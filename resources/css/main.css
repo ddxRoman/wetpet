@@ -1,0 +1,156 @@
+div{
+    /* border: 1px solid red; */
+}
+.body_page{
+    background-color: rgb(240, 245, 255);
+}
+.link_login_page_social{
+    text-decoration: none;
+}
+header{
+    padding: 1% 0%;
+}
+.header_center_block{
+    text-align: center;
+    color: rgb(73, 73, 202);
+}
+.header_logo{
+    width: 148px;
+    margin-top: 0;
+}
+.profile_block{
+    text-align: center;
+}
+.header-search{
+    width: 90%;
+    margin: 4% 0% 4% 0%;
+    padding-left: 1%;
+    padding-right: 1%;
+    height: 3em;
+    border-radius: 15px;
+    border: 1px solid #00f7ff;
+}
+.btn_login{
+    background-color: #ff17bd60;
+    border: 1px solid rgba(238, 130, 238, 0.705);
+    margin: 1%;
+}
+.btn_login:hover{
+    background-color: #FF17BC;
+    border: 1px solid rgba(0, 0, 0, 0.11);
+}
+
+.btn_search{
+    margin-left: 1%;
+    /* height: 3em; */
+    width: 3em;
+    background-color: #00d9ff00;
+    border: 1px solid #00000000;
+
+    border-radius: 15px;
+}
+.select-city{
+    text-decoration: none;
+    list-style-type: none;
+    margin-top: 20%;
+    
+}
+.select-city li{
+    margin-top: 10%;
+}
+.select_city_link{
+    text-decoration: none;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #979797;
+}
+.select_city_link:hover{
+    color: #000;
+}
+.search_modal{
+    width: 100%;
+    height: 50px;
+    border: 2px solid rgb(31, 136, 255);
+    height: 100%;
+    border-radius: 10px;
+}
+.login_link{
+    text-decoration: none;
+}
+.login_page_h1{
+    margin: 10%;
+}
+.login-page{
+    text-align: center;
+}
+.page-login_logo{
+    width: 168px;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+.login_input{
+    border-radius: 10px;
+    width: 25%;
+    height: 15%;
+    margin-bottom: 2%;
+}
+.login_btn_page{
+    width: 25%;
+    height: 20%;
+    border-radius: 10px;
+    color: aliceblue;
+    font-weight: 700;
+    background-color: #3fce3f;
+    border: 2px solid rgba(255, 255, 255, 0);
+    margin-top: 2%;
+}
+.login_btn_page:hover{
+    background-color: #12aa12;
+}
+.login_social_icon{
+    width: 4%;
+}
+.hr_login_page{
+    margin: 3% 0% 0% 0%;
+}
+
+/*--------------------------------------------------------------------body----------------------------------------------------------------------------------------------------- */
+.div_btn_category{
+    width: 155px;
+    height: 250px;
+    border: 2px solid #ff17bd34;
+    background-color: rgb(199, 219, 231);
+    border-radius: 20px;
+    text-align: center;
+}
+.header_h2{
+    padding-top: 3%;
+    padding-bottom: 2%;
+    text-align: center;
+}
+.most_popular_in_city{
+    margin-top: 3%;
+    max-height: 450px;
+}
+.title_list_popular{
+    padding-bottom: 1%;
+    font-weight: 700;
+    font-size: 18pt;
+}
+.list_doctor{
+    list-style-type: none;
+    color: #000000;
+}
+.list_in_category_specialist{
+    padding: 3px;
+    color: #1f1f1f;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+}
+.link_in_category_specialist{
+    text-decoration: none;
+}
+.list_specialist_count{
+padding-left: 3%;
+}
