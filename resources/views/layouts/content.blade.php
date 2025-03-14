@@ -50,6 +50,24 @@
         <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a> 
         <span class="list_specialist_count">50</span>
     </li>
+        <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a> 
+        <span class="list_specialist_count">50</span>
+    </li>
+        <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a> 
+        <span class="list_specialist_count">50</span>
+    </li>
+        <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a> 
+        <span class="list_specialist_count">50</span>
+    </li>
+        <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a> 
+        <span class="list_specialist_count">50</span>
+    </li>
+        <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a> 
+        <span class="list_specialist_count">50</span>
+    </li>
+        <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a> 
+        <span class="list_specialist_count">50</span>
+    </li>
     </div>
 </div>
 <div class="col-4">
@@ -76,6 +94,8 @@
 @extends('layouts.modules.top_rank_clinic')
 @section('top_rank_clinic')
 @endsection
+@extends('layouts.modules.must_popular')
+
 
 
 </div>

@@ -6,7 +6,7 @@
               <div class="Scriptcontent">
               
 <!-- partial:index.partial.html -->
-<div class="container">
+<div class="container_slider">
   <div class="wgh-slider">
     <input class="wgh-slider-target" type="radio" id="slide-1" name="slider"/>
     <input class="wgh-slider-target" type="radio" id="slide-2" name="slider"/>

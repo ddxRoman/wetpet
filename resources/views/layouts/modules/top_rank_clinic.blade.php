@@ -1,5 +1,5 @@
 <section class="slider_section">
-    <div class="container">
+    <div class="container_slider">
         <div class="carousel">
             <input type="radio" name="slides" checked="checked" id="slide-1">
             <input type="radio" name="slides" id="slide-2">
