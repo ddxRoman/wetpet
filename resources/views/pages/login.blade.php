@@ -1,8 +1,11 @@
 @vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -17,8 +20,8 @@
             
             <div class="col-12 login-block">
                 <form action="">
-                    <input class="login_input" type="phone"><br>
-                    <input class="login_input" type="password"><br>
+                    <input class="login_input" type="phone" placeholder="Телефон"><br>
+                    <input class="login_input" type="password" placeholder="Пароль"><br>
                     <button class="login_btn_page">Войти</button>
                 </form>
                 <hr class="hr_login_page">
@@ -39,7 +42,6 @@
                 <a href="" class="link_login_page_social">
                     <img class="login_social_icon" src="{{ Storage::url('icon/social/yandex.svg') }}" alt="">
                 </a>
-
             </div>
         </div>
     </div>

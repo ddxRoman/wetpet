@@ -138,11 +138,13 @@ header{
     font-size: 18pt;
 }
 .list_doctor{
+    background-color: yellowgreen;
     list-style-type: none;
     color: #000000;
+    height: 105px;
 }
 .list_in_category_specialist{
-    padding: 3px;
+    padding-bottom: 3px;
     color: #1f1f1f;
     font-weight: 600;
     text-decoration: none;
@@ -154,3 +156,24 @@ header{
 .list_specialist_count{
 padding-left: 3%;
 }
+.btn_popular_in_city{
+    border: none;
+    background-color: none;
+    font-weight: 600;
+}
+.btn_popular_in_city:hover{
+    border: none;
+    background-color: none;
+    color: rgb(82, 82, 82);
+
+}
+.top_rank_doctor_h3{
+    margin-top: 5%;
+text-align: center;
+
+}
+.top_rank_doctor_h5{
+    margin-top: 0;
+text-align: center;
+}
+
