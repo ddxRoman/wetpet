@@ -13,7 +13,9 @@
                 <li class="carousel__slide">
                     <figure>
                         <div>
-                            <img class="carousel__slide_img_prewiew" src="https://avatars.mds.yandex.net/get-altay/11403733/2a0000018e5aae6202ced7c736dc57a5e53e/XXL_height" alt="">
+                            <a href="">
+                                <img class="carousel__slide_img_prewiew" src="https://avatars.mds.yandex.net/get-altay/11403733/2a0000018e5aae6202ced7c736dc57a5e53e/XXL_height" alt="">
+                            </a>
                         </div>
                         <figcaption>
                             Гепард Васильевич
@@ -24,7 +26,9 @@
                 <li class="carousel__slide">
                     <figure>
                         <div>
+                            <a href="">
                             <img class="carousel__slide_img_prewiew" src="https://i.pinimg.com/736x/d3/ea/76/d3ea76b935336a9be4af78961d9cf898.jpg" alt="">
+</a>
                         </div>
                         <figcaption>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -35,7 +39,9 @@
                 <li class="carousel__slide">
                     <figure>
                         <div>
+                            <a href="">
                             <img class="carousel__slide_img_prewiew" src="https://p0.zoon.ru/preview/BiAdyyks6Ez9i0dc5w-kbg/2400x1500x85/1/1/3/original_6035bfbd8aece54aed2aa414_603613435ea85.jpg" alt="">
+</a>
                         </div>
                         <figcaption>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -46,7 +52,9 @@
                 <li class="carousel__slide">
                     <figure>
                         <div>
+                            <a href="">
                             <img class="carousel__slide_img_prewiew" src="https://gas-kvas.com/uploads/posts/2023-02/1676904858_gas-kvas-com-p-risunok-na-temu-ya-khochu-stat-veterinarom-9.jpg" alt="">
+</a>
                         </div>
                         <figcaption>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -57,7 +65,9 @@
                 <li class="carousel__slide">
                     <figure>
                         <div>
+                            <a href="">
                             <img class="carousel__slide_img_prewiew" src="https://wallpapers.com/images/hd/cute-kawaii-fox-in-hollow-log-2qyihxo0dlmrvwzh.jpg" alt="">
+</a>
                         </div>
                         <figcaption>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -68,7 +78,9 @@
                 <li class="carousel__slide">
                     <figure>
                         <div>
+                            <a href="">
                             <img class="carousel__slide_img_prewiew" src="https://avatars.mds.yandex.net/i?id=11c80c4e000e835751f538ee6c92efa2_l-5222428-images-thumbs&n=13" alt="">
+</a>
                         </div>
                         <figcaption>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.

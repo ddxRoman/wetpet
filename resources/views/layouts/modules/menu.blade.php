@@ -17,7 +17,7 @@
                 <div class="div_btn_category">Дрессировшики</div>
             </div>
             <div class="col-2">
-                <div class="div_btn_category">Пятое Десятое</div>
+                <div class="div_btn_category">Работа для Животных</div>
             </div>
             <div class="col-2">
                 <div class="div_btn_category">Все остальное</div>
