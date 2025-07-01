@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-3">
-                <button type="button" class="btn btn_login" data-bs-toggle="modal" data-bs-target="#selectcityModal">Ваш Город</button>
+                <button type="button" class="btn_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">Ваш Город</button>
                 </div>
                 <div class="col-6 header_center_block">            <img class="header_logo" src="{{ Storage::url('logo.png') }}" alt="Зверополис"></div>
                 <div class="col-3 profile_block"><a href="" class="login_link">

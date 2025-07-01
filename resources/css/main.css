@@ -38,6 +38,7 @@ header{
 }
 
 .btn_login{
+    font-weight: 600;
     background-color: #ff17bd60;
     border: 1px solid rgba(238, 130, 238, 0.705);
     margin: 1%;
@@ -49,7 +50,19 @@ header{
     background-color: #FF17BC;
     border: 1px solid rgba(0, 0, 0, 0.11);
 }
-
+.btn_city{
+    font-weight: 600;
+    background-color: #1797ff60;
+    border: 1px solid rgba(238, 130, 238, 0.705);
+    margin: 1%;
+    height: 25px;
+    width: 30%;
+    border-radius: 10px;
+}
+.btn_city:hover{
+        background-color: #1797ffb9;
+    border: 1px solid rgba(0, 0, 0, 0.11);
+}
 .btn_search{
     margin-left: 1%;
     /* height: 3em; */
