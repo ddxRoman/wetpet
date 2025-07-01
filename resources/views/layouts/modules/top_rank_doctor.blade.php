@@ -7,7 +7,7 @@
 
 </head>
 <body>
-  <div class="container">
+  <div class="container slider_doctor">
 
 
 <!-- partial:index.partial.html -->
@@ -65,7 +65,7 @@
 </div>
 
 <!-- Thumbnail navigation -->
-<div class="swiper-container nav-slider loading">
+<div class="swiper-container  nav-slider loading">
   <div class="swiper-wrapper" role="navigation">
     <div class="swiper-slide">
       <figure class="slide-bgimg" style="background-image:url(https://images.unsplash.com/photo-1483985988355-763728e1935b?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0MDE1NTg2Ng&ixlib=rb-1.2.1&q=85)">

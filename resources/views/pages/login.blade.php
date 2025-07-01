@@ -5,9 +5,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"></script>
+    <script src="https://snipp.ru/cdn/maskedinput/jquery.maskedinput.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src="https://snipp.ru/cdn/maskedinput/jquery.maskedinput.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Авторизация</title>
 </head>
 <body class="body_page">
     <div class="container login-page">
@@ -17,10 +20,10 @@
         </div>
     </div>    
         <div class="row">
-            
             <div class="col-12 login-block">
                 <form action="">
-                    <input class="login_input" type="phone" placeholder="Телефон"><br>
+                    @CSRF
+                    <input class="login_input mask-phone" type="phone" placeholder="Телефон"><br>
                     <input class="login_input" type="password" placeholder="Пароль"><br>
                     <button class="login_btn_page">Войти</button>
                 </form>
@@ -47,3 +50,7 @@
     </div>
 </body>
 </html>
+
+	<script>
+                                $('.mask-phone').mask('+7 (999) 999-99-99');
+                            </script>

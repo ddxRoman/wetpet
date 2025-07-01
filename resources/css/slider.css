@@ -21,7 +21,7 @@
     }
   }
   
-  // Styling
+   /* Styling */
   
   section {
       background: #F4F4F4;
@@ -30,7 +30,7 @@
   
   .container {
       max-width: 1044px;
-      margin: 0 auto;
+      margin: 1% auto;
       padding: 0 20px;
   }
   

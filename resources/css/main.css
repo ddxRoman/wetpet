@@ -29,11 +29,21 @@ header{
     height: 3em;
     border-radius: 15px;
     border: 1px solid #00f7ff;
+    background-color: #dadada;
 }
+.header-search:focus{
+    border: 2px solid #00f7ff;
+    background-color: #ffffff;
+
+}
+
 .btn_login{
     background-color: #ff17bd60;
     border: 1px solid rgba(238, 130, 238, 0.705);
     margin: 1%;
+    height: 25px;
+    width: 25%;
+    border-radius: 10px;
 }
 .btn_login:hover{
     background-color: #FF17BC;
@@ -67,6 +77,11 @@ header{
 .select_city_link:hover{
     color: #000;
 }
+.description_view{
+    text-align: center;
+    padding-top: 4%;
+    font-weight: 600;
+}
 .search_modal{
     width: 100%;
     height: 50px;
@@ -93,6 +108,8 @@ header{
     width: 25%;
     height: 15%;
     margin-bottom: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 .login_btn_page{
     width: 25%;
@@ -116,12 +133,28 @@ header{
 
 /*--------------------------------------------------------------------body----------------------------------------------------------------------------------------------------- */
 .div_btn_category{
+    padding-top: 4%;
     width: 155px;
     height: 250px;
     border: 2px solid #ff17bd34;
     background-color: rgb(199, 219, 231);
     border-radius: 20px;
     text-align: center;
+    cursor: pointer;
+}
+.div_btn_category:hover{
+    background-color: rgb(175, 211, 233);
+        font-weight: 800;
+    color: #000;
+    font-size: large;
+}
+.text_menu_btn_category{
+    font-weight: 600;
+    color: #313131;
+    height: 85px;
+}
+.text_menu_btn_category:hover{
+
 }
 .header_h2{
     padding-top: 3%;
@@ -177,8 +210,14 @@ text-align: center;
 text-align: center;
 }
 
+.category_icon{
+    width: 130px;
+    border-radius: 15px;
+}
 
-
+.div_btn_category_icon{
+/* margin-top: 75%; */
+}
 
 .border {
     list-style: none;
@@ -208,3 +247,7 @@ text-align: center;
     .border li:nth-child(3):hover {border-right: 10px solid #fcba30;}
     .border li:nth-child(4):hover {border-right: 10px solid #1ccfc9;}
     .border li:nth-child(5):hover {border-right: 10px solid #493224;}
+    
+    .footer{
+background-color: #00000011;
+}
