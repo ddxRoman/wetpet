@@ -38,7 +38,7 @@
       display: block;
       text-align: left;
       position: relative;
-      margin-bottom: 22px;
+
       
       > input {
           clip: rect(1px, 1px, 1px, 1px);

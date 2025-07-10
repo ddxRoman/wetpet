@@ -10,7 +10,6 @@
 </head>
 <body class="body_page">
     <header>
-
         <div class="container">
             <div class="row">
                 <div class="col-3">
@@ -38,12 +37,7 @@
         </div>
     </header>
     <main>
-
     </main>
-    <footer>
-
-    </footer>
-
     </body>
     </html>
 

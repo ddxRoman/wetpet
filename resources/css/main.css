@@ -262,5 +262,27 @@ text-align: center;
     .border li:nth-child(5):hover {border-right: 10px solid #493224;}
     
     .footer{
-background-color: #00000011;
-}
+
+        margin-top: 5%;
+        background-color: #00000011;
+    }
+    
+    .footer a{
+        text-decoration: none;
+        color: #000;
+        font-weight: 600;
+        
+        
+    }
+    .footer li{
+        padding-top: 5%;
+    }
+    .footer-content{
+        padding-top: 2%;
+    }
+    .footer_copyright{
+        padding-top: 2%;
+        font-style: italic;
+        color: #636363;
+        text-align: center;
+    }

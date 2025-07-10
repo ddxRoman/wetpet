@@ -1,6 +1,4 @@
         <div class="container">
-
-
             <div class="row">
                 <h2 class="header_h2">Популярное в городе <button type="button" class="btn_popular_in_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">[city]</button></h2>
                 <div class="col-4">
