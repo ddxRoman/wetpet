@@ -1,5 +1,6 @@
 @vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
 @include('modal.select_city')
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,16 +24,38 @@
                 <div class="col-6 header_center_block">            <img class="header_logo" src="{{ Storage::url('logo.png') }}" alt="Зверополис"></div>
                 
                 @guest
-                <div class="col-3 profile_block"><a href="" class="login_link">
-                    <a href="{{route('login')}}">
+                <div class="col-3 profile_block">
+                    <a class="login_link" href="{{route('login')}}">
                         <button type="button" class="btn_login">Войти</button>
+                        
                     </a>
-                </a>
-            </div>
-            @endguest
+</div>
+                @endguest
+                
+                @auth
+                <!-- Authentication Links -->
+                <div class=" col-3 profile_block">
+                    
+                    
+                    <a id="navbarDropdown" class="profile_link " href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ Auth::user()->name }}
+                    </a>
+                    
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item login_link" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    
+                                </div>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                         </div>
 
-                            @auth
-                            вы авторизованы
+
                             @endauth
 
             <div class="description_view col-12">

@@ -1,24 +1,6 @@
 @extends('layouts.app')
 @vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-<div>
-    <label for="login">Email или телефон</label>
-    <input id="login" type="text" name="login" required autofocus>
-</div>
-        <div>
-            <label for="password">Пароль</label>
-            <input id="password" type="password" name="password" required>
-        </div>
-        <div>
-            <input type="checkbox" name="remember" id="remember">
-            <label for="remember">Запомнить меня</label>
-        </div>
-        <button type="submit">Войти</button>
-    </form>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,9 +25,9 @@
                     <form method="POST" action="{{ route('login') }}">
                     @CSRF
 
-    <input id="login" type="text" name="login" required autofocus>
+                    <input class="login_input" id="login" type="text" name="login" required autofocus><br>
 
-                    <input class="login_input" type="password" id="password" placeholder="Пароль" required><br> 
+                    <input class="login_input" type="password" id="password" name="password" placeholder="Пароль" required><br> 
                     <div>
         <input type="checkbox" name="remember" id="remember">
         <label for="remember">Запомнить меня</label>

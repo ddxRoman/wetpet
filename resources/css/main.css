@@ -19,7 +19,9 @@ header{
     margin-top: 0;
 }
 .profile_block{
-    text-align: center;
+    position: relative;
+    top:0;
+    text-align: end;
 }
 .header-search{
     width: 90%;
@@ -104,6 +106,13 @@ header{
 }
 .login_link{
     text-decoration: none;
+}
+.profile_link{
+    text-decoration: none;
+    color: #002fff;
+    font-weight: 600;
+    font-size: large;
+
 }
 .login_page_h1{
     margin: 10%;
