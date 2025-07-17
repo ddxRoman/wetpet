@@ -8,6 +8,11 @@
     <link rel="icon" href="{{ url('favicon.ico') }}">
     <title>Зверополис</title>
 </head>
+
+
+
+{{-- Для гостей (неавторизованных) --}}
+
 <body class="body_page">
     <header>
         <div class="container">
@@ -16,12 +21,20 @@
                 <button type="button" class="btn_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">Ваш Город</button>
                 </div>
                 <div class="col-6 header_center_block">            <img class="header_logo" src="{{ Storage::url('logo.png') }}" alt="Зверополис"></div>
+                
+                @guest
                 <div class="col-3 profile_block"><a href="" class="login_link">
-                    <a href="{{route('login_page')}}">
+                    <a href="{{route('login')}}">
                         <button type="button" class="btn_login">Войти</button>
                     </a>
                 </a>
             </div>
+            @endguest
+
+                            @auth
+                            вы авторизованы
+                            @endauth
+
             <div class="description_view col-12">
                 <h1>Сайт про домашних животных</h1>
                 <div>На сайте вы сможете найти: ветеринарные клиники, ветгостиницы, лекарства, ветеринаров и грумеров <br>

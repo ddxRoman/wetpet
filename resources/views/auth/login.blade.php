@@ -1,4 +1,22 @@
+@extends('layouts.app')
 @vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
+
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+<div>
+    <label for="login">Email или телефон</label>
+    <input id="login" type="text" name="login" required autofocus>
+</div>
+        <div>
+            <label for="password">Пароль</label>
+            <input id="password" type="password" name="password" required>
+        </div>
+        <div>
+            <input type="checkbox" name="remember" id="remember">
+            <label for="remember">Запомнить меня</label>
+        </div>
+        <button type="submit">Войти</button>
+    </form>
 
 
 <!DOCTYPE html>
@@ -12,6 +30,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Авторизация</title>
 </head>
+@section('content')
 <body class="body_page">
     <div class="container login-page">
     <div class="row">
@@ -21,10 +40,16 @@
     </div>    
         <div class="row">
             <div class="col-12 login-block">
-                <form action="">
+                    <form method="POST" action="{{ route('login') }}">
                     @CSRF
-                    <input class="login_input mask-phone" type="phone" placeholder="Телефон"><br>
-                    <input class="login_input" type="password" placeholder="Пароль"><br>
+
+    <input id="login" type="text" name="login" required autofocus>
+
+                    <input class="login_input" type="password" id="password" placeholder="Пароль" required><br> 
+                    <div>
+        <input type="checkbox" name="remember" id="remember">
+        <label for="remember">Запомнить меня</label>
+    </div>
                     <button class="login_btn_page">Войти</button>
                 </form>
                 <hr class="hr_login_page">
@@ -45,10 +70,12 @@
                 <a href="" class="link_login_page_social">
                     <img class="login_social_icon" src="{{ Storage::url('icon/social/yandex.svg') }}" alt="">
                 </a>
+                
             </div>
         </div>
     </div>
 </body>
+@endsection
 </html>
 
 	<script>

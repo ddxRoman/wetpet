@@ -19,8 +19,8 @@
         <div class="wgh-slider__container">
           <div class="wgh-slider-item">
             <div class="wgh-slider-item__inner">
-              <figure class="wgh-slider-item-figure"><img class="wgh-slider-item-figure__image" src="https://i.pinimg.com/736x/d3/ea/76/d3ea76b935336a9be4af78961d9cf898.jpg" alt="The 5th Exotic"/>
-                <figcaption class="wgh-slider-item-figure__caption"><a href="page_doctor  ">Первая картинка</a><span>Quantic</span></figcaption>
+              <figure class="wgh-slider-item-figure"><img class="wgh-slider-item-figure__image" src="https://i.pinimg.com/736x/d3/ea/76/d3ea76b935336a9be4af78961d9cf898.jpg"  alt="The 5th Exotic"/>
+                <figcaption class="wgh-slider-item-figure__caption"><a href="page_doctor">Первая картинка</a><span>Quantic</span></figcaption>
               </figure>
               <label class="wgh-slider-item__trigger" for="slide-doctor-1" title="Show product 1"></label>
             </div>
@@ -57,20 +57,6 @@
               <label class="wgh-slider-item__trigger" for="slide-doctor-5" title="Show product 5"></label>
             </div>
           </div>
-
-         
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
       </div>
     </div>
