@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RandomNumberController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,6 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
-
 // Маршруты аутентификации
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -37,4 +38,3 @@ Route::get('/profile', function () {
     // Только для аутентифицированных пользователей
 })->middleware('auth');
 
-// Проверить, аутентифицирован ли пользователь

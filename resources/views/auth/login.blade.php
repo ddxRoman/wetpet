@@ -24,9 +24,7 @@
             <div class="col-12 login-block">
                     <form method="POST" action="{{ route('login') }}">
                     @CSRF
-
                     <input class="login_input" id="login" type="text" name="login" required autofocus><br>
-
                     <input class="login_input" type="password" id="password" name="password" placeholder="Пароль" required><br> 
                     <div>
         <input type="checkbox" name="remember" id="remember">

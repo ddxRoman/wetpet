@@ -106,14 +106,19 @@ header{
 }
 .login_link{
     text-decoration: none;
+
 }
 .profile_link{
     text-decoration: none;
-    color: #002fff;
+    color: #424242;
     font-weight: 600;
     font-size: large;
-
 }
+    .avatars_pics{
+        width: 35px;
+        background-color: #12aa1228;
+        border-radius: 15px;
+    }
 .login_page_h1{
     margin: 10%;
 }
@@ -294,4 +299,7 @@ text-align: center;
         font-style: italic;
         color: #636363;
         text-align: center;
+    }
+    .avatars_pics{
+        width: 35px;
     }

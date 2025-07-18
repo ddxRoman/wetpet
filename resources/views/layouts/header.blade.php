@@ -22,42 +22,41 @@
                 <button type="button" class="btn_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">Ваш Город</button>
                 </div>
                 <div class="col-6 header_center_block">            <img class="header_logo" src="{{ Storage::url('logo.png') }}" alt="Зверополис"></div>
-                
                 @guest
                 <div class="col-3 profile_block">
                     <a class="login_link" href="{{route('login')}}">
                         <button type="button" class="btn_login">Войти</button>
                         
                     </a>
-</div>
-                @endguest
-                
-                @auth
-                <!-- Authentication Links -->
-                <div class=" col-3 profile_block">
-                    
-                    
-                    <a id="navbarDropdown" class="profile_link " href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }}
+</div> 
+@endguest
+@auth
+<!-- Authentication Links -->
+<div class=" col-3 profile_block">
+    <a id="navbarDropdown" class="profile_link " href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+    @php
+        $randomNumber = rand(0, 20);
+        $link="storage/avatars/default/$randomNumber.png"
+
+    @endphp
+<br>
+
+<img class="avatars_pics" src="{{asset("{$link}")}}">
+    {{ Auth::user()->name }}
                     </a>
-                    
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item login_link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    
                                 </div>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
                          </div>
-
-
                             @endauth
-
             <div class="description_view col-12">
                 <h1>Сайт про домашних животных</h1>
                 <div>На сайте вы сможете найти: ветеринарные клиники, ветгостиницы, лекарства, ветеринаров и грумеров <br>
