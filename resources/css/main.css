@@ -31,7 +31,7 @@ header{
     height: 3em;
     border-radius: 15px;
     border: 1px solid #00f7ff;
-    background-color: #dadada;
+    background-color: #fff5ee;
 }
 .header-search:focus{
     border: 2px solid #00f7ff;
@@ -106,7 +106,6 @@ header{
 }
 .login_link{
     text-decoration: none;
-
 }
 .profile_link{
     text-decoration: none;
@@ -122,6 +121,22 @@ header{
 .login_page_h1{
     margin: 10%;
 }
+.dropdown-menu.show{
+background-color: rgb(207, 207, 207);
+
+}
+.dropdown-profile{
+    color: #1d6621;
+    text-decoration: none;
+    margin-left: 5%;
+    
+}
+
+.dropdown-profile:hover{
+    color: #000;
+    font-weight: 500;
+}
+
 .login-page{
     text-align: center;
 }
@@ -171,18 +186,26 @@ header{
 }
 .div_btn_category:hover{
     background-color: rgb(175, 211, 233);
-        font-weight: 800;
+    font-weight: 800;
     color: #000;
     font-size: large;
+    border-radius: 15px;
+    border: 2px solid #ff17bd5d;
+
 }
+
+
 .text_menu_btn_category{
     font-weight: 600;
     color: #313131;
     height: 85px;
 }
-.text_menu_btn_category:hover{
 
+
+.text_menu_btn_category:hover{
+color: #490034e5;
 }
+
 .header_h2{
     padding-top: 3%;
     padding-bottom: 2%;
@@ -242,9 +265,8 @@ text-align: center;
     border-radius: 15px;
 }
 
-.div_btn_category_icon{
-/* margin-top: 75%; */
-}
+
+
 
 .border {
     list-style: none;
@@ -253,7 +275,7 @@ text-align: center;
     .border li {
     font-family: "Trebuchet MS", "Lucida Sans";
     padding: 7px 20px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border-radius: 5px;
     border-left: 10px solid #f05d22; 
     box-shadow: 2px -2px 5px 0 rgba(0,0,0,.1),
@@ -303,3 +325,48 @@ text-align: center;
     .avatars_pics{
         width: 35px;
     }
+    .pets_menu{
+        text-align: center;
+        font-weight: 600;
+        background-color: yellowgreen;
+        padding: 2%;
+        cursor: pointer;
+        border-radius: 10px;
+        margin-bottom: 8%;
+        height: 300px;
+    }
+    .pets_menu:hover{
+        text-align: center;
+        font-weight: 600;
+        background-color: rgb(147, 204, 33);
+        padding: 2%;
+    }
+    .pets_menu_pic{
+        width: 50%;
+        border-radius: 10px;
+        text-align: center;
+        justify-content: end;
+    }
+    .header_pets_menu{
+        margin-top: 5%;
+        height: 130px;
+        display: block;
+        font-size: 16pt;
+    }
+    .pets_menu:hover .pets_menu_pic {
+
+        width: 70%;
+    }
+    .pets_menu:hover .header_pets_menu{
+        height: 80px;
+    }
+        .pets_menu:hover .header_pets_menu {
+
+    color: #000;
+    font-size: 17pt;
+}
+
+.general_menu_link{
+    text-decoration: none;
+}
+

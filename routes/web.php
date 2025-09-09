@@ -29,6 +29,10 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
+Route::get('pets', function () {    return view('pages.pets');})->name('pets');
+
+
 // Защищённый маршрут
 Route::get('/home', function () {
     return view('welcome');
@@ -37,4 +41,6 @@ Route::get('/home', function () {
 Route::get('/profile', function () {
     // Только для аутентифицированных пользователей
 })->middleware('auth');
+
+
 

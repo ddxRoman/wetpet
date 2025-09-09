@@ -21,7 +21,7 @@
                 <div class="col-3">
                 <button type="button" class="btn_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">Ваш Город</button>
                 </div>
-                <div class="col-6 header_center_block">            <img class="header_logo" src="{{ Storage::url('logo.png') }}" alt="Зверополис"></div>
+                <div class="col-6 header_center_block">     <a href="/">     <img class="header_logo" src="{{ Storage::url('logo.png') }}" alt="Зверополис"> </a>  </div>
                 @guest
                 <div class="col-3 profile_block">
                     <a class="login_link" href="{{route('login')}}">
@@ -45,7 +45,7 @@
     {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item login_link" href="{{ route('logout') }}"
+                        <a class="dropdown-profile" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
