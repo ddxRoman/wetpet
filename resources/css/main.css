@@ -128,13 +128,22 @@ background-color: rgb(207, 207, 207);
 .dropdown-profile{
     color: #1d6621;
     text-decoration: none;
-    margin-left: 5%;
-    
 }
+ol, ul {
+padding-left: 0.5rem;
+}
+
 
 .dropdown-profile:hover{
     color: #000;
     font-weight: 500;
+}
+
+.dropdown_menu_li{
+    text-decoration: none;
+    list-style-type: none;
+    margin: 0;
+
 }
 
 .login-page{

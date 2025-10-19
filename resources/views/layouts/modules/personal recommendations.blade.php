@@ -1,6 +1,6 @@
 <section class="slider_section">
     <div class="container">
-    <h3 class="top_rank_doctor_h3">Лучшие клиники города <button type="button" class="btn_popular_in_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">[city]</button></h3>
+    <h3 class="top_rank_doctor_h3">Рекомендации для вас в городе <button type="button" class="btn_popular_in_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">[city]</button></h3>
     <h5 class="top_rank_doctor_h5">по оценкам пользователей</h5>
         <div class="carousel">
             <input type="radio" name="slides" checked="checked" id="slide-clinic-1">

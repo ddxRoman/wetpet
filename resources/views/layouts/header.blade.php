@@ -7,9 +7,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}">
-    <title>Зверополис</title>
+    <title>Мяу-Гав</title>
 </head>
 
+
+@include('partials.city-selector')
 
 
 {{-- Для гостей (неавторизованных) --}}
@@ -21,7 +23,7 @@
                 <div class="col-3">
                 <button type="button" class="btn_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">Ваш Город</button>
                 </div>
-                <div class="col-6 header_center_block">     <a href="/">     <img class="header_logo" src="{{ Storage::url('logo.png') }}" alt="Зверополис"> </a>  </div>
+                <div class="col-6 header_center_block">     <a href="/">     <img class="header_logo" src="{{ Storage::url('logo3.png') }}" alt="Зверополис"> </a>  </div>
                 @guest
                 <div class="col-3 profile_block">
                     <a class="login_link" href="{{route('login')}}">
@@ -45,11 +47,22 @@
     {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-profile" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
+                        <ul class="dropdown_menu_li">
+<li>
+
+    <a class="dropdown-profile" href="{{ route('logout') }}">
+        Профиль
+    </a>
+</li>
+<li>
+
+    <a class="dropdown-profile" href="{{ route('logout') }}"
+    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                </li>
+                                </ul>
                                 </div>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf

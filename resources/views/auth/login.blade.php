@@ -12,6 +12,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Авторизация</title>
 </head>
+<style>
+    .navbar{
+background-color: violet;
+/* opacity: 0; */
+    }
+</style>
+
+
 @section('content')
 <body class="body_page">
     <div class="container login-page">
