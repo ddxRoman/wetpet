@@ -11,7 +11,7 @@
 </head>
 
 
-@include('partials.city-selector')
+
 
 
 {{-- Для гостей (неавторизованных) --}}
@@ -21,7 +21,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-3">
-                <button type="button" class="btn_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">Ваш Город</button>
+                    @include('partials.city-selector')
+
                 </div>
                 <div class="col-6 header_center_block">     <a href="/">     <img class="header_logo" src="{{ Storage::url('logo3.png') }}" alt="Зверополис"> </a>  </div>
                 @guest

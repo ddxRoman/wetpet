@@ -8,6 +8,10 @@
 </head>
 <body>
 <div class="container slider_doctor">
+<div class="row">
+<div class="col-12">
+
+
 
   <div class="swiper-container main-slider loading">
     <div class="swiper-wrapper">
@@ -42,9 +46,9 @@
       @endforeach
     </div>
   </div>
-
 </div>
-
+</div>
+</div>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js'></script>
 <script src="{{ asset('js/script.js') }}"></script>
 </body>

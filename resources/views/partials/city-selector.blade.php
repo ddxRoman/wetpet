@@ -4,15 +4,24 @@
 @endphp
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
+<style>
+.select_city_btn{
+color: #0066ffff;
+background-color: #ffffff01;
+/* opacity: 0; */
+border: none;
+margin-left: 2%;
+font-weight: 700;
+}
+</style>
 
 <div id="city-selector" style="max-width:420px;">
-    <div class="city-current" style="display:flex;align-items:center;justify-content:space-between;">
+    <div class="city-current" style="display:flex;align-items:center;">
         <div>
             <strong>Город:</strong>
-            <span id="current-city-name">{{ $currentCity ? $currentCity->name : '—' }}</span>
         </div>
-        <button id="open-city-modal" aria-haspopup="dialog" style="padding:.4rem .6rem;border-radius:.4rem;border:1px solid #ccc;background:#fff;">
-            Изменить
+        <button id="open-city-modal" class="select_city_btn" aria-haspopup="dialog">
+            <span id="current-city-name">{{ $currentCity ? $currentCity->name : '—' }}</span>
         </button>
     </div>
 
