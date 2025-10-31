@@ -5,6 +5,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RandomNumberController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Models\City;
+use Illuminate\Support\Facades\Auth;
+
+
+Auth::routes();
 
 
 
@@ -56,8 +63,17 @@ Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
 
 
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-use App\Models\City;
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+
+Route::post('reset/password', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');
+
+
+
 
 Route::get('/test-city', function () {
     return City::count();
