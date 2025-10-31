@@ -21,8 +21,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('welcome');
-    }
+public function index()
+{
+    // Получаем название города из сессии (или подставляем значение по умолчанию)
+    $currentCityName = session('city_name', 'Ваш город');
+
+    // Передаём переменную в Blade
+    return view('welcome', compact('currentCityName'));
+}
+
 }

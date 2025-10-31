@@ -1,6 +1,6 @@
 <section class="slider_section">
   <div class="rt-container">
-        <h3 class="top_rank_doctor_h3">Лучшие ветеринары города <button type="button" class="btn_popular_in_city" data-bs-toggle="modal" data-bs-target="#selectcityModal">[city]</button></h3>
+        <h3 class="top_rank_doctor_h3">Лучшие ветеринары города {{ $currentCityName }}</h3>
         <h5 class="top_rank_doctor_h5">по оценкам пользователей</h5>
           <div class="col-rt-12">
               <div class="Scriptcontent">
