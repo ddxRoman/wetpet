@@ -2,62 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
+use App\Models\City;
 
 class CityController extends Controller
 {
     /**
-     * Возвращает список городов (с поддержкой поиска)
+     * Возвращает список городов (для поиска)
      */
     public function index(Request $request)
     {
-        $q = $request->query('q');
+        $q = $request->get('q', '');
 
         $cities = City::query()
             ->when($q, fn($query) => $query->where('name', 'like', "%{$q}%"))
             ->orderBy('name')
             ->limit(50)
-            ->get(['id', 'name', 'slug']); // Только нужные поля
+            ->get(['id', 'name']);
 
         return response()->json($cities);
     }
 
     /**
-     * Устанавливает выбранный город пользователю
+     * Устанавливает выбранный город
      */
-    public function setCity(Request $request)
+    public function set(Request $request)
     {
-        try {
-            $request->validate([
-                'city_id' => 'required|integer|exists:cities,id',
-            ]);
+        $request->validate([
+            'city_id' => 'required|exists:cities,id',
+        ]);
 
-            $city = City::find($request->city_id);
+        $city = City::findOrFail($request->city_id);
 
-            if (!$city) {
-                return response()->json(['error' => 'Город не найден'], 404);
-            }
+        // Сохраняем в сессию
+        session([
+            'city_id' => $city->id,
+            'city_name' => $city->name,
+        ]);
 
-            // Сохраняем город в сессии
-            Session::put('city_id', $city->id);
-            Session::put('city_name', $city->name);
-
-            return response()->json([
-                'success' => true,
-                'city' => [
-                    'id' => $city->id,
-                    'name' => $city->name,
-                    'slug' => $city->slug,
-                ],
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['error' => 'Некорректные данные'], 400);
-        } catch (\Exception $e) {
-            Log::error('Ошибка при выборе города: ' . $e->getMessage());
-            return response()->json(['error' => 'Ошибка при установке города'], 500);
+        // Если пользователь авторизован — обновляем поле city_id в users
+        if (auth()->check()) {
+            $user = auth()->user();
+            $user->city_id = $city->id;
+            $user->save();
         }
+
+        return response()->json(['city' => $city]);
     }
 }

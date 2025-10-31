@@ -49,11 +49,13 @@ Route::get('/profile', function () {
 })->middleware('auth');
 
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
-Route::post('/set-city', [CityController::class, 'setCity'])->name('cities.set');
+Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');
 
 
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
+
+
 
 use App\Models\City;
 

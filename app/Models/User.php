@@ -21,4 +21,10 @@ protected $fillable = ['name','email','email_verified_at','password','phone','ci
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // app/Models/User.php
+public function city()
+{
+    return $this->belongsTo(City::class);
+}
+
 }

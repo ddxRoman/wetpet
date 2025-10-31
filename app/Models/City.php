@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     protected $fillable = ['name','slug','region'];
+    // app/Models/City.php
+public function users()
+{
+    return $this->hasMany(User::class);
+}
+
 }
