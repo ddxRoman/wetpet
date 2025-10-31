@@ -1,5 +1,5 @@
 @php
-    $currentCityName = auth()->user()?->city?->name ?? session('city_name', '—');
+    $currentCityName = auth()->user()?->city?->name ?? session('city_name', ' нужно выбрать');
     $citiesIndexUrl = route('cities.index');
     $citiesSetUrl   = route('cities.set');
 @endphp
