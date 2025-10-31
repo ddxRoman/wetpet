@@ -45,23 +45,25 @@ public function register(Request $request)
     // Обработка входа
 public function login(Request $request)
 {
-    $credentials = $request->validate([
-        'login' => 'required|string', // Может быть email или phone
+    $request->validate([
+        'login' => 'required|string',
         'password' => 'required|string',
     ]);
-    
 
-    // Определяем, что введено - email или телефон
-    $field = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
-    
-    if (Auth::attempt([$field => $credentials['login'], 'password' => $credentials['password']], $request->remember)) {
-        $request->session()->regenerate();
-        return redirect()->intended('/home');
+    // Проверяем существует ли пользователь
+    $user = User::where('email', $request->login)->first();
+
+    if (!$user) {
+        return back()->withInput()->with('login_error', 'Пользователь не найден');
     }
 
-    return back()->withErrors([
-        'login' => 'Неверные учетные данные.',
-    ]);
+    // Проверяем правильность пароля
+    if (!Auth::attempt(['email' => $request->login, 'password' => $request->password], $request->remember)) {
+        return back()->withInput()->with('password_error', 'Неверный пароль');
+    }
+
+    // Авторизация успешна
+    return redirect()->intended('/');
 }
 
     // Выход
