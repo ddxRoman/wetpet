@@ -2,8 +2,11 @@
 @extends('layouts.app')
 
 @section('content')
-
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Восстановление пароля</title>
     <style>
         body.body_page {
             background-color: #eef3ff;
@@ -28,18 +31,18 @@
         .page-forgot_logo {
             width: 120px;
             display: block;
-            margin: 0 auto 10px;
+            margin: 0 auto 15px;
         }
 
         h2 {
-            font-size: 20px;
+            font-size: 22px;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .forgot_input {
+        .login_input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 14px;
             border: 1px solid #ccc;
             border-radius: 6px;
             margin-bottom: 12px;
@@ -47,14 +50,14 @@
             transition: border-color 0.2s;
         }
 
-        .forgot_input:focus {
+        .login_input:focus {
             outline: none;
             border-color: #3399ff;
         }
 
-        .forgot_btn {
+        .login_btn_page {
             width: 100%;
-            background-color: #2ecc71;
+            background-color: #3cec19b6;
             color: #fff;
             border: none;
             padding: 12px;
@@ -65,11 +68,11 @@
             transition: background-color 0.2s;
         }
 
-        .forgot_btn:hover {
-            background-color: #29b765;
+        .login_btn_page:hover {
+            background-color: #19ec58ff;
         }
 
-        .back-link {
+        .register-btn {
             display: inline-block;
             margin-top: 15px;
             color: #007bff;
@@ -77,41 +80,47 @@
             font-size: 14px;
         }
 
-        .back-link:hover {
+        .register-btn:hover {
             text-decoration: underline;
         }
 
-        .status-message {
+        .alert-success {
             color: #28a745;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 10px;
             font-size: 14px;
             margin-bottom: 15px;
         }
 
-        .error-message {
+        .alert-danger {
             color: #e74c3c;
-            font-size: 13px;
-            margin-bottom: 10px;
-            text-align: left;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
         }
 
         .navbar {
             display: none !important;
         }
     </style>
-
-
+</head>
 
 <body class="body_page">
-    <div class="login-page">
+    <div class="forgot-page">
         <a href="{{ url('/') }}">
-            <!-- <img class="page-login_logo" src="{{ Storage::url('logo3.png') }}" alt="Зверополис"> -->
+            <img class="page-forgot_logo" src="{{ Storage::url('logo3.png') }}" alt="Зверополис">
         </a>
 
         <h2>Восстановление пароля</h2>
 
         @if (session('status'))
-            <div class="alert alert-success" role="alert">
-                {{ session('status') }}
+            <div class="alert-success" role="alert">
+                Мы отправили ссылку для сброса пароля на указанный адрес.
             </div>
         @endif
 
@@ -126,7 +135,7 @@
                    required autofocus>
 
             @error('email')
-                <div class="alert alert-danger" role="alert">
+                <div class="alert-danger" role="alert">
                     {{ $message }}
                 </div>
             @enderror
@@ -139,4 +148,5 @@
         <a href="{{ route('login') }}" class="register-btn">Назад к входу</a>
     </div>
 </body>
+</html>
 @endsection

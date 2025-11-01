@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\HtmlString;
 
 class ResetPasswordNotification extends Notification
 {
@@ -21,15 +22,16 @@ class ResetPasswordNotification extends Notification
 
     public function toMail($notifiable)
     {
-        $url = url(route('password.reset', [
+        $resetUrl = url(route('password.reset', [
             'token' => $this->token,
             'email' => $notifiable->getEmailForPasswordReset(),
         ], false));
 
         return (new MailMessage)
-            ->subject('Сброс пароля')
-            ->line('Вы получили это письмо, потому что запросили сброс пароля.')
-            ->action('Сбросить пароль', $url)
-            ->line('Если вы не запрашивали сброс, просто проигнорируйте это письмо.');
+            ->subject('Сброс пароля на сайте Зверополис')
+            ->view('emails.password_reset', [
+                'resetUrl' => $resetUrl,
+                'user' => $notifiable,
+            ]);
     }
 }
