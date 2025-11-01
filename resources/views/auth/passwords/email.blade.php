@@ -113,7 +113,7 @@
 <body class="body_page">
     <div class="forgot-page">
         <a href="{{ url('/') }}">
-            <img class="page-forgot_logo" src="{{ Storage::url('logo3.png') }}" alt="Зверополис">
+            <img class="page-forgot_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="Зверополис">
         </a>
 
         <h2>Восстановление пароля</h2>

@@ -218,7 +218,7 @@ select:focus {
     <nav class="navbar">
         <div class="navbar-logo">
             <a href="{{ url('/') }}">
-                <img src="{{ asset('images/logo3.png') }}" alt="Логотип">
+                <img src="{{ asset('logo/logo3.png') }}" alt="Логотип">
             </a>
         </div>
         <div class="navbar-user">

@@ -150,7 +150,7 @@
     <div class="login-page">
 
         <a href="{{ url('/') }}">
-            <img class="page-login_logo" src="{{ Storage::url('logo3.png') }}" alt="Зверополис">
+            <img class="page-login_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="Зверополис">
         </a>
 
         <a href="{{ route('register') }}" class="register-btn">Зарегистрироваться</a>
@@ -193,9 +193,9 @@
 
         <h3>или авторизуйтесь через:</h3>
         <div>
-            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/telegram.svg') }}" title="Telegram" alt="Telegram"></a>
-            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/vk.svg') }}" title="VK ID" alt="VK"></a>
-            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/yandex.svg') }}" title="Yandex" alt="Yandex"></a>
+            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/telegram-logo.svg') }}" title="Telegram" alt="Telegram"></a>
+            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/vk-logo.svg') }}" title="VK ID" alt="VK"></a>
+            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/yandex-logo.svg') }}" title="Yandex" alt="Yandex"></a>
         </div>
     </div>
 </body>
