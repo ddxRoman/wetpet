@@ -193,9 +193,9 @@
 
         <h3>или авторизуйтесь через:</h3>
         <div>
-            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/telegram-logo.svg') }}" title="Telegram" alt="Telegram"></a>
-            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/vk-logo.svg') }}" title="VK ID" alt="VK"></a>
-            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/yandex-logo.svg') }}" title="Yandex" alt="Yandex"></a>
+            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/telegram-logo.svg') }}" title="Telegram" alt="Telegram"></a>
+            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/vk-logo.svg') }}" title="VK ID" alt="VK"></a>
+            <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/yandex-logo.svg') }}" title="Yandex" alt="Yandex"></a>
         </div>
     </div>
 </body>

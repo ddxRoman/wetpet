@@ -79,7 +79,7 @@
                 <div class="row">
                     <div class="col-12">
                         <input type="search" class="header-search" placeholder="Животные, породы, ветеринары, клиники ">
-                       <a href=""><img class="btn_search" src="{{storage::url('icon/search.png')}}" alt=""></a>
+                       <a href=""><img class="btn_search" src="{{storage::url('icon/button/search.svg')}}" alt=""></a>
                     </div>
                 </div>
             </div>
