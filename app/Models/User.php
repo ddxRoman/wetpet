@@ -34,5 +34,10 @@ public function sendPasswordResetNotification($token)
     $this->notify(new ResetPasswordNotification($token));
 }
 
+public function pets()
+{
+    return $this->belongsToMany(Pet::class);
+}
+
 
 }

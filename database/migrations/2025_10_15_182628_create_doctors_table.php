@@ -10,6 +10,8 @@ return new class extends Migration {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id(); // ID врача
             $table->string('name'); // Имя врача
+            $table->string('specialization'); // специализация врача
+            $table->string('clinic'); // клиника врача
             $table->string('photo'); // Фото (путь к файлу)
             $table->text('description')->nullable(); // Описание, специализация и т.п.
             $table->timestamps(); // created_at и updated_at

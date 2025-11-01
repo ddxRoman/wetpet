@@ -10,6 +10,9 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\City;
 use Illuminate\Support\Facades\Auth;
+        use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PetController;
+
 
 Auth::routes();
 
@@ -69,6 +72,14 @@ Route::get('reset-password/{token}', [ResetPasswordController::class, 'showReset
     
     Route::get('/test-city', function () {
         return City::count();});
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/pets/store', [PetController::class, 'store'])->name('pets.store');
+});
 
         Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account');

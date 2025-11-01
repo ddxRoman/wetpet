@@ -3,31 +3,53 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
-class CitiesTableSeeder extends Seeder
+class UserTableSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        $cities = [
-            'Москва',
-            'Санкт-Петербург',
-            'Казань',
-            'Екатеринбург',
-            'Новосибирск',
-            'Нижний Новгород',
-            'Самара',
-            'Краснодар',
+        $users = [
+            [
+                'name' => 'Роман Оксентий',
+                'nickname' => 'DDX',
+                'email' => 'ddxman@mail.ru',
+                'phone' => '+79667404577',
+                'password' => Hash::make('12345678'),
+                'city_id' => 1, // ID города из таблицы cities
+            ],
+            [
+                'name' => 'Анна Петрова',
+                'nickname' => 'annapet',
+                'email' => 'ddx2man@mail.ru',
+                'phone' => '+7964334577',
+                'password' => Hash::make('12345678'),
+                'city_id' => 2,
+            ],
+            [
+                'name' => 'Сергей Смирнов',
+                'nickname' => 'sergeydev',
+                'email' => 'ddx1man@mail.ru',
+                'phone' => '+7964545447',
+                'password' => Hash::make('12345678'),
+                'city_id' => 3,
+            ],
+            [
+                'name' => 'Валерия Кошечка',
+                'nickname' => 'kitty',
+                'email' => 'valaria.mas@yandex.ru',
+                'phone' => '+79645433447',
+                'password' => Hash::make('12345678'),
+                'city_id' => 3,
+            ],
         ];
 
-        foreach ($cities as $name) {
-            DB::table('cities')->insert([
-                'name' => $name,
-                'slug' => Str::slug($name),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        foreach ($users as $user) {
+            User::updateOrCreate(
+                ['email' => $user['email']], // если пользователь уже есть — обновим
+                $user
+            );
         }
     }
 }

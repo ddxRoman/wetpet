@@ -297,6 +297,14 @@ body.body_page {
                     <button type="submit" class="save-btn">Добавить питомца</button>
                 </form>
             </div>
+
+@if (session('success'))
+    <div style="color: green; margin-bottom: 15px;">
+        {{ session('success') }}
+    </div>
+@endif
+
+
         </div>
     </div>
 
