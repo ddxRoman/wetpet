@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\RandomNumberController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\CityController;
@@ -9,7 +10,6 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\City;
 use Illuminate\Support\Facades\Auth;
-
 
 Auth::routes();
 
@@ -51,10 +51,6 @@ Route::get('/home', function () {
     return view('welcome');
 })->middleware('auth');
 
-Route::get('/profile', function () {
-    // Только для аутентифицированных пользователей
-})->middleware('auth');
-
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');
 
@@ -67,10 +63,20 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkE
 
 Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
     ->name('password.reset');
-
-Route::post('reset/password', [ResetPasswordController::class, 'reset'])
+    
+    Route::post('reset/password', [ResetPasswordController::class, 'reset'])
     ->name('password.update');
+    
+    Route::get('/test-city', function () {
+        return City::count();});
 
-Route::get('/test-city', function () {
-    return City::count();
+        Route::middleware(['auth'])->group(function () {
+    Route::get('/account', [AccountController::class, 'index'])->name('account');
+    Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/account/pets', [AccountController::class, 'storePet'])->name('pets.store');
+});
+
+// 👇 этот блок должен идти после всех других маршрутов
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account', [AccountController::class, 'index'])->name('account');
 });

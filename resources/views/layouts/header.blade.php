@@ -51,7 +51,7 @@
                         <ul class="dropdown_menu_li">
 <li>
 
-    <a class="dropdown-profile" href="{{ route('logout') }}">
+    <a class="dropdown-profile" href="{{ route('account') }}">
         Профиль
     </a>
 </li>
