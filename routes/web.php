@@ -81,11 +81,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pets/store', [PetController::class, 'store'])->name('pets.store');
 });
 
-        Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account');
-    Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
-    Route::post('/account/pets', [AccountController::class, 'storePet'])->name('pets.store');
+    Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
+    Route::post('/account/pets', [AccountController::class, 'storePet'])->name('account.pets.store');
 });
+
 
 // 👇 этот блок должен идти после всех других маршрутов
 Route::middleware(['auth'])->group(function () {
