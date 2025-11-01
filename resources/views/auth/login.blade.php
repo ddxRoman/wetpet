@@ -90,6 +90,20 @@
             margin-bottom: 10px;
         }
 
+        .forgot-btn {
+            display: inline-block;
+            margin-top: 8px;
+            color: #007bff;
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .forgot-btn:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
         .hr_login_page {
             margin: 25px 0;
             border: none;
@@ -141,34 +155,39 @@
 
         <a href="{{ route('register') }}" class="register-btn">Зарегистрироваться</a>
 
-<form method="POST" action="{{ route('login') }}">
-    @csrf
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
 
-    {{-- Поле Email --}}
-    <input class="login_input" id="login" type="text" name="login" placeholder="Email" value="{{ old('login') }}" required autofocus>
-    @error('login')
-        <div class="error-message">{{ $message }}</div>
-    @enderror
-    @if (session('login_error'))
-        <div class="error-message">{{ session('login_error') }}</div>
-    @endif
+            {{-- Поле Email --}}
+            <input class="login_input" id="login" type="text" name="login" placeholder="Email" value="{{ old('login') }}" required autofocus>
+            @error('login')
+                <div class="error-message">{{ $message }}</div>
+            @enderror
+            @if (session('login_error'))
+                <div class="error-message">{{ session('login_error') }}</div>
+            @endif
 
-    {{-- Поле Пароль --}}
-    <input class="login_input" type="password" id="password" name="password" placeholder="Пароль" required>
-    @error('password')
-        <div class="error-message">{{ $message }}</div>
-    @enderror
-    @if (session('password_error'))
-        <div class="error-message">{{ session('password_error') }}</div>
-    @endif
+            {{-- Поле Пароль --}}
+            <input class="login_input" type="password" id="password" name="password" placeholder="Пароль" required>
+            @error('password')
+                <div class="error-message">{{ $message }}</div>
+            @enderror
+            @if (session('password_error'))
+                <div class="error-message">{{ session('password_error') }}</div>
+            @endif
 
-    <div class="remember-block">
-        <input type="checkbox" name="remember" id="remember">
-        <label for="remember">Запомнить меня</label>
-    </div>
+            {{-- Если пароль неверный, показываем ссылку "Забыли пароль?" --}}
+            @if ($errors->has('password') || session('password_error'))
+                <a href="{{ route('password.request') }}" class="forgot-btn">Забыли пароль?</a>
+            @endif
 
-    <button class="login_btn_page">Войти</button>
-</form>
+            <!-- <div class="remember-block">
+                <input type="checkbox" name="remember" id="remember">
+                <label for="remember">Запомнить меня</label>
+            </div> -->
+
+            <button class="login_btn_page">Войти</button>
+        </form>
 
         <hr class="hr_login_page">
 

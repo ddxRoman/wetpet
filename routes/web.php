@@ -62,7 +62,6 @@ Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
 
-
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
@@ -71,9 +70,6 @@ Route::get('reset-password/{token}', [ResetPasswordController::class, 'showReset
 
 Route::post('reset/password', [ResetPasswordController::class, 'reset'])
     ->name('password.update');
-
-
-
 
 Route::get('/test-city', function () {
     return City::count();
