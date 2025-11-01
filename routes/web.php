@@ -87,6 +87,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/account/pets', [AccountController::class, 'storePet'])->name('account.pets.store');
 });
 
+Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
+Route::post('/cities/add', [CityController::class, 'store'])->name('cities.add');
+
+Route::get('/cities/all', [CityController::class, 'getAll'])->name('cities.all');
+
+// routes/web.php
+Route::get('/cities/all', [CityController::class, 'all'])->name('cities.all');
+Route::post('/cities/add', [CityController::class, 'add'])->name('cities.add');
+
+
 
 // 👇 этот блок должен идти после всех других маршрутов
 Route::middleware(['auth'])->group(function () {

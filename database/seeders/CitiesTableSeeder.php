@@ -19,12 +19,23 @@ class CitiesTableSeeder extends Seeder
             'Нижний Новгород',
             'Самара',
             'Краснодар',
+            'Белгород',
+            'Воронеж',
+            'Сочи',
+            'Донецк',
+            'Макеевка',
+            'Луганск',
+            'Севастополь',
+            'Уфа',
+            'Красноярск',
+            'Владивосток',
         ];
 
         foreach ($cities as $name) {
             DB::table('cities')->insert([
                 'name' => $name,
                 'slug' => Str::slug($name),
+                'verified' => 'verified',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
-    protected $fillable = ['name','slug','region'];
+    protected $fillable = ['name','slug','region','verified'];
     // app/Models/City.php
 public function users()
 {

@@ -16,11 +16,11 @@ class UserTableSeeder extends Seeder
                 'nickname' => 'DDX',
                 'email' => 'ddxman@mail.ru',
                 'birth_date' => '-----',
-                'avatar' => 'https://i.pinimg.com/originals/71/9b/1e/719b1eabeffc617b788639f4e564bbbb.jpg',
+                'avatar' => 'storage/default-avatar.png',
                 
                 'phone' => '+79667404577',
                 'password' => Hash::make('12345678'),
-                'city_id' => 1, // ID города из таблицы cities
+                'city_id' => 8, // ID города из таблицы cities
             ],
             [
                 'name' => 'Анна Петрова',

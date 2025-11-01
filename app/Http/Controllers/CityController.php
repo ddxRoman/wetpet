@@ -7,6 +7,65 @@ use App\Models\City;
 
 class CityController extends Controller
 {
+    public function getAll()
+{
+    return response()->json(\App\Models\City::orderBy('name')->get(['id', 'name']));
+}
+
+
+public function all()
+{
+    return response()->json(\App\Models\City::select('id', 'name')->orderBy('name')->get());
+}
+
+public function add(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'country' => 'required|string|max:255',
+        'region' => 'required|string|max:255',
+    ]);
+
+    $city = \App\Models\City::create($validated);
+
+    return response()->json(['success' => true, 'city' => $city]);
+}
+
+
+     public function search(Request $request)
+    {
+        $query = $request->get('query', '');
+        $cities = City::where('name', 'like', "%{$query}%")
+            ->orderBy('name')
+            ->limit(10)
+            ->get(['id', 'name']);
+
+        return response()->json($cities);
+    }
+
+    // Добавление нового города (с отметкой unconfirmed)
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'country' => 'required|string|max:255',
+            'region' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:cities,name',
+        ]);
+
+        $city = City::create([
+            'country' => $validated['country'],
+            'region' => $validated['region'],
+            'name' => $validated['name'],
+            'verified' => 'unconfirmed',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'city' => $city
+        ]);
+    }
+
+
     /**
      * Возвращает список городов (для поиска)
      */
