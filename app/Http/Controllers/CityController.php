@@ -26,10 +26,26 @@ public function add(Request $request)
         'region' => 'required|string|max:255',
     ]);
 
-    $city = \App\Models\City::create($validated);
+    // Создаём slug автоматически
+    $slug = \Str::slug($validated['name']);
+
+    // Проверяем, что slug уникален
+    $count = \App\Models\City::where('slug', 'like', $slug . '%')->count();
+    if ($count > 0) {
+        $slug .= '-' . ($count + 1);
+    }
+
+    $city = \App\Models\City::create([
+        'name' => $validated['name'],
+        'country' => $validated['country'],
+        'region' => $validated['region'],
+        'slug' => $slug,
+        'verified' => 'unconfirmed',
+    ]);
 
     return response()->json(['success' => true, 'city' => $city]);
 }
+
 
 
      public function search(Request $request)
