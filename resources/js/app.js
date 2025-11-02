@@ -1,3 +1,6 @@
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
 import './bootstrap';
 import './slider_doctor';
 import 'select2';

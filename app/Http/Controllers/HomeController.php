@@ -24,7 +24,7 @@ class HomeController extends Controller
 public function index()
 {
     // Получаем название города из сессии (или подставляем значение по умолчанию)
-    $currentCityName = session('city_name', 'Ваш город');
+    $currentCityName = session('city_name', 'Выберите город');
 
     // Передаём переменную в Blade
     return view('welcome', compact('currentCityName'));

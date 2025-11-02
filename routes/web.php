@@ -73,6 +73,7 @@ Route::get('reset-password/{token}', [ResetPasswordController::class, 'showReset
     Route::get('/test-city', function () {
         return City::count();});
 
+Route::post('/account/update-city', [AccountController::class, 'updateCity'])->name('account.updateCity');
 
 
 

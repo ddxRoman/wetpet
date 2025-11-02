@@ -22,7 +22,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         // Делаем $currentCityName доступным во всех Blade-шаблонах
         View::composer('*', function ($view) {
-            $currentCityName = auth()->user()?->city?->name ?? session('city_name', 'Ваш город');
+            $currentCityName = auth()->user()?->city?->name ?? session('city_name', 'Выберите город');
             $view->with('currentCityName', $currentCityName);
         });
     }

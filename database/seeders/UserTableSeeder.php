@@ -15,8 +15,8 @@ class UserTableSeeder extends Seeder
                 'name' => 'Роман Оксентий',
                 'nickname' => 'DDX',
                 'email' => 'ddxman@mail.ru',
-                'birth_date' => '-----',
-                'avatar' => 'storage/default-avatar.png',
+                'birth_date' => '12.05.1994',
+                'avatar' => 'avatars/ejWLZaF7SgpdXEToQxdi3j9n8LSStnuFMFkfLZdE.jpg',
                 
                 'phone' => '+79667404577',
                 'password' => Hash::make('12345678'),

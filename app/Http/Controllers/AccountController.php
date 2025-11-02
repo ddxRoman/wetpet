@@ -15,6 +15,21 @@ class AccountController extends Controller
         return view('account', compact('user'));
     }
 
+
+    public function updateCity(Request $request)
+{
+    $request->validate([
+        'city_id' => 'required|exists:cities,id',
+    ]);
+
+    $user = auth()->user();
+    $user->city_id = $request->city_id;
+    $user->save();
+
+    return response()->json(['success' => true]);
+}
+
+
     // Обновление данных профиля
     public function updateProfile(Request $request)
     {

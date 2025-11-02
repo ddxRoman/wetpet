@@ -9,13 +9,11 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет</title>
-    
-    </head>
-    <style>
-        .py-4 {
-            padding: 0 !important;
-        }
-        </style>
+</head>
+<style>
+    .py-4 { padding: 0 !important; }
+    #avatar-input { display: none; }
+</style>
 
 <body class="body_page">
     {{-- 🔹 Навбар --}}
@@ -44,12 +42,15 @@
                 <form method="POST" action="{{ route('account.updateProfile') }}" enctype="multipart/form-data">
                     @csrf
 
+                    {{-- 🔹 Аватар (кликабельный для загрузки) --}}
                     <div class="form-group avatar-upload">
                         <label for="avatar-input">
-                            <img title="Изменить фото" src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('storage/default-avatar.png') }}"
+                            <img title="Изменить фото"
+                                 src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('storage/default-avatar.png') }}"
                                  alt="Аватар"
                                  class="avatar-preview"
-                                 id="avatar-preview">
+                                 id="avatar-preview"
+                                 style="cursor:pointer;">
                         </label>
                         <input type="file" id="avatar-input" name="avatar" accept="image/*">
                     </div>
@@ -69,6 +70,7 @@
                         <input type="date" name="birth_date" value="{{ $user->birth_date ?? '' }}">
                     </div>
 
+                    {{-- 🔹 Селект городов --}}
                     <div class="form-group">
                         <label>Город</label>
                         <div style="position: relative;">
@@ -76,6 +78,7 @@
                                 <option value="">Выберите город...</option>
                             </select>
                         </div>
+
                         <div id="new-city-fields" style="display:none; margin-top:15px;">
                             <input type="text" id="new-country" placeholder="Страна" style="margin-bottom:8px;">
                             <input type="text" id="new-region" placeholder="Область / Край" style="margin-bottom:8px;">
@@ -120,59 +123,71 @@ document.addEventListener('DOMContentLoaded', function() {
     const citySelect = $('#city-select');
     const newCityFields = document.getElementById('new-city-fields');
     const saveCityBtn = document.getElementById('save-city-btn');
+    const userCityId = '{{ $user->city_id ?? '' }}';
 
+    // 🔹 Загружаем города
     fetch('{{ route('cities.all') }}')
         .then(res => res.json())
         .then(cities => {
+            // Добавляем города
             cities.forEach(city => {
-                citySelect.append(new Option(city.name, city.id));
+                const option = new Option(city.name, city.id, false, false);
+                citySelect.append(option);
             });
 
+            // Добавляем пункт "+ Моего города нет в списке"
+            const addNewOption = new Option('+ Моего города нет в списке', 'add_new_city', false, false);
+            citySelect.append(addNewOption);
+
+            // Инициализация select2
             citySelect.select2({
                 placeholder: "Введите название города...",
                 allowClear: true,
                 width: '100%',
-                minimumResultsForSearch: 0,
                 language: {
                     searching: () => "Поиск...",
                     noResults: () => "Нет совпадений"
                 }
             });
 
-            const addNewOptionHtml = `
-                <li class="select2-results__option select2-results__option--add" 
-                    id="add-new-city-option"
-                    role="treeitem" aria-selected="false"
-                    style="cursor:pointer; font-weight:600; color:#007bff;">
-                    + Моего города нет в списке
-                </li>
-            `;
-
-            citySelect.on('select2:open', function() {
-                let observer = new MutationObserver(() => {
-                    const results = document.querySelector('.select2-results__options');
-                    if (results && !document.getElementById('add-new-city-option')) {
-                        results.insertAdjacentHTML('beforeend', addNewOptionHtml);
-                        document.getElementById('add-new-city-option').addEventListener('click', () => {
-                            citySelect.select2('close');
-                            newCityFields.style.display = 'block';
-                        });
-                    }
-                });
-
-                observer.observe(document.querySelector('.select2-results__options').parentNode, {
-                    childList: true,
-                    subtree: true
-                });
-            });
+            // Устанавливаем город пользователя
+            if (userCityId) {
+                citySelect.val(userCityId).trigger('change');
+            }
         });
 
+    // 🔹 Обработка выбора города
     citySelect.on('change', function() {
-        if ($(this).val() !== 'add_new_city') {
+        const value = $(this).val();
+
+        if (value === 'add_new_city') {
+            newCityFields.style.display = 'block';
+            const option = new Option('+ Моего города нет в списке', 'add_new_city', true, true);
+            citySelect.append(option).trigger('change.select2');
+        } else {
             newCityFields.style.display = 'none';
+            if (value) {
+                // Автоматически сохраняем выбранный город
+                fetch('{{ route('account.updateCity') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ city_id: value })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert('Ошибка при сохранении города');
+                    }
+                })
+                .catch(() => alert('Ошибка при сохранении города'));
+            }
         }
     });
 
+    // 🔹 Сохранение нового города
     saveCityBtn.addEventListener('click', function() {
         const name = document.getElementById('new-name').value.trim();
         const country = document.getElementById('new-country').value.trim();
@@ -197,14 +212,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 const newOption = new Option(data.city.name, data.city.id, true, true);
                 citySelect.append(newOption).trigger('change');
                 newCityFields.style.display = 'none';
-                alert('Город успешно добавлен!');
+
+                // Автоматически сохраняем новый город
+                fetch('{{ route('account.updateCity') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ city_id: data.city.id })
+                });
+
+                alert('Город успешно добавлен и выбран!');
             } else {
                 alert('Ошибка при добавлении города');
             }
-        });
+        })
+        .catch(() => alert('Ошибка при добавлении города'));
     });
 });
 </script>
+
+
 
 
 </body>
