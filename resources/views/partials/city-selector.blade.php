@@ -174,4 +174,22 @@
         renderCities(filtered);
     });
 })();
+$.ajax({
+    url: '/cities/list',
+    type: 'GET',
+    success: function (data) {
+        const $select = $('#city-select');
+        $select.empty();
+
+        data.forEach(city => {
+            const option = new Option(city.name, city.id, false, false);
+            $select.append(option);
+        });
+
+        // Добавляем пункт "Моего города нет в списке"
+        $select.append(new Option('Моего города нет в списке', 'add_new_city'));
+    }
+});
+
 </script>
+

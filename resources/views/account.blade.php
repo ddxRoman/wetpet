@@ -32,6 +32,8 @@
         <div class="sidebar">
             <button class="tab-btn active" data-tab="profile">Профиль</button>
             <button class="tab-btn" data-tab="pets">Питомцы</button>
+            <button class="tab-btn" data-tab="favorits">Избранное</button>
+            <button class="tab-btn" data-tab="rewievs">Отзывы</button>
         </div>
 
         <div class="account-content">

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\City;
 
@@ -26,24 +26,44 @@ public function add(Request $request)
         'region' => 'required|string|max:255',
     ]);
 
-    // Создаём slug автоматически
     $slug = \Str::slug($validated['name']);
-
-    // Проверяем, что slug уникален
-    $count = \App\Models\City::where('slug', 'like', $slug . '%')->count();
+    $count = City::where('slug', 'like', $slug . '%')->count();
     if ($count > 0) {
         $slug .= '-' . ($count + 1);
     }
 
-    $city = \App\Models\City::create([
+    $city = City::create([
         'name' => $validated['name'],
+        'slug' => $slug,
         'country' => $validated['country'],
         'region' => $validated['region'],
-        'slug' => $slug,
         'verified' => 'unconfirmed',
+        'user_id' => Auth::id(), // 👈 сохраняем ID автора
     ]);
 
     return response()->json(['success' => true, 'city' => $city]);
+}
+
+
+
+public function getCities()
+{
+    $user = Auth::user();
+
+    // Базовый запрос — только подтверждённые города
+    $query = City::where('verified', 'confirmed');
+
+    // Если пользователь авторизован, добавляем и его непроверенные города
+    if ($user) {
+        $query->orWhere(function($q) use ($user) {
+            $q->where('verified', 'unconfirmed')
+              ->where('user_id', $user->id);
+        });
+    }
+
+    $cities = $query->orderBy('name')->get();
+
+    return response()->json($cities);
 }
 
 
@@ -85,19 +105,25 @@ public function add(Request $request)
     /**
      * Возвращает список городов (для поиска)
      */
-    public function index(Request $request)
-    {
-        $q = $request->get('q', '');
+   public function index()
+{
+    $user = Auth::user();
 
-        $cities = City::query()
-            ->when($q, fn($query) => $query->where('name', 'like', "%{$q}%"))
-            ->orderBy('name')
-            ->limit(50)
-            ->get(['id', 'name']);
+    // Базовый запрос — только подтверждённые города
+    $query = City::where('verified', 'confirmed');
 
-        return response()->json($cities);
+    // Если пользователь авторизован — добавляем его собственные города
+    if ($user) {
+        $query->orWhere(function ($q) use ($user) {
+            $q->where('verified', 'unconfirmed')
+              ->where('user_id', $user->id);
+        });
     }
 
+    $cities = $query->orderBy('name')->get(['id', 'name']);
+
+    return response()->json($cities);
+}
     /**
      * Устанавливает выбранный город
      */

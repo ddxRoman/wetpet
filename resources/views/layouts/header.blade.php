@@ -22,7 +22,6 @@
             <div class="row">
                 <div class="col-3">
                     @include('partials.city-selector')
-
                 </div>
                 <div class="col-6 header_center_block">     <a href="/">     <img class="header_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}"> </a>  </div>
                 @guest

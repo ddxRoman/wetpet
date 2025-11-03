@@ -75,6 +75,7 @@ Route::get('reset-password/{token}', [ResetPasswordController::class, 'showReset
 
 Route::post('/account/update-city', [AccountController::class, 'updateCity'])->name('account.updateCity');
 
+Route::get('/cities/list', [CityController::class, 'getCities'])->name('cities.list');
 
 
 Route::middleware(['auth'])->group(function () {
