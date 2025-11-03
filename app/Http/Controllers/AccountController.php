@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+
 
 class AccountController extends Controller
 {
@@ -42,34 +42,50 @@ public function updateCity(Request $request)
 
 
     // Обновление данных профиля
-    public function updateProfile(Request $request)
-    {
-        $user = Auth::user();
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'nickname' => 'required|string|max:255|unique:users,nickname,' . $user->id,
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'birth_date' => 'nullable|date',
-            'city' => 'nullable|string|max:255',
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
 
-        // Если загружен аватар
-        if ($request->hasFile('avatar')) {
-            // Удаляем старый аватар, если он был
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
-            }
+public function updateProfile(Request $request)
+{
+    $user = auth()->user();
 
-            // Сохраняем новый
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $validated['avatar'] = $path;
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'nickname' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'birth_date' => 'nullable|date',
+        'avatar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+    ]);
+
+
+    // 🔹 Сохраняем аватар, если загружен
+    if ($request->hasFile('avatar')) {
+        // Удаляем старый (если не дефолт)
+        if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
+            Storage::delete('public/' . $user->avatar);
         }
 
-        // Обновляем профиль
-        $user->update($validated);
-
-        return back()->with('success', 'Профиль успешно обновлён!');
+        // Сохраняем новый в `storage/app/public/avatars`
+        $path = $request->file('avatar')->store('avatars', 'public');
+        $user->avatar = $path;
     }
+
+    // 🔹 Обновляем остальные данные
+    $user->name = $request->name;
+    $user->nickname = $request->nickname;
+    $user->email = $request->email;
+    $user->birth_date = $request->birth_date;
+
+if ($request->filled('city_slug')) {
+    $city = \App\Models\City::where('slug', $request->city_slug)->first();
+    if ($city) {
+        $user->city_id = $city->id;
+    }
+}
+
+
+    $user->save();
+
+    return redirect()->back()->with('success', 'Профиль обновлён');
+}
+
 }

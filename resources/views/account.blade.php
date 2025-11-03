@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+
 @section('content')
 <!DOCTYPE html>
 <html lang="ru">
@@ -497,12 +501,13 @@ fetch('{{ route("pets.index") }}')
   });
 
 
-    if (p.photo) {
-      previewEdit.src = '/storage/' + p.photo;
-      previewEdit.style.display = 'block';
-    } else {
-      previewEdit.style.display = 'none';
-    }
+if (p.photo) {
+  previewEdit.src = '/storage/' + p.photo;
+} else {
+  previewEdit.src = '/storage/pets/default-pet.jpg';
+}
+previewEdit.style.display = 'block';
+
 
     modal.style.display = 'flex';
   })
@@ -642,13 +647,14 @@ fetch('/test-pets', {
 <div style="margin-bottom:10px; text-align:center;">
   <label for="edit-pet-photo" style="cursor:pointer; display:inline-block;">
     <img id="edit-photo-preview"
-         src=""
+         src="/storage/pets/default-pet.jpg"
          alt="Фото питомца"
-         style="max-width:150px; border-radius:10px; display:none; margin-bottom:8px; border:2px solid #ddd; transition:0.3s;">
+         style="max-width:150px; border-radius:10px; margin-bottom:8px; border:2px solid #ddd; transition:0.3s;">
   </label>
   <input type="file" id="edit-pet-photo" accept="image/*" style="display:none;">
-  <p style="font-size:13px; color:#666;">Нажмите на фото, чтобы изменить</p>
+  <p style="font-size:13px; color:#666;">Нажмите на фото, чтобы добавить или изменить</p>
 </div>
+
 
 
     <button id="save-edit-pet" class="save-btn">Сохранить изменения</button>
@@ -693,6 +699,93 @@ function showToast(message, type = 'success') {
     setTimeout(() => toast.remove(), 4000);
 }
 </script>
+
+
+
+<!-- 🔹 Универсальная модалка кадрирования -->
+<div id="cropper-modal" style="
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+    justify-content:center; align-items:center; z-index:10000;">
+  <div style="background:#fff; padding:20px; border-radius:10px; max-width:90vw; max-height:90vh;">
+    <img id="cropper-image" src="" alt="crop" style="max-width:100%; max-height:70vh;">
+    <div style="text-align:center; margin-top:10px;">
+      <button id="cropper-save" class="save-btn">Обрезать</button>
+      <button id="cropper-cancel" class="save-btn" style="background:#aaa;">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let cropperInstance = null;
+let currentInput = null;
+let currentPreview = null;
+
+function initCropper(inputId, previewId, aspectRatio = 1) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    const modal = document.getElementById('cropper-modal');
+    const cropImage = document.getElementById('cropper-image');
+    const saveBtn = document.getElementById('cropper-save');
+    const cancelBtn = document.getElementById('cropper-cancel');
+
+    input.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        cropImage.src = url;
+        currentInput = input;
+        currentPreview = preview;
+
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            cropperInstance = new Cropper(cropImage, {
+                aspectRatio,
+                viewMode: 1,
+                autoCropArea: 1
+            });
+        }, 100);
+    });
+
+    cancelBtn.onclick = () => {
+        modal.style.display = 'none';
+        cropperInstance?.destroy();
+    };
+
+    saveBtn.onclick = () => {
+        const canvas = cropperInstance.getCroppedCanvas({
+            width: 600,
+            height: 600
+        });
+
+        // Показываем preview и заменяем input-файл
+        canvas.toBlob(blob => {
+            const webpFile = new File([blob], 'photo.webp', { type: 'image/webp' });
+            const dt = new DataTransfer();
+            dt.items.add(webpFile);
+            currentInput.files = dt.files;
+
+            currentPreview.src = URL.createObjectURL(webpFile);
+        }, 'image/webp', 0.9);
+
+        modal.style.display = 'none';
+        cropperInstance.destroy();
+    };
+}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 🧩 Аватар пользователя (квадрат)
+    initCropper('avatar-input', 'avatar-preview', 1);
+
+    // 🧩 Фото питомца при добавлении
+    initCropper('pet-photo', 'photo-preview', 1);
+
+    // 🧩 Фото питомца при редактировании
+    initCropper('edit-pet-photo', 'edit-photo-preview', 1);
+});
+</script>
+
 
 
 </body>
