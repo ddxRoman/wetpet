@@ -4,7 +4,7 @@
     <div class="container">
         <hr>
         <div class="row footer-content">
-            <h2>{{ $brandName }}</h2>
+            <h2>{{ $brandname }}</h2>
             <div class="col-4">
 <ul>
     <a href=""><li>Пункты карты сайта</li></a>

@@ -28,7 +28,7 @@ class ResetPasswordNotification extends Notification
         ], false));
 
         return (new MailMessage)
-            ->subject('Сброс пароля на сайте Зверополис')
+            ->subject('Сброс пароля на сайте {{$brandname}}')
             ->view('emails.password_reset', [
                 'resetUrl' => $resetUrl,
                 'user' => $notifiable,

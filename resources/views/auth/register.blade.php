@@ -123,7 +123,7 @@
 <div class="register-container">
     <div class="register-box">
         <a href="{{ url('/') }}">
-            <img class="page-registr_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="Зверополис">
+            <img class="page-registr_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{$brandname}}">
         </a>
         <div class="register-title">Регистрация</div>
 

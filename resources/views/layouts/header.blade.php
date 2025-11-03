@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}">
-    <title>Мяу-Гав</title>
+    <title>{{ $brandname  }}</title>
 </head>
 
 
@@ -24,7 +24,7 @@
                     @include('partials.city-selector')
 
                 </div>
-                <div class="col-6 header_center_block">     <a href="/">     <img class="header_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="Зверополис"> </a>  </div>
+                <div class="col-6 header_center_block">     <a href="/">     <img class="header_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}"> </a>  </div>
                 @guest
                 <div class="col-3 profile_block">
                     <a class="login_link" href="{{route('login')}}">

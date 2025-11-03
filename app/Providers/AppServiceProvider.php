@@ -21,7 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       view()->share('brandName', 'Зверополис');
+view()->share('brandname', env('BRAND_NAME', 'Зверозор'));
+
+
+
     View::composer('*', function ($view) {
         $cityId = session('selected_city_id') ?: request()->cookie('selected_city_id') ?: null;
         

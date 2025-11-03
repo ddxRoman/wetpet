@@ -150,7 +150,7 @@
     <div class="login-page">
 
         <a href="{{ url('/') }}">
-            <img class="page-login_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="Зверополис">
+            <img class="page-login_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{$brandname}}">
         </a>
 
         <a href="{{ route('register') }}" class="register-btn">Зарегистрироваться</a>

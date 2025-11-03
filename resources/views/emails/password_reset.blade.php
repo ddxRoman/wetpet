@@ -67,12 +67,12 @@
 <body>
     <div class="email-wrapper">
         <div class="email-header">
-            <img src="{{ Storage::url('logo/logo3.png') }}" alt="Зверополис">
+            <img src="{{ Storage::url('logo/logo3.png') }}" alt="{{ brandname }}">
         </div>
 
         <div class="email-body">
             <h2>Здравствуйте{{ $user->name ? ', '.$user->name : '' }}!</h2>
-            <p>Вы получили это письмо, потому что запросили сброс пароля на сайте <b>Зверополис</b>.</p>
+            <p>Вы получили это письмо, потому что запросили сброс пароля на сайте <b>{{ $brandname }}</b>.</p>
             <p>Нажмите на кнопку ниже, чтобы установить новый пароль:</p>
 
             <a href="{{ $resetUrl }}" class="reset-btn">Сбросить пароль</a>
@@ -81,7 +81,7 @@
         </div>
 
         <div class="email-footer">
-            © {{ date('Y') }} Зверополис. Все права защищены.
+            © {{ date('Y') }} {{ $brandname }}. Все права защищены.
         </div>
     </div>
 </body>

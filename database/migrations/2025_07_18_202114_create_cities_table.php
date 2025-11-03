@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('region')->nullable();
             $table->string('country')->nullable();
             $table->enum('verified', ['confirmed', 'unconfirmed'])->default('unconfirmed');
+            $table->string('user_id')->nullable();
             $table->timestamps();
         });
     }
