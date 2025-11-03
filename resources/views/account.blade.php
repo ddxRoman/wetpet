@@ -114,6 +114,14 @@
 
     <input type="text" id="pet-name" placeholder="Имя питомца" style="width:100%; margin-bottom:10px;">
 
+    <label>Пол питомца:</label>
+<select id="pet-gender" style="width:100%; margin-bottom:10px;">
+    <option value="">Выберите пол...</option>
+    <option value="male">Самец</option>
+    <option value="female">Самка</option>
+</select>
+
+
     <div id="birth-block">
         <label>Дата рождения:</label>
         <input type="date" id="pet-birth" style="width:100%;">
@@ -271,6 +279,8 @@ function loadPets() {
                 return;
             }
 
+            data.pets.sort((a, b) => a.name.localeCompare(b.name, 'ru', { sensitivity: 'base' }));
+
             data.pets.forEach(p => {
                 const cls = getTypeClass(p.animal.species);
                 petsList.innerHTML += `
@@ -280,6 +290,7 @@ function loadPets() {
                              style="width:100%; max-width:120px; border-radius:10px; display:block; margin-bottom:8px;">
                         <b>${p.name}</b><br>
                         <small>${p.animal.species} (${p.animal.breed})</small><br>
+                        ${p.gender ? `<small>Пол: ${p.gender === 'male' ? 'самец' : 'самка'}</small><br>` : ''}
                         ${p.birth_date ? `<small>Дата рождения: ${p.birth_date}</small>` : (p.age ? `<small>Возраст: ${p.age} лет</small>` : '')}
                     </div>
                 `;
@@ -343,6 +354,8 @@ function loadPets() {
     fd.append('name', name);
     if (birth_date) fd.append('birth_date', birth_date);
     if (age) fd.append('age', age);
+const gender = document.getElementById('pet-gender').value;
+if (gender) fd.append('gender', gender);
 
     const photoInput = document.getElementById('pet-photo');
     if (photoInput && photoInput.files[0]) {
@@ -378,93 +391,142 @@ function loadPets() {
 });
 
 // === Модалка редактирования ===
+// === Модалка редактирования ===
 const modal = document.getElementById('edit-pet-modal');
 const closeModal = document.getElementById('close-modal');
 const saveEditBtn = document.getElementById('save-edit-pet');
 const previewEdit = document.getElementById('edit-photo-preview');
+const unknownEdit = document.getElementById('edit-unknown-birth');
+const birthBlockEdit = document.getElementById('edit-birth-block');
+const ageBlockEdit = document.getElementById('edit-age-block');
+const breedSelectEdit = document.getElementById('edit-pet-breed');
 
 closeModal.addEventListener('click', () => modal.style.display = 'none');
 
+// переключатель "не знаю дату"
+unknownEdit.addEventListener('change', () => {
+  if (unknownEdit.checked) {
+    birthBlockEdit.style.display = 'none';
+    ageBlockEdit.style.display = 'block';
+  } else {
+    birthBlockEdit.style.display = 'block';
+    ageBlockEdit.style.display = 'none';
+  }
+});
+
 function openEditModal(petId) {
-    fetch(`/pets/${petId}`, {
-        method: 'GET',
-        credentials: 'same-origin', // ✅ Laravel увидит авторизацию
-        headers: {
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-    })
-    .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-    })
-    .then(p => {
-        document.getElementById('edit-pet-id').value = p.id;
-        document.getElementById('edit-pet-name').value = p.name;
-        document.getElementById('edit-pet-birth').value = p.birth_date ?? '';
-        document.getElementById('edit-pet-age').value = p.age ?? '';
-        if (p.photo) {
-            previewEdit.src = '/storage/' + p.photo;
-            previewEdit.style.display = 'block';
-        } else {
-            previewEdit.style.display = 'none';
-        }
-        modal.style.display = 'flex';
-    })
-    .catch(err => {
-        console.error('Ошибка загрузки питомца:', err);
-        alert('Не удалось загрузить данные питомца');
+  fetch(`/pets/${petId}`, {
+    method: 'GET',
+    credentials: 'same-origin',
+    headers: {
+      'Accept': 'application/json',
+      'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    }
+  })
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  })
+  .then(p => {
+    document.getElementById('edit-pet-id').value = p.id;
+    document.getElementById('edit-pet-name').value = p.name;
+    document.getElementById('edit-pet-birth').value = p.birth_date ?? '';
+    document.getElementById('edit-pet-age').value = p.age ?? '';
+
+    // переключение полей
+    if (p.birth_date) {
+      unknownEdit.checked = false;
+      birthBlockEdit.style.display = 'block';
+      ageBlockEdit.style.display = 'none';
+    } else {
+      unknownEdit.checked = true;
+      birthBlockEdit.style.display = 'none';
+      ageBlockEdit.style.display = 'block';
+    }
+
+    // Породы
+fetch('{{ route("pets.index") }}')
+  .then(r => r.json())
+  .then(data => {
+    // находим тип (вид) текущего питомца
+    const currentType = p.animal.species;
+    // фильтруем породы только по этому типу
+    const breeds = data.animals.filter(a => a.species === currentType);
+
+    breedSelectEdit.innerHTML = '';
+    breeds.forEach(a => {
+      breedSelectEdit.innerHTML += `<option value="${a.id}" ${a.id === p.animal_id ? 'selected' : ''}>${a.breed}</option>`;
     });
+  });
+
+
+    if (p.photo) {
+      previewEdit.src = '/storage/' + p.photo;
+      previewEdit.style.display = 'block';
+    } else {
+      previewEdit.style.display = 'none';
+    }
+
+    modal.style.display = 'flex';
+  })
+  .catch(err => {
+    console.error('Ошибка загрузки питомца:', err);
+    alert('Не удалось загрузить данные питомца');
+  });
 }
 
 // Предпросмотр нового фото
 document.getElementById('edit-pet-photo').addEventListener('change', e => {
-    const f = e.target.files[0];
-    if (f) {
-        previewEdit.src = URL.createObjectURL(f);
-        previewEdit.style.display = 'block';
-    } else {
-        previewEdit.style.display = 'none';
-    }
+  const f = e.target.files[0];
+  if (f) {
+    previewEdit.src = URL.createObjectURL(f);
+    previewEdit.style.display = 'block';
+  } else {
+    previewEdit.style.display = 'none';
+  }
 });
 
 // === Сохранение изменений ===
 saveEditBtn.addEventListener('click', () => {
-    const id = document.getElementById('edit-pet-id').value;
-    const name = document.getElementById('edit-pet-name').value.trim();
-    const birth = document.getElementById('edit-pet-birth').value;
-    const age = document.getElementById('edit-pet-age').value;
+  const id = document.getElementById('edit-pet-id').value;
+  const name = document.getElementById('edit-pet-name').value.trim();
+  const animal_id = document.getElementById('edit-pet-breed').value;
+  const birth = unknownEdit.checked ? '' : document.getElementById('edit-pet-birth').value;
+  const age = unknownEdit.checked ? document.getElementById('edit-pet-age').value : '';
+  const file = document.getElementById('edit-pet-photo').files[0];
 
-    if (!name) return alert('Введите имя питомца.');
+  if (!name || !animal_id) return alert('Заполните обязательные поля.');
 
-    const fd = new FormData();
-    fd.append('name', name);
-    fd.append('birth_date', birth);
-    fd.append('age', age);
-    const file = document.getElementById('edit-pet-photo').files[0];
-    if (file) fd.append('photo', file);
+  const fd = new FormData();
+  fd.append('name', name);
+  fd.append('animal_id', animal_id);
+  if (birth) fd.append('birth_date', birth);
+  if (age) fd.append('age', age);
+  if (file) fd.append('photo', file);
+  fd.append('_method', 'PUT');
 
-    fetch(`/pets/${id}`, {
-        method: 'POST', // Laravel поддерживает метод spoof через _method
-        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
-        body: (() => { fd.append('_method', 'PUT'); return fd; })()
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            alert('Изменения сохранены!');
-            modal.style.display = 'none';
-            loadPets();
-        } else {
-            alert('Ошибка при сохранении');
-            console.log(data);
-        }
-    })
-    .catch(e => {
-        console.error(e);
-        alert('Ошибка сети');
-    });
+  fetch(`/pets/${id}`, {
+    method: 'POST',
+    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+    body: fd
+  })
+  .then(r => r.json().catch(() => { throw new Error('JSON parse error'); }))
+  .then(data => {
+    if (data.success) {
+      alert('Изменения сохранены!');
+      modal.style.display = 'none';
+      loadPets();
+    } else {
+      console.error(data);
+      alert('Ошибка при сохранении питомца');
+    }
+  })
+  .catch(e => {
+    console.error(e);
+    alert('Ошибка сети или сервера');
+  });
 });
+
 
 
     loadPets();
@@ -514,16 +576,25 @@ fetch('/test-pets', {
     <input type="hidden" id="edit-pet-id">
 
     <div style="margin-bottom:10px;">
-      <label>Имя</label>
+      <label>Имя *</label>
       <input type="text" id="edit-pet-name" style="width:100%;">
     </div>
 
     <div style="margin-bottom:10px;">
+      <label>Порода *</label>
+      <select id="edit-pet-breed" style="width:100%;"></select>
+    </div>
+
+    <div id="edit-birth-block" style="margin-bottom:10px;">
       <label>Дата рождения</label>
       <input type="date" id="edit-pet-birth" style="width:100%;">
     </div>
 
-    <div style="margin-bottom:10px;">
+    <label style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      <input type="checkbox" id="edit-unknown-birth"> Я не знаю точную дату
+    </label>
+
+    <div id="edit-age-block" style="display:none; margin-bottom:10px;">
       <label>Возраст</label>
       <input type="number" id="edit-pet-age" style="width:100%;" min="0">
     </div>
@@ -537,7 +608,6 @@ fetch('/test-pets', {
     <button id="save-edit-pet" class="save-btn">Сохранить изменения</button>
   </div>
 </div>
-
 
 
 </body>

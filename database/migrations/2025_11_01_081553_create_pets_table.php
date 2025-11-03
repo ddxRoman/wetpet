@@ -17,6 +17,7 @@ public function up(): void
         $table->foreignId('animal_id')->constrained('animals')->cascadeOnDelete();
         $table->string('name');
         $table->date('birth_date')->nullable();
+        $table->string('gender');
         $table->integer('age')->nullable();
         $table->string('color')->nullable();
         $table->string('photo')->nullable();

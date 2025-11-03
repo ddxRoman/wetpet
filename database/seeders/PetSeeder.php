@@ -28,6 +28,7 @@ class PetSeeder extends Seeder
                 'name'       => $faker->firstName,
                 'birth_date' => $faker->date(),
                 'color'      => $faker->safeColorName,
+                'gender' => $faker->randomElement(['Самец', 'Самка']),
                 'photo'      => null,
             ]);
         }

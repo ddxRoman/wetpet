@@ -20,7 +20,7 @@ class UserTableSeeder extends Seeder
                 
                 'phone' => '+79667404577',
                 'password' => Hash::make('12345678'),
-                'city_id' => 8, // ID города из таблицы cities
+                'city_id' => 20, // ID города из таблицы cities
             ],
             [
                 'name' => 'Анна Петрова',

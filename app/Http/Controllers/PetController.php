@@ -29,6 +29,7 @@ public function store(Request $request)
         'birth_date' => 'nullable|date',
         'age' => 'nullable|integer|min:0',
         'photo' => 'nullable|image|max:2048',
+        'gender' => 'nullable|string|max:10', // ✅ добавляем
     ]);
 
     $pet = new Pet();
@@ -37,6 +38,7 @@ public function store(Request $request)
     $pet->name = $request->name;
     $pet->birth_date = $request->birth_date;
     $pet->age = $request->age;
+        $pet->gender = $request->gender; // ✅ добавляем
 
     if ($request->hasFile('photo')) {
         $path = $request->file('photo')->store('pets', 'public');
@@ -62,28 +64,23 @@ public function show($id)
 
 public function update(Request $request, Pet $pet)
 {
-    $this->authorize('update', $pet);
+    $user = Auth::user();
+    if ($pet->user_id !== $user->id) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'birth_date' => 'nullable|date',
-        'age' => 'nullable|integer|min:0',
-    ]);
+    $data = $request->only(['animal_id','name','birth_date','age']);
 
     if ($request->hasFile('photo')) {
         $path = $request->file('photo')->store('pets', 'public');
-        $pet->photo = $path;
+        $data['photo'] = $path;
     }
 
-    $pet->update($request->only('name', 'birth_date', 'age'));
+    $pet->update($data);
 
-return response()->json([
-    'success' => true,
-    'pets' => $pets,
-    'animals' => $animals,
-]);
-
+    return response()->json(['success' => true, 'pet' => $pet->load('animal')]);
 }
+
 
 
 }
