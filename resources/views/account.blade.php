@@ -281,25 +281,59 @@ function loadPets() {
 
             data.pets.sort((a, b) => a.name.localeCompare(b.name, 'ru', { sensitivity: 'base' }));
 
-            data.pets.forEach(p => {
-                const cls = getTypeClass(p.animal.species);
-                petsList.innerHTML += `
-                    <div class="pet-card ${cls}" data-id="${p.id}" style="cursor:pointer; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:10px;">
-                        <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
-                             alt="${p.name}"
-                             style="width:100%; max-width:120px; border-radius:10px; display:block; margin-bottom:8px;">
-                        <b>${p.name}</b><br>
-                        <small>${p.animal.species} (${p.animal.breed})</small><br>
-                        ${p.gender ? `<small>Пол: ${p.gender === 'male' ? 'самец' : 'самка'}</small><br>` : ''}
-                        ${p.birth_date ? `<small>Дата рождения: ${p.birth_date}</small>` : (p.age ? `<small>Возраст: ${p.age} лет</small>` : '')}
-                    </div>
-                `;
-            });
+data.pets.forEach(p => {
+  const cls = getTypeClass(p.animal.species);
+  petsList.innerHTML += `
+    <div class="pet-card ${cls}" data-id="${p.id}" style="cursor:pointer; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:10px; position:relative;">
+        <button class="delete-pet-btn" data-id="${p.id}" 
+            style="position:absolute; top:8px; right:8px; background:#ff4d4f; color:#fff; border:none; border-radius:6px; cursor:pointer; padding:4px 8px;">
+            ✖
+        </button>
+        <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
+             alt="${p.name}"
+             style="width:100%; max-width:120px; border-radius:10px; display:block; margin-bottom:8px;">
+        <b>${p.name}</b><br>
+        <small>${p.animal.species} (${p.animal.breed})</small><br>
+        ${p.gender ? `<small>Пол: ${p.gender === 'male' ? 'самец' : 'самка'}</small><br>` : ''}
+        ${p.birth_date ? `<small>Дата рождения: ${p.birth_date}</small>` : (p.age ? `<small>Возраст: ${p.age} лет</small>` : '')}
+    </div>
+  `;
+});
+
 
             // 🔹 Навешиваем обработчики клика для редактирования
             document.querySelectorAll('.pet-card').forEach(card => {
                 card.addEventListener('click', () => openEditModal(card.dataset.id));
             });
+
+            // 🔹 Удаление питомца
+document.querySelectorAll('.delete-pet-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.stopPropagation(); // не открывать модалку при клике
+        const id = btn.dataset.id;
+        if (!confirm('Удалить питомца?')) return;
+
+        fetch(`/pets/${id}`, {
+            method: 'DELETE',
+            headers: { 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                showToast('Питомец удалён', 'success');
+                loadPets();
+            } else {
+                showToast('Ошибка при удалении', 'error');
+            }
+        })
+        .catch(() => showToast('Ошибка сети', 'error'));
+    });
+});
+
+
         })
         .catch(err => console.error('Ошибка загрузки питомцев:', err));
 }
@@ -377,16 +411,19 @@ if (gender) fd.append('gender', gender);
     })
     .then(data => {
         if (data.success) {
-            alert('Питомец добавлен!');
+showToast('Питомец добавлен!', 'success');
+
             form.style.display = 'none';
             loadPets();
         } else {
-            alert('Ошибка при сохранении питомца');
+showToast('Ошибка при добавлении питомца', 'error');
+
         }
     })
     .catch(err => {
         console.error(err);
-        alert('Ошибка сети при добавлении питомца.');
+showToast('Ошибка сети при добавлении питомца', 'error');
+
     });
 });
 
@@ -478,13 +515,13 @@ fetch('{{ route("pets.index") }}')
 // Предпросмотр нового фото
 document.getElementById('edit-pet-photo').addEventListener('change', e => {
   const f = e.target.files[0];
+  const preview = document.getElementById('edit-photo-preview');
   if (f) {
-    previewEdit.src = URL.createObjectURL(f);
-    previewEdit.style.display = 'block';
-  } else {
-    previewEdit.style.display = 'none';
+    preview.src = URL.createObjectURL(f);
+    preview.style.display = 'block';
   }
 });
+
 
 // === Сохранение изменений ===
 saveEditBtn.addEventListener('click', () => {
@@ -513,17 +550,20 @@ saveEditBtn.addEventListener('click', () => {
   .then(r => r.json().catch(() => { throw new Error('JSON parse error'); }))
   .then(data => {
     if (data.success) {
-      alert('Изменения сохранены!');
+showToast('Сохранено', 'success');
+
       modal.style.display = 'none';
       loadPets();
     } else {
       console.error(data);
-      alert('Ошибка при сохранении питомца');
+      showToast('Ошибка', 'error');
+
     }
   })
   .catch(e => {
     console.error(e);
-    alert('Ошибка сети или сервера');
+    showToast('Ошибка сети', 'error');
+
   });
 });
 
@@ -599,15 +639,60 @@ fetch('/test-pets', {
       <input type="number" id="edit-pet-age" style="width:100%;" min="0">
     </div>
 
-    <div style="margin-bottom:10px;">
-      <label>Фото</label>
-      <input type="file" id="edit-pet-photo" accept="image/*" style="width:100%;">
-      <img id="edit-photo-preview" src="" alt="" style="max-width:100px; display:none; margin-top:8px; border-radius:8px;">
-    </div>
+<div style="margin-bottom:10px; text-align:center;">
+  <label for="edit-pet-photo" style="cursor:pointer; display:inline-block;">
+    <img id="edit-photo-preview"
+         src=""
+         alt="Фото питомца"
+         style="max-width:150px; border-radius:10px; display:none; margin-bottom:8px; border:2px solid #ddd; transition:0.3s;">
+  </label>
+  <input type="file" id="edit-pet-photo" accept="image/*" style="display:none;">
+  <p style="font-size:13px; color:#666;">Нажмите на фото, чтобы изменить</p>
+</div>
+
 
     <button id="save-edit-pet" class="save-btn">Сохранить изменения</button>
   </div>
 </div>
+
+
+<!-- 🔹 Контейнер для уведомлений -->
+<div id="toast-container" style="position:fixed; top:20px; right:20px; z-index:10000;"></div>
+
+<style>
+.toast {
+    background: #fff;
+    color: #333;
+    border-left: 5px solid #007bff;
+    padding: 12px 16px;
+    margin-top: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: system-ui, sans-serif;
+    min-width: 250px;
+    animation: fadeInOut 4s ease forwards;
+}
+.toast.success { border-color: #28a745; }
+.toast.error { border-color: #dc3545; }
+.toast.warning { border-color: #ffc107; }
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+</style>
+
+<script>
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+}
+</script>
 
 
 </body>

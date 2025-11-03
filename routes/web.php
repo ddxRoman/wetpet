@@ -64,6 +64,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
+Route::delete('/pets/{pet}', [App\Http\Controllers\PetController::class, 'destroy'])->name('pets.destroy');
+
+
 Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
 Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
 

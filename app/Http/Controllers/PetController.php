@@ -81,6 +81,20 @@ public function update(Request $request, Pet $pet)
     return response()->json(['success' => true, 'pet' => $pet->load('animal')]);
 }
 
+public function destroy(Pet $pet)
+{
+    if ($pet->user_id !== auth()->id()) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+
+    if ($pet->photo && \Storage::disk('public')->exists($pet->photo)) {
+        \Storage::disk('public')->delete($pet->photo);
+    }
+
+    $pet->delete();
+
+    return response()->json(['success' => true]);
+}
 
 
 }
