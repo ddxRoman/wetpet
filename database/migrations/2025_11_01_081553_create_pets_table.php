@@ -9,18 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-Schema::create('pets', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    $table->string('type');
-    $table->string('breed');
-    $table->date('birth_date')->nullable();
-    $table->string('age')->nullable();
-    $table->string('color')->nullable();
-    $table->string('photo')->nullable();
-    $table->timestamps();
+public function up(): void
+{
+    Schema::create('pets', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // 👈 добавь это
+        $table->foreignId('animal_id')->constrained('animals')->cascadeOnDelete();
+        $table->string('name');
+        $table->date('birth_date')->nullable();
+        $table->integer('age')->nullable();
+        $table->string('color')->nullable();
+        $table->string('photo')->nullable();
+        $table->timestamps();
 });
     }
 

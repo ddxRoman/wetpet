@@ -15,8 +15,9 @@ class CityController extends Controller
 
 public function all()
 {
-    return response()->json(\App\Models\City::select('id', 'name')->orderBy('name')->get());
+    return response()->json(City::select('id', 'name', 'slug')->get());
 }
+
 
 public function add(Request $request)
 {

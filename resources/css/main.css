@@ -634,3 +634,40 @@ select:focus {
         padding: 25px 20px;
     }
 }
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 15px;
+}
+
+.pet-card {
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.pet-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.pet-cat {
+    background: linear-gradient(135deg, #ffe6f2, #fff);
+}
+.pet-dog {
+    background: linear-gradient(135deg, #e6f7ff, #fff);
+}
+.pet-bird {
+    background: linear-gradient(135deg, #fffbe6, #fff);
+}
+.pet-other {
+    background: linear-gradient(135deg, #f9f9f9, #fff);
+}

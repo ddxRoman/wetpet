@@ -29,6 +29,7 @@ class DoctorSeeder extends Seeder
                 'clinic' => $faker->randomElement(['Биосфера', 'Слон', 'ВетЛазарет', 'Государственная']),
                 'photo' => $faker->randomElement($photos),
                 'description' => $faker->randomElement(['Хороший', 'Плохой', 'Злой', 'Добрый']),
+
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

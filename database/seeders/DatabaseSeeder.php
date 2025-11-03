@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
         UserTableSeeder::class,
         PetSeeder::class,
         DoctorSeeder::class,
+        AnimalSeeder::class,
+        PetSeeder::class,
+
     ]);
     }
 }

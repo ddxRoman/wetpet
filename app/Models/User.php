@@ -46,8 +46,10 @@ public function sendPasswordResetNotification($token)
 
 public function pets()
 {
-    return $this->belongsToMany(Pet::class);
+    return $this->hasMany(\App\Models\Pet::class, 'user_id');
 }
+
+
 
 
 }

@@ -16,18 +16,29 @@ class AccountController extends Controller
     }
 
 
-    public function updateCity(Request $request)
+public function updateCity(Request $request)
 {
     $request->validate([
-        'city_id' => 'required|exists:cities,id',
+        'city_slug' => 'required|string',
     ]);
 
+    $city = \App\Models\City::where('slug', $request->city_slug)->first();
+
+    if (!$city) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Город не найден'
+        ]);
+    }
+
     $user = auth()->user();
-    $user->city_id = $request->city_id;
+    $user->city_id = $city->id;
     $user->save();
 
     return response()->json(['success' => true]);
 }
+
+
 
 
     // Обновление данных профиля

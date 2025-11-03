@@ -2,17 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pet extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'animal_id',
+        'name',
+        'breed',
+        'birth_date',
+        'age',
+        'photo',
+    ];
 
-    protected $fillable = ['type', 'breed', 'birth_date', 'age', 'color', 'photo'];
-
-    public function owners()
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function animal()
+    {
+        return $this->belongsTo(Animal::class);
     }
 }

@@ -3,7 +3,7 @@
         <div class="row">
 
             <div class="col-2">
-                <a class="general_menu_link" href="{{route('pets')}}">
+                <a class="general_menu_link" href="">
                     <div class="div_btn_category">
                         <div class="text_menu_btn_category">
                             
