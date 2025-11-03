@@ -70,7 +70,8 @@
 
                     <div class="form-group">
                         <label>Дата рождения</label>
-                        <input type="date" name="birth_date" value="{{ $user->birth_date ?? '' }}">
+                        <input type="date" name="birth_date" value="{{ $user->birth_date ? \Carbon\Carbon::parse($user->birth_date)->format('Y-m-d') : '' }}">
+
                     </div>
 
                     <div class="form-group">
@@ -252,30 +253,51 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'pet-other';
     }
 
-    function loadPets() {
-        fetch('{{ route('pets.index') }}')
-            .then(res => res.json())
-            .then(data => {
-                // типы
-                typeSelect.innerHTML = '<option value="">Выберите тип животного...</option>';
-                const types = [...new Set(data.animals.map(a => a.species))];
-                types.forEach(type => typeSelect.innerHTML += `<option value="${type}">${type}</option>`);
-
-                // карточки
-                petsList.innerHTML = '';
-                data.pets.forEach(p => {
-                    const cls = getTypeClass(p.animal.species);
-                    petsList.innerHTML += `
-                        <div class="pet-card ${cls}">
-                            <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}" alt="${p.name}">
-                            <b>${p.name}</b>
-                            <div>${p.animal.species} (${p.animal.breed})</div>
-                            <div>${p.birth_date ? 'Дата рождения: ' + p.birth_date : 'Возраст: ' + (p.age ?? '-') + ' лет'}</div>
-                        </div>
-                    `;
-                });
+function loadPets() {
+    fetch('{{ route('pets.index') }}')
+        .then(res => res.json())
+        .then(data => {
+            // 🔹 Заполняем селект типов животных
+            typeSelect.innerHTML = '<option value="">Выберите тип животного...</option>';
+            const types = [...new Set(data.animals.map(a => a.species))];
+            types.forEach(type => {
+                typeSelect.innerHTML += `<option value="${type}">${type}</option>`;
             });
-    }
+
+            // 🔹 Выводим карточки питомцев
+            petsList.innerHTML = '';
+            if (data.pets.length === 0) {
+                petsList.innerHTML = '<p>У вас пока нет питомцев.</p>';
+                return;
+            }
+
+            data.pets.forEach(p => {
+                const cls = getTypeClass(p.animal.species);
+                petsList.innerHTML += `
+                    <div class="pet-card ${cls}" data-id="${p.id}" style="cursor:pointer; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:10px;">
+                        <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
+                             alt="${p.name}"
+                             style="width:100%; max-width:120px; border-radius:10px; display:block; margin-bottom:8px;">
+                        <b>${p.name}</b><br>
+                        <small>${p.animal.species} (${p.animal.breed})</small><br>
+                        ${p.birth_date ? `<small>Дата рождения: ${p.birth_date}</small>` : (p.age ? `<small>Возраст: ${p.age} лет</small>` : '')}
+                    </div>
+                `;
+            });
+
+            // 🔹 Навешиваем обработчики клика для редактирования
+            document.querySelectorAll('.pet-card').forEach(card => {
+                card.addEventListener('click', () => openEditModal(card.dataset.id));
+            });
+        })
+        .catch(err => console.error('Ошибка загрузки питомцев:', err));
+}
+
+
+
+
+
+
 
     typeSelect.addEventListener('change', () => {
         const selectedType = typeSelect.value;
@@ -355,6 +377,95 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// === Модалка редактирования ===
+const modal = document.getElementById('edit-pet-modal');
+const closeModal = document.getElementById('close-modal');
+const saveEditBtn = document.getElementById('save-edit-pet');
+const previewEdit = document.getElementById('edit-photo-preview');
+
+closeModal.addEventListener('click', () => modal.style.display = 'none');
+
+function openEditModal(petId) {
+    fetch(`/pets/${petId}`, {
+        method: 'GET',
+        credentials: 'same-origin', // ✅ Laravel увидит авторизацию
+        headers: {
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+    })
+    .then(p => {
+        document.getElementById('edit-pet-id').value = p.id;
+        document.getElementById('edit-pet-name').value = p.name;
+        document.getElementById('edit-pet-birth').value = p.birth_date ?? '';
+        document.getElementById('edit-pet-age').value = p.age ?? '';
+        if (p.photo) {
+            previewEdit.src = '/storage/' + p.photo;
+            previewEdit.style.display = 'block';
+        } else {
+            previewEdit.style.display = 'none';
+        }
+        modal.style.display = 'flex';
+    })
+    .catch(err => {
+        console.error('Ошибка загрузки питомца:', err);
+        alert('Не удалось загрузить данные питомца');
+    });
+}
+
+// Предпросмотр нового фото
+document.getElementById('edit-pet-photo').addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (f) {
+        previewEdit.src = URL.createObjectURL(f);
+        previewEdit.style.display = 'block';
+    } else {
+        previewEdit.style.display = 'none';
+    }
+});
+
+// === Сохранение изменений ===
+saveEditBtn.addEventListener('click', () => {
+    const id = document.getElementById('edit-pet-id').value;
+    const name = document.getElementById('edit-pet-name').value.trim();
+    const birth = document.getElementById('edit-pet-birth').value;
+    const age = document.getElementById('edit-pet-age').value;
+
+    if (!name) return alert('Введите имя питомца.');
+
+    const fd = new FormData();
+    fd.append('name', name);
+    fd.append('birth_date', birth);
+    fd.append('age', age);
+    const file = document.getElementById('edit-pet-photo').files[0];
+    if (file) fd.append('photo', file);
+
+    fetch(`/pets/${id}`, {
+        method: 'POST', // Laravel поддерживает метод spoof через _method
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+        body: (() => { fd.append('_method', 'PUT'); return fd; })()
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            alert('Изменения сохранены!');
+            modal.style.display = 'none';
+            loadPets();
+        } else {
+            alert('Ошибка при сохранении');
+            console.log(data);
+        }
+    })
+    .catch(e => {
+        console.error(e);
+        alert('Ошибка сети');
+    });
+});
+
 
     loadPets();
 });
@@ -390,6 +501,44 @@ fetch('/test-pets', {
 
 
 </script>
+
+
+<!-- 🔹 Модалка редактирования питомца -->
+<div id="edit-pet-modal" class="modal" style="
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+    justify-content:center; align-items:center; z-index:9999;">
+  <div style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:400px; position:relative;">
+    <button id="close-modal" style="position:absolute; top:8px; right:10px; background:none; border:none; font-size:18px;">✖</button>
+    <h3>Редактировать питомца</h3>
+
+    <input type="hidden" id="edit-pet-id">
+
+    <div style="margin-bottom:10px;">
+      <label>Имя</label>
+      <input type="text" id="edit-pet-name" style="width:100%;">
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <label>Дата рождения</label>
+      <input type="date" id="edit-pet-birth" style="width:100%;">
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <label>Возраст</label>
+      <input type="number" id="edit-pet-age" style="width:100%;" min="0">
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <label>Фото</label>
+      <input type="file" id="edit-pet-photo" accept="image/*" style="width:100%;">
+      <img id="edit-photo-preview" src="" alt="" style="max-width:100px; display:none; margin-top:8px; border-radius:8px;">
+    </div>
+
+    <button id="save-edit-pet" class="save-btn">Сохранить изменения</button>
+  </div>
+</div>
+
+
 
 </body>
 </html>

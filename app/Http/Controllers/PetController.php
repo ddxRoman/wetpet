@@ -48,5 +48,42 @@ public function store(Request $request)
     return response()->json(['success' => true, 'pet' => $pet->load('animal')]);
 }
 
+public function show($id)
+{
+    $pet = Pet::with('animal')->where('user_id', auth()->id())->find($id);
+
+    if (!$pet) {
+        return response()->json(['error' => 'Питомец не найден'], 404);
+    }
+
+    return response()->json($pet);
+}
+
+
+public function update(Request $request, Pet $pet)
+{
+    $this->authorize('update', $pet);
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'birth_date' => 'nullable|date',
+        'age' => 'nullable|integer|min:0',
+    ]);
+
+    if ($request->hasFile('photo')) {
+        $path = $request->file('photo')->store('pets', 'public');
+        $pet->photo = $path;
+    }
+
+    $pet->update($request->only('name', 'birth_date', 'age'));
+
+return response()->json([
+    'success' => true,
+    'pets' => $pets,
+    'animals' => $animals,
+]);
+
+}
+
 
 }

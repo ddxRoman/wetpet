@@ -64,7 +64,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
-// ⚙️ Тестовый маршрут (для отладки)
-Route::get('/test-city', function () {
-    return City::count();
-});
+Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
+Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
+

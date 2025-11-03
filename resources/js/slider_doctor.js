@@ -1,3 +1,4 @@
+
 // Params
 let mainSliderSelector = '.main-slider',
     navSliderSelector = '.nav-slider',
