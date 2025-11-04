@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
 
+@if(Auth::check())
+    <script>window.location.href = "{{ url('/') }}";</script>
+@endif
+
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -181,10 +187,10 @@
                 <a href="{{ route('password.request') }}" class="forgot-btn">Забыли пароль?</a>
             @endif
 
-            <!-- <div class="remember-block">
+            <div class="remember-block">
                 <input type="checkbox" name="remember" id="remember">
                 <label for="remember">Запомнить меня</label>
-            </div> -->
+            </div>
 
             <button class="login_btn_page">Войти</button>
         </form>

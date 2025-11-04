@@ -7,6 +7,18 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
+
+    public function showLoginForm()
+{
+    if (Auth::check()) {
+        return redirect('/');
+    }
+
+    return view('auth.login');
+}
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller

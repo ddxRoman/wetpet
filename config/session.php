@@ -211,4 +211,9 @@ return [
 
     'partitioned' => false,
 
+
+    'lifetime' => 525600, // минуты (время жизни обычной сессии) 1 год
+'expire_on_close' => false, // false — не удалять сессию при закрытии браузера
+
+
 ];

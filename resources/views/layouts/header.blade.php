@@ -1,5 +1,5 @@
 @vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
-@include('modal.select_city')
+
 
 <!DOCTYPE html>
 <html lang="en">
