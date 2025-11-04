@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\ClinicController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
@@ -68,6 +68,13 @@ Route::post('/account/update', [AccountController::class, 'updateProfile'])->nam
 
 
 Route::delete('/pets/{pet}', [App\Http\Controllers\PetController::class, 'destroy'])->name('pets.destroy');
+
+
+Route::resource('clinics', ClinicController::class);
+
+Route::get('/clinics', [ClinicController::class, 'index'])->name('clinics.index');
+Route::get('/clinics/{id}', [ClinicController::class, 'show'])->name('clinics.show');
+
 
 
 Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
