@@ -18,11 +18,14 @@
                 </div>
             </div>
             <div class="col-2">
-                <div class="div_btn_category">
-                                    <div class="text_menu_btn_category">
+                <a href="{{ route('clinics.index') }}">
 
-                        Клиники
-                    </div>
+                    <div class="div_btn_category">
+                        <div class="text_menu_btn_category">
+                            
+                            Клиники
+                        </div>
+                    </a>
                     <br>
                    <div class="div_btn_category_icon">
                        <img  class="category_icon" src="{{ Storage::url('icon/category/veterinarian_icon_category.png') }}" alt="">
