@@ -671,3 +671,79 @@ select:focus {
 .pet-other {
     background: linear-gradient(135deg, #f9f9f9, #fff);
 }
+
+/* ====== ХЕДЕР ====== */
+.site-header {
+    background-color: #f8faff;
+    border-bottom: 1px solid #e5e5e5;
+    min-height: 25vh;
+    padding: 10px 0 20px;
+    transition: all 0.3s ease;
+}
+
+/* Компактная версия (для /clinics и /clinics/{id}) */
+.site-header.compact-header {
+    min-height: 15vh;
+    padding: 8px 0;
+}
+
+.header_logo {
+    transition: all 0.3s ease;
+}
+
+
+/* Кнопки и профили */
+.btn_login {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+.btn_login:hover {
+    background-color: #0056b3;
+}
+
+.avatars_pics {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 6px;
+}
+
+/* Поиск */
+.header-search {
+    width: 60%;
+    max-width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 6px 12px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.header-search:focus {
+    border-color: #007bff;
+}
+.btn_search {
+    width: 28px;
+    height: 28px;
+    margin-left: 8px;
+}
+
+/* ====== АДАПТИВ ====== */
+@media (max-width: 768px) {
+    .site-header {
+        min-height: auto;
+    }
+    .site-header.compact-header {
+        min-height: 12vh;
+    }
+    .header_logo {
+        height: 60px;
+    }
+    .header-search {
+        width: 80%;
+    }
+}

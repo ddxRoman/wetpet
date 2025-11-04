@@ -11,20 +11,20 @@ class ClinicController extends Controller
     public function index()
     {
         $clinics = Clinic::orderBy('name')->get();
-        return view('clinics.index', compact('clinics'));
+        return view('pages.clinics.index', compact('clinics'));
     }
 
     // Просмотр одной клиники
     public function show($id)
     {
         $clinic = Clinic::findOrFail($id);
-        return view('clinics.show', compact('clinic'));
+        return view('pages.clinics.show', compact('clinic'));
     }
 
     // Форма добавления новой клиники
     public function create()
     {
-        return view('clinics.create');
+        return view('pages.clinics.create');
     }
 
     // Сохранение новой клиники
@@ -51,14 +51,14 @@ class ClinicController extends Controller
 
         Clinic::create($data);
 
-        return redirect()->route('clinics.index')->with('success', 'Клиника добавлена');
+        return redirect()->route('pages.clinics.index')->with('success', 'Клиника добавлена');
     }
 
     // Форма редактирования
     public function edit($id)
     {
         $clinic = Clinic::findOrFail($id);
-        return view('clinics.edit', compact('clinic'));
+        return view('pages.clinics.edit', compact('clinic'));
     }
 
     // Обновление клиники
@@ -87,7 +87,7 @@ class ClinicController extends Controller
 
         $clinic->update($data);
 
-        return redirect()->route('clinics.show', $clinic->id)
+        return redirect()->route('pages.clinics.show', $clinic->id)
                          ->with('success', 'Клиника обновлена');
     }
 
@@ -97,6 +97,6 @@ class ClinicController extends Controller
         $clinic = Clinic::findOrFail($id);
         $clinic->delete();
 
-        return redirect()->route('clinics.index')->with('success', 'Клиника удалена');
+        return redirect()->route('pages.clinics.index')->with('success', 'Клиника удалена');
     }
 }

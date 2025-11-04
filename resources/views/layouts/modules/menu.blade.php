@@ -12,13 +12,14 @@
                     </a>
                     <br>
                    <div class="div_btn_category_icon">
+                    
                        <img  class="category_icon" src="{{ Storage::url('icon/category/pets_icon_category.png') }}" alt="">
                    </div>
 
                 </div>
             </div>
             <div class="col-2">
-                <a href="{{ route('clinics.index') }}">
+                <a href="{{ route('pages.clinics.index') }}">
 
                     <div class="div_btn_category">
                         <div class="text_menu_btn_category">

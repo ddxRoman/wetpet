@@ -72,8 +72,8 @@ Route::delete('/pets/{pet}', [App\Http\Controllers\PetController::class, 'destro
 
 Route::resource('clinics', ClinicController::class);
 
-Route::get('/clinics', [ClinicController::class, 'index'])->name('clinics.index');
-Route::get('/clinics/{id}', [ClinicController::class, 'show'])->name('clinics.show');
+Route::get('/clinics', [ClinicController::class, 'index'])->name('pages.clinics.index');
+Route::get('/clinics/{id}', [ClinicController::class, 'show'])->name('pages.clinics.show');
 
 
 
