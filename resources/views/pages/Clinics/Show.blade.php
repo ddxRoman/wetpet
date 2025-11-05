@@ -119,7 +119,7 @@
                             @if(!empty($clinic->photos))
                                 @foreach($clinic->photos as $photo)
                                     <div class="col-md-4 col-sm-6">
-                                        <img src="{{ asset('storage/' . $photo) }}" class="img-fluid rounded shadow-sm" alt="Фото клиники">
+                                        <img src="{{ asset('/' . $photo) }}" class="img-fluid rounded shadow-sm" alt="Фото клиники">
                                     </div>
                                 @endforeach
                             @else
@@ -148,7 +148,7 @@
                                     </div>
 
                                     <div class="card-body text-center">
-                                        <img src="{{ $doctor->photo ? asset('/' . $doctor->photo) : asset('storage/doctors/default.webp') }}"
+                                        <img src="{{ $doctor->photo ? asset('/' . $doctor->photo) : asset('/doctors/default.webp') }}"
                                              alt="{{ $doctor->name }}"
                                              class="doctor-photo mb-3">
                                         <h5 class="card-title mb-1">{{ $doctor->name }}</h5>

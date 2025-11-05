@@ -15,11 +15,19 @@ class DoctorSeeder extends Seeder
         $photos = [
             'storage/doctors/doctor1.jpg',
             'storage/doctors/doctor2.jpg',
-            'storage/doctors/doctor3.jpg',
+            'storage/doctors/doctor3.webp',
+            'storage/doctors/doctor11.webp',
+            'storage/doctors/doctor12.webp',
+            'storage/doctors/doctor13.webp',
             'storage/doctors/doctor4.jpg',
             'storage/doctors/doctor5.jpg',
             'storage/doctors/doctor6.jpg',
+            'storage/doctors/doctor8.jpg',
+            'storage/doctors/doctor9.jpg',
+            'storage/doctors/doctor10.jpg',
+            'storage/doctors/doctor14.jpg',
             'storage/doctors/doctor7.webp',
+
         ];
 
         foreach (range(1, 15) as $i) {

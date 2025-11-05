@@ -37,7 +37,7 @@ class ClinicSeeder extends Seeder
                 'workdays' => 'Пн–Вс',
             ],
             [
-                'name' => 'Зоомед Центр "Лапа+"',
+                'name' => 'Слон',
                 'country' => 'Россия',
                 'region' => 'Санкт-Петербург',
                 'city' => 'Санкт-Петербург',
@@ -57,7 +57,7 @@ class ClinicSeeder extends Seeder
                 'workdays' => 'Пн–Сб',
             ],
             [
-                'name' => 'Ветеринарная клиника "Айболит"',
+                'name' => 'ВетЛазарет',
                 'country' => 'Россия',
                 'region' => 'Свердловская область',
                 'city' => 'Екатеринбург',
@@ -77,7 +77,7 @@ class ClinicSeeder extends Seeder
                 'workdays' => 'Пн–Вс',
             ],
             [
-                'name' => 'Ветцентр "ЗоДоктор"',
+                'name' => 'Государственная',
                 'country' => 'Россия',
                 'region' => 'Новосибирская область',
                 'city' => 'Новосибирск',
