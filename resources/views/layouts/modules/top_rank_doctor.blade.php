@@ -7,48 +7,49 @@
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-<div class="container slider_doctor">
-<div class="row">
-<div class="col-12">
+<div class="container slider_doctor slider_doctor_mobile">
+  <div class="row row_slider_doctor row_slider_doctor_mobile">
+    <div class="col-12 col_slider_doctor col_slider_doctor_mobile">
 
-
-
-  <div class="swiper-container main-slider loading">
-    <div class="swiper-wrapper">
-      @foreach ($doctors as $doctor)
-        <div class="swiper-slide">
-          <figure class="slide-bgimg" style="background-image:url('{{ asset($doctor->photo) }}')">
-            <img src="{{ asset($doctor->photo) }}" class="entity-img" alt="{{ $doctor->name }}">
-          </figure>
-          <div class="content">
-            <p class="title">{{ $doctor->name }}</p>
-            <span class="caption">{{ $doctor->description ?? 'Описание отсутствует' }}</span>
-          </div>
+      <!-- Основной слайдер -->
+      <div class="swiper-container main-slider loading main-slider_mobile">
+        <div class="swiper-wrapper">
+          @foreach ($doctors as $doctor)
+            <div class="swiper-slide swiper-slide_mobile">
+              <figure class="slide-bgimg slide-bgimg_mobile" style="background-image:url('{{ asset($doctor->photo) }}')">
+                <img src="{{ asset($doctor->photo) }}" class="entity-img entity-img_mobile" alt="{{ $doctor->name }}">
+              </figure>
+              <div class="content content_mobile">
+                <p class="title title_mobile">{{ $doctor->name }}</p>
+                <span class="caption caption_mobile">{{ $doctor->description ?? 'Описание отсутствует' }}</span>
+              </div>
+            </div>
+          @endforeach
         </div>
-      @endforeach
-    </div>
-    <div class="swiper-button-prev swiper-button-white"></div>
-    <div class="swiper-button-next swiper-button-white"></div>
-  </div>
+        <div class="swiper-button-prev swiper-button-white swiper-button-prev_mobile"></div>
+        <div class="swiper-button-next swiper-button-white swiper-button-next_mobile"></div>
+      </div>
 
-  <!-- Thumbnail navigation -->
-  <div class="swiper-container nav-slider loading">
-    <div class="swiper-wrapper" role="navigation">
-      @foreach ($doctors as $doctor)
-        <div class="swiper-slide">
-          <figure class="slide-bgimg" style="background-image:url('{{ asset($doctor->photo) }}')">
-            <img src="{{ asset($doctor->photo) }}" class="entity-img" alt="{{ $doctor->name }}">
-          </figure>
-          <div class="content">
-            <p class="title">{{ $doctor->name }}</p>
-          </div>
+      <!-- Миниатюры -->
+      <div class="swiper-container nav-slider loading nav-slider_mobile">
+        <div class="swiper-wrapper" role="navigation">
+          @foreach ($doctors as $doctor)
+            <div class="swiper-slide swiper-slide_mobile_thumb">
+              <figure class="slide-bgimg slide-bgimg_mobile_thumb" style="background-image:url('{{ asset($doctor->photo) }}')">
+                <img src="{{ asset($doctor->photo) }}" class="entity-img entity-img_mobile_thumb" alt="{{ $doctor->name }}">
+              </figure>
+              <div class="content content_mobile_thumb">
+                <p class="title title_mobile_thumb">{{ $doctor->name }}</p>
+              </div>
+            </div>
+          @endforeach
         </div>
-      @endforeach
+      </div>
+
     </div>
   </div>
 </div>
-</div>
-</div>
+
 <script src='https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js'></script>
 <script src="{{ asset('js/script.js') }}"></script>
 </body>

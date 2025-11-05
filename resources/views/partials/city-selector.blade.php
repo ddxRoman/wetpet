@@ -59,7 +59,7 @@
      data-cities-set-url="{{ $citiesSetUrl }}"
      style="max-width:420px;">
     <div class="city-current" style="display:flex;align-items:center;">
-        <div><strong>Город:</strong></div>
+        <div><strong class="city_word">Город:</strong></div>
         <button id="open-city-modal" class="select_city_btn" aria-haspopup="dialog">
             <span id="current-city-name">{{ $currentCityName }}</span>
         </button>

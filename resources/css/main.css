@@ -715,8 +715,8 @@ select:focus {
 
 /* Поиск */
 .header-search {
-    width: 60%;
-    max-width: 500px;
+
+
     border: 1px solid #ccc;
     border-radius: 20px;
     padding: 6px 12px;
@@ -734,6 +734,11 @@ select:focus {
 
 /* ====== АДАПТИВ ====== */
 @media (max-width: 768px) {
+
+    .city_word, .avatars_pics{
+        display: none;
+    }
+
     .site-header {
         min-height: auto;
     }
@@ -741,9 +746,93 @@ select:focus {
         min-height: 12vh;
     }
     .header_logo {
-        height: 60px;
+        width: 60px;
     }
     .header-search {
         width: 80%;
     }
+}
+/* === Адаптация header под мобильные устройства === */
+@media (max-width: 768px) {
+
+    .city_word, .avatars_pics{
+        display: none;
+    }
+
+  /* Контейнер и ряды */
+  .container_header_mobile {
+    padding: 8px 15px;
+  }
+
+  .row_header_mobile {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  /* Скрываем блок выбора города */
+  .city_selector_mobile {
+    display: none !important;
+  }
+
+  /* Логотип */
+  .header-logo-link_mobile {
+    display: flex;
+    align-items: center;
+  }
+
+  .header_logo_mobile {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  /* Правая часть — кнопка/профиль */
+  .col_profile_block_mobile {
+    justify-content: flex-end;
+  }
+
+  .btn_login_mobile {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .avatars_pics_mobile {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    margin-right: 6px;
+  }
+
+  .username_mobile {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .profile_link_mobile {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Описание и поиск — уменьшенные отступы */
+  .description_view_mobile h1 {
+    font-size: 20px;
+  }
+
+  .description_view_mobile p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .header-search_mobile {
+    width: 80%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .btn_search_mobile {
+    width: 24px;
+    height: 24px;
+    margin-left: 6px;
+  }
 }
