@@ -1,5 +1,5 @@
 @php
-    $currentCityName = auth()->user()?->city?->name ?? session('city_name', ' нужно выбрать');
+    $currentCityName = auth()->user()?->city?->name ?? session('city_name', 'нужно выбрать');
     $citiesIndexUrl = route('cities.index');
     $citiesSetUrl   = route('cities.set');
 @endphp
@@ -94,7 +94,6 @@
     let allCities = [];
 
     openBtn.addEventListener('click', () => {
-        // 🔹 Очистка поля поиска и сброс фильтра
         search.value = '';
         modal.style.display = 'block';
         if (allCities.length) {
@@ -113,12 +112,6 @@
             const res = await fetch(citiesIndexUrl, { headers: {'Accept':'application/json'} });
             if (!res.ok) throw new Error('Ошибка загрузки: ' + res.status);
             allCities = await res.json();
-
-            if (!Array.isArray(allCities) || !allCities.length) {
-                list.innerHTML = '<div style="grid-column:1/-1;padding:1rem;text-align:center;">Нет данных</div>';
-                return;
-            }
-
             renderCities(allCities);
         } catch (err) {
             console.error(err);
@@ -128,18 +121,19 @@
 
     function renderCities(cities) {
         list.innerHTML = cities.map(c => `
-            <button class="city-item" data-id="${c.id}">${c.name}</button>
+            <button class="city-item" data-id="${c.id}" data-name="${c.name}">${c.name}</button>
         `).join('');
 
         document.querySelectorAll('.city-item').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const cityId = btn.dataset.id;
-                await setCity(cityId);
+                const cityName = btn.dataset.name;
+                await setCity(cityId, cityName);
             });
         });
     }
 
-    async function setCity(cityId) {
+    async function setCity(cityId, cityName) {
         try {
             const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const res = await fetch(citiesSetUrl, {
@@ -157,39 +151,37 @@
 
             currentName.textContent = json.city.name;
             modal.style.display = 'none';
+
+            // 🔹 Автоматическое обновление каталога клиник без перезагрузки
+            if (window.location.pathname.includes('/clinics')) {
+                const response = await fetch(`/clinics?city=${encodeURIComponent(cityName)}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const html = await response.text();
+
+                // Находим контейнер с клиниками
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                const newList = tempDiv.querySelector('.row.g-4');
+                const currentList = document.querySelector('.row.g-4');
+
+                if (newList && currentList) {
+                    currentList.innerHTML = newList.innerHTML;
+                }
+            }
+
         } catch (err) {
             alert('Не удалось установить город. Попробуйте ещё раз.');
             console.error(err);
         }
     }
 
-    // 🔍 Поиск (фильтрация локально)
+    // 🔍 Поиск
     search.addEventListener('input', () => {
         const q = search.value.trim().toLowerCase();
-        if (!q) {
-            renderCities(allCities);
-            return;
-        }
+        if (!q) return renderCities(allCities);
         const filtered = allCities.filter(c => c.name.toLowerCase().includes(q));
         renderCities(filtered);
     });
 })();
-$.ajax({
-    url: '/cities/list',
-    type: 'GET',
-    success: function (data) {
-        const $select = $('#city-select');
-        $select.empty();
-
-        data.forEach(city => {
-            const option = new Option(city.name, city.id, false, false);
-            $select.append(option);
-        });
-
-        // Добавляем пункт "Моего города нет в списке"
-        $select.append(new Option('Моего города нет в списке', 'add_new_city'));
-    }
-});
-
 </script>
-

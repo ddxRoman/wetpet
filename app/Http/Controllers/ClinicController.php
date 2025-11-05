@@ -8,11 +8,24 @@ use Illuminate\Http\Request;
 class ClinicController extends Controller
 {
     // Список всех клиник
-    public function index()
-    {
-        $clinics = Clinic::orderBy('name')->get();
-        return view('pages.clinics.index', compact('clinics'));
+public function index(Request $request)
+{
+    // Получаем выбранный город из сессии или запроса
+    $selectedCity = $request->input('city', session('selected_city'));
+
+    // Если город выбран — фильтруем по нему, иначе показываем все
+    $clinics = Clinic::when($selectedCity, function ($query, $city) {
+        return $query->where('city', $city);
+    })->get();
+
+    // Сохраняем выбранный город в сессию (чтобы не сбрасывался при переходах)
+    if ($selectedCity) {
+        session(['selected_city' => $selectedCity]);
     }
+
+    return view('pages.clinics.index', compact('clinics', 'selectedCity'));
+}
+
 
     // Просмотр одной клиники
     public function show($id)
