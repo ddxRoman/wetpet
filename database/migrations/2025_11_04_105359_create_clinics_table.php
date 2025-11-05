@@ -31,6 +31,7 @@ return new class extends Migration {
             $table->string('email')->nullable();
             $table->string('telegram')->nullable();
             $table->string('whatsapp')->nullable();
+            $table->string('website')->nullable();
 
             // Время работы
             $table->string('schedule')->nullable(); // "с 8:00 до 22:00"
