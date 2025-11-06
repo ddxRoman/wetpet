@@ -33,9 +33,8 @@ return new class extends Migration {
             $table->boolean('receipt_verified')->default(false);
 
             // 🐾 Информация о питомце
-            $table->string('pet_name')->nullable();
-            $table->string('pet_type')->nullable(); // например, кошка, собака
-            $table->integer('pet_age')->nullable();
+            $table->unsignedTinyInteger('pet_id')->nullable();
+
             
             $table->timestamps();
         });

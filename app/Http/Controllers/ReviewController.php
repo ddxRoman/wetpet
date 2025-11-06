@@ -29,55 +29,52 @@ class ReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'reviewable_id' => 'required|integer',
-            'reviewable_type' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5',
-            'liked' => 'nullable|string|max:255',
-            'disliked' => 'nullable|string|max:255',
-            'content' => 'nullable|string|max:2000',
-            'pet_id' => 'nullable|integer',
-            'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'photos.*' => 'nullable|image|max:5120',
-        ]);
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'reviewable_id' => 'required|integer',
+        'reviewable_type' => 'required|string',
+        'rating' => 'required|integer|min:1|max:5',
+        'liked' => 'nullable|string|max:255',
+        'disliked' => 'nullable|string|max:255',
+        'content' => 'nullable|string|max:2000',
+        'pet_id' => 'nullable|integer',
+        'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+        'photos.*' => 'nullable|image|max:5120',
+    ]);
 
-        $review = new Review();
-        $review->user_id = Auth::id();
-        $review->reviewable_id = $validated['reviewable_id'];
-        $review->reviewable_type = $validated['reviewable_type'];
-        $review->rating = $validated['rating'];
-        $review->liked = $validated['liked'] ?? null;
-        $review->disliked = $validated['disliked'] ?? null;
-        $review->content = $validated['content'] ?? null;
-        $review->pet_id = $validated['pet_id'] ?? null;
-        $review->review_date = now();
+    $review = new \App\Models\Review();
+    $review->user_id = auth()->id();
+    $review->reviewable_id = $validated['reviewable_id'];
+    $review->reviewable_type = $validated['reviewable_type'];
+    $review->rating = $validated['rating'];
+    $review->liked = $validated['liked'] ?? null;
+    $review->disliked = $validated['disliked'] ?? null;
+    $review->content = $validated['content'] ?? null;
+    $review->pet_id = $validated['pet_id'] ?? null;
+    $review->review_date = now();
 
-        // 📎 Загрузка чека
-        if ($request->hasFile('receipt')) {
-            $path = $request->file('receipt')->store('reviews/receipts', 'public');
-            $review->receipt_path = $path;
-        }
-
-        $review->save();
-
-        // 🖼 Загрузка фото
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('reviews/photos', 'public');
-                \App\Models\ReviewPhoto::create([
-                    'review_id' => $review->id,
-                    'path' => $path,
-                ]);
-            }
-        }
-
-        return redirect()->back()->with('success', 'Спасибо! Ваш отзыв успешно отправлен.');
-    
-
-
+    // Чек
+    if ($request->hasFile('receipt')) {
+        $review->receipt_path = $request->file('receipt')->store('reviews/receipts', 'public');
     }
+
+    $review->save();
+
+    // Фото
+    if ($request->hasFile('photos')) {
+        foreach ($request->file('photos') as $photo) {
+            $path = $photo->store('reviews/photos', 'public');
+            \App\Models\ReviewPhoto::create([
+                'review_id' => $review->id,
+                'path' => $path,
+            ]);
+        }
+    }
+
+    return redirect()->back()->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
+}
+
 
     /**
      * Display the specified resource.

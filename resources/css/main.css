@@ -1030,4 +1030,19 @@ select:focus {
     scroll-margin-top: 120px;
 }
 
+                            .small-textarea {
+                                transition: all 0.3s ease;
+                                resize: none;
+                                height: 60px;
+                            }
+                            .small-textarea.expanded {
+                                height: 150px;
+                            }
+                            .rating-star {
+                                cursor: pointer;
+                                transition: transform 0.2s ease;
+                            }
+                            .rating-star:hover {
+                                transform: scale(1.1);
+                            }
 

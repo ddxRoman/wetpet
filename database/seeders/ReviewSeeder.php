@@ -30,8 +30,8 @@ class ReviewSeeder extends Seeder
             'Нет терминала', 'Слишком холодно в зале ожидания', 'Мало специалистов по редким животным'
         ];
 
-        $petTypes = ['Кошка', 'Собака', 'Попугай', 'Хомяк', 'Кролик', 'Черепаха', 'Игуана'];
-        $petNames = ['Мурзик', 'Барсик', 'Шарик', 'Лаки', 'Сэм', 'Белка', 'Рыжик', 'Пушок', 'Тоша', 'Кузя'];
+
+        $petid = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
         for ($i = 0; $i < 100; $i++) {
             $user = $users->random();
@@ -48,10 +48,7 @@ class ReviewSeeder extends Seeder
                 'liked' => Arr::random($likedOptions, rand(1, 3)) ? implode(', ', Arr::random($likedOptions, rand(1, 3))) : null,
                 'disliked' => Arr::random($dislikedOptions, rand(0, 2)) ? implode(', ', Arr::random($dislikedOptions, rand(0, 2))) : null,
 
-                'pet_name' => Arr::random($petNames),
-                'pet_type' => Arr::random($petTypes),
-                'pet_age' => rand(1, 15),
-
+                'pet_id' => Arr::random($petid),
                 'receipt_verified' => fake()->boolean(80), // 80% проверено
                 'receipt_path' => fake()->boolean(50) ? 'storage/receipts/example_' . rand(1, 10) . '.webp' : null,
             ]);

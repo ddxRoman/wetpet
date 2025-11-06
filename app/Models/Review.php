@@ -20,9 +20,8 @@ class Review extends Model
         'disliked',
         'receipt_path',
         'receipt_verified',
-        'pet_name',
-        'pet_type',
-        'pet_age',
+        'pet_id',
+
     ];
 
     protected $casts = [
