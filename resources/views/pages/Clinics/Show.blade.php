@@ -6,8 +6,18 @@
 <div class="d-flex flex-column min-vh-100 bg-white">
 
     @include('layouts.header')
-
+    
     <main class="flex-grow-1 container py-5">
+    <main class="flex-grow-1 container py-5">
+    {{-- 🔙 Кнопка "В каталог" --}}
+    <div class="mb-3">
+        <a href="{{ route('pages.clinics.index') }}" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog">
+            <img src="{{ asset('storage/icon/button/arrow-back.svg') }}" width="22" alt="paw">
+            В каталог
+        </a>
+    </div>
+
+
         <div class="row">
             <div class="col-lg-12 col-12">
 
@@ -22,6 +32,7 @@
                     <img src="{{ $logo }}" alt="{{ $clinic->name }}" class="logo_clinic_card me-3 mb-3 mb-md-0">
                     <h1 class="text-2xl fw-bold m-0">{{ $clinic->name }}</h1>
                 </div>
+                
 
                 {{-- Вкладки --}}
                 <ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
@@ -62,10 +73,10 @@
     @endif
                                     <div>✉️ {{ $clinic->email }}</div>
                                     @if($clinic->telegram)
-                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}" target="_blank">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Рейтинг"></a></div>
                                     @endif
                                     @if($clinic->whatsapp)
-                                        <div>💬 WhatsApp: <a href="https://t.me/{{ $clinic->whatsapp }}">https://t.me/{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Рейтинг"></a></div>
                                     @endif
                                     @if($clinic->website)
                                         <div>💬  <a href="{{ $clinic->website }}">Перейти на сайт</a></div>
@@ -405,6 +416,44 @@ document.querySelectorAll('.paw-link').forEach(link => {
     padding-top: 1%;
     padding-left: 1%;
 }
+
+/* 🔙 Кнопка "В каталог" */
+.back-to-catalog {
+    height: 30px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 3px 3px;
+    transition: all 0.25s ease-in-out;
+    border: none;
+    color: #4b4b4bff;
+    background-color: #abc2ae11;
+}
+
+.back-to-catalog:hover {
+    background-color: #0000000c;
+    color: #000000ff !important;
+    transform: translateY(-2px);
+}
+
+
+.back-to-catalog img {
+    opacity: 0.85;
+    transition: transform 0.3s;
+}
+
+.back-to-catalog:hover img {
+    transform: rotate(-10deg);
+}
+
+.py-5 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem !important;
+}
+
 
 </style>
 @endsection
