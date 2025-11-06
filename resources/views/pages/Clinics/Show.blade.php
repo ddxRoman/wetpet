@@ -62,10 +62,10 @@
     @endif
                                     <div>✉️ {{ $clinic->email }}</div>
                                     @if($clinic->telegram)
-                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}"><img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Рейтинг"></a></div>
                                     @endif
                                     @if($clinic->whatsapp)
-                                        <div>💬 WhatsApp: <a href="https://t.me/{{ $clinic->whatsapp }}"><img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 WhatsApp: <a href="https://t.me/{{ $clinic->whatsapp }}">https://t.me/{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Рейтинг"></a></div>
                                     @endif
                                     @if($clinic->website)
                                         <div>💬  <a href="{{ $clinic->website }}">Перейти на сайт</a></div>
@@ -152,7 +152,7 @@
                 $anchor = mb_strtoupper(mb_substr($specialization, 0, 1));
             @endphp
             <div id="letter-{{ $anchor }}" class="mb-5 specialization-block">
-                <h5 class="fw-semibold text-primary border-bottom pb-2 mb-3 specialization-header">
+                <h5 class="fw-semibold specialization_block text-primary border-bottom pb-2 mb-3 specialization-header">
                     {{ $specialization }}
                 </h5>
 
@@ -400,6 +400,10 @@ document.querySelectorAll('.paw-link').forEach(link => {
 .nav-item{
     background-color: #c9c1f72d;
     border: 1px solid #adadad1f;
+}
+.specialization_block{
+    padding-top: 1%;
+    padding-left: 1%;
 }
 
 </style>
