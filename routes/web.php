@@ -89,3 +89,6 @@ Route::get('/user/{id}', function ($id) {
 
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::resource('reviews', ReviewController::class);
+
+Route::get('/clinics/{clinic}', [ClinicController::class, 'show'])->name('pages.clinics.show');
+
