@@ -17,7 +17,6 @@ class UserTableSeeder extends Seeder
                 'email' => 'ddxman@mail.ru',
                 'birth_date' => '12.05.1994',
                 'avatar' => 'avatars/ejWLZaF7SgpdXEToQxdi3j9n8LSStnuFMFkfLZdE.jpg',
-                
                 'phone' => '+79667404577',
                 'password' => Hash::make('12345678'),
                 'city_id' => 20, // ID города из таблицы cities
@@ -27,7 +26,7 @@ class UserTableSeeder extends Seeder
                 'nickname' => 'annapet',
                 'email' => 'ddx2man@mail.ru',
                                 'birth_date' => '-----',
-                                'avatar' => '-----',
+                                'avatar' => '',
                                 
                 'phone' => '+7964334577',
                 'password' => Hash::make('12345678'),
@@ -38,7 +37,7 @@ class UserTableSeeder extends Seeder
                 'nickname' => 'sergeydev',
                 'email' => 'ddx1man@mail.ru',
                                 'birth_date' => '-----',
-                                'avatar' => '-----',
+                                'avatar' => '',
                                 
                 'phone' => '+7964545447',
                 'password' => Hash::make('12345678'),
@@ -49,7 +48,7 @@ class UserTableSeeder extends Seeder
                 'nickname' => 'kitty',
                 'email' => 'valaria.mas@yandex.ru',
                                 'birth_date' => '-----',
-                                'avatar' => '-----',
+                                'avatar' => '',
                                 
                 'phone' => '+79645433447',
                 'password' => Hash::make('12345678'),

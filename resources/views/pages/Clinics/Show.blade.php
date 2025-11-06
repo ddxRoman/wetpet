@@ -1,5 +1,5 @@
 @extends('layouts.app')
-        use App\Models\Review;
+
 
 @section('title', $clinic->name)
 
