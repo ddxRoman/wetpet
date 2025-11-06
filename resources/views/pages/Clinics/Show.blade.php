@@ -32,7 +32,10 @@
                         <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab">Услуги</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#directions" type="button" role="tab">Направления</button>
+                        <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#directions" type="button" role="tab">Отзывы</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#directions" type="button" role="tab">Награды</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos" type="button" role="tab">Фото</button>
@@ -44,17 +47,25 @@
                     <div class="tab-pane fade show active" id="contacts" role="tabpanel">
                         <div class="row">
                             {{-- Левая часть: контакты --}}
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <div class="text-secondary mb-4">
                                     <div>📍 {{ $clinic->country }}, {{ $clinic->region }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}</div>
                                     <div>🕒 {{ $clinic->workdays }} — {{ $clinic->schedule }}</div>
-                                    <div>📞 {{ $clinic->phone1 }} @if($clinic->phone2), {{ $clinic->phone2 }}@endif</div>
+                                   {{-- Телефоны как ссылки --}}
+    @if($clinic->phone1)
+        <div>
+            📞 <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone1) }}">{{ $clinic->phone1 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Рейтинг"> </a>
+            @if($clinic->phone2)
+                , <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone2) }}">{{ $clinic->phone2 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Рейтинг"> </a>
+            @endif
+        </div>
+    @endif
                                     <div>✉️ {{ $clinic->email }}</div>
                                     @if($clinic->telegram)
-                                        <div>💬 Telegram: {{ $clinic->telegram }}</div>
+                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}"><img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Рейтинг"></a></div>
                                     @endif
                                     @if($clinic->whatsapp)
-                                        <div>💬 WhatsApp: {{ $clinic->whatsapp }}</div>
+                                        <div>💬 WhatsApp: <a href="https://t.me/{{ $clinic->whatsapp }}"><img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Рейтинг"></a></div>
                                     @endif
                                     @if($clinic->website)
                                         <div>💬  <a href="{{ $clinic->website }}">Перейти на сайт</a></div>
@@ -63,7 +74,7 @@
                             </div>
 
 {{-- Карта / Доп. информация --}}
-<div class="card shadow-sm border-0 p-3" style="max-width: 300px;">
+<div class="card shadow-sm border-0 p-3" style="max-width: 450px;">
     <h5 class="fw-semibold mb-2">Карта / Доп. информация</h5>
 
     {{-- Встраиваемая Яндекс.Карта с геометкой --}}
@@ -81,12 +92,12 @@
 
     {{-- Дополнительная информация --}}
     <div class="text-muted small">
-        <p><strong>Адрес:</strong> {{ $clinic->country }}, {{ $clinic->region }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}</p>
+        <!-- <p><strong>Адрес:</strong> {{ $clinic->country }}, {{ $clinic->region }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}</p> -->
         @if(!empty($clinic->founded))
-            <p><strong>Основана:</strong> {{ $clinic->founded }}</p>
+            <!-- <p><strong>Основана:</strong> {{ $clinic->founded }}</p> -->
         @endif
         @if(!empty($clinic->description))
-            <p><strong>Описание:</strong> {{ $clinic->description }}</p>
+            <!-- <p><strong>Описание:</strong> {{ $clinic->description }}</p> -->
         @endif
     </div>
 </div>
@@ -95,18 +106,168 @@
                         </div>
                     </div>
 
-                    {{-- Услуги --}}
-                    <div class="tab-pane fade" id="services" role="tabpanel">
-                        @if(!empty($clinic->services))
-                            <ul class="mb-0">
-                                @foreach($clinic->services as $service)
-                                    <li>{{ $service }}</li>
-                                @endforeach
-                            </ul>
-                        @else
-                            <p class="text-muted">Информация об услугах отсутствует.</p>
-                        @endif
+{{-- Услуги --}}
+<div class="tab-pane fade" id="services" role="tabpanel">
+    @php
+        // Все услуги, связанные с клиникой
+        $services = $clinic->services ?? collect();
+
+        // Сортировка по специализации и названию
+        $services = $services->sortBy([
+            fn($a, $b) => strcasecmp($a->specialization ?? '', $b->specialization ?? ''),
+            fn($a, $b) => strcasecmp($a->name ?? '', $b->name ?? ''),
+        ]);
+
+        // Загружаем цены
+        $prices = \App\Models\Price::where('clinic_id', $clinic->id)->get()->keyBy('service_id');
+
+        // Группировка по специализациям
+        $grouped = $services->groupBy(fn($s) => $s->specialization ?? 'Без специализации');
+
+        // Алфавит (только используемые буквы)
+        $letters = collect($grouped->keys())
+            ->map(fn($key) => mb_strtoupper(mb_substr($key, 0, 1)))
+            ->unique()
+            ->sort()
+            ->values();
+    @endphp
+
+    @if($grouped->isNotEmpty())
+
+        {{-- 🐾 Алфавитный навигатор --}}
+        <div class="mb-4 d-flex flex-wrap gap-2 justify-content-start">
+            @foreach($letters as $letter)
+                <a href="#letter-{{ $letter }}" class="paw-link text-decoration-none" title="Перейти к '{{ $letter }}'">
+                    <div class="paw-circle">
+                        <img src="{{ asset('storage/icon/alphabet/letter_icon.png') }}" class="paw-icon" alt="paw">
+                        <span class="paw-letter">{{ $letter }}</span>
                     </div>
+                </a>
+            @endforeach
+        </div>
+
+        {{-- Список специализаций --}}
+        @foreach($grouped as $specialization => $group)
+            @php
+                $anchor = mb_strtoupper(mb_substr($specialization, 0, 1));
+            @endphp
+            <div id="letter-{{ $anchor }}" class="mb-5 specialization-block">
+                <h5 class="fw-semibold text-primary border-bottom pb-2 mb-3 specialization-header">
+                    {{ $specialization }}
+                </h5>
+
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 60%">Название услуги</th>
+                            <th style="width: 40%">Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($group as $service)
+                            @php
+                                $price = $prices->get($service->id);
+                            @endphp
+                            <tr>
+                                <td>{{ $service->name }}</td>
+                                <td>
+                                    @if($price && $price->price !== null)
+                                        {{ number_format($price->price, 0, ',', ' ') }} {{ $price->currency }}
+                                    @else
+                                        —
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endforeach
+
+    @else
+        <p class="text-muted">Информация об услугах отсутствует.</p>
+    @endif
+</div>
+
+{{-- 🪄 Плавная прокрутка и подсветка --}}
+<script>
+document.querySelectorAll('.paw-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Подсветка блока на 3 секунды
+            target.classList.add('highlight-section');
+            setTimeout(() => {
+                target.classList.remove('highlight-section');
+            }, 3000);
+        }
+    });
+});
+</script>
+
+<style>
+/* 🐾 Алфавит */
+.paw-link {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+.paw-circle {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+    display: flex;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, background-color 0.25s;
+    cursor: pointer;
+}
+.paw-circle:hover {
+    background-color: #4787ff36;
+    transform: scale(1.1);
+    border-color: #ffb347;
+        opacity: 0.95;
+}
+.paw-icon {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    opacity: 0.75;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.paw-letter {
+    position: relative;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+/* 🔦 Подсветка блока при переходе */
+.highlight-section {
+    animation: highlightFade 3s ease-in-out;
+}
+@keyframes highlightFade {
+    0%   { background-color: #cfffcdff; }
+    100% { background-color: transparent; }
+}
+
+.specialization-block {
+    scroll-margin-top: 120px;
+}
+</style>
+
+
+
+
 
                     {{-- Направления --}}
                     <div class="tab-pane fade" id="directions" role="tabpanel">
@@ -235,5 +396,11 @@
 .rating-badge .rating-value {
     font-size: 0.9rem;
 }
+
+.nav-item{
+    background-color: #c9c1f72d;
+    border: 1px solid #adadad1f;
+}
+
 </style>
 @endsection

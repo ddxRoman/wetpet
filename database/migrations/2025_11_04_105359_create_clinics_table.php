@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('clinics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+
             // Адрес
             $table->string('country');
             $table->string('region')->nullable();
@@ -18,12 +19,9 @@ return new class extends Migration {
             $table->string('house')->nullable();
             $table->string('address_comment')->nullable();
 
+            // Инфо
             $table->string('logo')->nullable();
             $table->text('description')->nullable();
-
-            // Отношения по кодам
-            $table->json('services')->nullable();
-            $table->json('doctors')->nullable();
 
             // Контакты
             $table->string('phone1')->nullable();
@@ -33,7 +31,7 @@ return new class extends Migration {
             $table->string('whatsapp')->nullable();
             $table->string('website')->nullable();
 
-            // Время работы
+            // График
             $table->string('schedule')->nullable(); // "с 8:00 до 22:00"
             $table->string('workdays')->nullable(); // "Пн–Вс"
 
