@@ -16,8 +16,7 @@
     color: #333;
 }
 .category_icon {
-    width: 60px;
-    height: 60px;
+    height: 80px;
     object-fit: contain;
 }
 .div_btn_category_icon {
@@ -61,9 +60,9 @@
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <div class="div_btn_category">
-                <div class="text_menu_btn_category">Зооцентры</div>
+                <div class="text_menu_btn_category">Ветеринары</div>
                 <div class="div_btn_category_icon">
-                    <img class="category_icon" src="{{ Storage::url('icon/category/zoocentr_icon_category.png') }}" alt="Зооцентры">
+                    <img class="category_icon" src="{{ Storage::url('icon/button/menu/doctor_menu.webp') }}" alt="Зооцентры">
                 </div>
             </div>
         </div>
@@ -72,7 +71,7 @@
             <div class="div_btn_category">
                 <div class="text_menu_btn_category">Дрессировщики</div>
                 <div class="div_btn_category_icon">
-                    <img class="category_icon" src="{{ Storage::url('icon/category/trainer_icon_category.png') }}" alt="Дрессировщики">
+                    <img class="category_icon" src="{{ Storage::url('icon/button/menu/trainer_menu.webp') }}" alt="Дрессировщики">
                 </div>
             </div>
         </div>
@@ -81,7 +80,7 @@
             <div class="div_btn_category">
                 <div class="text_menu_btn_category">Работа <br> для животных</div>
                 <div class="div_btn_category_icon">
-                    <img class="category_icon" src="{{ Storage::url('icon/category/petjob_icon_category.png') }}" alt="Работа для животных">
+                    <img class="category_icon" src="{{ Storage::url('icon/button/menu/petjob_menu.webp') }}" alt="Работа для животных">
                 </div>
             </div>
         </div>
@@ -90,7 +89,7 @@
             <div class="div_btn_category">
                 <div class="text_menu_btn_category">Все остальное</div>
                 <div class="div_btn_category_icon">
-                    <img class="category_icon" src="{{ Storage::url('icon/category/other_icon_category.png') }}" alt="Все остальное">
+                    <img class="category_icon" src="{{ Storage::url('icon/button/menu/other_menu.webp') }}" alt="Все остальное">
                 </div>
             </div>
         </div>
