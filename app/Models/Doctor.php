@@ -23,4 +23,11 @@ class Doctor extends Model
     return $this->belongsToMany(Service::class, 'doctor_service');
 }
 
+
+public function reviews()
+{
+    return $this->morphMany(Review::class, 'reviewable');
+}
+
+
 }

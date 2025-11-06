@@ -1,4 +1,5 @@
 @extends('layouts.app')
+        use App\Models\Review;
 
 @section('title', $clinic->name)
 
@@ -31,6 +32,38 @@
                 <div class="d-flex align-items-center mb-4 flex-wrap">
                     <img src="{{ $logo }}" alt="{{ $clinic->name }}" class="logo_clinic_card me-3 mb-3 mb-md-0">
                     <h1 class="text-2xl fw-bold m-0">{{ $clinic->name }}</h1>
+
+                    @php
+    use App\Models\Review;
+
+    // Получаем все отзывы по клинике
+    $reviews = Review::where('reviewable_id', $clinic->id)
+        ->where('reviewable_type', \App\Models\Clinic::class)
+        ->get();
+
+    $reviewCount = $reviews->count();
+    $averageRating = $reviewCount > 0 ? round($reviews->avg('rating'), 1) : null;
+@endphp
+
+@if($reviewCount > 0)
+    <div class="d-flex align-items-center mt-2 rating-summary">
+        {{-- Звёзды --}}
+        <div class="d-flex align-items-center me-2">
+            @for ($i = 1; $i <= 5; $i++)
+                <img src="{{ asset('storage/icon/button/' . ($i <= $averageRating ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
+                     width="22" alt="звезда">
+            @endfor
+        </div>
+
+        {{-- Средний рейтинг и количество отзывов --}}
+        <span class="fw-semibold text-dark me-1">{{ $averageRating }}</span>
+        <span class="text-muted small">({{ $reviewCount }} отзыв{{ $reviewCount % 10 == 1 && $reviewCount % 100 != 11 ? '' : 'ов' }})</span>
+    </div>
+@else
+    <div class="text-muted small mt-2">Отзывов пока нет</div>
+@endif
+
+
                 </div>
                 
 
@@ -46,7 +79,7 @@
                         <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#directions" type="button" role="tab">Отзывы</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#directions" type="button" role="tab">Награды</button>
+                        <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#awards" type="button" role="tab">Награды</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos" type="button" role="tab">Фото</button>
@@ -280,10 +313,121 @@ document.querySelectorAll('.paw-link').forEach(link => {
 
 
 
-                    {{-- Направления --}}
-                    <div class="tab-pane fade" id="directions" role="tabpanel">
-                        <p>{{ $clinic->directions ?? 'Информация о направлениях отсутствует.' }}</p>
+{{-- Отзывы --}}
+<div class="tab-pane fade" id="directions" role="tabpanel">
+    @php
+
+        $reviews = Review::where('reviewable_id', $clinic->id)
+            ->where('reviewable_type', \App\Models\Clinic::class)
+            ->with('user')
+            ->latest('review_date')
+            ->get();
+    @endphp
+
+    @if($reviews->isNotEmpty())
+        <div class="list-group">
+            @foreach($reviews as $review)
+                <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card">
+
+                    {{-- 🧍 Пользователь --}}
+                    <div class="d-flex align-items-center mb-3">
+@php
+    $avatarPath = null;
+
+    if (!empty($review->user->avatar)) {
+        // Если у пользователя есть загруженный аватар в storage
+        $avatarPath = asset('storage/' . $review->user->avatar);
+    } elseif (!empty($review->user->photo)) {
+        // Альтернативное поле (если используется 'photo')
+        $avatarPath = asset('storage/' . $review->user->photo);
+    } elseif (!empty($review->user->profile_photo_path)) {
+        // Для пользователей Jetstream / Breeze
+        $avatarPath = asset('storage/' . $review->user->profile_photo_path);
+    } else {
+        // Стандартный аватар
+        $avatarPath = asset('storage/avatars/default/default_avatar.webp');
+    }
+@endphp
+
+<img src="{{ $avatarPath }}" 
+     alt="{{ $review->user->name }}" 
+     class="rounded-circle me-3 border" 
+     width="56" height="56">
+
+                        <div>
+                            <a href="{{ route('user.profile', $review->user->id) }}" class="fw-semibold text-decoration-none text-primary">
+                                {{ $review->user->name }}
+                            </a>
+                            <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
+                        </div>
                     </div>
+
+                    {{-- ⭐ Оценка --}}
+                    <div class="mb-3">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <img src="{{ asset('storage/icon/button/' . ($i <= $review->rating ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
+                                 width="20" alt="звезда">
+                        @endfor
+                    </div>
+
+                    {{-- 👍 Понравилось --}}
+                    @if($review->liked)
+                        <div class="mb-2">
+                            <strong class="text-success">Понравилось:</strong>
+                            <p class="mb-1">{{ $review->liked }}</p>
+                        </div>
+                    @endif
+
+                    {{-- 👎 Не понравилось --}}
+                    @if($review->disliked)
+                        <div class="mb-2">
+                            <strong class="text-danger">Не понравилось:</strong>
+                            <p class="mb-1">{{ $review->disliked }}</p>
+                        </div>
+                    @endif
+
+                    {{-- 💬 Отзыв --}}
+                    @if($review->content)
+                        <div class="mb-3">
+                            <strong>Отзыв:</strong>
+                            <p class="mb-0">{{ $review->content }}</p>
+                        </div>
+                    @endif
+
+                    {{-- 🐾 Данные о питомце --}}
+                    <div class="small text-muted mt-2">
+                        <em>Питомец:</em> {{ $review->pet_name }},
+                        {{ $review->pet_type }},
+                        {{ $review->pet_age }} лет
+                    </div>
+
+                    {{-- 📎 Фото из отзыва --}}
+                    @if($review->photos && $review->photos->count())
+                        <div class="mt-3 d-flex flex-wrap gap-2">
+                            @foreach($review->photos as $photo)
+                                <img src="{{ asset('storage/' . $photo->path) }}"
+                                     alt="Фото из отзыва"
+                                     class="rounded border"
+                                     style="width: 120px; height: 120px; object-fit: cover;">
+                            @endforeach
+                        </div>
+                    @endif
+
+                    {{-- ✅ Проверка чека --}}
+                    @if($review->receipt_verified)
+                        <div class="mt-3 small text-success fw-semibold">
+                            ✅ Отзыв подтверждён по чеку
+                        </div>
+                    @endif
+
+                </div>
+            @endforeach
+        </div>
+    @else
+        <p class="text-muted">Отзывов пока нет.</p>
+    @endif
+</div>
+
 
                     {{-- Фото --}}
                     <div class="tab-pane fade" id="photos" role="tabpanel">
@@ -300,6 +444,25 @@ document.querySelectorAll('.paw-link').forEach(link => {
                         </div>
                     </div>
                 </div>
+                    {{-- Награды --}}
+                    <div class="tab-pane fade" id="awards" role="tabpanel">
+                        <div class="row g-3">
+                            @if(!empty($clinic->photos))
+                                @foreach($clinic->photos as $photo)
+                                    <div class="col-md-4 col-sm-6">
+                                        <img src="{{ asset('/' . $photo) }}" class="img-fluid rounded shadow-sm" alt="Фото клиники">
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-muted">Награды пока не добавлены.</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+
+
+
 
                 {{-- Доктора --}}
                 <div class="mb-4 mt-5">
@@ -452,6 +615,18 @@ document.querySelectorAll('.paw-link').forEach(link => {
 
 .mb-3 {
     margin-bottom: 1.5rem !important;
+}
+.rating-summary img {
+    margin-right: 2px;
+}
+.rating-summary {
+    background-color: #fff7e6;
+    border: 1px solid #ffe0b3;
+    border-radius: 10px;
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 

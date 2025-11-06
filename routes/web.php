@@ -80,3 +80,7 @@ Route::get('/clinics/{id}', [ClinicController::class, 'show'])->name('pages.clin
 Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
 Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
 
+Route::get('/user/{id}', function ($id) {
+    $user = \App\Models\User::findOrFail($id);
+    return view('pages.user.profile', compact('user'));
+})->name('user.profile');
