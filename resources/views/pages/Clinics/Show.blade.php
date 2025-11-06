@@ -347,7 +347,7 @@ use App\Models\Pet;
                             <p class="text-muted mb-4">Чтобы оставить отзыв, <a href="{{ route('login') }}">войдите в аккаунт</a>.</p>
                             @endauth
 
-{{-- 🔽 Панель сортировки --}}
+{{-- 🔽 Панель сортировки + фильтр --}}
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 bg-light p-3 rounded shadow-sm">
     <div class="d-flex align-items-center gap-2">
         <label for="sort" class="fw-semibold text-secondary mb-0">Сортировать по:</label>
@@ -360,12 +360,16 @@ use App\Models\Pet;
     </div>
 </div>
 
+
 {{-- 🔽 Список отзывов --}}
 <div id="reviewList" class="list-group">
     @foreach($reviews as $review)
-        <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
-             data-date="{{ $review->review_date->timestamp }}"
-             data-rating="{{ $review->rating }}">
+<div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
+     data-date="{{ $review->review_date->timestamp }}"
+     data-rating="{{ $review->rating }}"
+  data-verified="{{ $review->receipt_verified }}">
+
+
 
             {{-- Пользователь --}}
             <div class="d-flex align-items-center mb-3">
@@ -380,6 +384,26 @@ use App\Models\Pet;
                         {{ $review->user->name }}
                     </a>
                     <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
+                    @if(Auth::id() === $review->user_id)
+                    
+  {{-- Отметка "Реальный клиент" --}}
+@if($review->receipt_verified=1)
+    <span class="verifed_client">
+
+       ✅ Реальный клиент
+    </span>
+@endif
+    <div class="mt-1">
+        <button class="btn btn-sm btn-outline-secondary edit-review" data-id="{{ $review->id }}">Редактировать</button>
+        <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" class="d-inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-outline-danger"
+                onclick="return confirm('Удалить отзыв?')">Удалить</button>
+        </form>
+    </div>
+@endif
+
                 </div>
             </div>
 
@@ -420,31 +444,62 @@ use App\Models\Pet;
 </div>
 
 {{-- 🚀 JS сортировка без перезагрузки --}}
+{{-- 🚀 JS сортировка и фильтр отзывов --}}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const select = document.getElementById('sortReviews');
     const list = document.getElementById('reviewList');
+    const verifiedOnly = document.getElementById('verifiedOnly');
 
-    if (select && list) {
-        select.addEventListener('change', () => {
-            const value = select.value;
-            const items = Array.from(list.querySelectorAll('.review-card'));
+    if (!list) return;
 
-            // Определяем тип сортировки
-            items.sort((a, b) => {
-                if (value === 'date_desc') return b.dataset.date - a.dataset.date;
-                if (value === 'date_asc') return a.dataset.date - b.dataset.date;
-                if (value === 'rating_desc') return b.dataset.rating - a.dataset.rating;
-                if (value === 'rating_asc') return a.dataset.rating - b.dataset.rating;
-            });
-
-            // Перестраиваем DOM
-            list.innerHTML = '';
-            items.forEach(item => list.appendChild(item));
-        });
+    function normalizeVerified(value) {
+        // Приводим любое значение в data-verified к булевому
+        if (!value) return false;
+        value = value.toString().toLowerCase().trim();
+        return value === '1' || value === 'true' || value === 'yes';
     }
+
+    function applyFilters() {
+        const value = select?.value || 'date_desc';
+        const items = Array.from(list.querySelectorAll('.review-card'));
+
+        // Фильтрация
+        let filtered = items.filter(item => {
+            const verified = normalizeVerified(item.dataset.verified);
+            return verifiedOnly?.checked ? verified : true;
+        });
+
+        // Сортировка
+        filtered.sort((a, b) => {
+            const aDate = Number(a.dataset.date);
+            const bDate = Number(b.dataset.date);
+            const aRating = Number(a.dataset.rating);
+            const bRating = Number(b.dataset.rating);
+
+            switch (value) {
+                case 'date_asc': return aDate - bDate;
+                case 'date_desc': return bDate - aDate;
+                case 'rating_asc': return aRating - bRating;
+                case 'rating_desc': return bRating - aRating;
+                default: return 0;
+            }
+        });
+
+        // Перестроение DOM
+        list.innerHTML = '';
+        filtered.forEach(item => list.appendChild(item));
+    }
+
+    // Обработчики событий
+    select?.addEventListener('change', applyFilters);
+    verifiedOnly?.addEventListener('change', applyFilters);
+
+    // Инициализация при загрузке
+    applyFilters();
 });
 </script>
+
 
 
                         {{-- ⚡ JS: активация звёзд и textarea --}}
@@ -499,6 +554,39 @@ if (toggleButton && form) {
         }
     });
 }
+
+
+// ✏️ Редактирование отзыва
+document.addEventListener('DOMContentLoaded', () => {
+    const editButtons = document.querySelectorAll('.edit-review');
+
+    editButtons.forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const card = btn.closest('.review-card');
+            const content = card.querySelector('p')?.textContent.trim() || '';
+
+            const newText = prompt('Измените текст отзыва:', content);
+            if (newText === null) return;
+
+            const response = await fetch(`/reviews/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: newText }),
+            });
+
+            if (response.ok) {
+                card.querySelector('p').textContent = newText;
+                alert('Отзыв обновлён!');
+            } else {
+                alert('Ошибка при обновлении.');
+            }
+        });
+    });
+});
 
 
 

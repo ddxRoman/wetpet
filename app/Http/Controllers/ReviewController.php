@@ -95,16 +95,28 @@ public function store(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Review $review)
-    {
-        //
+public function update(Request $request, Review $review)
+{
+    if (Auth::id() !== $review->user_id) {
+        return response()->json(['error' => 'Нет прав'], 403);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Review $review)
-    {
-        //
+    $validated = $request->validate([
+        'content' => 'nullable|string|max:2000',
+    ]);
+
+    $review->update(['content' => $validated['content']]);
+    return response()->json(['success' => true]);
+}
+
+public function destroy(Review $review)
+{
+    if (Auth::id() !== $review->user_id) {
+        return back()->withErrors(['error' => 'Нет прав для удаления']);
     }
+
+    $review->delete();
+    return back()->with('success', 'Отзыв удалён');
+}
+
 }
