@@ -13,8 +13,9 @@ class ReviewPhoto extends Model
         'photo_path',
     ];
 
-    public function review()
-    {
-        return $this->belongsTo(Review::class);
-    }
+public function photos()
+{
+    return $this->hasMany(\App\Models\ReviewPhoto::class);
+}
+
 }

@@ -41,13 +41,15 @@ return new class extends Migration {
         });
 
         // Таблица с фотографиями к отзывам
-        Schema::create('review_photos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('review_id')->constrained()->onDelete('cascade');
-            $table->string('photo_path');
-            $table->timestamps();
-        });
-    }
+
+    Schema::create('review_photos', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('review_id')->constrained()->onDelete('cascade');
+        $table->string('photo_path');
+        $table->timestamps();
+    });
+}
+
 
     public function down(): void
     {

@@ -53,10 +53,13 @@ class ReviewSeeder extends Seeder
                 'pet_age' => rand(1, 15),
 
                 'receipt_verified' => fake()->boolean(80), // 80% проверено
-                'receipt_path' => fake()->boolean(50) ? 'storage/receipts/example_' . rand(1, 10) . '.jpg' : null,
+                'receipt_path' => fake()->boolean(50) ? 'storage/receipts/example_' . rand(1, 10) . '.webp' : null,
             ]);
         }
 
         $this->command->info('✅ Добавлено 100 случайных отзывов.');
     }
+
+    
+
 }

@@ -836,3 +836,198 @@ select:focus {
     margin-left: 6px;
   }
 }
+
+.small-textarea {
+    transition: all 0.3s ease;
+    min-height: 60px;
+    resize: vertical;
+}
+.small-textarea.expanded {
+    min-height: 160px;
+}
+.rating-star {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.rating-star:hover {
+    transform: scale(1.1);
+}
+
+
+.logo_clinic_card {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    padding: 6px;
+    border: 1px solid #eee;
+}
+
+.doctor-photo {
+    width: 130px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+}
+
+.nav-tabs .nav-link {
+    color: #555;
+    font-weight: 500;
+}
+.nav-tabs .nav-link.active {
+    color: #000;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.footer-fullwidth {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e5e5e5;
+}
+
+.doctor-card {
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.doctor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Лапка с рейтингом — в левом верхнем углу */
+.rating-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ff7b00;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.rating-badge .rating-value {
+    font-size: 0.9rem;
+}
+
+.nav-item{
+    background-color: #c9c1f72d;
+    border: 1px solid #adadad1f;
+}
+.specialization_block{
+    padding-top: 1%;
+    padding-left: 1%;
+}
+
+/* 🔙 Кнопка "В каталог" */
+.back-to-catalog {
+    height: 30px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 3px 3px;
+    transition: all 0.25s ease-in-out;
+    border: none;
+    color: #4b4b4bff;
+    background-color: #abc2ae11;
+}
+
+.back-to-catalog:hover {
+    background-color: #0000000c;
+    color: #000000ff !important;
+    transform: translateY(-2px);
+}
+
+
+.back-to-catalog img {
+    opacity: 0.85;
+    transition: transform 0.3s;
+}
+
+.back-to-catalog:hover img {
+    transform: rotate(-10deg);
+}
+
+.py-5 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem !important;
+}
+.rating-summary img {
+    margin-right: 2px;
+}
+.rating-summary {
+    background-color: #fff7e6;
+    border: 1px solid #ffe0b3;
+    border-radius: 10px;
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+
+/* 🐾 Алфавит */
+.paw-link {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+.paw-circle {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+    display: flex;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, background-color 0.25s;
+    cursor: pointer;
+}
+.paw-circle:hover {
+    background-color: #4787ff36;
+    transform: scale(1.1);
+    border-color: #ffb347;
+        opacity: 0.95;
+}
+.paw-icon {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    opacity: 0.75;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.paw-letter {
+    position: relative;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+/* 🔦 Подсветка блока при переходе */
+.highlight-section {
+    animation: highlightFade 3s ease-in-out;
+}
+@keyframes highlightFade {
+    0%   { background-color: #cfffcdff; }
+    100% { background-color: transparent; }
+}
+
+.specialization-block {
+    scroll-margin-top: 120px;
+}
+
+

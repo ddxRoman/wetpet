@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PetController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ReviewController;
 use App\Models\City;
 
 /*
@@ -84,3 +85,6 @@ Route::get('/user/{id}', function ($id) {
     $user = \App\Models\User::findOrFail($id);
     return view('pages.user.profile', compact('user'));
 })->name('user.profile');
+
+
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');

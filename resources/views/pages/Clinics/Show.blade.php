@@ -252,182 +252,224 @@ document.querySelectorAll('.paw-link').forEach(link => {
 });
 </script>
 
-<style>
-/* 🐾 Алфавит */
-.paw-link {
-    display: inline-block;
-    position: relative;
-    text-align: center;
-}
-.paw-circle {
-    position: relative;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background-color: #f8f9fa;
-    border: 2px solid #dee2e6;
-    display: flex;
-    border: none;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.25s ease, background-color 0.25s;
-    cursor: pointer;
-}
-.paw-circle:hover {
-    background-color: #4787ff36;
-    transform: scale(1.1);
-    border-color: #ffb347;
-        opacity: 0.95;
-}
-.paw-icon {
-    position: absolute;
-    width: 38px;
-    height: 38px;
-    opacity: 0.75;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-.paw-letter {
-    position: relative;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #333;
-}
-
-/* 🔦 Подсветка блока при переходе */
-.highlight-section {
-    animation: highlightFade 3s ease-in-out;
-}
-@keyframes highlightFade {
-    0%   { background-color: #cfffcdff; }
-    100% { background-color: transparent; }
-}
-
-.specialization-block {
-    scroll-margin-top: 120px;
-}
-</style>
-
-
-
-
-
 {{-- Отзывы --}}
 <div class="tab-pane fade" id="directions" role="tabpanel">
     @php
-
+        use App\Models\Pet;
         $reviews = Review::where('reviewable_id', $clinic->id)
             ->where('reviewable_type', \App\Models\Clinic::class)
             ->with('user')
             ->latest('review_date')
             ->get();
+
+        $pets = Pet::where('user_id', auth()->id())->get();
     @endphp
 
-    @if($reviews->isNotEmpty())
-        <div class="list-group">
-            @foreach($reviews as $review)
-                <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card">
+    {{-- 📝 Форма добавления отзыва --}}
+    @auth
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="fw-semibold mb-3">Оставить отзыв</h5>
+            <form id="reviewForm" method="POST" action="{{ route('reviews.store') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
+                <input type="hidden" name="reviewable_type" value="{{ addslashes(\App\Models\Clinic::class) }}">
 
-                    {{-- 🧍 Пользователь --}}
-                    <div class="d-flex align-items-center mb-3">
-@php
-    $avatarPath = null;
-
-    if (!empty($review->user->avatar)) {
-        // Если у пользователя есть загруженный аватар в storage
-        $avatarPath = asset('storage/' . $review->user->avatar);
-    } elseif (!empty($review->user->photo)) {
-        // Альтернативное поле (если используется 'photo')
-        $avatarPath = asset('storage/' . $review->user->photo);
-    } elseif (!empty($review->user->profile_photo_path)) {
-        // Для пользователей Jetstream / Breeze
-        $avatarPath = asset('storage/' . $review->user->profile_photo_path);
-    } else {
-        // Стандартный аватар
-        $avatarPath = asset('storage/avatars/default/default_avatar.webp');
-    }
-@endphp
-
-<img src="{{ $avatarPath }}" 
-     alt="{{ $review->user->name }}" 
-     class="rounded-circle me-3 border" 
-     width="56" height="56">
-
-                        <div>
-                            <a href="{{ route('user.profile', $review->user->id) }}" class="fw-semibold text-decoration-none text-primary">
-                                {{ $review->user->name }}
-                            </a>
-                            <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
-                        </div>
-                    </div>
-
-                    {{-- ⭐ Оценка --}}
-                    <div class="mb-3">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <img src="{{ asset('storage/icon/button/' . ($i <= $review->rating ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
-                                 width="20" alt="звезда">
+                {{-- ⭐ Оценка --}}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Оценка:</label>
+                    <div id="ratingStars" class="d-flex gap-1">
+                        @for($i = 1; $i <= 5; $i++)
+                            <img src="{{ asset('storage/icon/button/award-stars_disable.svg') }}"
+                                 data-value="{{ $i }}"
+                                 class="rating-star"
+                                 width="28"
+                                 alt="звезда">
                         @endfor
                     </div>
-
-                    {{-- 👍 Понравилось --}}
-                    @if($review->liked)
-                        <div class="mb-2">
-                            <strong class="text-success">Понравилось:</strong>
-                            <p class="mb-1">{{ $review->liked }}</p>
-                        </div>
-                    @endif
-
-                    {{-- 👎 Не понравилось --}}
-                    @if($review->disliked)
-                        <div class="mb-2">
-                            <strong class="text-danger">Не понравилось:</strong>
-                            <p class="mb-1">{{ $review->disliked }}</p>
-                        </div>
-                    @endif
-
-                    {{-- 💬 Отзыв --}}
-                    @if($review->content)
-                        <div class="mb-3">
-                            <strong>Отзыв:</strong>
-                            <p class="mb-0">{{ $review->content }}</p>
-                        </div>
-                    @endif
-
-                    {{-- 🐾 Данные о питомце --}}
-                    <div class="small text-muted mt-2">
-                        <em>Питомец:</em> {{ $review->pet_name }},
-                        {{ $review->pet_type }},
-                        {{ $review->pet_age }} лет
-                    </div>
-
-                    {{-- 📎 Фото из отзыва --}}
-                    @if($review->photos && $review->photos->count())
-                        <div class="mt-3 d-flex flex-wrap gap-2">
-                            @foreach($review->photos as $photo)
-                                <img src="{{ asset('storage/' . $photo->path) }}"
-                                     alt="Фото из отзыва"
-                                     class="rounded border"
-                                     style="width: 120px; height: 120px; object-fit: cover;">
-                            @endforeach
-                        </div>
-                    @endif
-
-                    {{-- ✅ Проверка чека --}}
-                    @if($review->receipt_verified)
-                        <div class="mt-3 small text-success fw-semibold">
-                            ✅ Отзыв подтверждён по чеку
-                        </div>
-                    @endif
-
+                    <input type="hidden" name="rating" id="ratingValue" value="0">
                 </div>
-            @endforeach
+
+                {{-- 💚 Понравилось --}}
+                <div class="mb-3">
+                    <label class="form-label">Понравилось:</label>
+                    <input type="text" name="liked" class="form-control" placeholder="Что вам понравилось">
+                </div>
+
+                {{-- 💔 Не понравилось --}}
+                <div class="mb-3">
+                    <label class="form-label">Не понравилось:</label>
+                    <input type="text" name="disliked" class="form-control" placeholder="Что можно улучшить">
+                </div>
+
+                {{-- 💬 Текст отзыва --}}
+                <div class="mb-3">
+                    <label class="form-label">Ваш отзыв:</label>
+                    <textarea name="content" id="reviewText" class="form-control small-textarea" placeholder="Напишите свой отзыв..." rows="2"></textarea>
+                </div>
+
+                {{-- 🐾 Выбор питомца --}}
+                <div class="mb-3">
+                    <label class="form-label">Ваш питомец:</label>
+                    <select name="pet_id" class="form-select">
+                        @forelse($pets as $pet)
+                            <option value="{{ $pet->id }}">{{ $pet->name }} — {{ $pet->type }}</option>
+                        @empty
+                            <option disabled>Добавьте питомца в профиле</option>
+                        @endforelse
+                    </select>
+                </div>
+
+                {{-- 📎 Загрузка чека --}}
+                <div class="mb-3">
+                    <label class="form-label">Чек (для подтверждения отзыва):</label>
+                    <input type="file" name="receipt" accept="image/*,application/pdf" class="form-control">
+                </div>
+
+                {{-- 🖼 Фото --}}
+                <div class="mb-3">
+                    <label class="form-label">Фотографии:</label>
+                    <input type="file" name="photos[]" multiple accept="image/*" class="form-control">
+                </div>
+
+                {{-- 🚀 Кнопка --}}
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary px-4">Отправить отзыв</button>
+                </div>
+            </form>
         </div>
+    </div>
+    @else
+        <p class="text-muted mb-4">Чтобы оставить отзыв, <a href="{{ route('login') }}">войдите в аккаунт</a>.</p>
+    @endauth
+
+    {{-- 🔽 Панель сортировки --}}
+    @if($reviews->isNotEmpty())
+    <div class="d-flex justify-content-end mb-3">
+        <div class="d-flex align-items-center gap-2">
+            <label for="reviewSort" class="small text-muted mb-0">Сортировать:</label>
+            <select id="reviewSort" class="form-select form-select-sm w-auto shadow-sm border-0 bg-light">
+                <option value="date_desc" selected>По дате (новые сверху)</option>
+                <option value="date_asc">По дате (старые сверху)</option>
+                <option value="rating_desc">По оценке (от лучших)</option>
+                <option value="rating_asc">По оценке (от худших)</option>
+            </select>
+        </div>
+    </div>
+
+    {{-- 🧾 Список отзывов --}}
+    <div id="reviewList" class="list-group">
+        @foreach($reviews as $review)
+            <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
+                 data-date="{{ $review->review_date->timestamp }}"
+                 data-rating="{{ $review->rating }}">
+                 
+                {{-- Пользователь --}}
+                <div class="d-flex align-items-center mb-3">
+                    @php
+                        $avatar = $review->user->avatar ? asset('storage/'.$review->user->avatar) : asset('storage/avatars/default/default_avatar.webp');
+                    @endphp
+                    <img src="{{ $avatar }}" width="56" height="56" class="rounded-circle me-3 border" alt="{{ $review->user->name }}">
+                    <div>
+                        <a href="{{ route('user.profile', $review->user->id) }}" class="fw-semibold text-decoration-none text-primary">
+                            {{ $review->user->name }}
+                        </a>
+                        <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
+                    </div>
+                </div>
+
+                {{-- Оценка --}}
+                <div class="mb-3">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <img src="{{ asset('storage/icon/button/' . ($i <= $review->rating ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
+                             width="20" alt="звезда">
+                    @endfor
+                </div>
+
+                @if($review->liked)
+                    <div><strong class="text-success">Понравилось:</strong> {{ $review->liked }}</div>
+                @endif
+                @if($review->disliked)
+                    <div><strong class="text-danger">Не понравилось:</strong> {{ $review->disliked }}</div>
+                @endif
+                @if($review->content)
+                    <p class="mt-2">{{ $review->content }}</p>
+                @endif
+
+                <div class="small text-muted mt-2">
+                    <em>Питомец:</em> {{ $review->pet_name }} ({{ $review->pet_type }})
+                </div>
+
+                @if($review->photos && $review->photos->count())
+                    <div class="mt-3 d-flex flex-wrap gap-2">
+                        @foreach($review->photos as $photo)
+                            <img src="{{ asset('storage/' . $photo->photo_path) }}"
+                                 class="rounded border"
+                                 style="width: 100px; height: 100px; object-fit: cover;">
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        @endforeach
+    </div>
     @else
         <p class="text-muted">Отзывов пока нет.</p>
     @endif
 </div>
 
+{{-- ⚡ JS: интерактивность --}}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sortSelect = document.getElementById('reviewSort');
+    const reviewList = document.getElementById('reviewList');
+    const textarea = document.getElementById('reviewText');
+    const stars = document.querySelectorAll('.rating-star');
+    const ratingInput = document.getElementById('ratingValue');
+
+    // ✨ Расширение textarea при фокусе
+    if (textarea) {
+        textarea.addEventListener('focus', () => textarea.classList.add('expanded'));
+        textarea.addEventListener('blur', () => {
+            if (!textarea.value.trim()) textarea.classList.remove('expanded');
+        });
+    }
+
+    // ⭐ Система звёзд
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const value = star.dataset.value;
+            ratingInput.value = value;
+            stars.forEach(s => {
+                s.src = s.dataset.value <= value
+                    ? "{{ asset('storage/icon/button/award-stars_active.svg') }}"
+                    : "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+            });
+        });
+    });
+
+    // 🔄 Сортировка отзывов
+    if (sortSelect && reviewList) {
+        sortSelect.addEventListener('change', () => {
+            const reviews = Array.from(reviewList.querySelectorAll('.review-card'));
+            const type = sortSelect.value;
+            reviews.sort((a, b) => {
+                const dateA = +a.dataset.date, dateB = +b.dataset.date;
+                const rateA = +a.dataset.rating, rateB = +b.dataset.rating;
+                switch(type){
+                    case 'date_asc': return dateA - dateB;
+                    case 'rating_asc': return rateA - rateB;
+                    case 'rating_desc': return rateB - rateA;
+                    default: return dateB - dateA;
+                }
+            });
+            reviewList.innerHTML = '';
+            reviews.forEach(r => reviewList.appendChild(r));
+        });
+    }
+});
+</script>
+
+{{-- 🎨 Стили для textarea и звёзд --}}
 
                     {{-- Фото --}}
                     <div class="tab-pane fade" id="photos" role="tabpanel">
@@ -507,128 +549,4 @@ document.querySelectorAll('.paw-link').forEach(link => {
         @include('layouts.footer')
     </footer>
 </div>
-
-<style>
-.logo_clinic_card {
-    width: 96px;
-    height: 96px;
-    object-fit: contain;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    padding: 6px;
-    border: 1px solid #eee;
-}
-
-.doctor-photo {
-    width: 130px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    background-color: #f8f9fa;
-}
-
-.nav-tabs .nav-link {
-    color: #555;
-    font-weight: 500;
-}
-.nav-tabs .nav-link.active {
-    color: #000;
-    border-color: #dee2e6 #dee2e6 #fff;
-}
-
-.footer-fullwidth {
-    background-color: #f8f9fa;
-    border-top: 1px solid #e5e5e5;
-}
-
-.doctor-card {
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.doctor-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-/* Лапка с рейтингом — в левом верхнем углу */
-.rating-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #fff;
-    border-radius: 20px;
-    padding: 4px 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #ff7b00;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-.rating-badge .rating-value {
-    font-size: 0.9rem;
-}
-
-.nav-item{
-    background-color: #c9c1f72d;
-    border: 1px solid #adadad1f;
-}
-.specialization_block{
-    padding-top: 1%;
-    padding-left: 1%;
-}
-
-/* 🔙 Кнопка "В каталог" */
-.back-to-catalog {
-    height: 30px;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 3px 3px;
-    transition: all 0.25s ease-in-out;
-    border: none;
-    color: #4b4b4bff;
-    background-color: #abc2ae11;
-}
-
-.back-to-catalog:hover {
-    background-color: #0000000c;
-    color: #000000ff !important;
-    transform: translateY(-2px);
-}
-
-
-.back-to-catalog img {
-    opacity: 0.85;
-    transition: transform 0.3s;
-}
-
-.back-to-catalog:hover img {
-    transform: rotate(-10deg);
-}
-
-.py-5 {
-    padding-top: 1.5rem !important;
-    padding-bottom: 3rem !important;
-}
-
-.mb-3 {
-    margin-bottom: 1.5rem !important;
-}
-.rating-summary img {
-    margin-right: 2px;
-}
-.rating-summary {
-    background-color: #fff7e6;
-    border: 1px solid #ffe0b3;
-    border-radius: 10px;
-    padding: 4px 10px;
-    display: inline-flex;
-    align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-
-</style>
 @endsection
