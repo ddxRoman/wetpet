@@ -23,7 +23,7 @@ public function index(Request $request)
         session(['selected_city' => $selectedCity]);
     }
 
-    return view('clinics.index', compact('clinics', 'selectedCity'));
+    return view('pages.clinics.index', compact('clinics', 'selectedCity'));
 }
 
 
