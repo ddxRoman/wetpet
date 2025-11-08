@@ -48,7 +48,7 @@
         </div>
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <a class="text-decoration-none" href="{{ route('pages.clinics.index') }}">
+            <a class="text-decoration-none" href="{{ route('clinics.index') }}">
                 <div class="div_btn_category">
                     <div class="text_menu_btn_category">Клиники</div>
                     <div class="div_btn_category_icon">

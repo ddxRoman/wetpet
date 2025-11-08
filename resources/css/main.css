@@ -1050,3 +1050,46 @@ select:focus {
     color: green;
     font-weight: 800;
 }
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+.card-img-top {
+    height: 180px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+/* Значок рейтинга */
+.rating-badge {
+    font-size: 0.9rem;
+    line-height: 1;
+    background-color: #FFD700 !important;
+    color: #222 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+/* Адаптив */
+@media (max-width: 576px) {
+    .rating-badge {
+        font-size: 0.8rem;
+        padding: 3px 6px;
+    }
+    .card-img-top {
+        height: 140px;
+    }
+}
+.bg-warning{
+    background-color: yellowgreen !important;
+}
+
+
+

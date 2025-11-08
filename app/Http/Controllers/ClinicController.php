@@ -23,7 +23,7 @@ public function index(Request $request)
         session(['selected_city' => $selectedCity]);
     }
 
-    return view('pages.clinics.index', compact('clinics', 'selectedCity'));
+    return view('clinics.index', compact('clinics', 'selectedCity'));
 }
 
 
@@ -64,7 +64,7 @@ public function index(Request $request)
 
         Clinic::create($data);
 
-        return redirect()->route('pages.clinics.index')->with('success', 'Клиника добавлена');
+        return redirect()->route('clinics.index')->with('success', 'Клиника добавлена');
     }
 
     // Форма редактирования
@@ -110,6 +110,6 @@ public function index(Request $request)
         $clinic = Clinic::findOrFail($id);
         $clinic->delete();
 
-        return redirect()->route('pages.clinics.index')->with('success', 'Клиника удалена');
+        return redirect()->route('clinics.index')->with('success', 'Клиника удалена');
     }
 }

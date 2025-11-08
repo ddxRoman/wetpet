@@ -10,7 +10,7 @@ use App\Models\Pet;
         <main class="flex-grow-1 container py-5">
             {{-- 🔙 Кнопка "В каталог" --}}
             <div class="mb-3">
-                <a href="{{ route('pages.clinics.index') }}" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog">
+                <a href="{{ route('clinics.index') }}" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog">
                     <img src="{{ asset('storage/icon/button/arrow-back.svg') }}" width="22" alt="paw">
                     В каталог
                 </a>
@@ -44,7 +44,7 @@ use App\Models\Pet;
                                     width="22" alt="звезда">
                                     @endfor
                             </div>
-            {{-- Средний рейтинг и количество отзывов --}}
+                            {{-- Средний рейтинг и количество отзывов --}}
                             <span class="fw-semibold text-dark me-1">{{ $averageRating }}</span>
                             <span class="text-muted small">({{ $reviewCount }} отзыв{{ $reviewCount % 10 == 1 && $reviewCount % 100 != 11 ? '' : 'ов' }})</span>
                         </div>
@@ -56,7 +56,7 @@ use App\Models\Pet;
                     </div>
 
 
-            {{-- Вкладки --}}
+                    {{-- Вкладки --}}
                     <ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contacts" type="button" role="tab">Контакты</button>
@@ -106,11 +106,11 @@ use App\Models\Pet;
                                     </div>
                                 </div>
 
-                        {{-- Карта / Доп. информация --}}
+                                {{-- Карта / Доп. информация --}}
                                 <div class="card shadow-sm border-0 p-3" style="max-width: 450px;">
                                     <h5 class="fw-semibold mb-2">Карта / Доп. информация</h5>
 
-                        {{-- Встраиваемая Яндекс.Карта с геометкой --}}
+                                    {{-- Встраиваемая Яндекс.Карта с геометкой --}}
                                     <div class="bg-light rounded overflow-hidden mb-3" style="height: 300px; width: 100%;">
                                         <iframe
                                             src="https://yandex.ru/map-widget/v1/?text={{ urlencode($clinic->country . ', ' . $clinic->region . ', ' . $clinic->city . ', ' . $clinic->street . ' ' . $clinic->house) }}&z=16&l=map"
@@ -122,7 +122,7 @@ use App\Models\Pet;
                                     </div>
 
 
-                        {{-- Дополнительная информация --}}
+                                    {{-- Дополнительная информация --}}
                                     <div class="text-muted small">
                                         <!-- <p><strong>Адрес:</strong> {{ $clinic->country }}, {{ $clinic->region }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}</p> -->
                                         @if(!empty($clinic->founded))
@@ -166,7 +166,7 @@ use App\Models\Pet;
 
                             @if($grouped->isNotEmpty())
 
-                        {{-- 🐾 Алфавитный навигатор --}}
+                            {{-- 🐾 Алфавитный навигатор --}}
                             <div class="mb-4 d-flex flex-wrap gap-2 justify-content-start">
                                 @foreach($letters as $letter)
                                 <a href="#letter-{{ $letter }}" class="paw-link text-decoration-none" title="Перейти к '{{ $letter }}'">
@@ -178,7 +178,7 @@ use App\Models\Pet;
                                 @endforeach
                             </div>
 
-                        {{-- Список специализаций --}}
+                            {{-- Список специализаций --}}
                             @foreach($grouped as $specialization => $group)
                             @php
                             $anchor = mb_strtoupper(mb_substr($specialization, 0, 1));
@@ -258,13 +258,13 @@ use App\Models\Pet;
                             @endphp
 
                             {{-- 📝 Кнопка открытия формы --}}
-{{-- 📝 Кнопка открытия / закрытия формы --}}
-@auth
-    <div class="text-end mb-3">
-        <button id="toggleReviewButton" class="btn btn-outline-primary" type="button">
-            ✍️ Оставить отзыв
-        </button>
-    </div>
+                            {{-- 📝 Кнопка открытия / закрытия формы --}}
+                            @auth
+                            <div class="text-end mb-3">
+                                <button id="toggleReviewButton" class="btn btn-outline-primary" type="button">
+                                    ✍️ Оставить отзыв
+                                </button>
+                            </div>
 
 
 
@@ -341,7 +341,7 @@ use App\Models\Pet;
                                             </div>
                                         </form>
 
-                                        
+
 
                                     </div>
                                 </div>
@@ -350,404 +350,508 @@ use App\Models\Pet;
                             <p class="text-muted mb-4">Чтобы оставить отзыв, <a href="{{ route('login') }}">войдите в аккаунт</a>.</p>
                             @endauth
 
-{{-- 🔽 Панель сортировки + фильтр --}}
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 bg-light p-3 rounded shadow-sm">
-    <div class="d-flex align-items-center gap-2">
-        <label for="sort" class="fw-semibold text-secondary mb-0">Сортировать по:</label>
-        <select id="sortReviews" class="form-select form-select-sm" style="width: 180px;">
-            <option value="date_desc">Дате ↓ (новые)</option>
-            <option value="date_asc">Дате ↑ (старые)</option>
-            <option value="rating_desc">Оценке ↓ (высокие)</option>
-            <option value="rating_asc">Оценке ↑ (низкие)</option>
-        </select>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" value="1" id="verifiedOnly">
+                                <label class="form-check-label" for="verifiedOnly" title="Будут показываться только те отзывы на которых был прикреплен чек подтверждающий визит в клинику">
+                                    Показывать только  "Реальных клиентов"
+                                </label>
+                            </div>
+
+
+
+
+                            {{-- 🔽 Список отзывов --}}
+                            <div id="reviewList" class="list-group">
+                                @foreach($reviews as $review)
+                                <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
+                                    data-date="{{ $review->review_date->timestamp }}"
+                                    data-rating="{{ $review->rating }}"
+                                    data-verified="{{ $review->receipt_verified }}">
+
+                                    @if($review->receipt_verified == 1)
+                                    <div class="verified-badge position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-start">
+                                        ✅ Реальный клиент
+                                    </div>
+                                    @endif
+
+
+                                    {{-- Пользователь --}}
+                                    <div class="d-flex align-items-center mb-3">
+                                        @php
+                                        $avatar = $review->user->avatar
+                                        ? asset('storage/'.$review->user->avatar)
+                                        : asset('storage/avatars/default/default_avatar.webp');
+                                        @endphp
+                                        <img src="{{ $avatar }}" width="56" height="56" class="rounded-circle me-3 border" alt="{{ $review->user->name }}">
+                                        <div>
+                                            <a href="{{ route('user.profile', $review->user->id) }}" class="fw-semibold text-decoration-none text-primary">
+                                                {{ $review->user->name }}
+                                            </a>
+                                            <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
+                                            @if(Auth::id() === $review->user_id)
+
+                                            {{-- Отметка "Реальный клиент" --}}
+                                            @if($review->receipt_verified == 1)
+                                            <span class="verifed_client">
+
+                                                ✅ Реальный клиент
+                                            </span>
+                                            @endif
+                                            <div class="mt-1">
+                                                <button class="btn btn-sm btn-outline-primary edit-review"
+                                                    data-id="{{ $review->id }}"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editReviewModal">
+                                                    ✏️ Редактировать
+                                                </button>
+
+                                                <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                        onclick="return confirm('Удалить отзыв?')">Удалить</button>
+                                                </form>
+                                            </div>
+                                            @endif
+
+                                        </div>
+                                    </div>
+
+                                    {{-- ⭐ Оценка --}}
+                                    <div class="mb-3">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <img src="{{ asset('storage/icon/button/' . ($i <= $review->rating ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
+                                            width="20" alt="звезда">
+                                            @endfor
+                                    </div>
+
+                                    @if($review->liked)
+                                    <div data-field="liked"><strong class="text-success">Понравилось:</strong> {{ $review->liked }}</div>
+                                    @endif
+                                    @if($review->disliked)
+                                    <div data-field="disliked"><strong class="text-danger">Не понравилось:</strong> {{ $review->disliked }}</div>
+                                    @endif
+
+                                    @if($review->content)
+                                    <p class="mt-2">{{ $review->content }}</p>
+                                    @endif
+
+                                    <div class="small text-muted mt-2">
+                                        <em>Питомец:</em> {{ $review->pet_name }} ({{ $review->pet_type }})
+                                    </div>
+
+                                    {{-- Фото отзыва --}}
+@if($review->photos && $review->photos->count())
+    <div class="mt-3 d-flex flex-wrap gap-2 review-photos" data-review-id="{{ $review->id }}">
+        @foreach($review->photos as $photo)
+            <img src="{{ asset('storage/' . $photo->photo_path) }}"
+                 class="rounded border review-photo"
+                 data-review-id="{{ $review->id }}"
+                 data-index="{{ $loop->index }}"
+                 style="width: 100px; height: 100px; object-fit: cover; cursor: zoom-in;"
+                 alt="Фото отзыва">
+        @endforeach
     </div>
-</div>
-
-{{-- 🔽 Список отзывов --}}
-<div id="reviewList" class="list-group">
-    @foreach($reviews as $review)
-<div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
-     data-date="{{ $review->review_date->timestamp }}"
-     data-rating="{{ $review->rating }}"
-  data-verified="{{ $review->receipt_verified }}">
-
-            {{-- Пользователь --}}
-            <div class="d-flex align-items-center mb-3">
-                @php
-                    $avatar = $review->user->avatar
-                        ? asset('storage/'.$review->user->avatar)
-                        : asset('storage/avatars/default/default_avatar.webp');
-                @endphp
-                <img src="{{ $avatar }}" width="56" height="56" class="rounded-circle me-3 border" alt="{{ $review->user->name }}">
-                <div>
-                    <a href="{{ route('user.profile', $review->user->id) }}" class="fw-semibold text-decoration-none text-primary">
-                        {{ $review->user->name }}
-                    </a>
-                    <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
-                    @if(Auth::id() === $review->user_id)
-                    
-  {{-- Отметка "Реальный клиент" --}}
-@if($review->receipt_verified=1)
-    <span class="verifed_client">
-
-       ✅ Реальный клиент
-    </span>
-@endif
-    <div class="mt-1">
-<button class="btn btn-sm btn-outline-primary edit-review"
-        data-id="{{ $review->id }}"
-        data-bs-toggle="modal"
-        data-bs-target="#editReviewModal">
-    ✏️ Редактировать
-</button>
-
-        <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" class="d-inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-sm btn-outline-danger"
-                onclick="return confirm('Удалить отзыв?')">Удалить</button>
-        </form>
-    </div>
 @endif
 
-                </div>
-            </div>
 
-            {{-- ⭐ Оценка --}}
-            <div class="mb-3">
-                @for ($i = 1; $i <= 5; $i++)
-                    <img src="{{ asset('storage/icon/button/' . ($i <= $review->rating ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
-                         width="20" alt="звезда">
-                @endfor
-            </div>
 
-@if($review->liked)
-    <div data-field="liked"><strong class="text-success">Понравилось:</strong> {{ $review->liked }}</div>
-@endif
-@if($review->disliked)
-    <div data-field="disliked"><strong class="text-danger">Не понравилось:</strong> {{ $review->disliked }}</div>
-@endif
+                                </div>
+                                @endforeach
+                            </div>
 
-            @if($review->content)
-                <p class="mt-2">{{ $review->content }}</p>
-            @endif
+                            {{-- 🚀 JS сортировка без перезагрузки --}}
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const form = document.getElementById('editReviewForm');
+                                    const modalEl = document.getElementById('editReviewModal');
+                                    const stars = modalEl.querySelectorAll('.rating-star-edit');
+                                    const ratingInput = document.getElementById('editRatingValue');
+                                    const likedInput = document.getElementById('editLiked');
+                                    const dislikedInput = document.getElementById('editDisliked');
+                                    const contentInput = document.getElementById('editContent');
+                                    const petSelect = document.getElementById('editPetId');
 
-            <div class="small text-muted mt-2">
-                <em>Питомец:</em> {{ $review->pet_name }} ({{ $review->pet_type }})
-            </div>
+                                    // ⭐ Клик по звёздам
+                                    stars.forEach(star => {
+                                        star.addEventListener('click', () => {
+                                            const value = star.dataset.value;
+                                            ratingInput.value = value;
+                                            stars.forEach(s => {
+                                                s.src = s.dataset.value <= value ?
+                                                    "{{ asset('storage/icon/button/award-stars_active.svg') }}" :
+                                                    "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+                                            });
+                                        });
+                                    });
 
-            {{-- Фото отзыва --}}
-            @if($review->photos && $review->photos->count())
-                <div class="mt-3 d-flex flex-wrap gap-2">
-                    @foreach($review->photos as $photo)
-                        <img src="{{ asset('storage/' . $photo->photo_path) }}"
-                             class="rounded border"
-                             style="width: 100px; height: 100px; object-fit: cover;">
-                    @endforeach
-                </div>
-            @endif
-        </div>
-    @endforeach
-</div>
+                                    // ✏️ При нажатии "Редактировать"
+                                    document.querySelectorAll('.edit-review').forEach(btn => {
+                                        btn.addEventListener('click', () => {
+                                            const card = btn.closest('.review-card');
+                                            const id = btn.dataset.id;
 
-{{-- 🚀 JS сортировка без перезагрузки --}}
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('editReviewForm');
-    const modalEl = document.getElementById('editReviewModal');
-    const stars = modalEl.querySelectorAll('.rating-star-edit');
-    const ratingInput = document.getElementById('editRatingValue');
-    const likedInput = document.getElementById('editLiked');
-    const dislikedInput = document.getElementById('editDisliked');
-    const contentInput = document.getElementById('editContent');
-    const petSelect = document.getElementById('editPetId');
+                                            form.action = `/reviews/${id}`;
+                                            ratingInput.value = card.dataset.rating || 0;
+                                            likedInput.value = card.querySelector('[data-field="liked"]')?.textContent.replace('Понравилось:', '').trim() || '';
+                                            dislikedInput.value = card.querySelector('[data-field="disliked"]')?.textContent.replace('Не понравилось:', '').trim() || '';
+                                            contentInput.value = card.querySelector('p')?.textContent.trim() || '';
+                                            petSelect.value = card.dataset.petId || '';
 
-    // ⭐ Клик по звёздам
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            const value = star.dataset.value;
-            ratingInput.value = value;
-            stars.forEach(s => {
-                s.src = s.dataset.value <= value
-                    ? "{{ asset('storage/icon/button/award-stars_active.svg') }}"
-                    : "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
-            });
-        });
-    });
-
-    // ✏️ При нажатии "Редактировать"
-    document.querySelectorAll('.edit-review').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const card = btn.closest('.review-card');
-            const id = btn.dataset.id;
-
-            form.action = `/reviews/${id}`;
-            ratingInput.value = card.dataset.rating || 0;
-            likedInput.value = card.querySelector('[data-field="liked"]')?.textContent.replace('Понравилось:', '').trim() || '';
-            dislikedInput.value = card.querySelector('[data-field="disliked"]')?.textContent.replace('Не понравилось:', '').trim() || '';
-            contentInput.value = card.querySelector('p')?.textContent.trim() || '';
-            petSelect.value = card.dataset.petId || '';
-
-            // Обновляем звёзды
-            stars.forEach(s => {
-                s.src = s.dataset.value <= ratingInput.value
-                    ? "{{ asset('storage/icon/button/award-stars_active.svg') }}"
-                    : "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
-            });
-        });
-    });
-});
-</script>
+                                            // Обновляем звёзды
+                                            stars.forEach(s => {
+                                                s.src = s.dataset.value <= ratingInput.value ?
+                                                    "{{ asset('storage/icon/button/award-stars_active.svg') }}" :
+                                                    "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+                                            });
+                                        });
+                                    });
+                                });
+                            </script>
 
 
 
-                        {{-- ⚡ JS: активация звёзд и textarea --}}
-                        <script>
-                            document.addEventListener('DOMContentLoaded', () => {
-                                const stars = document.querySelectorAll('.rating-star');
-                                const ratingInput = document.getElementById('ratingValue');
-                                const textarea = document.getElementById('reviewText');
+                            {{-- ⚡ JS: активация звёзд и textarea --}}
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const stars = document.querySelectorAll('.rating-star');
+                                    const ratingInput = document.getElementById('ratingValue');
+                                    const textarea = document.getElementById('reviewText');
 
-                                // ⭐ Система звёзд
-                                stars.forEach(star => {
-                                    star.addEventListener('click', () => {
-                                        const value = star.dataset.value;
-                                        ratingInput.value = value;
-                                        stars.forEach(s => {
-                                            s.src = s.dataset.value <= value ?
-                                                "{{ asset('storage/icon/button/award-stars_active.svg') }}" :
-                                                "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+                                    // ⭐ Система звёзд
+                                    stars.forEach(star => {
+                                        star.addEventListener('click', () => {
+                                            const value = star.dataset.value;
+                                            ratingInput.value = value;
+                                            stars.forEach(s => {
+                                                s.src = s.dataset.value <= value ?
+                                                    "{{ asset('storage/icon/button/award-stars_active.svg') }}" :
+                                                    "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+                                            });
+                                        });
+                                    });
+
+                                    // ✨ Анимация textarea
+                                    if (textarea) {
+                                        textarea.addEventListener('focus', () => textarea.classList.add('expanded'));
+                                        textarea.addEventListener('blur', () => {
+                                            if (!textarea.value.trim()) textarea.classList.remove('expanded');
+                                        });
+                                    }
+                                });
+                                const toggleBtn = document.getElementById('toggleReviewForm');
+                                const formContainer = document.getElementById('reviewFormContainer');
+                                if (toggleBtn && formContainer) {
+                                    toggleBtn.addEventListener('click', () => {
+                                        formContainer.classList.toggle('d-none');
+                                        toggleBtn.textContent = formContainer.classList.contains('d-none') ?
+                                            '✍️ Оставить отзыв' :
+                                            '🔽 Скрыть форму';
+                                    });
+                                }
+
+                                const toggleButton = document.getElementById('toggleReviewButton');
+                                const form = document.getElementById('addReviewForm');
+
+                                if (toggleButton && form) {
+                                    toggleButton.addEventListener('click', () => {
+                                        const collapse = new bootstrap.Collapse(form, {
+                                            toggle: false
+                                        });
+                                        if (form.classList.contains('show')) {
+                                            collapse.hide();
+                                        } else {
+                                            collapse.show();
+                                        }
+                                    });
+                                }
+
+
+                                {
+                                    {
+                                        // --✏️JS: редактирование через модальное окно--
+                                    }
+                                }
+
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const modalEl = document.getElementById('editReviewModal');
+                                    const modal = new bootstrap.Modal(modalEl);
+                                    const form = document.getElementById('editReviewForm');
+
+                                    const stars = modalEl.querySelectorAll('.rating-star-edit');
+                                    const ratingInput = document.getElementById('editRatingValue');
+                                    const likedInput = document.getElementById('editLiked');
+                                    const dislikedInput = document.getElementById('editDisliked');
+                                    const contentInput = document.getElementById('editContent');
+                                    const petSelect = document.getElementById('editPetId');
+
+                                    // ⭐ Управление звёздами
+                                    stars.forEach(star => {
+                                        star.addEventListener('click', () => {
+                                            const value = star.dataset.value;
+                                            ratingInput.value = value;
+                                            stars.forEach(s => {
+                                                s.src = s.dataset.value <= value ?
+                                                    "{{ asset('storage/icon/button/award-stars_active.svg') }}" :
+                                                    "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+                                            });
+                                        });
+                                    });
+
+                                    // 🔘 Кнопки "Редактировать"
+                                    document.querySelectorAll('.edit-review').forEach(btn => {
+                                        btn.addEventListener('click', async () => {
+                                            const id = btn.dataset.id;
+                                            const card = btn.closest('.review-card');
+
+                                            // Подставляем данные
+                                            form.action = `/reviews/${id}`;
+                                            ratingInput.value = card.dataset.rating || 0;
+                                            likedInput.value = card.querySelector('[data-field="liked"]')?.textContent.trim().replace('Понравилось:', '').trim() || '';
+                                            dislikedInput.value = card.querySelector('[data-field="disliked"]')?.textContent.trim().replace('Не понравилось:', '').trim() || '';
+                                            contentInput.value = card.querySelector('p')?.textContent.trim() || '';
+
+                                            // Обновляем звёзды
+                                            stars.forEach(s => {
+                                                s.src = s.dataset.value <= ratingInput.value ?
+                                                    "{{ asset('storage/icon/button/award-stars_active.svg') }}" :
+                                                    "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+                                            });
+
+                                            modal.show();
                                         });
                                     });
                                 });
 
-                                // ✨ Анимация textarea
-                                if (textarea) {
-                                    textarea.addEventListener('focus', () => textarea.classList.add('expanded'));
-                                    textarea.addEventListener('blur', () => {
-                                        if (!textarea.value.trim()) textarea.classList.remove('expanded');
+
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const checkbox = document.getElementById('verifiedOnly');
+                                    const reviews = document.querySelectorAll('.review-card');
+
+                                    checkbox.addEventListener('change', () => {
+                                        const showVerifiedOnly = checkbox.checked;
+
+                                        reviews.forEach(review => {
+                                            const verified = review.dataset.verified === "1";
+                                            review.style.display = (showVerifiedOnly && !verified) ? 'none' : '';
+                                        });
                                     });
-                                }
-                            });
-                            const toggleBtn = document.getElementById('toggleReviewForm');
-                            const formContainer = document.getElementById('reviewFormContainer');
-                            if (toggleBtn && formContainer) {
-                                toggleBtn.addEventListener('click', () => {
-                                    formContainer.classList.toggle('d-none');
-                                    toggleBtn.textContent = formContainer.classList.contains('d-none') ?
-                                        '✍️ Оставить отзыв' :
-                                        '🔽 Скрыть форму';
                                 });
-                            }
+                            </script>
 
-                            const toggleButton = document.getElementById('toggleReviewButton');
-const form = document.getElementById('addReviewForm');
-
-if (toggleButton && form) {
-    toggleButton.addEventListener('click', () => {
-        const collapse = new bootstrap.Collapse(form, { toggle: false });
-        if (form.classList.contains('show')) {
-            collapse.hide();
-        } else {
-            collapse.show();
-        }
-    });
-}
-
-
-{{-- ✏️ JS: редактирование через модальное окно --}}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const modalEl = document.getElementById('editReviewModal');
-    const modal = new bootstrap.Modal(modalEl);
-    const form = document.getElementById('editReviewForm');
-
-    const stars = modalEl.querySelectorAll('.rating-star-edit');
-    const ratingInput = document.getElementById('editRatingValue');
-    const likedInput = document.getElementById('editLiked');
-    const dislikedInput = document.getElementById('editDisliked');
-    const contentInput = document.getElementById('editContent');
-    const petSelect = document.getElementById('editPetId');
-
-    // ⭐ Управление звёздами
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            const value = star.dataset.value;
-            ratingInput.value = value;
-            stars.forEach(s => {
-                s.src = s.dataset.value <= value
-                    ? "{{ asset('storage/icon/button/award-stars_active.svg') }}"
-                    : "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
-            });
-        });
-    });
-
-    // 🔘 Кнопки "Редактировать"
-    document.querySelectorAll('.edit-review').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const id = btn.dataset.id;
-            const card = btn.closest('.review-card');
-
-            // Подставляем данные
-            form.action = `/reviews/${id}`;
-            ratingInput.value = card.dataset.rating || 0;
-            likedInput.value = card.querySelector('[data-field="liked"]')?.textContent.trim().replace('Понравилось:', '').trim() || '';
-            dislikedInput.value = card.querySelector('[data-field="disliked"]')?.textContent.trim().replace('Не понравилось:', '').trim() || '';
-            contentInput.value = card.querySelector('p')?.textContent.trim() || '';
-
-            // Обновляем звёзды
-            stars.forEach(s => {
-                s.src = s.dataset.value <= ratingInput.value
-                    ? "{{ asset('storage/icon/button/award-stars_active.svg') }}"
-                    : "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
-            });
-
-            modal.show();
-        });
-    });
-});
-</script>
-
-
-
-                        </script>
-
-                        {{-- Награды --}}
-                        <div class="tab-pane fade" id="awards" role="tabpanel">
-                            <div class="row g-3">
-                                @if(!empty($clinic->photos))
-                                @foreach($clinic->photos as $photo)
-                                <div class="col-md-4 col-sm-6">
-                                    <img src="{{ asset('/' . $photo) }}" class="img-fluid rounded shadow-sm" alt="Фото клиники">
+                            {{-- Награды --}}
+                            <div class="tab-pane fade" id="awards" role="tabpanel">
+                                <div class="row g-3">
+                                    @if(!empty($clinic->photos))
+                                    @foreach($clinic->photos as $photo)
+                                    <div class="col-md-4 col-sm-6">
+                                        <img src="{{ asset('/' . $photo) }}" class="img-fluid rounded shadow-sm" alt="Фото клиники">
+                                    </div>
+                                    @endforeach
+                                    @else
+                                    <p class="text-muted">Награды пока не добавлены.</p>
+                                    @endif
                                 </div>
-                                @endforeach
-                                @else
-                                <p class="text-muted">Награды пока не добавлены.</p>
-                                @endif
                             </div>
                         </div>
-                    </div>
 
-                    {{-- Доктора --}}
-                    <div class="mb-4 mt-5">
-                        <h2 class="fs-5 fw-semibold mb-3">Доктора</h2>
+                        {{-- Доктора --}}
+                        <div class="mb-4 mt-5">
+                            <h2 class="fs-5 fw-semibold mb-3">Доктора</h2>
 
-                        @php
-                        $doctors = \App\Models\Doctor::where('clinic', $clinic->name)->get();
-                        @endphp
+                            @php
+                            $doctors = \App\Models\Doctor::where('clinic', $clinic->name)->get();
+                            @endphp
 
-                        <div class="row g-3">
-                            @forelse ($doctors as $doctor)
-                            <div class="col-md-6 col-lg-4 col-sm-6">
-                                <div class="card h-100 shadow-sm border-0 position-relative doctor-card">
-                                    {{-- Лапка с рейтингом --}}
-                                    <div class="rating-badge">
-                                        <img width="24px" src="{{ asset('storage/icon/stars/doctors_stars.png') }}" alt="Рейтинг">
-                                        <span class="rating-value">4.5</span>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <img src="{{ $doctor->photo ? asset('/' . $doctor->photo) : asset('/doctors/default.webp') }}"
-                                            alt="{{ $doctor->name }}"
-                                            class="doctor-photo mb-3">
-                                        <h5 class="card-title mb-1">{{ $doctor->name }}</h5>
-                                        <p class="text-muted mb-2">{{ $doctor->specialization ?? 'Ветеринар' }}</p>
-                                        @if($doctor->experience)
-                                        <p class="small text-secondary">Опыт: {{ $doctor->experience }} лет</p>
-                                        @endif
+                            <div class="row g-3">
+                                @forelse ($doctors as $doctor)
+                                <div class="col-md-6 col-lg-4 col-sm-6">
+                                    <div class="card h-100 shadow-sm border-0 position-relative doctor-card">
+                                        {{-- Лапка с рейтингом --}}
+                                        <div class="rating-badge">
+                                            <img width="24px" src="{{ asset('storage/icon/stars/doctors_stars.png') }}" alt="Рейтинг">
+                                            <span class="rating-value">4.5</span>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <img src="{{ $doctor->photo ? asset('/' . $doctor->photo) : asset('/doctors/default.webp') }}"
+                                                alt="{{ $doctor->name }}"
+                                                class="doctor-photo mb-3">
+                                            <h5 class="card-title mb-1">{{ $doctor->name }}</h5>
+                                            <p class="text-muted mb-2">{{ $doctor->specialization ?? 'Ветеринар' }}</p>
+                                            @if($doctor->experience)
+                                            <p class="small text-secondary">Опыт: {{ $doctor->experience }} лет</p>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
+                                @empty
+                                <p class="text-muted">Доктора не указаны.</p>
+                                @endforelse
                             </div>
-                            @empty
-                            <p class="text-muted">Доктора не указаны.</p>
-                            @endforelse
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {{-- ✏️ Модальное окно редактирования отзыва --}}
-<div class="modal fade" id="editReviewModal" tabindex="-1" aria-labelledby="editReviewModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title fw-semibold" id="editReviewModalLabel">Редактировать отзыв</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                {{-- ✏️ Модальное окно редактирования отзыва --}}
+                <div class="modal fade" id="editReviewModal" tabindex="-1" aria-labelledby="editReviewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title fw-semibold" id="editReviewModalLabel">Редактировать отзыв</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editReviewForm" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+
+                                    {{-- ⭐ Оценка --}}
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Оценка:</label>
+                                        <div id="editRatingStars" class="d-flex gap-1">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <img src="{{ asset('storage/icon/button/award-stars_disable.svg') }}"
+                                                data-value="{{ $i }}"
+                                                class="rating-star-edit"
+                                                width="30"
+                                                alt="звезда">
+                                                @endfor
+                                        </div>
+                                        <input type="hidden" name="rating" id="editRatingValue" value="0">
+                                    </div>
+
+                                    {{-- 💚 Понравилось --}}
+                                    <div class="mb-3">
+                                        <label class="form-label">Понравилось:</label>
+                                        <input type="text" name="liked" id="editLiked" class="form-control">
+                                    </div>
+
+                                    {{-- 💔 Не понравилось --}}
+                                    <div class="mb-3">
+                                        <label class="form-label">Не понравилось:</label>
+                                        <input type="text" name="disliked" id="editDisliked" class="form-control">
+                                    </div>
+
+                                    {{-- 💬 Отзыв --}}
+                                    <div class="mb-3">
+                                        <label class="form-label">Текст отзыва:</label>
+                                        <textarea name="content" id="editContent" class="form-control" rows="3"></textarea>
+                                    </div>
+
+                                    {{-- 🐾 Питомец --}}
+                                    <div class="mb-3">
+                                        <label class="form-label">Питомец:</label>
+                                        <select name="pet_id" id="editPetId" class="form-select">
+                                            @foreach($pets as $pet)
+                                            <option value="{{ $pet->id }}">{{ $pet->name }} — {{ $pet->type }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    {{-- 📎 Чек --}}
+                                    <div class="mb-3">
+                                        <label class="form-label">Новый чек (если хотите заменить):</label>
+                                        <input type="file" name="receipt" class="form-control" accept="image/*,application/pdf">
+                                    </div>
+
+                                    {{-- 🖼 Фото --}}
+                                    <div class="mb-3">
+                                        <label class="form-label">Добавить новые фото (опционально):</label>
+                                        <input type="file" name="photos[]" multiple class="form-control" accept="image/*">
+                                    </div>
+
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-success px-4">💾 Сохранить</button>
+                                    </div>
+                                </form>
+
+                                <form id="reviewForm" method="POST" action="{{ route('reviews.store') }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
+                                    <input type="hidden" name="reviewable_type" value="{{ (\App\Models\Clinic::class) }}">
+                                    <!-- остальные поля формы -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!-- 🖼️ Модальное окно просмотра фото -->
+<div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0 shadow-none position-relative">
+      <div class="modal-body p-0 text-center">
+        <img id="modalPhoto" src="" alt="Фото отзыва" class="img-fluid rounded shadow-lg">
       </div>
-      <div class="modal-body">
-        <form id="editReviewForm" method="POST" enctype="multipart/form-data">
-          @csrf
-          @method('PUT')
 
-          {{-- ⭐ Оценка --}}
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Оценка:</label>
-            <div id="editRatingStars" class="d-flex gap-1">
-              @for($i = 1; $i <= 5; $i++)
-                  <img src="{{ asset('storage/icon/button/award-stars_disable.svg') }}"
-                       data-value="{{ $i }}"
-                       class="rating-star-edit"
-                       width="30"
-                       alt="звезда">
-              @endfor
-            </div>
-            <input type="hidden" name="rating" id="editRatingValue" value="0">
-          </div>
-
-          {{-- 💚 Понравилось --}}
-          <div class="mb-3">
-            <label class="form-label">Понравилось:</label>
-            <input type="text" name="liked" id="editLiked" class="form-control">
-          </div>
-
-          {{-- 💔 Не понравилось --}}
-          <div class="mb-3">
-            <label class="form-label">Не понравилось:</label>
-            <input type="text" name="disliked" id="editDisliked" class="form-control">
-          </div>
-
-          {{-- 💬 Отзыв --}}
-          <div class="mb-3">
-            <label class="form-label">Текст отзыва:</label>
-            <textarea name="content" id="editContent" class="form-control" rows="3"></textarea>
-          </div>
-
-          {{-- 🐾 Питомец --}}
-          <div class="mb-3">
-            <label class="form-label">Питомец:</label>
-            <select name="pet_id" id="editPetId" class="form-select">
-              @foreach($pets as $pet)
-                  <option value="{{ $pet->id }}">{{ $pet->name }} — {{ $pet->type }}</option>
-              @endforeach
-            </select>
-          </div>
-
-          {{-- 📎 Чек --}}
-          <div class="mb-3">
-            <label class="form-label">Новый чек (если хотите заменить):</label>
-            <input type="file" name="receipt" class="form-control" accept="image/*,application/pdf">
-          </div>
-
-          {{-- 🖼 Фото --}}
-          <div class="mb-3">
-            <label class="form-label">Добавить новые фото (опционально):</label>
-            <input type="file" name="photos[]" multiple class="form-control" accept="image/*">
-          </div>
-
-          <div class="text-end">
-            <button type="submit" class="btn btn-success px-4">💾 Сохранить</button>
-          </div>
-        </form>
-
-        <form id="reviewForm" method="POST" action="{{ route('reviews.store') }}" enctype="multipart/form-data">
-    @csrf
-    <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
-    <input type="hidden" name="reviewable_type" value="{{ (\App\Models\Clinic::class) }}">
-    <!-- остальные поля формы -->
-</form>
-      </div>
+      <!-- Кнопки навигации -->
+      <button class="btn btn-light position-absolute top-50 start-0 translate-middle-y shadow"
+              id="prevPhoto" style="opacity: 0.8;">❮</button>
+      <button class="btn btn-light position-absolute top-50 end-0 translate-middle-y shadow"
+              id="nextPhoto" style="opacity: 0.8;">❯</button>
     </div>
   </div>
 </div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const photoModal = new bootstrap.Modal(document.getElementById('photoModal'));
+    const modalImage = document.getElementById('modalPhoto');
+    const prevBtn = document.getElementById('prevPhoto');
+    const nextBtn = document.getElementById('nextPhoto');
+
+    let currentPhotos = [];
+    let currentIndex = 0;
+
+    // 📸 Клик по миниатюре — открываем модалку
+    document.querySelectorAll('.review-photo').forEach(img => {
+        img.addEventListener('click', () => {
+            const reviewId = img.dataset.reviewId;
+            const gallery = document.querySelectorAll(`.review-photos[data-review-id="${reviewId}"] .review-photo`);
+            currentPhotos = Array.from(gallery).map(i => i.src);
+            currentIndex = parseInt(img.dataset.index);
+
+            showPhoto(currentIndex);
+            photoModal.show();
+        });
+    });
+
+    // 🔁 Показ фото по индексу
+    function showPhoto(index) {
+        if (currentPhotos.length === 0) return;
+        if (index < 0) index = currentPhotos.length - 1;
+        if (index >= currentPhotos.length) index = 0;
+        currentIndex = index;
+        modalImage.src = currentPhotos[currentIndex];
+    }
+
+    // ⬅️➡️ Кнопки
+    prevBtn.addEventListener('click', () => showPhoto(currentIndex - 1));
+    nextBtn.addEventListener('click', () => showPhoto(currentIndex + 1));
+
+    // 🎹 Управление клавишами
+    document.addEventListener('keydown', e => {
+        if (!document.getElementById('photoModal').classList.contains('show')) return;
+        if (e.key === 'ArrowLeft') showPhoto(currentIndex - 1);
+        if (e.key === 'ArrowRight') showPhoto(currentIndex + 1);
+    });
+
+    // 📱 Поддержка свайпа
+    let startX = 0;
+    modalImage.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+    });
+    modalImage.addEventListener('touchend', e => {
+        const diffX = e.changedTouches[0].clientX - startX;
+        if (Math.abs(diffX) > 50) {
+            if (diffX < 0) showPhoto(currentIndex + 1); // свайп влево
+            else showPhoto(currentIndex - 1); // свайп вправо
+        }
+    });
+});
+</script>
 
 
 
@@ -759,3 +863,38 @@ document.addEventListener('DOMContentLoaded', () => {
         </footer>
 </div>
 @endsection
+<style>
+#photoModal img {
+    max-height: 90vh;
+    object-fit: contain;
+}
+#prevPhoto, #nextPhoto {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+#prevPhoto:hover, #nextPhoto:hover {
+    opacity: 1 !important;
+    background-color: #fff;
+}
+
+#photoModal img {
+    max-height: 90vh;
+    object-fit: contain;
+}
+#prevPhoto, #nextPhoto {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+#prevPhoto:hover, #nextPhoto:hover {
+    opacity: 1 !important;
+    background-color: #fff;
+}
+
+
+</style>
