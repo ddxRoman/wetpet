@@ -25,6 +25,8 @@ class ReviewController extends Controller
             'pet_id' => 'nullable|integer',
             'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'photos.*' => 'nullable|image|max:5120',
+        ],[
+             'rating.required' => 'Пожалуйста, выберите оценку от 1 до 5 звёзд.',
         ]);
 
         $review = new Review();

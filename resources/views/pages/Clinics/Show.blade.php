@@ -275,23 +275,38 @@ use App\Models\Pet;
                                         <h5 class="fw-semibold mb-3">Оставить отзыв</h5>
                                         <form id="reviewForm" method="POST" action="{{ route('reviews.store') }}" enctype="multipart/form-data">
                                             @csrf
+                                            @if ($errors->any())
+    <div class="alert alert-danger small py-2">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
                                             <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
                                             <input type="hidden" name="reviewable_type" value="{{ (\App\Models\Clinic::class) }}">
 
-                                            {{-- ⭐ Оценка --}}
-                                            <div class="mb-3">
-                                                <label class="form-label fw-semibold">Оценка:</label>
-                                                <div id="ratingStars" class="d-flex gap-1">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <img src="{{ asset('storage/icon/button/award-stars_disable.svg') }}"
-                                                        data-value="{{ $i }}"
-                                                        class="rating-star"
-                                                        width="28"
-                                                        alt="звезда">
-                                                        @endfor
-                                                </div>
-                                                <input type="hidden" name="rating" id="ratingValue" value="0">
-                                            </div>
+{{-- ⭐ Оценка --}}
+<div class="mb-3">
+    <label class="form-label fw-semibold">Оценка:</label>
+    <div id="ratingStars" class="d-flex gap-1">
+        @for($i = 1; $i <= 5; $i++)
+            <img src="{{ asset('storage/icon/button/award-stars_disable.svg') }}"
+                 data-value="{{ $i }}"
+                 class="rating-star"
+                 width="28"
+                 alt="звезда">
+        @endfor
+    </div>
+    <input type="hidden" name="rating" id="ratingValue" value="0">
+    @error('rating')
+        <div class="text-danger small mt-1">{{ $message }}</div>
+    @enderror
+    <div id="ratingError" class="text-danger small mt-1 d-none">Выберите оценку от 1 до 5 звёзд.</div>
+</div>
+
 
                                             {{-- 💚 Понравилось --}}
                                             <div class="mb-3">
@@ -705,20 +720,25 @@ use App\Models\Pet;
                                     @csrf
                                     @method('PUT')
 
-                                    {{-- ⭐ Оценка --}}
-                                    <div class="mb-3">
-                                        <label class="form-label fw-semibold">Оценка:</label>
-                                        <div id="editRatingStars" class="d-flex gap-1">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                <img src="{{ asset('storage/icon/button/award-stars_disable.svg') }}"
-                                                data-value="{{ $i }}"
-                                                class="rating-star-edit"
-                                                width="30"
-                                                alt="звезда">
-                                                @endfor
-                                        </div>
-                                        <input type="hidden" name="rating" id="editRatingValue" value="0">
-                                    </div>
+{{-- ⭐ Оценка --}}
+<div class="mb-3">
+    <label class="form-label fw-semibold">Оценка:</label>
+    <div id="ratingStars" class="d-flex gap-1">
+        @for($i = 1; $i <= 5; $i++)
+            <img src="{{ asset('storage/icon/button/award-stars_disable.svg') }}"
+                 data-value="{{ $i }}"
+                 class="rating-star"
+                 width="28"
+                 alt="звезда">
+        @endfor
+    </div>
+    <input type="hidden" name="rating" id="ratingValue" value="0">
+    @error('rating')
+        <div class="text-danger small mt-1">{{ $message }}</div>
+    @enderror
+    <div id="ratingError" class="text-danger small mt-1 d-none">Выберите оценку от 1 до 5 звёзд.</div>
+</div>
+
 
                                     {{-- 💚 Понравилось --}}
                                     <div class="mb-3">
@@ -852,8 +872,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+@push('scripts')
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const stars = document.querySelectorAll('.rating-star');
+    const ratingValue = document.getElementById('ratingValue');
+    const ratingError = document.getElementById('ratingError');
+    const form = document.getElementById('reviewForm');
 
+    if (!form) return;
 
+    // Наведение и выбор звёзд
+    stars.forEach(star => {
+        star.addEventListener('mouseover', function () {
+            const value = this.dataset.value;
+            stars.forEach(s => {
+                s.src = s.dataset.value <= value
+                    ? "{{ asset('storage/icon/button/award-stars_active.svg') }}"
+                    : "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+            });
+        });
+
+        star.addEventListener('mouseout', function () {
+            const value = ratingValue.value;
+            stars.forEach(s => {
+                s.src = s.dataset.value <= value
+                    ? "{{ asset('storage/icon/button/award-stars_active.svg') }}"
+                    : "{{ asset('storage/icon/button/award-stars_disable.svg') }}";
+            });
+        });
+
+        star.addEventListener('click', function () {
+            ratingValue.value = this.dataset.value;
+            ratingError.classList.add('d-none');
+        });
+    });
+
+    // Проверка при отправке формы
+    form.addEventListener('submit', function (e) {
+        const rating = parseInt(ratingValue.value);
+        if (isNaN(rating) || rating < 1 || rating > 5) {
+            e.preventDefault();
+            ratingError.classList.remove('d-none');
+            ratingError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+});
+</script>
+@endpush
+
+@endpush
 
 
         </main>
@@ -863,38 +932,3 @@ document.addEventListener('DOMContentLoaded', () => {
         </footer>
 </div>
 @endsection
-<style>
-#photoModal img {
-    max-height: 90vh;
-    object-fit: contain;
-}
-#prevPhoto, #nextPhoto {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    line-height: 1;
-}
-#prevPhoto:hover, #nextPhoto:hover {
-    opacity: 1 !important;
-    background-color: #fff;
-}
-
-#photoModal img {
-    max-height: 90vh;
-    object-fit: contain;
-}
-#prevPhoto, #nextPhoto {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    line-height: 1;
-}
-#prevPhoto:hover, #nextPhoto:hover {
-    opacity: 1 !important;
-    background-color: #fff;
-}
-
-
-</style>

@@ -1090,6 +1090,38 @@ select:focus {
 .bg-warning{
     background-color: yellowgreen !important;
 }
+#photoModal img {
+    max-height: 90vh;
+    object-fit: contain;
+}
+#prevPhoto, #nextPhoto {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+#prevPhoto:hover, #nextPhoto:hover {
+    opacity: 1 !important;
+    background-color: #fff;
+}
+
+#photoModal img {
+    max-height: 90vh;
+    object-fit: contain;
+}
+#prevPhoto, #nextPhoto {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+#prevPhoto:hover, #nextPhoto:hover {
+    opacity: 1 !important;
+    background-color: #fff;
+}
+
 
 
 
