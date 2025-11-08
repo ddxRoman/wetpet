@@ -71,10 +71,8 @@ Route::post('/account/update', [AccountController::class, 'updateProfile'])->nam
 Route::delete('/pets/{pet}', [App\Http\Controllers\PetController::class, 'destroy'])->name('pets.destroy');
 
 
-Route::resource('clinics', ClinicController::class);
 
-Route::get('/clinics', [ClinicController::class, 'index'])->name('pages.clinics.index');
-Route::get('/clinics/{id}', [ClinicController::class, 'show'])->name('pages.clinics.show');
+Route::resource('clinics', ClinicController::class);
 
 
 
@@ -90,5 +88,4 @@ Route::get('/user/{id}', function ($id) {
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::resource('reviews', ReviewController::class);
 
-Route::get('/clinics/{clinic}', [ClinicController::class, 'show'])->name('pages.clinics.show');
 
