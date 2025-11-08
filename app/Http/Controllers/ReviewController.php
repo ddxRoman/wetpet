@@ -25,14 +25,14 @@ class ReviewController extends Controller
             'pet_id' => 'nullable|integer',
             'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'photos.*' => 'nullable|image|max:5120',
-        ],[
-             'rating.required' => 'Пожалуйста, выберите оценку от 1 до 5 звёзд.',
+        ], [
+            'rating.required' => 'Пожалуйста, выберите оценку от 1 до 5 звёзд.',
         ]);
 
         $review = new Review();
         $review->user_id = Auth::id();
         $review->reviewable_id = $validated['reviewable_id'];
-        $review->reviewable_type = str_replace('\\\\', '\\', $validated['reviewable_type']); // исправляем двойные слеши
+        $review->reviewable_type = str_replace('\\\\', '\\', $validated['reviewable_type']);
         $review->rating = $validated['rating'];
         $review->liked = $validated['liked'] ?? null;
         $review->disliked = $validated['disliked'] ?? null;
@@ -41,10 +41,9 @@ class ReviewController extends Controller
         $review->review_date = now();
         $review->save();
 
-        // 📎 Сохраняем чек в отдельную таблицу
+        // 📎 Сохраняем чек
         if ($request->hasFile('receipt')) {
             $path = $request->file('receipt')->store('reviews/receipts', 'public');
-
             ReviewReceipt::create([
                 'review_id' => $review->id,
                 'clinic_id' => $review->reviewable_id,
@@ -53,7 +52,7 @@ class ReviewController extends Controller
             ]);
         }
 
-        // 🖼 Сохраняем фото
+        // 🖼 Фото
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
                 $path = $photo->store('reviews/photos', 'public');
@@ -64,14 +63,13 @@ class ReviewController extends Controller
             }
         }
 
-        // 🔁 Возвращаем пользователя на вкладку "Отзывы"
         return redirect()
-            ->to(url()->previous() . '#directions')
+            ->to(url("/clinics/{$review->reviewable_id}#reviews"))
             ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
     }
 
     /**
-     * Обновление существующего отзыва
+     * Обновление отзыва
      */
     public function update(Request $request, Review $review)
     {
@@ -85,7 +83,6 @@ class ReviewController extends Controller
 
         $review->update($validated);
 
-        // Добавляем новые фото (если есть)
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
                 $path = $photo->store('reviews/photos', 'public');
@@ -97,7 +94,7 @@ class ReviewController extends Controller
         }
 
         return redirect()
-            ->to(url()->previous() . '#directions')
+            ->to(url("/clinics/{$review->reviewable_id}#reviews"))
             ->with('success', 'Отзыв успешно обновлён.');
     }
 
@@ -110,10 +107,12 @@ class ReviewController extends Controller
             return back()->withErrors(['error' => 'Нет прав для удаления этого отзыва.']);
         }
 
+        $clinicId = $review->reviewable_id;
+
         $review->delete();
 
         return redirect()
-            ->to(url()->previous() . '#directions')
+            ->to(url("/clinics/{$clinicId}#reviews"))
             ->with('success', 'Отзыв удалён.');
     }
 }

@@ -52,29 +52,28 @@ use App\Models\Pet;
                         @else
                         <div class="text-muted small mt-2">Отзывов пока нет</div>
                         @endif
-
-
                     </div>
 
 
-                    {{-- Вкладки --}}
-                    <ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contacts" type="button" role="tab">Контакты</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab">Услуги</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#directions" type="button" role="tab">Отзывы</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#awards" type="button" role="tab">Награды</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos" type="button" role="tab">Фото</button>
-                        </li>
-                    </ul>
+{{-- Вкладки --}}
+<ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="contacts-tab" data-bs-toggle="tab" href="#contacts" role="tab">Контакты</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="services-tab" data-bs-toggle="tab" href="#services" role="tab">Услуги</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab">Отзывы</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="awards-tab" data-bs-toggle="tab" href="#awards" role="tab">Награды</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="photos-tab" data-bs-toggle="tab" href="#photos" role="tab">Фото</a>
+    </li>
+</ul>
+
 
                     <div class="tab-content" id="clinicTabsContent">
                         {{-- Контакты --}}
@@ -121,21 +120,7 @@ use App\Models\Pet;
                                             allowfullscreen
                                             loading="lazy"></iframe>
                                     </div>
-
-
-                                    {{-- Дополнительная информация --}}
-                                    <div class="text-muted small">
-                                        <!-- <p><strong>Адрес:</strong> {{ $clinic->country }}, {{ $clinic->region }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}</p> -->
-                                        @if(!empty($clinic->founded))
-                                        <!-- <p><strong>Основана:</strong> {{ $clinic->founded }}</p> -->
-                                        @endif
-                                        @if(!empty($clinic->description))
-                                        <!-- <p><strong>Описание:</strong> {{ $clinic->description }}</p> -->
-                                        @endif
-                                    </div>
                                 </div>
-
-
                             </div>
                         </div>
 
@@ -245,7 +230,7 @@ use App\Models\Pet;
                         </script>
 
                         {{-- Отзывы --}}
-                        <div class="tab-pane fade" id="directions" role="tabpanel">
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
                             @php
 
 
@@ -374,9 +359,20 @@ use App\Models\Pet;
                             </div>
 
 
+                            {{-- 🔽 Сортировка отзывов --}}
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <label for="sortReviews" class="form-label mb-0 me-2 fw-semibold">Сортировать по:</label>
+    <select id="sortReviews" class="form-select w-auto">
+        <option value="date_desc" selected>Дате (новые сверху)</option>
+        <option value="date_asc">Дате (старые сверху)</option>
+        <option value="rating_desc">Оценке (от высокой к низкой)</option>
+        <option value="rating_asc">Оценке (от низкой к высокой)</option>
+    </select>
+</div>
 
-
+                            
                             {{-- 🔽 Список отзывов --}}
+
                             <div id="reviewList" class="list-group">
                                 @foreach($reviews as $review)
                                 <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
@@ -475,6 +471,46 @@ use App\Models\Pet;
                                 </div>
                                 @endforeach
                             </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const reviewList = document.getElementById('reviewList');
+    const sortSelect = document.getElementById('sortReviews');
+
+    if (!reviewList || !sortSelect) return;
+
+    sortSelect.addEventListener('change', () => {
+        const sortType = sortSelect.value;
+        const reviews = Array.from(reviewList.querySelectorAll('.review-card'));
+
+        reviews.sort((a, b) => {
+            const dateA = parseInt(a.dataset.date);
+            const dateB = parseInt(b.dataset.date);
+            const ratingA = parseInt(a.dataset.rating);
+            const ratingB = parseInt(b.dataset.rating);
+
+            switch (sortType) {
+                case 'date_asc':
+                    return dateA - dateB;
+                case 'date_desc':
+                    return dateB - dateA;
+                case 'rating_asc':
+                    return ratingA - ratingB;
+                case 'rating_desc':
+                    return ratingB - ratingA;
+                default:
+                    return 0;
+            }
+        });
+
+        // Перестраиваем DOM
+        reviewList.innerHTML = '';
+        reviews.forEach(r => reviewList.appendChild(r));
+    });
+});
+</script>
+
 
                             {{-- 🚀 JS сортировка без перезагрузки --}}
                             <script>
@@ -653,6 +689,9 @@ use App\Models\Pet;
                                         });
                                     });
                                 });
+
+                                
+
                             </script>
 
                             {{-- Награды --}}
@@ -816,6 +855,7 @@ use App\Models\Pet;
 
 
 
+{{-- 📸 Просмотр фото в модалке --}}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const photoModal = new bootstrap.Modal(document.getElementById('photoModal'));
@@ -826,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPhotos = [];
     let currentIndex = 0;
 
-    // 📸 Клик по миниатюре — открываем модалку
+    // Клик по миниатюре — открываем модалку
     document.querySelectorAll('.review-photo').forEach(img => {
         img.addEventListener('click', () => {
             const reviewId = img.dataset.reviewId;
@@ -839,7 +879,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 🔁 Показ фото по индексу
+    // Показ фото по индексу
     function showPhoto(index) {
         if (currentPhotos.length === 0) return;
         if (index < 0) index = currentPhotos.length - 1;
@@ -848,33 +888,53 @@ document.addEventListener('DOMContentLoaded', () => {
         modalImage.src = currentPhotos[currentIndex];
     }
 
-    // ⬅️➡️ Кнопки
+    // Кнопки
     prevBtn.addEventListener('click', () => showPhoto(currentIndex - 1));
     nextBtn.addEventListener('click', () => showPhoto(currentIndex + 1));
 
-    // 🎹 Управление клавишами
+    // Клавиши ← →
     document.addEventListener('keydown', e => {
         if (!document.getElementById('photoModal').classList.contains('show')) return;
         if (e.key === 'ArrowLeft') showPhoto(currentIndex - 1);
         if (e.key === 'ArrowRight') showPhoto(currentIndex + 1);
     });
 
-    // 📱 Поддержка свайпа
+    // Поддержка свайпа
     let startX = 0;
-    modalImage.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-    });
+    modalImage.addEventListener('touchstart', e => startX = e.touches[0].clientX);
     modalImage.addEventListener('touchend', e => {
         const diffX = e.changedTouches[0].clientX - startX;
         if (Math.abs(diffX) > 50) {
-            if (diffX < 0) showPhoto(currentIndex + 1); // свайп влево
-            else showPhoto(currentIndex - 1); // свайп вправо
+            if (diffX < 0) showPhoto(currentIndex + 1); // влево
+            else showPhoto(currentIndex - 1); // вправо
         }
     });
 });
 </script>
-@push('scripts')
-@push('scripts')
+
+{{-- 🔖 Автоматическое открытие вкладки по якорю --}}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const hash = window.location.hash;
+    if (hash) {
+        const triggerEl = document.querySelector(`a[href="${hash}"]`);
+        if (triggerEl) {
+            const tab = new bootstrap.Tab(triggerEl);
+            tab.show();
+        }
+    }
+
+    // обновляем URL при переключении вкладок
+    const tabLinks = document.querySelectorAll('a[data-bs-toggle="tab"]');
+    tabLinks.forEach(link => {
+        link.addEventListener('shown.bs.tab', function (e) {
+            history.replaceState(null, null, e.target.getAttribute('href'));
+        });
+    });
+});
+</script>
+
+{{-- ⭐ Выбор рейтинга (звёзды) и валидация --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const stars = document.querySelectorAll('.rating-star');
@@ -921,13 +981,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-@endpush
-
-@endpush
-
 
         </main>
-
         <footer class="footer-fullwidth mt-auto w-100">
             @include('layouts.footer')
         </footer>
