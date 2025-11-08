@@ -52,38 +52,25 @@ Route::post('reset/password', [ResetPasswordController::class, 'reset'])->name('
 
 // 🔒 Защищённые маршруты
 Route::middleware(['auth'])->group(function () {
-
     // 👤 Личный кабинет
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-
     // 🐾 Питомцы
     Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
     Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
-
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::post('/account/update', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-
-
 Route::delete('/pets/{pet}', [App\Http\Controllers\PetController::class, 'destroy'])->name('pets.destroy');
-
-
-
 Route::resource('clinics', ClinicController::class);
-
-
-
 Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
 Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
-
 Route::get('/user/{id}', function ($id) {
     $user = \App\Models\User::findOrFail($id);
     return view('pages.user.profile', compact('user'));
 })->name('user.profile');
-
 
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::resource('reviews', ReviewController::class);

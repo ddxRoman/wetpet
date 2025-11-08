@@ -2,8 +2,9 @@
 use App\Models\Pet;
 @endphp
 @extends('layouts.app')
-@section('title', $clinic->name)
+
 @section('content')
+
 <div class="d-flex flex-column min-vh-100 bg-white">
     @include('layouts.header')
     <main class="flex-grow-1 container py-5">
