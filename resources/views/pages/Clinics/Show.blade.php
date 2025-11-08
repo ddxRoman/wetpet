@@ -3,6 +3,7 @@ use App\Models\Pet;
 @endphp
 @extends('layouts.app')
 
+@include('pages.clinics.tabs.awards')
 @section('content')
 
 <div class="d-flex flex-column min-vh-100 bg-white">
@@ -66,9 +67,10 @@ use App\Models\Pet;
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab">Отзывы</a>
     </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" id="awards-tab" data-bs-toggle="tab" href="#awards" role="tab">Награды</a>
-    </li>
+<li class="nav-item" role="presentation">
+    <a class="nav-link" id="awards-tab" data-bs-toggle="tab" href="#awards" role="tab">Награды</a>
+</li>
+
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="photos-tab" data-bs-toggle="tab" href="#photos" role="tab">Фото</a>
     </li>
