@@ -49,6 +49,10 @@ public function pets()
     return $this->hasMany(\App\Models\Pet::class, 'user_id');
 }
 
+public function isAdmin(): bool
+{
+    return (bool) $this->is_admin;
+}
 
 
 
