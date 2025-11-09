@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->unique()->nullable();;
             $table->unsignedBigInteger('city_id')->nullable();
+            $table->string('status')->default('active');
             $table->boolean('is_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
