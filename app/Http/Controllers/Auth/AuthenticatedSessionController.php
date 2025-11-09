@@ -13,6 +13,28 @@ class AuthenticatedSessionController extends Controller
 
      public function store(Request $request)
     {
+          $credentials = $request->only('email', 'password');
+  $user = \App\Models\User::where('email', $request->email)->first();
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        if ($user->status === 'ban') {
+            Auth::logout();
+
+            return back()->withErrors([
+                'email' => 'Ваш аккаунт заблокирован. Обратитесь в поддержку.',
+            ]);
+        }
+
+        $request->session()->regenerate();
+
+        return redirect()->intended('/');
+    }
+
+    return back()->withErrors([
+        'email' => 'Неверные данные для входа.',
+    ]);
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
@@ -51,4 +73,5 @@ class AuthenticatedSessionController extends Controller
 
         return response()->noContent();
     }
+
 }

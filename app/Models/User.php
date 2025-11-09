@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use App\Notifications\ResetPasswordNotification;
-
+    use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,6 +23,7 @@ protected $fillable = [
     'city_id',
     'birth_date',
     'avatar',
+    'status',
 ];
 
     protected $hidden = [

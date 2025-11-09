@@ -148,6 +148,12 @@
         .navbar {
             display: none !important; /* скрываем Login / Register */
         }
+        .text-red-500{
+            font-weight: 600;
+            font-size: 16pt;
+            color: red;
+            padding-bottom: 2%;
+        }
     </style>
 </head>
 
@@ -160,7 +166,11 @@
         </a>
 
         <a href="{{ route('register') }}" class="register-btn">Зарегистрироваться</a>
-
+    @if ($errors->any())
+    <div class="text-red-500 mt-2">
+        {{ $errors->first('email') }}
+    </div>
+@endif
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
@@ -204,6 +214,8 @@
             <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/yandex-logo.svg') }}" title="Yandex" alt="Yandex"></a>
         </div>
     </div>
+
+
 </body>
 @endsection
 </html>
