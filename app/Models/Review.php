@@ -46,4 +46,9 @@ class Review extends Model
     {
         return $this->hasMany(ReviewPhoto::class);
     }
+    public function pet()
+{
+    return $this->belongsTo(Pet::class, 'pet_id');
+}
+
 }
