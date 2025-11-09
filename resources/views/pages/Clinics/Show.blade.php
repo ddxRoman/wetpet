@@ -59,22 +59,23 @@ use App\Models\Pet;
 {{-- Вкладки --}}
 <ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="contacts-tab" data-bs-toggle="tab" href="#contacts" role="tab">Контакты</a>
+        <a class="nav-link active" id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contacts" role="tab">Контакты</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="services-tab" data-bs-toggle="tab" href="#services" role="tab">Услуги</a>
+        <a class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" role="tab">Услуги</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab">Отзывы</a>
+        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" role="tab">Отзывы</a>
     </li>
 <li class="nav-item" role="presentation">
-    <a class="nav-link" id="awards-tab" data-bs-toggle="tab" href="#awards" role="tab">Награды</a>
+    <a class="nav-link" id="awards-tab" data-bs-toggle="tab" data-bs-target="#awards" role="tab">Награды</a>
 </li>
 
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="photos-tab" data-bs-toggle="tab" href="#photos" role="tab">Фото</a>
+        <a class="nav-link" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos" role="tab">Фото</a>
     </li>
 </ul>
+
 
 
                     <div class="tab-content" id="clinicTabsContent">
@@ -208,6 +209,97 @@ use App\Models\Pet;
                             <p class="text-muted">Информация об услугах отсутствует.</p>
                             @endif
                         </div>
+
+
+{{-- Награды --}}
+<div class="tab-pane fade" id="awards" role="tabpanel">
+    <div class="row g-4">
+        @forelse($clinic->awards ?? [] as $index => $award)
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <a href="#" 
+                       class="award-thumb" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#awardModal"
+                       data-index="{{ $index }}">
+                        <img src="{{ asset('storage/' . $award->image) }}" 
+                             class="card-img-top rounded" 
+                             alt="{{ $award->title }}">
+                    </a>
+                    <div class="card-body">
+                        <h6 class="card-title text-center fw-bold">{{ $award->title }}</h6>
+                        <p class="text-muted small text-center mb-0">
+                            {{ Str::limit($award->description, 60, '...') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <p class="text-center text-muted">Награды пока не добавлены.</p>
+        @endforelse
+    </div>
+
+    {{-- Модальное окно со слайдером --}}
+    @if(($clinic->awards ?? [])->count())
+    <div class="modal fade" id="awardModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body p-0">
+                    <div id="awardCarousel" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-inner">
+                            @foreach($clinic->awards as $index => $award)
+                                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                    <div class="text-center p-3">
+                                        <img src="{{ asset('storage/' . $award->image) }}" 
+                                             class="img-fluid rounded mb-3 award-img"
+                                             alt="{{ $award->title }}"
+                                             style="max-height: 70vh; object-fit: contain;">
+                                        <h5 class="fw-bold">{{ $award->title }}</h5>
+                                        <p class="text-muted mb-0">{{ $award->description }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- Стрелки навигации --}}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#awardCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#awardCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+</div>
+
+{{-- Скрипт для открытия модалки с нужного слайда --}}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.getElementById('awardCarousel');
+    const bsCarousel = new bootstrap.Carousel(carousel);
+
+    document.querySelectorAll('.award-thumb').forEach((thumb) => {
+        thumb.addEventListener('click', (event) => {
+            const index = parseInt(event.currentTarget.dataset.index);
+            bsCarousel.to(index);
+        });
+    });
+});
+</script>
+
+
+
+
+
+
 
                         {{-- 🪄 Плавная прокрутка и подсветка --}}
                         <script>
@@ -696,20 +788,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             </script>
 
-                            {{-- Награды --}}
-                            <div class="tab-pane fade" id="awards" role="tabpanel">
-                                <div class="row g-3">
-                                    @if(!empty($clinic->photos))
-                                    @foreach($clinic->photos as $photo)
-                                    <div class="col-md-4 col-sm-6">
-                                        <img src="{{ asset('/' . $photo) }}" class="img-fluid rounded shadow-sm" alt="Фото клиники">
-                                    </div>
-                                    @endforeach
-                                    @else
-                                    <p class="text-muted">Награды пока не добавлены.</p>
-                                    @endif
-                                </div>
-                            </div>
+
+
                         </div>
 
                         {{-- Доктора --}}
@@ -983,6 +1063,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
         </main>
         <footer class="footer-fullwidth mt-auto w-100">

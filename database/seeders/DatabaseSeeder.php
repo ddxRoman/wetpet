@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
             PriceSeeder::class,
             ReviewSeeder::class,
                 ReviewPhotoSeeder::class,
+AwardsTableSeeder::class,
+
 
 
         ]);

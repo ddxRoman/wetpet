@@ -33,8 +33,11 @@ public function index(Request $request)
         $clinic = Clinic::findOrFail($id);
         return view('pages.clinics.show', compact('clinic'));
         
-        $clinic = Clinic::with(['awards', 'reviews'])->findOrFail($id);
-        return view('clinics.show', compact('clinic'));
+        // Загружаем клинику вместе с наградами
+    $clinic = Clinic::with('awards')->findOrFail($id);
+
+    return view('pages.clinics.show', compact('clinic'));
+
         
     }
 
