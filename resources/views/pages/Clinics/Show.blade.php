@@ -3,7 +3,7 @@ use App\Models\Pet;
 @endphp
 @extends('layouts.app')
 
-@include('pages.clinics.tabs.awards')
+
 @section('content')
 
 <div class="d-flex flex-column min-vh-100 bg-white">
