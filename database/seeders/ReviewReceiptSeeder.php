@@ -29,7 +29,7 @@ class ReviewReceiptSeeder extends Seeder
 
         foreach (range(1, 10) as $i) {
             ReviewReceipt::create([
-                'review_id' => $review->id,
+                'review_id' => rand(1, 8),
                 'clinic_id' => $clinic->id,
                  'path' => "clinics/review_receipts/fake_receipt_" . rand(1, 8) . ".webp", // 👈 случайный номер 1–8
                 'status' => 'pending',

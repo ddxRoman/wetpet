@@ -449,8 +449,8 @@ $pets = Pet::where('user_id', auth()->id())
                                     data-rating="{{ $review->rating }}"
                                     data-verified="{{ $review->receipt_verified }}">
 
-                                    @if($review->receipt_verified == 1)
-                                    <div class="verified-badge position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-start">
+                                    @if($review->receipt_verified == "verified")
+                                    <div class="verified-badge position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-start" title="Этот пользователь подтвердил свой визит в клинику, чеком, электронной квитанцией или заключаем из больницы">
                                         ✅ Реальный клиент
                                     </div>
                                     @endif
