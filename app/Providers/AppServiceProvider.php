@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\City;
 use Illuminate\Support\Facades\View;
+use App\Models\ReviewReceipt;
+use App\Observers\ReviewReceiptObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
 view()->share('brandname', env('BRAND_NAME', 'Зверозор'));
 
+ReviewReceipt::observe(ReviewReceiptObserver::class);
 
 
     View::composer('*', function ($view) {

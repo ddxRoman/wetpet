@@ -30,7 +30,10 @@ return new class extends Migration {
 
             // 🧾 Чек — файл подтверждения
             $table->string('receipt_path')->nullable();
-            $table->boolean('receipt_verified')->default(false);
+                        // ✅ Статус проверки чека
+            $table->enum('receipt_verified', ['pending', 'verified', 'rejected'])
+                  ->default('pending')
+                  ->collation('utf8mb4_unicode_ci');
 
             // 🐾 Информация о питомце
             $table->unsignedTinyInteger('pet_id')->nullable();

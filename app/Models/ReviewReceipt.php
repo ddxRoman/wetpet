@@ -16,19 +16,34 @@ class ReviewReceipt extends Model
         'status',
     ];
 
-    /**
-     * Отзыв, к которому относится чек
-     */
     public function review()
     {
-        return $this->belongsTo(Review::class);
+        return $this->belongsTo(Review::class, 'review_id');
     }
 
-    /**
-     * Клиника, к которой относится чек
-     */
     public function clinic()
     {
         return $this->belongsTo(Clinic::class);
+    }
+
+    protected static function booted()
+    {
+        // Когда чек сохранён или обновлён
+        static::saved(function ($receipt) {
+            if ($receipt->review) {
+                $receipt->review->update([
+                    'receipt_verified' => $receipt->status, // ✅ статус из чека в отзыв
+                ]);
+            }
+        });
+
+        // Когда чек удалён
+        static::deleted(function ($receipt) {
+            if ($receipt->review) {
+                $receipt->review->update([
+                    'receipt_verified' => 'pending', // 🔁 возвращаем в "ожидание"
+                ]);
+            }
+        });
     }
 }

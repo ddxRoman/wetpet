@@ -21,12 +21,11 @@ class Review extends Model
         'receipt_path',
         'receipt_verified',
         'pet_id',
-
     ];
 
     protected $casts = [
         'review_date' => 'date',
-        'receipt_verified' => 'boolean',
+        // ❌ убираем boolean, потому что это ENUM
     ];
 
     // Связь с пользователем
@@ -46,9 +45,14 @@ class Review extends Model
     {
         return $this->hasMany(ReviewPhoto::class);
     }
-    public function pet()
-{
-    return $this->belongsTo(Pet::class, 'pet_id');
-}
 
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class, 'pet_id');
+    }
+
+    public function receipt()
+    {
+        return $this->hasOne(ReviewReceipt::class, 'review_id');
+    }
 }
