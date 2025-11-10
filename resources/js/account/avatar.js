@@ -1,3 +1,4 @@
+import { initCropper } from './cropper-init'; // ✅ правильный путь
 document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('avatar-input');
     const previewImg = document.getElementById('avatar-preview');

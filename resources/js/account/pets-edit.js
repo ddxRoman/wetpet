@@ -1,4 +1,5 @@
 import { showToast } from './toast';
+import { initCropper } from './cropper-init'; // ✅ правильный путь
 
 export function openEditModal(petId) {
     const modal = document.getElementById('edit-pet-modal');
@@ -38,19 +39,9 @@ export function openEditModal(petId) {
     previewEdit.src = photo || '/storage/pets/default-pet.jpg';
     previewEdit.style.display = 'block';
 
-    // 🔹 Подключаем обработчик предпросмотра нового фото
-    photoInputEdit.value = ''; // сброс
-    photoInputEdit.addEventListener('change', () => {
-        const file = photoInputEdit.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                previewEdit.src = e.target.result;
-                previewEdit.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    }, { once: true }); // чтобы не дублировался при повторных открытиях
+    // 🔹 Подключаем кроппер
+    photoInputEdit.value = ''; // сбрасываем старое фото
+    initCropper(photoInputEdit, previewEdit);
 
     // 🔹 Загружаем список пород
     breedSelectEdit.innerHTML = '<option>Загрузка...</option>';
@@ -60,7 +51,7 @@ export function openEditModal(petId) {
     }
 
     fetch(`/breeds?type=${encodeURIComponent(species)}`)
-        .then(r => r.ok ? r.json() : [])
+        .then(r => (r.ok ? r.json() : []))
         .then(breeds => {
             breedSelectEdit.innerHTML = '';
             if (!Array.isArray(breeds) || breeds.length === 0) {
@@ -87,43 +78,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = document.getElementById('close-modal');
     const saveEditBtn = document.getElementById('save-edit-pet');
     const photoInputEdit = document.getElementById('edit-pet-photo');
+    const previewEdit = document.getElementById('edit-photo-preview');
 
-    closeModal.addEventListener('click', () => (modal.style.display = 'none'));
+    if (closeModal) {
+        closeModal.addEventListener('click', () => (modal.style.display = 'none'));
+    }
 
-    saveEditBtn.addEventListener('click', async () => {
-        const id = document.getElementById('edit-pet-id').value;
-        const fd = new FormData();
-        fd.append('name', document.getElementById('edit-pet-name').value);
-        fd.append('animal_id', document.getElementById('edit-pet-breed').value);
-        fd.append('birth_date', document.getElementById('edit-pet-birth').value);
-        fd.append('age', document.getElementById('edit-pet-age').value);
-        fd.append('_method', 'PUT');
+    if (saveEditBtn) {
+        saveEditBtn.addEventListener('click', async () => {
+            const id = document.getElementById('edit-pet-id').value;
+            const fd = new FormData();
+            fd.append('name', document.getElementById('edit-pet-name').value);
+            fd.append('animal_id', document.getElementById('edit-pet-breed').value);
+            fd.append('birth_date', document.getElementById('edit-pet-birth').value);
+            fd.append('age', document.getElementById('edit-pet-age').value);
+            fd.append('_method', 'PUT');
 
-        // 🔹 Добавляем фото, если выбрано
-        if (photoInputEdit.files.length > 0) {
-            fd.append('photo', photoInputEdit.files[0]);
-        }
-
-        const token = document.querySelector('meta[name="csrf-token"]')?.content || '';
-
-        try {
-            const res = await fetch(`/pets/${id}`, {
-                method: 'POST',
-                headers: { 'X-CSRF-TOKEN': token },
-                body: fd
-            });
-
-            const data = await res.json();
-            if (res.ok && data.success) {
-                showToast('Изменения сохранены', 'success');
-                modal.style.display = 'none';
-                setTimeout(() => location.reload(), 700);
-            } else {
-                showToast(data.message || 'Ошибка при сохранении', 'error');
+            // 🔹 Если фото выбрано
+            if (photoInputEdit.files.length > 0) {
+                const file = photoInputEdit.files[0];
+                fd.append('photo', file, 'pet.webp');
             }
-        } catch (err) {
-            console.error('Ошибка сохранения питомца:', err);
-            showToast('Ошибка сети', 'error');
-        }
-    });
+
+            const token = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+            try {
+                const res = await fetch(`/pets/${id}`, {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': token },
+                    body: fd
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showToast('Изменения сохранены', 'success');
+                    modal.style.display = 'none';
+                    setTimeout(() => location.reload(), 700);
+                } else {
+                    showToast(data.message || 'Ошибка при сохранении', 'error');
+                }
+            } catch (err) {
+                console.error('Ошибка сохранения питомца:', err);
+                showToast('Ошибка сети', 'error');
+            }
+        });
+    }
+
+    // Инициализация кроппера (чтобы сработало при загрузке)
+    const fileInput = document.getElementById('edit-pet-photo');
+    const previewImg = document.getElementById('edit-photo-preview');
+    if (fileInput && previewImg) {
+        initCropper(fileInput, previewImg);
+    }
 });
