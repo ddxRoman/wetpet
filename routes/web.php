@@ -15,7 +15,6 @@ use App\Http\Controllers\{
     ReviewController
 };
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,17 +52,31 @@ Route::post('reset/password', [ResetPasswordController::class, 'reset'])->name('
 // 🔒 ЗАЩИЩЁННЫЕ маршруты (только для авторизованных)
 // ======================================================
 Route::middleware(['auth'])->group(function () {
+
     // 👤 Личный кабинет
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
     Route::post('/account/update-city', [AccountController::class, 'updateCity'])->name('account.updateCity');
 
     // 🧾 Отзывы пользователя
-    Route::get('/account/reviews/{user}', [AccountController::class, 'getReviews'])->name('account.reviews');
-    Route::post('/reviews/{id}', [AccountController::class, 'updateReview']);
-    Route::delete('/reviews/{id}', [AccountController::class, 'deleteReview']);
-    Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto']);
-    Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt']);
+    Route::get('/account/reviews/{user}', [AccountController::class, 'getReviews'])
+        ->name('account.reviews');
+
+    // ✅ Обновление отзыва (используется при сохранении)
+    Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])
+        ->name('reviews.update');
+
+    // ✅ Удаление отзыва (fetch DELETE)
+    Route::delete('/reviews/{id}', [AccountController::class, 'deleteReview'])
+        ->name('reviews.delete');
+
+    // ✅ Удаление фото из отзыва
+    Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])
+        ->name('review_photos.delete');
+
+    // ✅ Удаление чека из отзыва
+    Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])
+        ->name('review_receipts.delete');
 
     // 🐾 Питомцы
     Route::get('/pets', [PetController::class, 'index'])->name('pets.index');

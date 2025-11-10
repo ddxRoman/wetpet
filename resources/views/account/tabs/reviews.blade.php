@@ -40,22 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const path = p.photo_path ?? '';
                 return `
                     <div class="media-item">
-                        <img src="/storage/${path}" alt="Фото" class="previewable" data-full="/storage/${path}">
+                        <img src="${path ? '/storage/' + path : ''}" alt="Фото" class="previewable" data-full="${path ? '/storage/' + path : ''}">
                         <button type="button" class="btn-del-photo" data-photo-id="${p.id}">×</button>
                     </div>`;
-            }).join('')}</div>`
-            : '';
+            }).join('')}</div>` : '';
 
         const receipts = r.receipts?.length
             ? `<div class="media-group"><strong>Чеки:</strong> ${r.receipts.map(f => {
                 const path = f.receipt_path ?? '';
                 return `
                     <div class="media-item">
-                        <a href="/storage/${path}" target="_blank" class="receipt-link">📄 Чек</a>
+                        <a href="${path ? '/storage/' + path : '#'}" target="_blank" class="receipt-link">📄 Чек</a>
                         <button type="button" class="btn-del-receipt" data-receipt-id="${f.id}">×</button>
                     </div>`;
-            }).join('')}</div>`
-            : '';
+            }).join('')}</div>` : '';
 
         return `
             <article class="review-card" data-id="${r.id}">
@@ -93,22 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         <label>Оценка (1-5)
                             <input name="rating" type="number" class="input-rating" min="1" max="5" value="${r.rating ?? ''}">
                         </label>
-
                         <label>Добавить фото
                             <input type="file" class="input-photos" accept="image/*" multiple>
                         </label>
                         <label>Добавить чеки
                             <input type="file" class="input-receipts" accept="image/*,application/pdf" multiple>
                         </label>
-
                         <div class="edit-actions">
                             <button type="button" class="btn-cancel">Отмена</button>
                             <button type="button" class="btn-save">Сохранить</button>
                         </div>
                     </form>
                 </div>
-            </article>
-        `;
+            </article>`;
     }
 
     function escapeHtml(str) {
@@ -140,74 +135,85 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // ✅ Сохранение
         if (e.target.classList.contains('btn-save')) {
             const id = card.dataset.id;
             const formData = new FormData();
+            formData.append('_token', csrf);
+            formData.append('_method', 'PUT');
             formData.append('liked', card.querySelector('.input-liked').value.trim());
             formData.append('disliked', card.querySelector('.input-disliked').value.trim());
             formData.append('content', card.querySelector('.input-content').value.trim());
             formData.append('rating', card.querySelector('.input-rating').value.trim());
 
-            // файлы фото и чеков
             Array.from(card.querySelector('.input-photos').files).forEach(f => formData.append('photos[]', f));
             Array.from(card.querySelector('.input-receipts').files).forEach(f => formData.append('receipts[]', f));
 
             try {
-                const res = await fetch(`/reviews/${id}`, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': csrf },
-                    body: formData
-                });
+                const res = await fetch(`/reviews/${id}`, { method: 'POST', body: formData });
                 if (!res.ok) throw new Error('Ошибка сохранения');
                 showToast('Отзыв обновлён', 'success');
                 loadReviews();
             } catch (err) {
                 console.error(err);
-                showToast('Не удалось сохранить', 'error');
+                showToast('Не удалось сохранить (403/419)', 'error');
             }
             return;
         }
 
+        // ✅ Удаление
         if (e.target.classList.contains('btn-delete')) {
             if (!confirm('Удалить этот отзыв?')) return;
             const id = card.dataset.id;
+            const formData = new FormData();
+            formData.append('_token', csrf);
+            formData.append('_method', 'DELETE');
             try {
                 const res = await fetch(`/reviews/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': csrf }
+                    method: 'POST',
+                    body: formData
                 });
-                if (!res.ok) throw new Error();
+                if (!res.ok) throw new Error('Ошибка удаления');
                 card.remove();
                 showToast('Отзыв удалён', 'success');
-            } catch {
-                showToast('Ошибка удаления', 'error');
+            } catch (err) {
+                console.error(err);
+                showToast('Ошибка удаления (403/419)', 'error');
             }
             return;
         }
 
+        // ✅ Удаление фото
         if (e.target.classList.contains('btn-del-photo')) {
             const pid = e.target.dataset.photoId;
+            const form = new FormData();
+            form.append('_token', csrf);
+            form.append('_method', 'DELETE');
             try {
                 const res = await fetch(`/review_photos/${pid}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': csrf }
+                    method: 'POST',
+                    body: form
                 });
                 if (res.ok) e.target.closest('.media-item').remove();
             } catch {}
         }
 
+        // ✅ Удаление чека
         if (e.target.classList.contains('btn-del-receipt')) {
             const rid = e.target.dataset.receiptId;
+            const form = new FormData();
+            form.append('_token', csrf);
+            form.append('_method', 'DELETE');
             try {
                 const res = await fetch(`/review_receipts/${rid}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': csrf }
+                    method: 'POST',
+                    body: form
                 });
                 if (res.ok) e.target.closest('.media-item').remove();
             } catch {}
         }
 
-        // превью фото
+        // ✅ Превью фото
         if (e.target.classList.contains('previewable')) {
             const fullSrc = e.target.dataset.full;
             openPreview(fullSrc);
@@ -239,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (location.hash === '#reviews') { loadReviews(); loaded = true; }
 });
 </script>
-
 <style>
 .reviews-container { display:flex; flex-direction:column; gap:14px; }
 .review-card { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:12px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
