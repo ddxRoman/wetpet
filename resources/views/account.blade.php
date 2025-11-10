@@ -5,6 +5,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 
+
 @section('content')
 <!DOCTYPE html>
 <html lang="ru">
@@ -35,10 +36,10 @@
 
     <div class="account-container">
         <div class="sidebar">
-            <button class="tab-btn active" data-tab="profile">Профиль</button>
-            <button class="tab-btn" data-tab="pets">Питомцы</button>
+            <button  class="tab-btn active" data-tab="profile">Профиль</button>
+            <button  class="tab-btn" data-tab="pets">Питомцы</button>
             <!-- <button class="tab-btn" data-tab="favorits">Избранное</button> -->
-            <!-- <button class="tab-btn" data-tab="rewievs">Отзывы</button> -->
+            <button  class="tab-btn" data-tab="reviews">Отзывы</button>
         </div>
 
         <div class="account-content">
@@ -153,6 +154,8 @@
 
                 <div id="pets-list"></div>
             </div>
+            <!-- Отзывы -->
+             @include('account.tabs.reviews')
         </div>
     </div>
 
@@ -786,6 +789,41 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    function openTab(tab) {
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.style.display = 'none');
+
+        const btn = document.querySelector(`[data-tab="${tab}"]`);
+        const content = document.getElementById(tab);
+
+        if (btn && content) {
+            btn.classList.add('active');
+            content.style.display = 'block';
+            location.hash = tab; // 👈 устанавливаем якорь в URL
+        }
+    }
+
+    // при клике по вкладке
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => openTab(btn.dataset.tab));
+    });
+
+    // открываем вкладку по якорю, если он есть
+    const currentTab = location.hash.replace('#', '') || 'profile';
+    openTab(currentTab);
+
+    // реагируем на смену якоря вручную (нажатие Назад/Вперёд)
+    window.addEventListener('hashchange', () => {
+        const tab = location.hash.replace('#', '') || 'profile';
+        openTab(tab);
+    });
+});
+</script>
 
 
 </body>

@@ -20,24 +20,20 @@ return new class extends Migration {
             
             // Оценка (1–5)
             $table->unsignedTinyInteger('rating')->nullable();
-
             // Текст отзыва
             $table->text('content')->nullable();
             
             // Что понравилось / не понравилось
             $table->text('liked')->nullable();
             $table->text('disliked')->nullable();
-
             // 🧾 Чек — файл подтверждения
             $table->string('receipt_path')->nullable();
                         // ✅ Статус проверки чека
             $table->enum('receipt_verified', ['pending', 'verified', 'rejected'])
                   ->default('pending')
                   ->collation('utf8mb4_unicode_ci');
-
             // 🐾 Информация о питомце
             $table->unsignedTinyInteger('pet_id')->nullable();
-
             
             $table->timestamps();
         });

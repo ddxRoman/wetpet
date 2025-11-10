@@ -36,13 +36,10 @@ class AuthenticatedSessionController extends Controller
     ]);
 
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-
             return redirect()->intended('/');
         }
-
         return back()->withErrors([
             'email' => 'Неверные учетные данные.',
         ]);

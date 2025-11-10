@@ -1,27 +1,26 @@
 <?php
-use App\Http\Controllers\ClinicController;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PetController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ReviewController;
-use App\Models\City;
+use App\Http\Controllers\{
+    ClinicController,
+    AuthController,
+    AccountController,
+    DoctorController,
+    CityController,
+    Auth\ForgotPasswordController,
+    Auth\ResetPasswordController,
+    ProfileController,
+    PetController,
+    ReviewController
+};
+
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
-Route::post('/test-pets', function (\Illuminate\Http\Request $r) {
-    return response()->json(['ok' => true, 'data' => $r->all()]);
-});
-
 
 // 🏠 Главная
 Route::get('/', [DoctorController::class, 'index'])->name('home');
@@ -41,8 +40,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/cities/all', [CityController::class, 'all'])->name('cities.all');
 Route::post('/cities/add', [CityController::class, 'add'])->name('cities.add');
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
-Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
-Route::post('/account/update-city', [AccountController::class, 'updateCity'])->name('account.updateCity');
+Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');
+Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
 
 // 📧 Сброс пароля
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -50,29 +49,40 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkE
 Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('reset/password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-// 🔒 Защищённые маршруты
+// ======================================================
+// 🔒 ЗАЩИЩЁННЫЕ маршруты (только для авторизованных)
+// ======================================================
 Route::middleware(['auth'])->group(function () {
     // 👤 Личный кабинет
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
+    Route::post('/account/update-city', [AccountController::class, 'updateCity'])->name('account.updateCity');
+
+    // 🧾 Отзывы пользователя
+    Route::get('/account/reviews/{user}', [AccountController::class, 'getReviews'])->name('account.reviews');
+    Route::post('/reviews/{id}', [AccountController::class, 'updateReview']);
+    Route::delete('/reviews/{id}', [AccountController::class, 'deleteReview']);
+    Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto']);
+    Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt']);
+
     // 🐾 Питомцы
     Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
     Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
+    Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
+    Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
+    Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
+
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
-Route::post('/account/update', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-Route::delete('/pets/{pet}', [App\Http\Controllers\PetController::class, 'destroy'])->name('pets.destroy');
+// 🏥 Клиники и отзывы (публичные)
 Route::resource('clinics', ClinicController::class);
-Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
-Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
+Route::resource('reviews', ReviewController::class);
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+// 👤 Страница пользователя
 Route::get('/user/{id}', function ($id) {
     $user = \App\Models\User::findOrFail($id);
     return view('pages.user.profile', compact('user'));
 })->name('user.profile');
-
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::resource('reviews', ReviewController::class);
-
-

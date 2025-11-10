@@ -71,48 +71,40 @@ class ReviewController extends Controller
     /**
      * Обновление отзыва
      */
-    public function update(Request $request, Review $review)
+public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'rating' => 'integer|min:1|max:5',
-            'liked' => 'nullable|string|max:255',
-            'disliked' => 'nullable|string|max:255',
-            'content' => 'nullable|string|max:2000',
-            'photos.*' => 'nullable|image|max:5120',
-        ]);
+        $review = Review::findOrFail($id);
 
-        $review->update($validated);
-
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('reviews/photos', 'public');
-                ReviewPhoto::create([
-                    'review_id' => $review->id,
-                    'photo_path' => $path,
-                ]);
-            }
+        if ($review->user_id !== auth()->id()) {
+            abort(403);
         }
 
-        return redirect()
-            ->to(url("/clinics/{$review->reviewable_id}#reviews"))
-            ->with('success', 'Отзыв успешно обновлён.');
-    }
+        $review->update([
+            'liked' => $request->liked,
+            'disliked' => $request->disliked,
+            'content' => $request->content,
+            'rating' => $request->rating,
+        ]);
 
+        return response()->json(['success' => true]);
+    }
     /**
      * Удаление отзыва
      */
-    public function destroy(Review $review)
-    {
-        if (Auth::id() !== $review->user_id) {
-            return back()->withErrors(['error' => 'Нет прав для удаления этого отзыва.']);
-        }
 
-        $clinicId = $review->reviewable_id;
+    public function destroy($id)
+    {
+        $review = Review::findOrFail($id);
+
+        if ($review->user_id !== auth()->id()) {
+            abort(403);
+        }
 
         $review->delete();
 
-        return redirect()
-            ->to(url("/clinics/{$clinicId}#reviews"))
-            ->with('success', 'Отзыв удалён.');
+        return response()->json(['success' => true]);
     }
+
+
+
 }

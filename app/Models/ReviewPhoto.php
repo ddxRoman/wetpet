@@ -17,5 +17,9 @@ public function photos()
 {
     return $this->hasMany(\App\Models\ReviewPhoto::class);
 }
+    public function review()
+    {
+        return $this->belongsTo(Review::class);
+    }
 
 }

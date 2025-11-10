@@ -51,13 +51,13 @@ class Review extends Model
         return $this->belongsTo(Pet::class, 'pet_id');
     }
 
-    public function receipt()
+    public function receipts()
     {
-        return $this->hasOne(ReviewReceipt::class, 'review_id');
+            return $this->hasMany(ReviewReceipt::class, 'review_id');
     }
 public function clinic()
 {
-    return $this->belongsTo(\App\Models\Clinic::class, 'clinic_id');
+    return $this->belongsTo(\App\Models\Clinic::class, 'reviewable_id');
 }
 
 }

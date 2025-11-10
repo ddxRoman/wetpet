@@ -14,6 +14,7 @@ class ReviewReceipt extends Model
         'clinic_id',
         'path',
         'status',
+        'path',
     ];
 
 public function review()
