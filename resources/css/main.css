@@ -394,7 +394,6 @@ body.body_page {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-
 }
 
 /* Скрыть стандартный navbar */
@@ -1264,4 +1263,279 @@ a{
 
 .delete-pet-btn:active {
     transform: scale(0.95);
+}
+/* === Раздел отзывов пользователя === */
+.tab-content#reviews {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    max-width: 900px;
+    margin: 30px auto;
+    font-family: system-ui, sans-serif;
+}
+
+#reviews h2 {
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    color: #222;
+    text-align: center;
+}
+
+.reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.empty-message {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+/* === Карточка отзыва === */
+.review-card {
+    background: #fafafa;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.review-card:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+
+/* === Заголовок карточки === */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.review-header .clinic-block {
+    font-weight: 600;
+    color: #111;
+}
+.review-header .clinic-name {
+    color: #2563eb;
+    text-decoration: none;
+}
+.review-header .clinic-name:hover {
+    text-decoration: underline;
+}
+.review-header .clinic-address {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 2px;
+}
+.review-header .review-date {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 4px;
+}
+.review-header .right button {
+    margin-left: 6px;
+}
+
+/* === Тело отзыва === */
+.review-body {
+    margin-top: 14px;
+}
+.review-body .line {
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    color: #333;
+}
+.review-body strong {
+    color: #111;
+}
+
+/* === Кнопки === */
+.btn-toggle,
+.btn-delete,
+.btn-save,
+.btn-cancel {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.btn-toggle { background: #3b82f6; color: #fff; }
+.btn-toggle:hover { background: #2563eb; }
+.btn-delete { background: #ef4444; color: #fff; }
+.btn-delete:hover { background: #dc2626; }
+.btn-save { background: #10b981; color: #fff; }
+.btn-save:hover { background: #059669; }
+.btn-cancel { background: #9ca3af; color: #fff; }
+.btn-cancel:hover { background: #6b7280; }
+.btn-toggle:active,
+.btn-delete:active,
+.btn-save:active,
+.btn-cancel:active { transform: scale(0.97); }
+
+/* === Редактирование === */
+.edit-panel {
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    padding: 14px;
+    margin-top: 10px;
+}
+.edit-panel label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+.edit-panel input[type="text"],
+.edit-panel input[type="number"],
+.edit-panel textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    resize: vertical;
+}
+.edit-panel input:focus,
+.edit-panel textarea:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+.edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* === Фото и чеки === */
+.media-group {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.media-group strong {
+    width: 100%;
+    font-weight: 600;
+    color: #222;
+}
+.media-item {
+    position: relative;
+    display: inline-block;
+}
+.media-item img {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.media-item img:hover {
+    transform: scale(1.05);
+}
+.btn-del-photo,
+.btn-del-receipt {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: rgba(239,68,68,0.9);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+}
+.btn-del-photo:hover,
+.btn-del-receipt:hover {
+    background: #dc2626;
+}
+
+/* === Ссылка на чек === */
+.receipt-link {
+    display: inline-block;
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+.receipt-link:hover {
+    background: #1e40af;
+}
+
+/* === Просмотр фото === */
+.photo-preview-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.photo-preview {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+.photo-preview img {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+.photo-preview .close-preview {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(239,68,68,0.95);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.photo-preview .close-preview:hover {
+    background: #dc2626;
+}
+
+/* === Адаптивность === */
+@media (max-width: 768px) {
+    .tab-content#reviews {
+        padding: 20px;
+        border-radius: 10px;
+    }
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .review-header .right {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .media-item img {
+        width: 70px;
+        height: 70px;
+    }
 }

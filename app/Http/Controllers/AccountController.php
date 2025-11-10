@@ -78,8 +78,6 @@ class AccountController extends Controller
     // Получение отзывов пользователя (с фото и чеками)
 public function getReviews($userId)
 {
-    // \Log::info("getReviews вызван пользователем ID $userId");
-
     try {
         $reviews = Review::where('user_id', $userId)
             ->with([
@@ -88,18 +86,18 @@ public function getReviews($userId)
                 'receipts:id,review_id,path'
             ])
             ->latest()
-            ->get(['id', 'user_id', 'reviewable_id', 'liked', 'disliked', 'content', 'rating', 'created_at']);
+            ->get(['id', 'user_id', 'reviewable_id', 'reviewable_type', 'liked', 'disliked', 'content', 'rating', 'created_at']);
 
         $formatted = $reviews->map(function ($r) {
-            $clinic = $r->reviewable;
+            $clinic = $r->reviewable; // может быть null
             return [
                 'id'           => $r->id,
-                'clinic_id'    => $clinic->id ?? null,
-                'clinic_name'  => $clinic->name ?? '—',
-                'region'       => $clinic->region ?? null,
-                'city'         => $clinic->city ?? null,
-                'street'       => $clinic->street ?? null,
-                'house'        => $clinic->house ?? null,
+                'clinic_id'    => $clinic?->id,
+                'clinic_name'  => $clinic?->name ?? '—',
+                'region'       => $clinic?->region ?? null,
+                'city'         => $clinic?->city ?? null,
+                'street'       => $clinic?->street ?? null,
+                'house'        => $clinic?->house ?? null,
                 'liked'        => $r->liked,
                 'disliked'     => $r->disliked,
                 'content'      => $r->content,
@@ -122,6 +120,7 @@ public function getReviews($userId)
         return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);
     }
 }
+
 
 
 
