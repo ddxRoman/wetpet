@@ -116,28 +116,27 @@
                 <h2>Мои питомцы</h2>
                 <button id="add-pet-btn" class="save-btn" style="margin-bottom:15px;">+ Добавить питомца</button>
 
-<div id="add-pet-form" style="display:none; margin-bottom:20px;">
-    <select id="type-select" style="width:100%; margin-bottom:10px;">
+<form id="add-pet-form" enctype="multipart/form-data" style="display:none; margin-bottom:20px;">
+    <select id="type-select" name="type" style="width:100%; margin-bottom:10px;">
         <option value="">Выберите тип животного...</option>
     </select>
 
-    <select id="breed-select" style="width:100%; margin-bottom:10px;" disabled>
+    <select id="breed-select" name="breed" style="width:100%; margin-bottom:10px;" disabled>
         <option value="">Сначала выберите тип...</option>
     </select>
 
-    <input type="text" id="pet-name" placeholder="Имя питомца" style="width:100%; margin-bottom:10px;">
+    <input type="text" id="pet-name" name="name" placeholder="Имя питомца" style="width:100%; margin-bottom:10px;">
 
     <label>Пол питомца:</label>
-<select id="pet-gender" style="width:100%; margin-bottom:10px;">
-    <option value="">Выберите пол...</option>
-    <option value="male">Самец</option>
-    <option value="female">Самка</option>
-</select>
-
+    <select id="pet-gender" name="gender" style="width:100%; margin-bottom:10px;">
+        <option value="">Выберите пол...</option>
+        <option value="male">Самец</option>
+        <option value="female">Самка</option>
+    </select>
 
     <div id="birth-block">
         <label>Дата рождения:</label>
-        <input type="date" id="pet-birth" style="width:100%;">
+        <input type="date" id="pet-birth" name="birth" style="width:100%;">
     </div>
 
     <label style="display:flex; align-items:center; gap:8px; margin-top:8px;">
@@ -146,16 +145,17 @@
 
     <div id="age-block" style="display:none;">
         <label>Возраст:</label>
-        <input type="number" id="pet-age" min="0" style="width:100%;">
+        <input type="number" id="pet-age" name="age" min="0" style="width:100%;">
     </div>
 
-    <!-- 🔹 Новое поле: Фото питомца -->
+    <!-- Фото питомца -->
     <label style="display:block; margin-top:10px;">Фото питомца:</label>
-    <input type="file" id="pet-photo" accept="image/*" style="width:100%; margin-bottom:10px;">
+    <input type="file" id="pet-photo" name="photo" accept="image/*" style="width:100%; margin-bottom:10px;">
     <img id="photo-preview" src="" alt="" style="max-width:100px; display:none; border-radius:8px; margin-bottom:10px;">
 
-    <button id="save-pet-btn" class="save-btn" style="margin-top:10px;">Сохранить</button>
-</div>
+    <button id="save-pet-btn" type="submit" class="save-btn" style="margin-top:10px;">Сохранить</button>
+</form>
+
 
 <div id="pets-list" class="pets-grid"></div>
 

@@ -85,9 +85,21 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
     Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
 
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pets', [PetController::class, 'index']);
+    Route::post('/pets', [PetController::class, 'store']);
+    Route::delete('/pets/{id}', [PetController::class, 'destroy']);
+});
+
+
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
+
+Route::get('/breeds', [PetController::class, 'getBreeds']);
+
 
 // 🏥 Клиники и отзывы (публичные)
 Route::resource('clinics', ClinicController::class);
