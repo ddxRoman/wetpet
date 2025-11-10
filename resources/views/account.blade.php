@@ -196,6 +196,7 @@
     <label style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
       <input type="checkbox" id="edit-unknown-birth"> Я не знаю точную дату
     </label>
+    
 
     <div id="edit-age-block" style="display:none; margin-bottom:10px;">
       <label>Возраст</label>
@@ -216,7 +217,11 @@
 
 
     <button id="save-edit-pet" class="save-btn">Сохранить изменения</button>
-  </div>
+
+
+
+</div>
+
 </div>
 
 

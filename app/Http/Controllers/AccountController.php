@@ -78,7 +78,7 @@ class AccountController extends Controller
     // Получение отзывов пользователя (с фото и чеками)
 public function getReviews($userId)
 {
-    \Log::info("getReviews вызван пользователем ID $userId");
+    // \Log::info("getReviews вызван пользователем ID $userId");
 
     try {
         $reviews = Review::where('user_id', $userId)
