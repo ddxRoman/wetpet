@@ -68,7 +68,7 @@
                                  id="avatar-preview"
                                  style="cursor:pointer;">
                         </label>
-                        <input type="file" id="avatar-input" accept="image/*">
+                        <input type="file" id="avatar-input" name="avatar" accept="image/*">
 
                     </div>
 
