@@ -70,8 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <label>Не понравилось <input name="disliked" type="text" class="input-disliked" value="${escapeAttr(r.disliked ?? '')}"></label>
                         <label>Отзыв <textarea name="content" class="input-content" rows="4">${escapeHtml(r.content ?? '')}</textarea></label>
                         <label>Оценка (1-5) <input name="rating" type="number" min="1" max="5" class="input-rating" value="${r.rating ?? ''}"></label>
-                        <label>Добавить фото <input type="file" class="input-photos" accept="image/*" multiple></label>
-                        <label>Добавить чеки <input type="file" class="input-receipts" accept="image/*,application/pdf" multiple></label>
+                        <label>Добавить чеки <input type="file" name="path" class="input-receipts" accept="image/*,application/pdf" multiple></label>
+                        <label>Добавить фото <input type="file" name="photo_path" class="input-photos" accept="image/*" multiple></label>
                         <div class="edit-actions">
                             <button type="button" class="btn-cancel">Отмена</button>
                             <button type="button" class="btn-save">Сохранить</button>
@@ -166,32 +166,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Удаление фото
-        if (e.target.classList.contains('btn-del-photo')) {
-            const pid = e.target.dataset.photoId;
-            try {
-                const res = await fetch(`/review_photos/${pid}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': csrfToken },
-                    credentials: 'same-origin'
-                });
-                if (res.ok) e.target.closest('.media-item').remove();
-            } catch (err) { console.error(err); }
-            return;
+// Удаление фото
+if (e.target.classList.contains('btn-del-photo')) {
+    if (!confirm('Удалить это фото?')) return;
+    const pid = e.target.dataset.photoId;
+    try {
+        const res = await fetch(`/review_photos/${pid}`, {
+            method: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': csrfToken },
+            credentials: 'same-origin'
+        });
+        if (res.ok) {
+            e.target.closest('.media-item').remove();
+            showToast('Фото удалено', 'success');
+        } else {
+            showToast('Ошибка удаления фото', 'error');
         }
+    } catch (err) {
+        console.error(err);
+        showToast('Ошибка при удалении фото', 'error');
+    }
+    return;
+}
+
 
         // Удаление чека
-        if (e.target.classList.contains('btn-del-receipt')) {
-            const rid = e.target.dataset.receiptId;
-            try {
-                const res = await fetch(`/review_receipts/${rid}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': csrfToken },
-                    credentials: 'same-origin'
-                });
-                if (res.ok) e.target.closest('.media-item').remove();
-            } catch (err) { console.error(err); }
-            return;
+// Удаление чека
+if (e.target.classList.contains('btn-del-receipt')) {
+    if (!confirm('Удалить этот чек?')) return;
+    const rid = e.target.dataset.receiptId;
+    try {
+        const res = await fetch(`/review_receipts/${rid}`, {
+            method: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': csrfToken },
+            credentials: 'same-origin'
+        });
+        if (res.ok) {
+            e.target.closest('.media-item').remove();
+            showToast('Чек удалён', 'success');
+        } else {
+            showToast('Ошибка удаления чека', 'error');
         }
+    } catch (err) {
+        console.error(err);
+        showToast('Ошибка при удалении чека', 'error');
+    }
+    return;
+}
+
 
         // Просмотр фото
         if (e.target.classList.contains('previewable')) {
