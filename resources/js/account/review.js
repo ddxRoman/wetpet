@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <label>Не понравилось <input name="disliked" type="text" class="input-disliked" value="${escapeAttr(r.disliked ?? '')}"></label>
                         <label>Отзыв <textarea name="content" class="input-content" rows="4">${escapeHtml(r.content ?? '')}</textarea></label>
                         <label>Оценка (1-5) <input name="rating" type="number" min="1" max="5" class="input-rating" value="${r.rating ?? ''}"></label>
-                        <label>Добавить чеки <input type="file" name="path" class="input-receipts" accept="image/*,application/pdf" multiple></label>
+                        <label>Добавить чеки <input type="file" name="receipts[]" class="input-receipts" accept="image/*,application/pdf" multiple></label>
                         <label>Добавить фото <input type="file" name="photo_path" class="input-photos" accept="image/*" multiple></label>
                         <div class="edit-actions">
                             <button type="button" class="btn-cancel">Отмена</button>
@@ -193,7 +193,7 @@ if (e.target.classList.contains('btn-del-photo')) {
         // Удаление чека
 // Удаление чека
 if (e.target.classList.contains('btn-del-receipt')) {
-    if (!confirm('Удалить этот чек?')) return;
+    if (!confirm('Вы уверены что хотите удалить чек? Его нельзя будет восстановить и если вы передумаете его придётся загружать заново')) return;
     const rid = e.target.dataset.receiptId;
     try {
         const res = await fetch(`/review_receipts/${rid}`, {

@@ -72,24 +72,50 @@ class ReviewController extends Controller
      * Обновление отзыва
      */
 public function update(Request $request, $id)
-    {
-        
-        $review = Review::findOrFail($id);
+{
+    $review = Review::findOrFail($id);
 
-
-        if ($review->user_id !== auth()->id()) {
-            abort(403);
-        }
-
-        $review->update([
-            'liked' => $request->liked,
-            'disliked' => $request->disliked,
-            'content' => $request->content,
-            'rating' => $request->rating,
-        ]);
-
-        return response()->json(['success' => true]);
+    // Проверка владельца
+    if ($review->user_id !== auth()->id()) {
+        abort(403);
     }
+
+    // Обновляем основные поля
+    $review->update([
+        'liked' => $request->input('liked'),
+        'disliked' => $request->input('disliked'),
+        'content' => $request->input('content'),
+        'rating' => $request->input('rating'),
+    ]);
+
+    // === 📸 Добавляем новые фото ===
+    if ($request->hasFile('photos')) {
+        foreach ($request->file('photos') as $photo) {
+            $path = $photo->store('reviews/photos', 'public');
+            $review->photos()->create([
+                'photo_path' => $path,
+            ]);
+        }
+    }
+
+    // === 🧾 Добавляем новые чеки ===
+// === 🧾 Добавляем новые чеки ===
+if ($request->hasFile('receipts')) {
+    foreach ($request->file('receipts') as $file) {
+        $path = $file->store('reviews/receipts', 'public');
+        ReviewReceipt::create([
+            'review_id' => $review->id,
+            'clinic_id' => $review->reviewable_id,
+            'path' => $path,
+            'status' => 'pending',
+        ]);
+    }
+}
+
+
+    return response()->json(['success' => true]);
+}
+
     /**
      * Удаление отзыва
      */

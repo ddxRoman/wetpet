@@ -14,12 +14,11 @@ class ReviewReceipt extends Model
         'clinic_id',
         'path',
         'status',
-        'path',
     ];
 
 public function review()
 {
-    return $this->belongsTo(\App\Models\Review::class, 'review_id');
+    return $this->belongsTo(Review::class);
 }
 
 
