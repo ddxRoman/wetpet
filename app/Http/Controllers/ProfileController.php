@@ -11,13 +11,13 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
-
+$user->city_id = $request->city_id;
         // Валидация данных
         $request->validate([
             'name' => 'required|string|max:255',
             'nickname' => 'required|string|max:100',
             'birth_date' => 'nullable|date',
-            'city' => 'nullable|string|max:255',
+            'city_id' => 'nullable|exists:cities,id|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'avatar' => 'nullable|image|max:2048', // до 2MB
         ]);
@@ -27,7 +27,9 @@ class ProfileController extends Controller
         $user->nickname = $request->nickname;
         $user->birth_date = $request->birth_date;
         $user->email = $request->email;
-        $user->city = $request->city; // если это текстовое поле, а не отдельная таблица
+if ($request->filled('city_id')) {
+    $user->city_id = $request->city_id;
+}
 
         // Загрузка нового аватара (если был отправлен)
         if ($request->hasFile('avatar')) {
@@ -42,4 +44,15 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Профиль успешно обновлён!');
     }
+    public function updateCity(Request $request)
+{
+    $request->validate(['city_id' => 'required|exists:cities,id']);
+
+    $user = Auth::user();
+    $user->city_id = $request->city_id;
+    $user->save();
+
+    return response()->json(['success' => true, 'city_id' => $user->city_id]);
+}
+
 }

@@ -41,6 +41,8 @@ Route::post('/cities/add', [CityController::class, 'add'])->name('cities.add');
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');
 Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
+Route::post('/account/update-city', [ProfileController::class, 'updateCity'])->name('account.updateCity');
+
 
 // 📧 Сброс пароля
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -56,7 +58,6 @@ Route::middleware(['auth'])->group(function () {
     // 👤 Личный кабинет
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-    Route::post('/account/update-city', [AccountController::class, 'updateCity'])->name('account.updateCity');
 
     // 🧾 Отзывы пользователя (всегда для текущего пользователя)
     Route::get('/account/reviews', [AccountController::class, 'getReviews'])
