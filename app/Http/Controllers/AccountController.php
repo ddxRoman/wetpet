@@ -11,13 +11,14 @@ use App\Models\ReviewReceipt;
 
 class AccountController extends Controller
 {
-    // Отображение страницы аккаунта
+    // === Страница аккаунта ===
     public function index()
     {
         $user = Auth::user();
         return view('account', compact('user'));
     }
 
+    // === Обновление города ===
     public function updateCity(Request $request)
     {
         $request->validate([
@@ -27,10 +28,7 @@ class AccountController extends Controller
         $city = \App\Models\City::where('slug', $request->city_slug)->first();
 
         if (!$city) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Город не найден'
-            ]);
+            return response()->json(['success' => false, 'message' => 'Город не найден']);
         }
 
         $user = auth()->user();
@@ -40,7 +38,7 @@ class AccountController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // Обновление данных профиля
+    // === Обновление профиля ===
     public function updateProfile(Request $request)
     {
         $user = auth()->user();
@@ -58,7 +56,6 @@ class AccountController extends Controller
             if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
                 Storage::delete('public/' . $user->avatar);
             }
-
             $path = $request->file('avatar')->store('avatars', 'public');
             $user->avatar = $path;
         }
@@ -75,67 +72,72 @@ class AccountController extends Controller
         return redirect()->back()->with('success', 'Профиль обновлён');
     }
 
-    // Получение отзывов пользователя (с фото и чеками)
-public function getReviews($userId)
-{
-    try {
-        $reviews = Review::where('user_id', $userId)
-            ->with([
-                'reviewable:id,name,region,city,street,house',
-                'photos:id,review_id,photo_path',
-                'receipts:id,review_id,path'
-            ])
-            ->latest()
-            ->get(['id', 'user_id', 'reviewable_id', 'reviewable_type', 'liked', 'disliked', 'content', 'rating', 'created_at']);
+    // === Получение отзывов текущего пользователя ===
+    public function getReviews()
+    {
+        $userId = auth()->id();
 
-        $formatted = $reviews->map(function ($r) {
-            $clinic = $r->reviewable; // может быть null
-            return [
-                'id'           => $r->id,
-                'clinic_id'    => $clinic?->id,
-                'clinic_name'  => $clinic?->name ?? '—',
-                'region'       => $clinic?->region ?? null,
-                'city'         => $clinic?->city ?? null,
-                'street'       => $clinic?->street ?? null,
-                'house'        => $clinic?->house ?? null,
-                'liked'        => $r->liked,
-                'disliked'     => $r->disliked,
-                'content'      => $r->content,
-                'rating'       => $r->rating,
-                'created_at'   => $r->created_at,
-                'photos'       => $r->photos->map(fn($p) => [
-                    'id' => $p->id,
-                    'photo_path' => $p->photo_path,
-                ]),
-                'receipts'     => $r->receipts->map(fn($f) => [
-                    'id' => $f->id,
-                    'receipt_path' => $f->path,
-                ]),
-            ];
-        });
+        try {
+            $reviews = Review::where('user_id', $userId)
+                ->with([
+                    'reviewable:id,name,region,city,street,house',
+                    'photos:id,review_id,photo_path',
+                    'receipts:id,review_id,path'
+                ])
+                ->latest()
+                ->get();
 
-        return response()->json($formatted);
-    } catch (\Throwable $e) {
-        \Log::error('Ошибка getReviews: '.$e->getMessage().' ('.$e->getFile().':'.$e->getLine().')');
-        return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);
+            if ($reviews->isEmpty()) {
+                return response()->json([]);
+            }
+
+            $formatted = $reviews->map(function ($r) {
+                $clinic = $r->reviewable;
+                return [
+                    'id' => $r->id,
+                    'clinic_id' => $clinic?->id,
+                    'clinic_name' => $clinic?->name ?? '—',
+                    'region' => $clinic?->region,
+                    'city' => $clinic?->city,
+                    'street' => $clinic?->street,
+                    'house' => $clinic?->house,
+                    'liked' => $r->liked,
+                    'disliked' => $r->disliked,
+                    'content' => $r->content,
+                    'rating' => $r->rating,
+                    'created_at' => $r->created_at,
+                    'photos' => $r->photos->map(fn($p) => [
+                        'id' => $p->id,
+                        'photo_path' => $p->photo_path,
+                    ]),
+                    'receipts' => $r->receipts->map(fn($f) => [
+                        'id' => $f->id,
+                        'receipt_path' => $f->path,
+                    ]),
+                ];
+            });
+
+            return response()->json($formatted);
+        } catch (\Throwable $e) {
+            \Log::error('Ошибка getReviews: ' . $e->getMessage());
+            return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);
+        }
     }
-}
-
-
-
 
     // === Обновление отзыва ===
     public function updateReview(Request $request, $id)
     {
         $review = Review::findOrFail($id);
 
-        $this->authorize('update', $review);
+        if ($review->user_id !== auth()->id()) {
+            abort(403, 'Нет прав для изменения этого отзыва.');
+        }
 
         $request->validate([
-            'liked'    => 'nullable|string|max:500',
+            'liked' => 'nullable|string|max:500',
             'disliked' => 'nullable|string|max:500',
-            'content'  => 'nullable|string|max:2000',
-            'rating'   => 'nullable|numeric|min:1|max:5',
+            'content' => 'nullable|string|max:2000',
+            'rating' => 'nullable|numeric|min:1|max:5',
             'photos.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'receipts.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:4096',
         ]);
@@ -171,24 +173,27 @@ public function getReviews($userId)
     public function deleteReview($id)
     {
         $review = Review::findOrFail($id);
-        $this->authorize('delete', $review);
 
-        // Удаляем фото и чеки
+        if ($review->user_id !== auth()->id()) {
+            abort(403, 'Нет прав для удаления этого отзыва.');
+        }
+
         foreach ($review->photos as $photo) {
             Storage::delete('public/' . $photo->photo_path);
             $photo->delete();
         }
-foreach ($review->receipts as $receipt) {
-    Storage::delete('public/' . $receipt->path);
-    $receipt->delete();
-}
 
+        foreach ($review->receipts as $receipt) {
+            Storage::delete('public/' . $receipt->path);
+            $receipt->delete();
+        }
 
         $review->delete();
+
         return response()->json(['success' => true]);
     }
 
-    // === Удаление отдельного фото ===
+    // === Удаление фото ===
     public function deletePhoto($id)
     {
         $photo = ReviewPhoto::findOrFail($id);
@@ -197,11 +202,11 @@ foreach ($review->receipts as $receipt) {
         return response()->json(['success' => true]);
     }
 
-    // === Удаление отдельного чека ===
+    // === Удаление чека ===
     public function deleteReceipt($id)
     {
         $receipt = ReviewReceipt::findOrFail($id);
-        Storage::delete('public/' . $receipt->receipt_path);
+        Storage::delete('public/' . $receipt->path);
         $receipt->delete();
         return response()->json(['success' => true]);
     }

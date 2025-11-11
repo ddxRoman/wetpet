@@ -73,7 +73,9 @@ class ReviewController extends Controller
      */
 public function update(Request $request, $id)
     {
+        
         $review = Review::findOrFail($id);
+
 
         if ($review->user_id !== auth()->id()) {
             abort(403);

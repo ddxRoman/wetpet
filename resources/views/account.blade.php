@@ -68,7 +68,8 @@
                                  id="avatar-preview"
                                  style="cursor:pointer;">
                         </label>
-                        <input type="file" id="avatar-input" name="avatar" accept="image/*">
+                        <input type="file" id="avatar-input" accept="image/*">
+
                     </div>
 
                     <div class="form-group">
@@ -235,7 +236,7 @@
 ">
   <div style="background:#fff; padding:20px; border-radius:10px; max-width:90%; width:400px; text-align:center; position:relative;">
     <button id="close-cropper" style="position:absolute; top:8px; right:10px; background:none; border:none; font-size:18px;">✖</button>
-    <h3>Обрезка фото питомца</h3>
+    <h3>Обрезка фото </h3>
     <img id="cropper-image" src="" style="max-width:100%; margin-top:10px; border-radius:8px;">
     <button id="save-cropped" class="save-btn" style="margin-top:15px;">Сохранить</button>
   </div>

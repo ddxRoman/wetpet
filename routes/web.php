@@ -58,25 +58,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
     Route::post('/account/update-city', [AccountController::class, 'updateCity'])->name('account.updateCity');
 
-    // 🧾 Отзывы пользователя
-    Route::get('/account/reviews/{user}', [AccountController::class, 'getReviews'])
+    // 🧾 Отзывы пользователя (всегда для текущего пользователя)
+    Route::get('/account/reviews', [AccountController::class, 'getReviews'])
         ->name('account.reviews');
 
-    // ✅ Обновление отзыва (используется при сохранении)
-    Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])
-        ->name('reviews.update');
+    // ✅ Обновление, удаление и управление отзывами
+    Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('reviews.update');
+    Route::delete('/reviews/{id}', [AccountController::class, 'deleteReview'])->name('reviews.delete');
 
-    // ✅ Удаление отзыва (fetch DELETE)
-    Route::delete('/reviews/{id}', [AccountController::class, 'deleteReview'])
-        ->name('reviews.delete');
-
-    // ✅ Удаление фото из отзыва
-    Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])
-        ->name('review_photos.delete');
-
-    // ✅ Удаление чека из отзыва
-    Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])
-        ->name('review_receipts.delete');
+    // ✅ Удаление фото и чеков
+    Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])->name('review_photos.delete');
+    Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])->name('review_receipts.delete');
 
     // 🐾 Питомцы
     Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
@@ -85,28 +77,18 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
     Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
 
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/pets', [PetController::class, 'index']);
-    Route::post('/pets', [PetController::class, 'store']);
-    Route::delete('/pets/{id}', [PetController::class, 'destroy']);
-});
-
-
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::get('/breeds', [PetController::class, 'getBreeds']);
 
-
 // 🏥 Клиники и отзывы (публичные)
 Route::resource('clinics', ClinicController::class);
 Route::resource('reviews', ReviewController::class);
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
-// 👤 Страница пользователя
+// 👤 Публичный профиль пользователя
 Route::get('/user/{id}', function ($id) {
     $user = \App\Models\User::findOrFail($id);
     return view('pages.user.profile', compact('user'));
