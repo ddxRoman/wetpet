@@ -2,6 +2,8 @@
 use App\Models\Pet;
 @endphp
 @extends('layouts.app')
+@vite('resources/js/account/review.js')
+
 @section('content')
 <body>
 <div class="d-flex flex-column min-vh-100 bg-white">
@@ -299,15 +301,19 @@ $pets = Pet::where('user_id', auth()->id())
 {{-- 📝 Кнопка открытия / закрытия формы --}}
 @auth
 <div class="text-end mb-3">
-    <button id="toggleReviewButton"
-            class="btn btn-outline-primary"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#addReviewForm"
-            aria-expanded="false"
-            aria-controls="addReviewForm">
-        ✍️ Оставить отзыв
-    </button>
+{{-- ✍️ Кнопка "Оставить отзыв" --}}
+<button id="toggleReviewButton"
+        class="btn btn-primary mb-3"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#addReviewForm"
+        aria-expanded="false"
+        aria-controls="addReviewForm">
+    ✍️ Оставить отзыв
+</button>
+
+
+
 </div>
 
 {{-- 🔽 Скрытая форма --}}
@@ -611,223 +617,6 @@ $reviews = Review::where('reviewable_id', $clinic->id)
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
-    /* ===================== 🔄 СОРТИРОВКА ===================== */
-    const reviewList = document.getElementById('reviewList');
-    const sortSelect = document.getElementById('sortReviews');
-
-    if (reviewList && sortSelect) {
-        sortSelect.addEventListener('change', () => {
-            const sortType = sortSelect.value;
-            const reviews = Array.from(reviewList.querySelectorAll('.review-card'));
-
-            reviews.sort((a, b) => {
-                const dateA = parseInt(a.dataset.date);
-                const dateB = parseInt(b.dataset.date);
-                const ratingA = parseInt(a.dataset.rating);
-                const ratingB = parseInt(b.dataset.rating);
-
-                switch (sortType) {
-                    case 'date_asc': return dateA - dateB;
-                    case 'date_desc': return dateB - dateA;
-                    case 'rating_asc': return ratingA - ratingB;
-                    case 'rating_desc': return ratingB - ratingA;
-                    default: return 0;
-                }
-            });
-
-            reviewList.innerHTML = '';
-            reviews.forEach(r => reviewList.appendChild(r));
-        });
-    }
-
-
-    if (editModal && editForm) {
-        // 🌟 Установка рейтинга
-        editStars.forEach(star => {
-            star.addEventListener('click', () => {
-                const value = star.getAttribute('data-value');
-                ratingValue.value = value;
-                editStars.forEach(s => {
-                    s.src = s.dataset.value <= value
-                        ? '/storage/icon/button/award-stars_active.svg'
-                        : '/storage/icon/button/award-stars_disable.svg';
-                });
-            });
-        });
-
-        // 📋 Заполнение данных в модалке
-        editModal.addEventListener('show.bs.modal', (event) => {
-            const button = event.relatedTarget;
-            if (!button) return;
-
-            const reviewId = button.dataset.id;
-            const rating = button.dataset.rating || 0;
-            const liked = button.dataset.liked || '';
-            const disliked = button.dataset.disliked || '';
-            const content = button.dataset.content || '';
-            const petId = button.dataset.petId || '';
-
-            editForm.action = `/reviews/${reviewId}`;
-            ratingValue.value = rating;
-            likedInput.value = liked;
-            dislikedInput.value = disliked;
-            contentInput.value = content;
-            petSelect.value = petId;
-
-            editStars.forEach(s => {
-                s.src = s.dataset.value <= rating
-                    ? '/storage/icon/button/award-stars_active.svg'
-                    : '/storage/icon/button/award-stars_disable.svg';
-            });
-        });
-    }
-
-    /* ===================== ✅ ФИЛЬТР ТОЛЬКО ВЕРИФИЦИРОВАННЫЕ ===================== */
-    const checkbox = document.getElementById('verifiedOnly');
-    if (checkbox) {
-        checkbox.addEventListener('change', () => {
-            const reviews = document.querySelectorAll('.review-card');
-            const showVerifiedOnly = checkbox.checked;
-
-            reviews.forEach(review => {
-                const verified = review.dataset.verified === "1";
-                review.style.display = (showVerifiedOnly && !verified) ? 'none' : '';
-            });
-        });
-    }
-
-    /* ===================== 🖼️ ПРОСМОТР ФОТО ===================== */
-    const photoModalEl = document.getElementById('photoModal');
-    if (photoModalEl) {
-        const photoModal = new bootstrap.Modal(photoModalEl);
-        const modalImage = document.getElementById('modalPhoto');
-        const prevBtn = document.getElementById('prevPhoto');
-        const nextBtn = document.getElementById('nextPhoto');
-
-        let currentPhotos = [];
-        let currentIndex = 0;
-
-        document.querySelectorAll('.review-photo').forEach(img => {
-            img.addEventListener('click', () => {
-                const reviewId = img.dataset.reviewId;
-                const gallery = document.querySelectorAll(`.review-photos[data-review-id="${reviewId}"] .review-photo`);
-                currentPhotos = Array.from(gallery).map(i => i.src);
-                currentIndex = parseInt(img.dataset.index);
-
-                showPhoto(currentIndex);
-                photoModal.show();
-            });
-        });
-
-        function showPhoto(index) {
-            if (currentPhotos.length === 0) return;
-            if (index < 0) index = currentPhotos.length - 1;
-            if (index >= currentPhotos.length) index = 0;
-            currentIndex = index;
-            modalImage.src = currentPhotos[currentIndex];
-        }
-
-        prevBtn?.addEventListener('click', () => showPhoto(currentIndex - 1));
-        nextBtn?.addEventListener('click', () => showPhoto(currentIndex + 1));
-
-        document.addEventListener('keydown', e => {
-            if (!photoModalEl.classList.contains('show')) return;
-            if (e.key === 'ArrowLeft') showPhoto(currentIndex - 1);
-            if (e.key === 'ArrowRight') showPhoto(currentIndex + 1);
-        });
-    }
-
-    /* ===================== 🏅 СЛАЙДЕР НАГРАД ===================== */
-    const carousel = document.getElementById('awardCarousel');
-    if (carousel) {
-        const bsCarousel = new bootstrap.Carousel(carousel);
-        document.querySelectorAll('.award-thumb').forEach((thumb) => {
-            thumb.addEventListener('click', (event) => {
-                const index = parseInt(event.currentTarget.dataset.index);
-                bsCarousel.to(index);
-            });
-        });
-    }
-
-    /* ===================== 🔗 ВКЛАДКИ ===================== */
-    const hash = window.location.hash;
-    if (hash) {
-        const triggerEl = document.querySelector(`a[href="${hash}"]`);
-        if (triggerEl) {
-            const tab = new bootstrap.Tab(triggerEl);
-            tab.show();
-        }
-    }
-
-    document.querySelectorAll('a[data-bs-toggle="tab"]').forEach(link => {
-        link.addEventListener('shown.bs.tab', e => {
-            history.replaceState(null, null, e.target.getAttribute('href'));
-        });
-    });
-
-    /* ===================== 🐾 ПЛАВНАЯ ПРОКРУТКА ===================== */
-    document.querySelectorAll('.paw-link').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const target = document.querySelector(link.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                target.classList.add('highlight-section');
-                setTimeout(() => target.classList.remove('highlight-section'), 3000);
-            }
-        });
-    });
-    /* ===================== ✍️ ОТКРЫТИЕ / ЗАКРЫТИЕ ФОРМЫ ОТЗЫВА ===================== */
-const toggleButton = document.getElementById('toggleReviewButton');
-const reviewForm = document.getElementById('addReviewForm');
-
-if (toggleButton && reviewForm) {
-    toggleButton.addEventListener('click', () => {
-        const collapse = new bootstrap.Collapse(reviewForm, {
-            toggle: true
-        });
-
-        // Меняем текст кнопки при открытии / закрытии
-        const isShown = reviewForm.classList.contains('show');
-        toggleButton.textContent = isShown ? '✍️ Оставить отзыв' : '▲ Скрыть форму';
-    });
-
-    reviewForm.addEventListener('shown.bs.collapse', () => {
-        toggleButton.textContent = '▲ Скрыть форму';
-    });
-
-    reviewForm.addEventListener('hidden.bs.collapse', () => {
-        toggleButton.textContent = '✍️ Оставить отзыв';
-    });
-}
-
-});
-
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // 🌟 Оценка в форме добавления отзыва
-    const addStars = document.querySelectorAll('#addRatingStars .rating-star');
-    const addRatingValue = document.getElementById('addRatingValue');
-
-    if (addStars.length && addRatingValue) {
-        addStars.forEach(star => {
-            star.addEventListener('click', () => {
-                const value = star.dataset.value;
-                addRatingValue.value = value;
-
-                addStars.forEach(s => {
-                    s.src = s.dataset.value <= value
-                        ? '/storage/icon/button/award-stars_active.svg'
-                        : '/storage/icon/button/award-stars_disable.svg';
-                });
-            });
-        });
-    }
-});
-</script>
 
 </body>
         </main>

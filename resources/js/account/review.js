@@ -246,3 +246,154 @@ if (e.target.classList.contains('btn-del-receipt')) {
     tabBtn?.addEventListener('click', () => { if (!loaded) { loadReviews(); loaded = true; } });
     if (location.hash === '#reviews') { loadReviews(); loaded = true; }
 });
+
+/* ===================== ✅ ФИЛЬТР "РЕАЛЬНЫЕ КЛИЕНТЫ" ===================== */
+document.addEventListener('DOMContentLoaded', () => {
+    const checkbox = document.getElementById('verifiedOnly');
+
+    if (checkbox) {
+        checkbox.addEventListener('change', () => {
+            // Получаем все карточки отзывов
+            const reviewCards = document.querySelectorAll('.review-card');
+            const showVerifiedOnly = checkbox.checked;
+
+            reviewCards.forEach(card => {
+                // Проверяем, есть ли внутри карточки элемент с классом .verified-badge
+                const hasBadge = !!card.querySelector('.verified-badge');
+
+                // Если фильтр включен и плашки нет — скрываем
+                // Если фильтр выключен — показываем все
+                card.style.display = (showVerifiedOnly && !hasBadge) ? 'none' : '';
+            });
+        });
+
+        // Если чекбокс уже был отмечен при загрузке страницы — применяем фильтр сразу
+        if (checkbox.checked) {
+            checkbox.dispatchEvent(new Event('change'));
+        }
+    }
+});
+/* =================== ✅ КОНЕЦ ФИЛЬТРА "РЕАЛЬНЫЕ КЛИЕНТЫ" =================== */
+
+ /* ===================== 🐾 ПЛАВНАЯ ПРОКРУТКА ===================== */
+    document.querySelectorAll('.paw-link').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                target.classList.add('highlight-section');
+                setTimeout(() => target.classList.remove('highlight-section'), 3000);
+            }
+        });
+    });
+
+
+
+    /* ===================== 🔄 СОРТИРОВКА ===================== */
+    const reviewList = document.getElementById('reviewList');
+    const sortSelect = document.getElementById('sortReviews');
+
+    if (reviewList && sortSelect) {
+        sortSelect.addEventListener('change', () => {
+            const sortType = sortSelect.value;
+            const reviews = Array.from(reviewList.querySelectorAll('.review-card'));
+
+            reviews.sort((a, b) => {
+                const dateA = parseInt(a.dataset.date);
+                const dateB = parseInt(b.dataset.date);
+                const ratingA = parseInt(a.dataset.rating);
+                const ratingB = parseInt(b.dataset.rating);
+
+                switch (sortType) {
+                    case 'date_asc': return dateA - dateB;
+                    case 'date_desc': return dateB - dateA;
+                    case 'rating_asc': return ratingA - ratingB;
+                    case 'rating_desc': return ratingB - ratingA;
+                    default: return 0;
+                }
+            });
+
+            reviewList.innerHTML = '';
+            reviews.forEach(r => reviewList.appendChild(r));
+        });
+    }
+
+
+
+/* ===========================================================
+   ✅ 2. ПРОСМОТР ФОТО В МОДАЛКЕ С ПЕРЕЛИСТЫВАНИЕМ
+=========================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('photoModal');
+    const modalImg = document.getElementById('modalPhoto');
+    const prevBtn = document.getElementById('prevPhoto');
+    const nextBtn = document.getElementById('nextPhoto');
+
+    let currentReviewId = null;
+    let currentIndex = 0;
+    let currentPhotos = [];
+
+    // Открытие модалки при клике на фото
+    document.querySelectorAll('.review-photo').forEach(img => {
+        img.addEventListener('click', () => {
+            currentReviewId = img.dataset.reviewId;
+            currentIndex = parseInt(img.dataset.index, 10);
+
+            // Собираем все фото этого отзыва
+            currentPhotos = Array.from(
+                document.querySelectorAll(`.review-photos[data-review-id="${currentReviewId}"] .review-photo`)
+            );
+
+            // Показываем выбранное фото
+            modalImg.src = img.src;
+
+            // Открываем модалку Bootstrap
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+        });
+    });
+
+    // Показ следующего фото
+    nextBtn.addEventListener('click', () => {
+        if (!currentPhotos.length) return;
+        currentIndex = (currentIndex + 1) % currentPhotos.length;
+        modalImg.src = currentPhotos[currentIndex].src;
+    });
+
+    // Показ предыдущего фото
+    prevBtn.addEventListener('click', () => {
+        if (!currentPhotos.length) return;
+        currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+        modalImg.src = currentPhotos[currentIndex].src;
+    });
+
+    // Перелистывание клавишами ← и →
+    document.addEventListener('keydown', e => {
+        if (!bootstrap.Modal.getInstance(modal)) return;
+        if (e.key === 'ArrowRight') nextBtn.click();
+        if (e.key === 'ArrowLeft') prevBtn.click();
+    });
+});
+
+
+    // 🌟 Оценка в форме добавления отзыва
+    document.addEventListener('DOMContentLoaded', () => {
+    const addStars = document.querySelectorAll('#addRatingStars .rating-star');
+    const addRatingValue = document.getElementById('addRatingValue');
+
+    if (addStars.length && addRatingValue) {
+        addStars.forEach(star => {
+            star.addEventListener('click', () => {
+                const value = star.dataset.value;
+                addRatingValue.value = value;
+
+                addStars.forEach(s => {
+                    s.src = s.dataset.value <= value
+                        ? '/storage/icon/button/award-stars_active.svg'
+                        : '/storage/icon/button/award-stars_disable.svg';
+                });
+            });
+        });
+    }
+});

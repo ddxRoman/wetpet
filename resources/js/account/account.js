@@ -1,5 +1,6 @@
 
 import './avatar.js';
+import './awards.js';
 import './cities.js';
 import './pets.js';
 import './pets-edit.js';
