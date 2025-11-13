@@ -56,31 +56,54 @@ use App\Models\Pet;
                     </div>
 
 
-{{-- Вкладки --}}
+
+                    
+
+
+            {{-- Вкладки  --}}
+@php
+    // Определяем активную вкладку через параметр в URL (?tab=reviews)
+    $activeTab = request('tab', 'contacts');
+@endphp
+
 <ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contacts" role="tab">Контакты</a>
+        <a class="nav-link {{ $activeTab === 'contacts' ? 'active' : '' }}"
+           href="?tab=contacts"
+           role="tab"
+           aria-controls="contacts"
+           aria-selected="{{ $activeTab === 'contacts' ? 'true' : 'false' }}">
+            Контакты
+        </a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" role="tab">Услуги</a>
+        <a class="nav-link {{ $activeTab === 'services' ? 'active' : '' }}"
+           href="?tab=services"
+           role="tab"
+           aria-controls="services"
+           aria-selected="{{ $activeTab === 'services' ? 'true' : 'false' }}">
+            Услуги
+        </a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" role="tab">Отзывы</a>
+        <a class="nav-link {{ $activeTab === 'reviews' ? 'active' : '' }}"
+           href="?tab=reviews"
+           role="tab"
+           aria-controls="reviews"
+           aria-selected="{{ $activeTab === 'reviews' ? 'true' : 'false' }}">
+            Отзывы
+        </a>
     </li>
-<!-- <li class="nav-item" role="presentation">
-    <a class="nav-link" id="awards-tab" data-bs-toggle="tab" data-bs-target="#awards" role="tab">Награды</a>
-</li>
-
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos" role="tab">Фото</a>
-    </li> -->
 </ul>
 
+{{-- Контент вкладок --}}
 
+<div class="tab-content" id="clinicTabsContent">
 
-                    <div class="tab-content" id="clinicTabsContent">
+    {{-- Контакты --}}
+    <div class="tab-pane fade {{ $activeTab === 'contacts' ? 'show active' : '' }}" id="contacts" role="tabpanel">
                         {{-- Контакты --}}
-                        <div class="tab-pane fade show active" id="contacts" role="tabpanel">
+                        
                             <div class="row">
                                 {{-- Левая часть: контакты --}}
                                 <div class="col-md-7">
@@ -126,9 +149,15 @@ use App\Models\Pet;
                                 </div>
                             </div>
                         </div>
+        
+
+
+    {{-- Услуги --}}
+    <div class="tab-pane fade {{ $activeTab === 'services' ? 'show active' : '' }}" id="services" role="tabpanel">
+        <h4>Услуги</h4>
 
                         {{-- Услуги --}}
-                        <div class="tab-pane fade" id="services" role="tabpanel">
+                        
                             @php
                             // Все услуги, связанные с клиникой
                             $services = $clinic->services ?? collect();
@@ -211,77 +240,14 @@ use App\Models\Pet;
                         </div>
 
 
-{{-- Награды --}}
-<div class="tab-pane fade" id="awards" role="tabpanel">
-    <div class="row g-4">
-        @forelse($clinic->awards ?? [] as $index => $award)
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="card h-100 shadow-sm border-0">
-                    <a href="#" 
-                       class="award-thumb" 
-                       data-bs-toggle="modal" 
-                       data-bs-target="#awardModal"
-                       data-index="{{ $index }}">
-                        <img src="{{ asset('storage/' . $award->image) }}" 
-                             class="card-img-top rounded" 
-                             alt="{{ $award->title }}">
-                    </a>
-                    <div class="card-body">
-                        <h6 class="card-title text-center fw-bold">{{ $award->title }}</h6>
-                        <p class="text-muted small text-center mb-0">
-                            {{ Str::limit($award->description, 60, '...') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        @empty
-            <p class="text-center text-muted">Награды пока не добавлены.</p>
-        @endforelse
-    </div>
 
-    {{-- Модальное окно со слайдером --}}
-    @if(($clinic->awards ?? [])->count())
-    <div class="modal fade" id="awardModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-body p-0">
-                    <div id="awardCarousel" class="carousel slide" data-bs-ride="false">
-                        <div class="carousel-inner">
-                            @foreach($clinic->awards as $index => $award)
-                                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <div class="text-center p-3">
-                                        <img src="{{ asset('storage/' . $award->image) }}" 
-                                             class="img-fluid rounded mb-3 award-img"
-                                             alt="{{ $award->title }}"
-                                             style="max-height: 70vh; object-fit: contain;">
-                                        <h5 class="fw-bold">{{ $award->title }}</h5>
-                                        <p class="text-muted mb-0">{{ $award->description }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
 
-                        {{-- Стрелки навигации --}}
-                        <button class="carousel-control-prev" type="button" data-bs-target="#awardCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#awardCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
-                    </div>
-                </div>
+    {{-- Отзывы --}}
+    <div class="tab-pane fade {{ $activeTab === 'reviews' ? 'show active' : '' }}" id="reviews" role="tabpanel">
 
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-</div>
 
                         {{-- Отзывы --}}
-                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        
                             @php
 
 
@@ -306,9 +272,9 @@ $pets = Pet::where('user_id', auth()->id())
         class="btn btn-primary mb-3"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#addReviewForm"
+        data-bs-target="#openReviewForm"
         aria-expanded="false"
-        aria-controls="addReviewForm">
+        aria-controls="openReviewForm">
     ✍️ Оставить отзыв
 </button>
 
@@ -317,7 +283,7 @@ $pets = Pet::where('user_id', auth()->id())
 </div>
 
 {{-- 🔽 Скрытая форма --}}
-<div class="collapse" id="addReviewForm">
+<div class="collapse" id="openReviewForm">
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
             <h5 class="fw-semibold mb-3">Оставить отзыв</h5>
@@ -397,8 +363,6 @@ $pets = Pet::where('user_id', auth()->id())
         @endforelse
     </select>
 </div>
-
-
                 {{-- 📎 Загрузка чека --}}
                 <div class="mb-3">
                     <label class="form-label">Чек (для подтверждения отзыва):</label>
@@ -481,7 +445,7 @@ $pets = Pet::where('user_id', auth()->id())
                                             @if($review->receipt_verified == 1)
                                             <span class="verifed_client">
 
-                                                ✅ Реальный клиент
+
                                             </span>
                                             @endif
                                             <div class="mt-1">
@@ -542,7 +506,6 @@ $reviews = Review::where('reviewable_id', $clinic->id)
     </div>
 @endif
 
-
                                     {{-- Фото отзыва --}}
 @if($review->photos && $review->photos->count())
     <div class="mt-3 d-flex flex-wrap gap-2 review-photos" data-review-id="{{ $review->id }}">
@@ -561,6 +524,115 @@ $reviews = Review::where('reviewable_id', $clinic->id)
                                 @endforeach
                             </div>
                         </div>
+
+
+
+
+
+
+    <div class="tab-pane fade {{ $activeTab === 'awards' ? 'show active' : '' }}" id="awards" role="tabpanel">
+        <h4>Награды</h4>
+{{-- Награды --}}
+
+    <div class="row g-4">
+        @forelse($clinic->awards ?? [] as $index => $award)
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <a href="#" 
+                       class="award-thumb" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#awardModal"
+                       data-index="{{ $index }}">
+                        <img src="{{ asset('storage/' . $award->image) }}" 
+                             class="card-img-top rounded" 
+                             alt="{{ $award->title }}">
+                    </a>
+                    <div class="card-body">
+                        <h6 class="card-title text-center fw-bold">{{ $award->title }}</h6>
+                        <p class="text-muted small text-center mb-0">
+                            {{ Str::limit($award->description, 60, '...') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <p class="text-center text-muted">Награды пока не добавлены.</p>
+        @endforelse
+    </div>
+
+    {{-- Модальное окно со слайдером --}}
+    @if(($clinic->awards ?? [])->count())
+    <div class="modal fade" id="awardModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body p-0">
+                    <div id="awardCarousel" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-inner">
+                            @foreach($clinic->awards as $index => $award)
+                                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                    <div class="text-center p-3">
+                                        <img src="{{ asset('storage/' . $award->image) }}" 
+                                             class="img-fluid rounded mb-3 award-img"
+                                             alt="{{ $award->title }}"
+                                             style="max-height: 70vh; object-fit: contain;">
+                                        <h5 class="fw-bold">{{ $award->title }}</h5>
+                                        <p class="text-muted mb-0">{{ $award->description }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- Стрелки навигации --}}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#awardCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#awardCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+
+    @endif
+</div>
+
+    </div>
+
+</div>
+
+
+
+
+{{-- Вкладки --}}
+<!-- <ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contacts" role="tab">Контакты</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" role="tab">Услуги</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" role="tab">Отзывы</a>
+    </li> -->
+ <!-- <li class="nav-item" role="presentation">
+    <a class="nav-link" id="awards-tab" data-bs-toggle="tab" data-bs-target="#awards" role="tab">Награды</a>
+</li> -->
+
+ <!--   <li class="nav-item" role="presentation">
+        <a class="nav-link" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos" role="tab">Фото</a>
+    </li> -->
+<!-- </ul> -->
+
+
+
+
+
+
                         {{-- Доктора --}}
                         <div class="mb-4 mt-5">
                             <h2 class="fs-5 fw-semibold mb-3">Доктора</h2>
@@ -613,9 +685,8 @@ $reviews = Review::where('reviewable_id', $clinic->id)
               id="nextPhoto" style="opacity: 0.8;">❯</button>
     </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 </body>

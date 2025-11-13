@@ -146,24 +146,72 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Удаление отзыва
-        if (e.target.classList.contains('btn-delete')) {
-            if (!confirm('Удалить этот отзыв?')) return;
-            const id = card.dataset.id;
-            try {
-                const res = await fetch(`/reviews/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': csrfToken },
-                    credentials: 'same-origin'
-                });
-                if (!res.ok) throw new Error(await res.text());
-                card.remove();
-                showToast('Отзыв удалён', 'success');
-            } catch {
-                showToast('Ошибка удаления', 'error');
-            }
+// Удаление отзыва
+if (e.target.classList.contains('btn-delete')) {
+    if (!confirm('Удалить этот отзыв?')) return;
+    const id = card.dataset.id;
+
+    try {
+        const res = await fetch(`/reviews/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                // просим HTML (не JSON) чтобы Laravel выполнил redirect()->to(...)
+                'Accept': 'text/html'
+            },
+            credentials: 'same-origin',
+            redirect: 'follow' // по умолчанию, но явно указываем
+        });
+
+        // если сервер ответил не ок — прочитаем текст и кинем ошибку
+        if (!res.ok) {
+            const txt = await res.text();
+            throw new Error(txt || `HTTP ${res.status}`);
+        }
+
+        // Если fetch последовал за редиректом, res.redirected=true и res.url содержит итоговый адрес
+        if (res.redirected && res.url) {
+            // Переходим по адресу, который вернул сервер
+            window.location.href = res.url;
             return;
         }
+
+        // Иначе — возможно сервер вернул JSON; пробуем разобрать
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+            const payload = await res.json();
+            // если JSON содержит success — делаем клиентский редирект к вкладке отзывов
+            if (payload && payload.success) {
+                showToast('Отзыв удалён', 'success');
+
+                const clinicId = card.querySelector('.clinic-name')
+                    ?.getAttribute('href')
+                    ?.match(/clinics\/(\d+)/)?.[1];
+
+                if (clinicId) {
+                    // короткая задержка чтобы пользователь увидел тост
+                    setTimeout(() => {
+                        window.location.href = `/clinics/${clinicId}?tab=reviews`;
+                    }, 700);
+                    return;
+                } else {
+                    // fallback — перезагрузим страницу
+                    setTimeout(() => window.location.reload(), 700);
+                    return;
+                }
+            }
+        }
+
+        // Если ничего из выше не сработало — как fallback перезагрузим страницу
+        window.location.reload();
+
+    } catch (err) {
+        console.error(err);
+        showToast('Ошибка удаления', 'error');
+    }
+}
+
+
 
         // Удаление фото
 // Удаление фото
@@ -397,3 +445,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+
+// {{-- JS: управление (Bootstrap + fallback) --}}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('toggleAccordionBtn');
+    const closeBtn = document.getElementById('closeAccordionBtn');
+    const content = document.getElementById('accordionContent');
+
+    if (!btn || !content) return;
+
+    // Функция обновления aria и текста кнопки
+    function updateButton(isOpen) {
+        btn.setAttribute('aria-expanded', String(Boolean(isOpen)));
+        btn.textContent = isOpen ? '✖️ Свернуть форму' : '✍️ Оставить отзыв';
+    }
+
+    // Если Bootstrap доступен — используем collapse API (без автоматического toggle при инициации)
+    if (window.bootstrap && bootstrap.Collapse) {
+        // создаём экземпляр, но не трогаем состояние на создании (toggle: false)
+        const bsCollapse = new bootstrap.Collapse(content, { toggle: false });
+
+        // Обработка клика по основной кнопке — переключаем состояние
+        btn.addEventListener('click', () => {
+            // если открыт — скрываем, если скрыт — показываем
+            if (content.classList.contains('show')) {
+                bsCollapse.hide();
+            } else {
+                bsCollapse.show();
+            }
+        });
+
+        // Вешаем слушатели событий Bootstrap, чтобы обновлять текст/aria
+        content.addEventListener('shown.bs.collapse', () => updateButton(true));
+        content.addEventListener('hidden.bs.collapse', () => updateButton(false));
+
+        // Внутренняя кнопка закрытия
+        closeBtn?.addEventListener('click', () => bsCollapse.hide());
+
+        // Инициализация текста в зависимости от текущего состояния (на случай SSR / server-rendered)
+        updateButton(content.classList.contains('show'));
+        return;
+    }
+
+
+    closeBtn?.addEventListener('click', () => {
+        content.classList.remove('show');
+        content.style.display = 'none';
+        updateButton(false);
+    });
+
+    // Стартовое состояние: если блок уже видим в DOM — отобразим соответствующий текст
+    const initiallyOpen = content.classList.contains('show') || (getComputedStyle(content).display !== 'none' && getComputedStyle(content).display !== 'none');
+    updateButton(initiallyOpen);
+});
+

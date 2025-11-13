@@ -64,7 +64,7 @@ class ReviewController extends Controller
         }
 
         return redirect()
-            ->to(url("/clinics/{$review->reviewable_id}#reviews"))
+            ->to(url("/clinics/{$review->reviewable_id}?tab=reviews"))
             ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
     }
 
@@ -119,19 +119,21 @@ if ($request->hasFile('receipts')) {
     /**
      * Удаление отзыва
      */
+public function destroy($id)
+{
+    $review = Review::findOrFail($id);
 
-    public function destroy($id)
-    {
-        $review = Review::findOrFail($id);
-
-        if ($review->user_id !== auth()->id()) {
-            abort(403);
-        }
-
-        $review->delete();
-
-        return response()->json(['success' => true]);
+    if ($review->user_id !== auth()->id()) {
+        abort(403);
     }
+
+    $clinicId = $review->reviewable_id; // ID клиники для редиректа
+    $review->delete();
+
+    return redirect()
+        ->to(url("/clinics/{$clinicId}?tab=reviews"))
+        ->with('success', 'Отзыв успешно удалён.');
+}
 
 
 

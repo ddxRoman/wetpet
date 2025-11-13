@@ -24,6 +24,12 @@ use App\Http\Controllers\{
 // 🏠 Главная
 Route::get('/', [DoctorController::class, 'index'])->name('home');
 
+Route::get('/test', function () {
+    return view('pages.clinics.tabs.test');
+})->name('clinics.tabs.test');
+
+
+
 // 🔐 Аутентификация
 Auth::routes();
 require __DIR__.'/auth.php';
@@ -65,11 +71,14 @@ Route::middleware(['auth'])->group(function () {
 
     // ✅ Обновление, удаление и управление отзывами
     Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('reviews.update');
-    Route::delete('/reviews/{id}', [AccountController::class, 'deleteReview'])->name('reviews.delete');
+    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+
 
     // ✅ Удаление фото и чеков
     Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])->name('review_photos.delete');
     Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])->name('review_receipts.delete');
+
 
     // 🐾 Питомцы
     Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
