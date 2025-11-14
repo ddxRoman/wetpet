@@ -63,18 +63,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
             data.pets.forEach(p => {
                 const cls = getTypeClass(p.animal?.species);
-                petsList.insertAdjacentHTML('beforeend', `
-                    <div class="pet-card ${cls}" data-id="${p.id}" style="position:relative;">
-                        <button class="delete-pet-btn" data-id="${p.id}" aria-label="Удалить питомца"
-                            style="position:absolute; top:8px; right:8px; background:#ff4d4f; color:#fff; border:none; border-radius:6px; cursor:pointer; padding:4px 8px;">
-                            🗑
-                        </button>
-                        <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
-                             alt="${p.name}"
-                             style="max-width:120px; display:block; margin-bottom:8px; border-radius:10px;">
-                        <b>${p.name}</b><br>
-                        <small>${p.animal?.species || ''} (${p.animal?.breed || ''})</small><br>
-                    </div>`);
+petsList.insertAdjacentHTML('beforeend', `
+    <div class="pet-card ${cls}"
+         data-id="${p.id}"
+         data-name="${p.name}"
+         data-gender="${p.gender || ''}"
+         data-birth="${p.birth_date || ''}"
+         data-age="${p.age || ''}"
+         data-breed="${p.animal?.breed || ''}"
+         data-breed-id="${p.animal_id || ''}"
+         data-photo="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
+         style="position:relative;">
+
+        <button class="delete-pet-btn" data-id="${p.id}" aria-label="Удалить питомца"
+            style="position:absolute; top:8px; right:8px; background:#ff4d4f; color:#fff; border:none; border-radius:6px; cursor:pointer; padding:4px 8px;">
+            🗑
+        </button>
+
+        <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
+             alt="${p.name}"
+             style="max-width:120px; display:block; margin-bottom:8px; border-radius:10px;">
+
+        <b>${p.name}</b><br>
+        <small>${p.animal?.species || ''} (${p.animal?.breed || ''})</small><br>
+    </div>
+`);
+
             });
 
             // Открытие модалки

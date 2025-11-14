@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Review;
 use App\Models\ReviewPhoto;
 use App\Models\ReviewReceipt;
+use App\Models\Pet;
 
 class AccountController extends Controller
 {
@@ -15,7 +16,14 @@ class AccountController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('account', compact('user'));
+
+        // Грузим питомцев пользователя
+        $pets = Pet::where('user_id', $user->id)->get();
+
+        return view('account', [
+            'user' => $user,
+            'pets' => $pets,
+        ]);
     }
 
     // === Обновление города ===

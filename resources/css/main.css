@@ -1539,10 +1539,16 @@ a{
         height: 70px;
     }
 }
+
+.cropper-canvas{
+    width: 100%;
+}
+
 .modal_cropp_photo{
     padding: 1% 0%;
     background:#fff; 
     min-height:600px; 
+
     border-radius:10px; 
     max-width:100%; 
     width:500px; 

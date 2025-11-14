@@ -191,10 +191,12 @@
                 <select id="edit-pet-breed" style="width:100%;"></select>
             </div>
 
-            <div id="edit-birth-block" style="margin-bottom:10px;">
-                <label>Дата рождения</label>
-                <input type="date" id="edit-pet-birth" style="width:100%;">
-            </div>
+            
+<div style="margin-bottom:10px;">
+    <label>Дата рождения</label>
+    <input type="date" id="edit-pet-birth" style="width:100%;">
+</div>
+
 
             <label style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
                 <input type="checkbox" id="edit-unknown-birth"> Я не знаю точную дату

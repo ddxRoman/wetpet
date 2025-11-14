@@ -1,25 +1,36 @@
 import { showToast } from './toast';
-import { initCropper } from './cropper-init'; // ✅ правильный путь
+import { initCropper } from './cropper-init';
 
+// =========================
+//  ОТКРЫТИЕ МОДАЛКИ
+// =========================
 export function openEditModal(petId) {
     const modal = document.getElementById('edit-pet-modal');
     const previewEdit = document.getElementById('edit-photo-preview');
     const photoInputEdit = document.getElementById('edit-pet-photo');
     const breedSelectEdit = document.getElementById('edit-pet-breed');
 
-    // 🔹 Находим карточку питомца
+    // —————— Поиск карточки ——————
     const card = document.querySelector(`.pet-card[data-id="${petId}"]`);
     if (!card) {
         showToast('Питомец не найден на странице', 'error');
         return;
     }
 
-    // 🔹 Извлекаем данные из карточки
+    // —————— Считываем данные ——————
     const name = card.querySelector('b')?.textContent?.trim() || '';
     const info = card.querySelector('small')?.textContent?.trim() || '';
     const photo = card.querySelector('img')?.getAttribute('src') || '';
 
-    // 🔹 Разбираем "Тип (Порода)"
+    // 🔹 Дата рождения
+const birth = card.getAttribute("data-birth") || "";
+
+
+// 🔹 Возраст (если нет даты)
+const age   = card.getAttribute("data-age") || "";
+
+
+    // —————— Разбор типа и породы ——————
     let species = '', breed = '';
     if (info.includes('(')) {
         const [typePart, breedPart] = info.split('(');
@@ -29,22 +40,36 @@ export function openEditModal(petId) {
         species = info.trim();
     }
 
-    // 🔹 Заполняем базовые поля модалки
+    // —————— Заполнение модалки ——————
     document.getElementById('edit-pet-id').value = petId;
     document.getElementById('edit-pet-name').value = name;
-    document.getElementById('edit-pet-birth').value = '';
-    document.getElementById('edit-pet-age').value = '';
 
-    // 🔹 Фото — показываем текущее
+    // 🔥 Автоматическое заполнение даты рождения
+    document.getElementById('edit-pet-birth').value = birth || '';
+
+    if (birth) {
+        // Если дата есть — отключаем режим возраста
+        document.getElementById('edit-unknown-birth').checked = false;
+        document.getElementById('edit-age-block').style.display = 'none';
+        document.getElementById('edit-pet-age').value = '';
+    } else {
+        // Если даты нет — включаем возраст
+        document.getElementById('edit-unknown-birth').checked = false;
+        document.getElementById('edit-age-block').style.display = 'block';
+        document.getElementById('edit-pet-age').value = age || '';
+    }
+
+    // —————— Фото ——————
     previewEdit.src = photo || '/storage/pets/default-pet.jpg';
     previewEdit.style.display = 'block';
 
-    // 🔹 Подключаем кроппер
-    photoInputEdit.value = ''; // сбрасываем старое фото
+    // —————— Кроппер ——————
+    photoInputEdit.value = '';
     initCropper(photoInputEdit, previewEdit);
 
-    // 🔹 Загружаем список пород
+    // —————— Породы ——————
     breedSelectEdit.innerHTML = '<option>Загрузка...</option>';
+
     if (!species) {
         showToast('Не удалось определить тип животного', 'error');
         return;
@@ -72,13 +97,79 @@ export function openEditModal(petId) {
     modal.style.display = 'flex';
 }
 
-// 💾 Сохранение изменений
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // === Добавление питомца ===
+    const unknownBirth = document.getElementById("unknown-birth");
+    const birthInput = document.getElementById("pet-birth");
+    const ageBlock = document.getElementById("age-block");
+    const ageInput = document.getElementById("pet-age");
+
+    function toggleBirthFields() {
+        if (unknownBirth.checked) {
+            birthInput.disabled = true;
+            birthInput.value = "";
+            ageBlock.style.display = "block";
+            ageInput.disabled = false;
+        } else {
+            birthInput.disabled = false;
+            ageBlock.style.display = "none";
+            ageInput.value = "";
+            ageInput.disabled = true;
+        }
+    }
+
+    if (unknownBirth) {
+        // 🔥 Чётко ставим чекбокс в выключенное состояние
+        unknownBirth.checked = false;
+
+        toggleBirthFields();
+        unknownBirth.addEventListener("change", toggleBirthFields);
+    }
+
+
+    // === Редактирование питомца ===
+    const editUnknownBirth = document.getElementById("edit-unknown-birth");
+    const editBirthInput = document.getElementById("edit-pet-birth");
+    const editAgeBlock = document.getElementById("edit-age-block");
+    const editAgeInput = document.getElementById("edit-pet-age");
+
+    function toggleEditBirthFields() {
+        if (editUnknownBirth.checked) {
+            editBirthInput.disabled = true;
+            editAgeBlock.style.display = "block";
+            editAgeInput.disabled = false;
+        } else {
+            editBirthInput.disabled = false;
+            editAgeBlock.style.display = "none";
+            editAgeInput.value = "";
+            editAgeInput.disabled = true;
+        }
+    }
+
+    if (editUnknownBirth) {
+        // 🔥 Тоже выключаем по умолчанию
+        editUnknownBirth.checked = false;
+
+        toggleEditBirthFields();
+        editUnknownBirth.addEventListener("change", toggleEditBirthFields);
+    }
+
+});
+
+
+
+
+
+// =========================
+//  СОХРАНЕНИЕ ИЗМЕНЕНИЙ
+// =========================
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('edit-pet-modal');
     const closeModal = document.getElementById('close-modal');
     const saveEditBtn = document.getElementById('save-edit-pet');
     const photoInputEdit = document.getElementById('edit-pet-photo');
-    const previewEdit = document.getElementById('edit-photo-preview');
 
     if (closeModal) {
         closeModal.addEventListener('click', () => (modal.style.display = 'none'));
@@ -88,13 +179,24 @@ document.addEventListener('DOMContentLoaded', () => {
         saveEditBtn.addEventListener('click', async () => {
             const id = document.getElementById('edit-pet-id').value;
             const fd = new FormData();
+
             fd.append('name', document.getElementById('edit-pet-name').value);
             fd.append('animal_id', document.getElementById('edit-pet-breed').value);
-            fd.append('birth_date', document.getElementById('edit-pet-birth').value);
-            fd.append('age', document.getElementById('edit-pet-age').value);
+
+            // —————— Дата рождения или возраст ——————
+            const unknownBirth = document.getElementById('edit-unknown-birth').checked;
+
+            if (unknownBirth) {
+                fd.append('birth_date', '');
+                fd.append('age', document.getElementById('edit-pet-age').value);
+            } else {
+                fd.append('birth_date', document.getElementById('edit-pet-birth').value);
+                fd.append('age', '');
+            }
+
             fd.append('_method', 'PUT');
 
-            // 🔹 Если фото выбрано
+            // —————— Фото ——————
             if (photoInputEdit.files.length > 0) {
                 const file = photoInputEdit.files[0];
                 fd.append('photo', file, 'pet.webp');
@@ -110,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 const data = await res.json();
+
                 if (res.ok && data.success) {
                     showToast('Изменения сохранены', 'success');
                     modal.style.display = 'none';
@@ -124,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Инициализация кроппера (чтобы сработало при загрузке)
+    // —————— Инициализация кроппера при загрузке ——————
     const fileInput = document.getElementById('edit-pet-photo');
     const previewImg = document.getElementById('edit-photo-preview');
     if (fileInput && previewImg) {

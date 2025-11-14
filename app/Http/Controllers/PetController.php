@@ -23,68 +23,91 @@ class PetController extends Controller
             'pets' => $pets,
             'animals' => $animals,
         ]);
+          $user = Auth::user();
+    // подгружаем питомцев вместе с animal
+    $pets = $user->pets()->with('animal')->get();
+
+    return view('account', compact('user', 'pets'));
     }
 
     // === Добавление питомца ===
-    public function store(Request $request)
-    {
-        try {
-            // 🔹 Если на фронте передаётся type и breed — подбираем animal_id
-            $animalId = $request->input('animal_id');
+public function store(Request $request)
+{
+    try {
+        // --- Определяем animal_id ---
+        $animalId = $request->input('animal_id');
 
-            if (!$animalId && $request->filled(['type', 'breed'])) {
-                $animal = Animal::where('species', $request->type)
-                    ->where('breed', $request->breed)
-                    ->first();
+        if (!$animalId && $request->filled(['type', 'breed'])) {
+            $animal = Animal::where('species', $request->type)
+                ->where('breed', $request->breed)
+                ->first();
 
-                if ($animal) {
-                    $animalId = $animal->id;
-                }
+            if ($animal) {
+                $animalId = $animal->id;
             }
+        }
 
-            if (!$animalId) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Не удалось определить животное (тип/порода)',
-                ], 422);
-            }
-
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'birth_date' => 'nullable|date',
-                'age' => 'nullable|integer|min:0',
-                'photo' => 'nullable|image|max:4096',
-                'gender' => 'nullable|string|max:10',
-            ]);
-
-            $pet = new Pet();
-            $pet->user_id = auth()->id();
-            $pet->animal_id = $animalId;
-            $pet->name = $request->name;
-            $pet->birth_date = $request->birth_date;
-            $pet->age = $request->age;
-            $pet->gender = $request->gender;
-
-            if ($request->hasFile('photo')) {
-                $path = $request->file('photo')->store('pets', 'public');
-                $pet->photo = $path;
-            }
-
-            $pet->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Питомец добавлен',
-                'pet' => $pet->load('animal'),
-            ]);
-        } catch (\Throwable $e) {
+        if (!$animalId) {
             return response()->json([
                 'success' => false,
-                'message' => 'Ошибка при добавлении питомца',
-                'error' => $e->getMessage(),
-            ], 500);
+                'message' => 'Не удалось определить животное (тип/порода)',
+            ], 422);
         }
+
+        // --- Валидация ---
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'birth_date' => 'nullable|date',
+            'age' => 'nullable|integer|min:0',
+            'photo' => 'nullable|image|max:4096',
+            'gender' => 'nullable|string|max:10',
+        ]);
+
+        // ---- НОВАЯ ЛОГИКА ДАТЫ / ВОЗРАСТА ----
+        $birth = $request->birth_date;
+        $age   = $request->age;
+
+        // Если указана дата рождения → считаем возраст
+        if ($birth) {
+            $age = \Carbon\Carbon::parse($birth)->age;
+        }
+        // Если даты нет, но указан возраст → считаем дату рождения
+        elseif ($age) {
+            $birth = \Carbon\Carbon::now()->subYears($age)->format('Y-m-d');
+        }
+
+        // --- Создание питомца ---
+        $pet = new Pet();
+        $pet->user_id    = auth()->id();
+        $pet->animal_id  = $animalId;
+        $pet->name       = $request->name;
+        $pet->birth_date = $birth;
+        $pet->age        = $age;
+        $pet->gender     = $request->gender;
+
+        // Фото
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('pets', 'public');
+            $pet->photo = $path;
+        }
+
+        $pet->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Питомец добавлен',
+            'pet' => $pet->load('animal'),
+        ]);
+
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Ошибка при добавлении питомца',
+            'error' => $e->getMessage(),
+        ], 500);
     }
+}
+
 
     // === Просмотр одного питомца ===
     public function show($id)
