@@ -81,39 +81,116 @@ class ClinicSeeder extends Seeder
                 'workdays' => 'Пн–Вс',
                 'service_ids' => [1, 3, 6, 8],
             ],
-        ];
+    [
+        'name' => 'Ветеринарная клиника Доктор Вет',
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'Северная',
+        'house' => '341',
+        'address_comment' => '1 этаж жилого дома, отдельный вход',
+        'logo' => '',
+        'description' => 'Круглосуточная ветеринарная помощь, УЗИ, хирургия, стационар, вакцинация и выезд на дом.',
+        'phone1' => '+7 (861) 238-88-88',
+        'phone2' => '+7 (918) 400-00-00',
+        'email' => 'info@doktorvet-krd.ru',
+        'telegram' => 'doktorvet_krd',
+        'whatsapp' => 'https://wa.me/79184000000',
+        'website' => 'https://doktorvet-krd.ru',
+        'schedule' => 'круглосуточно',
+        'workdays' => 'Пн–Вс',
+        'service_ids' => [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+        'name' => 'Семейная ветеринарная клиника ЗооЛайн',
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'им. Васнецова',
+        'house' => '56',
+        'address_comment' => 'Рядом с парком, отдельное здание',
+        'logo' => '',
+        'description' => 'Полный спектр услуг: терапия, дерматология, стоматология, лабораторная диагностика и груминг.',
+        'phone1' => '+7 (861) 274-44-44',
+        'phone2' => null,
+        'email' => 'zooline-krd@yandex.ru',
+        'telegram' => 'zooline_krd',
+        'whatsapp' => 'https://wa.me/78612744444',
+        'website' => 'https://zooline-krd.ru',
+        'schedule' => 'с 9:00 до 20:00',
+        'workdays' => 'Пн–Сб',
+        'service_ids' => [1, 2, 5, 6, 7, 9],
+    ],
+    [
+        'name' => 'Ветеринарная клиника Био-Вет',
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'Уральская',
+        'house' => '107/2',
+        'address_comment' => 'Вход с торца, рядом с аптекой',
+        'logo' => '',
+        'description' => 'Специализированная диагностика, УЗИ, ЭКГ, анализы, вакцинация и профилактика паразитов.',
+        'phone1' => '+7 (861) 292-22-92',
+        'phone2' => '+7 (918) 292-22-92',
+        'email' => 'biovetkrd@mail.ru',
+        'telegram' => 'biovet_krd',
+        'whatsapp' => 'https://wa.me/79182922292',
+        'website' => 'https://biovet-krd.ru',
+        'schedule' => 'с 8:00 до 20:00',
+        'workdays' => 'Пн–Вс',
+        'service_ids' => [1, 2, 5, 6, 8],
+    ],
+    [
+        'name' => 'Клиника для животных ЗооМир',
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'им. Героя Аверкиева',
+        'house' => '15',
+        'address_comment' => 'На первом этаже ТЦ "ЗооМир"',
+        'logo' => '',
+        'description' => 'Современное оборудование, опытные врачи, отделение неотложной помощи и косметология для животных.',
+        'phone1' => '+7 (861) 237-77-77',
+        'phone2' => null,
+        'email' => 'zoomir-krd@info.ru',
+        'telegram' => 'zoomir_krd',
+        'whatsapp' => 'https://wa.me/78612377777',
+        'website' => 'https://zoomir-krd.ru',
+        'schedule' => 'с 9:00 до 21:00',
+        'workdays' => 'Пн–Сб',
+        'service_ids' => [1, 2, 3, 4, 5, 7],
+    ],
+    [
+        'name' => 'Ветеринарная клиника Айболит',
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'Красная',
+        'house' => '147',
+        'address_comment' => 'Центр города, рядом с универмагом',
+        'logo' => '',
+        'description' => 'Одна из старейших клиник Краснодара. Приём всех видов животных, включая экзотических.',
+        'phone1' => '+7 (861) 262-22-22',
+        'phone2' => '+7 (918) 262-22-22',
+        'email' => 'aibolit-krd@yandex.ru',
+        'telegram' => 'aibolit_krd',
+        'whatsapp' => 'https://wa.me/79182622222',
+        'website' => 'https://aibolit-krd.ru',
+        'schedule' => 'с 8:30 до 20:00',
+        'workdays' => 'Пн–Вс',
+        'service_ids' => [1, 2, 5, 6, 7, 9, 10],
+    ],
+];
 
-        // + добавим 10 шаблонных клиник
-        for ($i = 1; $i <= 10; $i++) {
-            $clinics[] = [
-                'name' => "Государственная Ветеринарная клиника №{$i}",
-                'country' => 'Россия',
-                'region' => 'Область №' . $i,
-                'city' => 'Город  '. $i,
-                'street' => 'Улица ' . $i,
-                'house' => rand(1, 200),
-                'address_comment' => '',
-                'logo' => '',
-                'description' => 'Типовая клиника с общим приёмом и терапией домашних животных.',
-                'phone1' => '+7 (900) ' . rand(100, 999) . '-' . rand(10, 99) . '-' . rand(10, 99),
-                'phone2' => null,
-                'email' => 'clinic' . $i . '@mail.ru',
-                'telegram' => null,
-                'whatsapp' => null,
-                'website' => null,
-                'schedule' => 'с 9:00 до 20:00',
-                'workdays' => 'Пн–Сб',
-                'service_ids' => [1, 2],
-            ];
-        }
 
-        // Создаем клиники и прикрепляем услуги
-        foreach ($clinics as $data) {
-            $serviceIds = $data['service_ids'];
-            unset($data['service_ids']);
-
-            $clinic = Clinic::create($data);
-            $clinic->services()->sync($serviceIds);
-        }
-    }
+// Создаем клиники и прикрепляем услуги
+foreach ($clinics as $data) {
+    $serviceIds = $data['service_ids'];
+    unset($data['service_ids']);
+    
+    $clinic = Clinic::create($data);
+    $clinic->services()->sync($serviceIds);
+}
+}
 }

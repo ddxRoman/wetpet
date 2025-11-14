@@ -171,7 +171,7 @@
         </div>
     </div>
 
-    <!-- 🔹 Модалка редактирования питомца -->
+    <!-- 🔹 Модалка редактирования фото -->
     <div id="edit-pet-modal" class="modal" style="
     display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
     justify-content:center; align-items:center; z-index:9999;">
@@ -223,22 +223,20 @@
 
     <!-- 🔹 Контейнер для уведомлений -->
     <div id="toast-container" style="position:fixed; top:20px; right:20px; z-index:10000;"></div>
-    <!-- 🔹 Модалка кадрирования фото питомца -->
+    <!-- 🔹 Модалка кадрирования фото  -->
     <div id="cropper-modal" style="
     display:none; position:fixed; inset:0;
     background:rgba(0,0,0,0.7); z-index:10000;
     justify-content:center; align-items:center;
 ">
-        <div style="background:#fff; padding:20px; border-radius:10px; max-width:90%; width:400px; text-align:center; position:relative;">
+        <div class="modal_cropp_photo">
             <button id="close-cropper" style="position:absolute; top:8px; right:10px; background:none; border:none; font-size:18px;">✖</button>
             <h3>Обрезка фото </h3>
             <img id="cropper-image" src="" style="max-width:100%; margin-top:10px; border-radius:8px;">
             <button id="save-cropped" class="save-btn" style="margin-top:15px;">Сохранить</button>
         </div>
     </div>
-<script>
 
-</script>
 
 </body>
 

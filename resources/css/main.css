@@ -495,7 +495,7 @@ body.body_page {
 .account-container {
     display: flex;
     background: #fff;
-    width: 90%;
+    width: 95%;
     max-width: 1600px;
     border-radius: 16px;
     overflow: hidden;
@@ -1538,4 +1538,14 @@ a{
         width: 70px;
         height: 70px;
     }
+}
+.modal_cropp_photo{
+    padding: 1% 0%;
+    background:#fff; 
+    min-height:600px; 
+    border-radius:10px; 
+    max-width:100%; 
+    width:500px; 
+    text-align:center; 
+    position:relative;
 }
