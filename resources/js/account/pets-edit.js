@@ -233,4 +233,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fileInput && previewImg) {
         initCropper(fileInput, previewImg);
     }
+}
+
+);
+
+document.addEventListener("change", function (e) {
+    if (e.target.matches('[id^="pet_photo_input_"]')) {
+        const input = e.target;
+        const index = input.id.split("_").pop();
+
+        const preview = document.getElementById("photo_preview_" + index);
+        const plus    = document.getElementById("plus_icon_" + index);
+
+        const file = input.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                preview.src = event.target.result;
+                preview.style.display = "block";
+                plus.style.display = "none"; // Убираем плюсик
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 });
+

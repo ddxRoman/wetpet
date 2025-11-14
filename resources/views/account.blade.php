@@ -15,6 +15,75 @@
 <!DOCTYPE html>
 <html lang="ru">
 
+<style>
+    .photo-upload-box {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #bbb;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+    background: #fafafa;
+}
+
+.photo-upload-box:hover {
+    border-color: #999;
+    background: #f0f0f0;
+}
+
+.photo-upload-plus {
+    font-size: 48px;
+    color: #aaa;
+    transition: .3s;
+}
+
+.photo-upload-box:hover .photo-upload-plus {
+    color: #888;
+}
+
+#pet-photo {
+    display: none;
+}
+
+#photo-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: none;
+}
+.photo-box {
+    width: 140px;
+    height: 140px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.plus-icon {
+    font-size: 48px;
+    color: #999;
+}
+
+.photo-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+</style>
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -144,7 +213,9 @@
 
                     <div id="birth-block">
                         <label>Дата рождения:</label>
-                        <input type="date" id="pet-birth" name="birth" style="width:100%;">
+                        <input type="date" id="pet-birth" name="birth" style="width:100%;"
+       max="{{ date('Y-m-d') }}">
+
                     </div>
 
                     <label style="display:flex; align-items:center; gap:8px; margin-top:8px;">
@@ -157,9 +228,16 @@
                     </div>
 
                     <!-- Фото питомца -->
-                    <label style="display:block; margin-top:10px;">Фото питомца:</label>
-                    <input type="file" id="pet-photo" name="photo" accept="image/*" style="width:100%; margin-bottom:10px;">
-                    <img id="photo-preview" src="" alt="" style="max-width:100px; display:none; border-radius:8px; margin-bottom:10px;">
+<label style="display:block; margin-top:10px;">Фото питомца:</label>
+
+<label class="photo-upload-box" for="pet-photo" id="photo-box">
+    <span class="photo-upload-plus">+</span>
+</label>
+
+<input type="file" id="pet-photo" name="photo" accept="image/*">
+
+<img id="photo-preview" alt="Фото питомца">
+
 
                     <button id="save-pet-btn" type="submit" class="save-btn" style="margin-top:10px;">Сохранить</button>
                 </form>
@@ -194,7 +272,9 @@
             
 <div style="margin-bottom:10px;">
     <label>Дата рождения</label>
-    <input type="date" id="edit-pet-birth" style="width:100%;">
+<input type="date" id="edit-pet-birth" style="width:100%;"
+       max="{{ date('Y-m-d') }}">
+
 </div>
 
 

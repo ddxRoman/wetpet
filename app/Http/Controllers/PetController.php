@@ -122,39 +122,67 @@ public function store(Request $request)
     }
 
     // === Обновление питомца ===
-    public function update(Request $request, Pet $pet)
-    {
-        $user = Auth::user();
-        if ($pet->user_id !== $user->id) {
-            return response()->json(['success' => false, 'message' => 'Нет доступа'], 403);
-        }
-
-        $request->validate([
-            'animal_id' => 'nullable|exists:animals,id',
-            'name' => 'nullable|string|max:255',
-            'birth_date' => 'nullable|date',
-            'age' => 'nullable|integer|min:0',
-            'photo' => 'nullable|image|max:4096',
-            'gender' => 'nullable|string|max:10',
-        ]);
-
-        $data = $request->only(['animal_id', 'name', 'birth_date', 'age', 'gender']);
-
-        if ($request->hasFile('photo')) {
-            if ($pet->photo && Storage::disk('public')->exists($pet->photo)) {
-                Storage::disk('public')->delete($pet->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('pets', 'public');
-        }
-
-        $pet->update($data);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Данные питомца обновлены',
-            'pet' => $pet->load('animal'),
-        ]);
+// === Обновление питомца ===
+public function update(Request $request, Pet $pet)
+{
+    $user = Auth::user();
+    if ($pet->user_id !== $user->id) {
+        return response()->json(['success' => false, 'message' => 'Нет доступа'], 403);
     }
+
+    $request->validate([
+        'animal_id'  => 'nullable|exists:animals,id',
+        'name'       => 'nullable|string|max:255',
+        'birth_date' => 'nullable|date',
+        'age'        => 'nullable|integer|min:0',
+        'photo'      => 'nullable|image|max:4096',
+        'gender'     => 'nullable|string|max:10',
+    ]);
+
+    // Берём входные данные
+    $birth = $request->birth_date;
+    $age   = $request->age;
+
+    // --- ТА ЖЕ ЛОГИКА, ЧТО И В store() ---
+    if ($birth) {
+        // Если есть дата рождения → вычисляем новый возраст
+        $age = \Carbon\Carbon::parse($birth)->age;
+    }
+    elseif ($age) {
+        // Если даты нет, но есть возраст → вычисляем дату рождения
+        $birth = \Carbon\Carbon::now()->subYears($age)->format('Y-m-d');
+    } else {
+        // Если оба поля НЕ переданы — оставляем старые значения
+        $birth = $pet->birth_date;
+        $age   = $pet->age;
+    }
+
+    // Собираем данные
+    $data = [
+        'animal_id'  => $request->animal_id ?? $pet->animal_id,
+        'name'       => $request->name ?? $pet->name,
+        'birth_date' => $birth,
+        'age'        => $age,
+        'gender'     => $request->gender ?? $pet->gender,
+    ];
+
+    // Фото
+    if ($request->hasFile('photo')) {
+        if ($pet->photo && Storage::disk('public')->exists($pet->photo)) {
+            Storage::disk('public')->delete($pet->photo);
+        }
+        $data['photo'] = $request->file('photo')->store('pets', 'public');
+    }
+
+    $pet->update($data);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Данные питомца обновлены',
+        'pet' => $pet->load('animal'),
+    ]);
+}
+
 
     // === Удаление питомца ===
     public function destroy(Pet $pet)
