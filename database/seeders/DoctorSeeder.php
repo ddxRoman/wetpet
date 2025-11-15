@@ -30,13 +30,22 @@ class DoctorSeeder extends Seeder
 
         ];
 
-        foreach (range(1, 15) as $i) {
+        foreach (range(1, 55) as $i) {
             DB::table('doctors')->insert([
                 'name' => $faker->name,
-                'specialization' => $faker->randomElement(['Терапевт', 'Хирург', 'Офтальмолог', 'Кардиолог']),
+                'date_of_birth'    => $faker->dateTimeBetween('-60 years', '-25 years')->format('Y-m-d'),
+                'city_id'             => $faker->numberBetween(1, 30),
+                'specialization' => $faker->randomElement(['Терапевт', 'Хирург', 'Офтальмолог', 'Кардиолог','Узист', 'Хирург', 'Терапевт', 'Стоматолог']),
                 'clinic' => $faker->randomElement(['Биосфера', 'Слон', 'ВетЛазарет', 'Государственная']),
-                'photo' => $faker->randomElement($photos),
-                'description' => $faker->randomElement(['Хороший', 'Плохой', 'Злой', 'Добрый']),
+                'experience'       => $faker->numberBetween(1, 30) . ' лет',
+                'exotic_animals'   => $faker->boolean() ? 'Да' : 'Нет',
+                'On-site_assistance' => $faker->boolean() ? 'Да' : 'Нет',
+                'photo' => 'doctors/doctor' . rand(1, 14) . '.webp',
+                'description'      => $faker->realText(200),
+                'created_at'       => now(),
+                'updated_at'       => now(),
+
+
 
                 'created_at' => now(),
                 'updated_at' => now(),

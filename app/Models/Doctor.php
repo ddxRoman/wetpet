@@ -28,6 +28,10 @@ public function reviews()
 {
     return $this->morphMany(Review::class, 'reviewable');
 }
+public function city()
+{
+    return $this->belongsTo(City::class);
+}
 
 
 }

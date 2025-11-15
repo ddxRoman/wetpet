@@ -170,6 +170,27 @@
                 }
             }
 
+            // 🔹 Автоматическое обновление списка докторов после смены города
+if (window.location.pathname.includes('/doctors')) {
+    const response = await fetch(`/doctors?city=${encodeURIComponent(cityName)}`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    });
+    const html = await response.text();
+
+    // Находим контейнер с докторами
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const newList = tempDiv.querySelector('.doctors-list');
+    const currentList = document.querySelector('.doctors-list');
+
+    if (newList && currentList) {
+        currentList.innerHTML = newList.innerHTML;
+    } else {
+        location.reload(); // fallback – перезагрузить страницу
+    }
+}
+
+
         } catch (err) {
             alert('Не удалось установить город. Попробуйте ещё раз.');
             console.error(err);

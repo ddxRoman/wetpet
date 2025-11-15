@@ -22,7 +22,7 @@ use App\Http\Controllers\{
 */
 
 // 🏠 Главная
-Route::get('/', [DoctorController::class, 'index'])->name('home');
+Route::get('/', [DoctorController::class, 'welcome'])->name('welcome');
 
 Route::get('/test', function () {
     return view('pages.clinics.tabs.test');
@@ -103,3 +103,9 @@ Route::get('/user/{id}', function ($id) {
     $user = \App\Models\User::findOrFail($id);
     return view('pages.user.profile', compact('user'));
 })->name('user.profile');
+
+// Страница всех докторов
+Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+
+// Страница одного доктора
+Route::get('/doctors/{id}', [DoctorController::class, 'show'])->name('doctors.show');

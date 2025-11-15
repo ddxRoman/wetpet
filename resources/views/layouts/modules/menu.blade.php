@@ -57,15 +57,17 @@
                 </div>
             </a>
         </div>
-
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div class="div_btn_category">
-                <div class="text_menu_btn_category">Ветеринары</div>
-                <div class="div_btn_category_icon">
-                    <img class="category_icon" src="{{ Storage::url('icon/button/menu/doctor_menu.webp') }}" alt="Зооцентры">
+            <a class="text-decoration-none" href="{{ route('doctors.index') }}">
+                <div class="div_btn_category">
+                    <div class="text_menu_btn_category">Ветеринары</div>
+                    <div class="div_btn_category_icon">
+                        <img class="category_icon" src="{{ Storage::url('icon/button/menu/doctor_menu.webp') }}" alt="Ветеринары">
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
+
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <div class="div_btn_category">

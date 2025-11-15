@@ -5,23 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}">
 
-@if(Route::currentRouteName() === 'clinics.show')
-<title>
-    {{ $clinic->name ? $clinic->name . ' — контакты и отзывы о клинике в городе ' . $clinic->city : 'Сайт про домашних животных' }}
-</title>
+    @if(Route::currentRouteName() === 'clinics.show')
+        <title>
+            {{ $clinic->name ? $clinic->name . ' — контакты и отзывы о клинике в городе ' . $clinic->city : 'Сайт про домашних животных' }}
+        </title>
 
-@else
-    <title>{{ $brandname ?? 'Сайт про домашних животных' }}</title>
-@endif
+    @elseif(Route::currentRouteName() === 'doctors.show')
+        <title>
+            {{ $doctor->name ? $doctor->name . ' — ветеринар в городе ' . $doctor->city : 'Сайт про домашних животных' }}
+        </title>
 
-
+    @else
+        <title>{{ $brandname ?? 'Сайт про домашних животных' }}</title>
+    @endif
 
     {{-- Подключение стилей и скриптов --}}
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
 <body class="body_page">
-<header class="site-header {{ request()->is('clinics*') ? 'compact-header' : '' }}">
+<header class="site-header 
+    {{ request()->is('clinics*') ? 'compact-header' : '' }}
+    {{ request()->is('doctors*') ? 'compact-header' : '' }}">
     <div class="container h-100">
         <div class="row align-items-center h-100">
 
@@ -71,8 +76,8 @@
             </div>
         </div>
 
-        {{-- Блок описания и поиска (только НЕ для страниц /clinics и /clinics/*) --}}
-        @if(!request()->is('clinics*'))
+        {{-- Блок описания и поиска (НЕ показываем на /clinics и /doctors страницах) --}}
+        @if(!request()->is('clinics*') && !request()->is('doctors*'))
             <div class="description_view text-center mt-3">
                 <h1>Сайт про домашних животных</h1>
                 <p>

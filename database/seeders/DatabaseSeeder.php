@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             UserTableSeeder::class,
             PetSeeder::class,
-            DoctorSeeder::class,
             AnimalSeeder::class,
             PetSeeder::class,
             ServiceSeeder::class,
@@ -31,7 +30,8 @@ class DatabaseSeeder extends Seeder
             DoctorServiceSeeder::class,
             PriceSeeder::class,
             ReviewSeeder::class,
-                ReviewPhotoSeeder::class,
+            ReviewPhotoSeeder::class,
+            DoctorSeeder::class,
 AwardsTableSeeder::class,
 ReviewReceiptSeeder::class
 
