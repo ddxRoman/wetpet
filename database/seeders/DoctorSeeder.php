@@ -36,7 +36,7 @@ class DoctorSeeder extends Seeder
                 'date_of_birth'    => $faker->dateTimeBetween('-60 years', '-25 years')->format('Y-m-d'),
                 'city_id'             => $faker->numberBetween(1, 30),
                 'specialization' => $faker->randomElement(['Терапевт', 'Хирург', 'Офтальмолог', 'Кардиолог','Узист', 'Хирург', 'Терапевт', 'Стоматолог']),
-                'clinic' => $faker->randomElement(['Биосфера', 'Слон', 'ВетЛазарет', 'Государственная']),
+                'clinic_id' => rand(1, 8),
                 'experience'       => $faker->numberBetween(1, 30) . ' лет',
                 'exotic_animals'   => $faker->boolean() ? 'Да' : 'Нет',
                 'On-site_assistance' => $faker->boolean() ? 'Да' : 'Нет',

@@ -81,56 +81,59 @@ class AccountController extends Controller
     }
 
     // === Получение отзывов текущего пользователя ===
-    public function getReviews()
-    {
-        $userId = auth()->id();
+public function getReviews()
+{
+    $userId = auth()->id();
 
-        try {
-            $reviews = Review::where('user_id', $userId)
-                ->with([
-                    'reviewable:id,name,region,city,street,house',
-                    'photos:id,review_id,photo_path',
-                    'receipts:id,review_id,path'
-                ])
-                ->latest()
-                ->get();
+    try {
+        $reviews = Review::where('user_id', $userId)
+            ->with([
+                'reviewable:id,name,region,city,street,house', // Работает для клиник и врачей, если у них есть эти поля
+                'photos:id,review_id,photo_path',
+                'receipts:id,review_id,path'
+            ])
+            ->latest()
+            ->get();
 
-            if ($reviews->isEmpty()) {
-                return response()->json([]);
-            }
-
-            $formatted = $reviews->map(function ($r) {
-                $clinic = $r->reviewable;
-                return [
-                    'id' => $r->id,
-                    'clinic_id' => $clinic?->id,
-                    'clinic_name' => $clinic?->name ?? '—',
-                    'region' => $clinic?->region,
-                    'city' => $clinic?->city,
-                    'street' => $clinic?->street,
-                    'house' => $clinic?->house,
-                    'liked' => $r->liked,
-                    'disliked' => $r->disliked,
-                    'content' => $r->content,
-                    'rating' => $r->rating,
-                    'created_at' => $r->created_at,
-                    'photos' => $r->photos->map(fn($p) => [
-                        'id' => $p->id,
-                        'photo_path' => $p->photo_path,
-                    ]),
-                    'receipts' => $r->receipts->map(fn($f) => [
-                        'id' => $f->id,
-                        'receipt_path' => $f->path,
-                    ]),
-                ];
-            });
-
-            return response()->json($formatted);
-        } catch (\Throwable $e) {
-            \Log::error('Ошибка getReviews: ' . $e->getMessage());
-            return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);
+        if ($reviews->isEmpty()) {
+            return response()->json([]);
         }
+
+        $formatted = $reviews->map(function ($r) {
+            $target = $r->reviewable; // Клиника или врач
+
+            return [
+                'id' => $r->id,
+                'target_id' => $target?->id,
+                'target_type' => class_basename($target), // Clinic или Doctor, полезно для фронтенда
+                'target_name' => $target?->name ?? '—',
+                'region' => $target?->region ?? null,
+                'city' => $target?->city ?? null,
+                'street' => $target?->street ?? null,
+                'house' => $target?->house ?? null,
+                'liked' => $r->liked,
+                'disliked' => $r->disliked,
+                'content' => $r->content,
+                'rating' => $r->rating,
+                'created_at' => $r->created_at->toDateTimeString(),
+                'photos' => $r->photos->map(fn($p) => [
+                    'id' => $p->id,
+                    'photo_path' => $p->photo_path,
+                ]),
+                'receipts' => $r->receipts->map(fn($f) => [
+                    'id' => $f->id,
+                    'receipt_path' => $f->path,
+                ]),
+            ];
+        });
+
+        return response()->json($formatted);
+    } catch (\Throwable $e) {
+        \Log::error('Ошибка getReviews: ' . $e->getMessage());
+        return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);
     }
+}
+
 
     // === Обновление отзыва ===
     public function updateReview(Request $request, $id)

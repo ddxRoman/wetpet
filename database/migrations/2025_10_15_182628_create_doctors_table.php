@@ -12,8 +12,8 @@ return new class extends Migration {
             $table->string('name'); // Имя врача
             $table->string('specialization'); // специализация врача
             $table->date('date_of_birth'); // специализация врача
-            $table->string('city_id'); // клиника врача
-            $table->string('clinic'); // клиника врача
+            $table->string('city_id'); // город врача
+            $table->string('clinic_id'); // клиника врача
             $table->string('experience'); // Опыт врача
             $table->string('exotic_animals'); // Опыт врача
             $table->string('On-site_assistance'); // Опыт врача

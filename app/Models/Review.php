@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,39 +24,35 @@ class Review extends Model
 
     protected $casts = [
         'review_date' => 'date',
-        // ❌ убираем boolean, потому что это ENUM
     ];
 
-    // Связь с пользователем
+    // Отзыв — принадлежит пользователю
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Полиморфная связь
+    // Полиморфная связь (клиника, врач, сервис и т.д.)
     public function reviewable()
     {
         return $this->morphTo();
     }
 
-    // Фото, прикреплённые к отзыву
+    // Фото прикрепленные
     public function photos()
     {
         return $this->hasMany(ReviewPhoto::class);
     }
 
+    // Чеки
+    public function receipts()
+    {
+        return $this->hasMany(ReviewReceipt::class);
+    }
+
+    // Связанный питомец
     public function pet()
     {
         return $this->belongsTo(Pet::class, 'pet_id');
     }
-
-    public function receipts()
-    {
-            return $this->hasMany(ReviewReceipt::class, 'review_id');
-    }
-public function clinic()
-{
-    return $this->belongsTo(\App\Models\Clinic::class, 'reviewable_id');
-}
-
 }

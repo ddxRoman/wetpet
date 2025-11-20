@@ -1,12 +1,22 @@
-use App\Models\Review;
 
+@php
+    use App\Models\Review;
+    use App\Models\Pet;
+
+
+    $user = $user ?? auth()->user();
+@endphp
+
+
+@php
+    $user = $user ?? auth()->user();
+@endphp
 
 
 {{-- Отзывы --}}
-                        <div class="tab-pane fade" id="reviews" role="tabpanel">
                             @php
-                            $reviews = Review::where('reviewable_id', $clinic->id)
-                            ->where('reviewable_type', \App\Models\Clinic::class)
+                            $reviews = Review::where('reviewable_id', $doctor->id)
+                            ->where('reviewable_type', \App\Models\doctor::class)
                             ->with(['user', 'photos'])
                             ->latest('review_date')
                             ->get();
@@ -16,7 +26,6 @@ $pets = Pet::where('user_id', auth()->id())
     ->with('animal') // подгружаем связь
     ->get();
 @endphp
-
 
 {{-- 📝 Кнопка открытия / закрытия формы --}}
 @auth
@@ -35,6 +44,7 @@ $pets = Pet::where('user_id', auth()->id())
 
 
 </div>
+
 
 {{-- 🔽 Скрытая форма --}}
 <div class="collapse" id="openReviewForm">
@@ -58,8 +68,9 @@ $pets = Pet::where('user_id', auth()->id())
                     </div>
                 @endif
 
-                <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
-                <input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
+<input type="hidden" name="reviewable_id" value="{{ $doctor->id }}">
+<input type="hidden" name="reviewable_type" value="{{ \App\Models\Doctor::class }}">
+
 
 {{-- ⭐ Оценка --}}
 <div class="mb-3">
@@ -163,11 +174,11 @@ $pets = Pet::where('user_id', auth()->id())
     </select>
 </div>
 
-                            
+  
                             {{-- 🔽 Список отзывов --}}
 
                             <div id="reviewList" class="list-group">
-                                @foreach($reviews as $review)
+                                @foreach($doctor->reviews as $review)
                                 <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
                                     data-date="{{ $review->review_date->timestamp }}"
                                     data-rating="{{ $review->rating }}"
@@ -242,8 +253,8 @@ $pets = Pet::where('user_id', auth()->id())
                                     @endif
 
                                     @php
-$reviews = Review::where('reviewable_id', $clinic->id)
-    ->where('reviewable_type', \App\Models\Clinic::class)
+$reviews = Review::where('reviewable_id', $doctor->id)
+    ->where('reviewable_type', \App\Models\doctor::class)
     ->with(['user', 'photos', 'pet.animal']) // добавили pet и animal
     ->latest('review_date')
     ->get();
@@ -273,8 +284,6 @@ $reviews = Review::where('reviewable_id', $clinic->id)
         @endforeach
     </div>
 @endif
-
                                 </div>
                                 @endforeach
                             </div>
-                        </div>

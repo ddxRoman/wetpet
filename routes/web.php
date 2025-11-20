@@ -109,3 +109,10 @@ Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index'
 
 // Страница одного доктора
 Route::get('/doctors/{id}', [DoctorController::class, 'show'])->name('doctors.show');
+Route::get('/doctors/update/{id}', [DoctorController::class, 'update'])->name('doctors.update');
+
+
+// Доктор Редактирование
+Route::post('/doctors/{doctor}/update', [DoctorController::class, 'update'])
+    ->name('doctor.update')
+    ->middleware('auth'); // при необходимости добавь middleware

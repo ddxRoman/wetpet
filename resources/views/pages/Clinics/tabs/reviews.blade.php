@@ -241,13 +241,7 @@ $pets = Pet::where('user_id', auth()->id())
                                     <p class="mt-2">{{ $review->content }}</p>
                                     @endif
 
-                                    @php
-$reviews = Review::where('reviewable_id', $clinic->id)
-    ->where('reviewable_type', \App\Models\Clinic::class)
-    ->with(['user', 'photos', 'pet.animal']) // добавили pet и animal
-    ->latest('review_date')
-    ->get();
-@endphp
+
 
 
 @if($review->pet)

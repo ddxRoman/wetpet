@@ -6,17 +6,27 @@ use Illuminate\Database\Seeder;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\Clinic;
+use App\Models\Doctor;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 
 class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::all();
+        $users   = User::all();
         $clinics = Clinic::all();
+        $doctors = Doctor::all();
 
-        if ($users->isEmpty() || $clinics->isEmpty()) {
-            $this->command->warn('❗ Не найдено пользователей или клиник. Добавь данные перед запуском сидера.');
+        // Если нет пользователей — смысла нет продолжать
+        if ($users->isEmpty()) {
+            $this->command->warn('❗ Нет пользователей. Добавь User перед запуском.');
+            return;
+        }
+
+        // Если нет ни клиник, ни докторов — сидер бесполезен
+        if ($clinics->isEmpty() && $doctors->isEmpty()) {
+            $this->command->warn('❗ Нет ни клиник, ни докторов.');
             return;
         }
 
@@ -32,19 +42,45 @@ class ReviewSeeder extends Seeder
 
         $petid = range(1, 10);
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 2000; $i++) {
+
             $user = $users->random();
-            $clinic = $clinics->random();
+
+            // Случайно выбираем: clinic или doctor
+            $isClinic = rand(0, 1);
+
+            // Выбираем объект, но только если он существует
+            if ($isClinic && $clinics->count() > 0) {
+                $reviewable     = $clinics->random();
+                $reviewableType = Clinic::class;
+            } elseif ($doctors->count() > 0) {
+                $reviewable     = $doctors->random();
+                $reviewableType = Doctor::class;
+            } else {
+                // Вообще ничего нет — пропускаем итерацию
+                continue;
+            }
 
             Review::create([
-                'user_id' => $user->id,
-                'reviewable_id' => $clinic->id,
-                'reviewable_type' => Clinic::class,
-                'review_date' => now()->subDays(rand(0, 365)),
-                'rating' => rand(1, 5),
-                'content' => fake()->paragraph(2),
-                'liked' => implode(', ', Arr::random($likedOptions, rand(1, 3))),
-                'disliked' => implode(', ', Arr::random($dislikedOptions, rand(0, 2))),
+                'user_id'         => $user->id,
+                'reviewable_id'   => $reviewable->id,
+                'reviewable_type' => $reviewableType,
+                'review_date'     => now()->subDays(rand(0, 365)),
+                'rating'          => rand(1, 5),
+                'content'         => fake()->paragraph(2),
+
+                'liked' => implode(', ', Arr::random(
+                    $likedOptions,
+                    rand(1, min(3, count($likedOptions)))
+                )),
+
+                'disliked' => rand(0, 2)
+                    ? implode(', ', Arr::random(
+                        $dislikedOptions,
+                        rand(1, min(2, count($dislikedOptions)))
+                    ))
+                    : null,
+
                 'pet_id' => Arr::random($petid),
 
                 'receipt_path' => fake()->boolean(50)
@@ -53,6 +89,6 @@ class ReviewSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('✅ Добавлено 100 случайных отзывов.');
+        $this->command->info('✅ Добавлены отзывы для клиник и докторов.');
     }
 }

@@ -33,5 +33,16 @@ public function city()
     return $this->belongsTo(City::class);
 }
 
+public function clinic()
+{
+    return $this->belongsTo(\App\Models\Clinic::class);
+}
+public function reviewable()
+{
+    return $this->morphTo();
+}
+
+
+
 
 }

@@ -23,19 +23,16 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             PetSeeder::class,
             AnimalSeeder::class,
-            PetSeeder::class,
             ServiceSeeder::class,
             ClinicSeeder::class,
             ClinicServiceSeeder::class,
+            DoctorSeeder::class,
             DoctorServiceSeeder::class,
             PriceSeeder::class,
             ReviewSeeder::class,
             ReviewPhotoSeeder::class,
-            DoctorSeeder::class,
 AwardsTableSeeder::class,
 ReviewReceiptSeeder::class
-
-
 
         ]);
     }
