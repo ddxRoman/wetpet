@@ -12,8 +12,9 @@ class Service extends Model
 
 public function doctors()
 {
-    return $this->belongsToMany(Doctor::class, 'doctor_service');
+    return $this->belongsToMany(Doctor::class, 'doctor_service', 'service_id', 'doctor_id');
 }
+
  public function clinics()
     {
         return $this->belongsToMany(Clinic::class, 'clinic_service', 'service_id', 'clinic_id');

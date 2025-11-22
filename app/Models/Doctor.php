@@ -18,10 +18,11 @@ class Doctor extends Model
         'photo',
         'description',
     ];
-    public function services()
+public function services()
 {
-    return $this->belongsToMany(Service::class, 'doctor_service');
+    return $this->belongsToMany(Service::class, 'doctor_service', 'doctor_id', 'service_id');
 }
+
 
 
 public function reviews()

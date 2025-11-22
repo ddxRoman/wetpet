@@ -52,6 +52,7 @@ public function show($id)
 
     $reviews = $doctor->reviews()->with('user', 'photos')->latest()->get();
 
+    
 
     return view('pages.doctors.show', compact('doctor', 'clinic'));
 }

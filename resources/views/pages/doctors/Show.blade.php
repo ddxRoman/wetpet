@@ -102,13 +102,13 @@
             @endif
 
 
+            
+
             {{-- 🔹 УСЛУГИ --}}
-            @if($tab === 'services')
-                <h4 class="fw-semibold mb-3">Услуги врача</h4>
-                <p class="text-muted">
-                    Пока услуги не добавлены
-                </p>
-            @endif
+@if($tab === 'services')
+    @include('pages.doctors.tabs.services', ['doctor' => $doctor])
+@endif
+
 
 
             {{-- 🔹 ОТЗЫВЫ --}}
