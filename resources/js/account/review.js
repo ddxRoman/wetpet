@@ -3,19 +3,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabBtn = document.querySelector('[data-tab="reviews"]');
     let loaded = false;
 
-    async function loadReviews() {
-        try {
-            const res = await fetch(`/account/reviews`, { credentials: 'same-origin' });
-            if (!res.ok) throw new Error(await res.text());
-            const data = await res.json();
-            reviewsList.innerHTML = data.length
-                ? data.map(r => renderCard(r)).join('')
-                : '<p class="empty-message">Вы пока не оставили ни одного отзыва.</p>';
-        } catch (e) {
-            console.error(e);
-            reviewsList.innerHTML = '<p class="empty-message" style="color:red;">Ошибка при загрузке отзывов.</p>';
-        }
+async function loadReviews() {
+    try {
+        const res = await fetch(`/account/reviews`, { credentials: 'same-origin' });
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+
+        // === Вот это добавляем ===
+        data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        reviewsList.innerHTML = data.length
+            ? data.map(r => renderCard(r)).join('')
+            : '<p class="empty-message">Вы пока не оставили ни одного отзыва.</p>';
+    } catch (e) {
+        console.error(e);
+        reviewsList.innerHTML = '<p class="empty-message" style="color:red;">Ошибка при загрузке отзывов.</p>';
     }
+}
+
 
     function renderCard(r) {
         const date = new Date(r.created_at).toLocaleDateString('ru-RU');
@@ -45,7 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 `).join('') + `</div>` : '';
 
         return `
-            <article class="review-card" data-id="${r.id}">
+            <article class="review-card"
+         data-id="${r.id}"
+         data-date="${new Date(r.created_at).getTime()}"
+         data-rating="${r.rating ?? 0}">
+
                 <header class="review-header">
                     <div class="left">
                         <div class="clinic-block">${clinicLink}${address ? `<div class="clinic-address">${address}</div>` : ''}</div>
@@ -343,6 +352,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sortSelect = document.getElementById('sortReviews');
 
     if (reviewList && sortSelect) {
+        // Запускаем сортировку по умолчанию (если выбран "сначала новые")
+if (sortSelect.value === 'date_desc') {
+    setTimeout(() => sortSelect.dispatchEvent(new Event('change')), 100);
+}
+
         sortSelect.addEventListener('change', () => {
             const sortType = sortSelect.value;
             const reviews = Array.from(reviewList.querySelectorAll('.review-card'));

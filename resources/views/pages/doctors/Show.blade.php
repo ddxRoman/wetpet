@@ -3,6 +3,7 @@
     'resources/css/main.css',
     'resources/sass/app.scss',
     'resources/js/app.js',
+    'resources/js/account/account.js',
 ])
 
 @section('content')

@@ -14,59 +14,64 @@ class ReviewController extends Controller
      * Сохранение нового отзыва
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'reviewable_id' => 'required|integer',
-            'reviewable_type' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5',
-            'liked' => 'nullable|string|max:255',
-            'disliked' => 'nullable|string|max:255',
-            'content' => 'nullable|string|max:2000',
-            'pet_id' => 'nullable|integer',
-            'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'photos.*' => 'nullable|image|max:5120',
-        ], [
-            'rating.required' => 'Пожалуйста, выберите оценку от 1 до 5 звёзд.',
+{
+    $validated = $request->validate([
+        'reviewable_id' => 'required|integer',
+        'reviewable_type' => 'required|string',
+        'rating' => 'required|integer|min:1|max:5',
+        'liked' => 'nullable|string|max:255',
+        'disliked' => 'nullable|string|max:255',
+        'content' => 'nullable|string|max:2000',
+        'pet_id' => 'nullable|integer',
+        'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+        'photos.*' => 'nullable|image|max:5120',
+    ]);
+
+    $review = new Review();
+    $review->user_id = Auth::id();
+    $review->reviewable_id = $validated['reviewable_id'];
+    $review->reviewable_type = str_replace('\\\\', '\\', $validated['reviewable_type']);
+    $review->rating = $validated['rating'];
+    $review->liked = $validated['liked'] ?? null;
+    $review->disliked = $validated['disliked'] ?? null;
+    $review->content = $validated['content'] ?? null;
+    $review->pet_id = $validated['pet_id'] ?? null;
+    $review->review_date = now();
+    $review->save();
+
+    // чек
+    if ($request->hasFile('receipt')) {
+        $path = $request->file('receipt')->store('reviews/receipts', 'public');
+
+        ReviewReceipt::create([
+            'review_id' => $review->id,
+            'path' => $path,
+            'status' => 'pending',
         ]);
+    }
 
-        $review = new Review();
-        $review->user_id = Auth::id();
-        $review->reviewable_id = $validated['reviewable_id'];
-        $review->reviewable_type = str_replace('\\\\', '\\', $validated['reviewable_type']);
-        $review->rating = $validated['rating'];
-        $review->liked = $validated['liked'] ?? null;
-        $review->disliked = $validated['disliked'] ?? null;
-        $review->content = $validated['content'] ?? null;
-        $review->pet_id = $validated['pet_id'] ?? null;
-        $review->review_date = now();
-        $review->save();
-
-        // 📎 Сохраняем чек
-        if ($request->hasFile('receipt')) {
-            $path = $request->file('receipt')->store('reviews/receipts', 'public');
-            ReviewReceipt::create([
+    // фотографии
+    if ($request->hasFile('photos')) {
+        foreach ($request->file('photos') as $photo) {
+            $path = $photo->store('reviews/photos', 'public');
+            ReviewPhoto::create([
                 'review_id' => $review->id,
-                'clinic_id' => $review->reviewable_id,
-                'path' => $path,
-                'status' => 'pending',
+                'photo_path' => $path,
             ]);
         }
-
-        // 🖼 Фото
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('reviews/photos', 'public');
-                ReviewPhoto::create([
-                    'review_id' => $review->id,
-                    'photo_path' => $path,
-                ]);
-            }
-        }
-
-        return redirect()
-            ->to(url("/clinics/{$review->reviewable_id}?tab=reviews"))
-            ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
     }
+
+    // === КОРРЕКТНЫЙ РЕДИРЕКТ ===
+    $model = $review->reviewable;
+    $route = $model instanceof \App\Models\Doctor
+        ? 'doctors.show'
+        : 'clinics.show';
+
+    return redirect()
+        ->route($route, [$model->id, 'tab' => 'reviews'])
+        ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
+}
+
 
     /**
      * Обновление отзыва
@@ -127,13 +132,17 @@ public function destroy($id)
         abort(403);
     }
 
-    $clinicId = $review->reviewable_id; // ID клиники для редиректа
+    $model = $review->reviewable;
     $review->delete();
 
-    return redirect()
-        ->to(url("/clinics/{$clinicId}?tab=reviews"))
-        ->with('success', 'Отзыв успешно удалён.');
+    $route = $model instanceof \App\Models\Doctor
+        ? 'doctors.show'
+        : 'clinics.show';
+
+return redirect()->to(url(request()->headers->get('referer')));
+
 }
+
 
 
 

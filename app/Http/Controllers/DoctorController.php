@@ -93,5 +93,14 @@ public function show($id)
         // если ожидался JSON (AJAX) — можно вернуть JSON:
         // return response()->json(['success' => true, 'doctor' => $doctor->fresh()]);
     }
+
+     public function destroy($id)
+    {
+        $clinic = Clinic::findOrFail($id);
+        $clinic->delete();
+
+        return redirect()->route('doctors.index')->with('success', 'Клиника удалена');
+    }
+
     
 }

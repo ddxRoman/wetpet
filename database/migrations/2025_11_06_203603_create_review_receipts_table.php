@@ -19,11 +19,6 @@ return new class extends Migration
                   ->constrained('reviews')
                   ->onDelete('cascade');
 
-            // Связь с клиникой
-            $table->foreignId('clinic_id')
-                  ->constrained('clinics')
-                  ->onDelete('cascade');
-
             // Путь к файлу чека
             $table->string('path');
 
