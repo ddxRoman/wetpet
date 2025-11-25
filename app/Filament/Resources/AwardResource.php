@@ -24,21 +24,21 @@ public static function form(Form $form): Form
     return $form
         ->schema([
             
-            Forms\Components\Select::make('doctor_id')
-                ->label('Доктор')
-                ->relationship('doctor', 'name')
-                ->disabled()
-->dehydrated(false)
-
-                ->required(),
+Forms\Components\Select::make('doctor_id')
+    ->label('Доктор')
+    ->relationship('doctor', 'name')
+    ->disabled()
+    ->dehydrated(false)
+    ->nullable()
+    ->required(false),
 
             Forms\Components\Select::make('clinic_id')
                 ->label('Клиника')
                 ->relationship('clinic', 'name')
                 ->disabled()
-
-
-                ->required(),
+->nullable()
+->required(false)
+->dehydrated(false),
 
             // Фото награды
             Forms\Components\FileUpload::make('image')
