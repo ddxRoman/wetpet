@@ -55,6 +55,35 @@ Forms\Components\Select::make('specialization')
                 ->searchable()
                 ->preload()
                 ->required(),
+
+                Forms\Components\HasManyRepeater::make('awards')
+    ->relationship('awards')
+    ->label('Награды')
+    ->schema([
+        Forms\Components\FileUpload::make('image')
+            ->label('Изображение')
+            ->directory('awards')
+            ->image(),
+            
+        Forms\Components\TextInput::make('title')
+            ->label('Название'),
+
+        Forms\Components\Textarea::make('description')
+            ->label('Описание'),
+
+        Forms\Components\Select::make('confirmed')
+            ->label('Статус')
+            ->options([
+                'pending' => 'На проверке',
+                'accepted' => 'Одобрена',
+                'rejected' => 'Отклонена',
+            ])
+            ->default('pending'),
+    ])
+    ->orderable()
+    ->collapsible()
+
+
         ]);
 }
 

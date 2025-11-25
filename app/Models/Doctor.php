@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+
+
 
 class Doctor extends Model
 {
     use HasFactory;
+        use Notifiable;
 
     // имя таблицы (по умолчанию Laravel сам подставит "doctors", можно не указывать)
     protected $table = 'doctors';
@@ -45,6 +49,13 @@ public function reviewable()
 {
     return $this->morphTo();
 }
+public function awards()
+{
+    return $this->hasMany(Award::class);
+}
+
+
+
 
 
 
