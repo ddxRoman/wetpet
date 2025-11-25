@@ -34,8 +34,9 @@ class DoctorSeeder extends Seeder
             DB::table('doctors')->insert([
                 'name' => $faker->name,
                 'date_of_birth'    => $faker->dateTimeBetween('-60 years', '-25 years')->format('Y-m-d'),
-                'city_id'             => $faker->numberBetween(1, 30),
-                'specialization' => $faker->randomElement(['Терапия', 'Уход', 'Офтальмология', 'Кардиология', 'Неврология', 'Дерматология', 'Диагностика', 'Хирургия', 'Репродуктология', 'Стоматология']),
+                'city_id'             => "21",
+                // 'city_id'             => $faker->numberBetween(1, 30),
+                'specialization' => $faker->randomElement(['Терапия', 'Уход', 'Офтальмолог', 'Лаборатория', 'Кардиолог', 'Невролог', 'Дерматолог', 'Диагностика', 'Хирург', 'Репродуктолог', 'Стоматолог']),
                 'clinic_id' => rand(1, 8),
                 'experience'       => $faker->numberBetween(1, 30) . ' лет',
                 'exotic_animals'   => $faker->boolean() ? 'Да' : 'Нет',
@@ -44,11 +45,6 @@ class DoctorSeeder extends Seeder
                 'description'      => $faker->realText(200),
                 'created_at'       => now(),
                 'updated_at'       => now(),
-
-
-
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
         }
     }

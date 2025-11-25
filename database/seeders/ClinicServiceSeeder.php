@@ -28,7 +28,7 @@ DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         foreach ($clinics as $clinic) {
             // Каждая клиника получит от 5 до 15 случайных услуг
-            $assignedServices = $services->random(rand(5, 15));
+            $assignedServices = $services->random(rand(50, 150));
             foreach ($assignedServices as $service) {
                 $insert[] = [
                     'clinic_id' => $clinic->id,

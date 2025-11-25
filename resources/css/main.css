@@ -1657,3 +1657,7 @@ a{
 .tooltip.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
     border-top-color: #ddd !important;
 }
+.text-primary {
+    padding-top: 1%;
+    padding-left: 0.5%;
+}

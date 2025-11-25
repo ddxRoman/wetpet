@@ -44,17 +44,28 @@ public function index()
 
 public function show($id)
 {
-    // Подгружаем доктора и его клинику
-    $doctor = Doctor::with('clinic')->findOrFail($id);
+$doctor = Doctor::findOrFail($id);
 
-    // Проверяем, есть ли у доктора клиника (связь)
-    $clinic = $doctor->clinic; // ❗ Это уже объект Clinic или null
+$doctor->load([
+    'clinic',
+    'services' => function($q) use ($doctor) {
+        $q->where('specialization_doctor', $doctor->specialization);
+    }
+]);
 
-    $reviews = $doctor->reviews()->with('user', 'photos')->latest()->get();
 
-    
+    $clinic = $doctor->clinic;
 
-    return view('pages.doctors.show', compact('doctor', 'clinic'));
+    $reviews = $doctor->reviews()
+        ->with('user', 'photos')
+        ->latest()
+        ->get();
+
+    return view('pages.doctors.show', compact(
+        'doctor',
+        'clinic',
+        'reviews'
+    ));
 }
 
 

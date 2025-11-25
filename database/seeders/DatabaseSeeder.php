@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CitiesTableSeeder::class,
             UserTableSeeder::class,
-            PetSeeder::class,
             AnimalSeeder::class,
+            PetSeeder::class,
             ServiceSeeder::class,
             ClinicSeeder::class,
             ClinicServiceSeeder::class,
