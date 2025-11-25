@@ -20,9 +20,13 @@
     $mapQuery = urlencode(implode(', ', $addressParts));
 @endphp
 
+<body>
+    <div class="d-flex flex-column min-vh-100 bg-white">
+    @include('layouts.header')
+
+</body>
 
 <div class="container mt-5">
-
     {{-- КНОПКА НАЗАД --}}
     <div class="mb-4">
         <a href="{{ route('doctors.index') }}"
@@ -80,7 +84,9 @@
                 <ul class="list-unstyled text-secondary">
 
                     @if($doctor->clinic)
+                    <a href="{{ route('clinics.show', $clinic->id) }}" class="text-decoration-none text-reset">
                         <li>🏥 {{ $doctor->clinic->name }}</li>
+                    </a>    
                     @endif
 
                     @if($doctor->city)
@@ -150,6 +156,6 @@
 
         </div>
     </div>
-
+</div>
 </div>
 @endsection

@@ -632,18 +632,18 @@ $reviews = Review::where('reviewable_id', $clinic->id)
 
 
 
-
                         {{-- Доктора --}}
                         <div class="mb-4 mt-5">
                             <h2 class="fs-5 fw-semibold mb-3">Доктора</h2>
 
                             @php
-                            $doctors = \App\Models\Doctor::where('clinic', $clinic->name)->get();
+                            $doctors = \App\Models\Doctor::where('clinic_id', $clinic->id)->get();
                             @endphp
 
                             <div class="row g-3">
                                 @forelse ($doctors as $doctor)
                                 <div class="col-md-6 col-lg-4 col-sm-6">
+                                                    <a href="{{ route('doctors.show', $doctor->id) }}" class="text-decoration-none text-reset">
                                     <div class="card h-100 shadow-sm border-0 position-relative doctor-card">
                                         {{-- Лапка с рейтингом --}}
                                         <div class="rating-badge">
@@ -651,7 +651,7 @@ $reviews = Review::where('reviewable_id', $clinic->id)
                                             <span class="rating-value">4.5</span>
                                         </div>
                                         <div class="card-body text-center">
-                                            <img src="{{ $doctor->photo ? asset('/' . $doctor->photo) : asset('/doctors/default.webp') }}"
+                                            <img src="{{ $doctor->photo ? asset('/storage/' . $doctor->photo) : asset('/storage/doctors/default.webp') }}"
                                                 alt="{{ $doctor->name }}"
                                                 class="doctor-photo mb-3">
                                             <h5 class="card-title mb-1">{{ $doctor->name }}</h5>
@@ -661,6 +661,7 @@ $reviews = Review::where('reviewable_id', $clinic->id)
                                             @endif
                                         </div>
                                     </div>
+                                </a>
                                 </div>
                                 @empty
                                 <p class="text-muted">Доктора не указаны.</p>
