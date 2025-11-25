@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->date('date_of_birth'); // специализация врача
             $table->string('city_id'); // город врача
             $table->string('clinic_id'); // клиника врача
-            $table->string('experience'); // Опыт врача
+            $table->integer('experience'); // Опыт врача
             $table->string('exotic_animals'); // Опыт врача
             $table->string('On-site_assistance'); // Опыт врача
             $table->string('photo'); // Фото (путь к файлу)

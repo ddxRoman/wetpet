@@ -17,6 +17,9 @@ class Doctor extends Model
         'name',
         'photo',
         'description',
+        'specialization',
+        'experience',
+        'photo',
     ];
 public function services()
 {

@@ -41,7 +41,7 @@ class ServiceSeeder extends Seeder
                 Service::create([
                     'name'                  => $serviceName,
                     'specialization'        => $service['spec'],
-                    'specialization_doctor' => 'Терапия',
+                    'specialization_doctor' => $service['doc'],
                 ]);
 
                 $count++;
