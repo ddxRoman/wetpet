@@ -92,7 +92,14 @@ $pets = Pet::where('user_id', auth()->id())
         Выберите оценку от 1 до 5 звёзд.
     </div>
 </div>
-
+<style>
+    .bg-dark {
+    background-color: #ffffff11 !important;
+    -webkit-box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
+box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
+}
+</style>
 
                 {{-- 💚 Понравилось --}}
                 <div class="mb-3">
@@ -287,3 +294,34 @@ $reviews = Review::where('reviewable_id', $doctor->id)
                                 </div>
                                 @endforeach
                             </div>
+                            <!-- Modal для просмотра фото -->
+<div class="modal fade" id="photoModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark border-0">
+            <div class="modal-body position-relative p-0">
+
+                <!-- Левая стрелка -->
+                <button id="prevPhoto"
+                        class="btn btn-dark position-absolute top-50 start-0 translate-middle-y opacity-75"
+                        style="z-index: 10;">
+                    <span class="fs-3">&lt;</span>
+                </button>
+
+                <!-- Фото -->
+                <img id="modalPhoto"
+                     src=""
+                     class="img-fluid rounded w-100"
+                     alt="Фото">
+
+                <!-- Правая стрелка -->
+                <button id="nextPhoto"
+                        class="btn btn-dark position-absolute top-50 end-0 translate-middle-y opacity-75"
+                        style="z-index: 10;">
+                    <span class="fs-3">&gt;</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
