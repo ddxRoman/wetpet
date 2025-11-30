@@ -43,7 +43,16 @@
              class="me-3">
 
         <div>
-            <h1 class="fw-bold m-0">{{ $doctor->name }}</h1>
+<h1 class="fw-bold m-0 d-flex align-items-center gap-2">
+    {{ $doctor->name }}
+
+    @if($doctor->exotic_animals == 'Да' || $doctor->exotic_animals == 1 || $doctor->exotic_animals === true)
+        <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">
+            Экзотические животные
+        </span>
+    @endif
+</h1>
+
 
             <div class="text-muted">
                 {{ $doctor->specialization }}
@@ -53,9 +62,14 @@
 
 
     {{-- ТАБЫ --}}
-    @php $tab = request('tab', 'contacts'); @endphp
+    @php $tab = request('tab', 'info'); @endphp
 
     <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link {{ $tab==='info' ? 'active':'' }}"
+               href="?tab=info">Информация</a>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link {{ $tab==='contacts' ? 'active':'' }}"
                href="?tab=contacts">Контакты</a>
@@ -71,40 +85,20 @@
                href="?tab=reviews">Отзывы</a>
         </li>
     </ul>
-
-
+    
+    
     <div class="row">
         {{-- ЛЕВАЯ КОЛОНКА --}}
         <div class="col-lg-8">
-
+            
+            {{-- 🔹 УСЛУГИ --}}
+        @if($tab === 'info')
+        @include('pages.doctors.tabs.info', ['doctor' => $doctor])
+        @endif
+            
             {{-- 🔹 КОНТАКТЫ --}}
             @if($tab === 'contacts')
-                <h4 class="fw-semibold mb-3">Контакты</h4>
-
-                <ul class="list-unstyled text-secondary">
-
-                    @if($doctor->clinic)
-                    <a href="{{ route('clinics.show', $clinic->id) }}" class="text-decoration-none text-reset">
-                        <li>🏥 {{ $doctor->clinic->name }}</li>
-                    </a>    
-                    @endif
-
-                    @if($doctor->city)
-                        <li>📍 {{ $doctor->city->name }}</li>
-                    @endif
-
-                    @if($doctor->experience)
-                        <li>👨‍⚕️ Стаж: {{ $doctor->experience }} лет</li>
-                    @endif
-
-                    @if($doctor->phone)
-                        <li>📞 <a href="tel:{{ $doctor->phone }}">{{ $doctor->phone }}</a></li>
-                    @endif
-
-                    @if($doctor->email)
-                        <li>✉️ {{ $doctor->email }}</li>
-                    @endif
-                </ul>
+                   @include('pages.doctors.tabs.contacts', ['doctor' => $doctor])
             @endif
 
 
@@ -136,18 +130,14 @@
             <div class="card shadow-sm border-0">
                 <div class="card-body">
 
-                    <h6 class="fw-semibold">Карта / местоположение</h6>
+                    <h6 class="fw-semibold">Врач {{ $doctor->specialization }} {{ $doctor->name }}</h6>
 
                     <div class="rounded mt-2"
                          style="overflow:hidden;width:100%;height:260px;">
 
-                        <iframe
-                            width="100%"
-                            height="100%"
-                            frameborder="0"
-                            src="https://www.orsdiplom.h1n.ru/action/autorization.php"
-                            allowfullscreen>
-                        </iframe>
+        <img src="{{ $photo }}"
+             style="width:290px;height:290px;border-radius:10px;border:1px solid #ddd;object-fit:cover"
+             class="me-3">
 
                     </div>
 

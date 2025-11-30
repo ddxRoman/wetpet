@@ -30,6 +30,10 @@ public function services()
     return $this->belongsToMany(Service::class, 'doctor_service', 'doctor_id', 'service_id');
 }
 
+public function contacts()
+{
+    return $this->hasOne(DoctorContact::class);
+}
 
 
 public function reviews()

@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->string('city_id'); // город врача
             $table->string('clinic_id'); // клиника врача
             $table->integer('experience'); // Опыт врача
-            $table->string('exotic_animals'); // Опыт врача
-            $table->string('On-site_assistance'); // Опыт врача
+            $table->string('exotic_animals'); // Экзотические животные
+            $table->string('On-site_assistance'); // Выезд на дом
             $table->string('photo'); // Фото (путь к файлу)
             $table->text('description')->nullable(); // Описание, специализация и т.п.
             $table->timestamps(); // created_at и updated_at

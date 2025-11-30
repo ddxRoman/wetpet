@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             ReviewPhotoSeeder::class,
 AwardsTableSeeder::class,
-ReviewReceiptSeeder::class
+ReviewReceiptSeeder::class,
+DoctorContactsSeeder::class,
 
         ]);
     }

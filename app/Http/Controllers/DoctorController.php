@@ -48,6 +48,7 @@ $doctor = Doctor::findOrFail($id);
 
 $doctor->load([
     'clinic',
+     'contacts',   // ← добавили
     'services' => function($q) use ($doctor) {
         $q->where('specialization_doctor', $doctor->specialization);
     }

@@ -37,8 +37,19 @@
                                      ⭐ {{ $rating }} — {{ $ratingCounts[$rating] ?? 0 }} отзыв{{ ($ratingCounts[$rating] ?? 0) == 1 ? ' ' : 'ов' }}
                                 @endfor
                             ">
-                        ⭐ <span class="ms-1 fw-semibold">{{ number_format($avgRating, 1) }}</span>
-                        </div>
+                            
+                                                    ⭐ <span class="ms-1 fw-semibold">{{ number_format($avgRating, 1) }}</span>
+                                                    </div>
+                            {{-- 🦎 Иконка экзотических животных --}}
+@if($doctor->exotic_animals == 'Да')
+    <div class="exotic-icon position-absolute top-0 end-0 m-2 bg-white rounded-circle shadow d-flex align-items-center justify-content-center"
+         style="width:34px;height:34px;font-size:18px; z-index: 20;">
+    <img src="{{ asset('storage/icon/stars/exotic.png') }}"
+         alt="Экзотические животные"
+         style="width:32px; height:32px; z-index:20; border-radius: 25px;">
+    </div>
+@endif
+
 
                         @php
                             $photo = !empty($doctor->photo)
@@ -50,6 +61,12 @@
 
                         <div class="card-body">
                             <h5 class="card-title">{{ $doctor->name }}</h5>
+                            
+    @if($doctor->exotic_animals == 'Да' || $doctor->exotic_animals == 1 || $doctor->exotic_animals === true)
+        <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">
+            Экзотические животные
+        </span>
+    @endif
                             <p class="card-text mb-1">
                                 <strong>Специализация:</strong> {{ $doctor->specialization }}
                             </p>
