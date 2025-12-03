@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\{
@@ -116,3 +117,7 @@ Route::get('/doctors/update/{id}', [DoctorController::class, 'update'])->name('d
 Route::post('/doctors/{doctor}/update', [DoctorController::class, 'update'])
     ->name('doctor.update')
     ->middleware('auth'); // при необходимости добавь middleware
+
+
+Route::post('/doctors/store', [DoctorController::class, 'store'])->name('doctors.store');
+Route::post('/clinics/store', [ClinicController::class, 'store'])->name('clinics.store');

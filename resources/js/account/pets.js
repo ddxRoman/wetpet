@@ -82,7 +82,7 @@ petsList.insertAdjacentHTML('beforeend', `
 
         <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
              alt="${p.name}"
-             style="max-width:120px; display:block; margin-bottom:8px; border-radius:10px;">
+             style="max-width:100%; display:block; margin-bottom:8px; border-radius:10px;">
 
         <b>${p.name}</b><br>
         <small>${p.animal?.species || ''} (${p.animal?.breed || ''})</small><br>
