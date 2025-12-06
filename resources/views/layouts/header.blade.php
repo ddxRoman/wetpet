@@ -46,12 +46,12 @@
 
             {{-- ==== Кнопки ==== --}}
             <div class="d-none d-md-flex gap-2 flex-shrink-0 me-3">
-                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
-                    Специалист+
+                <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addClinicModal">
+                    <img class="add_btn"  src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" title="Добавить организацию" alt="Добавить организацию">
                 </button>
 
-                <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#addClinicModal">
-                    Клиника+
+                <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" title="Добавить Специалиста" alt="Добавить специалиста">
                 </button>
             </div>
 

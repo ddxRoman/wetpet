@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
 AwardsTableSeeder::class,
 ReviewReceiptSeeder::class,
 DoctorContactsSeeder::class,
+FieldOfActivitySeeder::class,
+
 
         ]);
     }

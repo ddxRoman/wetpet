@@ -50,6 +50,10 @@ Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');
 Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
 Route::post('/account/update-city', [ProfileController::class, 'updateCity'])->name('account.updateCity');
 
+Route::get('/api/clinics/by-city/{city}', function ($cityId) {
+    return \App\Models\Clinic::where('city', $cityId)->get(['id', 'name']);
+});
+
 
 // 📧 Сброс пароля
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');

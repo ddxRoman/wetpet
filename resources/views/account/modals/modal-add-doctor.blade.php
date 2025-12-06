@@ -1,31 +1,5 @@
 <style>
-    /* квадрат 150x150 */
-    #photoPicker {
-        width: 150px;
-        height: 150px;
-        border: 2px dashed #b8b8b8;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-size: 48px;
-        color: #999;
-        transition: 0.2s;
-    }
-    #photoPicker:hover {
-        background: #f7f7f7;
-    }
-    #doctorPhotoPreview {
-        width: 150px;
-        height: 150px;
-        border-radius: 10px;
-        object-fit: cover;
-        display: none;
-    }
-    #doctorPhotoInput {
-        display: none;
-    }
+
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
@@ -55,10 +29,25 @@
 
                     <div class="row g-3">
 
+                                            <div class="col-12">
+    <label class="form-check-label">
+        <input type="checkbox" name="is_me" class="form-check-input">
+    <strong>
+        Добавляю себя
+    </strong> 
+    </label>
+</div>
+
+
                         <div class="col-12">
                             <label>Имя врача</label>
                             <input type="text" name="name" class="form-control">
                         </div>
+
+
+                        
+
+
 
                         <div class="col-12">
                             <label>Специализация</label>
@@ -69,6 +58,8 @@
                             <label>Дата рождения</label>
                             <input type="date" name="date_of_birth" class="form-control">
                         </div>
+
+
 
                         <div class="col-md-6">
                             <label>Опыт (лет)</label>
@@ -87,7 +78,10 @@
 
                         <div class="col-md-6">
                             <label>Клиника</label>
-                            <input type="number" name="clinic_id" class="form-control">
+                            <select name="clinic_id" id="clinicSelect" class="form-select">
+    <option value="">Сначала выберите город</option>
+</select>
+
                         </div>
 
                         <div class="col-md-6">
@@ -228,4 +222,60 @@ document.addEventListener("DOMContentLoaded", () => {
         fileInput.value = '';
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const citySelect = document.getElementById("citySelect");
+    const clinicSelect = document.getElementById("clinicSelect");
+
+    let clinicChoices = null;
+
+    // подключаем Choices.js
+    function initClinicChoices() {
+        if (clinicChoices) clinicChoices.destroy();
+        clinicChoices = new Choices("#clinicSelect", {
+            searchPlaceholderValue: "Поиск клиники...",
+            removeItemButton: true
+        });
+    }
+
+    initClinicChoices();
+
+    // загрузка клиник по выбранному городу
+    citySelect.addEventListener("change", () => {
+        const cityId = citySelect.value;
+
+        clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
+        clinicChoices.destroy();
+
+        if (!cityId) {
+            clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
+            initClinicChoices();
+            return;
+        }
+
+        fetch(`/api/clinics/by-city/${cityId}`)
+            .then(r => r.json())
+            .then(data => {
+                clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
+
+                data.forEach(clinic => {
+                    const opt = document.createElement("option");
+                    opt.value = clinic.id;
+                    opt.textContent = clinic.name;
+                    clinicSelect.appendChild(opt);
+                });
+
+                initClinicChoices();
+
+            })
+            .catch(err => {
+                console.error(err);
+                clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+                initClinicChoices();
+            });
+    });
+
+});
+
 </script>
