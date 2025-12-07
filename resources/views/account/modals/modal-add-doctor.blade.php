@@ -28,10 +28,11 @@
                     <div class="row g-3">
                                             <div class="col-12">
     <label class="form-check-label">
-        <input type="checkbox" name="is_me" class="form-check-input">
+        <input type="checkbox" name="its_me" class="form-check-input">
     <strong>
         Добавляю себя
     </strong> 
+    <label for="its_me">Мы попросим вас подтвердить что вы именно явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
     </label>
 </div>
 
