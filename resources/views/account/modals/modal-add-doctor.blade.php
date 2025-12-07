@@ -24,11 +24,8 @@
                 </div>
 
                 <div class="modal-body">
-
                     <div id="doctorErrors" class="alert alert-danger d-none"></div>
-
                     <div class="row g-3">
-
                                             <div class="col-12">
     <label class="form-check-label">
         <input type="checkbox" name="is_me" class="form-check-input">
@@ -45,15 +42,27 @@
                         </div>
 
 
-                        <div class="col-12">
-                            <label>Специализация</label>
-                            <input type="text" name="specialization" class="form-control">
-                        </div>
-
-                        <div class="col-md-6">
+                                                <div class="col-md-6">
                             <label>Дата рождения</label>
                             <input type="date" name="date_of_birth" class="form-control">
                         </div>
+
+
+                        <div class="col-md-6">
+    <label>Сфера деятельности</label>
+    <select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select">
+        <option value="">Загрузка...</option>
+    </select>
+</div>
+
+
+
+                        <!-- <div class="col-12">
+                            <label>Специализация</label>
+                            <input type="text" name="specialization" class="form-control">
+                        </div> -->
+
+
 
                         <div class="col-md-6">
                             <label>Опыт (лет)</label>
@@ -108,8 +117,8 @@
                         </div>
 
                         <div class="col-12">
-                            <label>Описание</label>
-                            <textarea name="description" rows="4" class="form-control"></textarea>
+                            <label>Расскажите о специалисте</label>
+                            <textarea name="description" rows="4" class="form-control" placeholder="Опишите род деятельности, направления"></textarea>
                         </div>
 
                     </div>
@@ -140,6 +149,3 @@
     </div>
 
 </div>
-<script>
-
-</script>

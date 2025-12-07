@@ -128,3 +128,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+document.addEventListener("DOMContentLoaded", () => {
+
+    const fieldSelect = document.getElementById("fieldOfActivitySelect");
+
+    if (fieldSelect) {
+        fetch('/api/fields/specialists')
+            .then(r => r.json())
+            .then(data => {
+                fieldSelect.innerHTML = `<option value="">Выберите сферу деятельности</option>`;
+
+                data.forEach(item => {
+                    const opt = document.createElement("option");
+                    opt.value = item.id;
+                    opt.textContent = item.name;
+                    fieldSelect.appendChild(opt);
+                });
+            })
+            .catch(err => {
+                console.error("Ошибка загрузки полей деятельности:", err);
+                fieldSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+            });
+    }
+
+});
