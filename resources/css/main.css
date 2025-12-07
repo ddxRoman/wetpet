@@ -1698,3 +1698,7 @@ a{
     #doctorPhotoInput {
         display: none;
     }
+    .label_its_me{
+        color: #000000a6;
+        font-size: small;
+    }

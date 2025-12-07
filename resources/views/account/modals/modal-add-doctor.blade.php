@@ -32,7 +32,7 @@
     <strong>
         Добавляю себя
     </strong> 
-    <label for="its_me">Мы попросим вас подтвердить что вы именно явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
+    <label for="its_me" class="label_its_me">Мы попросим вас подтвердить что именно вы явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
     </label>
 </div>
 
@@ -43,10 +43,17 @@
                         </div>
 
 
-                                                <div class="col-md-6">
-                            <label>Дата рождения</label>
-                            <input type="date" name="date_of_birth" class="form-control">
-                        </div>
+<div class="col-md-6">
+    <label>Дата рождения</label>
+    <input 
+        type="date"
+        id="date_of_birth"
+        name="date_of_birth"
+        class="form-control"
+        max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}"
+    >
+</div>
+
 
 
                         <div class="col-md-6">
@@ -65,10 +72,16 @@
 
 
 
-                        <div class="col-md-6">
-                            <label>Опыт (лет)</label>
-                            <input type="number" name="experience" class="form-control">
-                        </div>
+<div class="col-md-6">
+    <label>Стаж (лет)</label>
+    <input 
+        type="number" 
+        id="experience"
+        name="experience" 
+        class="form-control"
+        min="0"
+    >
+</div>
 
                         <div class="col-md-6">
                             <label>Город</label>
@@ -150,3 +163,27 @@
     </div>
 
 </div>
+
+
+
+<script>
+document.getElementById('date_of_birth').addEventListener('change', function() {
+    const dob = new Date(this.value);
+    if (isNaN(dob)) return;
+
+    const now = new Date();
+    const age = now.getFullYear() - dob.getFullYear() -
+                ((now.getMonth() < dob.getMonth() || 
+                 (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate())) ? 1 : 0);
+
+    const maxExperience = age - 18;
+    const expInput = document.getElementById('experience');
+
+    expInput.max = maxExperience > 0 ? maxExperience : 0;
+
+    // если стаж превышал — автоматически уменьшаем
+    if (expInput.value > expInput.max) {
+        expInput.value = expInput.max;
+    }
+});
+</script>

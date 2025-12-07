@@ -1,87 +1,72 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById("doctorPhotoInput");
-    const preview = document.getElementById("doctorPhotoPreview");
-    const picker = document.getElementById("photoPicker");
 
-    if (!fileInput || !preview || !picker) {
-        console.error("Photo elements not found:", { fileInput, preview, picker });
-        return;
-    }
+    /* ============================================================
+       БЛОК 1 — ФОТО + CROPPER
+    ============================================================ */
+    const fileInput  = document.getElementById("doctorPhotoInput");
+    const preview    = document.getElementById("doctorPhotoPreview");
+    const picker     = document.getElementById("photoPicker");
 
-    // Клик по квадрату вызывает выбор файла
-    picker.addEventListener("click", () => fileInput.click());
+    if (fileInput && preview && picker) {
 
-    // Клик по превью – тоже вызывает выбор файла (возможность изменить картинку)
-    preview.addEventListener("click", () => fileInput.click());
+        picker.addEventListener("click", () => fileInput.click());
+        preview.addEventListener("click", () => fileInput.click());
 
-    // helper: показать превью из File или Blob
-    function showPreviewFromFile(file) {
-        if (!file) return;
-        try {
+        function showPreview(file) {
+            if (!file) return;
             const url = URL.createObjectURL(file);
             preview.src = url;
             preview.style.display = "block";
             picker.style.display = "none";
-        } catch (err) {
-            console.error("showPreviewFromFile error:", err);
         }
-    }
 
-    // fallback на случай отсутствия кропера
-    function fallbackAttach() {
-        fileInput.addEventListener("change", () => {
-            const f = fileInput.files && fileInput.files[0];
-            if (!f) {
-                preview.style.display = "none";
-                picker.style.display = "flex";
-                return;
+        function fallbackAttach() {
+            fileInput.addEventListener("change", () => {
+                const f = fileInput.files?.[0];
+                if (!f) {
+                    preview.style.display = "none";
+                    picker.style.display = "flex";
+                    return;
+                }
+                showPreview(f);
+            });
+        }
+
+        try {
+            if (typeof initCropper === "function") {
+                initCropper(fileInput, preview);
+
+                fileInput.addEventListener("change", () => {
+                    const f = fileInput.files?.[0];
+                    if (f) showPreview(f);
+                    else {
+                        preview.style.display = "none";
+                        picker.style.display = "flex";
+                    }
+                });
+
+            } else {
+                fallbackAttach();
             }
-            showPreviewFromFile(f);
+        } catch {
+            fallbackAttach();
+        }
+
+        preview.addEventListener("dblclick", () => {
+            preview.src = "";
+            preview.style.display = "none";
+            picker.style.display = "flex";
+            fileInput.value = "";
         });
     }
 
-    // Подключаем кроппер
-    try {
-        if (typeof initCropper === 'function') {
-            initCropper(fileInput, preview);
-
-            fileInput.addEventListener("change", () => {
-                const f = fileInput.files && fileInput.files[0];
-                if (f) {
-                    showPreviewFromFile(f);
-                } else {
-                    preview.style.display = "none";
-                    picker.style.display = "flex";
-                }
-            });
-
-            console.info("initCropper found and initialized.");
-        } else {
-            console.warn("initCropper() not found — using fallback preview only.");
-            fallbackAttach();
-        }
-    } catch (err) {
-        console.error("Error initializing cropper:", err);
-        fallbackAttach();
-    }
-
-    // двойной клик по превью — сброс изображения
-    preview.addEventListener('dblclick', () => {
-        preview.src = '';
-        preview.style.display = 'none';
-        picker.style.display = 'flex';
-        fileInput.value = '';
-    });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-
+    /* ============================================================
+       БЛОК 2 — загрузка клиник по городу (Choices.js)
+    ============================================================ */
     const citySelect = document.getElementById("citySelect");
     const clinicSelect = document.getElementById("clinicSelect");
+    let clinicChoices;
 
-    let clinicChoices = null;
-
-    // подключаем Choices.js
     function initClinicChoices() {
         if (clinicChoices) clinicChoices.destroy();
         clinicChoices = new Choices("#clinicSelect", {
@@ -90,124 +75,142 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    initClinicChoices();
+    if (clinicSelect && citySelect) {
+        initClinicChoices();
 
-    // загрузка клиник по выбранному городу
-    citySelect.addEventListener("change", () => {
-        const cityId = citySelect.value;
+        citySelect.addEventListener("change", () => {
+            const cityId = citySelect.value;
 
-        clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
-        clinicChoices.destroy();
+            clinicChoices.destroy();
+            clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
 
-        if (!cityId) {
-            clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
-            initClinicChoices();
-            return;
-        }
+            if (!cityId) {
+                clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
+                initClinicChoices();
+                return;
+            }
 
-        fetch(`/api/clinics/by-city/${cityId}`)
-            .then(r => r.json())
-            .then(data => {
-                clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
-
-                data.forEach(clinic => {
-                    const opt = document.createElement("option");
-                    opt.value = clinic.id;
-                    opt.textContent = clinic.name;
-                    clinicSelect.appendChild(opt);
+            fetch(`/api/clinics/by-city/${cityId}`)
+                .then(r => r.json())
+                .then(list => {
+                    clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
+                    list.forEach(c => {
+                        clinicSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                    });
+                    initClinicChoices();
+                })
+                .catch(() => {
+                    clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+                    initClinicChoices();
                 });
+        });
+    }
 
-                initClinicChoices();
-
-            })
-            .catch(err => {
-                console.error(err);
-                clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-                initClinicChoices();
-            });
-    });
-
-});
-document.addEventListener("DOMContentLoaded", () => {
-
+    /* ============================================================
+       БЛОК 3 — загрузка сфер деятельности
+    ============================================================ */
     const fieldSelect = document.getElementById("fieldOfActivitySelect");
 
     if (fieldSelect) {
-        fetch('/api/fields/specialists')
+        fetch("/api/fields/specialists")
             .then(r => r.json())
-            .then(data => {
+            .then(list => {
                 fieldSelect.innerHTML = `<option value="">Выберите сферу деятельности</option>`;
-
-                data.forEach(item => {
-                    const opt = document.createElement("option");
-                    opt.value = item.id;
-                    opt.textContent = item.name;
-                    fieldSelect.appendChild(opt);
+                list.forEach(item => {
+                    fieldSelect.innerHTML += `<option value="${item.id}">${item.name}</option>`;
                 });
             })
-            .catch(err => {
-                console.error("Ошибка загрузки полей деятельности:", err);
+            .catch(() => {
                 fieldSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
             });
     }
 
-});
-document.getElementById('addDoctorForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const data = new FormData(form);
+    /* ============================================================
+       БЛОК 4 — дата рождения + ограничение стажа
+    ============================================================ */
+    const birthInput = document.getElementById("dateOfBirth");
+    const expInput   = document.getElementById("experienceInput");
+    const modal      = document.getElementById("addDoctorModal");
 
-    const res = await fetch(form.action, {
-        method: 'POST',
-            headers: {
-        'Accept': 'application/json'
-    },
-        body: data
-    });
-
-    const json = await res.json();
-
-    const errBox = document.getElementById('doctorErrors');
-
-if (json.errors) {
-
-    // очистка подсветки
-    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-    let html = '';
-    for (let field in json.errors) {
-        html += `<div>${json.errors[field][0]}</div>`;
-
-        // подсветка нужного поля
-        const input = document.querySelector(`[name="${field}"]`);
-        if (input) input.classList.add('is-invalid');
+    function birthMax() {
+        const d = new Date();
+        d.setFullYear(d.getFullYear() - 18);
+        return d.toISOString().split("T")[0];
     }
 
-    errBox.innerHTML = html;
-    errBox.classList.remove('d-none');
+    function calcAge(d) {
+        const dob = new Date(d);
+        const now = new Date();
+        let age = now.getFullYear() - dob.getFullYear();
+        const m = now.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age--;
+        return age;
+    }
 
-    errBox.scrollIntoView({ behavior: "smooth" });
+    function updateExp() {
+        if (!birthInput.value) {
+            expInput.removeAttribute("max");
+            return;
+        }
 
-    return;
-}
+        const age = calcAge(birthInput.value);
+        const maxExp = Math.max(age - 18, 0);
 
-if (json.errors) {
-    let html = '';
-    Object.values(json.errors).forEach(err => {
-        html += `<div>${err}</div>`;
+        expInput.max = maxExp;
+
+        if (expInput.value > maxExp) expInput.value = maxExp;
+    }
+
+    if (birthInput && expInput) {
+        if (modal) {
+            modal.addEventListener("show.bs.modal", () => {
+                birthInput.max = birthMax();
+                updateExp();
+            });
+        }
+
+        birthInput.addEventListener("change", updateExp);
+    }
+
+    /* ============================================================
+       БЛОК 5 — AJAX отправка формы
+    ============================================================ */
+    const form = document.getElementById("addDoctorForm");
+    const errBox = document.getElementById("doctorErrors");
+
+    form?.addEventListener("submit", async e => {
+        e.preventDefault();
+
+        const data = new FormData(form);
+
+        const res = await fetch(form.action, {
+            method: "POST",
+            headers: { "Accept": "application/json" },
+            body: data
+        });
+
+        const json = await res.json();
+
+        if (json.errors) {
+            document.querySelectorAll(".is-invalid")
+                .forEach(e => e.classList.remove("is-invalid"));
+
+            let html = "";
+            Object.keys(json.errors).forEach(name => {
+                html += `<div>${json.errors[name][0]}</div>`;
+                const input = document.querySelector(`[name="${name}"]`);
+                if (input) input.classList.add("is-invalid");
+            });
+
+            errBox.innerHTML = html;
+            errBox.classList.remove("d-none");
+            errBox.scrollIntoView({ behavior: "smooth" });
+            return;
+        }
+
+        errBox.classList.add("d-none");
+        alert(json.message);
+        location.reload();
     });
 
-    errBox.innerHTML = html;
-    errBox.classList.remove('d-none');
-    return;
-}
-
-
-    // Ошибки убираем
-    errBox.classList.add('d-none');
-    errBox.innerHTML = '';
-
-    // Если успех
-    alert(json.message);
-    location.reload();
 });
