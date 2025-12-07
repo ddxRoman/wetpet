@@ -55,6 +55,12 @@ Route::get('/api/clinics/by-city/{city}', function ($cityId) {
 });
 
 
+
+
+Route::get('/api/clinics/by-city/{cityId}', [ClinicController::class, 'clinicsByCity']);
+
+
+
 // 📧 Сброс пароля
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');

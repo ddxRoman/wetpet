@@ -45,10 +45,6 @@
                         </div>
 
 
-                        
-
-
-
                         <div class="col-12">
                             <label>Специализация</label>
                             <input type="text" name="specialization" class="form-control">
@@ -58,8 +54,6 @@
                             <label>Дата рождения</label>
                             <input type="date" name="date_of_birth" class="form-control">
                         </div>
-
-
 
                         <div class="col-md-6">
                             <label>Опыт (лет)</label>
@@ -78,7 +72,7 @@
 
                         <div class="col-md-6">
                             <label>Клиника</label>
-                            <select name="clinic_id" id="clinicSelect" class="form-select">
+                            <select name="clinic" id="clinicSelect" class="form-select">
     <option value="">Сначала выберите город</option>
 </select>
 
@@ -147,135 +141,5 @@
 
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById("doctorPhotoInput");
-    const preview = document.getElementById("doctorPhotoPreview");
-    const picker = document.getElementById("photoPicker");
-
-    if (!fileInput || !preview || !picker) {
-        console.error("Photo elements not found:", { fileInput, preview, picker });
-        return;
-    }
-
-    // Клик по квадрату вызывает выбор файла
-    picker.addEventListener("click", () => fileInput.click());
-
-    // Клик по превью – тоже вызывает выбор файла (возможность изменить картинку)
-    preview.addEventListener("click", () => fileInput.click());
-
-    // helper: показать превью из File или Blob
-    function showPreviewFromFile(file) {
-        if (!file) return;
-        try {
-            const url = URL.createObjectURL(file);
-            preview.src = url;
-            preview.style.display = "block";
-            picker.style.display = "none";
-        } catch (err) {
-            console.error("showPreviewFromFile error:", err);
-        }
-    }
-
-    // fallback на случай отсутствия кропера
-    function fallbackAttach() {
-        fileInput.addEventListener("change", () => {
-            const f = fileInput.files && fileInput.files[0];
-            if (!f) {
-                preview.style.display = "none";
-                picker.style.display = "flex";
-                return;
-            }
-            showPreviewFromFile(f);
-        });
-    }
-
-    // Подключаем кроппер
-    try {
-        if (typeof initCropper === 'function') {
-            initCropper(fileInput, preview);
-
-            fileInput.addEventListener("change", () => {
-                const f = fileInput.files && fileInput.files[0];
-                if (f) {
-                    showPreviewFromFile(f);
-                } else {
-                    preview.style.display = "none";
-                    picker.style.display = "flex";
-                }
-            });
-
-            console.info("initCropper found and initialized.");
-        } else {
-            console.warn("initCropper() not found — using fallback preview only.");
-            fallbackAttach();
-        }
-    } catch (err) {
-        console.error("Error initializing cropper:", err);
-        fallbackAttach();
-    }
-
-    // двойной клик по превью — сброс изображения
-    preview.addEventListener('dblclick', () => {
-        preview.src = '';
-        preview.style.display = 'none';
-        picker.style.display = 'flex';
-        fileInput.value = '';
-    });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const citySelect = document.getElementById("citySelect");
-    const clinicSelect = document.getElementById("clinicSelect");
-
-    let clinicChoices = null;
-
-    // подключаем Choices.js
-    function initClinicChoices() {
-        if (clinicChoices) clinicChoices.destroy();
-        clinicChoices = new Choices("#clinicSelect", {
-            searchPlaceholderValue: "Поиск клиники...",
-            removeItemButton: true
-        });
-    }
-
-    initClinicChoices();
-
-    // загрузка клиник по выбранному городу
-    citySelect.addEventListener("change", () => {
-        const cityId = citySelect.value;
-
-        clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
-        clinicChoices.destroy();
-
-        if (!cityId) {
-            clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
-            initClinicChoices();
-            return;
-        }
-
-        fetch(`/api/clinics/by-city/${cityId}`)
-            .then(r => r.json())
-            .then(data => {
-                clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
-
-                data.forEach(clinic => {
-                    const opt = document.createElement("option");
-                    opt.value = clinic.id;
-                    opt.textContent = clinic.name;
-                    clinicSelect.appendChild(opt);
-                });
-
-                initClinicChoices();
-
-            })
-            .catch(err => {
-                console.error(err);
-                clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-                initClinicChoices();
-            });
-    });
-
-});
 
 </script>

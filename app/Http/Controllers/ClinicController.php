@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+    use App\Models\City;
 use App\Models\Clinic;
+
 use Illuminate\Http\Request;
 
 class ClinicController extends Controller
@@ -73,6 +74,40 @@ public function index(Request $request)
 
         return redirect()->route('clinics.index')->with('success', 'Клиника добавлена');
     }
+
+public function clinicsByCity($cityId)
+{
+    \Log::info("=== clinicsByCity START ===");
+    \Log::info("Received cityId: " . $cityId);
+
+    $city = City::find($cityId);
+
+    if (!$city) {
+        \Log::info("City NOT FOUND for ID: " . $cityId);
+        return response()->json([]);
+    }
+
+    \Log::info("Found city: " . json_encode($city->toArray()));
+
+    // Какие строки реально сравниваются
+    \Log::info("Comparing clinics.city with city->name: '" . $city->name . "'");
+
+    $clinics = Clinic::whereRaw(
+        'LOWER(TRIM(city)) = LOWER(TRIM(?))',
+        [$city->name]
+    )->get();
+
+    \Log::info("Clinics query result: " . $clinics->count());
+    \Log::info("Clinics list: " . $clinics->toJson());
+
+    \Log::info("=== clinicsByCity END ===");
+
+    return response()->json($clinics);
+}
+
+
+
+
 
     // Форма редактирования
     public function edit($id)
