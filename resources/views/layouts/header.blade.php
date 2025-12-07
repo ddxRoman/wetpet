@@ -1,5 +1,4 @@
-@include('account.modals.modal-add-doctor', ['cities' => $cities])
-
+@include('account.modals.modal-add-specialist', ['cities' => $cities])
 
 <!DOCTYPE html>
 <html lang="ru">
