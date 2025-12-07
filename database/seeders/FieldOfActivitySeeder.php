@@ -43,14 +43,16 @@ class FieldOfActivitySeeder extends Seeder
         foreach ($specialists as $name) {
             FieldOfActivity::create([
                 'name' => $name,
-                'type' => 'specialist'
+                'type' => 'specialist',
+                'activity' => 'doctor'
             ]);
         }
 
         foreach ($organizations as $name) {
             FieldOfActivity::create([
                 'name' => $name,
-                'type' => 'organization'
+                'type' => 'organization',
+                'activity' => 'Vetclinic'
             ]);
         }
     }

@@ -152,3 +152,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+document.getElementById('addDoctorForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const data = new FormData(form);
+
+    const res = await fetch(form.action, {
+        method: 'POST',
+            headers: {
+        'Accept': 'application/json'
+    },
+        body: data
+    });
+
+    const json = await res.json();
+
+    const errBox = document.getElementById('doctorErrors');
+
+if (json.errors) {
+
+    // очистка подсветки
+    document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+    let html = '';
+    for (let field in json.errors) {
+        html += `<div>${json.errors[field][0]}</div>`;
+
+        // подсветка нужного поля
+        const input = document.querySelector(`[name="${field}"]`);
+        if (input) input.classList.add('is-invalid');
+    }
+
+    errBox.innerHTML = html;
+    errBox.classList.remove('d-none');
+
+    errBox.scrollIntoView({ behavior: "smooth" });
+
+    return;
+}
+
+if (json.errors) {
+    let html = '';
+    Object.values(json.errors).forEach(err => {
+        html += `<div>${err}</div>`;
+    });
+
+    errBox.innerHTML = html;
+    errBox.classList.remove('d-none');
+    return;
+}
+
+
+    // Ошибки убираем
+    errBox.classList.add('d-none');
+    errBox.innerHTML = '';
+
+    // Если успех
+    alert(json.message);
+    location.reload();
+});

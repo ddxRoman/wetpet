@@ -1,23 +1,21 @@
-// Добавление врача
-document.getElementById('addDoctorForm')?.addEventListener('submit', async (e) => {
+document.getElementById("addDoctorForm").addEventListener("submit", function(e){
     e.preventDefault();
 
-    let form = e.target;
-    let data = new FormData(form);
+    let formData = new FormData(this);
 
-    let res = await fetch('/doctors/store', {
-        method: 'POST',
-        body: data
-    });
-
-    let json = await res.json();
-
-    if (json.errors) {
-        document.getElementById('doctorErrors').classList.remove('d-none');
-        document.getElementById('doctorErrors').innerHTML =
-            Object.values(json.errors).join('<br>');
-        return;
-    }
-
-    location.reload();
+    fetch("/add-doctor", {
+        method: "POST",
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById("doctorErrors").classList.remove("d-none");
+                document.getElementById("doctorErrors").innerText = data.error;
+            } else {
+                alert(data.message);
+                location.reload();
+            }
+        })
+        .catch(err => console.error(err));
 });

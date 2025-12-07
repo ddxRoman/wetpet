@@ -15,6 +15,7 @@ public function up()
         $table->id();
         $table->string('name');
         $table->string('type'); // specialist / organization
+        $table->string('activity');
         $table->timestamps();
     });
 }

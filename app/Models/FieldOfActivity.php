@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class FieldOfActivity extends Model
 {
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['name', 'type', 'activity '];
 }

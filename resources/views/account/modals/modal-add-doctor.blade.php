@@ -1,7 +1,3 @@
-<style>
-
-</style>
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
 
@@ -15,8 +11,12 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <form id="addDoctorForm" enctype="multipart/form-data">
-                @csrf
+<form id="addDoctorForm"
+      method="POST"
+      action="/add-doctor"
+      enctype="multipart/form-data">
+    @csrf
+
 
                 <div class="modal-header">
                     <h5 class="modal-title">Добавление специалиста</h5>
@@ -98,7 +98,7 @@
 
                         <div class="col-md-6">
                             <label>Выезд на дом</label>
-                            <select name="On-site_assistance" class="form-control">
+                            <select name="On_site_assistance" class="form-control">
                                 <option value="Нет">Нет</option>
                                 <option value="Да">Да</option>
                             </select>

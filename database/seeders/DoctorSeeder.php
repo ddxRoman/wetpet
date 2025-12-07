@@ -40,7 +40,7 @@ class DoctorSeeder extends Seeder
                 'clinic_id' => rand(1, 8),
                 'experience'       => $faker->numberBetween(1, 30),
                 'exotic_animals'   => $faker->boolean() ? 'Да' : 'Нет',
-                'On-site_assistance' => $faker->boolean() ? 'Да' : 'Нет',
+                'On_site_assistance' => $faker->boolean() ? 'Да' : 'Нет',
                 'photo' => 'doctors/doctor' . rand(1, 14) . '.webp',
                 'description'      => $faker->realText(200),
                 'created_at'       => now(),

@@ -7,17 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('doctors', function (Blueprint $table) {
+        Schema::create('specialists', function (Blueprint $table) {
             $table->id(); // ID врача
             $table->string('name'); // Имя врача
-            $table->string('specialization'); // специализация врача
+            $table->string('specialization'); // специализация
             $table->date('date_of_birth'); // специализация врача
             $table->string('city_id'); // город врача
-            $table->string('clinic_id')->nullable(); // клиника врача
-            $table->integer('experience')->nullable(); // Опыт врача
+            $table->string('organization_id'); // организация врача
+            $table->integer('experience'); // Опыт 
             $table->string('exotic_animals'); // Экзотические животные
             $table->string('On_site_assistance'); // Выезд на дом
-            $table->string('photo')->nullable(); // Фото (путь к файлу)
+            $table->string('photo'); // Фото (путь к файлу)
             $table->text('description')->nullable(); // Описание, специализация и т.п.
             $table->timestamps(); // created_at и updated_at
         });
@@ -25,6 +25,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('doctors');
+        Schema::dropIfExists('specialists');
     }
 };

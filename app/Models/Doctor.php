@@ -17,14 +17,13 @@ class Doctor extends Model
     protected $table = 'doctors';
 
     // какие поля можно массово заполнять (для create(), update())
+
     protected $fillable = [
-        'name',
-        'photo',
-        'description',
-        'specialization',
-        'experience',
-        'photo',
+        'name', 'specialization', 'date_of_birth', 'city_id',
+        'clinic_id', 'experience', 'exotic_animals',
+        'On_site_assistance', 'photo', 'description'
     ];
+
 public function services()
 {
     return $this->belongsToMany(Service::class, 'doctor_service', 'doctor_id', 'service_id');
