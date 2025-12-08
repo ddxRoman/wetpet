@@ -1,4 +1,4 @@
-@vite(['resources/js/app.js'])
+
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
 <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
@@ -51,19 +51,6 @@
         max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}"
     >
 </div>
-
-
-
-
-                                            <div class="col-12 div_its_me">
-    <label class="form-check-label">
-        <input type="checkbox" name="its_me" class="form-check-input">
-    <strong>
-        Добавляю себя
-    </strong> 
-    <label for="its_me" class="label_its_me">Мы попросим вас подтвердить что именно вы явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
-    </label>
-</div>
 <div class="col-md-6">
     <label>Стаж (лет)</label>
     <input 
@@ -74,6 +61,19 @@
         min="0"
     >
 </div>
+
+
+
+                                            <div class="col-12">
+    <label class="form-check-label">
+        <input type="checkbox" name="its_me" class="form-check-input">
+    <strong>
+        Добавляю себя
+    </strong> 
+    <label for="its_me" class="label_its_me">Мы попросим вас подтвердить что именно вы явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
+    </label>
+</div>
+
 
                         <div class="col-md-6">
                             <label>Город</label>
@@ -92,6 +92,38 @@
 </select>
 
                         </div>
+
+                        <div class="col-6">
+    <label>Телефон</label>
+    <input type="phone" name="phone" class="form-control">
+<label for="#messendger">Выберите соц сети к которым привязан этот контакт</label>
+    <div id="messendger" class="d-flex gap-3 mt-2 messenger-icons">
+
+        <!-- Telegram -->
+        <label class="messenger-icon">
+            <input type="checkbox" name="messengers[]" value="telegram" class="d-none">
+            <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" title="По этому номеру можно связатся в Телеграмм" alt="Telegram">
+        </label>
+
+        <!-- WhatsApp -->
+        <label class="messenger-icon">
+            <input type="checkbox" name="messengers[]" value="whatsapp" class="d-none">
+            <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" title="По этому номеру можно связатся в Вотсапп" alt="WhatsApp">
+        </label>
+
+        <!-- Messenger Max (VK Messenger) -->
+        <label class="messenger-icon">
+            <input type="checkbox" name="messengers[]" value="messenger" class="d-none">
+            <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" title="По этому номеру можно связатся в Max" alt="Messenger">
+        </label>
+
+    </div>
+</div>
+                        <div class="col-6">
+                            <label>Почта</label>
+                            <input type="text" name="mail" class="form-control">
+                        </div>    
+
 
                         <div class="col-md-6">
                             <label>Экзотические животные</label>
@@ -131,7 +163,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+
                 </div>
 
             </form>
@@ -349,12 +382,10 @@ function initAddDoctorScripts(modal) {
 /* ============================================================================
    ЗАПУСК ПРИ ОТКРЫТИИ МОДАЛКИ
 ============================================================================ */
-document.addEventListener("shown.bs.modal", function (event) {
-    const modal = event.target;
-
-    if (modal.id === "addDoctorModal") {
-        initAddDoctorScripts(modal);
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("addDoctorModal");
+    if (modal) initAddDoctorScripts(modal);
 });
+
 
 </script>

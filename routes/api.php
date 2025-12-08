@@ -21,6 +21,7 @@ use App\Http\Controllers\{
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/organizations', [\App\Http\Controllers\OrganizationController::class, 'store']);
 
 Route::get('/clinics/by-city/{cityId}', [\App\Http\Controllers\ClinicController::class, 'clinicsByCity']);
 
