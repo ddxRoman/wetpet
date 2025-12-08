@@ -17,7 +17,7 @@ public function getSpecialists()
 }
 public function getVetclinic()
 {
-    return FieldOfActivity::where('activity', 'vetclinic')->get();
+    return FieldOfActivity::where('type', 'organization')->get();
 }
 
 

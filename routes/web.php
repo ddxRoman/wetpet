@@ -16,6 +16,7 @@ use App\Http\Controllers\{
     ReviewController,
     FieldOfActivityController,
     AddDoctorController,
+    OrganizationController,
 };
 
 /*
@@ -146,3 +147,10 @@ Route::get('/cities/by-region/{region}', function ($region) {
 });
 // возвращает города для региона (используется в модалке)
 Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);
+
+
+
+Route::post('/add-organization', [OrganizationController::class, 'submit'])
+    ->name('add-organization');
+    Route::post('/submit-organization', [OrganizationController::class, 'submit'])->name('submit-organization');
+

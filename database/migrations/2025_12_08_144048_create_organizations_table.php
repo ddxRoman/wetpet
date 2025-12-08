@@ -18,14 +18,14 @@ public function up(): void
         $table->string('name');
 
         // Адрес
-        $table->string('country');
+        $table->string('country')->nullable();
         $table->string('region')->nullable();
         $table->string('city');
         $table->string('street');
-        $table->string('house')->nullable();
+        $table->string('house');
 
         // Инфо
-        $table->text('description')->nullable();
+        $table->text('description');
         $table->string('logo')->nullable();
 
         // График

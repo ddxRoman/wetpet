@@ -13,7 +13,7 @@
 
             <form id="addOrganizationForm"
                 method="POST"
-                action="/add-doctor"
+                action="/add-organization"
                 enctype="multipart/form-data">
                 @csrf
 
@@ -73,7 +73,7 @@
                         </div>
                         <div class="col-6">
                             <label>Дом</label>
-                            <input type="text" name="street" class="form-control">
+                            <input type="text" name="house" class="form-control">
                         </div>                        
                         
 <div class="col-6">
@@ -131,7 +131,7 @@
 
                             <div id="photoPicker" style="width:150px;height:150px;border:2px dashed #b8b8b8;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:48px;color:#999;">+</div>
 
-                            <input type="file" id="doctorPhotoInput" name="photo" accept="image/*" style="display:none;">
+                            <input type="file" id="doctorPhotoInput" name="logo" accept="image/*" style="display:none;">
                             <img id="doctorPhotoPreview" class="mt-2" style="width:150px;height:150px;border-radius:10px;object-fit:cover;display:none;">
                         </div>
 
