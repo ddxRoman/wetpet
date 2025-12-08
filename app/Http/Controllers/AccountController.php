@@ -88,7 +88,7 @@ public function getReviews()
     try {
         $reviews = Review::where('user_id', $userId)
             ->with([
-                'reviewable:id,name,region,city,street,house', // Работает для клиник и врачей, если у них есть эти поля
+                'reviewable', // Работает для клиник и врачей, если у них есть эти поля
                 'photos:id,review_id,photo_path',
                 'receipts:id,review_id,path'
             ])

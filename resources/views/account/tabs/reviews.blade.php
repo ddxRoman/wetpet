@@ -12,4 +12,4 @@
 </script>
 
 {{-- Подключаем внешний JS файл --}}
-<script src="/js/reviews.js"></script>
+<script src="\js\account\review.js"></script>
