@@ -47,8 +47,8 @@
     {{ $doctor->name }}
 
     @if($doctor->exotic_animals == 'Да' || $doctor->exotic_animals == 1 || $doctor->exotic_animals === true)
-        <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">
-            Экзотические животные
+        <span title="Экзотические животные" class="badge bg-warning text-dark" style="font-size: 0.8rem;">
+            🦎
         </span>
     @endif
 </h1>

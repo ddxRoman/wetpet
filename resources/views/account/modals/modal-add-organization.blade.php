@@ -11,12 +11,11 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <form id="addDoctorForm"
+            <form id="addOrganizationForm"
                 method="POST"
                 action="/add-doctor"
                 enctype="multipart/form-data">
                 @csrf
-
 
                 <div class="modal-header">
                     <h5 class="modal-title">Добавление Организации</h5>
@@ -25,14 +24,16 @@
 
                 <div class="modal-body">
                     <div id="doctorErrors" class="alert alert-danger d-none"></div>
+
                     <div class="row g-3">
+
                         <div class="col-12">
                             <label class="form-check-label">
                                 <input type="checkbox" name="its_me" class="form-check-input">
-                                <strong>
-                                    Это моя орагнизация
-                                </strong>
-                                <label for="its_me" class="label_its_me">Мы попросим вас подтвердить что именно вы явлетесь владельцем или доверенным лицом этой орагиназации, для этого могут потребоваться фотографии документов</label>
+                                <strong>Это моя организация</strong>
+                                <div class="label_its_me">
+                                    Мы попросим вас подтвердить что вы владелец или доверенное лицо организации
+                                </div>
                             </label>
                         </div>
 
@@ -48,50 +49,92 @@
                             <input type="text" name="name" class="form-control">
                         </div>
 
-{{-- region / city dependent selects --}}
-<div class="col-md-6">
-    <label>Регион</label>
-<select name="region" id="regionSelect" class="form-select">
-    <option value="">Выберите регион</option>
-    @foreach($cities as $city)
-        <option value="{{ $city->region }}">{{ $city->region }}</option>
-    @endforeach
-</select>
-
-</div>
-
-<div class="col-md-6">
-    <label>Город</label>
-    <select name="city_id" id="citySelect" class="form-select">
-        <option value="">Сначала выберите регион</option>
-    </select>
-</div>
-
-
-
-
-                        <div>
-                            <label for="">Улица</label>
+                        {{-- region / city dependent selects --}}
+                        <div class="col-md-6">
+                            <label>Регион</label>
+                            <select name="region" id="regionSelect" class="form-select">
+                                <option value="">Выберите регион</option>
+                                @foreach($cities as $city)
+                                    <option value="{{ $city->region }}">{{ $city->region }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
+                        <div class="col-md-6">
+                            <label>Город</label>
+                            <select name="city_id" id="citySelect" class="form-select">
+                                <option value="">Сначала выберите регион</option>
+                            </select>
+                        </div>
 
+                        <div class="col-6">
+                            <label>Улица</label>
+                            <input type="text" name="street" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label>Дом</label>
+                            <input type="text" name="street" class="form-control">
+                        </div>                        
+                        
+<div class="col-6">
+    <label>Телефон</label>
+    <input type="phone" name="phone" class="form-control">
+<label for="#messendger">Выберите соц сети к которым привязан этот контакт</label>
+    <div id="messendger" class="d-flex gap-3 mt-2 messenger-icons">
+
+        <!-- Telegram -->
+        <label class="messenger-icon">
+            <input type="checkbox" name="messengers[]" value="telegram" class="d-none">
+            <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" title="По этому номеру можно связатся в Телеграмм" alt="Telegram">
+        </label>
+
+        <!-- WhatsApp -->
+        <label class="messenger-icon">
+            <input type="checkbox" name="messengers[]" value="whatsapp" class="d-none">
+            <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" title="По этому номеру можно связатся в Вотсапп" alt="WhatsApp">
+        </label>
+
+        <!-- Messenger Max (VK Messenger) -->
+        <label class="messenger-icon">
+            <input type="checkbox" name="messengers[]" value="messenger" class="d-none">
+            <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" title="По этому номеру можно связатся в Max" alt="Messenger">
+        </label>
+
+    </div>
+</div>
+
+<style>
+    .messenger-icons img {
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        transition: 0.2s;
+        opacity: 0.2;
+    }
+    .messenger-icons input:checked + img {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+</style>
+
+                            
+                        <div class="col-6">
+                            <label>Почта</label>
+                            <input type="mail" name="street" class="form-control">
+                        </div>
 
                         <div class="col-12">
                             <label>Логотип</label>
 
-                            <!-- Квадрат для выбора -->
-                            <div id="photoPicker">+</div>
+                            <div id="photoPicker" style="width:150px;height:150px;border:2px dashed #b8b8b8;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:48px;color:#999;">+</div>
 
-                            <!-- Скрытый input -->
-                            <input type="file" id="doctorPhotoInput" name="photo" accept="image/*">
-
-                            <!-- Превью -->
-                            <img id="doctorPhotoPreview" class="mt-2">
+                            <input type="file" id="doctorPhotoInput" name="photo" accept="image/*" style="display:none;">
+                            <img id="doctorPhotoPreview" class="mt-2" style="width:150px;height:150px;border-radius:10px;object-fit:cover;display:none;">
                         </div>
 
                         <div class="col-12">
                             <label>Расскажите об организации</label>
-                            <textarea name="description" rows="4" class="form-control" placeholder="Опишите род деятельности, направления"></textarea>
+                            <textarea name="description" rows="4" class="form-control" placeholder="Опишите род деятельности"></textarea>
                         </div>
 
                     </div>
@@ -107,352 +150,332 @@
     </div>
 </div>
 
+<!-- Cropper modal (если используется) -->
+<div id="cropper-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:2000;">
+    <div style="background:#fff; padding:20px; border-radius:10px; max-width:90%; max-height:90%;">
+        <img id="cropper-image" style="max-width:100%; max-height:70vh;">
+        <div class="mt-3 d-flex justify-content-between">
+            <button class="btn btn-secondary" id="close-cropper">Отмена</button>
+            <button class="btn btn-primary" id="save-cropped">Обрезать и сохранить</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    console.log("add_doctor.js loaded");
+/* ===============================================================
+   Универсальная и полная сборка логики для модалки добавления
+   - region → city (Choices.js + поиск)
+   - загрузка сфер деятельности
+   - загрузка клиник по городу (если в форме есть clinicSelect)
+   - превью файла + кроппер (если initCropper присутствует)
+   - AJAX отправка формы с обработкой ошибок
+   - ограничение опыта по дате рождения (если поля есть)
+   =============================================================== */
 
-    /* ============================================================================
-       ГЛАВНАЯ ФУНКЦИЯ — ВСЯ ЛОГИКА ДЛЯ МОДАЛКИ
-    ============================================================================ */
-    function initAddDoctorScripts(modal) {
-        console.log("Add Doctor modal initialized!");
+(function () {
+    // Choices-инстансы
+    let regionChoices = null;
+    let cityChoices = null;
+    let clinicChoices = null;
 
-        /* ============================================================
-           БЛОК 1 — Ограничение стажа от возраста
-        ============================================================ */
-        const dobInput = modal.querySelector('#date_of_birth');
-        const expInput = modal.querySelector('#experience');
+    function initChoicesFor(selector, opts = {}) {
+        const el = document.querySelector(selector);
+        if (!el) return null;
+        // destroy previous if exists
+        try { if (el._choicesInstance) el._choicesInstance.destroy(); } catch (e) {}
+        const instance = new Choices(el, Object.assign({
+            searchPlaceholderValue: "Поиск...",
+            removeItemButton: true,
+            shouldSort: false
+        }, opts));
+        el._choicesInstance = instance;
+        return instance;
+    }
 
-        if (dobInput && expInput) {
-            dobInput.addEventListener('change', function() {
-                const dob = new Date(this.value);
-                if (isNaN(dob)) return;
+    // Функция инициализации модального блока (вызывается при shown.bs.modal)
+    function initAddOrganizationModal(modal) {
+        // элементы
+        const form = modal.querySelector('#addOrganizationForm');
+        const fieldSelect = modal.querySelector('#fieldOfActivitySelect');
+        const regionSelect = modal.querySelector('#regionSelect');
+        const citySelect = modal.querySelector('#citySelect');
+        const clinicSelect = modal.querySelector('#clinicSelect'); // может отсутствовать
+        const errBox = modal.querySelector('#doctorErrors');
 
-                const now = new Date();
-                const age =
-                    now.getFullYear() -
-                    dob.getFullYear() -
-                    (now.getMonth() < dob.getMonth() ||
-                        (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate()) ?
-                        1 :
-                        0);
+        // Инициализация Choices
+        regionChoices = initChoicesFor('#regionSelect', { searchPlaceholderValue: "Поиск региона..." });
+        cityChoices   = initChoicesFor('#citySelect',   { searchPlaceholderValue: "Поиск города..." });
+        if (clinicSelect) clinicChoices = initChoicesFor('#clinicSelect', { searchPlaceholderValue: "Поиск клиники..." });
 
-                const maxExperience = age - 18;
-
-                expInput.max = maxExperience > 0 ? maxExperience : 0;
-                if (expInput.value > expInput.max) {
-                    expInput.value = expInput.max;
-                }
-            });
-        }
-
-        /* ============================================================
-           БЛОК 2 — Загрузка клиник по городу (Choices.js)
-        ============================================================ */
-        const citySelect = modal.querySelector("#citySelect");
-        const clinicSelect = modal.querySelector("#clinicSelect");
-        let clinicChoices;
-
-        function initClinicChoices() {
-            if (clinicChoices) clinicChoices.destroy();
-            clinicChoices = new Choices(clinicSelect, {
-                searchPlaceholderValue: "Поиск клиники...",
-                removeItemButton: true
-            });
-        }
-
-        if (clinicSelect && citySelect) {
-            initClinicChoices();
-
-            citySelect.addEventListener("change", () => {
-                const cityId = citySelect.value;
-
-                clinicChoices.destroy();
-                clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
-
-                if (!cityId) {
-                    clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
-                    initClinicChoices();
-                    return;
-                }
-
-                fetch(`/api/clinics/by-city/${cityId}`)
-                    .then(r => r.json())
-                    .then(list => {
-                        clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
-                        list.forEach(c =>
-                            clinicSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`
-                        );
-                        initClinicChoices();
-                    })
-                    .catch(() => {
-                        clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-                        initClinicChoices();
-                    });
-            });
-        }
-
-        /* ============================================================
-           БЛОК 3 — Сферы деятельности
-        ============================================================ */
-        const fieldSelect = modal.querySelector("#fieldOfActivitySelect");
-
+        // ========== загрузка сфер деятельности ==========
         if (fieldSelect) {
-            fetch("/api/fields/specialists")
-                .then(r => r.json())
+            fetch('/api/fields/specialists')
+                .then(r => {
+                    if (!r.ok) throw new Error('Ошибка загрузки сфер');
+                    return r.json();
+                })
                 .then(list => {
                     fieldSelect.innerHTML = `<option value="">Выберите сферу деятельности</option>`;
                     list.forEach(item => {
-                        fieldSelect.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                        const opt = document.createElement('option');
+                        opt.value = item.id;
+                        opt.textContent = item.name;
+                        fieldSelect.appendChild(opt);
                     });
                 })
-                .catch(() => {
+                .catch(err => {
+                    console.error(err);
                     fieldSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
                 });
         }
 
-        /* ============================================================
-           БЛОК 4 — AJAX отправка формы
-        ============================================================ */
-        const form = modal.querySelector("#addDoctorForm");
-        const errBox = modal.querySelector("#doctorErrors");
+        // ========== region -> city ==========
+        if (regionSelect && citySelect) {
+            regionSelect.addEventListener('change', function () {
+                const region = this.value;
 
-        if (form) {
-            form.addEventListener("submit", async e => {
-                e.preventDefault();
+                // сброс city
+                if (citySelect._choicesInstance) {
+                    try { citySelect._choicesInstance.clearStore(); } catch(e) {}
+                }
+                citySelect.innerHTML = `<option value="">Загрузка...</option>`;
+                if (citySelect._choicesInstance) citySelect._choicesInstance.setChoices([{value:'',label:'Загрузка...'}], 'value', 'label', true);
 
-                const data = new FormData(form);
-
-                const res = await fetch(form.action, {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                    body: data
-                });
-
-                const json = await res.json();
-
-                if (json.errors) {
-                    modal.querySelectorAll(".is-invalid")
-                        .forEach(e => e.classList.remove("is-invalid"));
-
-                    let html = "";
-                    Object.keys(json.errors).forEach(name => {
-                        html += `<div>${json.errors[name][0]}</div>`;
-                        const input = modal.querySelector(`[name="${name}"]`);
-                        if (input) input.classList.add("is-invalid");
-                    });
-
-                    errBox.innerHTML = html;
-                    errBox.classList.remove("d-none");
-                    errBox.scrollIntoView({
-                        behavior: "smooth"
-                    });
+                if (!region) {
+                    citySelect.innerHTML = `<option value="">Сначала выберите регион</option>`;
+                    if (citySelect._choicesInstance) {
+                        citySelect._choicesInstance.setChoices([{value:'',label:'Сначала выберите регион'}], 'value', 'label', true);
+                    }
                     return;
                 }
 
-                errBox.classList.add("d-none");
-                alert(json.message);
-                location.reload();
+                const url = `/api/cities/by-region/${encodeURIComponent(region)}`;
+
+                fetch(url)
+                    .then(r => {
+                        if (!r.ok) throw new Error('Network error');
+                        return r.json();
+                    })
+                    .then(list => {
+                        // ожидаем list = [{id, name}, ...]
+                        if (!Array.isArray(list) || list.length === 0) {
+                            citySelect.innerHTML = `<option value="">Города не найдены</option>`;
+                            if (citySelect._choicesInstance) citySelect._choicesInstance.setChoices([{value:'',label:'Города не найдены'}], 'value', 'label', true);
+                            return;
+                        }
+
+                        // создаём опции
+                        citySelect.innerHTML = `<option value="">Выберите город</option>`;
+                        list.forEach(c => {
+                            const opt = document.createElement('option');
+                            opt.value = c.id;
+                            opt.textContent = c.name;
+                            citySelect.appendChild(opt);
+                        });
+
+                        // пересоздаём Choices
+                        if (citySelect._choicesInstance) {
+                            // убрать старое и создать заново чтобы обновились опции
+                            citySelect._choicesInstance.setChoices(
+                                Array.from(citySelect.options).map(o => ({value: o.value, label: o.text})),
+                                'value', 'label', true
+                            );
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Ошибка загрузки городов:', err);
+                        citySelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+                        if (citySelect._choicesInstance) citySelect._choicesInstance.setChoices([{value:'',label:'Ошибка загрузки'}], 'value', 'label', true);
+                    });
             });
         }
 
-        /* ============================================================
-           БЛОК 5 — Фото + Cropper
-        ============================================================ */
+        // ========== Подгрузка клиник по выбранному городу (если есть в форме) ==========
+        if (citySelect && clinicSelect) {
+            citySelect.addEventListener('change', function () {
+                const cityId = this.value;
+                clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
+                if (clinicSelect._choicesInstance) clinicSelect._choicesInstance.setChoices([{value:'',label:'Загрузка...'}], 'value', 'label', true);
+
+                if (!cityId) {
+                    clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
+                    if (clinicSelect._choicesInstance) clinicSelect._choicesInstance.setChoices([{value:'',label:'Сначала выберите город'}], 'value', 'label', true);
+                    return;
+                }
+
+                fetch(`/api/clinics/by-city/${encodeURIComponent(cityId)}`)
+                    .then(r => {
+                        if (!r.ok) throw new Error('Network error');
+                        return r.json();
+                    })
+                    .then(list => {
+                        clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
+                        list.forEach(c => {
+                            const opt = document.createElement('option');
+                            opt.value = c.id;
+                            opt.textContent = c.name;
+                            clinicSelect.appendChild(opt);
+                        });
+                        if (clinicSelect._choicesInstance) {
+                            clinicSelect._choicesInstance.setChoices(
+                                Array.from(clinicSelect.options).map(o => ({value: o.value, label: o.text})),
+                                'value', 'label', true
+                            );
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Ошибка загрузки клиник:', err);
+                        clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+                        if (clinicSelect._choicesInstance) clinicSelect._choicesInstance.setChoices([{value:'',label:'Ошибка загрузки'}], 'value', 'label', true);
+                    });
+            });
+        }
+
+        // ========== Превью и кроппер для логотипа ==========
         const fileInput = modal.querySelector("#doctorPhotoInput");
         const preview = modal.querySelector("#doctorPhotoPreview");
         const picker = modal.querySelector("#photoPicker");
 
         if (fileInput && preview && picker) {
-
-            picker.addEventListener("click", () => fileInput.click());
-            preview.addEventListener("click", () => fileInput.click());
-
+            // показываем/скрываем превью
             function showPreview(file) {
                 if (!file) return;
-                preview.src = URL.createObjectURL(file);
-                preview.style.display = "block";
-                picker.style.display = "none";
+                try {
+                    const url = URL.createObjectURL(file);
+                    preview.src = url;
+                    preview.style.display = "block";
+                    picker.style.display = "none";
+                } catch (err) { console.error(err); }
             }
 
+            // fallback без кроппера
             function fallbackAttach() {
-                fileInput.addEventListener("change", () => {
-                    const f = fileInput.files?.[0];
+                fileInput.addEventListener('change', () => {
+                    const f = fileInput.files && fileInput.files[0];
                     if (!f) {
-                        preview.style.display = "none";
-                        picker.style.display = "flex";
+                        preview.style.display = 'none';
+                        picker.style.display = 'flex';
                         return;
                     }
                     showPreview(f);
                 });
             }
 
+            // клики
+            picker.addEventListener('click', () => fileInput.click());
+            preview.addEventListener('click', () => fileInput.click());
+
+            // если глобально присутствует initCropper (внешний файл cropper-init.js), используем его
             try {
-                if (typeof initCropper === "function") {
-                    initCropper(fileInput, preview);
-
-                    fileInput.addEventListener("change", () => {
-                        const f = fileInput.files?.[0];
+                if (typeof initCropper === 'function') {
+                    initCropper(fileInput, preview); // предполагается, что initCropper сгенерирует кроппер и сам сохранит файл в input
+                    fileInput.addEventListener('change', () => {
+                        const f = fileInput.files && fileInput.files[0];
                         if (f) showPreview(f);
-                        else {
-                            preview.style.display = "none";
-                            picker.style.display = "flex";
-                        }
+                        else { preview.style.display = 'none'; picker.style.display = 'flex'; }
                     });
-
                 } else {
                     fallbackAttach();
                 }
-            } catch {
+            } catch (err) {
+                console.error('Ошибка инициализации cropper:', err);
                 fallbackAttach();
             }
 
-            preview.addEventListener("dblclick", () => {
-                preview.src = "";
-                preview.style.display = "none";
-                picker.style.display = "flex";
-                fileInput.value = "";
+            preview.addEventListener('dblclick', () => {
+                preview.src = '';
+                preview.style.display = 'none';
+                picker.style.display = 'flex';
+                fileInput.value = '';
             });
         }
-    }
 
-    /* ============================================================================
-       ЗАПУСК ПРИ ОТКРЫТИИ МОДАЛКИ
-    ============================================================================ */
-    document.addEventListener("shown.bs.modal", function(event) {
-        const modal = event.target;
-
-        if (modal.id === "addOrganizationModal") {
-            initAddDoctorScripts(modal);
-        }
-    });
-
-/* ============================================================
-   ЗАВИСИМЫЕ СЕЛЕКТЫ: РЕГИОН → ГОРОДА + ПОИСК (Choices.js)
-============================================================ */
-
-let regionChoices, cityChoices;
-
-function initRegionChoices() {
-    if (regionChoices) regionChoices.destroy();
-    regionChoices = new Choices("#regionSelect", {
-        searchPlaceholderValue: "Поиск региона...",
-        removeItemButton: true,
-        shouldSort: false,
-    });
-}
-
-function initCityChoices() {
-    if (cityChoices) cityChoices.destroy();
-    cityChoices = new Choices("#citySelect", {
-        searchPlaceholderValue: "Поиск города...",
-        removeItemButton: true,
-        shouldSort: false,
-    });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    initRegionChoices();
-    initCityChoices();
-
-    const regionSelect = document.querySelector("#regionSelect");
-    const citySelect   = document.querySelector("#citySelect");
-
-    regionSelect.addEventListener("change", function () {
-        const region = this.value;
-
-        if (!region) {
-            citySelect.innerHTML = `<option value="">Сначала выберите регион</option>`;
-            initCityChoices();
-            return;
-        }
-
-        fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
-            .then(r => r.json())
-            .then(list => {
-                citySelect.innerHTML = `<option value="">Выберите город</option>`;
-                list.forEach(city => {
-                    citySelect.innerHTML += `<option value="${city.id}">${city.name}</option>`;
-                });
-                initCityChoices();
-            })
-            .catch(() => {
-                citySelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-                initCityChoices();
-            });
-    });
-
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Если используешь Choices.js — убедись, что он подключён
-    let cityChoices = null;
-    function initCityChoices() {
-        if (cityChoices) cityChoices.destroy();
-        cityChoices = new Choices('#citySelect', {
-            searchPlaceholderValue: "Поиск города...",
-            shouldSort: false,
-            removeItemButton: false
-        });
-    }
-
-    // инициализация пустого Choices
-    initCityChoices();
-    const regionSelect = document.getElementById('regionSelect');
-    const citySelect = document.getElementById('citySelect');
-    if (!regionSelect || !citySelect) return;
-    regionSelect.addEventListener('change', function () {
-        const region = this.value;
-        // сбрасываем Choices, показываем прогресс
-        cityChoices.destroy();
-        citySelect.innerHTML = `<option value="">Загрузка...</option>`;
-        initCityChoices();
-        if (!region) {
-            cityChoices.destroy();
-            citySelect.innerHTML = `<option value="">Сначала выберите регион</option>`;
-            initCityChoices();
-            return;
-        }
-
-        // Кодируем region (в URL может быть пробел/слеш и т.п.)
-        const url = `/api/cities/by-region/${encodeURIComponent(region)}`;
-
-        fetch(url)
-            .then(resp => {
-                if (!resp.ok) throw new Error('Network response was not ok');
-                return resp.json();
-            })
-            .then(list => {
-                // list должен быть массив объектов {id, name}
-                cityChoices.destroy();
-                if (!Array.isArray(list) || list.length === 0) {
-                    citySelect.innerHTML = `<option value="">Города не найдены</option>`;
-                    initCityChoices();
-                    return;
+        // ========== Ограничение опыта по дате рождения (если поля присутствуют) ==========
+        const dobInput = modal.querySelector('#date_of_birth');
+        const expInput = modal.querySelector('#experience');
+        if (dobInput && expInput) {
+            dobInput.addEventListener('change', function () {
+                const dob = new Date(this.value);
+                if (isNaN(dob)) return;
+                const now = new Date();
+                let age = now.getFullYear() - dob.getFullYear();
+                if (now.getMonth() < dob.getMonth() || (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate())) {
+                    age--;
                 }
-
-                citySelect.innerHTML = `<option value="">Выберите город</option>`;
-                list.forEach(c => {
-                    // на всякий случай защита от некорректных элементов
-                    if (c && c.id && c.name) {
-                        const opt = document.createElement('option');
-                        opt.value = c.id;
-                        opt.textContent = c.name;
-                        citySelect.appendChild(opt);
-                    }
-                });
-
-                initCityChoices();
-            })
-            .catch(err => {
-                console.error('Ошибка загрузки городов:', err);
-                cityChoices.destroy();
-                citySelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-                initCityChoices();
+                const maxExperience = Math.max(0, age - 18);
+                expInput.max = maxExperience;
+                if (parseInt(expInput.value || 0) > maxExperience) expInput.value = maxExperience;
             });
-    });
-});
+        }
 
+        // ========== AJAX отправка формы ==========
+        if (form) {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                if (!errBox) return;
+
+                errBox.classList.add('d-none');
+                errBox.innerHTML = '';
+
+                const data = new FormData(form);
+
+                try {
+                    const res = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {'Accept': 'application/json'},
+                        body: data
+                    });
+
+                    const json = await res.json().catch(()=>({}));
+
+                    if (!res.ok) {
+                        // Если Laravel вернул валидационные ошибки (422)
+                        if (res.status === 422 && json.errors) {
+                            let html = '';
+                            Object.keys(json.errors).forEach(name => {
+                                html += `<div>${json.errors[name][0]}</div>`;
+                                const input = form.querySelector(`[name="${name}"]`);
+                                if (input) input.classList.add('is-invalid');
+                            });
+                            errBox.innerHTML = html;
+                            errBox.classList.remove('d-none');
+                            errBox.scrollIntoView({behavior:'smooth'});
+                            return;
+                        }
+                        // прочие ошибки
+                        const msg = (json && json.message) ? json.message : 'Ошибка сервера';
+                        errBox.innerHTML = `<div>${msg}</div>`;
+                        errBox.classList.remove('d-none');
+                        return;
+                    }
+
+                    // успешный ответ
+                    const message = (json && json.message) ? json.message : 'Сохранено';
+                    alert(message);
+                    // закрыть модал или перезагрузить страницу
+                    location.reload();
+                } catch (err) {
+                    console.error('Ошибка отправки формы:', err);
+                    errBox.innerHTML = `<div>Ошибка отправки: ${err.message}</div>`;
+                    errBox.classList.remove('d-none');
+                }
+            });
+        }
+    }
+
+    // Запуск инициализации при открытии модалки
+    document.addEventListener('shown.bs.modal', function (event) {
+        const modal = event.target;
+        if (modal && modal.id === 'addOrganizationModal') {
+            initAddOrganizationModal(modal);
+        }
+    });
+
+    // Если модалка уже открыта (при загрузке страницы), можно инициализировать сразу
+    const already = document.querySelector('#addOrganizationModal');
+    if (already && already.classList.contains('show')) {
+        initAddOrganizationModal(already);
+    }
+
+})();
 </script>

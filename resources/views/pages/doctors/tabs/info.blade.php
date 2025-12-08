@@ -88,18 +88,19 @@
                     <td>Образование:</td>
                     <td style="color: red;"> Надо сделать проверку, и выводить образование если указано</td>
                 </tr>
-                <tr>
-                    <td colspan="2"> {{ $doctor->description }}</td>
-                </tr>
-
-
-        @if($doctor->exotic_animals == 'Да')
+                        @if($doctor->exotic_animals == 'Да')
         <tr>
              <td colspan="2">
                 <span class="exotic-badge">Специалист по экзотическим животным</span>
             </td>
         </tr>
         @endif
+                <tr>
+                    <td colspan="2"> {{ $doctor->description }}</td>
+                </tr>
+
+
+
 
     </tbody>
 </table>

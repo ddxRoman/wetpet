@@ -6,8 +6,10 @@ import './slider_doctor';
 import 'select2';
 import 'select2/dist/css/select2.css';
 import './photo-slider.js';
-import './pages/add_doctor.js';
-import './account/cropper-init.js';
+import './pages/add_doctor.js'; //Не работает
+import './account/cropper-init.js'; //Не работает
+import './pages/add_organization.js'; //Не работает
+
 
 
 
