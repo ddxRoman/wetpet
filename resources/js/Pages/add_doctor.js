@@ -87,7 +87,8 @@ function initAddDoctorScripts(modal) {
     const fieldSelect = modal.querySelector("#fieldOfActivitySelect");
 
     if (fieldSelect) {
-        fetch("/api/fields/specialists")
+fetch("/api/fields/specialists?activity=Vetclinic")
+
             .then(r => r.json())
             .then(list => {
                 fieldSelect.innerHTML = `<option value="">Выберите сферу деятельности</option>`;
@@ -201,15 +202,4 @@ function initAddDoctorScripts(modal) {
             fileInput.value = "";
         });
     }
-}
-
-/* ============================================================================
-   ЗАПУСК ПРИ ОТКРЫТИИ МОДАЛКИ
-============================================================================ */
-document.addEventListener("shown.bs.modal", function (event) {
-    const modal = event.target;
-
-    if (modal.id === "addDoctorModal") {
-        initAddDoctorScripts(modal);
-    }
-});
+};

@@ -1,4 +1,5 @@
 @include('account.modals.modal-add-specialist', ['cities' => $cities])
+@include('account.modals.modal-add-organization', ['cities' => $cities])
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -21,7 +22,6 @@
 </head>
 
 <body class="body_page">
-
 <header class="site-header 
         {{ request()->is('clinics*') ? 'compact-header' : '' }}
         {{ request()->is('doctors*') ? 'compact-header' : '' }}">
@@ -29,66 +29,72 @@
     <div class="container py-2">
 
         {{-- =================== HEADER MAIN ROW =================== --}}
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="header-grid">
 
             {{-- ==== Левый блок (город) ==== --}}
-            <div class="flex-shrink-0">
+            <div class="city-block">
                 @include('partials.city-selector')
             </div>
 
             {{-- ==== Логотип ==== --}}
-            <div class="flex-grow-1 text-center">
-                <a href="/" class="header-logo-link d-inline-block">
+            <div class="logo-block">
+                <a href="/" class="header-logo-link">
                     <img class="header_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
                 </a>
             </div>
 
-            {{-- ==== Кнопки ==== --}}
-            <div class="d-none d-md-flex gap-2 flex-shrink-0 me-3">
-                <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addClinicModal">
-                    <img class="add_btn"  src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" title="Добавить организацию" alt="Добавить организацию">
-                </button>
+            {{-- ==== Правый блок (кнопки + профиль) ==== --}}
+            <div class="right-block d-flex align-items-center gap-3">
 
-                <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
-                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" title="Добавить Специалиста" alt="Добавить специалиста">
-                </button>
-            </div>
+                {{-- Кнопки --}}
+                <div class="d-none d-md-flex gap-2">
+                    <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
+                        <img class="add_btn"  src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" title="Добавить организацию" alt="Добавить организацию">
+                    </button>
 
-            {{-- ==== Профиль ==== --}}
-            <div class="flex-shrink-0 d-flex align-items-center">
-                @guest
-                    <a href="{{ route('login') }}" class="login_link">
-                        <button type="button" class="btn_login">Войти</button>
-                    </a>
-                @endguest
+                    <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                        <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" title="Добавить специалиста" alt="Добавить специалиста">
+                    </button>
+                </div>
 
-                @auth
-                    @php
-                        $randomNumber = rand(0, 20);
-                        $link = "storage/avatars/default/$randomNumber.png";
-                    @endphp
-                    <div class="dropdown">
-                        <a id="navbarDropdown" 
-                           class="profile_link dropdown-toggle d-flex align-items-center gap-2" 
-                           href="#" 
-                           role="button"
-                           data-bs-toggle="dropdown">
-                            <img class="avatars_pics" src="{{ asset($link) }}" alt="Аватар">
-                            {{ Auth::user()->name }}
+                {{-- Профиль --}}
+                <div class="d-flex align-items-center">
+                    @guest
+                        <a href="{{ route('login') }}" class="login_link">
+                            <button type="button" class="btn_login">Войти</button>
                         </a>
+                    @endguest
 
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="{{ route('account') }}">Профиль</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Выйти
+                    @auth
+                        @php
+                            $randomNumber = rand(0, 20);
+                            $link = "storage/avatars/default/$randomNumber.png";
+                        @endphp
+
+                        <div class="dropdown">
+                            <a id="navbarDropdown"
+                               class="profile_link dropdown-toggle d-flex align-items-center gap-2"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown">
+                                <img class="avatars_pics" src="{{ asset($link) }}" alt="Аватар">
+                                {{ Auth::user()->name }}
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
+
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="{{ route('account') }}">Профиль</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Выйти
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                @endauth
+                    @endauth
+                </div>
+
             </div>
 
         </div>
@@ -117,5 +123,6 @@
 
 </header>
 
-</body>
-</html>
+<style>
+
+</style>

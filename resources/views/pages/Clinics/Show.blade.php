@@ -263,7 +263,6 @@ $pets = Pet::where('user_id', auth()->id())
     ->get();
 @endphp
 
-
 {{-- 📝 Кнопка открытия / закрытия формы --}}
 @auth
 <div class="text-end mb-3">
@@ -277,9 +276,6 @@ $pets = Pet::where('user_id', auth()->id())
         aria-controls="openReviewForm">
     ✍️ Оставить отзыв
 </button>
-
-
-
 </div>
 
 {{-- 🔽 Скрытая форма --}}
@@ -328,7 +324,6 @@ $pets = Pet::where('user_id', auth()->id())
     </div>
 </div>
 
-
                 {{-- 💚 Понравилось --}}
                 <div class="mb-3">
                     <label class="form-label">Понравилось:</label>
@@ -347,6 +342,7 @@ $pets = Pet::where('user_id', auth()->id())
                     <textarea name="content" id="reviewText" class="form-control small-textarea"
                               placeholder="Напишите свой отзыв..." rows="2"></textarea>
                 </div>
+
 {{-- 🐾 Питомец --}}
 <div class="mb-3">
     <label class="form-label">Ваш питомец:</label>
@@ -363,6 +359,7 @@ $pets = Pet::where('user_id', auth()->id())
         @endforelse
     </select>
 </div>
+
                 {{-- 📎 Загрузка чека --}}
                 <div class="mb-3">
                     <label class="form-label">Чек (для подтверждения отзыва):</label>
@@ -388,16 +385,12 @@ $pets = Pet::where('user_id', auth()->id())
     Чтобы оставить отзыв, <a href="{{ route('login') }}">войдите в аккаунт</a>.
 </p>
 @endauth
-
-
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" value="1" id="verifiedOnly">
                                 <label class="form-check-label" for="verifiedOnly" title="Будут показываться только те отзывы на которых был прикреплен чек подтверждающий визит в клинику">
                                     Показывать только  "Реальных клиентов"
                                 </label>
                             </div>
-
-
                             {{-- 🔽 Сортировка отзывов --}}
 <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
     <label for="sortReviews" class="form-label mb-0 me-2 fw-semibold">Сортировать по:</label>
@@ -408,24 +401,19 @@ $pets = Pet::where('user_id', auth()->id())
         <option value="rating_asc">Оценке (от низкой к высокой)</option>
     </select>
 </div>
-
                             
                             {{-- 🔽 Список отзывов --}}
-
                             <div id="reviewList" class="list-group">
                                 @foreach($reviews as $review)
                                 <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
                                     data-date="{{ $review->review_date->timestamp }}"
                                     data-rating="{{ $review->rating }}"
                                     data-verified="{{ $review->receipt_verified }}">
-
                                     @if($review->receipt_verified == "verified")
                                     <div class="verified-badge position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-start" title="Этот пользователь подтвердил свой визит в клинику, чеком, электронной квитанцией или заключаем из больницы">
                                         ✅ Реальный клиент
                                     </div>
                                     @endif
-
-
                                     {{-- Пользователь --}}
                                     <div class="d-flex align-items-center mb-3">
                                         @php
@@ -440,12 +428,9 @@ $pets = Pet::where('user_id', auth()->id())
                                             </a>
                                             <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
                                             @if(Auth::id() === $review->user_id)
-
                                             {{-- Отметка "Реальный клиент" --}}
                                             @if($review->receipt_verified == 1)
                                             <span class="verifed_client">
-
-
                                             </span>
                                             @endif
                                             <div class="mt-1">
@@ -519,17 +504,10 @@ $reviews = Review::where('reviewable_id', $clinic->id)
         @endforeach
     </div>
 @endif
-
                                 </div>
                                 @endforeach
                             </div>
                         </div>
-
-
-
-
-
-
     <div class="tab-pane fade {{ $activeTab === 'awards' ? 'show active' : '' }}" id="awards" role="tabpanel">
         <h4>Награды</h4>
 {{-- Награды --}}

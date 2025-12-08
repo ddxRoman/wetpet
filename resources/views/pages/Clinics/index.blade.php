@@ -9,76 +9,96 @@
             <small class="text-muted d-block fs-6">Город: {{ $selectedCity }}</small>
         @endif
     </h1>
-    <div class="row g-4">
-        @foreach ($clinics as $clinic)
+
+    {{-- Если город не выбран — не показываем все клиники, а просим выбрать город --}}
+    @if(empty($selectedCity))
+        <div class="alert alert-info text-center">
+            Пожалуйста, выберите город и обновите страницу — список клиник будет отображён только для выбранного города.
+        </div>
+
+        {{-- Опционально: можно вывести краткий список городов для выбора --}}
+        {{-- если у вас есть переменная $cities, можно раскомментировать и использовать:
+        <div class="d-flex flex-wrap gap-2 justify-content-center">
+            @foreach($cities as $city)
+                <a href="{{ route('cities.set') }}" class="btn btn-outline-secondary btn-sm">{{ $city->name }}</a>
+            @endforeach
+        </div>
+        --}}
+
+    @else
+        <div class="row g-4">
             @php
-                // Подсчёт средней оценки и количества отзывов
-                $avgRating = $clinic->reviews->avg('rating') ?? 0;
-                $reviewCount = $clinic->reviews->count();
-                $ratingCounts = $clinic->reviews->groupBy('rating')->map->count();
+                // безопасная фильтрация коллекции клиник на стороне представления:
+                // если контроллер уже отфильтровал — это вернёт всё то же самое,
+                // если нет — мы убережёмся и покажем только нужные.
+                $filtered = $clinics->filter(function($clinic) use ($selectedCity) {
+                    // в базе поле city может быть либо id, либо название — сравним по названию
+                    return isset($clinic->city) && (trim($clinic->city) === trim($selectedCity));
+                })->values();
             @endphp
 
-            <div class="col-lg-3 col-md-4 col-12">
-                <a href="{{ route('clinics.show', $clinic->id) }}" class="text-decoration-none text-reset">
-                    <div class="card h-100 shadow-sm hover-shadow position-relative transition">
-
-                        {{-- ⭐ Средняя оценка --}}
-@php
-    $sortedRatings = $ratingCounts->sortKeysDesc();
-    $tooltipHtml = '<div style="min-width:160px;">';
-    $tooltipHtml .= '<strong>Всего отзывов:</strong> ' . $reviewCount . '<br><hr class="my-1">';
-    foreach ($sortedRatings as $rating => $count) {
-        $percent = $reviewCount > 0 ? round(($count / $reviewCount) * 100) : 0;
-        $tooltipHtml .= "
-            <div style='font-size:0.85rem;'>
-                ⭐ {$rating}
-                <div style='background:#eee; height:6px; border-radius:4px; overflow:hidden; margin-top:2px;'>
-                    <div style='width:{$percent}%; background:#ffc107; height:100%;'></div>
-                </div>
-                <small>{$count} отзывов</small>
-            </div>
-        ";
-    }
-    $tooltipHtml .= '</div>';
-@endphp
-
-
-<div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"
-     data-bs-toggle="tooltip"
-     data-bs-html="true"
-     title="
-        Всего отзывов: {{ $reviewCount }}
-        @for ($rating = 5; $rating >= 1; $rating--)
-             {{ str_repeat('⭐', $rating) }} — {{ $ratingCounts[$rating] ?? 0 }} оцен{{ ($ratingCounts[$rating] ?? 0) == 1 ? 'ка' : ((($ratingCounts[$rating] ?? 0) >= 2 && ($ratingCounts[$rating] ?? 0) <= 4) ? 'ки' : 'ок') }}
-        @endfor
-     ">
-⭐ <span class="ms-1 fw-semibold">{{ number_format($avgRating, 1) }}</span>
-</div>
-
-                        @php
-                            $logo = !empty($clinic->logo)
-                                ? asset('storage/' . $clinic->logo)
-                                : asset('storage/clinics/logo/default.webp');
-                        @endphp
-
-                        <img src="{{ $logo }}" class="card-img-top object-fit-contain p-3" alt="{{ $clinic->name }}">
-
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $clinic->name }}</h5>
-                            <p class="card-text mb-2">
-                                {{ $clinic->country }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}
-                            </p>
-                            @if(!empty($clinic->schedule))
-                                <p class="text-muted mb-0">
-                                    График: {{ $clinic->schedule }}
-                                </p>
-                            @endif
-                        </div>
+            @if($filtered->isEmpty())
+                <div class="col-12">
+                    <div class="alert alert-warning text-center">
+                        Для города <strong>{{ $selectedCity }}</strong> клиник пока не найдено. <br>
+                                        <button class="btn_add_clinic btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
+                    <img class="add_btn"  src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" title="Добавить организацию" alt="Добавить организацию">
+                                        Добавить клинику
+                </button>
                     </div>
-                </a>
-            </div>
-        @endforeach
-    </div>
+                </div>
+            @else
+                @foreach ($filtered as $clinic)
+                    @php
+                        // Подсчёт средней оценки и количества отзывов (защитим от null)
+                        $reviewsCollection = $clinic->reviews ?? collect();
+                        $avgRating = $reviewsCollection->avg('rating') ? number_format($reviewsCollection->avg('rating'), 1) : '0.0';
+                        $reviewCount = $reviewsCollection->count();
+                        $ratingCounts = $reviewsCollection->groupBy('rating')->map->count();
+                    @endphp
+
+                    <div class="col-lg-3 col-md-4 col-12">
+                        <a href="{{ route('clinics.show', $clinic->id) }}" class="text-decoration-none text-reset">
+                            <div class="card h-100 shadow-sm hover-shadow position-relative transition">
+                                {{-- Rating badge --}}
+                                <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"
+                                     data-bs-toggle="tooltip"
+                                     data-bs-html="true"
+                                     title="
+                                        Всего отзывов: {{ $reviewCount }}
+                                        @for ($rating = 5; $rating >= 1; $rating--)
+                                             {{ str_repeat('⭐', $rating) }} — {{ $ratingCounts[$rating] ?? 0 }}
+                                        @endfor
+                                     ">
+                                    ⭐ <span class="ms-1 fw-semibold">{{ $avgRating }}</span>
+                                </div>
+
+                                @php
+                                    $logo = !empty($clinic->logo)
+                                        ? asset('storage/' . $clinic->logo)
+                                        : asset('storage/clinics/logo/default.webp');
+                                @endphp
+
+                                <img src="{{ $logo }}" class="card-img-top object-fit-contain p-3" alt="{{ $clinic->name }}">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $clinic->name }}</h5>
+                                    <p class="card-text mb-2">
+                                        {{ $clinic->country }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}
+                                    </p>
+                                    @if(!empty($clinic->schedule))
+                                        <p class="text-muted mb-0">
+                                            График: {{ $clinic->schedule }}
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+    @endif
 </div>
 
 <style>
@@ -119,6 +139,14 @@
 }
 .tooltip.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
     border-top-color: #ddd !important;
+}
+.btn_add_clinic{
+    border: 1px solid #222;
+    background-color: #002fff21;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 0.2%;
+    border-radius: 5px;
 }
 </style>
 

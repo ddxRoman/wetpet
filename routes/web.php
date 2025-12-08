@@ -136,3 +136,9 @@ Route::post('/clinics/store', [ClinicController::class, 'store'])->name('clinics
 Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpecialists']);
 
 Route::post('/add-doctor', [AddDoctorController::class, 'store'])->name('add.doctor');
+
+Route::get('/cities/by-region/{region}', function ($region) {
+    return \App\Models\City::where('region', $region)->get();
+});
+// возвращает города для региона (используется в модалке)
+Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);

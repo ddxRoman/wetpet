@@ -1702,3 +1702,24 @@ a{
         color: #000000a6;
         font-size: small;
     }
+
+        .header-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+}
+
+/* Логотип — строго по центру */
+.logo-block {
+    justify-self: center;
+}
+
+/* Правый блок — вправо */
+.right-block {
+    justify-self: end;
+}
+
+/* Левый блок остаётся слева */
+.city-block {
+    justify-self: start;
+}

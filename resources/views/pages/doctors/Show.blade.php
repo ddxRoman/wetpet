@@ -116,11 +116,20 @@
                 <h4 class="fw-semibold mb-3">Отзывы</h4>
 
                 @include('pages.doctors.tabs.reviews', ['clinic_id' => $doctor->clinic_id])
-
-
             @endif
-
         </div>
+
+
+
+        <style>
+            .fw-semibold1{
+                font-weight: 300;
+            }
+            .doctor_fw-semibold{
+            color: #444444be;
+            }
+        </style>
+
 
 
         {{-- ПРАВАЯ КОЛОНКА --}}
@@ -130,7 +139,9 @@
             <div class="card shadow-sm border-0">
                 <div class="card-body">
 
-                    <h6 class="fw-semibold">Врач {{ $doctor->specialization }} {{ $doctor->name }}</h6>
+                   <span class="doctor_fw-semibold"> Врач-{{ $doctor->specialization }}: </span>
+                    <span class="fw-semibold">
+                   {{ $doctor->name }}</span>
 
                     <div class="rounded mt-2"
                          style="overflow:hidden;width:100%;height:260px;">

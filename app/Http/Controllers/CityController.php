@@ -45,6 +45,24 @@ public function add(Request $request)
     return response()->json(['success' => true, 'city' => $city]);
 }
 
+// в App\Http\Controllers\CityController
+public function citiesByRegion($region)
+{
+    // лог для отладки (убери в продакшн)
+    \Log::info('citiesByRegion called with region: ' . $region);
+$regions = \App\Models\City::select('region')->distinct()->orderBy('region')->get();
+
+    // безопасное сравнение: trim + lower
+    $cities = \App\Models\City::whereRaw(
+        'LOWER(TRIM(region)) = LOWER(TRIM(?))',
+        [$region]
+    )->orderBy('name')->get(['id','name']);
+
+    \Log::info('citiesByRegion result count: ' . $cities->count());
+
+    return response()->json($cities);
+}
+
 
 
 public function getCities()
