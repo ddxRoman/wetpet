@@ -129,10 +129,14 @@
                         <div class="col-12">
                             <label>Логотип</label>
 
-                            <div id="photoPicker" style="width:150px;height:150px;border:2px dashed #b8b8b8;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:48px;color:#999;">+</div>
+                            <!-- Квадрат для выбора -->
+                            <div id="photoPicker">+</div>
 
-                            <input type="file" id="doctorPhotoInput" name="logo" accept="image/*" style="display:none;">
-                            <img id="doctorPhotoPreview" class="mt-2" style="width:150px;height:150px;border-radius:10px;object-fit:cover;display:none;">
+                            <!-- Скрытый input -->
+                            <input type="file" id="doctorPhotoInput" name="logo" accept="image/*">
+
+                            <!-- Превью -->
+                            <img id="doctorPhotoPreview" class="mt-2">
                         </div>
 
                         <div class="col-12">

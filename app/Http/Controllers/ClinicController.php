@@ -11,21 +11,31 @@ class ClinicController extends Controller
     // Список всех клиник
 public function index(Request $request)
 {
-    // Получаем выбранный город из сессии или запроса
-    $selectedCity = $request->input('city', session('selected_city'));
+    $user = auth()->user();
 
-    // Если город выбран — фильтруем по нему, иначе показываем все
+    // 1) Если пользователь авторизован — берём город из users.city_id
+    if ($user && $user->city_id) {
+        $city = City::find($user->city_id);
+        $selectedCity = $city?->name;
+    }
+    // 2) Если пользователь не авторизован — берём из сессии
+    else {
+        $selectedCity = session('selected_city');
+    }
+
+    // 3) Фильтрация клиник по городу
     $clinics = Clinic::when($selectedCity, function ($query, $city) {
-        return $query->where('city', $city);
+        return $query->whereRaw('LOWER(TRIM(city)) = LOWER(TRIM(?))', [$city]);
     })->get();
 
-    // Сохраняем выбранный город в сессию (чтобы не сбрасывался при переходах)
-    if ($selectedCity) {
+    // 4) Если selectedCity появился — обновляем сессию для неавторизованных пользователей
+    if (!$user && $selectedCity) {
         session(['selected_city' => $selectedCity]);
     }
 
     return view('pages.clinics.index', compact('clinics', 'selectedCity'));
 }
+
 
 
     // Просмотр одной клиники
@@ -59,7 +69,7 @@ public function index(Request $request)
             'street' => 'required|string|max:255',
             'house' => 'nullable|string|max:50',
             'address_comment' => 'nullable|string|max:255',
-            'logo' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'description' => 'nullable|string',
             'phone1' => 'nullable|string|max:30',
             'phone2' => 'nullable|string|max:30',
@@ -129,7 +139,7 @@ public function clinicsByCity($cityId)
             'street' => 'required|string|max:255',
             'house' => 'nullable|string|max:50',
             'address_comment' => 'nullable|string|max:255',
-            'logo' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'description' => 'nullable|string',
             'phone1' => 'nullable|string|max:30',
             'phone2' => 'nullable|string|max:30',

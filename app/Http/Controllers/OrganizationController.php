@@ -23,7 +23,8 @@ class OrganizationController extends Controller
             'street'               => 'required|string|max:255',
             'house'                => 'nullable|string|max:255',
             'description'          => 'nullable|string',
-            'logo'                 => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+
             'schedule'             => 'nullable|string|max:255',
             'workdays'             => 'nullable|string|max:255',
             'phone'                => 'nullable|string|max:255',
@@ -47,6 +48,17 @@ class OrganizationController extends Controller
         // УСТАНАВЛИВАЕМ СТРАНУ ПО УМОЛЧАНИЮ
         // ------------------------------
  $validated['country'] = 'Россия';
+
+if ($request->hasFile('logo')) {
+$path = $request->file('logo')->store('clinics/logo', 'public');
+
+} else {
+    $path = null;
+}
+
+
+
+
         // ------------------------------
         // ГОРОД ПО ID
         // ------------------------------
@@ -62,7 +74,7 @@ class OrganizationController extends Controller
         // ------------------------------
         // SAFE GET ДЛЯ НЕОБЯЗАТЕЛЬНЫХ ПОЛЕЙ
         // ------------------------------
-        $logo     = $request->input('logo', null);
+
         $schedule = $request->input('schedule', null);
         $workdays = $request->input('workdays', null);
         $phone    = $request->input('phone', null);
@@ -82,7 +94,7 @@ class OrganizationController extends Controller
                 'street'      => $validated['street'],
                 'house'       => $validated['house'] ?? null,
                 'description' => $desc,
-                'logo'        => $logo,
+                'logo'        => $path,
                 'schedule'    => $schedule,
                 'workdays'    => $workdays,
                 'phone1'      => $phone,   // В модели Clinics: phone1 + phone2
@@ -107,7 +119,7 @@ class OrganizationController extends Controller
             'street'      => $validated['street'],
             'house'       => $validated['house'] ?? null,
             'description' => $desc,
-            'logo'        => $logo,
+            'logo'        => $path,
             'schedule'    => $schedule,
             'workdays'    => $workdays,
             'phone'       => $phone,
