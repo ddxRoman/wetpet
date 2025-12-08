@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}">
+    <meta name="robots" content="index, follow">
 
     @if(Route::currentRouteName() === 'clinics.show')
         <title>{{ $clinic->name ? $clinic->name . ' — контакты и отзывы о клинике в городе ' . $clinic->city : 'Сайт про домашних животных' }}</title>

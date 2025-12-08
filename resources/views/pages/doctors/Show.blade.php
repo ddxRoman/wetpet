@@ -20,6 +20,11 @@
     $mapQuery = urlencode(implode(', ', $addressParts));
 @endphp
 
+<head>
+    <meta name="robots" content="index, follow">
+
+</head>
+
 <body>
     <div class="d-flex flex-column min-vh-100 bg-white">
     @include('layouts.header')

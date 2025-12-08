@@ -1,3 +1,7 @@
+<head>
+    <meta name="robots" content="index, follow">
+
+</head>
 @extends('layouts.clinics_catalog')
 
 @section('title', 'Каталог ветеринарных клиник')

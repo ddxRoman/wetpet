@@ -5,6 +5,10 @@ use App\Models\Pet;
 @vite('resources/js/account/review.js')
 
 @section('content')
+<head>
+    <meta name="robots" content="index, follow">
+
+</head>
 <body>
 <div class="d-flex flex-column min-vh-100 bg-white">
     @include('layouts.header')

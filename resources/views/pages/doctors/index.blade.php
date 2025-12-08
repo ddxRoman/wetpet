@@ -4,6 +4,10 @@
 @section('title', 'Каталог ветеринарных врачей')
 
 @section('content')
+<head>
+    <meta name="robots" content="index, follow">
+
+</head>
 <div class="container py-5">
     <h1 class="mb-4 text-center">Каталог ветеринарных врачей
         @if(!empty($selectedCity))
