@@ -1726,3 +1726,18 @@ a{
 .city-block {
     justify-self: start;
 }
+.clinic-info-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.clinic-name {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.clinic-address {
+    color: #666;
+    font-size: 14px;
+    margin-top: 4px;
+}

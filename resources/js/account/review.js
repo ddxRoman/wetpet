@@ -18,78 +18,83 @@ async function loadReviews() {
     } catch (e) {
         console.error(e);
         reviewsList.innerHTML = '<p class="empty-message" style="color:red;">Ошибка при загрузке отзывов.</p>';
+    
+// Определяем, кто объект — Клиника или Доктор
+const isClinic = r.target_type === 'Clinic';
+const isDoctor = r.target_type === 'Doctor';
     }
 }
 
 
-    function renderCard(r) {
-        const date = new Date(r.created_at).toLocaleDateString('ru-RU');
-        const clinicLink = r.clinic_id
-            ? `<a href="/clinics/${r.clinic_id}" class="clinic-name">${escapeHtml(r.clinic_name)}</a>`
-            : `<span class="clinic-name">Клиника не найдена</span>`;
-        const address = [r.region, r.city, r.street, r.house].filter(Boolean).map(escapeHtml).join(', ');
+function renderCard(r) {
+    const isClinic = r.target_type === 'Clinic';
+    const isDoctor = r.target_type === 'Doctor';
 
-        const photos = (r.photos && r.photos.length)
-            ? `<div class="media-group"><strong>Фото:</strong>` + r.photos.map(p => {
-                const path = p.photo_path || '';
-                return `<div class="media-item">
-                    <img src="${path ? '/storage/'+path : '/storage/placeholder.png'}"
-                         alt="Фото" class="previewable"
-                         data-full="${path ? '/storage/'+path : ''}">
-                    <button type="button" class="btn-del-photo" data-photo-id="${p.id}">×</button>
-                </div>`;
-            }).join('') + `</div>` : '';
+    // Адрес (только для клиник)
+    const address = isClinic
+        ? [r.region, r.city, r.street, r.house]
+            .filter(Boolean)
+            .map(escapeHtml)
+            .join(', ')
+        : '';
 
-        const receipts = (r.receipts && r.receipts.length)
-            ? `<div class="media-group"><strong>Чеки:</strong>` + 
-                r.receipts.map(f => `
-                    <div class="media-item">
-                        <a href="/storage/${f.receipt_path}" target="_blank" class="receipt-link">📄 Чек</a>
-                        <button type="button" class="btn-del-receipt" data-receipt-id="${f.id}">×</button>
-                    </div>
-                `).join('') + `</div>` : '';
+    // ⭐ Блок название + адрес (всегда вертикально)
+    const targetInfoBlock = `
+        <div class="clinic-info-block">
+            <a href="${isClinic ? '/clinics/' : '/doctors/'}${r.target_id}" 
+               class="clinic-name">${escapeHtml(r.target_name)}</a>
 
-        return `
-            <article class="review-card"
-         data-id="${r.id}"
-         data-date="${new Date(r.created_at).getTime()}"
-         data-rating="${r.rating ?? 0}">
+            ${address ? `<div class="clinic-address">${address}</div>` : ''}
+        </div>
+    `;
 
-                <header class="review-header">
-                    <div class="left">
-                        <div class="clinic-block">${clinicLink}${address ? `<div class="clinic-address">${address}</div>` : ''}</div>
-                        <div class="review-date">${date}</div>
-                    </div>
-                    <div class="right">
-                        <button type="button" class="btn-toggle" aria-expanded="false">Редактировать</button>
-                        <button type="button" class="btn-delete">Удалить</button>
-                    </div>
-                </header>
-                <div class="review-body">
-                    <div class="display">
-                        <div class="line"><strong>Понравилось:</strong> <span class="field-liked">${escapeHtml(r.liked ?? '')}</span></div>
-                        <div class="line"><strong>Не понравилось:</strong> <span class="field-disliked">${escapeHtml(r.disliked ?? '')}</span></div>
-                        <div class="line"><strong>Отзыв:</strong> <span class="field-content">${escapeHtml(r.content ?? '')}</span></div>
-                        ${r.rating ? `<div class="line"><strong>Оценка:</strong> ★ ${r.rating}/5</div>` : ''}
-                        ${photos}
-                        ${receipts}
-                    </div>
-                    <form class="edit-panel" style="display:none;" enctype="multipart/form-data">
-                        <label>Понравилось <input name="liked" type="text" class="input-liked" value="${escapeAttr(r.liked ?? '')}"></label>
-                        <label>Не понравилось <input name="disliked" type="text" class="input-disliked" value="${escapeAttr(r.disliked ?? '')}"></label>
-                        <label>Отзыв <textarea name="content" class="input-content" rows="4">${escapeHtml(r.content ?? '')}</textarea></label>
-                        <label>Оценка (1-5) <input name="rating" type="number" min="1" max="5" class="input-rating" value="${r.rating ?? ''}"></label>
-                        <label>Добавить чеки <input type="file" name="receipts[]" class="input-receipts" accept="image/*,application/pdf" multiple></label>
-                        <label>Добавить фото <input type="file" name="photo_path" class="input-photos" accept="image/*" multiple></label>
-                        <div class="edit-actions">
-                            <button type="button" class="btn-cancel">Отмена</button>
-                            <button type="button" class="btn-save">Сохранить</button>
-                        </div>
-                    </form>
+    const photos = (r.photos && r.photos.length)
+        ? `<div class="media-group"><strong>Фото:</strong>` + r.photos.map(p => {
+            const path = p.photo_path || '';
+            return `<div class="media-item">
+                <img src="${path ? '/storage/'+path : '/storage/placeholder.png'}"
+                     alt="Фото" class="previewable"
+                     data-full="${path ? '/storage/'+path : ''}">
+                <button type="button" class="btn-del-photo" data-photo-id="${p.id}">×</button>
+            </div>`;
+        }).join('') + `</div>` : '';
+
+    const receipts = (r.receipts && r.receipts.length)
+        ? `<div class="media-group"><strong>Чеки:</strong>` +
+            r.receipts.map(f => `
+                <div class="media-item">
+                    <a href="/storage/${f.receipt_path}" target="_blank" class="receipt-link">📄 Чек</a>
+                    <button type="button" class="btn-del-receipt" data-receipt-id="${f.id}">×</button>
                 </div>
-            </article>
-        `;
-    }
+            `).join('') + `</div>` : '';
+
+    return `
+<article class="review-card"
+    data-id="${r.id}"
+    data-date="${new Date(r.created_at).getTime()}"
+    data-rating="${r.rating ?? 0}">
+
+    <header class="review-header">
+        ${targetInfoBlock}
+        <time class="review-date">${new Date(r.created_at).toLocaleDateString()}</time>
+    </header>
+
+    <div class="review-content">${escapeHtml(r.content || '')}</div>
+
+    <div class="review-liked"><strong>Понравилось:</strong> ${escapeHtml(r.liked || '')}</div>
+    <div class="review-disliked"><strong>Не понравилось:</strong> ${escapeHtml(r.disliked || '')}</div>
+
+    ${photos}
+    ${receipts}
+
+    <footer class="review-footer">
+        <div class="review-rating">Оценка: ${r.rating ?? 0}</div>
+    </footer>
+</article>
+`;
+}
+
+
 
     function escapeHtml(str) {
         if (str == null) return '';
