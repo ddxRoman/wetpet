@@ -209,7 +209,7 @@
 
         // ========== загрузка сфер деятельности ==========
         if (fieldSelect) {
-            fetch('/api/fields/specialists')
+fetch('/api/fields/vetclinic')
                 .then(r => {
                     if (!r.ok) throw new Error('Ошибка загрузки сфер');
                     return r.json();

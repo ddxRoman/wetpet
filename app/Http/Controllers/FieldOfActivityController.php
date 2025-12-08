@@ -15,5 +15,10 @@ public function getSpecialists()
         \App\Models\FieldOfActivity::where('type', 'specialist')->orderBy('name')->get()
     );
 }
+public function getVetclinic()
+{
+    return FieldOfActivity::where('activity', 'vetclinic')->get();
+}
+
 
 }

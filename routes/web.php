@@ -133,7 +133,11 @@ Route::post('/doctors/{doctor}/update', [DoctorController::class, 'update'])
 
 Route::post('/doctors/store', [DoctorController::class, 'store'])->name('doctors.store');
 Route::post('/clinics/store', [ClinicController::class, 'store'])->name('clinics.store');
+
+
+Route::get('/api/fields/vetclinic', [FieldOfActivityController::class, 'getVetclinic']);
 Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpecialists']);
+
 
 Route::post('/add-doctor', [AddDoctorController::class, 'store'])->name('add.doctor');
 

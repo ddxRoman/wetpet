@@ -26,14 +26,12 @@
                 <div class="modal-body">
                     <div id="doctorErrors" class="alert alert-danger d-none"></div>
                     <div class="row g-3">
-                                            <div class="col-12">
-    <label class="form-check-label">
-        <input type="checkbox" name="its_me" class="form-check-input">
-    <strong>
-        Добавляю себя
-    </strong> 
-    <label for="its_me" class="label_its_me">Мы попросим вас подтвердить что именно вы явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
-    </label>
+
+                        <div class="col-md-6">
+    <label>Сфера деятельности</label>
+    <select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select">
+        <option value="">Загрузка...</option>
+    </select>
 </div>
 
 
@@ -56,22 +54,16 @@
 
 
 
-                        <div class="col-md-6">
-    <label>Сфера деятельности</label>
-    <select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select">
-        <option value="">Загрузка...</option>
-    </select>
+
+                                            <div class="col-12 div_its_me">
+    <label class="form-check-label">
+        <input type="checkbox" name="its_me" class="form-check-input">
+    <strong>
+        Добавляю себя
+    </strong> 
+    <label for="its_me" class="label_its_me">Мы попросим вас подтвердить что именно вы явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
+    </label>
 </div>
-
-
-
-                        <!-- <div class="col-12">
-                            <label>Специализация</label>
-                            <input type="text" name="specialization" class="form-control">
-                        </div> -->
-
-
-
 <div class="col-md-6">
     <label>Стаж (лет)</label>
     <input 

@@ -52,7 +52,7 @@ class FieldOfActivitySeeder extends Seeder
             FieldOfActivity::create([
                 'name' => $name,
                 'type' => 'organization',
-                'activity' => 'Vetclinic'
+                'activity' => 'vetclinic'
             ]);
         }
     }
