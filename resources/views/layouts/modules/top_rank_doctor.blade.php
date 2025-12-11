@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://public.codepenassets.com/css/reset-2.0.min.css">
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.min.css'>
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
 <div class="container slider_doctor slider_doctor_mobile">
@@ -16,8 +15,8 @@
         <div class="swiper-wrapper">
           @foreach ($doctors as $doctor)
             <div class="swiper-slide swiper-slide_mobile">
-              <figure class="slide-bgimg slide-bgimg_mobile" style="background-image:url('{{ asset($doctor->photo) }}')">
-                <img src="{{ asset($doctor->photo) }}" class="entity-img entity-img_mobile" alt="{{ $doctor->name }}">
+              <figure class="slide-bgimg slide-bgimg_mobile" style="background-image:url('{{ asset ('storage/'.$doctor->photo) }}')">
+                <img src="{{ asset('storage/'.$doctor->photo) }}" class="entity-img entity-img_mobile" alt="{{ $doctor->name }}">
               </figure>
               <div class="content content_mobile">
                 <p class="title title_mobile">{{ $doctor->name }}</p>
@@ -35,8 +34,8 @@
         <div class="swiper-wrapper" role="navigation">
           @foreach ($doctors as $doctor)
             <div class="swiper-slide swiper-slide_mobile_thumb">
-              <figure class="slide-bgimg slide-bgimg_mobile_thumb" style="background-image:url('{{ asset($doctor->photo) }}')">
-                <img src="{{ asset($doctor->photo) }}" class="entity-img entity-img_mobile_thumb" alt="{{ $doctor->name }}">
+              <figure class="slide-bgimg slide-bgimg_mobile_thumb" style="background-image:url('{{ asset('storage/'.$doctor->photo) }}')">
+                <img src="{{ asset('storage/'.$doctor->photo) }}" class="entity-img entity-img_mobile_thumb" alt="{{ $doctor->name }}">
               </figure>
               <div class="content content_mobile_thumb">
                 <p class="title title_mobile_thumb">{{ $doctor->name }}</p>
@@ -51,6 +50,6 @@
 </div>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js'></script>
-<script src="{{ asset('js/script.js') }}"></script>
+
 </body>
 </html>

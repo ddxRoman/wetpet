@@ -10,17 +10,23 @@
     <meta name="robots" content="index, follow">
 
     @if(Route::currentRouteName() === 'clinics.show')
-        <title>{{ $clinic->name ? $clinic->name . ' — контакты и отзывы о клинике в городе ' . $clinic->city : 'Сайт про домашних животных' }}</title>
+        <meta name="description" content="Узнать стоимость услуг, посмотреть график работы прочитать и оставить отзывы на ветеринарную клинику">
+        <title>{{ $clinic->name ? $clinic->name . ' — контакты и отзывы о клинике в городе '  : 'Сайт про домашних животных' }}</title>
 
     @elseif(Route::currentRouteName() === 'doctors.show')
-        <title>{{ $doctor->name ? $doctor->name . ' — ветеринар в городе ' . $doctor->city : 'Сайт про домашних животных' }}</title>
+        <meta name="description" content="Узнать стоимость услуг, записаться на приём, прочитать и оставить отзывы на ветеринарного врача">
+        <title>{{ $doctor->name ? $doctor->name . ' — ветеринар в городе '  : 'Сайт про домашних животных' }}</title>
 
     @else
+        <meta name="description" content="Зверозор прочитать отзывы о домашних животных, ветеринарных клиниках, и врачах делимся опытом">
         <title>{{ $brandname ?? 'Сайт про домашних животных' }}</title>
     @endif
 
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+
+
 </head>
+
 
 <body class="body_page">
 <header class="site-header 
@@ -113,9 +119,9 @@
 
             <div class="d-flex justify-content-center mt-3">
                 <input type="search" class="header-search" placeholder="Животные, породы, ветеринары, клиники">
-                <a href="#" class="btn_search_link ms-2">
+
                     <img class="btn_search" src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск">
-                </a>
+
             </div>
 
         @endif

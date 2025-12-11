@@ -33,21 +33,22 @@ header{
 .header-search:focus{
     border: 2px solid #00f7ff;
     background-color: #ffffff;
-
 }
-
+/* Кнопки и профили */
 .btn_login{
     font-weight: 600;
-    background-color: #ff17bd60;
-    border: 1px solid rgba(238, 130, 238, 0.705);
+    background-color: #007bff;
     margin: 1%;
-    height: 25px;
-    width: 25%;
-    border-radius: 10px;
+    border: none;
+    height: 35px;
+    min-width: 80px;
+    border-radius: 6px;
+    color: white;
+    padding: 0;
+    transition: background-color 0.2s;
 }
 .btn_login:hover{
-    background-color: #FF17BC;
-    border: 1px solid rgba(0, 0, 0, 0.11);
+    background-color: #0056b3;
 }
 .btn_city{
     font-weight: 600;
@@ -64,7 +65,8 @@ header{
 }
 .btn_search{
     margin-left: 1%;
-    /* height: 3em; */
+    margin-top: 4.5%;
+    height: 3em;
     width: 3em;
     background-color: #00d9ff00;
     border: 1px solid #00000000;
@@ -390,7 +392,7 @@ text-align: center;
    
 body.body_page {
     background-color: #eef3ff;
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Rubik", Arial, sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -688,19 +690,6 @@ select:focus {
     transition: all 0.3s ease;
 }
 
-
-/* Кнопки и профили */
-.btn_login {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-}
-.btn_login:hover {
-    background-color: #0056b3;
-}
 
 .avatars_pics {
     width: 36px;
@@ -1740,4 +1729,18 @@ a{
     color: #666;
     font-size: 14px;
     margin-top: 4px;
+}
+
+.title_mobile_thumb{
+background-color: #f3f3f35b;
+color: #ffffff;
+text-shadow: rgb(0, 0, 0) 2px 5px 20px;
+}
+.title_mobile, .caption_mobile{
+
+color: #ffffff;
+text-shadow: rgb(0, 0, 0) 2px 5px 20px;
+}
+.caption_mobile{
+background-color: #f3f3f33a;
 }

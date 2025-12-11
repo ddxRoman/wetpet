@@ -133,7 +133,7 @@
 <body class="body_page_reset_password">
     <div class="login-page">
         <a href="{{ url('/') }}">
-            <img class="page-login_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
+            <img class="page-login_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="">
         </a>
 
         <h2>Сброс пароля</h2>

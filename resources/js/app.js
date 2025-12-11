@@ -2,14 +2,13 @@ import $ from 'jquery';
 window.$ = window.jQuery = $;
 
 import './bootstrap';
-import './slider_doctor';
 import 'select2';
 import 'select2/dist/css/select2.css';
-import './photo-slider.js';
-import './pages/add_doctor.js'; //Не работает
-import './account/cropper-init.js'; //Не работает
-import './pages/add_organization.js'; //Не работает
-
-
-
-
+import './pages/add_organization'; //Не работает
+import './pages/add_doctor'; //Не работает
+import './add'; 
+import './slider_doctor';
+import './photo-slider';
+import './account/account'; 
+import './account/cropper-init'; 
+import './account/toast'; 
