@@ -33,7 +33,7 @@ public function register(Request $request)
 
     Auth::login($user);
 
-    return redirect('/home');
+    return redirect('/');
 }
 
     // Показать форму входа

@@ -142,11 +142,11 @@
                 <div class="error-message">{{ $message }}</div>
             @enderror
 
-            <label for="phone">Телефон</label>
+            <!-- <label for="phone">Телефон</label>
             <input id="phone" type="tel" name="phone" value="{{ old('phone') }}">
             @error('phone')
                 <div class="error-message">{{ $message }}</div>
-            @enderror
+            @enderror -->
 
             <label for="password">Пароль<span>*</span></label>
             <input id="password" type="password" name="password" required>

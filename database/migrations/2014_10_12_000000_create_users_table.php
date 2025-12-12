@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('birth_date')->nullable();
             $table->string('avatar')->nullable();
             $table->string('password');
-            $table->string('phone')->unique()->nullable();;
+            $table->string('phone')->unique()->nullable(); // Является персональными данными, поэтому надо регистрировать как оператор
             $table->unsignedBigInteger('city_id')->nullable();
             $table->string('status')->default('active');
             $table->boolean('is_admin')->default(false);
