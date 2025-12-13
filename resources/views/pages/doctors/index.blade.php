@@ -5,7 +5,7 @@
 
 @section('content')
 <head>
-    <meta name="robots" content="index, follow">
+
 
 </head>
 <div class="container py-5">

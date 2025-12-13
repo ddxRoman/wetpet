@@ -21,7 +21,7 @@
 @endphp
 
 <head>
-    <meta name="robots" content="index, follow">
+
 
 </head>
 

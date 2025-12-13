@@ -5,10 +5,6 @@ use App\Models\Pet;
 @vite('resources/js/account/review.js')
 
 @section('content')
-<head>
-    <meta name="robots" content="index, follow">
-
-</head>
 <body>
 <div class="d-flex flex-column min-vh-100 bg-white">
     @include('layouts.header')
@@ -60,29 +56,7 @@ use App\Models\Pet;
                     </div>
 
 
-<script>
-        // 🌟 Оценка в форме добавления отзыва
-    document.addEventListener('DOMContentLoaded', () => {
-    const addStars = document.querySelectorAll('#addRatingStars .rating-star');
-    const addRatingValue = document.getElementById('addRatingValue');
 
-    if (addStars.length && addRatingValue) {
-        addStars.forEach(star => {
-            star.addEventListener('click', () => {
-                const value = star.dataset.value;
-                addRatingValue.value = value;
-
-                addStars.forEach(s => {
-                    s.src = s.dataset.value <= value
-                        ? '/storage/icon/button/award-stars_active.svg'
-                        : '/storage/icon/button/award-stars_disable.svg';
-                });
-            });
-        });
-    }
-});
-
-</script>
                     
 
 
