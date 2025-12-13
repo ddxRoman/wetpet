@@ -11,5 +11,3 @@
     window.csrfToken = '{{ csrf_token() }}';
 </script>
 
-{{-- Подключаем внешний JS файл --}}
-<script src="\js\account\review.js"></script>

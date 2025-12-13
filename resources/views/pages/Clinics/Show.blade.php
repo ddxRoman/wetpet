@@ -2,7 +2,7 @@
 use App\Models\Pet;
 @endphp
 @extends('layouts.app')
-@vite('resources/js/account/review.js')
+
 
 @section('content')
 <body>
