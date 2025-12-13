@@ -1744,3 +1744,10 @@ text-shadow: rgb(0, 0, 0) 2px 5px 20px;
 .caption_mobile{
 background-color: #f3f3f33a;
 }
+    .py-4 {
+        padding: 0 !important;
+    }
+
+    #avatar-input {
+        display: none;
+    }

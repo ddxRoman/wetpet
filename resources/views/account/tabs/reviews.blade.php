@@ -10,4 +10,3 @@
     window.userId = {{ auth()->id() }};
     window.csrfToken = '{{ csrf_token() }}';
 </script>
-
