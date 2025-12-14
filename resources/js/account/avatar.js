@@ -1,3 +1,5 @@
+console.log('avatars.js loaded');
+
 import { initCropper } from './cropper-init';
 
 document.addEventListener('DOMContentLoaded', () => {

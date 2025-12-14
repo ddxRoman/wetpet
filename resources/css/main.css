@@ -390,8 +390,8 @@ text-align: center;
 
 
    
-body.body_page {
-    background-color: #eef3ff;
+.body_page {
+    background-color: #fcfffb;
     font-family: "Rubik", Arial, sans-serif;
     margin: 0;
     padding: 0;

@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const reviewForm = document.getElementById('review-form');
+    if (!reviewForm) return; // ✅ КЛЮЧЕВО
+
+    reviewForm.addEventListener('submit', () => {
+        // код
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
     const reviewsList = document.getElementById('reviews-list');
     const tabBtn = document.querySelector('[data-tab="reviews"]');
     let loaded = false;
@@ -521,3 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateButton(initiallyOpen);
 });
 
+
+    });
+
+});

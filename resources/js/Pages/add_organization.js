@@ -165,7 +165,7 @@ function initAddOrganizationModal(modal) {
 
             if (json.errors) {
                 errBox.innerHTML = Object.values(json.errors)
-                    .map(e => `<div>${e[0]}</div>`).join('');
+                    .map(e => `<div>${e[0]}</div>`).join(''); 
                 errBox.classList.remove('d-none');
                 return;
             }

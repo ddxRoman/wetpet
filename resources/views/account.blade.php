@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 
+
 @section('content')
 
 
-<body class="body_page">
+<div class="body_page">
     {{-- 🔹 Навбар --}}
     <nav class="navbar">
         <div class="navbar-logo">
@@ -143,7 +144,7 @@
                     <button id="save-pet-btn" type="submit" class="save-btn" style="margin-top:10px;">Сохранить</button>
                 </form>
                 <div id="pets-list" class="pets-grid"></div>
-                <div id="pets-list"></div>
+
             </div>
             <!-- Отзывы -->
             @include('account.tabs.reviews')
@@ -219,9 +220,7 @@
             <button id="save-cropped" class="save-btn" style="margin-top:15px;">Сохранить</button>
         </div>
     </div>
+</div>
 
 
-</body>
-
-</html>
 @endsection

@@ -1,4 +1,4 @@
-
+console.log('account.js loaded');
 import './avatar.js';
 import './awards.js';
 import './cities.js';

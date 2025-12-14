@@ -1,111 +1,111 @@
 import $ from 'jquery';
 import 'select2';
+console.log('cities.js loaded');
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const citySelect = $('#city-select');
+
+    // 🔴 ДОБАВЛЕНО: защита, если select отсутствует на странице
+    if (!citySelect.length) return;
+
     const newCityFields = document.getElementById('new-city-fields');
     const saveCityBtn = document.getElementById('save-city-btn');
 
-    // ✅ Получаем CSRF-токен
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    // 🔴 ДОБАВЛЕНО: защита от null
+    if (!newCityFields || !saveCityBtn) return;
 
-    // ✅ 1️⃣ Получаем ID города пользователя из таблицы users (через hidden input)
+    // 🔴 ДОБАВЛЕНО: безопасное получение CSRF
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    if (!csrfToken) {
+        console.error('CSRF token not found');
+        return;
+    }
+
+    // === ID города пользователя ===
     const userCityId = document.getElementById('user-city-id')?.value || '';
 
-    // Показываем ID города (из users.city_id)
-    // alert('ID города пользователя из таблицы users: ' + userCityId);
-
-    // === Загружаем список городов из таблицы cities ===
+    // === Загрузка городов ===
     fetch('/cities/all')
         .then(res => res.json())
         .then(cities => {
-            console.log('📦 Ответ от /cities/all:', cities);
 
-            const cityWithId2 = cities.find(city => String(city.id) === String(userCityId));
-
-            // alert('✅ Город с id найден: ' + (cityWithId2?.name || '(без названия)'));
-
-            // Очистим select
-            citySelect.empty();
-
-            // Убедимся, что это массив
+            // 🟡 ИЗМЕНЕНО: защита от не-массива
             if (!Array.isArray(cities)) {
-                alert('⚠️ Ошибка: /cities/all вернул не массив');
-                console.error('Ответ:', cities);
+                console.error('cities is not array', cities);
                 return;
             }
 
-            // ✅ Если найден город пользователя — добавим его первым
-            if (cityWithId2) {
-                const cityName = cityWithId2.name || cityWithId2.title || '(без названия)';
-                citySelect.append(new Option(cityName));
+            citySelect.empty();
+
+            // 🟡 ИЗМЕНЕНО: аккуратный поиск текущего города
+            const currentCity = cities.find(
+                city => String(city.id) === String(userCityId)
+            );
+
+            // === Текущий город первым ===
+            if (currentCity) {
+                citySelect.append(
+                    new Option(currentCity.name, currentCity.id, true, true)
+                );
             }
 
-            // Добавляем остальные города (кроме текущего)
+            // === Остальные города ===
             cities.forEach(city => {
-                if (String(city.id) !== String(userCityId)) {
-                    const cityName = city.name || city.title || '(без названия)';
-                    citySelect.append(new Option(cityName, city.id));
+                if (!currentCity || String(city.id) !== String(currentCity.id)) {
+                    citySelect.append(
+                        new Option(city.name, city.id)
+                    );
                 }
             });
 
-            // Добавляем пункт "Моего города нет в списке"
-            citySelect.append(new Option('+ Моего города нет в списке', 'add_new_city'));
+            // === Добавить "моего города нет" ===
+            citySelect.append(
+                new Option('+ Моего города нет в списке', 'add_new_city')
+            );
 
-            // Инициализация select2
+            // === Инициализация select2 ===
             citySelect.select2({
                 placeholder: 'Введите город...',
                 width: '100%'
             });
-
-            // ✅ Устанавливаем выбранный город пользователя
-            if (cityWithId2) {
-                const cityName = cityWithId2.name || cityWithId2.title || '(без названия)';
-                citySelect.val(String(cityWithId2.id)).trigger('change.select2');
-                alert('✅ Город выбран по умолчанию: ' + cityName);
-                console.log('✅ Текущий город установлен:', cityName);
-            } else if (userCityId) {
-                alert('⚠️ Город с таким ID (' + userCityId + ') не найден в списке cities.');
-                console.warn('Список cities:', cities);
-            } else {
-                alert('У пользователя нет города (city_id пуст).');
-            }
         })
         .catch(err => {
             console.error('Ошибка загрузки городов:', err);
-            // alert('Ошибка при загрузке городов: ' + err.message);
         });
 
-    // === Обработка смены города ===
+    // === Смена города ===
     citySelect.on('change', function () {
         const value = $(this).val();
+
         if (value === 'add_new_city') {
             newCityFields.style.display = 'block';
-        } else {
-            newCityFields.style.display = 'none';
-            if (value) {
-                fetch('/account/update-city', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ city_id: value })
-                })
-                .then(res => {
-                    if (!res.ok) return res.text().then(t => Promise.reject(t));
-                    return res.json();
-                })
-                .then(json => {
-                    console.log('Город обновлён', json);
-                    alert('Город успешно обновлён!');
-                })
-                .catch(err => {
-                    console.error('Ошибка при сохранении города:', err);
-                    alert('Не удалось сохранить город');
-                });
-            }
+            return;
         }
+
+        newCityFields.style.display = 'none';
+
+        if (!value) return;
+
+        fetch('/account/update-city', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({ city_id: value })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Ошибка сохранения города');
+            return res.json();
+        })
+        .then(() => {
+            alert('Город успешно обновлён');
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Не удалось сохранить город');
+        });
     });
 
     // === Добавление нового города ===
@@ -114,27 +114,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const country = document.getElementById('new-country').value.trim();
         const region = document.getElementById('new-region').value.trim();
 
-        if (!name || !country || !region) return alert('Заполните все поля.');
+        if (!name || !country || !region) {
+            alert('Заполните все поля');
+            return;
+        }
 
         fetch('/cities/add', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
             body: JSON.stringify({ name, country, region })
         })
         .then(res => res.json())
         .then(data => {
-            if (data.success) {
-                const newOption = new Option(data.city.name, data.city.id, true, true);
-                citySelect.append(newOption).trigger('change');
-                newCityFields.style.display = 'none';
-                alert('Город добавлен!');
-            } else {
+            if (!data?.city) {
                 alert('Ошибка при добавлении города');
+                return;
             }
+
+            // 🟡 ИЗМЕНЕНО: корректное добавление нового option
+            const option = new Option(
+                data.city.name,
+                data.city.id,
+                true,
+                true
+            );
+
+            citySelect.append(option).trigger('change');
+            newCityFields.style.display = 'none';
         })
         .catch(err => {
             console.error(err);
             alert('Ошибка при добавлении города');
         });
     });
+
 });

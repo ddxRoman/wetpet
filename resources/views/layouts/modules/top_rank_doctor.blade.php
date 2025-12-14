@@ -16,7 +16,14 @@
           @foreach ($doctors as $doctor)
             <div class="swiper-slide swiper-slide_mobile">
               <figure class="slide-bgimg slide-bgimg_mobile" style="background-image:url('{{ asset ('storage/'.$doctor->photo) }}')">
-                <img src="{{ asset('storage/'.$doctor->photo) }}" class="entity-img entity-img_mobile" alt="{{ $doctor->name }}">
+                <img
+    src="{{ $doctor->photo
+        ? asset('storage/'.$doctor->photo)
+        : asset('images/default-doctor.png') }}"
+    class="entity-img entity-img_mobile"
+    alt="{{ $doctor->name }}"
+>
+
               </figure>
               <div class="content content_mobile">
                 <p class="title title_mobile">{{ $doctor->name }}</p>

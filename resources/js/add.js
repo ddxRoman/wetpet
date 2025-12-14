@@ -1,3 +1,14 @@
+console.log('add.js loaded');
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector('#add-btn');
+
+    if (!btn) return; // 🔐 КЛЮЧЕВАЯ СТРОКА
+
+    btn.addEventListener('click', () => {
+
+
 document.getElementById("addDoctorForm").addEventListener("submit", function(e){
     e.preventDefault();
 
@@ -18,4 +29,7 @@ document.getElementById("addDoctorForm").addEventListener("submit", function(e){
             }
         })
         .catch(err => console.error(err));
+});
+
+    });
 });
