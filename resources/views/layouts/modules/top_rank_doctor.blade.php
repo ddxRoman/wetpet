@@ -15,11 +15,16 @@
         <div class="swiper-wrapper">
           @foreach ($doctors as $doctor)
             <div class="swiper-slide swiper-slide_mobile">
-              <figure class="slide-bgimg slide-bgimg_mobile" style="background-image:url('{{ asset ('storage/'.$doctor->photo) }}')">
+             <figure
+    class="slide-bgimg slide-bgimg_mobile"
+    style="background-image:url('{{ $doctor->photo
+        ? asset('storage/'.$doctor->photo)
+        : asset('storage/doctors/default-doctor.png') }}')">
+
                 <img
     src="{{ $doctor->photo
         ? asset('storage/'.$doctor->photo)
-        : asset('images/default-doctor.png') }}"
+        : asset('storage/doctors/default-doctor.png') }}"
     class="entity-img entity-img_mobile"
     alt="{{ $doctor->name }}"
 >
@@ -41,8 +46,18 @@
         <div class="swiper-wrapper" role="navigation">
           @foreach ($doctors as $doctor)
             <div class="swiper-slide swiper-slide_mobile_thumb">
-              <figure class="slide-bgimg slide-bgimg_mobile_thumb" style="background-image:url('{{ asset('storage/'.$doctor->photo) }}')">
-                <img src="{{ asset('storage/'.$doctor->photo) }}" class="entity-img entity-img_mobile_thumb" alt="{{ $doctor->name }}">
+              <figure
+    class="slide-bgimg slide-bgimg_mobile_thumb"
+    style="background-image:url('{{ $doctor->photo
+        ? asset('storage/'.$doctor->photo)
+        : asset('storage/doctors/default-doctor.png') }}')">
+
+                <img
+    src="{{ $doctor->photo
+        ? asset('storage/'.$doctor->photo)
+        : asset('storage/doctors/default-doctor.png') }}"
+    class="entity-img entity-img_mobile"
+    alt="{{ $doctor->name }}">
               </figure>
               <div class="content content_mobile_thumb">
                 <p class="title title_mobile_thumb">{{ $doctor->name }}</p>
@@ -55,8 +70,6 @@
     </div>
   </div>
 </div>
-
-<script src='https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js'></script>
 
 </body>
 </html>
