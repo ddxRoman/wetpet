@@ -9,7 +9,7 @@
 @section('content')
 @php
     // Если нет фото — подставляем дефолт
-    $photo = $doctor->photo ? asset('storage/'.$doctor->photo) : asset('storage/default-doctor.png');
+    $photo = $doctor->photo ? asset('storage/'.$doctor->photo) : asset('storage/doctors/default-doctor.png');
 
     // Поля под карту
     $addressParts = array_filter([
