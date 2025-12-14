@@ -1,93 +1,177 @@
-// ------------------------------
-// Region → City dynamic loading
-// ------------------------------
-document.addEventListener('DOMContentLoaded', function () {
-    const regionSelect = document.getElementById('regionSelect');
-    const citySelect = document.getElementById('citySelect');
+import Choices from 'choices.js';
+import 'choices.js/public/assets/styles/choices.min.css';
 
-    if (regionSelect) {
-        regionSelect.addEventListener('change', function () {
-            const region = this.options[this.selectedIndex].text.trim();
+import Cropper from 'cropperjs';
+import 'cropperjs/dist/cropper.css';
 
-            citySelect.innerHTML = '<option value="">Загрузка...</option>';
+console.log('add_organization.js loaded');
 
-            fetch(`/api/cities?region=${encodeURIComponent(region)}`)
-                .then(res => res.json())
-                .then(data => {
-                    citySelect.innerHTML = '<option value="">Выберите город</option>';
-                    data.forEach(city => {
-                        citySelect.innerHTML += `<option value="${city.id}">${city.name}</option>`;
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('addOrganizationModal');
+    if (!modal) return;
+
+    let initialized = false;
+
+    modal.addEventListener('shown.bs.modal', () => {
+        if (initialized) return;
+        initialized = true;
+        initAddOrganizationModal(modal);
+    });
+});
+
+/* ============================================================================
+   ОСНОВНАЯ ЛОГИКА МОДАЛКИ
+============================================================================ */
+function initAddOrganizationModal(modal) {
+
+    /* ===== Choices helper ===== */
+    function initChoices(select, opts = {}) {
+        if (!select) return null;
+        if (select._choices) select._choices.destroy();
+
+        select._choices = new Choices(select, {
+            searchPlaceholderValue: 'Поиск...',
+            removeItemButton: true,
+            shouldSort: false,
+            ...opts
+        });
+
+        return select._choices;
+    }
+
+    /* ===== Elements ===== */
+    const form = modal.querySelector('#addOrganizationForm');
+    const errBox = modal.querySelector('#doctorErrors');
+
+    const fieldSelect  = modal.querySelector('#fieldOfActivitySelect');
+    const regionSelect = modal.querySelector('#regionSelect');
+    const citySelect   = modal.querySelector('#citySelect');
+    const clinicSelect = modal.querySelector('#clinicSelect');
+
+    /* ===== Choices init ===== */
+    initChoices(regionSelect, { searchPlaceholderValue: 'Поиск региона...' });
+    initChoices(citySelect,   { searchPlaceholderValue: 'Поиск города...' });
+    if (clinicSelect) initChoices(clinicSelect, { searchPlaceholderValue: 'Поиск клиники...' });
+
+    /* ===== Сферы деятельности ===== */
+    if (fieldSelect) {
+        fetch('/api/fields/vetclinic')
+            .then(r => r.json())
+            .then(list => {
+                fieldSelect.innerHTML = `<option value="">Выберите сферу</option>`;
+                list.forEach(i => {
+                    fieldSelect.innerHTML += `<option value="${i.id}">${i.name}</option>`;
+                });
+            })
+            .catch(() => {
+                fieldSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+            });
+    }
+
+    /* ===== Region → City ===== */
+    if (regionSelect && citySelect) {
+        regionSelect.addEventListener('change', () => {
+            const region = regionSelect.value;
+
+            citySelect.innerHTML = `<option value="">Загрузка...</option>`;
+            citySelect._choices?.setChoices([{ value:'', label:'Загрузка...' }], 'value', 'label', true);
+
+            if (!region) return;
+
+            fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
+                .then(r => r.json())
+                .then(list => {
+                    citySelect.innerHTML = `<option value="">Выберите город</option>`;
+                    list.forEach(c => {
+                        citySelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
                     });
+
+                    citySelect._choices.setChoices(
+                        [...citySelect.options].map(o => ({ value:o.value, label:o.text })),
+                        'value', 'label', true
+                    );
                 })
                 .catch(() => {
-                    citySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
+                    citySelect.innerHTML = `<option value="">Ошибка</option>`;
                 });
         });
     }
 
-    // ------------------------------
-    // Image preview
-    // ------------------------------
-    const fileInput = document.getElementById('fileInput');
-    const preview = document.getElementById('preview');
+    /* ===== City → Clinics (если есть) ===== */
+    if (citySelect && clinicSelect) {
+        citySelect.addEventListener('change', () => {
+            const cityId = citySelect.value;
+            clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
 
-    if (fileInput && preview) {
-        fileInput.addEventListener('change', function () {
-            preview.innerHTML = '';
-            [...this.files].forEach(file => {
-                let reader = new FileReader();
-                reader.onload = e => {
-                    preview.innerHTML += `
-                        <div class="preview-item">
-                            <img src="${e.target.result}" alt="">
-                        </div>`;
-                };
-                reader.readAsDataURL(file);
-            });
+            if (!cityId) return;
+
+            fetch(`/api/clinics/by-city/${cityId}`)
+                .then(r => r.json())
+                .then(list => {
+                    clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
+                    list.forEach(c => {
+                        clinicSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                    });
+
+                    clinicSelect._choices.setChoices(
+                        [...clinicSelect.options].map(o => ({ value:o.value, label:o.text })),
+                        'value', 'label', true
+                    );
+                });
         });
     }
 
-    // ------------------------------
-    // Autocomplete fields
-    // ------------------------------
-    function setupAutocomplete(inputId, listId) {
-        const input = document.getElementById(inputId);
-        const list = document.getElementById(listId);
+    /* ===== Logo / Cropper ===== */
+    const fileInput = modal.querySelector('#doctorPhotoInput');
+    const preview   = modal.querySelector('#doctorPhotoPreview');
+    const picker    = modal.querySelector('#photoPicker');
 
-        if (!input || !list) return;
+    if (fileInput && preview && picker) {
+        picker.onclick = () => fileInput.click();
+        preview.onclick = () => fileInput.click();
 
-        input.addEventListener('input', () => {
-            const q = input.value.trim();
-            if (q.length < 2) {
-                list.innerHTML = '';
+        fileInput.onchange = () => {
+            const file = fileInput.files?.[0];
+            if (!file) return;
+
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+            picker.style.display = 'none';
+        };
+
+        preview.ondblclick = () => {
+            preview.src = '';
+            preview.style.display = 'none';
+            picker.style.display = 'flex';
+            fileInput.value = '';
+        };
+    }
+
+    /* ===== AJAX submit ===== */
+    if (form) {
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            errBox.classList.add('d-none');
+            errBox.innerHTML = '';
+
+            const res = await fetch(form.action, {
+                method: 'POST',
+                headers: { Accept: 'application/json' },
+                body: new FormData(form)
+            });
+
+            const json = await res.json();
+
+            if (json.errors) {
+                errBox.innerHTML = Object.values(json.errors)
+                    .map(e => `<div>${e[0]}</div>`).join('');
+                errBox.classList.remove('d-none');
                 return;
             }
 
-            fetch(`/api/autocomplete?q=${encodeURIComponent(q)}`)
-                .then(res => res.json())
-                .then(data => {
-                    list.innerHTML = '';
-                    data.forEach(item => {
-                        list.innerHTML += `<div class="autocomplete-item" data-value="${item}">${item}</div>`;
-                    });
-                });
-        });
-
-        list.addEventListener('click', (e) => {
-            if (e.target.classList.contains('autocomplete-item')) {
-                input.value = e.target.dataset.value;
-                list.innerHTML = '';
-            }
-        });
-
-        document.addEventListener('click', e => {
-            if (!list.contains(e.target) && !input.contains(e.target)) {
-                list.innerHTML = '';
-            }
+            alert(json.message || 'Сохранено');
+            location.reload();
         });
     }
-
-    // Подключаем автокомплиты
-    setupAutocomplete('activityInput', 'activityList');
-    setupAutocomplete('serviceInput', 'serviceList');
-});
+}
