@@ -1,4 +1,4 @@
-console.log('awards.js loaded');
+// console.log('awards.js loaded');
 /* ===================== 🏅 СЛАЙДЕР НАГРАД ===================== */
 document.addEventListener('DOMContentLoaded', () => {
     const carouselEl = document.getElementById('awardCarousel');

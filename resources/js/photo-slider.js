@@ -1,4 +1,4 @@
-console.log('photo-slider.js loaded');
+// console.log('photo-slider.js loaded');
 
 import { Modal } from 'bootstrap';
 

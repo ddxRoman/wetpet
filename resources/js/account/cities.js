@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import 'select2';
-console.log('cities.js loaded');
+// console.log('cities.js loaded');
 
 document.addEventListener('DOMContentLoaded', () => {
 

@@ -1,7 +1,7 @@
 import { showToast } from './toast';
 import { initCropper } from './cropper-init';
 
-console.log('pets-edit.js loaded');
+// console.log('pets-edit.js loaded');
 
 /* ======================================================
    🟢 ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ МОДУЛЯ

@@ -1,7 +1,7 @@
 import Choices from 'choices.js';
 import 'choices.js/public/assets/styles/choices.min.css';
 
-console.log('add_doctor.js loaded');
+// console.log('add_doctor.js loaded');
 
 /* ============================================================================
    ГЛАВНАЯ ФУНКЦИЯ

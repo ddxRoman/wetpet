@@ -1,4 +1,4 @@
-console.log('slider_doctor.js loaded');
+// console.log('slider_doctor.js loaded');
 
 import Swiper from 'swiper';
 import { Navigation, Autoplay, Controller } from 'swiper/modules';

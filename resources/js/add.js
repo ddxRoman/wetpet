@@ -1,4 +1,4 @@
-console.log('add.js loaded');
+// console.log('add.js loaded');
 
 
 document.addEventListener('DOMContentLoaded', () => {

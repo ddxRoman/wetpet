@@ -4,7 +4,7 @@ import 'choices.js/public/assets/styles/choices.min.css';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
 
-console.log('add_organization.js loaded');
+// console.log('add_organization.js loaded');
 
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('addOrganizationModal');

@@ -8,6 +8,9 @@ use App\Models\DoctorContact;
 
 class DoctorContactsSeeder extends Seeder
 {
+
+
+
     public function run()
     {
         $doctors = Doctor::all();
@@ -19,7 +22,7 @@ class DoctorContactsSeeder extends Seeder
                 'email' => fake()->safeEmail(),
                 'telegram' => '@' . fake()->userName(),
                 'whatsapp' => fake()->phoneNumber(),
-                'max' => fake()->url(),
+                'max' => 'https://max.ru/'.fake()->phoneNumber(),
             ]);
         }
     }

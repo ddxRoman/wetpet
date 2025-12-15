@@ -1,4 +1,4 @@
-console.log("cropper-init loaded");
+// console.log("cropper-init loaded");
 
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';

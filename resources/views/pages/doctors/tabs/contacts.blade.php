@@ -54,7 +54,11 @@
                 {{-- 💬 Telegram MAX (структура MAX не уточнена, выводим как есть) --}}
                 @if(!empty($contact?->max))
                     <div>
-                        MAX: {{ $contact->max }}
+                        💬 MAX:
+                                                <a href="https://max.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank">
+                            {{ $contact->max }}
+                            <img width="24" src="{{ asset('storage/icon/contacts/max_messendger.svg') }}">
+                        </a> 
                     </div>
                 @endif
             </div>

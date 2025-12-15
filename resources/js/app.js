@@ -13,4 +13,4 @@ import './account/account';
 import './account/cropper-init'; 
 import './account/toast'; 
 
-console.log('app.js loaded');
+// console.log('app.js loaded');

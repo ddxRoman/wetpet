@@ -1,4 +1,4 @@
-console.log('avatars.js loaded');
+// console.log('avatars.js loaded');
 
 import { initCropper } from './cropper-init';
 
