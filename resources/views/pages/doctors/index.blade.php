@@ -1,7 +1,7 @@
 
 @extends('layouts.clinics_catalog')
 
-@section('title', 'Каталог ветеринарных врачей')
+@section('title', 'Каталог ветеринарных врачей в вашем городе ')
 
 @section('content')
 <head>

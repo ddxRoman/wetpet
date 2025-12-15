@@ -11,15 +11,22 @@
 
     @if(Route::currentRouteName() === 'clinics.show')
         <meta name="description" content="Узнать стоимость услуг, посмотреть график работы прочитать и оставить отзывы на ветеринарную клинику">
-        <title>{{ $clinic->name ? $clinic->name . ' — контакты и отзывы о клинике в городе '  : 'Сайт про домашних животных' }}</title>
+        <title>{{ $clinic->name ? $clinic->name . ' — контакты и отзывы о клинике в городе '  : 'Сайт про домашних животных в твоём городе' }}</title>
 
     @elseif(Route::currentRouteName() === 'doctors.show')
         <meta name="description" content="Узнать стоимость услуг, записаться на приём, прочитать и оставить отзывы на ветеринарного врача">
         <title>{{ $doctor->name ? $doctor->name . ' — ветеринар в городе '  : 'Сайт про домашних животных' }}</title>
 
     @else
-        <meta name="description" content="Зверозор прочитать отзывы о домашних животных, ветеринарных клиниках, и врачах делимся опытом">
-        <title>{{ $brandname ?? 'Сайт про домашних животных' }}</title>
+        <meta name="description" content="Зверозор прочитать отзывы о домашних животных, ветеринарных клиниках, и врачах - делимся опытом, находим лучших врачей и проверенные клиники">
+        <title>
+    {{ filled($brandname) 
+        ? $brandname . ' — сайт про домашних животных' 
+        : 'Сайт про домашних животных' 
+    }}
+</title>
+
+
     @endif
 
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
