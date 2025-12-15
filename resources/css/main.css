@@ -537,7 +537,7 @@ text-align: center;
 /* Контент */
 .account-content {
     flex: 1;
-    /* padding: 30px 50px !important; */
+        padding: 25px 20px;
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -546,6 +546,7 @@ h2 {
     font-size: 22px;
     color: #333;
     margin-bottom: 25px;
+    margin-top: 25px;
 }
 
 .form-group {
@@ -629,9 +630,7 @@ select:focus {
         border-bottom: 1px solid #ddd;
         padding: 10px 0;
     }
-    .account-content {
-        padding: 25px 20px;
-    }
+
 }
 .pets-grid {
     display: grid;
