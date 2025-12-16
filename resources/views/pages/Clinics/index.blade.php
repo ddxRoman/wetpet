@@ -1,7 +1,3 @@
-<head>
-
-
-</head>
 @extends('layouts.clinics_catalog')
 
 @section('title', 'Каталог ветеринарных клиник')

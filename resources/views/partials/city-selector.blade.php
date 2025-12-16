@@ -172,9 +172,10 @@
 
             // 🔹 Автоматическое обновление списка докторов после смены города
 if (window.location.pathname.includes('/doctors')) {
-    const response = await fetch(`/doctors?city=${encodeURIComponent(cityName)}`, {
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    });
+    const response = await fetch(`/doctors?city_id=${cityId}`, {
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+});
+
     const html = await response.text();
 
     // Находим контейнер с докторами

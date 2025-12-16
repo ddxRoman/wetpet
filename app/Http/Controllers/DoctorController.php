@@ -9,29 +9,44 @@ class DoctorController extends Controller
 {
     // 🔹 Список докторов (страница /doctors)
 
-public function index()
+public function index(\Illuminate\Http\Request $request)
 {
-    // Определяем city_id из сессии или профиля пользователя
-    $cityId = session('city_id');
+    $user = auth()->user();
+    $cityId = null;
+    $selectedCity = null;
 
-    if (!$cityId && auth()->check()) {
-        $cityId = auth()->user()->city_id; 
+    // 1️⃣ Если city_id пришёл из запроса (AJAX)
+    if ($request->filled('city_id')) {
+        $cityId = (int) $request->get('city_id');
+
+        if (!$user) {
+            session(['city_id' => $cityId]);
+        }
+    }
+    // 2️⃣ Если пользователь авторизован
+    elseif ($user && $user->city_id) {
+        $cityId = $user->city_id;
+    }
+    // 3️⃣ Берём из сессии
+    else {
+        $cityId = session('city_id');
     }
 
-    // Фильтруем доктора по city_id
-    $doctorsQuery = Doctor::query();
-
-    if (!empty($cityId)) {
-        $doctorsQuery->where('city_id', $cityId);
-        $selectedCity = City::find($cityId)?->name; // Для отображения названия города на странице
-    } else {
-        $selectedCity = null;
+    // Название города для отображения
+    if ($cityId) {
+        $selectedCity = City::find($cityId)?->name;
     }
 
-    $doctors = $doctorsQuery->orderBy('name')->get();
+    // Фильтрация докторов
+    $doctors = Doctor::when($cityId, function ($query) use ($cityId) {
+        $query->where('city_id', $cityId);
+    })
+    ->orderBy('name')
+    ->get();
 
     return view('pages.doctors.index', compact('doctors', 'selectedCity'));
 }
+
 
 
 
