@@ -16,7 +16,9 @@
     @elseif(Route::currentRouteName() === 'doctors.show')
         <meta name="description" content="Узнать стоимость услуг, записаться на приём, прочитать и оставить отзывы на ветеринарного врача">
         <title>{{ $doctor->name ? $doctor->name . ' — ветеринар в городе '  : 'Сайт про домашних животных' }}</title>
-
+    @elseif(Route::currentRouteName() === 'auth.login')
+    <title>Авторизация</title>
+       
     @else
         <meta name="description" content="Зверозор прочитать отзывы о домашних животных, ветеринарных клиниках, и врачах - делимся опытом, находим лучших врачей и проверенные клиники">
         <title>
