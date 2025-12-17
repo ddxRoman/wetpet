@@ -33,8 +33,6 @@ Route::get('/test', function () {
     return view('pages.clinics.tabs.test');
 })->name('clinics.tabs.test');
 
-
-
 // 🔐 Аутентификация
 Auth::routes();
 require __DIR__.'/auth.php';

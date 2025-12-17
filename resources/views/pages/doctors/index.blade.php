@@ -81,6 +81,7 @@
                                          style="width:34px;height:34px;font-size:18px; z-index: 20;">
                                         <img src="{{ asset('storage/icon/stars/exotic.png') }}"
                                             alt="Экзотические животные"
+                                            title="Данный специалист работает с экзотическими животными, рептилиями, амфибиями, птицами, грызунами, зайцеобразными и мелкими млекопитающими"
                                             style="width:32px; height:32px; border-radius: 25px;">
                                     </div>
                                 @endif

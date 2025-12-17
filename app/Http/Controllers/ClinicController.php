@@ -12,37 +12,29 @@ class ClinicController extends Controller
 public function index(Request $request)
 {
     $user = auth()->user();
-    $selectedCity = null;
 
-    // 1️⃣ Если город пришёл из запроса (?city=)
-    if ($request->filled('city')) {
-        $selectedCity = $request->get('city');
-
-        // сохраняем в сессию для гостей
-        if (!$user) {
-            session(['selected_city' => $selectedCity]);
-        }
-    }
-    // 2️⃣ Если пользователь авторизован и есть city_id
-    elseif ($user && $user->city_id) {
+    if ($user && $user->city_id) {
         $city = City::find($user->city_id);
         $selectedCity = $city?->name;
-    }
-    // 3️⃣ Берём из сессии
-    else {
-        $selectedCity = session('selected_city');
+    } else {
+        $selectedCity = session('city_name');
     }
 
-    // Фильтрация клиник
-    $clinics = Clinic::when($selectedCity, function ($query) use ($selectedCity) {
+    $clinics = Clinic::when($selectedCity, function ($query, $city) {
         $query->whereRaw(
             'LOWER(TRIM(city)) = LOWER(TRIM(?))',
-            [$selectedCity]
+            [$city]
         );
     })->get();
 
+    // 🔴 ВАЖНО: если AJAX — возвращаем ТОЛЬКО список
+    if ($request->ajax()) {
+        return view('pages.clinics.partials.list', compact('clinics'))->render();
+    }
+
     return view('pages.clinics.index', compact('clinics', 'selectedCity'));
 }
+
 
 
 

@@ -1,82 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const reviewForm = document.getElementById('review-form');
-    if (!reviewForm) return; // ✅ КЛЮЧЕВО
+/* =========================================================
+   🔹 ОБЩИЕ ПЕРЕМЕННЫЕ
+========================================================= */
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 
-    reviewForm.addEventListener('submit', () => {
-        // код
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const reviewsList = document.getElementById('reviews-list');
-    const tabBtn = document.querySelector('[data-tab="reviews"]');
-    let loaded = false;
+/* =========================================================
+   🔹 ЗАГРУЗКА И УПРАВЛЕНИЕ ОТЗЫВАМИ
+========================================================= */
+const reviewsList = document.getElementById('reviews-list');
+const tabBtn = document.querySelector('[data-tab="reviews"]');
+let loaded = false;
 
 async function loadReviews() {
+    if (!reviewsList) return;
+
     try {
-        const res = await fetch(`/account/reviews`, { credentials: 'same-origin' });
+        const res = await fetch('/account/reviews', { credentials: 'same-origin' });
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
 
-        // === Вот это добавляем ===
         data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
         reviewsList.innerHTML = data.length
-            ? data.map(r => renderCard(r)).join('')
+            ? data.map(renderCard).join('')
             : '<p class="empty-message">Вы пока не оставили ни одного отзыва.</p>';
     } catch (e) {
         console.error(e);
-        reviewsList.innerHTML = '<p class="empty-message" style="color:red;">Ошибка при загрузке отзывов.</p>';
-    
-// Определяем, кто объект — Клиника или Доктор
-const isClinic = r.target_type === 'Clinic';
-const isDoctor = r.target_type === 'Doctor';
+        reviewsList.innerHTML =
+            '<p class="empty-message" style="color:red;">Ошибка при загрузке отзывов.</p>';
     }
 }
-
 
 function renderCard(r) {
     const isClinic = r.target_type === 'Clinic';
     const isDoctor = r.target_type === 'Doctor';
 
-    // Адрес (только для клиник)
     const address = isClinic
         ? [r.region, r.city, r.street, r.house]
             .filter(Boolean)
             .map(escapeHtml)
             .join(', ')
         : '';
-
-    // ⭐ Блок название + адрес (всегда вертикально)
-    const targetInfoBlock = `
-        <div class="clinic-info-block">
-            <a href="${isClinic ? '/clinics/' : '/doctors/'}${r.target_id}" 
-               class="clinic-name">${escapeHtml(r.target_name)}</a>
-
-            ${address ? `<div class="clinic-address">${address}</div>` : ''}
-        </div>
-    `;
-
-    const photos = (r.photos && r.photos.length)
-        ? `<div class="media-group"><strong>Фото:</strong>` + r.photos.map(p => {
-            const path = p.photo_path || '';
-            return `<div class="media-item">
-                <img src="${path ? '/storage/'+path : '/storage/placeholder.png'}"
-                     alt="Фото" class="previewable"
-                     data-full="${path ? '/storage/'+path : ''}">
-                <button type="button" class="btn-del-photo" data-photo-id="${p.id}">×</button>
-            </div>`;
-        }).join('') + `</div>` : '';
-
-    const receipts = (r.receipts && r.receipts.length)
-        ? `<div class="media-group"><strong>Чеки:</strong>` +
-            r.receipts.map(f => `
-                <div class="media-item">
-                    <a href="/storage/${f.receipt_path}" target="_blank" class="receipt-link">📄 Чек</a>
-                    <button type="button" class="btn-del-receipt" data-receipt-id="${f.id}">×</button>
-                </div>
-            `).join('') + `</div>` : '';
 
     return `
 <article class="review-card"
@@ -85,8 +50,14 @@ function renderCard(r) {
     data-rating="${r.rating ?? 0}">
 
     <header class="review-header">
-        ${targetInfoBlock}
-        <time class="review-date">${new Date(r.created_at).toLocaleDateString()}</time>
+        <div class="clinic-info-block">
+            <a href="/${isClinic ? 'clinics' : 'doctors'}/${r.target_id}" 
+               class="clinic-name">
+               ${escapeHtml(r.target_name)}
+            </a>
+            ${address ? `<div class="clinic-address">${address}</div>` : ''}
+        </div>
+        <time>${new Date(r.created_at).toLocaleDateString()}</time>
     </header>
 
     <div class="review-content">${escapeHtml(r.content || '')}</div>
@@ -94,444 +65,163 @@ function renderCard(r) {
     <div class="review-liked"><strong>Понравилось:</strong> ${escapeHtml(r.liked || '')}</div>
     <div class="review-disliked"><strong>Не понравилось:</strong> ${escapeHtml(r.disliked || '')}</div>
 
-    ${photos}
-    ${receipts}
-
     <footer class="review-footer">
         <div class="review-rating">Оценка: ${r.rating ?? 0}</div>
     </footer>
-</article>
-`;
+</article>`;
 }
 
-
-
-    function escapeHtml(str) {
-        if (str == null) return '';
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-    }
-    function escapeAttr(str){ return escapeHtml(str).replace(/\n/g, '&#10;'); }
-
-    // Делегирование кликов
-    reviewsList.addEventListener('click', async (e) => {
-        const card = e.target.closest('.review-card');
-        if (!card) return;
-
-        // Переключение редактирования
-        if (e.target.classList.contains('btn-toggle')) {
-            const panel = card.querySelector('.edit-panel');
-            const open = panel.style.display !== 'none';
-            panel.style.display = open ? 'none' : 'block';
-            e.target.setAttribute('aria-expanded', (!open).toString());
-            return;
-        }
-
-        // Отмена
-        if (e.target.classList.contains('btn-cancel')) {
-            card.querySelector('.edit-panel').style.display = 'none';
-            card.querySelector('.btn-toggle').setAttribute('aria-expanded', 'false');
-            return;
-        }
-
-        // Сохранение
-        if (e.target.classList.contains('btn-save')) {
-            const id = card.dataset.id;
-            const formData = new FormData();
-            formData.append('liked', card.querySelector('.input-liked').value.trim());
-            formData.append('disliked', card.querySelector('.input-disliked').value.trim());
-            formData.append('content', card.querySelector('.input-content').value.trim());
-            formData.append('rating', card.querySelector('.input-rating').value.trim());
-
-            // Файлы
-            const photos = card.querySelector('.input-photos');
-            if (photos?.files.length) Array.from(photos.files).forEach(f => formData.append('photos[]', f));
-            const receipts = card.querySelector('.input-receipts');
-            if (receipts?.files.length) Array.from(receipts.files).forEach(f => formData.append('receipts[]', f));
-
-            try {
-                const res = await fetch(`/reviews/${id}`, {
-                    method: 'POST',
-                    headers: { 'X-CSRF-TOKEN': csrfToken, 'X-HTTP-Method-Override': 'PUT' },
-                    body: formData,
-                    credentials: 'same-origin'
-                });
-                if (!res.ok) throw new Error(await res.text());
-                showToast('Отзыв обновлён', 'success');
-                await loadReviews();
-            } catch (err) {
-                console.error(err);
-                showToast('Не удалось сохранить', 'error');
-            }
-            return;
-        }
-
-// Удаление отзыва
-if (e.target.classList.contains('btn-delete')) {
-    if (!confirm('Удалить этот отзыв?')) return;
-    const id = card.dataset.id;
-
-    try {
-        const res = await fetch(`/reviews/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-                // просим HTML (не JSON) чтобы Laravel выполнил redirect()->to(...)
-                'Accept': 'text/html'
-            },
-            credentials: 'same-origin',
-            redirect: 'follow' // по умолчанию, но явно указываем
-        });
-
-        // если сервер ответил не ок — прочитаем текст и кинем ошибку
-        if (!res.ok) {
-            const txt = await res.text();
-            throw new Error(txt || `HTTP ${res.status}`);
-        }
-
-        // Если fetch последовал за редиректом, res.redirected=true и res.url содержит итоговый адрес
-        if (res.redirected && res.url) {
-            // Переходим по адресу, который вернул сервер
-            window.location.href = res.url;
-            return;
-        }
-
-        // Иначе — возможно сервер вернул JSON; пробуем разобрать
-        const contentType = res.headers.get('content-type') || '';
-        if (contentType.includes('application/json')) {
-            const payload = await res.json();
-            // если JSON содержит success — делаем клиентский редирект к вкладке отзывов
-            if (payload && payload.success) {
-                showToast('Отзыв удалён', 'success');
-
-                const clinicId = card.querySelector('.clinic-name')
-                    ?.getAttribute('href')
-                    ?.match(/clinics\/(\d+)/)?.[1];
-
-                if (clinicId) {
-                    // короткая задержка чтобы пользователь увидел тост
-                    setTimeout(() => {
-                        window.location.href = `/clinics/${clinicId}?tab=reviews`;
-                    }, 700);
-                    return;
-                } else {
-                    // fallback — перезагрузим страницу
-                    setTimeout(() => window.location.reload(), 700);
-                    return;
-                }
-            }
-        }
-
-        // Если ничего из выше не сработало — как fallback перезагрузим страницу
-        window.location.reload();
-
-    } catch (err) {
-        console.error(err);
-        showToast('Ошибка удаления', 'error');
-    }
+/* =========================================================
+   🔹 ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+========================================================= */
+function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
-
-
-        // Удаление фото
-// Удаление фото
-if (e.target.classList.contains('btn-del-photo')) {
-    if (!confirm('Удалить это фото?')) return;
-    const pid = e.target.dataset.photoId;
-    try {
-        const res = await fetch(`/review_photos/${pid}`, {
-            method: 'DELETE',
-            headers: { 'X-CSRF-TOKEN': csrfToken },
-            credentials: 'same-origin'
-        });
-        if (res.ok) {
-            e.target.closest('.media-item').remove();
-            showToast('Фото удалено', 'success');
-        } else {
-            showToast('Ошибка удаления фото', 'error');
-        }
-    } catch (err) {
-        console.error(err);
-        showToast('Ошибка при удалении фото', 'error');
+/* =========================================================
+   🔹 ТАБ "ОТЗЫВЫ"
+========================================================= */
+tabBtn?.addEventListener('click', () => {
+    if (!loaded) {
+        loadReviews();
+        loaded = true;
     }
-    return;
-}
-
-
-        // Удаление чека
-// Удаление чека
-if (e.target.classList.contains('btn-del-receipt')) {
-    if (!confirm('Вы уверены что хотите удалить чек? Его нельзя будет восстановить и если вы передумаете его придётся загружать заново')) return;
-    const rid = e.target.dataset.receiptId;
-    try {
-        const res = await fetch(`/review_receipts/${rid}`, {
-            method: 'DELETE',
-            headers: { 'X-CSRF-TOKEN': csrfToken },
-            credentials: 'same-origin'
-        });
-        if (res.ok) {
-            e.target.closest('.media-item').remove();
-            showToast('Чек удалён', 'success');
-        } else {
-            showToast('Ошибка удаления чека', 'error');
-        }
-    } catch (err) {
-        console.error(err);
-        showToast('Ошибка при удалении чека', 'error');
-    }
-    return;
-}
-
-
-        // Просмотр фото
-        if (e.target.classList.contains('previewable')) {
-            const src = e.target.dataset.full;
-            if (src) openPreview(src);
-        }
-    });
-
-    function openPreview(src) {
-        const overlay = document.createElement('div');
-        overlay.className = 'photo-preview-overlay';
-        overlay.innerHTML = `<div class="photo-preview"><img src="${src}" alt=""><button class="close-preview">×</button></div>`;
-        document.body.appendChild(overlay);
-        overlay.querySelector('.close-preview').addEventListener('click', () => overlay.remove());
-        overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
-    }
-
-    function showToast(text, type='info') {
-        const c = document.getElementById('toast') || Object.assign(document.body.appendChild(document.createElement('div')), {
-            id: 'toast', style: 'position:fixed;top:15px;right:15px;z-index:9999;'
-        });
-        const n = Object.assign(document.createElement('div'), {
-            textContent: text,
-            style: `background:${type==='error'?'#ef4444':type==='success'?'#10b981':'#333'};color:#fff;padding:8px 12px;margin-top:8px;border-radius:6px;`
-        });
-        c.appendChild(n);
-        setTimeout(()=>n.remove(),3000);
-    }
-
-    tabBtn?.addEventListener('click', () => { if (!loaded) { loadReviews(); loaded = true; } });
-    if (location.hash === '#reviews') { loadReviews(); loaded = true; }
 });
 
-/* ===================== ✅ ФИЛЬТР "РЕАЛЬНЫЕ КЛИЕНТЫ" ===================== */
-document.addEventListener('DOMContentLoaded', () => {
-    const checkbox = document.getElementById('verifiedOnly');
+if (location.hash === '#reviews') {
+    loadReviews();
+    loaded = true;
+}
 
-    if (checkbox) {
-        checkbox.addEventListener('change', () => {
-            // Получаем все карточки отзывов
-            const reviewCards = document.querySelectorAll('.review-card');
-            const showVerifiedOnly = checkbox.checked;
+/* =========================================================
+   🔹 ФИЛЬТР "РЕАЛЬНЫЕ КЛИЕНТЫ"
+========================================================= */
+const verifiedCheckbox = document.getElementById('verifiedOnly');
+if (verifiedCheckbox) {
+    const applyFilter = () => {
+        document.querySelectorAll('.review-card').forEach(card => {
+            const hasBadge = !!card.querySelector('.verified-badge');
+            card.style.display =
+                (verifiedCheckbox.checked && !hasBadge) ? 'none' : '';
+        });
+    };
 
-            reviewCards.forEach(card => {
-                // Проверяем, есть ли внутри карточки элемент с классом .verified-badge
-                const hasBadge = !!card.querySelector('.verified-badge');
+    verifiedCheckbox.addEventListener('change', applyFilter);
+    if (verifiedCheckbox.checked) applyFilter();
+}
 
-                // Если фильтр включен и плашки нет — скрываем
-                // Если фильтр выключен — показываем все
-                card.style.display = (showVerifiedOnly && !hasBadge) ? 'none' : '';
+/* =========================================================
+   🔹 СОРТИРОВКА
+========================================================= */
+const reviewList = document.getElementById('reviewList');
+const sortSelect = document.getElementById('sortReviews');
+
+if (reviewList && sortSelect) {
+    sortSelect.addEventListener('change', () => {
+        const reviews = Array.from(reviewList.querySelectorAll('.review-card'));
+
+        reviews.sort((a, b) => {
+            const da = +a.dataset.date;
+            const db = +b.dataset.date;
+            const ra = +a.dataset.rating;
+            const rb = +b.dataset.rating;
+
+            switch (sortSelect.value) {
+                case 'date_asc': return da - db;
+                case 'date_desc': return db - da;
+                case 'rating_asc': return ra - rb;
+                case 'rating_desc': return rb - ra;
+                default: return 0;
+            }
+        });
+
+        reviewList.innerHTML = '';
+        reviews.forEach(r => reviewList.appendChild(r));
+    });
+
+    if (sortSelect.value === 'date_desc') {
+        sortSelect.dispatchEvent(new Event('change'));
+    }
+}
+
+/* =========================================================
+   🔹 МОДАЛКА ФОТО + ЛИСТАНИЕ
+========================================================= */
+const modal = document.getElementById('photoModal');
+const modalImg = document.getElementById('modalPhoto');
+const prevBtn = document.getElementById('prevPhoto');
+const nextBtn = document.getElementById('nextPhoto');
+
+let currentIndex = 0;
+let currentPhotos = [];
+
+document.querySelectorAll('.review-photo').forEach(img => {
+    img.addEventListener('click', () => {
+        currentIndex = +img.dataset.index;
+        currentPhotos = Array.from(
+            document.querySelectorAll(
+                `.review-photos[data-review-id="${img.dataset.reviewId}"] .review-photo`
+            )
+        );
+        modalImg.src = img.src;
+        new bootstrap.Modal(modal).show();
+    });
+});
+
+nextBtn?.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % currentPhotos.length;
+    modalImg.src = currentPhotos[currentIndex].src;
+});
+
+prevBtn?.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+    modalImg.src = currentPhotos[currentIndex].src;
+});
+
+/* =========================================================
+   🔹 АККОРДЕОН "ОСТАВИТЬ ОТЗЫВ"
+========================================================= */
+const toggleBtn = document.getElementById('toggleAccordionBtn');
+const closeBtn = document.getElementById('closeAccordionBtn');
+const accordion = document.getElementById('accordionContent');
+
+if (toggleBtn && accordion && window.bootstrap?.Collapse) {
+    const collapse = new bootstrap.Collapse(accordion, { toggle: false });
+
+    toggleBtn.addEventListener('click', () => {
+        accordion.classList.contains('show')
+            ? collapse.hide()
+            : collapse.show();
+    });
+
+    closeBtn?.addEventListener('click', () => collapse.hide());
+}
+
+/* =========================================================
+   🔹 ЗВЁЗДЫ В ФОРМЕ
+========================================================= */
+const stars = document.querySelectorAll('#addRatingStars .rating-star');
+const ratingInput = document.getElementById('addRatingValue');
+
+if (stars.length && ratingInput) {
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const val = +star.dataset.value;
+            ratingInput.value = val;
+
+            stars.forEach(s => {
+                s.src = +s.dataset.value <= val
+                    ? '/storage/icon/button/award-stars_active.svg'
+                    : '/storage/icon/button/award-stars_disable.svg';
             });
         });
-
-        // Если чекбокс уже был отмечен при загрузке страницы — применяем фильтр сразу
-        if (checkbox.checked) {
-            checkbox.dispatchEvent(new Event('change'));
-        }
-    }
-});
-/* =================== ✅ КОНЕЦ ФИЛЬТРА "РЕАЛЬНЫЕ КЛИЕНТЫ" =================== */
-
- /* ===================== 🐾 ПЛАВНАЯ ПРОКРУТКА ===================== */
-    document.querySelectorAll('.paw-link').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const target = document.querySelector(link.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                target.classList.add('highlight-section');
-                setTimeout(() => target.classList.remove('highlight-section'), 3000);
-            }
-        });
     });
-
-
-
-    /* ===================== 🔄 СОРТИРОВКА ===================== */
-    const reviewList = document.getElementById('reviewList');
-    const sortSelect = document.getElementById('sortReviews');
-
-    if (reviewList && sortSelect) {
-        // Запускаем сортировку по умолчанию (если выбран "сначала новые")
-if (sortSelect.value === 'date_desc') {
-    setTimeout(() => sortSelect.dispatchEvent(new Event('change')), 100);
 }
-
-        sortSelect.addEventListener('change', () => {
-            const sortType = sortSelect.value;
-            const reviews = Array.from(reviewList.querySelectorAll('.review-card'));
-
-            reviews.sort((a, b) => {
-                const dateA = parseInt(a.dataset.date);
-                const dateB = parseInt(b.dataset.date);
-                const ratingA = parseInt(a.dataset.rating);
-                const ratingB = parseInt(b.dataset.rating);
-
-                switch (sortType) {
-                    case 'date_asc': return dateA - dateB;
-                    case 'date_desc': return dateB - dateA;
-                    case 'rating_asc': return ratingA - ratingB;
-                    case 'rating_desc': return ratingB - ratingA;
-                    default: return 0;
-                }
-            });
-
-            reviewList.innerHTML = '';
-            reviews.forEach(r => reviewList.appendChild(r));
-        });
-    }
-
-
-
-/* ===========================================================
-   ✅ 2. ПРОСМОТР ФОТО В МОДАЛКЕ С ПЕРЕЛИСТЫВАНИЕМ
-=========================================================== */
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('photoModal');
-    const modalImg = document.getElementById('modalPhoto');
-    const prevBtn = document.getElementById('prevPhoto');
-    const nextBtn = document.getElementById('nextPhoto');
-
-    let currentReviewId = null;
-    let currentIndex = 0;
-    let currentPhotos = [];
-
-    // Открытие модалки при клике на фото
-    document.querySelectorAll('.review-photo').forEach(img => {
-        img.addEventListener('click', () => {
-            currentReviewId = img.dataset.reviewId;
-            currentIndex = parseInt(img.dataset.index, 10);
-
-            // Собираем все фото этого отзыва
-            currentPhotos = Array.from(
-                document.querySelectorAll(`.review-photos[data-review-id="${currentReviewId}"] .review-photo`)
-            );
-
-            // Показываем выбранное фото
-            modalImg.src = img.src;
-
-            // Открываем модалку Bootstrap
-            const bsModal = new bootstrap.Modal(modal);
-            bsModal.show();
-        });
-    });
-
-    // Показ следующего фото
-    nextBtn.addEventListener('click', () => {
-        if (!currentPhotos.length) return;
-        currentIndex = (currentIndex + 1) % currentPhotos.length;
-        modalImg.src = currentPhotos[currentIndex].src;
-    });
-
-    // Показ предыдущего фото
-    prevBtn.addEventListener('click', () => {
-        if (!currentPhotos.length) return;
-        currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
-        modalImg.src = currentPhotos[currentIndex].src;
-    });
-
-    // Перелистывание клавишами ← и →
-    document.addEventListener('keydown', e => {
-        if (!bootstrap.Modal.getInstance(modal)) return;
-        if (e.key === 'ArrowRight') nextBtn.click();
-        if (e.key === 'ArrowLeft') prevBtn.click();
-    });
-});
-
-
-    // 🌟 Оценка в форме добавления отзыва
-    document.addEventListener('DOMContentLoaded', () => {
-    const addStars = document.querySelectorAll('#addRatingStars .rating-star');
-    const addRatingValue = document.getElementById('addRatingValue');
-
-    if (addStars.length && addRatingValue) {
-        addStars.forEach(star => {
-            star.addEventListener('click', () => {
-                const value = star.dataset.value;
-                addRatingValue.value = value;
-
-                addStars.forEach(s => {
-                    s.src = s.dataset.value <= value
-                        ? '/storage/icon/button/award-stars_active.svg'
-                        : '/storage/icon/button/award-stars_disable.svg';
-                });
-            });
-        });
-    }
-});
-
-
-
-// {{-- JS: управление (Bootstrap + fallback) --}}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('toggleAccordionBtn');
-    const closeBtn = document.getElementById('closeAccordionBtn');
-    const content = document.getElementById('accordionContent');
-
-    if (!btn || !content) return;
-
-    // Функция обновления aria и текста кнопки
-    function updateButton(isOpen) {
-        btn.setAttribute('aria-expanded', String(Boolean(isOpen)));
-        btn.textContent = isOpen ? '✖️ Свернуть форму' : '✍️ Оставить отзыв';
-    }
-
-    // Если Bootstrap доступен — используем collapse API (без автоматического toggle при инициации)
-    if (window.bootstrap && bootstrap.Collapse) {
-        // создаём экземпляр, но не трогаем состояние на создании (toggle: false)
-        const bsCollapse = new bootstrap.Collapse(content, { toggle: false });
-
-        // Обработка клика по основной кнопке — переключаем состояние
-        btn.addEventListener('click', () => {
-            // если открыт — скрываем, если скрыт — показываем
-            if (content.classList.contains('show')) {
-                bsCollapse.hide();
-            } else {
-                bsCollapse.show();
-            }
-        });
-
-        // Вешаем слушатели событий Bootstrap, чтобы обновлять текст/aria
-        content.addEventListener('shown.bs.collapse', () => updateButton(true));
-        content.addEventListener('hidden.bs.collapse', () => updateButton(false));
-
-        // Внутренняя кнопка закрытия
-        closeBtn?.addEventListener('click', () => bsCollapse.hide());
-
-        // Инициализация текста в зависимости от текущего состояния (на случай SSR / server-rendered)
-        updateButton(content.classList.contains('show'));
-        return;
-    }
-
-
-    closeBtn?.addEventListener('click', () => {
-        content.classList.remove('show');
-        content.style.display = 'none';
-        updateButton(false);
-    });
-
-    // Стартовое состояние: если блок уже видим в DOM — отобразим соответствующий текст
-    const initiallyOpen = content.classList.contains('show') || (getComputedStyle(content).display !== 'none' && getComputedStyle(content).display !== 'none');
-    updateButton(initiallyOpen);
-});
-
-
-    });
 
 });

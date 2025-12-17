@@ -133,70 +133,31 @@
         });
     }
 
-    async function setCity(cityId, cityName) {
-        try {
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            const res = await fetch(citiesSetUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': token
-                },
-                body: JSON.stringify({ city_id: cityId })
-            });
+async function setCity(cityId, cityName) {
+    try {
+        const token = document.querySelector('meta[name="csrf-token"]').content;
 
-            if (!res.ok) throw new Error('Ошибка сети');
-            const json = await res.json();
+        const res = await fetch(citiesSetUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({ city_id: cityId })
+        });
 
-            currentName.textContent = json.city.name;
-            modal.style.display = 'none';
+        if (!res.ok) throw new Error();
 
-            // 🔹 Автоматическое обновление каталога клиник без перезагрузки
-            if (window.location.pathname.includes('/clinics')) {
-                const response = await fetch(`/clinics?city=${encodeURIComponent(cityName)}`, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                });
-                const html = await response.text();
+        modal.style.display = 'none';
 
-                // Находим контейнер с клиниками
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-                const newList = tempDiv.querySelector('.row.g-4');
-                const currentList = document.querySelector('.row.g-4');
+        // ✅ ПРОСТО ПЕРЕЗАГРУЖАЕМ
+        location.reload();
 
-                if (newList && currentList) {
-                    currentList.innerHTML = newList.innerHTML;
-                }
-            }
-
-            // 🔹 Автоматическое обновление списка докторов после смены города
-if (window.location.pathname.includes('/doctors')) {
-    const response = await fetch(`/doctors?city_id=${cityId}`, {
-    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-});
-
-    const html = await response.text();
-
-    // Находим контейнер с докторами
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    const newList = tempDiv.querySelector('.doctors-list');
-    const currentList = document.querySelector('.doctors-list');
-
-    if (newList && currentList) {
-        currentList.innerHTML = newList.innerHTML;
-    } else {
-        location.reload(); // fallback – перезагрузить страницу
+    } catch (e) {
+        alert('Не удалось установить город');
     }
 }
 
-
-        } catch (err) {
-            alert('Не удалось установить город. Попробуйте ещё раз.');
-            console.error(err);
-        }
-    }
 
     // 🔍 Поиск
     search.addEventListener('input', () => {

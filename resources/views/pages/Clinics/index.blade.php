@@ -16,14 +16,9 @@
             Пожалуйста, выберите город и обновите страницу — список клиник будет отображён только для выбранного города.
         </div>
 
-        {{-- Опционально: можно вывести краткий список городов для выбора --}}
-        {{-- если у вас есть переменная $cities, можно раскомментировать и использовать:
-        <div class="d-flex flex-wrap gap-2 justify-content-center">
-            @foreach($cities as $city)
-                <a href="{{ route('cities.set') }}" class="btn btn-outline-secondary btn-sm">{{ $city->name }}</a>
-            @endforeach
-        </div>
-        --}}
+
+
+
 
     @else
         <div class="row g-4">

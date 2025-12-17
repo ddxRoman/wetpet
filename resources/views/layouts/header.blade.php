@@ -126,8 +126,7 @@
             </div>
 
             <div class="d-flex justify-content-center mt-3">
-                <input type="search" class="header-search" placeholder="Животные, породы, ветеринары, клиники">
-
+                <input type="search" disabled class="header-search" placeholder="Животные, породы, ветеринары, клиники">
                     <img class="btn_search" src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск">
 
             </div>

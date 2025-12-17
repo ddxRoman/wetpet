@@ -511,7 +511,6 @@ $reviews = Review::where('reviewable_id', $clinic->id)
     <div class="tab-pane fade {{ $activeTab === 'awards' ? 'show active' : '' }}" id="awards" role="tabpanel">
         <h4>Награды</h4>
 {{-- Награды --}}
-
     <div class="row g-4">
         @forelse($clinic->awards ?? [] as $index => $award)
             <div class="col-6 col-md-4 col-lg-3">
@@ -537,7 +536,6 @@ $reviews = Review::where('reviewable_id', $clinic->id)
             <p class="text-center text-muted">Награды пока не добавлены.</p>
         @endforelse
     </div>
-
     {{-- Модальное окно со слайдером --}}
     @if(($clinic->awards ?? [])->count())
     <div class="modal fade" id="awardModal" tabindex="-1" aria-hidden="true">
@@ -559,7 +557,6 @@ $reviews = Review::where('reviewable_id', $clinic->id)
                                 </div>
                             @endforeach
                         </div>
-
                         {{-- Стрелки навигации --}}
                         <button class="carousel-control-prev" type="button" data-bs-target="#awardCarousel" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
@@ -569,48 +566,17 @@ $reviews = Review::where('reviewable_id', $clinic->id)
                         </button>
                     </div>
                 </div>
-
-                <div class="modal-footer border-0">
+            <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 </div>
             </div>
         </div>
-
     @endif
 </div>
-
     </div>
-
 </div>
 
-
-
-
-{{-- Вкладки --}}
-<!-- <ul class="nav nav-tabs mb-4" id="clinicTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contacts" role="tab">Контакты</a>
-    </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" role="tab">Услуги</a>
-    </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" role="tab">Отзывы</a>
-    </li> -->
- <!-- <li class="nav-item" role="presentation">
-    <a class="nav-link" id="awards-tab" data-bs-toggle="tab" data-bs-target="#awards" role="tab">Награды</a>
-</li> -->
-
- <!--   <li class="nav-item" role="presentation">
-        <a class="nav-link" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos" role="tab">Фото</a>
-    </li> -->
-<!-- </ul> -->
-
-
-
-
-
-                        {{-- Доктора --}}
+{{-- Доктора --}}
                         <div class="mb-4 mt-5">
                             <h2 class="fs-5 fw-semibold mb-3">Доктора</h2>
 
@@ -664,10 +630,6 @@ $reviews = Review::where('reviewable_id', $clinic->id)
               id="nextPhoto" style="opacity: 0.8;">❯</button>
     </div>
   </div>
-
-
-
-
 </body>
         </main>
         <footer class="footer-fullwidth mt-auto w-100">
