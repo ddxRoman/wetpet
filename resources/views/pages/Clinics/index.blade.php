@@ -96,54 +96,6 @@
     @endif
 </div>
 
-<style>
-.card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
-}
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-}
-.card-img-top {
-    height: 160px;
-    object-fit: contain;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #eee;
-}
-
-/* Значок рейтинга */
-.rating-badge {
-    font-size: 0.9rem;
-    line-height: 1;
-    background-color: #FFD700 !important;
-    color: #222 !important;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    z-index: 2;
-}
-
-/* Подсказки Bootstrap */
-.tooltip-inner {
-    background-color: #fff !important;
-    color: #222 !important;
-    border: 1px solid #ddd;
-    font-size: 0.85rem;
-    text-align: left;
-}
-.tooltip.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
-    border-top-color: #ddd !important;
-}
-.btn_add_clinic{
-    border: 1px solid #222;
-    background-color: #002fff21;
-    margin-top: 2%;
-    margin-bottom: 2%;
-    padding: 0.2%;
-    border-radius: 5px;
-}
-</style>
 
 {{-- Инициализация tooltip --}}
 <script>

@@ -35,10 +35,6 @@ public function index(Request $request)
     return view('pages.clinics.index', compact('clinics', 'selectedCity'));
 }
 
-
-
-
-
     // Просмотр одной клиники
     public function show($id)
     {

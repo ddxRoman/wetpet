@@ -113,9 +113,12 @@ header{
     font-size: large;
 }
     .avatars_pics{
-        width: 35px;
         background-color: #12aa1228;
-        border-radius: 15px;
+            width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 6px;
     }
 .login_page_h1{
     margin: 10%;
@@ -378,9 +381,6 @@ text-align: center;
         font-style: italic;
         color: #636363;
         text-align: center;
-    }
-    .avatars_pics{
-        width: 35px;
     }
     .pets_menu{
         text-align: center;
@@ -728,15 +728,6 @@ select:focus {
     transition: all 0.3s ease;
 }
 
-
-.avatars_pics {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 6px;
-}
-
 /* Поиск */
 .header-search {
 
@@ -749,11 +740,6 @@ select:focus {
 }
 .header-search:focus {
     border-color: #007bff;
-}
-.btn_search {
-    width: 28px;
-    height: 28px;
-    margin-left: 8px;
 }
 
 /* ====== АДАПТИВ ====== */
@@ -1929,3 +1915,103 @@ background-color: #f3f3f33a;
             color: red;
             padding-bottom: 2%;
         }
+            .btn_add_clinic{
+    border: 1px solid #222;
+    background-color: #002fff21;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 0.2%;
+    border-radius: 5px;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+.card-img-top {
+    height: 160px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+/* Значок рейтинга */
+.rating-badge {
+    font-size: 0.9rem;
+    line-height: 1;
+    background-color: #FFD700 !important;
+    color: #222 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+/* Подсказки Bootstrap */
+.tooltip-inner {
+    background-color: #fff !important;
+    color: #222 !important;
+    border: 1px solid #ddd;
+    font-size: 0.85rem;
+    text-align: left;
+}
+.tooltip.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
+    border-top-color: #ddd !important;
+}
+.btn_add_clinic{
+    border: 1px solid #222;
+    background-color: #002fff21;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 0.2%;
+    border-radius: 5px;
+}
+.select_city_btn {
+    color: #0066ff;
+    background-color: transparent;
+    border: none;
+    margin-left: 2%;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#city-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 9999;
+}
+
+#city-modal .modal-content {
+    background: #fff;
+    max-width: 600px;
+    margin: 6vh auto;
+    padding: 1rem;
+    border-radius: .6rem;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+#city-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: .4rem;
+}
+
+.city-item {
+    text-align: left;
+    padding: .6rem;
+    border: 1px solid #eee;
+    border-radius: .4rem;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.city-item:hover {
+    background: #f0f8ff;
+}

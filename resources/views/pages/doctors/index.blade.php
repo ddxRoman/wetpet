@@ -147,13 +147,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 @endsection
 
-<style>
-    .btn_add_clinic{
-    border: 1px solid #222;
-    background-color: #002fff21;
-    margin-top: 2%;
-    margin-bottom: 2%;
-    padding: 0.2%;
-    border-radius: 5px;
-}
-</style>
