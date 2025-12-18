@@ -1,17 +1,5 @@
 @extends('layouts.app')
 
-
-public function showLoginForm()
-{
-    if (auth()->check()) {
-        return redirect('/');
-    }
-
-    return view('auth.login');
-}
-
-
-
 @section('content')
 <div class="body_page_auth">
     <div class="login-page">
@@ -63,12 +51,12 @@ public function showLoginForm()
 
         <hr class="hr_login_page">
 
-        <h3>или авторизуйтесь через:</h3>
+        <!-- <h3>или авторизуйтесь через:</h3>
         <div>
             <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/telegram-logo.svg') }}" title="Telegram" alt="Telegram"></a>
             <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/vk-logo.svg') }}" title="VK ID" alt="VK"></a>
             <a href="#"><img class="login_social_icon" src="{{ Storage::url('icon/social/yandex-logo.svg') }}" title="Yandex" alt="Yandex"></a>
-        </div>
+        </div> -->
     </div>
 
 

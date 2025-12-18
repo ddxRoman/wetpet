@@ -20,7 +20,7 @@
         }
         .email-header {
             text-align: center;
-            background-color: #2bec19b6;
+            background-color: #a0c9ffb6;
             padding: 20px;
         }
         .email-header img {
@@ -67,12 +67,18 @@
 <body>
     <div class="email-wrapper">
         <div class="email-header">
-            <img src="{{ Storage::url('storage/logo/logo3.png') }}" alt="{{ $brandname }}">
+            <img
+    src="{{ asset('storage/logo/logo_mail.png') }}"
+    alt="{{ config('app.name') }}"
+    style="max-width:200px; display:block; margin:0 auto;"
+>
+
         </div>
 
         <div class="email-body">
             <h2>Здравствуйте{{ $user->name ? ', '.$user->name : '' }}!</h2>
-            <p>Вы получили это письмо, потому что запросили сброс пароля на сайте <b>{{ $brandname }}</b>.</p>
+            <p>Вы получили это письмо, потому что запросили сброс пароля на сайте <b>{{ config('app.name') }}
+</b>.</p>
             <p>Нажмите на кнопку ниже, чтобы установить новый пароль:</p>
 
             <a href="{{ $resetUrl }}" class="reset-btn">Сбросить пароль</a>
@@ -81,7 +87,7 @@
         </div>
 
         <div class="email-footer">
-            © {{ date('Y') }} {{ $brandname }}. Все права защищены.
+            © {{ date('Y') }} {{ config('app.name') }}. Все права защищены.
         </div>
     </div>
 </body>

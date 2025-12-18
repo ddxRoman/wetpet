@@ -113,7 +113,7 @@
 <body class="body_page">
     <div class="forgot-page">
         <a href="{{ url('/') }}">
-            <img class="page-forgot_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{$brandname}}">
+            <img class="page-forgot_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ config('app.name') }}">
         </a>
 
         <h2>Восстановление пароля</h2>
@@ -150,7 +150,7 @@
 
         <a href="{{ route('login') }}" class="register-btn">Назад к входу</a>
     </div>
-    
+
     <script>
     window.passwordResetSent = @json(session()->has('status'));
 </script>
