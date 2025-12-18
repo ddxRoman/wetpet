@@ -5,7 +5,7 @@
     <div class="login-page">
 
         <a href="{{ url('/') }}">
-            <img class="page-login_logo" src="{{ asset('storage/logo/logo3.png') }}" alt="{{ $brandname ?? 'Зверозор' }}"
+            <img class="page-login_logo" title="Перейти на сайт" src="{{ asset('storage/logo/logo3.png') }}" alt="{{ $brandname ?? 'Зверозор' }}"
 >
         </a>
 

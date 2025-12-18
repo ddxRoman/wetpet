@@ -69,6 +69,7 @@
         <div class="email-header">
             <img
     src="{{ asset('storage/logo/logo_mail.png') }}"
+    title="Зверозор, портал о домашних питомцах"
     alt="{{ config('app.name') }}"
     style="max-width:200px; display:block; margin:0 auto;"
 >

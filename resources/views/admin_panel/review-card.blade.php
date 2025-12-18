@@ -58,6 +58,7 @@
         <img
             :src="imageUrl"
             alt="Чек"
+            title="Чек от визита"
             class="max-h-[90vh] mx-auto rounded-lg shadow-lg"
         >
     </div>

@@ -129,7 +129,7 @@
                             <input type="file" id="doctorPhotoInput" name="logo" accept="image/*">
 
                             <!-- Превью -->
-                            <img id="doctorPhotoPreview" class="mt-2">
+                            <img id="doctorPhotoPreview" title="Превью фото" class="mt-2">
                         </div>
 
                         <div class="col-12">
@@ -153,7 +153,7 @@
 <!-- Cropper modal (если используется) -->
 <div id="cropper-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:2000;">
     <div style="background:#fff; padding:20px; border-radius:10px; max-width:90%; max-height:90%;">
-        <img id="cropper-image" style="max-width:100%; max-height:70vh;">
+        <img id="cropper-image" title="Редактировать" style="max-width:100%; max-height:70vh;">
         <div class="mt-3 d-flex justify-content-between">
             <button class="btn btn-secondary" id="close-cropper">Отмена</button>
             <button class="btn btn-primary" id="save-cropped">Обрезать и сохранить</button>

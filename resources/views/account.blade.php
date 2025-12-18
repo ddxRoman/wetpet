@@ -10,7 +10,7 @@
     <nav class="navbar">
         <div class="navbar-logo">
             <a href="{{ url('/') }}">
-                <img src="{{ Storage::url('logo/logo3.png') }}" alt="Логотип">
+                <img src="{{ Storage::url('logo/logo3.png') }}" title="Логотип зверозор" alt="Логотип">
             </a>
         </div>
         <div class="navbar-user">
@@ -138,7 +138,7 @@
 
 <input type="file" id="pet-photo" name="photo" accept="image/*">
 
-<img id="photo-preview" alt="Фото питомца">
+<img id="photo-preview" title="Фотография питомца" alt="Фото питомца">
 
 
                     <button id="save-pet-btn" type="submit" class="save-btn" style="margin-top:10px;">Сохранить</button>
@@ -193,6 +193,7 @@
             <div style="margin-bottom:10px; text-align:center;">
                 <label for="edit-pet-photo" style="cursor:pointer; display:inline-block;">
                     <img id="edit-photo-preview"
+                    title="Изменить фото"
                         src="/storage/pets/default-pet.jpg"
                         alt="Фото питомца"
                         style="max-width:150px; border-radius:10px; margin-bottom:8px; border:2px solid #ddd; transition:0.3s;">
@@ -216,7 +217,7 @@
         <div class="modal_cropp_photo">
             <button id="close-cropper" style="position:absolute; top:8px; right:10px; background:none; border:none; font-size:18px;">✖</button>
             <h3>Обрезка фото </h3>
-            <img id="cropper-image" src="" style="max-width:100%; margin-top:10px; border-radius:8px;">
+            <img id="cropper-image" title="обрезать фото" src="" style="max-width:100%; margin-top:10px; border-radius:8px;">
             <button id="save-cropped" class="save-btn" style="margin-top:15px;">Сохранить</button>
         </div>
     </div>

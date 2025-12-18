@@ -146,7 +146,7 @@
                   <div class="wgh-slider-item">
                     <div class="wgh-slider-item__inner">
                       <figure class="wgh-slider-item-figure">
-                        <img class="wgh-slider-item-figure__image" src="https://i.pinimg.com/736x/d3/ea/76/d3ea76b935336a9be4af78961d9cf898.jpg" alt="Ветеринар 1"/>
+                        <img class="wgh-slider-item-figure__image" title="" src="https://i.pinimg.com/736x/d3/ea/76/d3ea76b935336a9be4af78961d9cf898.jpg" alt="Ветеринар 1"/>
                         <figcaption class="wgh-slider-item-figure__caption">
                           <a href="page_doctor">Первая картинка</a>
                           <span>Quantic</span>

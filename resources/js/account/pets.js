@@ -82,6 +82,7 @@ petsList.insertAdjacentHTML('beforeend', `
 
         <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
              alt="${p.name}"
+             title="фотография животного"
              style="max-width:100%; display:block; margin-bottom:8px; border-radius:10px;">
 
         <b>${p.name}</b><br>

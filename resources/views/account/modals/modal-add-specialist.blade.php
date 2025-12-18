@@ -147,7 +147,7 @@
                             <input type="file" id="doctorPhotoInput" name="photo" accept="image/*">
 
                             <!-- Превью -->
-                            <img id="doctorPhotoPreview" class="mt-2">
+                            <img id="doctorPhotoPreview" title="Предпросмотр" class="mt-2">
                         </div>
 
                         <div class="col-12">

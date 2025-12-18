@@ -54,7 +54,7 @@
             {{-- ==== Логотип ==== --}}
             <div class="logo-block">
                 <a href="/" class="header-logo-link">
-                    <img class="header_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
+                    <img class="header_logo" title="Логотип зверозор" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
                 </a>
             </div>
 
@@ -64,7 +64,7 @@
                 {{-- Кнопки --}}
                 <div class="d-none d-md-flex gap-2">
                     <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
-                        <img class="add_btn"  src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" title="Добавить организацию" alt="Добавить организацию">
+                        <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" title="Добавить организацию" alt="Добавить организацию">
                     </button>
 
                     <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
@@ -92,7 +92,7 @@
                                href="#"
                                role="button"
                                data-bs-toggle="dropdown">
-                                <img class="avatars_pics" src="{{ asset($link) }}" alt="Аватар">
+                                <img class="avatars_pics" title="профиль {{ Auth::user()->name }}" src="{{ asset($link) }}" alt="Аватар">
                                 {{ Auth::user()->name }}
                             </a>
 
@@ -127,7 +127,7 @@
 
             <div class="d-flex justify-content-center mt-3">
                 <input type="search" disabled class="header-search" placeholder="Животные, породы, ветеринары, клиники">
-                    <img class="btn_search" src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск">
+                    <img class="btn_search" title="Найти" src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск">
 
             </div>
 
