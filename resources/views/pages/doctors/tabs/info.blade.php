@@ -53,7 +53,7 @@
                 @if($doctor->clinic)
                     <a href="{{ route('clinics.show', $doctor->clinic->id) }}" class="text-decoration-none">
                         {{ $doctor->clinic->name }}
-                        <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="">
+                        <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
                     </a>
                 @else
                     —
