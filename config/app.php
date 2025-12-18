@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Zverozor'),
 
     /*
     |--------------------------------------------------------------------------
@@ -126,6 +126,7 @@ return [
     */
 
     'key' => env('APP_KEY'),
+    'brandname' => env('APP_BRANDNAME', 'Мой сайт'),
 
     'cipher' => 'AES-256-CBC',
 

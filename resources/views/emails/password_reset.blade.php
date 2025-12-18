@@ -67,7 +67,7 @@
 <body>
     <div class="email-wrapper">
         <div class="email-header">
-            <img src="{{ Storage::url('logo/logo3.png') }}" alt="{{ brandname }}">
+            <img src="{{ Storage::url('storage/logo/logo3.png') }}" alt="{{ $brandname }}">
         </div>
 
         <div class="email-body">

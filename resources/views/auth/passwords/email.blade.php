@@ -140,13 +140,21 @@
                 </div>
             @enderror
 <br>
-            <button type="submit" class="login_btn_page">
-                Отправить ссылку для сброса пароля
-            </button>
+<button type="submit"
+        class="login_btn_page"
+        id="resetBtn">
+    Отправить ссылку для сброса пароля
+</button>
+<div id="timerText" style="margin-top:10px;font-size:14px;color:#666;"></div>
         </form>
 
         <a href="{{ route('login') }}" class="register-btn">Назад к входу</a>
     </div>
+    
+    <script>
+    window.passwordResetSent = @json(session()->has('status'));
+</script>
+
 </body>
 </html>
 @endsection
