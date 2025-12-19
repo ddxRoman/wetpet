@@ -15,7 +15,7 @@
         <div class="swiper-wrapper">
           @foreach ($doctors as $doctor)
             <div class="swiper-slide swiper-slide_mobile">
-             <figure
+              <figure
     class="slide-bgimg slide-bgimg_mobile"
     style="background-image:url('{{ $doctor->photo
         ? asset('storage/'.$doctor->photo)

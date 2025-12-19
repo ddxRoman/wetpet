@@ -9,7 +9,7 @@
     <title>Личный кабинет {{$user->nickname}}</title>
     @endif
 
-<title>Зверозор сайт о животных</title>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">

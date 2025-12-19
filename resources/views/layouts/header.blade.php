@@ -7,7 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}" type="image/vnd.microsoft.icon">
-
+<meta name="robots" content="all"/>
+<meta name="robots" content="noindex, follow"/>
+<!--Робот выберет значение all, текст и ссылки будут проиндексированы.-->
 
     @if(Route::currentRouteName() === 'clinics.show')
         <meta name="description" content="Узнать стоимость услуг, посмотреть график работы прочитать и оставить отзывы на ветеринарную клинику">

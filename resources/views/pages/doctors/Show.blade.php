@@ -19,7 +19,7 @@
 
     $tab = request('tab', 'info');
 @endphp
-
+    @include('layouts.header')
 <div class="container mt-5">
 
     {{-- КНОПКА НАЗАД --}}
