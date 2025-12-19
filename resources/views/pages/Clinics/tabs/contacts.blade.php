@@ -9,21 +9,21 @@
                                         {{-- Телефоны как ссылки --}}
                                         @if($clinic->phone1)
                                         <div>
-                                            📞 <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone1) }}">{{ $clinic->phone1 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Рейтинг"> </a>
+                                            📞 <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone1) }}">{{ $clinic->phone1 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" title="Позвонить" alt="Телефон"> </a>
                                             @if($clinic->phone2)
-                                            , <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone2) }}">{{ $clinic->phone2 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Рейтинг"> </a>
+                                            , <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone2) }}">{{ $clinic->phone2 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" title="Позвонить" alt="телефон"> </a>
                                             @endif
                                         </div>
                                         @endif
                                         <div>✉️ {{ $clinic->email }}</div>
                                         @if($clinic->telegram)
-                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}" target="_blank">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}" target="_blank">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" title="Связаться через телеграмм" alt="Телеграмм"></a></div>
                                         @endif
                                         @if($clinic->whatsapp)
-                                        <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" title="Связаться через Вотсапп" alt="Вотсапп"></a></div>
                                         @endif
                                         @if($clinic->website)
-                                        <div>💬 <a href="{{ $clinic->website }}">Перейти на сайт</a></div>
+                                        <div>💬 <a href="{{ $clinic->website }}" title="Перейти на сайт клиники" >Перейти на сайт</a></div>
                                         @endif
                                     </div>
                                 </div>

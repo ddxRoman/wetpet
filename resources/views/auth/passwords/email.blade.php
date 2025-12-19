@@ -148,7 +148,7 @@
 <div id="timerText" style="margin-top:10px;font-size:14px;color:#666;"></div>
         </form>
 
-        <a href="{{ route('login') }}" class="register-btn">Назад к входу</a>
+        <a href="{{ route('login') }}" title="Вернутся к странице авторизации" class="register-btn">Назад к входу</a>
     </div>
 
     <script>

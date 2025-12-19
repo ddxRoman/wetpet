@@ -9,7 +9,7 @@
     {{-- 🔹 Навбар --}}
     <nav class="navbar">
         <div class="navbar-logo">
-            <a href="{{ url('/') }}">
+            <a href="{{ url('/') }}" title="Перейти">
                 <img src="{{ Storage::url('logo/logo3.png') }}" title="Логотип зверозор" alt="Логотип">
             </a>
         </div>

@@ -91,11 +91,11 @@
       <div class="most_popular_in_city border">
         <figcaption class="title_list_popular">Врачи</figcaption>
         <ul class="list_doctor">
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Специализация</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Специализация</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Специализация</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Специализация</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Специализация</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Специализация</a><span class="list_specialist_count">50</span></li>
         </ul>
       </div>
     </div>
@@ -104,11 +104,11 @@
       <div class="most_popular_in_city border">
         <figcaption class="title_list_popular">Вет центры</figcaption>
         <ul class="list_doctor">
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Клиника</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Клиника</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Клиника</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Клиника</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Клиника</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Клиника</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Клиника</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Клиника</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Клиника</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Клиника</a><span class="list_specialist_count">50</span></li>
         </ul>
       </div>
     </div>
@@ -117,11 +117,11 @@
       <div class="most_popular_in_city border">
         <figcaption class="title_list_popular">Зоомагазины</figcaption>
         <ul class="list_doctor">
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Корм</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Корм</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Корм</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Корм</a><span class="list_specialist_count">50</span></li>
-          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="">Корм</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Корм</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Корм</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Корм</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Корм</a><span class="list_specialist_count">50</span></li>
+          <li class="list_in_category_specialist"><a class="link_in_category_specialist" href="" title="Специализация">Корм</a><span class="list_specialist_count">50</span></li>
         </ul>
       </div>
     </div>
@@ -136,33 +136,33 @@
     <div class="mobile-popular-card">
       <figcaption class="mobile-popular-card-title">Врачи</figcaption>
       <ul class="mobile-popular-list">
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Специализация</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Специализация</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Специализация</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Специализация</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Специализация</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Специализация</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Специализация</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Специализация</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Специализация</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Специализация</a><span class="mobile-popular-count">50</span></li>
       </ul>
     </div>
 
     <div class="mobile-popular-card">
       <figcaption class="mobile-popular-card-title">Вет центры</figcaption>
       <ul class="mobile-popular-list">
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Клиника</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Клиника</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Клиника</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Клиника</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Клиника</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Клиника</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Клиника</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Клиника</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Клиника</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Клиника</a><span class="mobile-popular-count">50</span></li>
       </ul>
     </div>
 
     <div class="mobile-popular-card">
       <figcaption class="mobile-popular-card-title">Зоомагазины</figcaption>
       <ul class="mobile-popular-list">
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Корм</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Корм</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Корм</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Корм</a><span class="mobile-popular-count">50</span></li>
-        <li class="mobile-popular-item"><a class="mobile-popular-link" href="">Корм</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Корм</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Корм</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Корм</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Корм</a><span class="mobile-popular-count">50</span></li>
+        <li class="mobile-popular-item"><a class="mobile-popular-link" href="" title="Специализация">Корм</a><span class="mobile-popular-count">50</span></li>
       </ul>
     </div>
   </div>

@@ -53,7 +53,7 @@
 
             {{-- ==== Логотип ==== --}}
             <div class="logo-block">
-                <a href="/" class="header-logo-link">
+                <a href="/" class="header-logo-link" title="Перейти на главную">
                     <img class="header_logo" title="Логотип зверозор" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
                 </a>
             </div>
@@ -75,7 +75,7 @@
                 {{-- Профиль --}}
                 <div class="d-flex align-items-center">
                     @guest
-                        <a href="{{ route('login') }}" class="login_link">
+                        <a href="{{ route('login') }}" title="Нажмите что бы авторизоваться" class="login_link">
                             <button type="button" class="btn_login">Войти</button>
                         </a>
                     @endguest
@@ -91,14 +91,15 @@
                                class="profile_link dropdown-toggle d-flex align-items-center gap-2"
                                href="#"
                                role="button"
+                               title="Открыть меню"
                                data-bs-toggle="dropdown">
                                 <img class="avatars_pics" title="профиль {{ Auth::user()->name }}" src="{{ asset($link) }}" alt="Аватар">
                                 {{ Auth::user()->name }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="{{ route('account') }}">Профиль</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                <a class="dropdown-item" title="Перейти в профиль" href="{{ route('account') }}">Профиль</a>
+                                <a class="dropdown-item" title="Выйти из аккаунта" href="{{ route('logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Выйти
                                 </a>

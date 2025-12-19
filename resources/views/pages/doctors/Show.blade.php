@@ -25,7 +25,8 @@
     {{-- КНОПКА НАЗАД --}}
     <div class="mb-4">
         <a href="{{ route('doctors.index') }}"
-           class="btn btn-outline-primary">
+           class="btn btn-outline-primary"
+           title="Вернутся к каталогу всех врачей города">
             ← В каталог врачей
         </a>
     </div>
@@ -54,16 +55,16 @@
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'info' ? 'active' : '' }}" href="?tab=info">Информация</a>
+            <a class="nav-link {{ $tab === 'info' ? 'active' : '' }}"  title="Просмотреть общую информацию" href="?tab=info">Информация</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'contacts' ? 'active' : '' }}" href="?tab=contacts">Контакты</a>
+            <a class="nav-link {{ $tab === 'contacts' ? 'active' : ''  }}" title="Просмотреть контакты" href="?tab=contacts">Контакты</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'services' ? 'active' : '' }}" href="?tab=services">Услуги</a>
+            <a class="nav-link {{ $tab === 'services' ? 'active' : ''  }}" title="Посмотреть перечь услуге которые оказывает данный специалист" href="?tab=services">Услуги</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'reviews' ? 'active' : '' }}" href="?tab=reviews">Отзывы</a>
+            <a class="nav-link {{ $tab === 'reviews' ? 'active' : ''  }}" title="Прочитать отзывы" href="?tab=reviews">Отзывы</a>
         </li>
     </ul>
 

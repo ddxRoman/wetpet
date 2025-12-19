@@ -52,6 +52,7 @@ function renderCard(r) {
     <header class="review-header">
         <div class="clinic-info-block">
             <a href="/${isClinic ? 'clinics' : 'doctors'}/${r.target_id}" 
+            title="Открыть"
                class="clinic-name">
                ${escapeHtml(r.target_name)}
             </a>

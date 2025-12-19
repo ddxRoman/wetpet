@@ -3,7 +3,7 @@
         @forelse($clinic->awards as $award)
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card shadow-sm border-0 h-100">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#awardModal{{ $award->id }}">
+                    <a href="#" data-bs-toggle="modal" title="Увеличить" data-bs-target="#awardModal{{ $award->id }}">
                         <img src="{{ asset('storage/' . $award->image) }}" class="card-img-top" alt="{{ $award->title }}">
                     </a>
                     <div class="card-body p-2">

@@ -13,9 +13,9 @@
                 {{-- 📞 Телефон --}}
                 @if(!empty($contact?->phone))
                     <div>
-                        📞 <a href="tel:{{ preg_replace('/\D/', '', $contact->phone) }}">
+                        📞 <a href="tel:{{ preg_replace('/\D/', '', $contact->phone) }}" title="Позвонить">
                             {{ $contact->phone }}
-                            <img width="24" src="{{ asset('storage/icon/contacts/phone.svg') }}">
+                            <img width="24" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон">
                         </a>
                     </div>
                 @endif
@@ -23,7 +23,7 @@
                 {{-- ✉️ Email --}}
                 @if(!empty($contact?->email))
                     <div>
-                        ✉️ <a href="mailto:{{ $contact->email }}">
+                        ✉️ <a href="mailto:{{ $contact->email }}" title="Написать на почту">
                             {{ $contact->email }}
                         </a>
                     </div>
@@ -33,9 +33,9 @@
                 @if(!empty($contact?->telegram))
                     <div>
                         💬 Telegram:
-                        <a href="https://t.me/{{ $contact->telegram }}" target="_blank">
+                        <a href="https://t.me/{{ $contact->telegram }}" target="_blank" title="Связатся через Телеграмм">
                             https://t.me/{{ $contact->telegram }}
-                            <img width="24" src="{{ asset('storage/icon/contacts/telegram.svg') }}">
+                            <img width="24" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Телеграмм">
                         </a>
                     </div>
                 @endif
@@ -44,9 +44,9 @@
                 @if(!empty($contact?->whatsapp))
                     <div>
                         💬 WhatsApp:
-                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank">
+                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank" title="Написать в вотсапп">
                             {{ $contact->whatsapp }}
-                            <img width="24" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}">
+                            <img width="24" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Вотсапп">
                         </a>
                     </div>
                 @endif
@@ -55,9 +55,9 @@
                 @if(!empty($contact?->max))
                     <div>
                         💬 MAX:
-                                                <a href="https://max.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank">
+                                                <a href="https://max.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank" title="Связаться через мессенджер МАХ">
                             {{ $contact->max }}
-                            <img width="24" src="{{ asset('storage/icon/contacts/max_messendger.svg') }}">
+                            <img width="24" src="{{ asset('storage/icon/contacts/max_messendger.svg') }}" alt="МАХ">
                         </a> 
                     </div>
                 @endif

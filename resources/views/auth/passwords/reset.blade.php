@@ -179,7 +179,7 @@
             </button>
         </form>
 
-        <a href="{{ route('login') }}" class="register-btn">Назад к входу</a>
+        <a href="{{ route('login') }}" title="Вернутся на старницу авторизации" class="register-btn">Назад к входу</a>
     </div>
 </body>
 @endsection

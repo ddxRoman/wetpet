@@ -12,7 +12,7 @@ use App\Models\Pet;
         <main class="flex-grow-1 container py-5">
             {{-- 🔙 Кнопка "В каталог" --}}
             <div class="mb-3">
-                <a href="{{ route('clinics.index') }}" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog">
+                <a href="{{ route('clinics.index') }}" title="Вернутся к каталогу всех клиник города" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog">
                     <img src="{{ asset('storage/icon/button/arrow-back.svg') }}" width="22" alt="paw">
                     В каталог
                 </a>
@@ -71,6 +71,7 @@ use App\Models\Pet;
         <a class="nav-link {{ $activeTab === 'contacts' ? 'active' : '' }}"
            href="?tab=contacts"
            role="tab"
+           title="Просмотреть контакты"
            aria-controls="contacts"
            aria-selected="{{ $activeTab === 'contacts' ? 'true' : 'false' }}">
             Контакты
@@ -80,6 +81,7 @@ use App\Models\Pet;
         <a class="nav-link {{ $activeTab === 'services' ? 'active' : '' }}"
            href="?tab=services"
            role="tab"
+           title="Открыть список услуг"
            aria-controls="services"
            aria-selected="{{ $activeTab === 'services' ? 'true' : 'false' }}">
             Услуги
@@ -89,6 +91,7 @@ use App\Models\Pet;
         <a class="nav-link {{ $activeTab === 'reviews' ? 'active' : '' }}"
            href="?tab=reviews"
            role="tab"
+           title="Прочитать отзывы о клинике"
            aria-controls="reviews"
            aria-selected="{{ $activeTab === 'reviews' ? 'true' : 'false' }}">
             Отзывы
@@ -113,21 +116,21 @@ use App\Models\Pet;
                                         {{-- Телефоны как ссылки --}}
                                         @if($clinic->phone1)
                                         <div>
-                                            📞 <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone1) }}">{{ $clinic->phone1 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Рейтинг"> </a>
+                                            📞 <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone1) }}">{{ $clinic->phone1 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон" title="Позвонить"> </a>
                                             @if($clinic->phone2)
-                                            , <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone2) }}">{{ $clinic->phone2 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Рейтинг"> </a>
+                                            , <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone2) }}">{{ $clinic->phone2 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон запасной" title="Позвонить"> </a>
                                             @endif
                                         </div>
                                         @endif
                                         <div>✉️ {{ $clinic->email }}</div>
                                         @if($clinic->telegram)
-                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}" target="_blank">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}" target="_blank">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" title="Связатся через телеграмм" alt="Телеграмм"></a></div>
                                         @endif
                                         @if($clinic->whatsapp)
-                                        <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Рейтинг"></a></div>
+                                        <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" title="Связаться через Вотсапп" alt="Вотсапп"></a></div>
                                         @endif
                                         @if($clinic->website)
-                                        <div>💬 <a href="{{ $clinic->website }}">Перейти на сайт</a></div>
+                                        <div>💬 <a href="{{ $clinic->website }}" title="Перейти на сайт клиники">Перейти на сайт</a></div>
                                         @endif
                                     </div>
                                 </div>
@@ -382,7 +385,7 @@ $pets = Pet::where('user_id', auth()->id())
 </div>
 @else
 <p class="text-muted mb-4">
-    Чтобы оставить отзыв, <a href="{{ route('login') }}">войдите в аккаунт</a>.
+    Чтобы оставить отзыв, <a href="{{ route('login') }}" title="Нажмите что бы авторизоваться">войдите в аккаунт</a>.
 </p>
 @endauth
                             <div class="form-check mb-3">
@@ -423,7 +426,7 @@ $pets = Pet::where('user_id', auth()->id())
                                         @endphp
                                         <img src="{{ $avatar }}" width="56" height="56" class="rounded-circle me-3 border" alt="{{ $review->user->name }}">
                                         <div>
-                                            <a href="{{ route('user.profile', $review->user->id) }}" class="fw-semibold text-decoration-none text-primary">
+                                            <a href="{{ route('user.profile', $review->user->id) }}" title="Перейти к профилю пользователя" class="fw-semibold text-decoration-none text-primary">
                                                 {{ $review->user->name }}
                                             </a>
                                             <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
@@ -516,6 +519,7 @@ $reviews = Review::where('reviewable_id', $clinic->id)
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 shadow-sm border-0">
                     <a href="#" 
+                    title="Просмотреть награду подробнее"
                        class="award-thumb" 
                        data-bs-toggle="modal" 
                        data-bs-target="#awardModal"
@@ -587,7 +591,7 @@ $reviews = Review::where('reviewable_id', $clinic->id)
                             <div class="row g-3">
                                 @forelse ($doctors as $doctor)
                                 <div class="col-md-6 col-lg-4 col-sm-6">
-                                                    <a href="{{ route('doctors.show', $doctor->id) }}" class="text-decoration-none text-reset">
+                                                    <a href="{{ route('doctors.show', $doctor->id) }}" title="Перейти в профиль доктора" class="text-decoration-none text-reset">
                                     <div class="card h-100 shadow-sm border-0 position-relative doctor-card">
                                         {{-- Лапка с рейтингом --}}
                                         <div class="rating-badge">

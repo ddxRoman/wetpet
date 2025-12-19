@@ -51,7 +51,7 @@
             <td>Клиника:</td>
             <td>
                 @if($doctor->clinic)
-                    <a href="{{ route('clinics.show', $doctor->clinic->id) }}" class="text-decoration-none">
+                    <a href="{{ route('clinics.show', $doctor->clinic->id) }}" title="Перейти на страницу клиники" class="text-decoration-none">
                         {{ $doctor->clinic->name }}
                         <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
                     </a>

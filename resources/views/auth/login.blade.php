@@ -9,7 +9,7 @@
 >
         </a>
 
-        <a href="{{ route('register') }}" class="register-btn">Зарегистрироваться</a>
+        <a href="{{ route('register') }}" title="Зарегистрироваться" class="register-btn">Зарегистрироваться</a>
     @if ($errors->any())
     <div class="text-red-500 mt-2">
         {{ $errors->first('email') }}
@@ -38,7 +38,7 @@
 
             {{-- Если пароль неверный, показываем ссылку "Забыли пароль?" --}}
             @if ($errors->has('password') || session('password_error'))
-                <a href="{{ route('password.request') }}" class="forgot-btn">Забыли пароль?</a>
+                <a href="{{ route('password.request') }}" title="Восстановить пароль" class="forgot-btn">Забыли пароль?</a>
             @endif
 
             <div class="remember-block">

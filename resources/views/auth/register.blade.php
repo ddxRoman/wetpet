@@ -161,7 +161,7 @@
         </form>
 
         <div class="login-link">
-            Уже зарегистрированы? <a href="{{ route('login') }}">Войти</a>
+            Уже зарегистрированы? <a href="{{ route('login') }}" title="Авторизоваться">Войти</a>
         </div>
     </div>
 </div>

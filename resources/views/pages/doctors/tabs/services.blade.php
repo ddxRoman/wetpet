@@ -32,7 +32,7 @@
             @foreach($letters as $letter)
                 <a href="#letter-{{ $letter }}" class="paw-link text-decoration-none">
                     <div class="paw-circle">
-                        <img src="{{ asset('storage/icon/alphabet/letter_icon.png') }}" class="paw-icon" alt="paw">
+                        <img src="{{ asset('storage/icon/alphabet/letter_icon.png') }}" title="Перейти к услугам на эту букву" class="paw-icon" alt="paw">
                         <span class="paw-letter">{{ $letter }}</span>
                     </div>
                 </a>

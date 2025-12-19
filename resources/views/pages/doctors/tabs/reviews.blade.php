@@ -157,7 +157,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
 </div>
 @else
 <p class="text-muted mb-4">
-    Чтобы оставить отзыв, <a href="{{ route('login') }}">войдите в аккаунт</a>.
+    Чтобы оставить отзыв, <a href="{{ route('login') }}" title="Нажмите что бы авторизоваться">войдите в аккаунт</a>.
 </p>
 @endauth
 
@@ -207,7 +207,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                         @endphp
                                         <img src="{{ $avatar }}" width="56" height="56" class="rounded-circle me-3 border" alt="{{ $review->user->name }}">
                                         <div>
-                                            <a href="{{ route('user.profile', $review->user->id) }}" class="fw-semibold text-decoration-none text-primary">
+                                            <a href="{{ route('user.profile', $review->user->id) }}" title="Перейти в профиль пользователя" class="fw-semibold text-decoration-none text-primary">
                                                 {{ $review->user->name }}
                                             </a>
                                             <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
