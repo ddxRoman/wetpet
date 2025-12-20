@@ -29,11 +29,11 @@ class DatabaseSeeder extends Seeder
             DoctorSeeder::class,
             DoctorServiceSeeder::class,
             PriceSeeder::class,
-            ReviewSeeder::class,
-            ReviewPhotoSeeder::class,
-AwardsTableSeeder::class,
-ReviewReceiptSeeder::class,
-DoctorContactsSeeder::class,
+            // ReviewSeeder::class,
+            // ReviewPhotoSeeder::class,
+// AwardsTableSeeder::class,
+// ReviewReceiptSeeder::class,
+// DoctorContactsSeeder::class,
 FieldOfActivitySeeder::class,
 
 
