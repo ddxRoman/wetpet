@@ -77,9 +77,15 @@
                 {{-- Профиль --}}
                 <div class="d-flex align-items-center">
                     @guest
-                        <a href="{{ route('login') }}" title="Нажмите что бы авторизоваться" class="login_link">
-                            <button type="button" class="btn_login">Войти</button>
-                        </a>
+@guest
+    <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
+       title="Нажмите чтобы авторизоваться"
+       class="login_link">
+
+        <button type="button" class="btn_login">Войти</button>
+    </a>
+@endguest
+
                     @endguest
 
                     @auth
@@ -101,13 +107,19 @@
 
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" title="Перейти в профиль" href="{{ route('account') }}">Профиль</a>
-                                <a class="dropdown-item" title="Выйти из аккаунта" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Выйти
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+<form action="{{ route('logout') }}" method="POST">
+    @csrf
+
+    <input type="hidden"
+           name="redirect"
+           value="{{ request()->getRequestUri() }}">
+
+    <button type="submit"
+            class="dropdown-item">
+        Выйти
+    </button>
+</form>
+
                             </div>
                         </div>
                     @endauth

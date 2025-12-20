@@ -108,6 +108,7 @@
             display: none !important;
         }
     </style>
+<title>Восстановление пароля</title>
 </head>
 
 <body class="body_page">

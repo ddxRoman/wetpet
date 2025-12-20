@@ -130,6 +130,8 @@
     }
 </style>
 
+<title>Сброс пароля</title>
+
 <body class="body_page_reset_password">
     <div class="login-page">
         <a href="{{ url('/') }}">

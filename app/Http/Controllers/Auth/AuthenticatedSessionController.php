@@ -71,4 +71,16 @@ class AuthenticatedSessionController extends Controller
         return response()->noContent();
     }
 
+    protected function authenticated($request, $user)
+{
+    $redirect = $request->get('redirect', '/');
+
+    if (! str_starts_with($redirect, config('app.url'))) {
+        $redirect = '/';
+    }
+
+    return redirect()->intended($redirect);
+}
+
+
 }

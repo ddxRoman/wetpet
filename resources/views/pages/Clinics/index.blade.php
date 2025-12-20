@@ -18,11 +18,7 @@
     @else
     <div class="row g-4">
         @php
-        // безопасная фильтрация коллекции клиник на стороне представления:
-        // если контроллер уже отфильтровал — это вернёт всё то же самое,
-        // если нет — мы убережёмся и покажем только нужные.
         $filtered = $clinics->filter(function($clinic) use ($selectedCity) {
-        // в базе поле city может быть либо id, либо название — сравним по названию
         return isset($clinic->city) && (trim($clinic->city) === trim($selectedCity));
         })->values();
         @endphp

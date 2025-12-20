@@ -157,7 +157,10 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
 </div>
 @else
 <p class="text-muted mb-4">
-    Чтобы оставить отзыв, <a href="{{ route('login') }}" title="Нажмите что бы авторизоваться">войдите в аккаунт</a>.
+    Чтобы оставить отзыв,         <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
+   title="Нажмите чтобы авторизоваться"
+   class="login_link">
+войдите в аккаунт</a>.
 </p>
 @endauth
 

@@ -33,7 +33,11 @@ public function register(Request $request)
 
     Auth::login($user);
 
-    return redirect('/');
+
+    return redirect()->intended(
+        $request->get('redirect', '/')
+    );
+
 }
 
     // Показать форму входа
@@ -63,16 +67,32 @@ public function login(Request $request)
     }
 
     // Авторизация успешна
-    return redirect()->intended('/');
+    return redirect()->intended(
+        $request->get('redirect', '/')
+    );
 }
 
     // Выход
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
+public function logout(Request $request)
+{
+    Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    // получаем redirect из формы
+    $redirect = $request->input('redirect', '/');
+
+    // защита от внешних редиректов
+    if (! str_starts_with($redirect, '/')) {
+        $redirect = '/';
     }
+
+    return redirect($redirect);
+}
+
+
+
+
 
 }

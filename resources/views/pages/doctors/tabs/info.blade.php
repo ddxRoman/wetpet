@@ -26,8 +26,8 @@
     width: 16px;
     height: 16px;
     margin-left: 4px;
-    opacity: 0.8;
     transition: 0.2s;
+    opacity: 0;
 }
 
 .doctor-info-table a:hover img.go-icon {
@@ -85,8 +85,8 @@
 
         
                 <tr>
-                    <td>Образование:</td>
-                    <td style="color: red;"> Надо сделать проверку, и выводить образование если указано</td>
+                    <!-- <td>Образование:</td>
+                    <td style="color: red;"> Надо сделать проверку, и выводить образование если указано</td> -->
                 </tr>
                         @if($doctor->exotic_animals == 'Да')
         <tr>

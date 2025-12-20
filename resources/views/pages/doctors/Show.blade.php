@@ -97,4 +97,7 @@
         </div>
     </div>
 </div>
+<footer class="footer-fullwidth mt-auto w-100">
+    @include('layouts.footer')
+</footer>
 @endsection

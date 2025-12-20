@@ -119,7 +119,7 @@
         width: 25%;
     }
 </style>
-
+<title>Регистрация</title>
 <div class="register-container">
     <div class="register-box">
         <a href="{{ url('/') }}">
@@ -129,7 +129,9 @@
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
-
+@if(request('redirect'))
+    <input type="hidden" name="redirect" value="{{ request('redirect') }}">
+@endif
             <label for="name">Имя<span>*</span></label>
             <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
             @error('name')

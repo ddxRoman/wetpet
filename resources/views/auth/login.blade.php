@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
+
 @section('content')
+<title>Авторизация</title>
 <div class="body_page_auth">
     <div class="login-page">
 
@@ -17,6 +19,9 @@
 @endif
         <form method="POST" action="{{ route('login') }}">
             @csrf
+@if(request('redirect'))
+    <input type="hidden" name="redirect" value="{{ request('redirect') }}">
+@endif
 
             {{-- Поле Email --}}
             <input class="login_input" id="login" type="text" name="login" placeholder="Email" value="{{ old('login') }}" required autofocus>

@@ -7,6 +7,8 @@
 
         @if(Route::currentRouteName() === 'account.account')
     <title>Личный кабинет {{$user->nickname}}</title>
+        @elseif(Route::currentRouteName() === 'auth.login')
+    <title>Авторизация</title>
     @endif
 
 

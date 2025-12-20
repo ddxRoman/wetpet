@@ -385,7 +385,11 @@ $pets = Pet::where('user_id', auth()->id())
 </div>
 @else
 <p class="text-muted mb-4">
-    Чтобы оставить отзыв, <a href="{{ route('login') }}" title="Нажмите что бы авторизоваться">войдите в аккаунт</a>.
+        <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
+       title="Нажмите чтобы авторизоваться"
+       class="login_link">
+    
+    войдите в аккаунт</a>.
 </p>
 @endauth
                             <div class="form-check mb-3">
@@ -590,13 +594,21 @@ $reviews = Review::where('reviewable_id', $clinic->id)
 
                             <div class="row g-3">
                                 @forelse ($doctors as $doctor)
+                                @php
+    $doctorReviews = $doctor->reviews ?? collect();
+    $doctorAvgRating = $doctorReviews->avg('rating')
+        ? number_format($doctorReviews->avg('rating'), 1)
+        : '0.0';
+@endphp
+
                                 <div class="col-md-6 col-lg-4 col-sm-6">
                                                     <a href="{{ route('doctors.show', $doctor->id) }}" title="Перейти в профиль доктора" class="text-decoration-none text-reset">
                                     <div class="card h-100 shadow-sm border-0 position-relative doctor-card">
                                         {{-- Лапка с рейтингом --}}
                                         <div class="rating-badge">
                                             <img width="24px" src="{{ asset('storage/icon/stars/doctors_stars.png') }}" alt="Рейтинг">
-                                            <span class="rating-value">4.5</span>
+                                            <span class="rating-value">{{ $doctorAvgRating }}</span>
+
                                         </div>
                                         <div class="card-body text-center">
                                             <img src="{{ $doctor->photo ? asset('/storage/' . $doctor->photo) : asset('/storage/doctors/default-doctor.png') }}"
@@ -634,9 +646,9 @@ $reviews = Review::where('reviewable_id', $clinic->id)
               id="nextPhoto" style="opacity: 0.8;">❯</button>
     </div>
   </div>
-</body>
-        </main>
-        <footer class="footer-fullwidth mt-auto w-100">
+</main>
+<footer class="footer-fullwidth mt-auto w-100">
+            </body>
             @include('layouts.footer')
         </footer>
 </div>
