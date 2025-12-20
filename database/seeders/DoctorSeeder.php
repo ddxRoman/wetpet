@@ -27,7 +27,7 @@ class DoctorSeeder extends Seeder
                 'experience' => NULL,
                 'exotic_animals' => NULL,
                 'On_site_assistance' => NULL,
-                'photo' => 'doctors/biosfera/reshetnikova-200x200.jpg',
+                'photo' => 'doctors/biosfera/reshetnikova.jpg',
                 'description' => 'основатель и владелец ветеринарной клиники «Биосфера»',
             ],
             [

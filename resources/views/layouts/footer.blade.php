@@ -5,7 +5,7 @@
         <hr>
         <div class="row footer-content">
             <h2>{{ $brandname }}</h2>
-            <div class="col-4">
+            <!-- <div class="col-4">
 <ul>
     <li><a title="Меня карты сайта" href="#">Пункты карты сайта</a></li>
     <li><a title="Меня карты сайта" href="#">Пункты карты сайта</a></li>
@@ -28,10 +28,9 @@
     <li><a title="Меня карты сайта" href="#">Пункты карты сайта</a></li>
 </ul>
 
-            </div>
+            </div> -->
             <div class="footer_copyright">
-                Далеко-далеко, за словесными горами в стране гласных и согласных живут рыбные тексты. 
-                <br> Copyright 2025
+                Copyright 2025
             </div>
         </div>
     </div>

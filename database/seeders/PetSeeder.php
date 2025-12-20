@@ -3,34 +3,59 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 use App\Models\Pet;
-use App\Models\User;
-use App\Models\Animal;
 
 class PetSeeder extends Seeder
 {
+    /**
+     * Запуск сидера
+     */
     public function run(): void
     {
-        $faker = Faker::create('ru_RU');
-        $userIds = User::pluck('id')->toArray();
-        $animalIds = Animal::pluck('id')->toArray();
+        // Очищаем таблицу
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('pets')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        if (empty($animalIds)) {
-            $this->command->warn('⚠️ Таблица animals пуста. Сначала запусти AnimalSeeder.');
-            return;
-        }
+        $pets = [
+            [
+                'user_id' => 1,
+                'animal_id' => 1, // Собака
+                'name' => 'Бёрд',
+                'birth_date' => '2020-03-15',
+                'color' => 'Подпалый',
+                'gender' => 'Самка',
+                'photo' => 'pets/bonya.webp',
+            ],
+            [
+                'user_id' => 1,
+                'animal_id' => 2, // Кошка
+                'name' => 'Марсель',
+                'birth_date' => '2018-11-02',
+                'color' => 'Чёрный',
+                'gender' => 'Самец',
+                'photo' => 'pets/marsel.webp',
+            ],
+            [
+                'user_id' => 1,
+                'animal_id' => 1, // Собака
+                'name' => 'Боня',
+                'birth_date' => '2020-03-15',
+                'color' => 'Рыжий',
+                'gender' => 'Самка',
+                'photo' => 'pets/bonya.webp',
+            ],
+        ];
 
-        foreach (range(1, 30) as $i) {
+        foreach ($pets as $pet) {
             Pet::create([
-                'user_id'    => $faker->randomElement($userIds),
-                'animal_id'  => $faker->randomElement($animalIds),
-                'name'       => $faker->firstName,
-                'birth_date' => $faker->date(),
-                'color'      => $faker->safeColorName,
-                'gender' => $faker->randomElement(['Самец', 'Самка']),
-                'photo'      => null,
+                ...$pet,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
+
+        $this->command->info('✅ Питомцы успешно добавлены.');
     }
 }
