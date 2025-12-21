@@ -135,7 +135,6 @@ public function getReviews()
     }
 }
 
-
     // === Обновление отзыва ===
     public function updateReview(Request $request, $id)
     {

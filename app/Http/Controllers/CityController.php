@@ -148,6 +148,11 @@ public function getCities()
      */
     public function set(Request $request)
     {
+        logger()->info('CityController@set called', [
+    'request' => $request->all(),
+    'session_before' => session()->all(),
+]);
+
         $request->validate([
             'city_id' => 'required|exists:cities,id',
         ]);
@@ -159,6 +164,8 @@ public function getCities()
             'city_id' => $city->id,
             'city_name' => $city->name,
         ]);
+        logger()->info('CityController@set session after', session()->all());
+
 
         // Если пользователь авторизован — обновляем поле city_id в users
         if (auth()->check()) {

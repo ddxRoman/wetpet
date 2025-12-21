@@ -17,18 +17,6 @@ class LoginController extends Controller
     return view('auth.login');
 }
 
-
-protected function authenticated(Request $request, $user)
-{
-    if ($user->city) {
-        session([
-            'city_id'   => $user->city->id,
-            'city_name' => $user->city->name,
-        ]);
-    }
-}
-
-
     /*
     |--------------------------------------------------------------------------
     | Login Controller
