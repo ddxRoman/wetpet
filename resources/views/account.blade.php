@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 
-
 @section('content')
 
+<title>Личный кабинет пользователя</title>
 
 <div class="body_page">
     {{-- 🔹 Навбар --}}

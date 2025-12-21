@@ -21,30 +21,30 @@ class PetSeeder extends Seeder
         $pets = [
             [
                 'user_id' => 1,
-                'animal_id' => 1, // Собака
+                'animal_id' => 42, // Собака
                 'name' => 'Бёрд',
-                'birth_date' => '2020-03-15',
+                'birth_date' => '2024-03-15',
                 'color' => 'Подпалый',
                 'gender' => 'Самка',
-                'photo' => 'pets/bonya.webp',
+                'photo' => 'pets/Bird_dog.jpg',
             ],
             [
                 'user_id' => 1,
-                'animal_id' => 2, // Кошка
-                'name' => 'Марсель',
-                'birth_date' => '2018-11-02',
-                'color' => 'Чёрный',
-                'gender' => 'Самец',
-                'photo' => 'pets/marsel.webp',
-            ],
-            [
-                'user_id' => 1,
-                'animal_id' => 1, // Собака
-                'name' => 'Боня',
-                'birth_date' => '2020-03-15',
-                'color' => 'Рыжий',
+                'animal_id' => 83, // Кошка
+                'name' => 'Рыся',
+                'birth_date' => '2016-11-02',
+                'color' => 'Коричневый',
                 'gender' => 'Самка',
-                'photo' => 'pets/bonya.webp',
+                'photo' => 'pets/Ryska.jpg',
+            ],
+            [
+                'user_id' => 1,
+                'animal_id' => 29, // Собака
+                'name' => 'Пряник',
+                'birth_date' => '2013-04-12',
+                'color' => 'Палевый',
+                'gender' => 'Самец',
+                'photo' => 'pets/pryanik.jpg',
             ],
         ];
 

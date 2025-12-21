@@ -17,6 +17,7 @@ use App\Http\Controllers\{
     FieldOfActivityController,
     AddDoctorController,
     OrganizationController,
+    testController,
 };
 
 /*
@@ -28,10 +29,9 @@ use App\Http\Controllers\{
 // 🏠 Главная
 Route::get('/', [DoctorController::class, 'welcome'])->name('welcome');
 Route::get('/home', [DoctorController::class, 'welcome'])->name('welcome');
+Route::get('/test', [testController::class, 'test'])->name('test');
 
-Route::get('/test', function () {
-    return view('pages.clinics.tabs.test');
-})->name('clinics.tabs.test');
+
 
 // 🔐 Аутентификация
 Auth::routes();

@@ -89,10 +89,8 @@ public function logout(Request $request)
     }
 
     return redirect($redirect);
+    
 }
-
-
-
 
 
 }

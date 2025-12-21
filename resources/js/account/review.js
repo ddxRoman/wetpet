@@ -50,6 +50,7 @@ function renderCard(r) {
     data-rating="${r.rating ?? 0}">
 
     <header class="review-header">
+    <img src="" alt="">
         <div class="clinic-info-block">
             <a href="/${isClinic ? 'clinics' : 'doctors'}/${r.target_id}" 
             title="Открыть"

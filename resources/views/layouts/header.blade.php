@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}" type="image/vnd.microsoft.icon">
 <meta name="robots" content="all"/>
-<meta name="robots" content="noindex, follow"/>
+<meta name="robots" content="index, follow"/>
 <!--Робот выберет значение all, текст и ссылки будут проиндексированы.-->
 
     @if(Route::currentRouteName() === 'clinics.show')
@@ -134,7 +134,7 @@
 
             <div class="text-center mt-3">
                 <h1>Сайт про домашних животных</h1>
-                <p>
+                <p class="description_index_page">
                     На сайте вы сможете найти ветеринарные клиники, ветгостиницы, лекарства, ветеринаров и грумеров,<br>
                     а также прочесть отзывы о породах от владельцев.
                 </p>

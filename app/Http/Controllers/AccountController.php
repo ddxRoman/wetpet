@@ -12,6 +12,7 @@ use App\Models\Pet;
 
 class AccountController extends Controller
 {
+    
     // === Страница аккаунта ===
     public function index()
     {
