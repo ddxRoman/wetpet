@@ -38,6 +38,7 @@
 </head>
 
 
+
 <body class="body_page">
 <header class="site-header 
         {{ request()->is('clinics*') ? 'compact-header' : '' }}

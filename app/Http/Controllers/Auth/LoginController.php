@@ -18,6 +18,15 @@ class LoginController extends Controller
 }
 
 
+protected function authenticated(Request $request, $user)
+{
+    if ($user->city) {
+        session([
+            'city_id'   => $user->city->id,
+            'city_name' => $user->city->name,
+        ]);
+    }
+}
 
 
     /*
