@@ -22,7 +22,7 @@
      style="max-width:420px;">
 
     <div class="city-current" style="display:flex;align-items:center;gap:.4rem;">
-        <strong>Город:</strong>
+            <strong class="city_world">Город:</strong>
         <button id="open-city-modal"
                 class="select_city_btn"
                 aria-haspopup="dialog">

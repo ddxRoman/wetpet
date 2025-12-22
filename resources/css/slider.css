@@ -278,6 +278,14 @@ h2 span {
 .Scriptcontent{
 	line-height:28px;	
 }
+.header_in_account h1{
+  display: none;
+}
+
+.header_in_account h1{
+  display: none;
+}
+
 .ScriptHeader h1{
 	font-family: "brandon-grotesque", "Brandon Grotesque", "Source Sans Pro", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
   text-rendering: optimizeLegibility;

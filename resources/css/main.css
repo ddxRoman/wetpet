@@ -45,6 +45,7 @@ header {
     justify-self: center;
 }
 
+
 .right-block {
     justify-self: end;
 }
@@ -62,6 +63,7 @@ header {
     width: 148px;
     margin-top: 0;
 }
+
 
 .profile_block {
     position: relative;
@@ -1715,10 +1717,15 @@ a {
     cursor: pointer;
 }
 
+
+
 /* Медиа запросы */
 @media (max-width: 768px) {
     .site-header {
         min-height: auto;
+    }
+        .city_world{
+        display: none;
     }
     .description_index_page{
         display: none;
@@ -1863,6 +1870,10 @@ a {
         display: none;
     }
 
+        .city_world{
+        display: none;
+    }
+
     .category_icon {
         width: 50px;
         height: 40%;
@@ -1925,3 +1936,4 @@ a {
 .select2-container--default .select2-selection--single:hover {
     border-color: #007bff !important;
 }
+

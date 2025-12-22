@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
                 'nickname' => 'DDX',
                 'email' => 'ddxman@mail.ru',
                 'birth_date' => '12.05.1994',
-                'avatar' => 'avatars/5jtUKDlJGZoEGsQECo7NuxedJ8tFgboctKWJVQhL.webp',
+                'avatar' => 'avatars/me-avatar.jpg',
                 'phone' => '+79667404577',
                 'password' => Hash::make('12345678'),
                 'city_id' => 21,

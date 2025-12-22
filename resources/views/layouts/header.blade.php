@@ -37,7 +37,61 @@
 
 </head>
 
+<style>
+   /* ================= МОБИЛЬНЫЙ ХЕДЕР — 1 СТРОКА ================= */
+@media (max-width: 768px) {
 
+    .header-grid {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+    }
+
+    /* ===== Бургер слева ===== */
+    .burger-block {
+        justify-self: start;
+        margin-top: -4px;
+    }
+
+    /* ===== Логотип строго по центру экрана ===== */
+    .logo-block {
+        justify-self: end;
+    }
+
+    /* ===== Город справа ===== */
+    .city-block {
+        justify-self: center;
+        font-size: 14px;
+    }
+
+    /* ===== Профиль скрыт (он в бургере) ===== */
+    .right-block {
+        display: none !important;
+    }
+
+    /* ===== КНОПКА БУРГЕРА ===== */
+    .burger-block .btn {
+        width: 38px;
+        height: 38px;
+        border: 1px solid #000;
+        border-radius: 6px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    /* ===== SVG-бургер ===== */
+    .burger-icon line {
+        stroke: #000;
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+}
+
+
+</style>
 
 <body class="body_page">
 <header class="site-header 
@@ -50,6 +104,31 @@
         <div class="header-grid">
 
             {{-- ==== Левый блок (город) ==== --}}
+
+            {{-- Бургер (мобилка) --}}
+<div class="d-flex d-md-none align-items-center burger-block">
+<button class="btn p-1 border border-dark burger-btn"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#mobileMenu"
+        title="Открыть меню">
+
+    <svg class="burger-icon"
+         width="22"
+         height="22"
+         viewBox="0 0 24 24"
+         fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+
+</button>
+
+</div>
+
             <div class="city-block">
                 @include('partials.city-selector')
             </div>
@@ -60,9 +139,9 @@
                     <img class="header_logo" title="Логотип зверозор" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
                 </a>
             </div>
-
             {{-- ==== Правый блок (кнопки + профиль) ==== --}}
-            <div class="right-block d-flex align-items-center gap-3">
+            <div class="right-block d-none d-md-flex align-items-center gap-3">
+
 
                 {{-- Кнопки --}}
                 <div class="d-none d-md-flex gap-2">
@@ -150,9 +229,74 @@
         @endif
 
     </div>
+{{-- Мобильное бургер-меню --}}
+<div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     id="mobileMenu"
+     aria-labelledby="mobileMenuLabel">
+
+     {{-- Профиль в мобильном меню --}}
+@auth
+    <div class="mobile-user mb-4">
+
+        <div class="d-flex align-items-center gap-2">
+            <img class="avatars_pics"
+                 src="{{ asset($link) }}"
+                 alt="Аватар">
+
+            <div class="d-flex flex-column">
+                <strong>{{ Auth::user()->name }}</strong>
+                <a href="{{ route('account') }}"
+                   class="text-decoration-none small">
+                    Профиль
+                </a>
+            </div>
+        </div>
+
+    </div>
+@endauth
+
+@guest
+    <div class="mobile-user mb-4">
+        <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
+           class="btn btn-outline-primary w-100">
+            Войти
+        </a>
+    </div>
+@endguest
+
+
+    {{-- Header --}}
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileMenuLabel">
+            Меню
+        </h5>
+
+        {{-- Крестик справа --}}
+        <button type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Закрыть"></button>
+    </div>
+
+    {{-- Body --}}
+    <div class="offcanvas-body d-flex flex-column gap-3">
+
+<button class="btn btn-outline-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addDoctorModal"
+        data-bs-dismiss="offcanvas">
+            Добавить организацию
+        </button>
+
+<button class="btn btn-outline-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addDoctorModal"
+        data-bs-dismiss="offcanvas">
+            Добавить специалиста
+        </button>
+
+    </div>
+</div>
 
 </header>
-
-<style>
-
-</style>

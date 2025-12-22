@@ -1,9 +1,11 @@
+<title>Личный кабинет пользователя</title>
 @extends('layouts.app')
 
 
 @section('content')
-
-<title>Личный кабинет пользователя</title>
+<div class="header_in_account">
+    @include('layouts.header')
+</div>
 
 <div class="body_page">
     {{-- 🔹 Навбар --}}
