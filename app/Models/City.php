@@ -12,4 +12,11 @@ public function users()
 {
     return $this->hasMany(User::class);
 }
+
+
+    protected $casts = [
+        'large_city' => 'boolean',
+    ];
+
+
 }

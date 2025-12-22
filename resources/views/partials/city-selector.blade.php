@@ -56,15 +56,15 @@
     const citiesIndexUrl = wrapper.dataset.citiesIndexUrl;
     const citiesSetUrl   = wrapper.dataset.citiesSetUrl;
 
-    const openBtn = document.getElementById('open-city-modal');
+    const openBtn  = document.getElementById('open-city-modal');
     const closeBtn = document.getElementById('close-city-modal');
-    const modal = document.getElementById('city-modal');
-    const list = document.getElementById('city-list');
-    const search = document.getElementById('city-search');
+    const modal    = document.getElementById('city-modal');
+    const list     = document.getElementById('city-list');
+    const search   = document.getElementById('city-search');
 
-    let allCities = [];
+    let allCities   = [];
+    let largeCities = [];
 
-    // 🔹 Автопоказ модалки, если города нет
     document.addEventListener('DOMContentLoaded', () => {
         if (!hasCity) {
             modal.style.display = 'block';
@@ -77,7 +77,7 @@
         modal.style.display = 'block';
 
         if (allCities.length) {
-            renderCities(allCities);
+            renderCities(largeCities);
         } else {
             loadAllCities();
         }
@@ -104,7 +104,11 @@
             if (!res.ok) throw new Error(res.status);
 
             allCities = await res.json();
-            renderCities(allCities);
+
+            // ✅ large_city приходит как 1 / 0
+            largeCities = allCities.filter(c => Number(c.large_city) === 1);
+
+            renderCities(largeCities);
         } catch {
             list.innerHTML =
                 '<div style="padding:1rem;text-align:center;color:red;">Ошибка загрузки</div>';
@@ -112,9 +116,14 @@
     }
 
     function renderCities(cities) {
+        if (!cities.length) {
+            list.innerHTML =
+                '<div style="padding:1rem;text-align:center;color:#777;">Ничего не найдено</div>';
+            return;
+        }
+
         list.innerHTML = cities.map(c => `
-            <button class="city-item"
-                    data-id="${c.id}">
+            <button class="city-item" data-id="${c.id}">
                 ${c.name}
             </button>
         `).join('');
@@ -154,7 +163,7 @@
         const q = search.value.trim().toLowerCase();
 
         if (!q) {
-            renderCities(allCities);
+            renderCities(largeCities);
             return;
         }
 

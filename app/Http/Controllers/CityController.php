@@ -139,7 +139,7 @@ public function getCities()
         });
     }
 
-    $cities = $query->orderBy('name')->get(['id', 'name']);
+    $cities = $query->orderBy('name')->get(['id', 'name', 'large_city']);
 
     return response()->json($cities);
 }

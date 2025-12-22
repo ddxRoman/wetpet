@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('slug')->unique(); // slug для URL/поиска
             $table->string('region')->nullable();
             $table->string('country')->nullable();
+            $table->boolean('large_city')->default(false);
+
             $table->enum('verified', ['confirmed', 'unconfirmed'])->default('unconfirmed');
             $table->string('user_id')->nullable();
             $table->timestamps();
