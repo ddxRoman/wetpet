@@ -24,11 +24,14 @@
 
     {{-- КНОПКА НАЗАД --}}
     <div class="mb-4">
-        <a href="{{ route('doctors.index') }}"
-           class="btn btn-outline-primary"
+
+                        <div class="mb-3">
+                <a href="{{ route('doctors.index') }}" class="btn btn-outline-primary"
            title="Вернутся к каталогу всех врачей города">
-            ← В каталог врачей
-        </a>
+                    <img src="{{ asset('storage/icon/button/arrow-back.svg') }}" width="22" alt="paw">
+                    В каталог
+                </a>
+            </div>
     </div>
 
     {{-- ШАПКА --}}
