@@ -47,9 +47,9 @@
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <div class="div_btn_category category_disabled">
-                <div class="text_menu_btn_category ">Работа <br> для животных</div>
+                <div class="text_menu_btn_category ">Зоомагазины</div>
                 <div class="div_btn_category_icon">
-                    <img class="category_icon" title="Открыть обьявления о работе для животных" src="{{ Storage::url('icon/button/menu/petjob_menu.webp') }}" alt="Работа для животных">
+                    <img class="category_icon" title="Открыть обьявления о работе для животных" src="{{ Storage::url('icon/button/menu/petjob_menu.webp') }}" alt="Зоомагазины">
                 </div>
                 <div class="will_be_soon">Скоро</div>
             </div>

@@ -37,7 +37,7 @@ header {
 
 .header-grid {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
 }
 
@@ -1937,3 +1937,71 @@ a {
     border-color: #007bff !important;
 }
 
+/* ================= МОБИЛЬНЫЙ ХЕДЕР ================= */
+@media (max-width: 768px) {
+
+    /* Сетка хедера */
+    .header-grid {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+    }
+
+    /* Бургер */
+    .burger-block {
+        justify-self: start;
+        margin-top: -4px;
+    }
+
+    /* Логотип по центру */
+    .logo-block {
+        justify-self: center;
+    }
+
+    /* ГОРОД В ХЕДЕРЕ — СКРЫТ НА МОБИЛКЕ */
+    .city-block {
+        display: none !important;
+    }
+
+    /* Профиль в хедере скрыт */
+    .right-block {
+        display: none !important;
+    }
+
+    /* Кнопка бургера */
+    .burger-block .btn {
+        width: 38px;
+        height: 38px;
+        border: 1px solid #000;
+        border-radius: 6px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .burger-icon line {
+        stroke: #000;
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+
+    .burger-profile {
+        font-size: 22px;
+        font-weight: 600;
+        color: #000;
+    }
+
+    .btn_burger-menu {
+        border: none;
+        color: #3d7cc4ff;
+        height: 4vh;
+        background-color: #5072bd10;
+        font-weight: 600;
+    }
+
+    .offcanvas-body {
+        background-color: #a3d3a61c;
+    }
+}
