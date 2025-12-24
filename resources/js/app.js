@@ -13,6 +13,7 @@ import './account/account';
 import './account/cropper-init'; 
 import './account/toast'; 
 import './reset_password/timer_mail_reset';
+import './slider/personal_recommendations';
 
 
 // console.log('app.js loaded');

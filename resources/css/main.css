@@ -1099,7 +1099,8 @@ select:focus {
 
 .review-header {
     display: flex;
-    justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 8px;
@@ -1844,10 +1845,6 @@ a {
         border-radius: 10px;
     }
 
-    .review-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
 
     .review-header .right {
         margin-top: 10px;

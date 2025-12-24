@@ -1,5 +1,6 @@
+
 <style>
-/* ====== Базовые стили (десктоп — без изменений) ====== */
+/* ====== Базовые стили ====== */
 .slider_section {
   padding: 50px 0;
   background: #fff;
@@ -26,6 +27,7 @@
   margin: 0 auto;
 }
 
+/* ====== Слайды ====== */
 .carousel__slides {
   list-style: none;
   padding: 0;
@@ -36,13 +38,18 @@
   margin: 0;
 }
 
+/* Главное изображение */
 .carousel__slide_img_prewiew {
-  width: 100%;
-  height: 400px;
+  width: 75%;
+  height: 350px;
+  aspect-ratio: 2 / 1;
   object-fit: cover;
   border-radius: 15px;
+  margin: 0 auto;
+  display: block;
 }
 
+/* ====== Миниатюры ====== */
 .carousel__thumbnails {
   display: flex;
   justify-content: center;
@@ -55,19 +62,20 @@
 }
 
 .carousel__slide_img {
-  width: 80px;
-  height: 60px;
+  width: 60px;               /* ~75% от прежних */
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 8px;
   cursor: pointer;
   opacity: 0.8;
-  transition: 0.3s;
+  transition: opacity 0.3s;
 }
 
 .carousel__slide_img:hover {
   opacity: 1;
 }
 
+/* ====== Текст ====== */
 figcaption {
   font-size: 1rem;
   margin-top: 10px;
@@ -80,7 +88,7 @@ figcaption {
   color: #777;
 }
 
-/* ====== Мобильная адаптация ====== */
+/* ====== Планшеты и мобилки ====== */
 @media (max-width: 992px) {
   .carousel {
     overflow-x: auto;
@@ -91,13 +99,12 @@ figcaption {
     padding: 0 10px;
   }
 
-  /* Прячем radio-инпуты и миниатюры — они не нужны на телефоне */
+  /* Прячем radio и миниатюры */
   .carousel input,
   .carousel__thumbnails {
     display: none;
   }
 
-  /* Слайды становятся горизонтально прокручиваемыми */
   .carousel__slides {
     display: flex;
     flex-wrap: nowrap;
@@ -114,8 +121,7 @@ figcaption {
   }
 
   .carousel__slide_img_prewiew {
-    height: 220px;
-    border-radius: 15px 15px 0 0;
+    width: 85%;
   }
 
   figcaption {
@@ -142,7 +148,7 @@ figcaption {
   }
 
   .carousel__slide_img_prewiew {
-    height: 180px;
+    width: 90%;
   }
 
   .top_rank_doctor_h3 {
@@ -153,6 +159,7 @@ figcaption {
     font-size: 0.85rem;
   }
 }
+
 </style>
 
 <section class="slider_section">
@@ -196,16 +203,18 @@ figcaption {
             <figcaption>
               <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->id) }}">
                 {{ $item->name }}
+</a>
+<a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->id) }}?tab=reviews">
 
                 <span class="credit">
-                    ⭐ {{ $item->avg_rating }} / 55
+                    ⭐ {{ $item->avg_rating }} / 5
                     ({{ $item->reviews_count }} отзывов)
                 </span>
-
+</a>
                 <div style="margin-top:5px;">
                     {{ Str::limit($item->description, 80) }}
                 </div>
-                </a>
+                
             </figcaption>
         </figure>
     </li>
@@ -239,3 +248,4 @@ figcaption {
     </div>
   </div>
 </section>
+    @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
