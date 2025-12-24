@@ -7,6 +7,10 @@
 
         @if(Route::currentRouteName() === 'account.account')
     <title>Личный кабинет {{$user->nickname}}</title>
+    @elseif(Route::currentRouteName() === 'auth.login')
+    <title>Авторизация</title>
+    <meta name="description" content="Зарегистрироваться на сайте зверозор оставить отзыв о ветеринаре и клинике, прочесть отзывы реальных людей, найти клинику в вашем городе">
+    
     @endif
 
 

@@ -2,7 +2,10 @@
 
 
 @section('content')
-<title>Авторизация</title>
+
+    <title>Авторизация на сайте | Зверозор</title>
+    <meta name="description" content="Зарегистрироваться на сайте зверозор оставить отзыв о ветеринаре и клинике, прочесть отзывы реальных людей, найти клинику в вашем городе">
+    
 <div class="body_page_auth">
     <div class="login-page">
 
