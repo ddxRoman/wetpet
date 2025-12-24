@@ -194,16 +194,18 @@ figcaption {
             </div>
 
             <figcaption>
+              <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->id) }}">
                 {{ $item->name }}
 
                 <span class="credit">
-                    ⭐ {{ $item->avg_rating }} / 5
+                    ⭐ {{ $item->avg_rating }} / 55
                     ({{ $item->reviews_count }} отзывов)
                 </span>
 
                 <div style="margin-top:5px;">
                     {{ Str::limit($item->description, 80) }}
                 </div>
+                </a>
             </figcaption>
         </figure>
     </li>
