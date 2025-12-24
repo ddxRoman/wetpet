@@ -279,6 +279,14 @@
     {{-- BODY --}}
     <div class="offcanvas-body d-flex flex-column gap-3">
 
+{{-- Выбор города (мобилка) --}}
+<button class="btn_burger-menu"
+        data-bs-toggle="modal"
+        data-bs-target="#citySelectModal">
+    📍 {{ $currentCityName ?? 'Выбрать город' }}
+</button>
+
+
         @guest
             <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
                class="btn btn-outline-primary w-100">
@@ -302,7 +310,4 @@
 
     </div>
 </div>
-
-
-
 </header>

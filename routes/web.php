@@ -17,6 +17,7 @@ use App\Http\Controllers\{
     FieldOfActivityController,
     AddDoctorController,
     OrganizationController,
+    HomeController,
     testController,
 };
 
@@ -28,6 +29,7 @@ use App\Http\Controllers\{
 
 // 🏠 Главная
 Route::get('/', [DoctorController::class, 'welcome'])->name('welcome');
+Route::get('/', [HomeController::class, 'index']);
 Route::get('/home', [DoctorController::class, 'welcome'])->name('welcome');
 Route::get('/test', [testController::class, 'test'])->name('test');
 

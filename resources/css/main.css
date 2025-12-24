@@ -1959,9 +1959,7 @@ a {
     }
 
     /* ГОРОД В ХЕДЕРЕ — СКРЫТ НА МОБИЛКЕ */
-    .city-block {
-        display: none !important;
-    }
+
 
     /* Профиль в хедере скрыт */
     .right-block {
@@ -2004,4 +2002,19 @@ a {
     .offcanvas-body {
         background-color: #a3d3a61c;
     }
+
+    /* ===== ГОРОД: десктоп / мобилка ===== */
+@media (max-width: 768px) {
+    .city-block {
+        display: none !important; /* прячем город в хедере */
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-city {
+        display: none !important; /* город в бургере только для мобилки */
+    }
+}
+
+
 }
