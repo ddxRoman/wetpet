@@ -151,6 +151,18 @@ class DoctorSeeder extends Seeder
                 'photo' => 'doctors/biosfera/martyrosiayan.png',
                 'description' => '',
             ],
+            [
+                'name' => 'Гурин Данил  Игоревич',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, хирург',
+                'clinic_id' => 1,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => 'doctors/biosfera/martyrosiayan.png',
+                'description' => '',
+            ],
         ];
 
         
