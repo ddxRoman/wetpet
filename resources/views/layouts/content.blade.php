@@ -2,4 +2,4 @@
 @include('layouts.modules.menu')
 @include('layouts.modules.personal recommendations')
 @include('layouts.modules.popular_in_city')
-@include('layouts.modules.top_rank_doctor', ['doctors' => $doctors ?? collect()])
+<!-- @include('layouts.modules.top_rank_doctor', ['doctors' => $doctors ?? collect()]) -->

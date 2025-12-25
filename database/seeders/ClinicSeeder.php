@@ -72,7 +72,7 @@ class ClinicSeeder extends Seeder
                 'house' => '56А',
                 'address_comment' => 'Около ТЦ "Пассаж"',
                 'logo' => 'clinics/logo/vetlazaret.png',
-                'description' => 'Сеть клиник "Айболит" — помощь питомцам 24/7. Стационар, хирургия, УЗИ, стоматология.',
+                'description' => 'Ветлазарет — помощь питомцам 24/7. Стационар, хирургия, УЗИ, стоматология.',
                 'phone1' => '+7 (343) 333-22-11',
                 'phone2' => null,
                 'email' => 'aibolit24@vet.ru',
