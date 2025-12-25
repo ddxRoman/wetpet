@@ -11,34 +11,84 @@
 <meta name="robots" content="index, follow"/>
 <!--Робот выберет значение all, текст и ссылки будут проиндексированы.-->
 
-    @if(Route::currentRouteName() === 'clinics.show')
-        <meta name="description" content="Узнать стоимость услуг, посмотреть график работы прочитать и оставить отзывы на ветеринарную клинику">
+@if(Route::currentRouteName() === 'clinics.show')
+@php
+    $seoCity = $pageCityName ?? $currentCityName;
+@endphp
 
-        <title>{{ $clinic->name ? $clinic->name .' '. $currentCityName . ' — контакты и отзывы о клинике в городе '   : 'Сайт про домашних животных в твоём городе' }}</title>
-    @elseif(Route::currentRouteName() === 'clinics.index')
-        <meta name="description" content="Найти ветеринарную клинику в городе, узнать ретинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
-        <title>{{'Все ветеринарные клиники города '. $currentCityName}}</title>
-    @elseif(Route::currentRouteName() === 'doctors.show')
-        <link rel="canonical" href="{{ route('doctors.show', $doctor->slug) }}">
-        <meta name="description" content="Узнать стоимость услуг у специалиста, записаться на приём, информация об образовани и месте работы прочитать и оставить отзывы на ветеринарного врача в городе ">
-        <title>{{ $doctor->name ? $doctor->name . ' —  информация о специалисте '  : 'Сайт про домашних животных' }}</title>
-    @elseif(Route::currentRouteName() === 'doctors.index')
-        <meta name="description" content="Узнать стоимость услуг, записаться на приём, прочитать и оставить отзывы на ветеринарного врача">
-        <title>{{'Список ветеринарных врачей города '. $currentCityName }}</title>
-    @elseif(Route::currentRouteName() === 'auth.login')
-    <title>Авторизация</title>
-    <meta name="description" content="Зарегистрироваться на сайте зверозор оставить отзыв о ветеринаре и клинике, прочесть отзывы реальных людей, найти клинику в вашем городе">
-    @else
-        <meta name="description" content="Зверозор прочитать отзывы о домашних животных, ветеринарных клиниках, и врачах - делимся опытом, находим лучших врачей и проверенные клиники">
-        <title>
-    {{ filled($brandname) 
-        ? $brandname . ' — сайт про домашних животных' 
-        : 'Сайт про домашних животных' 
+<meta
+    name="description"
+    content="{{ $clinic->name
+        ? 'Ветеринарная клиника ' . $clinic->name . ' в городе ' . $seoCity . ', стоимость услуг, посмотреть график работы, прочитать и оставить отзывы, найти контакты'
+        : 'Сайт про домашних животных в вашем городе'
+    }}"
+>
+
+<title>
+    {{ $clinic->name
+        ? $clinic->name . ' ' . $seoCity . ' — адрес, отзывы о клинике'
+        : 'Сайт про домашних животных в твоём городе'
     }}
 </title>
 
 
-    @endif
+@elseif(Route::currentRouteName() === 'clinics.index')
+    <meta name="description" content="Найти ветеринарную клинику в городе, узнать рейтинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
+    <title>{{ 'Все ветеринарные клиники города ' . $currentCityName }}</title>
+
+@elseif(Route::currentRouteName() === 'doctors.show')
+@php
+    $seoCity   = $pageCityName ?? $doctor->city?->name ?? $currentCityName;
+    $seoClinic = $doctor->clinic?->name;
+@endphp
+
+<link rel="canonical" href="{{ route('doctors.show', $doctor->slug) }}">
+
+<meta
+    name="description"
+    content="{{ $doctor->name
+        ? 'Ветеринарный врач ' . $doctor->name
+            . ($doctor->specialization ? ' — ' . mb_strtolower($doctor->specialization) : '')
+            . ($seoClinic ? ', клиника ' . $seoClinic : '')
+            . ' в городе ' . $seoCity
+            . '. Узнать стоимость услуг, прочитать отзывы.'
+        : 'Сайт про домашних животных'
+    }}"
+>
+
+
+<title>
+    {{ $doctor->name
+        ? $doctor->name
+            . ($seoClinic ? ' — ' . $seoClinic : '')
+            . ' ветеринар ' . $seoCity
+        : 'Сайт про домашних животных'
+    }}
+</title>
+
+
+@elseif(Route::currentRouteName() === 'doctors.index')
+    <meta name="description" content="Узнать стоимость услуг, записаться на приём, прочитать и оставить отзывы на ветеринарного врача">
+    <title>{{ 'Список ветеринарных врачей города ' . $currentCityName }}</title>
+
+@elseif(Route::currentRouteName() === 'auth.login')
+    <title>Авторизация</title>
+    <meta name="description" content="Зарегистрироваться на сайте зверозор оставить отзыв о ветеринаре и клинике, прочесть отзывы реальных людей, найти клинику в вашем городе">
+
+@else
+    <meta name="description" content="Зверозор прочитать отзывы о домашних животных, ветеринарных клиниках, и врачах - делимся опытом, находим лучших врачей и проверенные клиники">
+    <title>
+        {{ filled($brandname)
+            ? $brandname . ' — сайт про домашних животных'
+            : 'Сайт про домашних животных'
+        }}
+    </title>
+@endif
+
+
+
+
+
 
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 

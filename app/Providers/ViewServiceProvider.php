@@ -19,21 +19,52 @@ class ViewServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
+ public function boot(): void
     {
-        // 🔹 1. Передаём текущий выбранный город
         View::composer('*', function ($view) {
-            $currentCityName = auth()->user()?->city?->name ?? session('city_name', 'Выберите город');
-            $view->with('currentCityName', $currentCityName);
+
+            $data = $view->getData();
+
+            /**
+             * 🧭 1. Город, выбранный пользователем (как есть)
+             */
+            $currentCityName =
+                auth()->user()?->city?->name
+                ?? session('city_name')
+                ?? 'Выберите город';
+
+            /**
+             * 🏥 2. Город конкретной страницы
+             */
+            $pageCityName = null;
+
+            // 👉 Страница врача
+            if (isset($data['doctor'])) {
+
+                // doctors.city_id → cities.name
+                if ($data['doctor']->relationLoaded('city') && $data['doctor']->city) {
+                    $pageCityName = $data['doctor']->city->name;
+                }
+            }
+
+            // 👉 Страница клиники
+            if (!$pageCityName && isset($data['clinic'])) {
+
+                // clinics.city (строка)
+                $pageCityName = $data['clinic']->city;
+            }
+
+            $view->with([
+                'currentCityName' => $currentCityName,
+                'pageCityName'     => $pageCityName,
+            ]);
         });
 
-        // 🔹 2. Передаём все города для селектов
+        /**
+         * 🔹 Все города (селекты)
+         */
         View::composer('*', function ($view) {
-            $cities = City::orderBy('name')->get();
-
             $view->with('cities', City::orderBy('name')->get());
-            
         });
-        
     }
 }

@@ -39,6 +39,7 @@ public function index(Request $request)
 public function show(Clinic $clinic)
 {
     $clinic->load('awards');
+$clinic->load('doctors'); // city уже строка
 
     return view('pages.clinics.show', compact('clinic'));
 }

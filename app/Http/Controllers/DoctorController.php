@@ -51,13 +51,14 @@ public function index(\Illuminate\Http\Request $request)
     // 🔹 Передача докторов на welcome
     public function welcome()
     {
-        $doctors = Doctor::orderBy('name')->limit(12)->get(); // Можно ограничить до, например, 12
+        $doctors = Doctor::orderBy('name')->limit(120)->get(); // Можно ограничить до, например, 12
         return view('welcome', compact('doctors'));
     }
 
 public function show(Doctor $doctor)
 {
     $doctor->load([
+        'city',
         'clinic',
         'contacts',
         'services' => function ($q) use ($doctor) {

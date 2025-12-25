@@ -67,5 +67,9 @@ public function awards()
     return $this->hasMany(Award::class);
 }
 
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
+    }
 
 }
