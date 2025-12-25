@@ -1,3 +1,5 @@
+<!-- Карточка одной отдельной записи -->
+
 @php
 use App\Models\Pet;
 @endphp
@@ -304,6 +306,7 @@ $pets = Pet::where('user_id', auth()->id())
                 @endif
 
                 <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
+                <input type="hidden" name="redirect_slug" value="{{ $clinic->slug }}">
                 <input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
 
 {{-- ⭐ Оценка --}}
@@ -602,7 +605,7 @@ $reviews = Review::where('reviewable_id', $clinic->id)
 @endphp
 
                                 <div class="col-md-6 col-lg-4 col-sm-6">
-                                                    <a href="{{ route('doctors.show', $doctor->id) }}" title="Перейти в профиль доктора" class="text-decoration-none text-reset">
+                                                    <a href="{{ route('doctors.show', $doctor->slug) }}" title="Перейти в профиль доктора" class="text-decoration-none text-reset">
                                     <div class="card h-100 shadow-sm border-0 position-relative doctor-card">
                                         {{-- Лапка с рейтингом --}}
                                         <div class="rating-badge">

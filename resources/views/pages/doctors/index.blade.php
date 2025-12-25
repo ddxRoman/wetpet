@@ -22,9 +22,7 @@
     @else
 
         @php
-            // Фильтрация врачей на случай если контроллер не отфильтровал
             $filtered = $doctors->filter(function($doctor) use ($selectedCity) {
-                // У врача город находится в $doctor->city->name
                 return isset($doctor->city->name) && trim($doctor->city->name) === trim($selectedCity);
             })->values();
         @endphp
@@ -56,7 +54,7 @@
                     @endphp
 
                     <div class="col-lg-3 col-md-4 col-12">
-                        <a href="{{ route('doctors.show', $doctor->id) }}" title="Открыть карточку доктора" class="text-decoration-none text-reset">
+                        <a href="{{ route('doctors.show', $doctor->slug) }}" title="Открыть карточку доктора" class="text-decoration-none text-reset">
                             <div class="card h-100 shadow-sm hover-shadow position-relative transition">
 
                                 {{-- ⭐ Рейтинг --}}

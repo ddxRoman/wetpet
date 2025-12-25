@@ -13,11 +13,13 @@
 
     @if(Route::currentRouteName() === 'clinics.show')
         <meta name="description" content="Узнать стоимость услуг, посмотреть график работы прочитать и оставить отзывы на ветеринарную клинику">
+
         <title>{{ $clinic->name ? $clinic->name .' '. $currentCityName . ' — контакты и отзывы о клинике в городе '   : 'Сайт про домашних животных в твоём городе' }}</title>
     @elseif(Route::currentRouteName() === 'clinics.index')
         <meta name="description" content="Найти ветеринарную клинику в городе, узнать ретинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
         <title>{{'Все ветеринарные клиники города '. $currentCityName}}</title>
     @elseif(Route::currentRouteName() === 'doctors.show')
+        <link rel="canonical" href="{{ route('doctors.show', $doctor->slug) }}">
         <meta name="description" content="Узнать стоимость услуг у специалиста, записаться на приём, информация об образовани и месте работы прочитать и оставить отзывы на ветеринарного врача в городе ">
         <title>{{ $doctor->name ? $doctor->name . ' —  информация о специалисте '  : 'Сайт про домашних животных' }}</title>
     @elseif(Route::currentRouteName() === 'doctors.index')
@@ -41,10 +43,6 @@
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 
 </head>
-
-<style>
-
-</style>
 
 <body class="body_page">
 <header class="site-header 

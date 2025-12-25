@@ -1,13 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const radios = document.querySelectorAll('.carousel input[type="radio"]');
+    const radios = Array.from(
+        document.querySelectorAll('.carousel input[type="radio"]')
+    );
+
     if (!radios.length) return;
 
-    let current = 0;
-    const delay = 5000; // 5 секунд
+    const delay = 5000;
+    let timer;
 
-    setInterval(() => {
-        radios[current].checked = false;
-        current = (current + 1) % radios.length;
-        radios[current].checked = true;
-    }, delay);
+    const startAutoSlide = () => {
+        clearInterval(timer);
+        timer = setInterval(() => {
+            const currentIndex = radios.findIndex(radio => radio.checked);
+            const nextIndex = (currentIndex + 1) % radios.length;
+            radios[nextIndex].checked = true;
+        }, delay);
+    };
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', startAutoSlide);
+    });
+
+    startAutoSlide();
 });

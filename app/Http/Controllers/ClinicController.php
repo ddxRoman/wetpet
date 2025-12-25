@@ -36,18 +36,13 @@ public function index(Request $request)
 }
 
     // Просмотр одной клиники
-    public function show($id)
-    {
-        $clinic = Clinic::findOrFail($id);
-        return view('pages.clinics.show', compact('clinic'));
-        
-        // Загружаем клинику вместе с наградами
-    $clinic = Clinic::with('awards')->findOrFail($id);
+public function show(Clinic $clinic)
+{
+    $clinic->load('awards');
 
     return view('pages.clinics.show', compact('clinic'));
+}
 
-        
-    }
 
     // Форма добавления новой клиники
     public function create()
@@ -84,31 +79,17 @@ public function index(Request $request)
 
 public function clinicsByCity($cityId)
 {
-    \Log::info("=== clinicsByCity START ===");
-    \Log::info("Received cityId: " . $cityId);
 
     $city = City::find($cityId);
 
     if (!$city) {
-        \Log::info("City NOT FOUND for ID: " . $cityId);
         return response()->json([]);
     }
-
-    \Log::info("Found city: " . json_encode($city->toArray()));
-
-    // Какие строки реально сравниваются
-    \Log::info("Comparing clinics.city with city->name: '" . $city->name . "'");
 
     $clinics = Clinic::whereRaw(
         'LOWER(TRIM(city)) = LOWER(TRIM(?))',
         [$city->name]
     )->get();
-
-    \Log::info("Clinics query result: " . $clinics->count());
-    \Log::info("Clinics list: " . $clinics->toJson());
-
-    \Log::info("=== clinicsByCity END ===");
-
     return response()->json($clinics);
 }
 
@@ -117,11 +98,11 @@ public function clinicsByCity($cityId)
 
 
     // Форма редактирования
-    public function edit($id)
-    {
-        $clinic = Clinic::findOrFail($id);
-        return view('pages.clinics.edit', compact('clinic'));
-    }
+public function edit(Clinic $clinic)
+{
+    return view('pages.clinics.edit', compact('clinic'));
+}
+
 
     // Обновление клиники
     public function update(Request $request, $id)
@@ -149,7 +130,7 @@ public function clinicsByCity($cityId)
 
         $clinic->update($data);
 
-        return redirect()->route('pages.clinics.show', $clinic->id)
+        return redirect()->route('pages.clinics.show', $clinic->slug)
                          ->with('success', 'Клиника обновлена');
     }
 

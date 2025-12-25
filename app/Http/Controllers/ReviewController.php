@@ -25,6 +25,7 @@ class ReviewController extends Controller
         'pet_id' => 'nullable|integer',
         'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         'photos.*' => 'nullable|image|max:5120',
+        'redirect_slug'   => 'required|string',
     ]);
 
     $review = new Review();
@@ -68,7 +69,7 @@ class ReviewController extends Controller
         : 'clinics.show';
 
     return redirect()
-        ->route($route, [$model->id, 'tab' => 'reviews'])
+        ->route($route, [$model->slug, 'tab' => 'reviews'])
         ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
 }
 
@@ -139,9 +140,11 @@ public function destroy($id)
         ? 'doctors.show'
         : 'clinics.show';
 
-return redirect()->to(url(request()->headers->get('referer')));
-
+    return redirect()
+        ->route($route, $model->slug)
+        ->with('success', 'Отзыв удалён');
 }
+
 
 
 

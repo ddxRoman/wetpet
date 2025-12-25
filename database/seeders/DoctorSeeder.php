@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DoctorSeeder extends Seeder
 {
@@ -21,7 +22,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Решетникова Наталья Генриховна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'Главный ветеринарный врач',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -33,7 +34,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Тимченко Дарья Борисовна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'хирургия, онкология, стоматология, узи, эндоскопия и малоинвазивная хирургия.',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -45,7 +46,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Лопушинская Ангелина Михайловна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'эндокринология, офтальмология, дерматология, нефрология',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -57,7 +58,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Синельникова Версения Сергеевна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'интенсивная терапия, анестезиология',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -69,7 +70,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Федосеева Наталья Геннадьевна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'терапия, УЗИ',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -81,7 +82,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Глушкова Юлия Владимировна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'рентгенология, терапия',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -93,7 +94,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Макаренко Вероника Александровна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'кардиология, анестезиология, интенсивная терапия',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -105,7 +106,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Соболева Батина Гажиевна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'терапия, репродуктология, УЗИ диагностика',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -117,7 +118,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Абауи Мишель Муфид',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'хирургия, неврология, терапия',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -129,7 +130,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Стаценко Татьяна Сергеевна',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'Асистент',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -141,7 +142,7 @@ class DoctorSeeder extends Seeder
             [
                 'name' => 'Мартиросян Гагик Артавазович',
                 'date_of_birth' => NULL,
-                'city_id' => 21,
+                'city_id' => 31,
                 'specialization' => 'хирургия, эндоскопия, терапия',
                 'clinic_id' => 1,
                 'experience' => NULL,
@@ -152,12 +153,33 @@ class DoctorSeeder extends Seeder
             ],
         ];
 
-        foreach ($doctors as $doctor) {
-            DB::table('doctors')->insert([
-                ...$doctor,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        
+foreach ($doctors as $doctor) {
+
+    $slugParts = [
+        $doctor['name'],
+    ];
+
+    // если есть clinic_id — добавляем название клиники
+    if (!empty($doctor['clinic_id'])) {
+        $clinicName = DB::table('clinics')
+            ->where('id', $doctor['clinic_id'])
+            ->value('name');
+
+        if ($clinicName) {
+            $slugParts[] = $clinicName;
         }
+    }
+
+    $slug = Str::slug(implode(' ', $slugParts));
+
+    DB::table('doctors')->insert([
+        ...$doctor,
+        'slug' => $slug,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+}
+
     }
 }

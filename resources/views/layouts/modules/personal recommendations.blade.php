@@ -191,20 +191,20 @@ figcaption {
     <li class="carousel__slide">
         <figure>
             <div>
-                <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->id) }}">
+                <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->slug) }}">
                     <img
                         class="carousel__slide_img_prewiew"
-                        src="{{ $image ? asset('storage/'.$image) : asset('images/no-photo.jpg') }}"
+                        src="{{ $image ? asset('storage/'.$image) : asset('storage/clinics/logo/default.webp') }}"
                         alt="{{ $item->name }}"
                     >
                 </a>
             </div>
 
             <figcaption>
-              <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->id) }}">
+              <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->slug) }}">
                 {{ $item->name }}
 </a>
-<a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->id) }}?tab=reviews">
+<a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->slug) }}?tab=reviews">
 
                 <span class="credit">
                     ⭐ {{ $item->avg_rating }} / 5
@@ -236,7 +236,7 @@ figcaption {
         <label for="slide-clinic-{{ $index }}">
             <img
               class="carousel__slide_img"
-              src="{{ $image ? asset('storage/'.$image) : asset('images/no-photo-thumb.jpg') }}"
+              src="{{ $image ? asset('storage/'.$image) : asset('storage/clinics/logo/default.webp') }}"
               alt="{{ $item->name }}"
             >
         </label>

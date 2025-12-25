@@ -1,3 +1,7 @@
+<!-- Карточка одной отдельной записи -->
+
+
+
 @extends('layouts.app')
 
 @section('content')

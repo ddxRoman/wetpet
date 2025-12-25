@@ -69,6 +69,8 @@ $pets = Pet::where('user_id', auth()->id())
                 @endif
 
 <input type="hidden" name="reviewable_id" value="{{ $doctor->id }}">
+<input type="hidden" name="redirect_slug" value="{{ $doctor->slug }}">
+
 <input type="hidden" name="reviewable_type" value="{{ \App\Models\Doctor::class }}">
 
 

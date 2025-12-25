@@ -21,7 +21,7 @@ class UserTableSeeder extends Seeder
                 'avatar' => 'avatars/me-avatar.jpg',
                 'phone' => '+79667404577',
                 'password' => Hash::make('12345678'),
-                'city_id' => 21,
+                'city_id' => 31,
                 'is_admin' => true,
             ],
         ];

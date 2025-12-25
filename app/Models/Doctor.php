@@ -35,6 +35,13 @@ public function contacts()
 }
 
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+
+
 public function reviews()
 {
     return $this->morphMany(Review::class, 'reviewable');

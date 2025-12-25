@@ -56,6 +56,12 @@ public function reviews()
     return $this->morphMany(Review::class, 'reviewable');
 }
 
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
 public function awards()
 {
     return $this->hasMany(Award::class);

@@ -48,8 +48,6 @@ public function index(\Illuminate\Http\Request $request)
 }
 
 
-
-
     // 🔹 Передача докторов на welcome
     public function welcome()
     {
@@ -57,18 +55,15 @@ public function index(\Illuminate\Http\Request $request)
         return view('welcome', compact('doctors'));
     }
 
-public function show($id)
+public function show(Doctor $doctor)
 {
-$doctor = Doctor::findOrFail($id);
-
-$doctor->load([
-    'clinic',
-     'contacts',   // ← добавили
-    'services' => function($q) use ($doctor) {
-        $q->where('specialization_doctor', $doctor->specialization);
-    }
-]);
-
+    $doctor->load([
+        'clinic',
+        'contacts',
+        'services' => function ($q) use ($doctor) {
+            $q->where('specialization_doctor', $doctor->specialization);
+        }
+    ]);
 
     $clinic = $doctor->clinic;
 
@@ -83,6 +78,7 @@ $doctor->load([
         'reviews'
     ));
 }
+
 
 
      public function update(Request $request, Doctor $doctor)
@@ -122,13 +118,14 @@ $doctor->load([
         // return response()->json(['success' => true, 'doctor' => $doctor->fresh()]);
     }
 
-     public function destroy($id)
-    {
-        $clinic = Clinic::findOrFail($id);
-        $clinic->delete();
+public function destroy(Doctor $doctor)
+{
+    $doctor->delete();
 
-        return redirect()->route('doctors.index')->with('success', 'Клиника удалена');
-    }
+    return redirect()
+        ->route('doctors.index')
+        ->with('success', 'Врач удалён');
+}
 
     
 }

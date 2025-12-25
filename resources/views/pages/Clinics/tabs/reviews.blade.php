@@ -57,9 +57,10 @@ $pets = Pet::where('user_id', auth()->id())
                         </ul>
                     </div>
                 @endif
+<input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
+<input type="" name="redirect_slug" value="{{ $clinic->slug }}">
 
-                <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
-                <input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
+<input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
 
 {{-- ⭐ Оценка --}}
 <div class="mb-3">
@@ -205,12 +206,12 @@ $pets = Pet::where('user_id', auth()->id())
                                             </span>
                                             @endif
                                             <div class="mt-1">
-                                                <!-- <button class="btn btn-sm btn-outline-primary edit-review"
+                                                <button class="btn btn-sm btn-outline-primary edit-review"
                                                     data-id="{{ $review->id }}"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editReviewModal">
                                                     ✏️ Редактировать
-                                                </button> -->
+                                                </button>
 
                                                 <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" class="d-inline">
                                                     @csrf

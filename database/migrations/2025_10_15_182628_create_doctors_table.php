@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id(); // ID врача
             $table->string('name'); // Имя врача
+            $table->string('slug')->unique(); // Slug имени врача
             $table->string('specialization'); // специализация врача
             $table->date('date_of_birth')->nullable(); // Дата Рождения
             $table->string('city_id'); // город врача

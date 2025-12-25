@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Clinic;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class ClinicSeeder extends Seeder
 {
@@ -188,6 +190,11 @@ class ClinicSeeder extends Seeder
 foreach ($clinics as $data) {
     $serviceIds = $data['service_ids'];
     unset($data['service_ids']);
+
+                // ✅ Генерация slug
+            $data['slug'] = Str::slug(
+                $data['name'] . ' ' . $data['city'] . ' ' . $data['street']
+            );
     
     $clinic = Clinic::create($data);
     $clinic->services()->sync($serviceIds);
