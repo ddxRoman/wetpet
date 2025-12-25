@@ -77,16 +77,15 @@ Route::middleware(['auth'])->group(function () {
     // 👤 Личный кабинет
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-
+    // 🧑‍⚕️ Профиль пользователя
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
     // 🧾 Отзывы пользователя (всегда для текущего пользователя)
     Route::get('/account/reviews', [AccountController::class, 'getReviews'])
         ->name('account.reviews');
-
     // ✅ Обновление, удаление и управление отзывами
     Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('reviews.update');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-
-
     // ✅ Удаление фото и чеков
     Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])->name('review_photos.delete');
     Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])->name('review_receipts.delete');
@@ -99,9 +98,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
     Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
 
-    // 🧑‍⚕️ Профиль пользователя
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-});
 
 Route::get('/breeds', [PetController::class, 'getBreeds']);
 
@@ -118,29 +114,22 @@ Route::get('/user/{id}', function ($id) {
 
 // Страница всех докторов
 Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-
 // Страница одного доктора
 Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])
-    ->name('doctors.show');
-
-Route::get('/doctors/update/{slug}', [DoctorController::class, 'update'])->name('doctors.update');
-
-
+->name('doctors.show');
+    Route::get('/doctors/update/{slug}', [DoctorController::class, 'update'])->name('doctors.update');
 // Доктор Редактирование
 Route::post('/doctors/{id}/update', [DoctorController::class, 'update'])
     ->name('doctor.update')
     ->middleware('auth'); // при необходимости добавь middleware
-
-
 Route::post('/doctors/store', [DoctorController::class, 'store'])->name('doctors.store');
+Route::post('/add-doctor', [AddDoctorController::class, 'store'])->name('add.doctor');
 Route::post('/clinics/store', [ClinicController::class, 'store'])->name('clinics.store');
-
+Route::get('/doctors/{doctor:slug}', [DoctorController::class, 'show'])
+    ->name('doctors.show');
 
 Route::get('/api/fields/vetclinic', [FieldOfActivityController::class, 'getVetclinic']);
 Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpecialists']);
-
-
-Route::post('/add-doctor', [AddDoctorController::class, 'store'])->name('add.doctor');
 
 Route::get('/cities/by-region/{region}', function ($region) {
     return \App\Models\City::where('region', $region)->get();
@@ -149,8 +138,9 @@ Route::get('/cities/by-region/{region}', function ($region) {
 Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);
 
 
-
 Route::post('/add-organization', [OrganizationController::class, 'submit'])
     ->name('add-organization');
     Route::post('/submit-organization', [OrganizationController::class, 'submit'])->name('submit-organization');
 
+Route::get('/clinics/{clinic:slug}', [ClinicController::class, 'show'])
+    ->name('clinics.show');

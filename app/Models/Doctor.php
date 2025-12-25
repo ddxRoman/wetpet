@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Support\Str;
 
 
 class Doctor extends Model
@@ -19,11 +19,51 @@ class Doctor extends Model
     // какие поля можно массово заполнять (для create(), update())
 
     protected $fillable = [
-        'name', 'specialization', 'date_of_birth', 'city_id',
+        'name', 'slug','specialization', 'date_of_birth', 'city_id',
         'clinic_id', 'experience', 'exotic_animals',
         'On_site_assistance', 'photo', 'description'
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($doctor) {
+            $doctor->slug = self::makeSlug($doctor);
+        });
+
+        static::updating(function ($doctor) {
+            if ($doctor->isDirty(['name', 'city_id', 'clinic_id'])) {
+                $doctor->slug = self::makeSlug($doctor, $doctor->id);
+            }
+        });
+    }
+
+    protected static function makeSlug($doctor, $ignoreId = null)
+    {
+        $city = optional($doctor->city)->name;
+        $clinic = optional($doctor->clinic)->name;
+
+        $base = implode(' ', array_filter([
+            $doctor->name,
+            $city,
+            $clinic,
+        ]));
+
+        $slug = Str::slug($base);
+        $original = $slug;
+        $i = 1;
+
+        while (
+            self::where('slug', $slug)
+                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $slug = $original . '-' . $i++;
+        }
+
+        return $slug;
+    }
+
+    // связи
 public function services()
 {
     return $this->belongsToMany(Service::class, 'doctor_service', 'doctor_id', 'service_id');

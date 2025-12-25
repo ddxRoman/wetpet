@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
 
 class Clinic extends Model
 {
@@ -11,6 +13,7 @@ class Clinic extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'country',
         'region',
         'city',
@@ -28,6 +31,31 @@ class Clinic extends Model
         'schedule',
         'workdays',
     ];
+
+    /* ===============================
+       AUTO SLUG GENERATION
+    =============================== */
+    protected static function booted()
+    {
+        static::creating(function ($clinic) {
+            if (empty($clinic->slug)) {
+                $clinic->slug = static::generateUniqueSlug($clinic->name);
+            }
+        });
+    }
+
+    private static function generateUniqueSlug(string $name): string
+    {
+        $slug = Str::slug($name);
+        $original = $slug;
+        $i = 1;
+
+        while (static::where('slug', $slug)->exists()) {
+            $slug = $original . '-' . $i++;
+        }
+
+        return $slug;
+    }
 
     protected $casts = [];
 

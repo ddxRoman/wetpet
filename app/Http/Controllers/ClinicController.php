@@ -11,6 +11,7 @@ class ClinicController extends Controller
     // Список всех клиник
 public function index(Request $request)
 {
+    $country = 'Россия';
     $user = auth()->user();
 
     if ($user && $user->city_id) {
@@ -52,31 +53,49 @@ $clinic->load('doctors'); // city уже строка
     }
 
     // Сохранение новой клиники
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'country' => 'required|string|max:100',
-            'region' => 'nullable|string|max:100',
-            'city' => 'required|string|max:100',
-            'street' => 'required|string|max:255',
-            'house' => 'nullable|string|max:50',
-            'address_comment' => 'nullable|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'description' => 'nullable|string',
-            'phone1' => 'nullable|string|max:30',
-            'phone2' => 'nullable|string|max:30',
-            'email' => 'nullable|email|max:255',
-            'telegram' => 'nullable|string|max:255',
-            'whatsapp' => 'nullable|string|max:255',
-            'schedule' => 'nullable|string|max:100',
-            'workdays' => 'nullable|string|max:100',
-        ]);
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'region' => 'nullable|string|max:100',
+        'city_id' => 'required|exists:cities,id',
+        'street' => 'required|string|max:255',
+        'house' => 'nullable|string|max:50',
+        'address_comment' => 'nullable|string|max:255',
+        'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
+        'description' => 'nullable|string',
+        'phone1' => 'nullable|string|max:30',
+        'phone2' => 'nullable|string|max:30',
+        'email' => 'nullable|email|max:255',
+        'telegram' => 'nullable|string|max:255',
+        'whatsapp' => 'nullable|string|max:255',
+        'schedule' => 'nullable|string|max:100',
+        'workdays' => 'nullable|string|max:100',
+    ]);
 
-        Clinic::create($data);
+    $city = City::findOrFail($data['city_id']);
 
-        return redirect()->route('clinics.index')->with('success', 'Клиника добавлена');
-    }
+    $clinic = Clinic::create([
+        'name' => $data['name'],
+        'country' => 'Россия',
+        'region' => $data['region'] ?? null,
+        'city' => $city->name,
+        'street' => $data['street'],
+        'house' => $data['house'] ?? null,
+        'address_comment' => $data['address_comment'] ?? null,
+        'description' => $data['description'] ?? null,
+        'phone1' => $data['phone1'] ?? null,
+        'phone2' => $data['phone2'] ?? null,
+        'email' => $data['email'] ?? null,
+        'schedule' => $data['schedule'] ?? null,
+        'workdays' => $data['workdays'] ?? null,
+    ]);
+
+    return redirect()
+        ->route('clinics.show', $clinic)
+        ->with('success', 'Клиника добавлена');
+}
+
 
 public function clinicsByCity($cityId)
 {
@@ -94,10 +113,6 @@ public function clinicsByCity($cityId)
     return response()->json($clinics);
 }
 
-
-
-
-
     // Форма редактирования
 public function edit(Clinic $clinic)
 {
@@ -112,7 +127,6 @@ public function edit(Clinic $clinic)
 
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'country' => 'required|string|max:100',
             'region' => 'nullable|string|max:100',
             'city' => 'required|string|max:100',
             'street' => 'required|string|max:255',

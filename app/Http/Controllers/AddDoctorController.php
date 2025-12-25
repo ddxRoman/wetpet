@@ -22,12 +22,13 @@ class AddDoctorController extends Controller
             'On_site_assistance'=> 'required|string',
             'description'       => 'nullable|string',
             'photo'             => 'nullable|image|max:2048',
+            'clinic_id' => 'nullable|integer|exists:clinics,id',
 
             // 👇 Добавляю валидацию контактов
             'phone'             => 'nullable|string|max:255',
             'mail'              => 'nullable|string|email|max:255',
-            'messengers'        => 'array',
-            'messengers.*'      => 'string|in:telegram,whatsapp,messenger',
+            'messengers' => 'nullable|array',
+            'messengers.*' => 'string|in:telegram,whatsapp,messenger',
         ], [
             'name.required' => 'Введите имя специалиста.',
             'date_of_birth.required' => 'Укажите дату рождения.',
@@ -100,6 +101,7 @@ class AddDoctorController extends Controller
                 'max'       => $max,
             ]);
         }
+        
 
         return response()->json([
             'success' => true,

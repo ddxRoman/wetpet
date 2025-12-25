@@ -83,7 +83,7 @@
 
                         <div class="col-md-6">
                             <label>Клиника</label>
-                            <select name="clinic" id="clinicSelect" class="form-select">
+                            <select name="clinic_id" id="clinicSelect" class="form-select">
     <option value="">Сначала выберите город</option>
 </select>
 
