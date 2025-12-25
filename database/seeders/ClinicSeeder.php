@@ -91,7 +91,7 @@ class ClinicSeeder extends Seeder
         'street' => 'ул. Героев Разведчиков',
         'house' => '26/4',
         'address_comment' => 'Цокольный этаж жилого дома, отдельный вход',
-        'logo' => '',
+        'logo' => 'clinics/logo/chactlivay_morda.png',
         'description' => 'Круглосуточная ветеринарная помощь, УЗИ, хирургия, стационар, вакцинация и выезд на дом.',
         'phone1' => '+7 (905) 476-75-75',
         'phone2' => '+7 (918) 400-00-00',
