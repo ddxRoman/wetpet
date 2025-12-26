@@ -628,7 +628,7 @@ $reviews = Review::where('reviewable_id', $clinic->id)
 
                                         </div>
                                         <div class="card-body text-center">
-                                            <img src="{{ $doctor->photo ? asset('/storage/' . $doctor->photo) : asset('/storage/doctors/default-doctor.png') }}"
+                                            <img src="{{ $doctor->photo ? asset('/storage/' . $doctor->photo) : asset('/storage/doctors/default-doctor.webp') }}"
                                                 alt="{{ $doctor->name }}"
                                                 class="doctor-photo mb-3">
                                             <h5 class="card-title mb-1">{{ $doctor->name }}</h5>

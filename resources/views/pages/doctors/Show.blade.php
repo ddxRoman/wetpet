@@ -12,7 +12,7 @@
 
     $photo = $doctor->photo && file_exists(public_path('storage/'.$doctor->photo))
         ? asset('storage/'.$doctor->photo)
-        : asset('storage/doctors/default-doctor.png');
+        : asset('storage/doctors/default-doctor.webp');
 
     $addressParts = array_filter([
         $doctor->city ?? '',

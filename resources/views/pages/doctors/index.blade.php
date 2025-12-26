@@ -84,7 +84,7 @@
                                 @php
                                     $photo = !empty($doctor->photo)
                                         ? asset('storage/' . $doctor->photo)
-                                        : asset('storage/doctors/default-doctor.png');
+                                        : asset('storage/doctors/default-doctor.webp');
                                 @endphp
 
                                 <img src="{{ $photo }}" class="card-img-top object-fit-contain p-3" alt="{{ $doctor->name }}">
