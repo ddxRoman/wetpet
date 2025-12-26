@@ -1,8 +1,4 @@
 
-
-
-
-
 <div class="modal fade" id="addDoctorModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -71,15 +67,25 @@
 </div>
 
 
-                        <div class="col-md-6">
-                            <label>Город</label>
-                            <select name="city_id" id="citySelect" class="form-select">
-                                <option value="">Выберите город</option>
-                                @foreach($cities as $city)
-                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+<div class="col-md-6">
+    <label>Регион</label>
+    <select name="region" id="regionSelect" class="form-select">
+        <option value="">Выберите регион</option>
+        @foreach($cities->unique('region') as $city)
+            <option value="{{ $city->region }}">{{ $city->region }}</option>
+        @endforeach
+    </select>
+</div>
+
+<div class="col-md-6">
+    <label>Город</label>
+    <select name="city_id" id="citySelect" class="form-select">
+        <option value="">Сначала выберите регион</option>
+    </select>
+</div>
+
+
+
 
                         <div class="col-md-6">
                             <label>Клиника</label>

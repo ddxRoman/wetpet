@@ -36,48 +36,98 @@ function initAddDoctorScripts(modal) {
     }
 
     /* ===== БЛОК 2 — клиники ===== */
-    const citySelect = modal.querySelector('#citySelect');
-    const clinicSelect = modal.querySelector('#clinicSelect');
-    let clinicChoices;
+    /* ===== Region → City → Clinic ===== */
+const regionSelect = modal.querySelector('#regionSelect');
+const citySelect   = modal.querySelector('#citySelect');
+const clinicSelect = modal.querySelector('#clinicSelect');
 
-    function initClinicChoices() {
-        if (clinicChoices) clinicChoices.destroy();
-        clinicChoices = new Choices(clinicSelect, {
-            searchPlaceholderValue: 'Поиск клиники...',
-            removeItemButton: true,
-        });
-    }
+let regionChoices, cityChoices, clinicChoices;
 
-    if (citySelect && clinicSelect) {
-        initClinicChoices();
+function initChoices(select, placeholder) {
+    if (!select) return null;
+    if (select._choices) select._choices.destroy();
 
-        citySelect.addEventListener('change', () => {
-            const cityId = citySelect.value;
+    select._choices = new Choices(select, {
+        searchPlaceholderValue: placeholder,
+        shouldSort: false,
+        removeItemButton: true,
+    });
 
-            clinicChoices.destroy();
-            clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
+    return select._choices;
+}
 
-            if (!cityId) {
-                clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
-                initClinicChoices();
-                return;
-            }
+if (regionSelect && citySelect && clinicSelect) {
+    regionChoices = initChoices(regionSelect, 'Поиск региона...');
+    cityChoices   = initChoices(citySelect, 'Поиск города...');
+    clinicChoices = initChoices(clinicSelect, 'Поиск клиники...');
 
-            fetch(`/api/clinics/by-city/${cityId}`)
-                .then(r => r.json())
-                .then(list => {
-                    clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
-                    list.forEach(c => {
-                        clinicSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
-                    });
-                    initClinicChoices();
-                })
-                .catch(() => {
-                    clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-                    initClinicChoices();
+    /* ===== Регион → Город ===== */
+    regionSelect.addEventListener('change', () => {
+        const region = regionSelect.value;
+
+        citySelect.innerHTML = `<option value="">Загрузка...</option>`;
+        cityChoices.setChoices([{ value: '', label: 'Загрузка...' }], 'value', 'label', true);
+
+        clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
+        clinicChoices.clearStore();
+
+        if (!region) return;
+
+        fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
+            .then(r => r.json())
+            .then(list => {
+                citySelect.innerHTML = `<option value="">Выберите город</option>`;
+                list.forEach(c => {
+                    citySelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
                 });
-        });
-    }
+
+                cityChoices.setChoices(
+                    [...citySelect.options].map(o => ({
+                        value: o.value,
+                        label: o.text
+                    })),
+                    'value',
+                    'label',
+                    true
+                );
+            })
+            .catch(() => {
+                citySelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+            });
+    });
+
+    /* ===== Город → Клиника ===== */
+    citySelect.addEventListener('change', () => {
+        const cityId = citySelect.value;
+
+        clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
+        clinicChoices.setChoices([{ value: '', label: 'Загрузка...' }], 'value', 'label', true);
+
+        if (!cityId) return;
+
+        fetch(`/api/clinics/by-city/${cityId}`)
+            .then(r => r.json())
+            .then(list => {
+                clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
+                list.forEach(c => {
+                    clinicSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                });
+
+                clinicChoices.setChoices(
+                    [...clinicSelect.options].map(o => ({
+                        value: o.value,
+                        label: o.text
+                    })),
+                    'value',
+                    'label',
+                    true
+                );
+            })
+            .catch(() => {
+                clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+            });
+    });
+}
 
     /* ===== БЛОК 3 — сферы ===== */
     const fieldSelect = modal.querySelector('#fieldOfActivitySelect');

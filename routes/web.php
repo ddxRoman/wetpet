@@ -34,6 +34,7 @@ Route::get('/home', [DoctorController::class, 'welcome'])->name('welcome');
 Route::get('/test', [testController::class, 'test'])->name('test');
 
 
+
 // 🔐 Аутентификация
 Auth::routes();
 require __DIR__.'/auth.php';
