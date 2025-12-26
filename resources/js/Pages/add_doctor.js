@@ -1,11 +1,9 @@
 import Choices from 'choices.js';
 import 'choices.js/public/assets/styles/choices.min.css';
 
-// console.log('add_doctor.js loaded');
-
-/* ============================================================================
+/* =====================================================================
    ГЛАВНАЯ ФУНКЦИЯ
-============================================================================ */
+===================================================================== */
 function initAddDoctorScripts(modal) {
     console.log('Add Doctor modal initialized!');
 
@@ -35,99 +33,101 @@ function initAddDoctorScripts(modal) {
         });
     }
 
-    /* ===== БЛОК 2 — клиники ===== */
-    /* ===== Region → City → Clinic ===== */
-const regionSelect = modal.querySelector('#regionSelect');
-const citySelect   = modal.querySelector('#citySelect');
-const clinicSelect = modal.querySelector('#clinicSelect');
+    /* ===== БЛОК 2 — Region → City → Clinic ===== */
+    const regionSelect = modal.querySelector('#regionSelect');
+    const citySelect   = modal.querySelector('#citySelect');
+    const clinicSelect = modal.querySelector('#clinicSelect');
 
-let regionChoices, cityChoices, clinicChoices;
+    if (regionSelect && citySelect && clinicSelect) {
 
-function initChoices(select, placeholder) {
-    if (!select) return null;
-    if (select._choices) select._choices.destroy();
+        const regionChoices = new Choices(regionSelect, {
+            searchPlaceholderValue: 'Поиск региона...',
+            shouldSort: false,
+        });
 
-    select._choices = new Choices(select, {
-        searchPlaceholderValue: placeholder,
-        shouldSort: false,
-        removeItemButton: true,
-    });
+        const cityChoices = new Choices(citySelect, {
+            searchPlaceholderValue: 'Поиск города...',
+            shouldSort: false,
+        });
 
-    return select._choices;
-}
+        const clinicChoices = new Choices(clinicSelect, {
+            searchPlaceholderValue: 'Поиск клиники...',
+            shouldSort: false,
+        });
 
-if (regionSelect && citySelect && clinicSelect) {
-    regionChoices = initChoices(regionSelect, 'Поиск региона...');
-    cityChoices   = initChoices(citySelect, 'Поиск города...');
-    clinicChoices = initChoices(clinicSelect, 'Поиск клиники...');
+        /* ===== Регион → Город ===== */
+        regionSelect.addEventListener('change', () => {
+    const region = regionSelect.value;
 
-    /* ===== Регион → Город ===== */
-    regionSelect.addEventListener('change', () => {
-        const region = regionSelect.value;
+    // ⬇️ сброс города (placeholder ТУТ)
+    cityChoices.setChoices(
+        [{ value: '', label: 'Выберите город', selected: true }],
+        'value',
+        'label',
+        true
+    );
 
-        citySelect.innerHTML = `<option value="">Загрузка...</option>`;
-        cityChoices.setChoices([{ value: '', label: 'Загрузка...' }], 'value', 'label', true);
+    // ⬇️ сброс клиники
+    clinicChoices.setChoices(
+        [{ value: '', label: 'Сначала выберите город', selected: true }],
+        'value',
+        'label',
+        true
+    );
 
-        clinicSelect.innerHTML = `<option value="">Сначала выберите город</option>`;
-        clinicChoices.clearStore();
+    if (!region) return;
 
-        if (!region) return;
+    fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
+        .then(r => r.json())
+        .then(list => {
+            // ⬇️ ЗДЕСЬ БЕЗ placeholder!
+            cityChoices.setChoices(
+                list.map(c => ({
+                    value: c.id,
+                    label: c.name
+                })),
+                'value',
+                'label',
+                true
+            );
+        });
+});
 
-        fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
-            .then(r => r.json())
-            .then(list => {
-                citySelect.innerHTML = `<option value="">Выберите город</option>`;
-                list.forEach(c => {
-                    citySelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
-                });
 
-                cityChoices.setChoices(
-                    [...citySelect.options].map(o => ({
-                        value: o.value,
-                        label: o.text
-                    })),
-                    'value',
-                    'label',
-                    true
-                );
-            })
-            .catch(() => {
-                citySelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-            });
-    });
 
-    /* ===== Город → Клиника ===== */
-    citySelect.addEventListener('change', () => {
-        const cityId = citySelect.value;
 
-        clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
-        clinicChoices.setChoices([{ value: '', label: 'Загрузка...' }], 'value', 'label', true);
+        /* ===== Город → Клиника ===== */
+citySelect.addEventListener('change', () => {
+    const cityId = citySelect.value;
 
-        if (!cityId) return;
+    // ⬇️ сброс клиники (placeholder ТУТ)
+    clinicChoices.setChoices(
+        [{ value: '', label: 'Выберите клинику', selected: true }],
+        'value',
+        'label',
+        true
+    );
 
-        fetch(`/api/clinics/by-city/${cityId}`)
-            .then(r => r.json())
-            .then(list => {
-                clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
-                list.forEach(c => {
-                    clinicSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
-                });
+    if (!cityId) return;
 
-                clinicChoices.setChoices(
-                    [...clinicSelect.options].map(o => ({
-                        value: o.value,
-                        label: o.text
-                    })),
-                    'value',
-                    'label',
-                    true
-                );
-            })
-            .catch(() => {
-                clinicSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
-            });
-    });
-}
+    fetch(`/api/clinics/by-city/${cityId}`)
+        .then(r => r.json())
+        .then(list => {
+            // ⬇️ ЗДЕСЬ БЕЗ placeholder!
+            clinicChoices.setChoices(
+                list.map(c => ({
+                    value: c.id,
+                    label: c.name
+                })),
+                'value',
+                'label',
+                true
+            );
+        });
+});
+
+
+    }
 
     /* ===== БЛОК 3 — сферы ===== */
     const fieldSelect = modal.querySelector('#fieldOfActivitySelect');
@@ -172,25 +172,38 @@ if (regionSelect && citySelect && clinicSelect) {
     }
 
     /* ===== БЛОК 5 — фото ===== */
-    const picker = modal.querySelector('#photoPicker');
-    const fileInput = modal.querySelector('#doctorPhotoInput');
-    const preview = modal.querySelector('#doctorPhotoPreview');
+const picker = modal.querySelector('#photoPicker');
+const fileInput = modal.querySelector('#doctorPhotoInput');
+const preview = modal.querySelector('#doctorPhotoPreview');
+const previewWrapper = modal.querySelector('#photoPreviewWrapper');
+const removeBtn = modal.querySelector('#removePhotoBtn');
 
-    if (picker && fileInput && preview) {
-        picker.onclick = () => fileInput.click();
-        fileInput.onchange = () => {
-            const f = fileInput.files[0];
-            if (!f) return;
-            preview.src = URL.createObjectURL(f);
-            preview.style.display = 'block';
-            picker.style.display = 'none';
-        };
-    }
+if (picker && fileInput && preview && removeBtn) {
+
+    picker.onclick = () => fileInput.click();
+
+    fileInput.onchange = () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        preview.src = URL.createObjectURL(file);
+        previewWrapper.style.display = 'block';
+        picker.style.display = 'none';
+    };
+
+    removeBtn.onclick = () => {
+        fileInput.value = '';              // 🔥 главное
+        preview.src = '';
+        previewWrapper.style.display = 'none';
+        picker.style.display = 'flex';
+    };
 }
 
-/* ============================================================================
+}
+
+/* =====================================================================
    ИНИЦИАЛИЗАЦИЯ
-============================================================================ */
+===================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('addDoctorModal');
     if (modal) initAddDoctorScripts(modal);
