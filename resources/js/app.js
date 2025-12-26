@@ -14,7 +14,6 @@ import './account/cropper-init';
 import './account/toast'; 
 import './reset_password/timer_mail_reset';
 import './slider/personal_recommendations';
-import './pages/select_city_specialist';
 
 
 // console.log('app.js loaded');
