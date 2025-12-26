@@ -21,7 +21,7 @@ class AddDoctorController extends Controller
             'exotic_animals'    => 'required|string',
             'On_site_assistance'=> 'required|string',
             'description'       => 'nullable|string',
-            'photo'             => 'nullable|image|max:4096',
+            'image' => 'image|mimes:webp|max:5120',
             'clinic_id'         => 'nullable|integer|exists:clinics,id',
 
             // 👇 Добавляю валидацию контактов

@@ -23,7 +23,7 @@ class OrganizationController extends Controller
             'street'               => 'required|string|max:255',
             'house'                => 'nullable|string|max:255',
             'description'          => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
 
             'schedule'             => 'nullable|string|max:255',
             'workdays'             => 'nullable|string|max:255',

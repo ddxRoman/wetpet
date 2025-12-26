@@ -122,30 +122,30 @@ function initAddOrganizationModal(modal) {
     }
 
     /* ===== Logo / Cropper ===== */
-    const fileInput = modal.querySelector('#doctorPhotoInput');
-    const preview   = modal.querySelector('#doctorPhotoPreview');
-    const picker    = modal.querySelector('#photoPicker');
+const picker  = document.getElementById('orgPhotoPicker');
+const input   = document.getElementById('orgPhotoInput');
+const preview = document.getElementById('orgPhotoPreview');
+const wrapper = document.getElementById('orgPhotoPreviewWrapper');
+const remove  = document.getElementById('orgRemovePhotoBtn');
 
-    if (fileInput && preview && picker) {
-        picker.onclick = () => fileInput.click();
-        preview.onclick = () => fileInput.click();
+picker.addEventListener('click', () => input.click());
 
-        fileInput.onchange = () => {
-            const file = fileInput.files?.[0];
-            if (!file) return;
+input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (!file) return;
 
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-            picker.style.display = 'none';
-        };
+    preview.src = URL.createObjectURL(file);
+    wrapper.style.display = 'block';
+    picker.style.display = 'none';
+});
 
-        preview.ondblclick = () => {
-            preview.src = '';
-            preview.style.display = 'none';
-            picker.style.display = 'flex';
-            fileInput.value = '';
-        };
-    }
+remove.addEventListener('click', () => {
+    input.value = '';
+    preview.src = '';
+    wrapper.style.display = 'none';
+    picker.style.display = 'flex';
+});
+
 
     /* ===== AJAX submit ===== */
     if (form) {
@@ -169,8 +169,6 @@ function initAddOrganizationModal(modal) {
                 errBox.classList.remove('d-none');
                 return;
             }
-
-            alert(json.message || 'Сохранено');
             location.reload();
         });
     }

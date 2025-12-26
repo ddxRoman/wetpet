@@ -97,17 +97,50 @@
 </div>
 
 <style>
-    .messenger-icons img {
-        width: 36px;
-        height: 36px;
-        cursor: pointer;
-        transition: 0.2s;
-        opacity: 0.2;
-    }
-    .messenger-icons input:checked + img {
-        opacity: 1;
-        transform: scale(1.2);
-    }
+.photo-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+#orgPhotoPicker {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+#orgPhotoPreviewWrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+#orgPhotoPreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+#orgRemovePhotoBtn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: #dc3545;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
 </style>
 
                             
@@ -119,15 +152,20 @@
                         <div class="col-12">
                             <label>Логотип</label>
 
-                            <!-- Квадрат для выбора -->
-                            <div id="photoPicker">+</div>
+                            <div class="photo-wrapper">
+        <!-- Квадрат для выбора -->
+       <div id="orgPhotoPicker">+</div>
 
-                            <!-- Скрытый input -->
-                            <input type="file" id="doctorPhotoInput" name="logo" accept="image/*">
+        <!-- Превью -->
+    <div id="orgPhotoPreviewWrapper" style="display:none">
+        <img id="orgPhotoPreview" title="Предпросмотр">
+        <button type="button" id="orgRemovePhotoBtn">&times;</button>
+    </div>
+</div>
 
-                            <!-- Превью -->
-                            <img id="doctorPhotoPreview" title="Превью фото" class="mt-2">
-                        </div>
+    <!-- Скрытый input -->
+    <input type="file" id="orgPhotoInput" name="logo" accept="image/*">
+</div>
 
                         <div class="col-12">
                             <label>Расскажите об организации</label>

@@ -132,7 +132,7 @@ public function edit(Clinic $clinic)
             'street' => 'required|string|max:255',
             'house' => 'nullable|string|max:50',
             'address_comment' => 'nullable|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'logo' => 'nullable|image|mimes:webp|max:4096',
             'description' => 'nullable|string',
             'phone1' => 'nullable|string|max:30',
             'phone2' => 'nullable|string|max:30',

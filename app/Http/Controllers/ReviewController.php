@@ -24,7 +24,7 @@ class ReviewController extends Controller
         'content' => 'nullable|string|max:2000',
         'pet_id' => 'nullable|integer',
         'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-        'photos.*' => 'nullable|image|max:5120',
+        'photos.*' => 'nullable|imagem|mimes:webp|max:5120',
         'redirect_slug'   => 'required|string',
     ]);
 

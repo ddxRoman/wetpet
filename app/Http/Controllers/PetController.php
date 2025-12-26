@@ -59,7 +59,7 @@ public function store(Request $request)
             'name' => 'required|string|max:255',
             'birth_date' => 'nullable|date',
             'age' => 'nullable|integer|min:0',
-            'photo' => 'nullable|image|max:4096',
+            'photo' => 'nullable|image|mimes:webp|max:5120',
             'gender' => 'nullable|string|max:10',
         ]);
 
@@ -135,7 +135,7 @@ public function update(Request $request, Pet $pet)
         'name'       => 'nullable|string|max:255',
         'birth_date' => 'nullable|date',
         'age'        => 'nullable|integer|min:0',
-        'photo'      => 'nullable|image|max:4096',
+        'photo'      => 'nullable|image|mimes:webp|max:5120',
         'gender'     => 'nullable|string|max:10',
     ]);
 

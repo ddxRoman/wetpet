@@ -19,7 +19,7 @@ $user->city_id = $request->city_id;
             'birth_date' => 'nullable|date',
             'city_id' => 'nullable|exists:cities,id|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'avatar' => 'nullable|image|max:2048', // до 2MB
+            'avatar' => 'nullable|image|mimes:webp|max:5120', // до 2MB
         ]);
 
         // Обновление данных пользователя

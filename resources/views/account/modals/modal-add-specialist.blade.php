@@ -2,6 +2,7 @@
     .photo-wrapper {
     position: relative;
     width: 150px;
+    height: 150px;
 }
 
 #photoPicker {
@@ -16,8 +17,8 @@
 }
 
 #photoPreviewWrapper {
-    position: relative;
     display: none;
+    position: relative;
     width: 150px;
     height: 150px;
 }
@@ -201,7 +202,7 @@
 
         <!-- Превью -->
         <div id="photoPreviewWrapper">
-            <img id="doctorPhotoPreview" title="Предпросмотр">
+            <img id="doctorPhotoPreview"  title="Предпросмотр">
             <button type="button" id="removePhotoBtn">&times;</button>
         </div>
     </div>

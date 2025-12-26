@@ -1,6 +1,7 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
+import './heic-convertor'; 
 import './bootstrap';
 import 'select2';
 import 'select2/dist/css/select2.css';
@@ -14,6 +15,9 @@ import './account/cropper-init';
 import './account/toast'; 
 import './reset_password/timer_mail_reset';
 import './slider/personal_recommendations';
+
+
+
 
 
 // console.log('app.js loaded');
