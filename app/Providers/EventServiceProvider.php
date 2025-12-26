@@ -14,9 +14,10 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<class-string, array<int, class-string>>
      */
-    protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+                                                 // Регистрация ТГ сериса
+protected $listen = [
+        \Illuminate\Auth\Events\Registered::class => [
+            \App\Listeners\SendTelegramOnUserRegistered::class,
         ],
     ];
 
@@ -35,4 +36,8 @@ class EventServiceProvider extends ServiceProvider
     {
         return false;
     }
+
+
+
+
 }

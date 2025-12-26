@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Services\TelegramService;
+
 
 class AuthController extends Controller
 {
@@ -20,16 +22,29 @@ public function register(Request $request)
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
-        'phone' => 'required', new PhoneNumber, 'unique:users',
+        'phone' => ['nullable', 'sometimes', new PhoneNumber, 'unique:users,phone'],
+
         'password' => 'required|string|min:8|confirmed',
     ]);
 
     $user = User::create([
         'name' => $validatedData['name'],
         'email' => $validatedData['email'],
-        'phone' => $validatedData['phone'],
+        'phone' => $validatedData['phone'] ?? null,
         'password' => bcrypt($validatedData['password']),
     ]);
+
+        // ✅ Telegram-уведомление о регистрации
+$phoneText = $user->phone ? $user->phone : 'не указан';
+
+TelegramService::send(
+    "🎉 <b>Новая регистрация</b>\n\n" .
+    "👤 Имя: {$user->name}\n" .
+    "📧 Email: {$user->email}\n" .
+    "📱 Телефон: {$phoneText}\n" .
+    "🕒 Дата: " . now()->format('d.m.Y H:i')
+);
+
 
     Auth::login($user);
 

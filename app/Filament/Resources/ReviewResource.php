@@ -19,6 +19,15 @@ class ReviewResource extends Resource
     protected static ?string $modelLabel = 'Отзыв';
     protected static ?string $pluralModelLabel = 'Отзывы';
 
+    public static function getPages(): array
+{
+    return [
+        'index' => Pages\ListReviews::route('/'),
+        'edit'  => Pages\EditReview::route('/{record}/edit'),
+    ];
+}
+
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -135,13 +144,5 @@ class ReviewResource extends Resource
         ->bulkActions([
             Tables\Actions\DeleteBulkAction::make(),
         ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListReviews::route('/'),
-            'edit' => Pages\EditReview::route('/{record}/edit'),
-        ];
     }
 }

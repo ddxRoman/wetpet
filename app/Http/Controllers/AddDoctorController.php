@@ -14,7 +14,7 @@ class AddDoctorController extends Controller
         // 🔹 1. Валидация данных
         $validated = $request->validate([
             'name'              => 'required|string|max:255',
-            'date_of_birth'     => 'required|date',
+            'date_of_birth'     => 'nullable|date',
             'field_of_activity_id' => 'required|integer|exists:field_of_activities,id',
             'city_id'           => 'required|integer',
             'experience'        => 'nullable|integer|min:0',
@@ -22,7 +22,7 @@ class AddDoctorController extends Controller
             'On_site_assistance'=> 'required|string',
             'description'       => 'nullable|string',
             'photo'             => 'nullable|image|max:2048',
-            'clinic_id' => 'nullable|integer|exists:clinics,id',
+            'clinic_id'         => 'nullable|integer|exists:clinics,id',
 
             // 👇 Добавляю валидацию контактов
             'phone'             => 'nullable|string|max:255',
@@ -60,7 +60,7 @@ class AddDoctorController extends Controller
         $model->specialization = $field->name;
         $model->date_of_birth = $request->date_of_birth;
         $model->city_id = $request->city_id;
-        $model->clinic_id = $request->clinic;
+        $model->clinic_id = $request->clinic_id;
         $model->experience = $request->experience;
         $model->exotic_animals = $request->exotic_animals;
         $model->On_site_assistance = $request->On_site_assistance;

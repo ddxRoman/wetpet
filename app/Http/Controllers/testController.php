@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Specialist;
-use Illuminate\Http\Request;
+use App\Services\TelegramService;
 
-class testController extends Controller
+class TestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function test()
     {
-        dd(session()->all());
+        TelegramService::send(
+            "🎉 <b>Тестовое сообщение</b>\n\n" .
+            "👤 Имя: Тестовый пользователь\n" .
+            "📧 Email: test@test.ru\n" .
+            "📱 Телефон: 123456789\n" .
+            "🕒 Дата: " . now()->format('d.m.Y H:i')
+        );
 
+        return 'OK';
     }
 }
