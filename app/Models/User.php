@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -39,12 +42,26 @@ class User extends Authenticatable implements FilamentUser
 
     /* ================= Filament ================= */
 
-    public function canAccessPanel(Panel $panel): bool
-    {
+
+
+public function canAccessPanel(Panel $panel): bool
+{
+    if ($panel->getId() === 'admin') {
+
+        // 🔒 Если пользователь не авторизован — сразу 403
+        if (! Auth::check()) {
+            abort(403);
+        }
+
+        // 🔒 Если не админ — тоже 403
         return $this->is_admin === true;
     }
 
-    /* ================= ТВОЙ КОД ================= */
+    return true;
+}
+
+
+    /* ================= ТВОЙ САЙТ ================= */
 
     public function city()
     {

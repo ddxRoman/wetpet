@@ -7,6 +7,8 @@ use App\Models\Clinic;
 use App\Models\FieldOfActivity;
 use App\Models\City;
 use Illuminate\Http\Request;
+use App\Services\TelegramService;
+
 
 class OrganizationController extends Controller
 {
@@ -56,9 +58,6 @@ $path = $request->file('logo')->store('clinics/logo', 'public');
     $path = null;
 }
 
-
-
-
         // ------------------------------
         // ГОРОД ПО ID
         // ------------------------------
@@ -101,6 +100,22 @@ $path = $request->file('logo')->store('clinics/logo', 'public');
                 'email'       => $email
             ]);
 
+                $user = auth()->user();
+
+$clinicUrl = config('app.url') . '/clinics/' . $clinic->slug;
+
+app(TelegramService::class)->send(
+    "🏥 <b>Новая клиника</b>\n\n" .
+    "Название: <a href=\"{$clinicUrl}\">{$clinic->name}</a>\n" .
+    "Город: {$clinic->city}\n" .
+    "Адрес: {$clinic->street} {$clinic->house}\n\n" .
+    "👤 <b>Добавил:</b>\n" .
+    "Имя: " . ($user?->name ?? 'Гость') . "\n" .
+    "Email: " . ($user?->email ?? '—') . "\n\n" .
+    "🏷 <b>Пользователь добавил свою организацию</b>"
+);
+
+
             return response()->json([
                 'success' => true,
                 'saved_to' => 'clinics',
@@ -126,6 +141,27 @@ $path = $request->file('logo')->store('clinics/logo', 'public');
             'email'       => $email,
             'type'        => $activity->activity, // Например "Груминг", "Зоомагазин"
         ]);
+
+
+            // 🔔 TELEGRAM — ДО return
+    $user = auth()->user();
+
+$orgUrl = config('app.url') . '/organizations/' . $organization->slug;
+
+app(TelegramService::class)->send(
+    "🏢 <b>Новая организация</b>\n\n" .
+    "Название: <a href=\"{$orgUrl}\">{$organization->name}</a>\n" .
+    "Город: {$organization->city}\n" .
+    "Адрес: {$organization->street} {$organization->house}\n\n" .
+    "👤 <b>Добавил:</b>\n" .
+    "Имя: " . ($user?->name ?? 'Гость') . "\n" .
+    "Email: " . ($user?->email ?? '—') . "\n\n" .
+    // "🏷 <b>Пользователь добавил свою организацию</b>"
+);
+
+
+
+
 
         return response()->json([
             'success' => true,

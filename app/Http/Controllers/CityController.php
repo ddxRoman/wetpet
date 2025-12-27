@@ -12,12 +12,10 @@ class CityController extends Controller
     return response()->json(\App\Models\City::orderBy('name')->get(['id', 'name']));
 }
 
-
 public function all()
 {
     return response()->json(City::select('id', 'name', 'slug')->get());
 }
-
 
 public function add(Request $request)
 {
@@ -33,6 +31,8 @@ public function add(Request $request)
         $slug .= '-' . ($count + 1);
     }
 
+    
+
     $city = City::create([
         'name' => $validated['name'],
         'slug' => $slug,
@@ -41,6 +41,18 @@ public function add(Request $request)
         'verified' => 'unconfirmed',
         'user_id' => Auth::id(), // 👈 сохраняем ID автора
     ]);
+
+    $user = auth()->user();
+
+app(\App\Services\TelegramService::class)->send(
+    "🌆 <b>Добавлен город</b>\n\n" .
+    "Название: {$city->name}\n" .
+    "Регион: {$city->region}\n" .
+    "Статус: unconfirmed\n\n" .
+    "👤 <b>Добавил:</b>\n" .
+    "Имя: {$user?->name}\n" .
+    "Email: {$user?->email}"
+);
 
     return response()->json(['success' => true, 'city' => $city]);
 }
@@ -63,8 +75,6 @@ $regions = \App\Models\City::select('region')->distinct()->orderBy('region')->ge
     return response()->json($cities);
 }
 
-
-
 public function getCities()
 {
     $user = Auth::user();
@@ -84,8 +94,6 @@ public function getCities()
 
     return response()->json($cities);
 }
-
-
 
      public function search(Request $request)
     {
@@ -119,7 +127,6 @@ public function getCities()
             'city' => $city
         ]);
     }
-
 
     /**
      * Возвращает список городов (для поиска)
@@ -165,7 +172,6 @@ public function getCities()
             'city_name' => $city->name,
         ]);
         logger()->info('CityController@set session after', session()->all());
-
 
         // Если пользователь авторизован — обновляем поле city_id в users
         if (auth()->check()) {

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
     use App\Models\City;
 use App\Models\Clinic;
+use App\Services\TelegramService;
+
 
 use Illuminate\Http\Request;
 
@@ -53,6 +55,8 @@ $clinic->load('doctors'); // city уже строка
     }
 
     // Сохранение новой клиники
+
+
 public function store(Request $request)
 {
     $data = $request->validate([
@@ -90,6 +94,20 @@ public function store(Request $request)
         'schedule' => $data['schedule'] ?? null,
         'workdays' => $data['workdays'] ?? null,
     ]);
+
+    // 🔔 TELEGRAM — ДО return
+    $user = auth()->user();
+
+    app(TelegramService::class)->send(
+        "🏥 <b>Новая клиника</b>\n\n" .
+        "Название: {$clinic->name}\n" .
+        "Город: {$clinic->city}\n" .
+        "Адрес: {$clinic->street} {$clinic->house}\n\n" .
+        "👤 <b>Добавил:</b>\n" .
+        "Имя: " . ($user?->name ?? 'Гость') . "\n" .
+        "Email: " . ($user?->email ?? '—') . "\n\n" .
+        "🏷 <b>Пользователь добавил свою организацию</b>"
+    );
 
     return redirect()
         ->route('clinics.show', $clinic)

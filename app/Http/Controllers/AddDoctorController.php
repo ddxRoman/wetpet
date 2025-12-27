@@ -69,6 +69,39 @@ class AddDoctorController extends Controller
 
         $model->save();
 
+        $user = auth()->user();
+
+$isSelf = $user && (
+    mb_strtolower($user->name) === mb_strtolower($model->name)
+);
+
+$selfLabel = $isSelf
+    ? "🏷 <b>Это я</b>\n"
+    : '';
+
+$type = $field->activity === 'doctor'
+    ? 'Ветеринар'
+    : 'Специалист';
+
+$city = \App\Models\City::find($model->city_id)?->name;
+
+// 🔗 ССЫЛКА НА СТРАНИЦУ СПЕЦИАЛИСТА
+$specUrl = config('app.url') . '/doctors/' . $model->slug;
+
+app(\App\Services\TelegramService::class)->send(
+    "👤 <b>Добавлен {$type}</b>\n\n" .
+    "Имя: <a href=\"{$specUrl}\">{$model->name}</a>\n" .
+    "Специализация: {$model->specialization}\n" .
+    "Город: {$city}\n\n" .
+    "👤 <b>Добавил:</b>\n" .
+    "Имя: " . ($user?->name ?? 'Гость') . "\n" .
+    "Email: " . ($user?->email ?? '—') . "\n\n" .
+    $selfLabel
+);
+
+
+
+
         /* ============================================================
            🔥 6. СОХРАНЯЕМ КОНТАКТЫ (ТОЛЬКО ДЛЯ ВЕТВРАЧЕЙ)
         ============================================================ */
