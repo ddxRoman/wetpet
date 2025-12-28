@@ -11,13 +11,6 @@ class TelegramService
         $token = config('services.telegram.bot_token');
         $chatId = config('services.telegram.chat_id');
 
-
-            \Log::info('Telegram debug', [
-        'token' => $token,
-        'chat_id' => $chatId,
-    ]);
-
-
         if (!$token || !$chatId) {
             return;
         }
