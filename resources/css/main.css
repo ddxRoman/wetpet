@@ -37,9 +37,10 @@ header {
 
 .header-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: flex-start;
 }
+
 
 .logo-block {
     justify-self: center;
@@ -173,7 +174,7 @@ header {
 }
 
 #city-modal .modal-content {
-    background: #fff;
+    background: #f8f9ff;
     max-width: 600px;
     margin: 6vh auto;
     padding: 1rem;
@@ -405,7 +406,7 @@ ol, ul {
 .text_menu_btn_category {
     font-weight: 600;
     color: #313131;
-    height: 85px;
+    height: 50px;
     font-size: 1.1rem;
 }
 
@@ -415,7 +416,7 @@ ol, ul {
 }
 
 .category_icon {
-    height: 80px;
+    height: 125px;
     object-fit: contain;
 }
 
@@ -594,7 +595,7 @@ ol, ul {
 /* Footer */
 .footer {
     margin-top: 5%;
-    background-color: #00000011;
+    background-color: #F5F7F9;
 }
 
 .footer-content {
@@ -958,8 +959,12 @@ select:focus {
 }
 
 .add_btn {
-    width: 40px;
+    width: 120px;
     border: none;
+}
+
+.container-flex{
+    padding: 0 2% 0 2%;
 }
 
 .btn_add_clinic {
@@ -1944,7 +1949,7 @@ a {
     .header-grid {
         display: grid;
         grid-template-columns: auto 1fr auto;
-        align-items: center;
+        align-items: start;
     }
 
     /* Бургер */

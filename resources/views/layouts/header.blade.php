@@ -86,10 +86,6 @@
 @endif
 
 
-
-
-
-
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 
 </head>
@@ -99,7 +95,7 @@
         {{ request()->is('clinics*') ? 'compact-header' : '' }}
         {{ request()->is('doctors*') ? 'compact-header' : '' }}">
     
-    <div class="container py-2">
+    <div class="container-flex py-2">
 
         {{-- =================== HEADER MAIN ROW =================== --}}
         <div class="header-grid">
@@ -147,7 +143,7 @@
                 <div class="d-none d-md-flex gap-2">
                     <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
                         <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" title="Добавить организацию" alt="Добавить организацию">
-                    </button>
+                    </button><br>
 
                     <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
                         <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" title="Добавить специалиста" alt="Добавить специалиста">
