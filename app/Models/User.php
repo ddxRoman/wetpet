@@ -60,6 +60,23 @@ public function canAccessPanel(Panel $panel): bool
     return true;
 }
 
+public function ownedOrganizations()
+{
+    return $this->belongsToMany(
+        Organization::class,
+        'organization_owners'
+    )->withTimestamps();
+}
+
+// App\Models\User.php
+
+public function ownedClinics()
+{
+    return $this->belongsToMany(Clinic::class, 'clinic_owners')
+        ->withPivot('is_confirmed')
+        ->withTimestamps();
+}
+
 
     /* ================= ТВОЙ САЙТ ================= */
 

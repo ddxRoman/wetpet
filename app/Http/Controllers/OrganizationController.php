@@ -14,6 +14,11 @@ class OrganizationController extends Controller
 {
     public function submit(Request $request)
     {
+
+        $isOwner = $request->boolean('its_me');
+$user = auth()->user();
+
+
         // ------------------------------
         // ВАЛИДАЦИЯ
         // ------------------------------
@@ -23,8 +28,8 @@ class OrganizationController extends Controller
             'region'               => 'nullable|string|max:255',
             'city_id'              => 'required|integer',
             'street'               => 'required|string|max:255',
-            'house'                => 'nullable|string|max:255',
-            'description'          => 'nullable|string',
+            'house'                => 'required|string|max:255',
+            'description'          => 'required|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
 
             'schedule'             => 'nullable|string|max:255',
@@ -100,20 +105,28 @@ $path = $request->file('logo')->store('clinics/logo', 'public');
                 'email'       => $email
             ]);
 
+                    if ($isOwner && $user) {
+    $clinic->owners()->attach($user->id, [
+        'is_confirmed' => false, // позже можно сделать подтверждение
+    ]);
+}
+
                 $user = auth()->user();
 
 $clinicUrl = config('app.url') . '/clinics/' . $clinic->slug;
 
-app(TelegramService::class)->send(
-    "🏥 <b>Новая клиника</b>\n\n" .
+$message =
+    "🏥 <b>Новая ветеринарная клиника</b>\n\n" .
     "Название: <a href=\"{$clinicUrl}\">{$clinic->name}</a>\n" .
     "Город: {$clinic->city}\n" .
     "Адрес: {$clinic->street} {$clinic->house}\n\n" .
     "👤 <b>Добавил:</b>\n" .
     "Имя: " . ($user?->name ?? 'Гость') . "\n" .
-    "Email: " . ($user?->email ?? '—') . "\n\n" .
-    "🏷 <b>Пользователь добавил свою организацию</b>"
-);
+    "Email: " . ($user?->email ?? '—');
+
+app(TelegramService::class)->send($message);
+
+
 
 
             return response()->json([
@@ -142,24 +155,27 @@ app(TelegramService::class)->send(
             'type'        => $activity->activity, // Например "Груминг", "Зоомагазин"
         ]);
 
+        if ($isOwner && $user) {
+    $organization->owners()->attach($user->id, [
+        'is_confirmed' => false, // позже можно сделать подтверждение
+    ]);
+}
 
             // 🔔 TELEGRAM — ДО return
     $user = auth()->user();
 
 $orgUrl = config('app.url') . '/organizations/' . $organization->slug;
 
-app(TelegramService::class)->send(
+$message =
     "🏢 <b>Новая организация</b>\n\n" .
     "Название: <a href=\"{$orgUrl}\">{$organization->name}</a>\n" .
     "Город: {$organization->city}\n" .
     "Адрес: {$organization->street} {$organization->house}\n\n" .
     "👤 <b>Добавил:</b>\n" .
     "Имя: " . ($user?->name ?? 'Гость') . "\n" .
-    "Email: " . ($user?->email ?? '—') . "\n\n" .
-    // "🏷 <b>Пользователь добавил свою организацию</b>"
-);
+    "Email: " . ($user?->email ?? '—');
 
-
+app(TelegramService::class)->send($message);
 
 
 

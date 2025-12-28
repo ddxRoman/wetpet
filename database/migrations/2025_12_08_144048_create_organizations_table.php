@@ -25,7 +25,7 @@ public function up(): void
         $table->string('house');
 
         // Инфо
-        $table->text('description');
+        $table->text('description')->nullable();
         $table->string('logo')->nullable();
 
         // График

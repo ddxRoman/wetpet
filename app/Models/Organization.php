@@ -21,4 +21,13 @@ class Organization extends Model
         'email',
         'type',
     ];
+
+    public function owners()
+{
+    return $this->belongsToMany(
+        User::class,
+        'organization_owners'
+    )->withTimestamps();
+}
+
 }

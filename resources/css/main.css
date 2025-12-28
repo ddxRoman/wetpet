@@ -1622,9 +1622,6 @@ select:focus {
     object-fit: cover;
 }
 
-.doctorPhotoPreview-spec{
-    display: none;
-}
 
 #doctorPhotoInput,  #orgPhotoInput{
     display: none;
