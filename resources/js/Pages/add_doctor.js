@@ -132,16 +132,36 @@ citySelect.addEventListener('change', () => {
     /* ===== БЛОК 3 — сферы ===== */
     const fieldSelect = modal.querySelector('#fieldOfActivitySelect');
 
-    if (fieldSelect) {
-        fetch('/api/fields/specialists')
-            .then(r => r.json())
-            .then(list => {
-                fieldSelect.innerHTML = `<option value="">Выберите сферу</option>`;
-                list.forEach(i => {
+if (fieldSelect) {
+fetch('/api/fields/specialists')
+
+        .then(r => r.json())
+        .then(list => {
+            fieldSelect.innerHTML = '<option value="">Выберите сферу</option>';
+
+            const doctors = list.filter(i => i.activity === 'doctor');
+            const others  = list.filter(i => i.activity !== 'doctor');
+
+            if (doctors.length) {
+                fieldSelect.innerHTML += '<optgroup label="Врачи">';
+                doctors.forEach(i => {
                     fieldSelect.innerHTML += `<option value="${i.id}">${i.name}</option>`;
                 });
-            });
-    }
+                fieldSelect.innerHTML += '</optgroup>';
+            }
+
+            if (others.length) {
+                fieldSelect.innerHTML += '<optgroup label="Другие специалисты">';
+                others.forEach(i => {
+                    fieldSelect.innerHTML += `<option value="${i.id}">${i.name}</option>`;
+                });
+                fieldSelect.innerHTML += '</optgroup>';
+            }
+        })
+        .catch(() => {
+            fieldSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
+        });
+}
 
     /* ===== БЛОК 4 — форма ===== */
     const form = modal.querySelector('#addDoctorForm');

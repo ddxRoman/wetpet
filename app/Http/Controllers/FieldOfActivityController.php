@@ -11,10 +11,12 @@ class FieldOfActivityController extends Controller
 
 public function getSpecialists()
 {
-    return response()->json(
-        \App\Models\FieldOfActivity::where('type', 'specialist')->orderBy('name')->get()
-    );
+    return FieldOfActivity::where('type', 'specialist')
+        ->orderBy('activity')
+        ->orderBy('name')
+        ->get();
 }
+
 public function getVetclinic()
 {
     return FieldOfActivity::where('type', 'organization')->get();

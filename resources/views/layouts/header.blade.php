@@ -33,7 +33,7 @@
 
 
 @elseif(Route::currentRouteName() === 'clinics.index')
-    <meta name="description" content="Найти ветеринарную клинику в городе, узнать рейтинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
+    <meta name="description" content="Найти ветеринарную клинику в городе, ' . $seoCity . ', узнать рейтинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
     <title>{{ 'Все ветеринарные клиники города ' . $currentCityName }}</title>
 
 @elseif(Route::currentRouteName() === 'doctors.show')
