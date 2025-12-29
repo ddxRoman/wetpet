@@ -144,3 +144,7 @@ Route::post('/add-organization', [OrganizationController::class, 'submit'])
 
 Route::get('/clinics/{clinic:slug}', [ClinicController::class, 'show'])
     ->name('clinics.show');
+
+    Route::post('/add-specialist', [SpecialistCreateController::class, 'store']);
+// routes/web.php
+Route::get('/ajax/organizations', [OrganizationController::class, 'byActivityAndCity']);

@@ -7,7 +7,39 @@ use App\Models\City;
 
 class DoctorController extends Controller
 {
+    
+    public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'field_of_activity_id' => 'required|exists:field_of_activities,id',
+        'city_id' => 'nullable|exists:cities,id',
+        'clinic_id' => 'nullable|exists:clinics,id',
+    ]);
+
+    $doctor = Doctor::create([
+        'name' => $request->name,
+        'field_of_activity_id' => $request->field_of_activity_id,
+        'city_id' => $request->city_id,
+        'clinic_id' => $request->clinic_id,
+        'experience' => $request->experience,
+        'description' => $request->description,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'id' => $doctor->id,
+        'type' => 'doctor',
+    ]);
+}
+
+
+
+    
+    
+    
     // 🔹 Список докторов (страница /doctors)
+
 
 public function index(\Illuminate\Http\Request $request)
 {
@@ -84,9 +116,6 @@ public function show(Doctor $doctor)
 
      public function update(Request $request, Doctor $doctor)
     {
-        // Проверка прав — если нужно: убедиться, что текущий пользователь может редактировать
-        // if (auth()->id() !== $doctor->user_id) { abort(403); }
-
         $request->validate([
             'name' => 'required|string|max:255',
             'specialization' => 'nullable|string|max:255',

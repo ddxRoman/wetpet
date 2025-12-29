@@ -26,10 +26,26 @@ class SpecialistController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'field_of_activity_id' => 'required|exists:field_of_activities,id',
+    ]);
+
+    $specialist = Specialist::create([
+        'name' => $request->name,
+        'field_of_activity_id' => $request->field_of_activity_id,
+        'description' => $request->description,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'id' => $specialist->id,
+        'type' => 'specialist',
+    ]);
+}
+
 
     /**
      * Display the specified resource.

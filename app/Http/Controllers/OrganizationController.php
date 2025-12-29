@@ -185,4 +185,25 @@ app(TelegramService::class)->send($message);
             'organization' => $organization,
         ]);
     }
+
+    public function byActivityAndCity(Request $request)
+{
+    $request->validate([
+        'field_of_activity_id' => 'required|exists:field_of_activities,id',
+        'city_id' => 'required|exists:cities,id',
+    ]);
+
+    $activity = FieldOfActivity::find($request->field_of_activity_id)->activity;
+    $cityName = City::find($request->city_id)->name;
+
+    $organizations = Organization::where('type', $activity)
+        ->where('city', $cityName)
+        ->orderBy('name')
+        ->get(['id', 'name']);
+
+    return response()->json($organizations);
+}
+
+
+
 }

@@ -1,53 +1,3 @@
-<style>
-    .photo-wrapper {
-    position: relative;
-    width: 150px;
-    height: 150px;
-}
-
-#photoPicker {
-    width: 150px;
-    height: 150px;
-    border: 2px dashed #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    cursor: pointer;
-}
-
-#photoPreviewWrapper {
-    display: none;
-    position: relative;
-    width: 150px;
-    height: 150px;
-}
-
-#photoPreviewWrapper:hover #removePhotoBtn {
-    opacity: 1;
-}
-#removePhotoBtn {
-    opacity: 0;
-    transition: .2s;
-}
-
-#removePhotoBtn {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: none;
-    background: #dc3545;
-    color: #fff;
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-}
-
-</style>
-
 
 <div class="modal fade" id="addDoctorModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -55,7 +5,7 @@
 
 <form id="addDoctorForm"
       method="POST"
-      action="/add-doctor"
+      action="/add-specialist"
       enctype="multipart/form-data">
     @csrf
 
@@ -138,7 +88,7 @@
 
 
                         <div class="col-md-6">
-                            <label>Клиника</label>
+                            <label>Оргнанизация </label>
                             <select name="clinic_id" id="clinicSelect" class="form-select">
     <option value="">Сначала выберите город</option>
 </select>

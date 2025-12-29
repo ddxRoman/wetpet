@@ -208,3 +208,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('addDoctorModal');
     if (modal) initAddDoctorScripts(modal);
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fieldSelect  = document.getElementById('fieldOfActivitySelect');
+    const citySelect   = document.getElementById('citySelect');
+    const clinicSelect = document.getElementById('clinicSelect');
+
+    function loadClinics() {
+        const fieldId = fieldSelect.value;
+        const cityId  = citySelect.value;
+
+        clinicSelect.innerHTML = '<option>Загрузка...</option>';
+
+        if (!fieldId || !cityId) {
+            clinicSelect.innerHTML = '<option>Сначала выберите город и сферу деятельности</option>';
+            return;
+        }
+
+        fetch(`/ajax/organizations?field_of_activity_id=${fieldId}&city_id=${cityId}`)
+            .then(res => res.json())
+            .then(data => {
+                clinicSelect.innerHTML = '';
+
+                if (!data.length) {
+                    clinicSelect.innerHTML = '<option>Организации не найдены</option>';
+                    return;
+                }
+
+                data.forEach(org => {
+                    clinicSelect.innerHTML += `<option value="${org.id}">${org.name}</option>`;
+                });
+            })
+            .catch(() => {
+                clinicSelect.innerHTML = '<option>Ошибка загрузки</option>';
+            });
+    }
+
+    fieldSelect.addEventListener('change', loadClinics);
+    citySelect.addEventListener('change', loadClinics);
+});
+

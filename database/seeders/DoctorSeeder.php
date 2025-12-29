@@ -163,35 +163,453 @@ class DoctorSeeder extends Seeder
                 'photo' => 'doctors/biosfera/martyrosiayan.png',
                 'description' => '',
             ],
+            [
+                'name' => 'Хлытчиев Денис Владимирович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, эндохирург',
+                'clinic_id' => NULL,
+                'experience' => 28,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Руководитель ветклиники «Большая Медведица», специалист по эндохирургии',
+            ],
+            [
+                'name' => 'Шмелёва Татьяна Витальевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, специалист УЗИ, хирург, главный ветеринарный врач',
+                'clinic_id' => NULL,
+                'experience' => 17,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Главный ветеринарный врач клиники «Большая Медведица», специалист по ультразвуковой диагностике и хирургии',
+            ],
+            [
+                'name' => 'Губарь Вадим Александрович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, ортопед, невролог, хирург',
+                'clinic_id' => NULL,
+                'experience' => 15,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Специалист по ортопедическим и неврологическим заболеваниям животных в клинике «Большая Медведица»',
+            ],
+            [
+                'name' => 'Кучеренко Яна Владимировна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, стоматолог, ратолог',
+                'clinic_id' => NULL,
+                'experience' => 13,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Врач клиники «Большая Медведица», специализируется на терапии, стоматологии и лечении грызунов',
+            ],
+            [
+                'name' => 'Проценко Даниил Андреевич',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, нефролог, рентгенолог',
+                'clinic_id' => NULL,
+                'experience' => 8,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Специалист по нефрологии и рентгенологии в клинике «Большая Медведица»',
+            ],
+            [
+                'name' => 'Сагкаев Виталий Юрьевич',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, кардиолог, анестезиолог, терапевт',
+                'clinic_id' => NULL,
+                'experience' => 8,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Специалист по кардиологии и анестезиологии в клинике «Большая Медведица»',
+            ],
+            [
+                'name' => 'Розжигова Ольга Валерьевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, хирург, онколог, стоматолог, анестезиолог',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Врач клиники «Воля», специализируется на хирургии, онкологии и стоматологии',
+            ],
+            [
+                'name' => 'Чехова Елена Сергеевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, репродуктолог, специалист УЗИ, терапевт, хирург',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Врач клиники «Воля», проводит стерилизацию, УЗИ-диагностику и репродуктивные операции',
+            ],
+            [
+                'name' => 'Петросян Михаил Ераносович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, кардиолог, дерматолог, специалист УЗИ, хирург, эндокринолог',
+                'clinic_id' => NULL,
+                'experience' => 13,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Главный врач клиники доктора Петросяна, специализируется на кардиологии и ультразвуковой диагностике',
+            ],
+            [
+                'name' => 'Полежаева Елизавета Андреевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, нефролог-уролог',
+                'clinic_id' => NULL,
+                'experience' => 9,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Врач клиники доктора Петросяна, специализируется на терапии и нефрологии',
+            ],
+            [
+                'name' => 'Сборик Виталий Викторович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапия, хирургия, травматология, ортопедия, неврология',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Специалист по терапии, хирургии, травматологии, ортопедии и неврологии в клинике «Воля»'
+            ],
+            [
+                'name' => 'Бабенко Егор Александрович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, хирург, ортопед',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Терапевт, хирург и ортопед ветеринарной клиники «Воля»'
+            ],
+            [
+                'name' => 'Бородина Анна Сергеевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, хирург',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Врач-терапевт и хирург клиники «Воля», проводит оперативные вмешательства и консервативное лечение'
+            ],
+            [
+                'name' => 'Сасина Эмилия Анатольевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, специалист УЗИ, хирург',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Специализируется на терапии, ультразвуковой диагностике и хирургии в клинике «Воля»'
+            ],
+            [
+                'name' => 'Горецкая Мария Дмитриевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, хирург, стоматолог',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Врач клиники «Воля», ведёт приём по терапии, хирургии и стоматологии'
+            ],
+            [
+                'name' => 'Оленин Виктор',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, выезд на дом',
+                'clinic_id' => NULL,
+                'experience' => '8  ',
+                'exotic_animals' => NULL,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Осуществляет выезд на дом для проведения вакцинаций, забора анализов и лечебных процедур'
+            ],
+            [
+                'name' => 'Болдыш Андрей',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, выезд на дом',
+                'clinic_id' => NULL,
+                'experience' => '11  ',
+                'exotic_animals' => NULL,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Ветеринарный доктор с выездом на дом, оказывает полный спектр ветеринарных услуг'
+            ],
+            [
+                'name' => 'Моржиевский Павел',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, выезд на дом',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Проводит выездные приёмы, выполняет медицинские манипуляции и стрижку когтей'
+            ],
+            [
+                'name' => 'Грудзинская Татьяна Игоревна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, дерматолог, терапевт',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Специализируется на дерматологии и терапии, проводит онлайн-консультации и очные приёмы'
+            ],
+            [
+                'name' => 'Чапланова Нина',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, зоопсихолог, диетолог',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Занимается поведенческой медициной и диетологией, помогает в адаптации и коррекции поведения животных'
+            ],
+            [
+                'name' => 'Казанцев Сергей Владимирович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, хирург, стоматолог, специалист УЗИ',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Проводит терапию, хирургические операции, стоматологические процедуры и ультразвуковую диагностику'
+            ],
+            [
+                'name' => 'Иванова Марина Сергеевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, репродуктолог, эндокринолог',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Специализируется на репродуктологии и эндокринологии, ведёт приём в городской ветеринарной клинике'
+            ],
+            [
+                'name' => 'Петров Алексей Николаевич',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, кардиолог, пульмонолог',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Кардиолог и пульмонолог, занимается диагностикой и лечением заболеваний сердца и дыхательной системы'
+            ],
+            [
+                'name' => 'Смирнова Ольга Викторовна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, офтальмолог, терапевт',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Офтальмолог и терапевт, проводит диагностику и лечение глазных заболеваний у животных'
+            ],
+            [
+                'name' => 'Кузнецов Дмитрий Андреевич',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, онколог, химиотерапевт',
+                'clinic_id' => NULL,
+                'experience' => NULL,
+                'exotic_animals' => NULL,
+                'On_site_assistance' => NULL,
+                'photo' => NULL,
+                'description' => 'Онколог, специализируется на диагностике и химиотерапевтическом лечении онкологических заболеваний животных'
+            ],
+            [
+                'name' => 'Алексеева Елена Михайловна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, терапевт, инфекционист',
+                'clinic_id' => NULL,
+                'experience' => '15  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Специализируется на диагностике и лечении инфекционных заболеваний, проводит выездные приёмы'
+            ],
+            [
+                'name' => 'Морозов Иван Сергеевич',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, хирург, травматолог',
+                'clinic_id' => NULL,
+                'experience' => '18  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => NULL,
+                'description' => 'Опытный хирург и травматолог, проводит сложные оперативные вмешательства'
+            ],
+            [
+                'name' => 'Соколова Анна Петровна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, офтальмолог, микрохирург',
+                'clinic_id' => NULL,
+                'experience' => '12  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => NULL,
+                'description' => 'Специалист по офтальмологии и микрохирургии глаз у животных'
+            ],
+            [
+                'name' => 'Васильев Дмитрий Николаевич',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, кардиолог, УЗИ-диагност',
+                'clinic_id' => NULL,
+                'experience' => '20  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Кардиолог с углублённой подготовкой по ультразвуковой диагностике сердечно‑сосудистой системы'
+            ],
+            [
+                'name' => 'Никитина Мария Александровна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, гастроэнтеролог, диетолог',
+                'clinic_id' => NULL,
+                'experience' => '14  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Специализируется на заболеваниях ЖКТ и составлении индивидуальных диет для животных'
+            ],
+            [
+                'name' => 'Павлов Сергей Владимирович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, невролог, реабилитолог',
+                'clinic_id' => NULL,
+                'experience' => '16  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => NULL,
+                'description' => 'Занимается неврологическими заболеваниями и восстановительной терапией после травм и операций'
+            ],
+            [
+                'name' => 'Коваленко Ольга Игоревна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, эндокринолог, репродуктолог',
+                'clinic_id' => NULL,
+                'experience' => '13  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Специализируется на гормональных нарушениях и вопросах репродукции животных'
+            ],
+            [
+                'name' => 'Фёдоров Андрей Михайлович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, ортопед, спортивный врач',
+                'clinic_id' => NULL,
+                'experience' => '19  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => NULL,
+                'description' => 'Лечит ортопедические патологии, работает со спортивными и служебными собаками'
+            ],
+            [
+                'name' => 'Зотова Екатерина Сергеевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, дерматолог, аллерголог',
+                'clinic_id' => NULL,
+                'experience' => '11  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => true,
+                'photo' => NULL,
+                'description' => 'Диагностирует и лечит кожные заболевания и аллергические реакции у животных'
+            ],
+            [
+                'name' => 'Лазарев Николай Иванович',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Ветеринарный врач, анестезиолог, реаниматолог',
+                'clinic_id' => NULL,
+                'experience' => '22  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => NULL,
+                'description' => 'Специалист по анестезиологии и интенсивной терапии, обеспечивает безопасность операций'
+            ],
         ];
 
-        
-foreach ($doctors as $doctor) {
+        foreach ($doctors as $doctor) {
 
-    $slugParts = [
-        $doctor['name'],
-    ];
+            $slugParts = [
+                $doctor['name'],
+            ];
 
-    // если есть clinic_id — добавляем название клиники
-    if (!empty($doctor['clinic_id'])) {
-        $clinicName = DB::table('clinics')
-            ->where('id', $doctor['clinic_id'])
-            ->value('name');
+            // если есть clinic_id — добавляем название клиники
+            if (!empty($doctor['clinic_id'])) {
+                $clinicName = DB::table('clinics')
+                    ->where('id', $doctor['clinic_id'])
+                    ->value('name');
 
-        if ($clinicName) {
-            $slugParts[] = $clinicName;
+                if ($clinicName) {
+                    $slugParts[] = $clinicName;
+                }
+            }
+
+            $slug = Str::slug(implode(' ', $slugParts));
+
+            DB::table('doctors')->insert([
+                ...$doctor,
+                'slug' => $slug,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
-    }
-
-    $slug = Str::slug(implode(' ', $slugParts));
-
-    DB::table('doctors')->insert([
-        ...$doctor,
-        'slug' => $slug,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-}
-
     }
 }
