@@ -3,13 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
@@ -40,56 +37,62 @@ class User extends Authenticatable implements FilamentUser
         'is_admin' => 'boolean',
     ];
 
-    /* ================= Filament ================= */
+    /* ================= 1 к 1 ================= */
 
-
-
-public function canAccessPanel(Panel $panel): bool
-{
-    if ($panel->getId() === 'admin') {
-
-        // 🔒 Если пользователь не авторизован — сразу 403
-        if (! Auth::check()) {
-            abort(403);
-        }
-
-        // 🔒 Если не админ — тоже 403
-        return $this->is_admin === true;
+    public function doctorOwner()
+    {
+        return $this->hasOne(\App\Models\DoctorOwner::class);
     }
 
-    return true;
-}
+    public function specialistOwner()
+    {
+        return $this->hasOne(\App\Models\SpecialistOwner::class);
+    }
 
-public function ownedOrganizations()
-{
-    return $this->belongsToMany(
-        Organization::class,
-        'organization_owners'
-    )->withTimestamps();
-}
+    /**
+     * Есть ли уже связь "я — специалист"
+     */
+    public function hasSelfSpecialist(): bool
+    {
+        return $this->doctorOwner()->exists()
+            || $this->specialistOwner()->exists();
+    }
 
-// App\Models\User.php
+    /**
+     * Можно ли показывать чекбокс "Добавляю себя"
+     */
+    public function canAddSelfSpecialist(): bool
+    {
+        return ! $this->hasSelfSpecialist();
+    }
 
-public function ownedClinics()
-{
-    return $this->belongsToMany(Clinic::class, 'clinic_owners')
-        ->withPivot('is_confirmed')
-        ->withTimestamps();
-}
-public function ownedDoctors()
-{
-    return $this->belongsToMany(Doctor::class, 'doctor_owners')
-        ->withPivot('is_confirmed');
-}
+    /* ================= Остальное — БЕЗ ИЗМЕНЕНИЙ ================= */
 
-public function ownedSpecialists()
-{
-    return $this->belongsToMany(Specialist::class, 'specialist_owners')
-        ->withPivot('is_confirmed');
-}
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            if (!Auth::check()) {
+                abort(403);
+            }
+            return $this->is_admin === true;
+        }
+        return true;
+    }
 
+    public function ownedOrganizations()
+    {
+        return $this->belongsToMany(
+            Organization::class,
+            'organization_owners'
+        )->withTimestamps();
+    }
 
-    /* ================= ТВОЙ САЙТ ================= */
+    public function ownedClinics()
+    {
+        return $this->belongsToMany(Clinic::class, 'clinic_owners')
+            ->withPivot('is_confirmed')
+            ->withTimestamps();
+    }
 
     public function city()
     {

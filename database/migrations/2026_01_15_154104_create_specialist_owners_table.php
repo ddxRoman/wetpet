@@ -14,7 +14,7 @@ return new class extends Migration
 Schema::create('specialist_owners', function (Blueprint $table) {
     $table->id();
     $table->foreignId('specialist_id')->constrained()->cascadeOnDelete();
-    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
     $table->boolean('is_confirmed')->default(false);
     $table->timestamps();
 

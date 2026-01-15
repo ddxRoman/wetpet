@@ -1671,7 +1671,12 @@ select:focus {
     border-top: 1px solid #e5e5e5;
 }
 
+.form-check-label{
+    width: 100% !important; 
+}
+
 .label_its_me {
+    width: 100%;
     color: #000000a6;
     font-size: small;
     background-color: rgba(255, 0, 0, 0.123);

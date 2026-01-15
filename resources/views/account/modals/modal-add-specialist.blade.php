@@ -56,15 +56,18 @@
 
 
 
-                                            <div class="col-12">
-    <label class="form-check-label">
-        <input type="checkbox" name="its_me" class="form-check-input">
-    <strong>
-        Добавляю себя
-    </strong> 
-    <label for="its_me" class="label_its_me">Мы попросим вас подтвердить что именно вы явлетесь этим специалистом, для этого могут потребоваться фотографии дипломов и документов</label>
-    </label>
-</div>
+@if(auth()->check() && auth()->user()->canAddSelfSpecialist())
+    <div class="col-12">
+        <label class="form-check-label">
+            <input type="checkbox" name="its_me" class="form-check-input">
+            <strong>Добавляю себя</strong>
+            <div class="label_its_me">
+                Мы попросим подтвердить, что это вы.
+            </div>
+        </label>
+    </div>
+@endif
+
 
 
 <div class="col-md-6">

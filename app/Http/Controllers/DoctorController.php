@@ -60,13 +60,7 @@ class DoctorController extends Controller
             ]);
         }
 
-        // 🔹 ВАЖНО: JSON → модалка закрывается
-        return response()->json([
-            'success' => true,
-            'id' => $doctor->id,
-            'type' => 'doctor',
-        ]);
-                    // Для добавления владельца записи специалиста и доктора
+                            // Для добавления владельца записи специалиста и доктора
         $isOwner = $request->boolean('its_me');
 $user = auth()->user();
 
@@ -75,6 +69,14 @@ if ($isOwner && $user) {
         $user->id => ['is_confirmed' => false],
     ]);
 }
+
+        // 🔹 ВАЖНО: JSON → модалка закрывается
+        return response()->json([
+            'success' => true,
+            'id' => $doctor->id,
+            'type' => 'doctor',
+        ]);
+
 
 
     }
@@ -116,11 +118,24 @@ if ($isOwner && $user) {
     /**
      * 🔹 Доктора на главную
      */
-    public function welcome()
-    {
-        $doctors = Doctor::orderBy('name')->limit(120)->get();
-        return view('welcome', compact('doctors'));
+public function welcome()
+{
+    $doctors = Doctor::orderBy('name')->limit(120)->get();
+
+    $canAddSelf = true;
+
+    if (auth()->check()) {
+        $user = auth()->user();
+
+        $canAddSelf = !(
+            $user->ownedDoctors()->exists() ||
+            $user->ownedSpecialists()->exists()
+        );
     }
+
+    return view('welcome', compact('doctors', 'canAddSelf'));
+}
+
 
     /**
      * 🔹 Карточка врача
