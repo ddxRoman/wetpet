@@ -46,16 +46,12 @@ $clinic->load('doctors'); // city уже строка
 
     return view('pages.clinics.show', compact('clinic'));
 }
-
-
     // Форма добавления новой клиники
     public function create()
     {
         return view('pages.clinics.create');
     }
-
     // Сохранение новой клиники
-
 
 public function store(Request $request)
 {

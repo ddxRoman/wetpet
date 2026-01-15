@@ -4,117 +4,144 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use App\Models\City;
+use App\Models\FieldOfActivity;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class DoctorController extends Controller
 {
-    
+    /**
+     * 🔹 Создание врача (AJAX, модалка, Telegram)
+     */
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'field_of_activity_id' => 'required|exists:field_of_activities,id',
-        'city_id' => 'nullable|exists:cities,id',
-        'clinic_id' => 'nullable|exists:clinics,id',
-    ]);
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'field_of_activity_id' => 'required|exists:field_of_activities,id',
+            'city_id' => 'nullable|exists:cities,id',
+            'clinic_id' => 'nullable|exists:clinics,id',
+            'experience' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-    $doctor = Doctor::create([
-        'name' => $request->name,
-        'field_of_activity_id' => $request->field_of_activity_id,
-        'city_id' => $request->city_id,
-        'clinic_id' => $request->clinic_id,
-        'experience' => $request->experience,
-        'description' => $request->description,
-    ]);
+        // 🔹 Получаем специализацию
+        $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
 
-    return response()->json([
-        'success' => true,
-        'id' => $doctor->id,
-        'type' => 'doctor',
-    ]);
-}
+        // 🔹 Создаём врача
+        $doctor = Doctor::create([
+            'name' => $validated['name'],
+            'specialization' => $field->name,
+            'field_of_activity_id' => $field->id,
+            'city_id' => $validated['city_id'] ?? null,
+            'clinic_id' => $validated['clinic_id'] ?? null,
+            'experience' => $validated['experience'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'slug' => Str::slug($validated['name']),
+        ]);
 
-
-
-    
-    
-    
-    // 🔹 Список докторов (страница /doctors)
-
-
-public function index(\Illuminate\Http\Request $request)
-{
-    $user = auth()->user();
-    $cityId = null;
-    $selectedCity = null;
-
-    // 1️⃣ Если city_id пришёл из запроса (AJAX)
-    if ($request->filled('city_id')) {
-        $cityId = (int) $request->get('city_id');
-
-        if (!$user) {
-            session(['city_id' => $cityId]);
+        // 🔹 Уведомление в Telegram
+        try {
+            Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
+                'chat_id' => config('services.telegram.chat_id'),
+                'parse_mode' => 'HTML',
+                'text' =>
+                    "🩺 <b>Новый специалист</b>\n\n" .
+                    "👤 <b>Имя:</b> {$doctor->name}\n" .
+                    "📌 <b>Специализация:</b> {$doctor->specialization}\n" .
+                    ($doctor->city?->name ? "🏙 <b>Город:</b> {$doctor->city->name}\n" : '') .
+                    ($doctor->clinic?->name ? "🏥 <b>Клиника:</b> {$doctor->clinic->name}\n" : ''),
+            ]);
+        } catch (\Throwable $e) {
+            // намеренно игнорируем, чтобы не ломать создание врача
+            logger()->warning('Telegram notify failed', [
+                'error' => $e->getMessage(),
+            ]);
         }
-    }
-    // 2️⃣ Если пользователь авторизован
-    elseif ($user && $user->city_id) {
-        $cityId = $user->city_id;
-    }
-    // 3️⃣ Берём из сессии
-    else {
-        $cityId = session('city_id');
-    }
 
-    // Название города для отображения
-    if ($cityId) {
-        $selectedCity = City::find($cityId)?->name;
+        // 🔹 ВАЖНО: JSON → модалка закрывается
+        return response()->json([
+            'success' => true,
+            'id' => $doctor->id,
+            'type' => 'doctor',
+        ]);
     }
 
-    // Фильтрация докторов
-    $doctors = Doctor::when($cityId, function ($query) use ($cityId) {
-        $query->where('city_id', $cityId);
-    })
-    ->orderBy('name')
-    ->get();
+    /**
+     * 🔹 Список докторов
+     */
+    public function index(Request $request)
+    {
+        $user = auth()->user();
+        $cityId = null;
+        $selectedCity = null;
 
-    return view('pages.doctors.index', compact('doctors', 'selectedCity'));
-}
+        if ($request->filled('city_id')) {
+            $cityId = (int) $request->get('city_id');
 
+            if (!$user) {
+                session(['city_id' => $cityId]);
+            }
+        } elseif ($user && $user->city_id) {
+            $cityId = $user->city_id;
+        } else {
+            $cityId = session('city_id');
+        }
 
-    // 🔹 Передача докторов на welcome
+        if ($cityId) {
+            $selectedCity = City::find($cityId)?->name;
+        }
+
+        $doctors = Doctor::when($cityId, function ($query) use ($cityId) {
+            $query->where('city_id', $cityId);
+        })
+            ->orderBy('name')
+            ->get();
+
+        return view('pages.doctors.index', compact('doctors', 'selectedCity'));
+    }
+
+    /**
+     * 🔹 Доктора на главную
+     */
     public function welcome()
     {
-        $doctors = Doctor::orderBy('name')->limit(120)->get(); // Можно ограничить до, например, 12
+        $doctors = Doctor::orderBy('name')->limit(120)->get();
         return view('welcome', compact('doctors'));
     }
 
-public function show(Doctor $doctor)
-{
-    $doctor->load([
-        'city',
-        'clinic',
-        'contacts',
-        'services' => function ($q) use ($doctor) {
-            $q->where('specialization_doctor', $doctor->specialization);
-        }
-    ]);
+    /**
+     * 🔹 Карточка врача
+     */
+    public function show(Doctor $doctor)
+    {
+        $doctor->load([
+            'city',
+            'clinic',
+            'contacts',
+            'services' => function ($q) use ($doctor) {
+                $q->where('specialization_doctor', $doctor->specialization);
+            }
+        ]);
 
-    $clinic = $doctor->clinic;
+        $clinic = $doctor->clinic;
 
-    $reviews = $doctor->reviews()
-        ->with('user', 'photos')
-        ->latest()
-        ->get();
+        $reviews = $doctor->reviews()
+            ->with('user', 'photos')
+            ->latest()
+            ->get();
 
-    return view('pages.doctors.show', compact(
-        'doctor',
-        'clinic',
-        'reviews'
-    ));
-}
+        return view('pages.doctors.show', compact(
+            'doctor',
+            'clinic',
+            'reviews'
+        ));
+    }
 
-
-
-     public function update(Request $request, Doctor $doctor)
+    /**
+     * 🔹 Обновление врача
+     */
+    public function update(Request $request, Doctor $doctor)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -126,36 +153,37 @@ public function show(Doctor $doctor)
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
         ]);
 
-        $data = $request->only(['name','specialization','clinic','city','experience','description']);
+        $data = $request->only([
+            'name',
+            'specialization',
+            'clinic',
+            'city',
+            'experience',
+            'description'
+        ]);
 
-        // Фото
         if ($request->hasFile('photo')) {
-            // удаляем старое если есть
-            if (!empty($doctor->photo) && Storage::disk('public')->exists($doctor->photo)) {
-                Storage::disk('public')->delete($doctor->photo);
+            if (!empty($doctor->photo) && \Storage::disk('public')->exists($doctor->photo)) {
+                \Storage::disk('public')->delete($doctor->photo);
             }
-            // сохраняем новое (в папку doctors)
-            $path = $request->file('photo')->store('doctors', 'public');
-            $data['photo'] = $path;
+
+            $data['photo'] = $request->file('photo')->store('doctors', 'public');
         }
 
         $doctor->update($data);
 
-        // если форма обычная HTML — редирект обратно с флеш-сообщением
         return redirect()->back()->with('success', 'Данные врача сохранены');
-        
-        // если ожидался JSON (AJAX) — можно вернуть JSON:
-        // return response()->json(['success' => true, 'doctor' => $doctor->fresh()]);
     }
 
-public function destroy(Doctor $doctor)
-{
-    $doctor->delete();
+    /**
+     * 🔹 Удаление врача
+     */
+    public function destroy(Doctor $doctor)
+    {
+        $doctor->delete();
 
-    return redirect()
-        ->route('doctors.index')
-        ->with('success', 'Врач удалён');
-}
-
-    
+        return redirect()
+            ->route('doctors.index')
+            ->with('success', 'Врач удалён');
+    }
 }

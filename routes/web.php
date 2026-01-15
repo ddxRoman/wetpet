@@ -19,6 +19,7 @@ use App\Http\Controllers\{
     OrganizationController,
     HomeController,
     testController,
+    SpecialistCreateController,
 };
 
 /*
@@ -148,3 +149,4 @@ Route::get('/clinics/{clinic:slug}', [ClinicController::class, 'show'])
     Route::post('/add-specialist', [SpecialistCreateController::class, 'store']);
 // routes/web.php
 Route::get('/ajax/organizations', [OrganizationController::class, 'byActivityAndCity']);
+

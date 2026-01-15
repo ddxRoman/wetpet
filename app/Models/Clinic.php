@@ -90,16 +90,18 @@ public function reviews()
         return 'slug';
     }
 
-    // App\Models\Clinic.php
 
 public function owners()
 {
-    return $this->belongsToMany(User::class, 'clinic_owners')
-        ->withPivot('is_confirmed')
-        ->withTimestamps();
+    return $this->belongsToMany(
+        User::class,
+        'clinic_owners',
+        'clinic_id', // FK клиники
+        'user_id'    // FK пользователя
+    )
+    ->withPivot('is_confirmed')
+    ->withTimestamps();
 }
-
-
 
 
 public function awards()

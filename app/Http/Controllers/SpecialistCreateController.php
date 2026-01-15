@@ -1,7 +1,10 @@
 <?php
+namespace App\Http\Controllers;
 use App\Models\FieldOfActivity;
+use Illuminate\Http\Request;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\SpecialistController;
+use App\Http\Controllers\Controller;
 
 class SpecialistCreateController extends Controller
 {

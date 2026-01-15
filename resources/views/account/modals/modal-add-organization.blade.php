@@ -146,7 +146,7 @@
                             
                         <div class="col-6">
                             <label>Почта</label>
-                            <input type="mail" name="mail" class="form-control">
+                            <input type="mail" name="email" class="form-control">
                         </div>
 
                         <div class="col-12">

@@ -11,11 +11,12 @@ class Specialist extends Model
         'specialization',
         'date_of_birth',
         'city_id',
-        'clinic_id',
+        'organization_id',
         'experience',
         'exotic_animals',
         'On_site_assistance',
         'photo',
-        'description'
+        'description',
+        'field_of_activity_id',
     ];
 }

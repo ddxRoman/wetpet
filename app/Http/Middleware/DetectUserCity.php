@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Models\City;
+use App\Http\Controllers\SpecialistCreateController;
 
 class DetectUserCity
 {

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Specialist;
+use App\Models\FieldOfActivity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class SpecialistController extends Controller
 {
@@ -26,25 +28,54 @@ class SpecialistController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
 public function store(Request $request)
 {
     $request->validate([
         'name' => 'required|string|max:255',
-        'field_of_activity_id' => 'required|exists:field_of_activities,id',
+        'city_id' => 'required|string',
+        'organization_id' => 'nullable|string',
+        'description' => 'nullable|string',
+        'date_of_birth' => 'nullable|date',
+        'experience' => 'nullable|integer',
+        'exotic_animals' => 'nullable|string',
+        'On_site_assistance' => 'nullable|string',
     ]);
+
+    $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
 
     $specialist = Specialist::create([
         'name' => $request->name,
-        'field_of_activity_id' => $request->field_of_activity_id,
+        'specialization' => $field->name,
+        'city_id' => $request->city_id,
+        'organization_id' => $request->organization_id,
+        'date_of_birth' => $request->date_of_birth,
+        'experience' => $request->experience,
+        'exotic_animals' => $request->exotic_animals,
+        'On_site_assistance' => $request->On_site_assistance,
         'description' => $request->description,
     ]);
+
+    try {
+        Http::post(
+            'https://api.telegram.org/bot'.config('services.telegram.bot_token').'/sendMessage',
+            [
+                'chat_id' => config('services.telegram.chat_id'),
+                'text' => "➕ Новый специалист:\n{$specialist->name}\nСпециализация: {$specialist->specialization}"
+            ]
+        );
+    } catch (\Throwable $e) {
+        logger()->error('Telegram notify failed', ['error' => $e->getMessage()]);
+    }
 
     return response()->json([
         'success' => true,
         'id' => $specialist->id,
-        'type' => 'specialist',
     ]);
 }
+
+
+
 
 
     /**
