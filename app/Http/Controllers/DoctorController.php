@@ -8,6 +8,7 @@ use App\Models\FieldOfActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
@@ -65,6 +66,17 @@ class DoctorController extends Controller
             'id' => $doctor->id,
             'type' => 'doctor',
         ]);
+                    // Для добавления владельца записи специалиста и доктора
+        $isOwner = $request->boolean('its_me');
+$user = auth()->user();
+
+if ($isOwner && $user) {
+    $doctor->owners()->syncWithoutDetaching([
+        $user->id => ['is_confirmed' => false],
+    ]);
+}
+
+
     }
 
     /**

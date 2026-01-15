@@ -76,6 +76,17 @@ public function ownedClinics()
         ->withPivot('is_confirmed')
         ->withTimestamps();
 }
+public function ownedDoctors()
+{
+    return $this->belongsToMany(Doctor::class, 'doctor_owners')
+        ->withPivot('is_confirmed');
+}
+
+public function ownedSpecialists()
+{
+    return $this->belongsToMany(Specialist::class, 'specialist_owners')
+        ->withPivot('is_confirmed');
+}
 
 
     /* ================= ТВОЙ САЙТ ================= */

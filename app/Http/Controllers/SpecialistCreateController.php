@@ -1,27 +1,54 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\FieldOfActivity;
+use App\Models\Doctor;
+use App\Models\Specialist;
 use Illuminate\Http\Request;
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\SpecialistController;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SpecialistCreateController extends Controller
 {
     public function store(Request $request)
     {
-        $field = FieldOfActivity::findOrFail(
-            $request->field_of_activity_id
-        );
+        $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
 
-        // защита
+        // 🔒 защита
         if ($field->type !== 'specialist') {
             abort(403);
         }
 
-        return match ($field->activity) {
-            'doctor'     => app(DoctorController::class)->store($request),
-            default      => app(SpecialistController::class)->store($request),
+        // 🔹 создаём сущность
+        $response = match ($field->activity) {
+            'doctor' => app(DoctorController::class)->store($request),
+            default  => app(SpecialistController::class)->store($request),
         };
+
+        // 🔹 привязка владельца
+        if ($request->boolean('its_me') && Auth::check()) {
+
+            $data = $response->getData(true);
+            $userId = Auth::id();
+
+            if ($field->activity === 'doctor') {
+
+                $doctor = Doctor::find($data['id']);
+
+                $doctor?->owners()->syncWithoutDetaching([
+                    $userId => ['is_confirmed' => false],
+                ]);
+
+            } else {
+
+                $specialist = Specialist::find($data['id']);
+
+                $specialist?->owners()->syncWithoutDetaching([
+                    $userId => ['is_confirmed' => false],
+                ]);
+            }
+        }
+
+        return $response;
     }
 }

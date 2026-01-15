@@ -80,6 +80,17 @@ public function contacts()
         return 'slug';
     }
 
+public function owners()
+{
+    return $this->belongsToMany(
+        User::class,
+        'doctor_owners',
+        'doctor_id',
+        'user_id'
+    )
+    ->withPivot('is_confirmed')
+    ->withTimestamps();
+}
 
 
 public function reviews()

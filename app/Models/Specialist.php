@@ -19,4 +19,18 @@ class Specialist extends Model
         'description',
         'field_of_activity_id',
     ];
+
+    public function owners()
+{
+    return $this->belongsToMany(
+        User::class,
+        'specialist_owners',
+        'specialist_id',
+        'user_id'
+    )
+    ->withPivot('is_confirmed')
+    ->withTimestamps();
+}
+
+
 }
