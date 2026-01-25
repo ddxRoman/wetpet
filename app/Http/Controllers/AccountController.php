@@ -9,23 +9,110 @@ use App\Models\Review;
 use App\Models\ReviewPhoto;
 use App\Models\ReviewReceipt;
 use App\Models\Pet;
+use Illuminate\Support\Facades\DB;
+use App\Models\Organization;
+use App\Models\Specialist;
+use App\Models\ClinicOwner;
+use App\Models\OrganizationOwner;
+use App\Models\SpecialistOwner;
+use App\Models\Clinic;
+use App\Models\City;
+use App\Models\FieldOfActivity;
+
 
 class AccountController extends Controller
 {
     
     // === Страница аккаунта ===
-    public function index()
-    {
-        $user = Auth::user();
 
-        // Грузим питомцев пользователя
-        $pets = Pet::where('user_id', $user->id)->get();
+public function index()
+{
+    $user = Auth::user();
+    $pets = Pet::where('user_id', $user->id)->get();
 
-        return view('account', [
-            'user' => $user,
-            'pets' => $pets,
-        ]);
+    // =============================
+    // ФЛАГИ ДЛЯ ВКЛАДОК
+    // =============================
+    $hasClinic = ClinicOwner::where('user_id', $user->id)->exists();
+    $hasOrganization = OrganizationOwner::where('user_id', $user->id)->exists();
+    
+    $specialistOwner = SpecialistOwner::where('user_id', $user->id)->first();
+    $hasSpecialistProfile = (bool) $specialistOwner;
+
+    // =============================
+    // ДАННЫЕ ДЛЯ ВКЛАДКИ СПЕЦИАЛИСТА
+    // =============================
+    $specialist = null;
+    $groupedFields = collect(); // Сгруппированные специализации
+    $regions = collect();
+    $cities = collect();
+    $organizations = collect();
+    $currentCity = null;
+
+    // Подгружаем специализации ВСЕГДА (даже если профиля еще нет, для формы создания/редактирования)
+// 1. Получаем все поля
+$allFields = FieldOfActivity::where('type', 'specialist')
+    ->orderBy('name')
+    ->get();
+    
+// 2. Группируем вручную: если activity == doctor, оставляем "Врачи", иначе всё в "Другие специалисты"
+$groupedFields = $allFields->groupBy(function ($item) {
+    return ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты';
+});
+// 3. Сортируем группы, чтобы "Врачи" всегда были первыми
+$groupedFields = $groupedFields->sortByDesc(function ($value, $key) {
+    return $key === 'Врачи';
+});
+    // Подгружаем регионы для селекта
+    $regions = City::select('region')
+        ->whereNotNull('region')
+        ->distinct()
+        ->orderBy('region')
+        ->pluck('region');
+
+    if ($specialistOwner) {
+        $specialist = Specialist::find($specialistOwner->specialist_id);
+
+        if ($specialist) {
+            // Текущий город специалиста для инициализации селектов
+            $currentCity = City::find($specialist->city_id);
+
+            if ($currentCity) {
+                // Города того же региона, что и у специалиста
+                $cities = City::where('region', $currentCity->region)
+                    ->pluck('name', 'id');
+
+                // Организации в городе специалиста
+                // ВАЖНО: убедись, что в таблице организаций поле называется 'city' (как в твоем исходном коде) 
+                // или 'city_id'. Если не сработает, проверь имя столбца.
+                $organizations = Organization::where('city', $specialist->city_id)
+                    ->pluck('name', 'id');
+            }
+        }
     }
+
+    return view('account', [
+        'user' => $user,
+        'pets' => $pets,
+
+        // 🔹 флаги вкладок
+        'hasClinic' => $hasClinic,
+        'hasOrganization' => $hasOrganization,
+        'hasSpecialistProfile' => $hasSpecialistProfile,
+
+        // 🔹 specialist tab
+        'specialist' => $specialist,
+        'groupedFields' => $groupedFields, // Твоя новая переменная для Blade
+        'regions' => $regions,
+        'cities' => $cities,
+        'organizations' => $organizations,
+        'currentCity' => $currentCity,
+    ]);
+}
+
+
+
+
 
     // === Обновление города ===
     public function updateCity(Request $request)

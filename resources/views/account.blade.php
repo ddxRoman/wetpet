@@ -21,12 +21,25 @@
     </nav>
 
     <div class="account-container">
-        <div class="sidebar">
-            <button class="tab-btn active" data-tab="profile">Профиль</button>
-            <button class="tab-btn" data-tab="pets">Питомцы</button>
-            <!-- <button class="tab-btn" data-tab="favorits">Избранное</button> -->
-            <button class="tab-btn" data-tab="reviews">Отзывы</button>
-        </div>
+<div class="sidebar">
+    <button class="tab-btn active" data-tab="profile">Профиль</button>
+    <button class="tab-btn" data-tab="pets">Питомцы</button>
+
+    @if($hasClinic)
+        <button class="tab-btn" data-tab="my-clinics">Мои клиники</button>
+    @endif
+
+    @if($hasOrganization)
+        <button class="tab-btn" data-tab="my-organizations">Мои организации</button>
+    @endif
+
+    @if($hasSpecialistProfile)
+        <button class="tab-btn" data-tab="specialist-profile">Профиль специалиста</button>
+    @endif
+
+    <button class="tab-btn" data-tab="reviews">Отзывы</button>
+</div>
+
 
         <div class="account-content">
             {{-- 🔹 Вкладка профиля --}}
@@ -150,6 +163,26 @@
             </div>
             <!-- Отзывы -->
             @include('account.tabs.reviews')
+
+            @if($hasClinic)
+    <div class="tab-content" id="my-clinics" style="display:none;">
+        @include('account.tabs.my-clinics')
+    </div>
+@endif
+
+@if($hasOrganization)
+    <div class="tab-content" id="my-organizations" style="display:none;">
+        @include('account.tabs.my-organizations')
+    </div>
+@endif
+
+@if($hasSpecialistProfile)
+    <div class="tab-content" id="specialist-profile" style="display:none;">
+        @include('account.tabs.specialist-profile')
+    </div>
+@endif
+
+
         </div>
     </div>
 

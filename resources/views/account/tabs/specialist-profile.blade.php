@@ -1,37 +1,40 @@
-
-<div class="modal fade" id="addDoctorModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-
+@vite(['resources/js/pages/edit_doctor.js'])
 <form id="addDoctorForm"
       method="POST"
-      action="/add-specialist"
+      action="{{ route('specialist.update', $specialist) }}"
       enctype="multipart/form-data">
     @csrf
 
+@method('PUT')
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Добавление специалиста</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
+                    <h4 class="modal-title">Редактирование специалиста</h4>
                     <div id="doctorErrors" class="alert alert-danger d-none"></div>
-                    <div class="row g-3">
+                    
+                    <div class="modal-body">
+                        <div class="row g-3">
+                    <div class="col-md-8">
+                        <label>Имя врача</label>
+                        <input type="text" name="name" class="form-control">
+                    </div>
 
-                        <div class="col-md-6">
-    <label>Сфера деятельности</label>
-    <select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select">
-        <option value="">Загрузка...</option>
-    </select>
+                        
+                        <div class="col-md-4">
+<select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select">
+    <option value="">Выберите сферу</option>
+    
+    @foreach($groupedFields as $groupName => $fields)
+        <optgroup label="{{ $groupName }}">
+            @foreach($fields as $field)
+                <option value="{{ $field->id }}" 
+                    {{ (old('field_of_activity_id', $specialist->field_of_activity_id ?? '') == $field->id) ? 'selected' : '' }}>
+                    {{ $field->name }}
+                </option>
+            @endforeach
+        </optgroup>
+    @endforeach
+</select>
 </div>
-
-
-                        <div class="col-12">
-                            <label>Имя врача</label>
-                            <input type="text" name="name" class="form-control">
-                        </div>
-
+<br>
 
 <div class="col-md-6">
     <label>Дата рождения</label>
@@ -43,6 +46,7 @@
         max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}"
     >
 </div>
+
 <div class="col-md-6">
     <label>Стаж (лет)</label>
     <input 
@@ -55,24 +59,9 @@
 </div>
 
 
-
-@if(auth()->check() && auth()->user()->canAddSelfSpecialist())
-    <div class="col-12">
-        <label class="form-check-label">
-            <input type="checkbox" name="its_me" class="form-check-input">
-            <strong>Добавляю себя</strong>
-            <div class="label_its_me">
-                Мы попросим подтвердить, что это вы.
-            </div>
-        </label>
-    </div>
-@endif
-
-
-
-<div class="col-md-6">
+<div class="col-md-4">
     <label>Регион</label>
-    <select name="region" id="regionSelect" class="form-select">
+    <select name="region" id="regionSelect_specialist" class="form-select">
         <option value="">Выберите регион</option>
         @foreach($cities->unique('region') as $city)
             <option value="{{ $city->region }}">{{ $city->region }}</option>
@@ -80,14 +69,14 @@
     </select>
 </div>
 
-<div class="col-md-6">
+<div class="col-md-4">
     <label>Город</label>
-    <select name="city_id" id="citySelect" class="form-select">
+    <select name="city_id" id="citySelect_specialist" class="form-select">
         <option value="">Сначала выберите регион</option>
     </select>
 </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Оргнанизация </label>
                             <select name="clinic_id" id="clinicSelect" class="form-select">
     <option value="">Сначала выберите город</option>
@@ -177,6 +166,3 @@
 
             </form>
 
-        </div>
-    </div>
-</div>

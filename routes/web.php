@@ -20,6 +20,7 @@ use App\Http\Controllers\{
     HomeController,
     testController,
     SpecialistCreateController,
+    SpecialistController,
 };
 
 /*
@@ -54,10 +55,6 @@ Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::post('/cities/set', [CityController::class, 'set'])->name('cities.set');
 Route::get('/cities/search', [CityController::class, 'search'])->name('cities.search');
 Route::post('/account/update-city', [ProfileController::class, 'updateCity'])->name('account.updateCity');
-
-Route::get('/api/clinics/by-city/{city}', function ($cityId) {
-    return \App\Models\Clinic::where('city', $cityId)->get(['id', 'name']);
-});
 
 
 Route::get('/api/clinics/by-city/{cityId}', [ClinicController::class, 'clinicsByCity']);
@@ -115,9 +112,7 @@ Route::get('/user/{id}', function ($id) {
 
 // Страница всех докторов
 Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-// Страница одного доктора
-Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])
-->name('doctors.show');
+
     Route::get('/doctors/update/{slug}', [DoctorController::class, 'update'])->name('doctors.update');
 // Доктор Редактирование
 Route::post('/doctors/{id}/update', [DoctorController::class, 'update'])
@@ -132,9 +127,7 @@ Route::get('/doctors/{doctor:slug}', [DoctorController::class, 'show'])
 Route::get('/api/fields/vetclinic', [FieldOfActivityController::class, 'getVetclinic']);
 Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpecialists']);
 
-Route::get('/cities/by-region/{region}', function ($region) {
-    return \App\Models\City::where('region', $region)->get();
-});
+
 // возвращает города для региона (используется в модалке)
 Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);
 
@@ -147,6 +140,19 @@ Route::get('/clinics/{clinic:slug}', [ClinicController::class, 'show'])
     ->name('clinics.show');
 
     Route::post('/add-specialist', [SpecialistCreateController::class, 'store']);
-// routes/web.php
-Route::get('/ajax/organizations', [OrganizationController::class, 'byActivityAndCity']);
 
+// web.php
+Route::middleware(['auth'])->group(function () {
+
+    // создание (у тебя уже используется)
+    Route::post('/specialist', [SpecialistController::class, 'store'])
+        ->name('specialist.store');
+
+    // редактирование профиля специалиста
+    Route::get('/account/specialist/{specialist}/edit', [SpecialistController::class, 'edit'])
+        ->name('specialist.edit');
+
+    Route::post('/account/specialist/{specialist}/update', [SpecialistController::class, 'update'])
+        ->name('specialist.update');
+
+});

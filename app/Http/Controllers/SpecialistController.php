@@ -4,33 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Specialist;
 use App\Models\FieldOfActivity;
+use App\Models\City;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class SpecialistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function index() {}
+    public function create() {}
 
     /**
-     * Show the form for creating a new resource.
+     * ===============================
+     * СОЗДАНИЕ (НЕ ТРОГАЕМ)
+     * ===============================
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-
-public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -57,55 +48,81 @@ public function store(Request $request)
             'description' => $request->description,
         ]);
 
-        // 🔔 Telegram
-        try {
-            Http::post(
-                'https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage',
-                [
-                    'chat_id' => config('services.telegram.chat_id'),
-                    'text' => "➕ Новый специалист:\n{$specialist->name}\nСпециализация: {$specialist->specialization}"
-                ]
-            );
-        } catch (\Throwable $e) {
-            logger()->error('Telegram notify failed', ['error' => $e->getMessage()]);
-        }
-
         return response()->json([
             'success' => true,
             'id' => $specialist->id,
         ]);
     }
 
-
     /**
-     * Display the specified resource.
+     * ===============================
+     * РЕДАКТИРОВАНИЕ
+     * ===============================
      */
-    public function show(Specialist $specialist)
-    {
-        //
-    }
+public function edit(Specialist $specialist)
+{
+    // Получаем все специализации типа specialist
+    $allFields = \App\Models\FieldOfActivity::where('type', 'specialist')
+        ->orderBy('activity')
+        ->orderBy('name')
+        ->get();
+
+    // Группируем их по полю activity (doctor и прочие)
+    $groupedFields = $allFields->groupBy('activity');
+
+    $currentCity = $specialist->city_id ? City::find($specialist->city_id) : null;
+
+    $regions = City::select('region')
+        ->whereNotNull('region')
+        ->distinct()
+        ->orderBy('region')
+        ->pluck('region');
+
+    // Для организаций важно искать по city_id (внешний ключ), а не по имени
+    $organizations = $specialist->city_id
+        ? Organization::where('city_id', $specialist->city_id)->get()
+        : collect();
+
+    return view('account.tabs.specialist-profile', compact(
+        'specialist',
+        'groupedFields', // Передаем сгруппированные данные
+        'regions',
+        'organizations',
+        'currentCity'
+    ));
+}
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Specialist $specialist)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * ===============================
+     * ОБНОВЛЕНИЕ
+     * ===============================
      */
     public function update(Request $request, Specialist $specialist)
     {
-        //
-    }
+        $maxBirthDate = now()->subYears(18)->format('Y-m-d');
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Specialist $specialist)
-    {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'specialization' => 'required|string',
+            'date_of_birth' => "nullable|date|after_or_equal:1950-01-01|before_or_equal:$maxBirthDate",
+            'city_id' => 'required|exists:cities,id',
+            'organization_id' => 'nullable|exists:organizations,id',
+            'experience' => 'nullable|integer|min:0',
+            'exotic_animals' => 'required|in:Да,Нет',
+            'On_site_assistance' => 'required|in:Да,Нет',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'description' => 'nullable|string',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            if ($specialist->photo) {
+                Storage::delete('public/' . $specialist->photo);
+            }
+            $specialist->photo = $request->file('photo')->store('specialists', 'public');
+        }
+
+        $specialist->update($request->except('photo'));
+
+        return redirect()->back()->with('success', 'Профиль специалиста обновлён');
     }
 }
