@@ -2075,3 +2075,8 @@ a {
     line-height: 1;
     cursor: pointer;
 }
+.label_description_clinic{
+    font-size: large;
+    font-weight: 700;
+    color: black;
+}

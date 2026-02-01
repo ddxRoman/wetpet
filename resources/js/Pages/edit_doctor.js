@@ -1,46 +1,31 @@
 import $ from 'jquery';
 import select2 from 'select2';
 
-// КРИТИЧЕСКИ ВАЖНО для Vite: привязываем select2 к нашему jQuery
 if (typeof $.fn.select2 === 'undefined') {
     select2(window, $);
 }
 
 $(document).ready(function () {
-    // Список всех селекторов, которые должны стать Select2
     const regionSelectors = '#regionSelect, #regionSelect_specialist';
     const citySelectors = '#citySelect, #citySelect_specialist';
 
-    // Инициализация
     $(regionSelectors).select2({ width: '100%' });
     $(citySelectors).select2({ width: '100%' });
 
-    console.log('🚀 ОТЛАДКА: Select2 проинициализирован для всех полей');
-
-    // Слушаем изменение любого из регионов
+    // 1. Логика Регион -> Город
     $(document).on('change', regionSelectors, function () {
         const region = $(this).val();
-        const currentId = $(this).attr('id');
-        
-        // Определяем, какой именно селект города обновлять
-        let $currentCitySelect;
-        if (currentId === 'regionSelect_specialist') {
-            $currentCitySelect = $('#citySelect_specialist');
-        } else {
-            $currentCitySelect = $('#citySelect');
-        }
-
-        console.log('📡 СОБЫТИЕ:', currentId, 'выбрал', region);
+        const $currentCitySelect = ($(this).attr('id') === 'regionSelect_specialist') 
+            ? $('#citySelect_specialist') 
+            : $('#citySelect');
 
         if (!region) {
             $currentCitySelect.html('<option value="">Сначала выберите регион</option>').trigger('change');
             return;
         }
 
-        $currentCitySelect.prop('disabled', true);
-        $currentCitySelect.html('<option value="">Загрузка городов...</option>').trigger('change');
+        $currentCitySelect.prop('disabled', true).html('<option>Загрузка...</option>').trigger('change');
 
-        // Запрос к API
         fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
             .then(res => res.json())
             .then(data => {
@@ -48,16 +33,59 @@ $(document).ready(function () {
                 data.forEach(city => {
                     options += `<option value="${city.id}">${city.name}</option>`;
                 });
-
-                $currentCitySelect.html(options).prop('disabled', false);
-                
-                // Обновляем визуальную часть Select2
-                $currentCitySelect.trigger('change.select2'); 
-                console.log('✨ Список обновлен для:', $currentCitySelect.attr('id'));
-            })
-            .catch(err => {
-                console.error('❌ Ошибка загрузки городов:', err);
-                $currentCitySelect.prop('disabled', false);
+                $currentCitySelect.html(options).prop('disabled', false).trigger('change.select2');
             });
+    });
+
+    // 2. Логика Город -> Организация
+    $(document).on('change', '#citySelect_specialist', function () {
+        const cityId = $(this).val();
+        const $clinicSelect = $('#clinicSelect');
+
+        if (!cityId) {
+            $clinicSelect.html('<option value="">Сначала выберите город</option>').trigger('change');
+            return;
+        }
+
+        $clinicSelect.prop('disabled', true).html('<option>Загрузка...</option>').trigger('change');
+
+        fetch(`/api/clinics/by-city/${cityId}`)
+            .then(res => res.json())
+            .then(data => {
+                let options = '<option value="">Выберите организацию</option>';
+                data.forEach(clinic => {
+                    options += `<option value="${clinic.id}">${clinic.name}</option>`;
+                });
+                $clinicSelect.html(options).prop('disabled', false).trigger('change.select2');
+            });
+    });
+
+    // 3. Логика мессенджеров (визуальный отклик)
+    $(document).on('change', '.messenger-icon input', function() {
+        $(this).closest('.messenger-icon').toggleClass('active', this.checked);
+        // Можно добавить стили в CSS для .messenger-icon.active { opacity: 1; filter: grayscale(0); }
+    });
+
+    // 4. Логика Фото
+    $('#photoPicker').on('click', function() {
+        $('#doctorPhotoInput').click();
+    });
+
+    $('#doctorPhotoInput').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#doctorPhotoPreview').attr('src', e.target.result);
+                $('#photoPreviewWrapper').removeClass('d-none');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $('#removePhotoBtn').on('click', function() {
+        $('#doctorPhotoInput').val('');
+        $('#doctorPhotoPreview').attr('src', '#');
+        $('#photoPreviewWrapper').addClass('d-none');
     });
 });

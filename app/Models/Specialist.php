@@ -32,5 +32,11 @@ class Specialist extends Model
     ->withTimestamps();
 }
 
+public function contacts()
+{
+    return $this->hasOne(SpecialistContact::class);
+}
+
+
 
 }

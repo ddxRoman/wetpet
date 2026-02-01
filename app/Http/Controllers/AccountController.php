@@ -30,84 +30,50 @@ public function index()
     $user = Auth::user();
     $pets = Pet::where('user_id', $user->id)->get();
 
-    // =============================
-    // ФЛАГИ ДЛЯ ВКЛАДОК
-    // =============================
     $hasClinic = ClinicOwner::where('user_id', $user->id)->exists();
     $hasOrganization = OrganizationOwner::where('user_id', $user->id)->exists();
     
     $specialistOwner = SpecialistOwner::where('user_id', $user->id)->first();
     $hasSpecialistProfile = (bool) $specialistOwner;
 
-    // =============================
-    // ДАННЫЕ ДЛЯ ВКЛАДКИ СПЕЦИАЛИСТА
-    // =============================
     $specialist = null;
-    $groupedFields = collect(); // Сгруппированные специализации
+    $groupedFields = collect();
     $regions = collect();
     $cities = collect();
     $organizations = collect();
     $currentCity = null;
 
-    // Подгружаем специализации ВСЕГДА (даже если профиля еще нет, для формы создания/редактирования)
-// 1. Получаем все поля
-$allFields = FieldOfActivity::where('type', 'specialist')
-    ->orderBy('name')
-    ->get();
-    
-// 2. Группируем вручную: если activity == doctor, оставляем "Врачи", иначе всё в "Другие специалисты"
-$groupedFields = $allFields->groupBy(function ($item) {
-    return ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты';
-});
-// 3. Сортируем группы, чтобы "Врачи" всегда были первыми
-$groupedFields = $groupedFields->sortByDesc(function ($value, $key) {
-    return $key === 'Врачи';
-});
-    // Подгружаем регионы для селекта
-    $regions = City::select('region')
-        ->whereNotNull('region')
-        ->distinct()
-        ->orderBy('region')
-        ->pluck('region');
+    // Списки специализаций
+    $allFields = FieldOfActivity::where('type', 'specialist')->orderBy('name')->get();
+    $groupedFields = $allFields->groupBy(function ($item) {
+        return ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты';
+    })->sortByDesc(function ($value, $key) {
+        return $key === 'Врачи';
+    });
 
-    if ($specialistOwner) {
-        $specialist = Specialist::find($specialistOwner->specialist_id);
+    // Регионы
+    $regions = City::select('region')->whereNotNull('region')->distinct()->orderBy('region')->pluck('region');
 
-        if ($specialist) {
-            // Текущий город специалиста для инициализации селектов
-            $currentCity = City::find($specialist->city_id);
 
-            if ($currentCity) {
-                // Города того же региона, что и у специалиста
-                $cities = City::where('region', $currentCity->region)
-                    ->pluck('name', 'id');
+if ($specialistOwner) {
+    // Подгружаем специалиста сразу с его контактами
+    $specialist = Specialist::with('contacts')->find($specialistOwner->specialist_id);
 
-                // Организации в городе специалиста
-                // ВАЖНО: убедись, что в таблице организаций поле называется 'city' (как в твоем исходном коде) 
-                // или 'city_id'. Если не сработает, проверь имя столбца.
-                $organizations = Organization::where('city', $specialist->city_id)
-                    ->pluck('name', 'id');
-            }
+    if ($specialist) {
+        $currentCity = City::find($specialist->city_id);
+        
+        // Теперь данные контактов будут в $specialist->contacts
+        if ($currentCity) {
+            $cities = City::where('region', $currentCity->region)->orderBy('name')->pluck('name', 'id');
+            $organizations = Organization::where('city', $currentCity->name)->pluck('name', 'id');
         }
     }
+}
 
-    return view('account', [
-        'user' => $user,
-        'pets' => $pets,
-
-        // 🔹 флаги вкладок
-        'hasClinic' => $hasClinic,
-        'hasOrganization' => $hasOrganization,
-        'hasSpecialistProfile' => $hasSpecialistProfile,
-
-        // 🔹 specialist tab
-        'specialist' => $specialist,
-        'groupedFields' => $groupedFields, // Твоя новая переменная для Blade
-        'regions' => $regions,
-        'cities' => $cities,
-        'organizations' => $organizations,
-        'currentCity' => $currentCity,
-    ]);
+    return view('account', compact(
+        'user', 'pets', 'hasClinic', 'hasOrganization', 'hasSpecialistProfile',
+        'specialist', 'groupedFields', 'regions', 'cities', 'organizations', 'currentCity'
+    ));
 }
 
 

@@ -146,7 +146,12 @@ use App\Models\Pet;
                                         <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" title="Связаться через Вотсапп" alt="Вотсапп"></a></div>
                                         @endif
                                         @if($clinic->website)
-                                        <div>💬 <a href="{{ $clinic->website }}" title="Перейти на сайт клиники">Перейти на сайт</a></div>
+                                        <div>💬 <a href="{{ $clinic->website }}" target="_blank" title="Перейти на сайт клиники">Перейти на сайт</a></div>
+                                        @endif
+                                         @if($clinic->description)
+                                         <br>
+                                         <label class="label_description_clinic" for="description">О клинике</label>
+                                        <div id="#description">{{ $clinic->description }}</div>
                                         @endif
                                     </div>
                                 </div>

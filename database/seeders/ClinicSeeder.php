@@ -1020,14 +1020,27 @@ class ClinicSeeder extends Seeder
         'street' => 'Кубанская Набережная',
         'house' => '37/12',
         'address_comment' => 'Микрорайон Центральный, 1‑й этаж',
-        'logo' => null,
-        'description' => 'Комплексная диагностика (УЗИ, рентген), хирургия, терапия, ветеринарная лаборатория. Приём ведут опытные специалисты.',
-        'phone1' => '+7 (861) 222-33-33',
+        'logo' => 'clinics/logo/petrosyan-clinic.png',
+        'description' => '
+        Кардиология
+Стоматология
+Хирургия
+Терапия
+Лаборатория и УЗИ
+Дерматология
+
+🐕 собаки
+🐈‍⬛ кошки
+🐇 кролики
+🐹 морские свинки
+🐻‍❄️ хорьки
+🐁 домашние крысы',
+        'phone1' => '+7 (918) 072-17-33',
         'phone2' => null,
         'email' => 'petrosyan-vet@mail.ru',
         'telegram' => null,
         'whatsapp' => null,
-        'website' => 'petrosyan-vet-clinic.ru',
+        'website' => 'https://vetclinicpetrosyan.ru/',
         'schedule' => '09:00–21:00',
         'workdays' => 'Пн–Вс'
     ],

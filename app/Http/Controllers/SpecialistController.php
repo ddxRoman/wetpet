@@ -13,7 +13,11 @@ use Carbon\Carbon;
 
 class SpecialistController extends Controller
 {
-    public function index() {}
+    public function index() {
+
+    
+
+    }
     public function create() {}
 
     /**
@@ -103,7 +107,7 @@ public function edit(Specialist $specialist)
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'specialization' => 'required|string',
+            'field_of_activity_id' => 'required|exists:field_of_activities,id', // Исправлено
             'date_of_birth' => "nullable|date|after_or_equal:1950-01-01|before_or_equal:$maxBirthDate",
             'city_id' => 'required|exists:cities,id',
             'organization_id' => 'nullable|exists:organizations,id',
@@ -112,16 +116,44 @@ public function edit(Specialist $specialist)
             'On_site_assistance' => 'required|in:Да,Нет',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'description' => 'nullable|string',
+            'messengers' => 'nullable|array', // Добавлено
         ]);
+
+    // ... твоя валидация ...
+
+    // 1. Обновляем самого специалиста
+    $specialist->update($request->only(['name', 'city_id', 'organization_id', 'description', 'experience', 'exotic_animals', 'On_site_assistance']));
+
+    // 2. Обновляем или создаем контакты
+    $specialist->contacts()->updateOrCreate(
+        ['specialist_id' => $specialist->id],
+        [
+            'phone'    => $request->phone,
+            'email'    => $request->email,
+            'telegram' => $request->has('telegram'),
+            'whatsapp' => $request->has('whatsapp'),
+            'max'      => $request->has('max'),
+        ]
+    );
+
+
+
+        // Получаем название специализации по ID
+        $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
+
+        $data = $request->except('photo', 'messengers');
+        $data['specialization'] = $field->name; // Записываем имя специализации
+        $data['field_of_activity_id'] = $request->field_of_activity_id;
+        $data['messengers'] = json_encode($request->messengers); // Сохраняем как JSON
 
         if ($request->hasFile('photo')) {
             if ($specialist->photo) {
                 Storage::delete('public/' . $specialist->photo);
             }
-            $specialist->photo = $request->file('photo')->store('specialists', 'public');
+            $data['photo'] = $request->file('photo')->store('specialists', 'public');
         }
 
-        $specialist->update($request->except('photo'));
+        $specialist->update($data);
 
         return redirect()->back()->with('success', 'Профиль специалиста обновлён');
     }
