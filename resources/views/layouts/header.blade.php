@@ -247,7 +247,7 @@
         </div>
 
         {{-- =================== БЛОК ПОИСКА И ОПИСАНИЯ =================== --}}
-        @if(!request()->is('clinics*') && !request()->is('doctors*') && !request()->is('account*') )
+        @if(!request()->is('clinics*') && !request()->is('doctors*') && !request()->is('account*') && !request()->is('legal/*')  )
 
             <div class="text-center mt-3">
                 <h1>Сайт про домашних животных</h1>

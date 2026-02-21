@@ -35,7 +35,25 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/home', [DoctorController::class, 'welcome'])->name('welcome');
 Route::get('/test', [testController::class, 'test'])->name('test');
 
+Route::get('legal/about', function () {
+    return view('pages.legal.about');
+})->name('legal/about');
+Route::get('legal/faq', function () {
+    return view('pages.legal.faq');
+})->name('legal/faq');
+Route::get('legal/terms', function () {
+    return view('pages.legal.terms');
+})->name('legal/terms');
+Route::get('legal/glossary', function () {
+    return view('pages.legal.glossary');
+})->name('legal/glossary');
 
+Route::get('legal/privacy', function () {
+    return view('pages.legal.privacy');
+})->name('legal/privacy');
+Route::get('legal/news', function () {
+    return view('pages.legal.news');
+})->name('legal/news');
 
 // 🔐 Аутентификация
 Auth::routes();

@@ -598,18 +598,28 @@ ol, ul {
     background-color: #F5F7F9;
 }
 
+.footer img{
+    width: 100px;
+}
+
 .footer-content {
     padding-top: 2%;
 }
 
 .footer a {
     text-decoration: none;
-    color: #000;
+    color: #00000044;
+    font-weight: 600;
+}
+.footer a:hover {
+    text-decoration: none;
+    color: #000000c7;
     font-weight: 600;
 }
 
 .footer li {
-    padding-top: 5%;
+    padding-top: 0.5rem;
+    list-style: none;
 }
 
 .footer_copyright {
@@ -2079,4 +2089,9 @@ a {
     font-size: large;
     font-weight: 700;
     color: black;
+}
+.legal_h2{
+    color: #000000;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
 }
