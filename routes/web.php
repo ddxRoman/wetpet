@@ -174,3 +174,5 @@ Route::middleware(['auth'])->group(function () {
         ->name('specialist.update');
 
 });
+
+Route::get('/api/clinics-search', [ClinicController::class, 'liveSearch'])->name('api.clinics.search');

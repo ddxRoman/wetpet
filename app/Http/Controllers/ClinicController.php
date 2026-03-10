@@ -132,7 +132,49 @@ public function edit(Clinic $clinic)
 {
     return view('pages.clinics.edit', compact('clinic'));
 }
+public function liveSearch(Request $request)
+{
+    $query = $request->get('q');
+    if (mb_strlen($query) < 2) return response()->json([]);
 
+    // 1. Поиск клиник
+    $clinics = \App\Models\Clinic::where('name', 'LIKE', "%{$query}%")
+        ->limit(5)
+        ->get(['name', 'city', 'street', 'house', 'slug', 'logo'])
+        ->map(function($item) {
+            return [
+                'type' => 'clinic',
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'address' => "{$item->city}, {$item->street} {$item->house}",
+                // Если лого нет, можно поставить стандартную иконку здания
+                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default.webp')
+
+            ];
+        });
+
+    // 2. Поиск врачей
+    $doctors = \App\Models\Doctor::with('clinic:id,name')
+        ->where(function($q) use ($query) {
+            $q->where('name', 'LIKE', "%{$query}%")
+              ->orWhere('specialization', 'LIKE', "%{$query}%");
+        })
+        ->limit(5)
+        ->get()
+        ->map(function($item) {
+            return [
+                'type' => 'doctor',
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'specialization' => $item->specialization,
+                'clinic_name' => $item->clinic->name ?? 'Частная практика',
+                // Если фото нет, ставим стандартный аватар
+                'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp')
+            ];
+        });
+
+    return response()->json(['clinics' => $clinics, 'doctors' => $doctors]);
+}
 
     // Обновление клиники
     public function update(Request $request, $id)
@@ -171,4 +213,5 @@ public function edit(Clinic $clinic)
 
         return redirect()->route('clinics.index')->with('success', 'Клиника удалена');
     }
+
 }

@@ -247,23 +247,43 @@
         </div>
 
         {{-- =================== БЛОК ПОИСКА И ОПИСАНИЯ =================== --}}
-        @if(!request()->is('clinics*') && !request()->is('doctors*') && !request()->is('account*') && !request()->is('legal/*')  )
+       {{-- Показываем поиск если: это НЕ врачи, НЕ аккаунт, НЕ инфо-страницы И (это НЕ клиники ИЛИ это страница конкретной клиники) --}}
+@if(!request()->is( 'account*', 'legal/*') || Route::currentRouteName() === 'clinics.show')
 
-            <div class="text-center mt-3">
-                <h1>Сайт про домашних животных</h1>
-                <p class="description_index_page">
-                    На сайте вы сможете найти ветеринарные клиники, ветгостиницы, лекарства, ветеринаров и грумеров,<br>
-                    а также прочесть отзывы о породах от владельцев.
-                </p>
-            </div>
+<div class="text-center mt-3">
+    {{-- Убираем H1 и описание для страницы клиники, чтобы не дублировать SEO-теги --}}
+@php
+    // Проверяем, нужно ли показывать поиск
+    $showSearch = !request()->is('account*', 'legal/*') || Route::currentRouteName() === 'clinics.show';
+    // Проверяем, нужно ли показывать заголовок и описание (только на главной)
+    $showHero = request()->is('/'); 
+@endphp
 
-            <div class="d-flex justify-content-center mt-3">
-                <input type="search" disabled class="header-search" placeholder="Животные, породы, ветеринары, клиники">
-                    <img class="btn_search" title="Найти" src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск">
-
-            </div>
-
+@if($showSearch)
+    <div class="text-center mt-3">
+        @if($showHero)
+            <h1>Сайт про домашних животных</h1>
+            <p class="description_index_page">
+                На сайте вы сможете найти ветеринарные клиники, ветгостиницы, лекарства, ветеринаров и грумеров,<br>
+                а также прочесть отзывы о породах от владельцев.
+            </p>
         @endif
+    </div>
+@endif
+
+    </div>
+
+    <div class="search-container mt-3 position-relative">
+        <div class="d-flex justify-content-center">
+            {{-- Убираем disabled и добавляем id для JS --}}
+            <input type="search" id="clinic-live-search" class="header-search" placeholder="Введите название клиники..." autocomplete="off">
+            <img class="btn_search" title="Найти" src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск">
+        </div>
+        {{-- Контейнер для результатов --}}
+        <div id="search-results" class="search-results-dropdown d-none"></div>
+    </div>
+
+@endif
 
     </div>
 {{-- Мобильное бургер-меню --}}

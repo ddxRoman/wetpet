@@ -20,7 +20,6 @@
 </ul>
             </div>
             <div class="col-md-3">
-
 <a href="legal/faq"><p>FAQ</p></a>
 <a href="legal/privacy"><p>Политика конфиденциальности</p></a>
 <a href="legal/terms"><p>Пользовательское соглашение</p></a>

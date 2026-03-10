@@ -4,6 +4,7 @@ window.$ = window.jQuery = $;
 import './heic-convertor'; 
 import './bootstrap';
 import 'select2';
+import './search_script';
 import 'select2/dist/css/select2.css';
 import './pages/add_organization';
 import './pages/add_doctor'; 
