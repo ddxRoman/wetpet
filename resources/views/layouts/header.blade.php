@@ -8,37 +8,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}" type="image/vnd.microsoft.icon">
 <meta name="robots" content="all"/>
+
+
+
+<!-- ТУТ НАДО БУДЕТ МАРШРУТЫ СДЕЛАТЬ НОРМАЛЬНО И СЕОшку к ним -->
+
+@if(!request()->routeIs('pages.legal.*'))
 <meta name="robots" content="index, follow"/>
 <!--Робот выберет значение all, текст и ссылки будут проиндексированы.-->
-
+@endif
 @if(Route::currentRouteName() === 'clinics.show')
 @php
-    $seoCity = $pageCityName ?? $currentCityName;
+    $currentCityName = $pageCityName ?? $currentCityName;
 @endphp
 
 <meta
     name="description"
     content="{{ $clinic->name
-        ? 'Ветеринарная клиника ' . $clinic->name . ' в городе ' . $seoCity . ', стоимость услуг, посмотреть график работы, прочитать и оставить отзывы, найти контакты'
+        ? 'Ветеринарная клиника ' . $clinic->name . ' в городе ' . $currentCityName . ', стоимость услуг, посмотреть график работы, прочитать и оставить отзывы, найти контакты'
         : 'Сайт про домашних животных в вашем городе'
     }}"
 >
 
 <title>
     {{ $clinic->name
-        ? $clinic->name . ' ' . $seoCity . ' — адрес, отзывы о клинике'
+        ? $clinic->name . ' ' . $currentCityName . ' — адрес, отзывы о клинике'
         : 'Сайт про домашних животных в твоём городе'
     }}
 </title>
 
 
 @elseif(Route::currentRouteName() === 'clinics.index')
-    <meta name="description" content="Найти ветеринарную клинику в городе, ' . $seoCity . ', узнать рейтинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
+    <meta name="description" content="Найти ветеринарную клинику в городе, ' . $currentCityName . ', узнать рейтинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
     <title>{{ 'Все ветеринарные клиники города ' . $currentCityName }}</title>
 
 @elseif(Route::currentRouteName() === 'doctors.show')
 @php
-    $seoCity   = $pageCityName ?? $doctor->city?->name ?? $currentCityName;
+    $currentCityName   = $pageCityName ?? $doctor->city?->name ?? $currentCityName;
     $seoClinic = $doctor->clinic?->name;
 @endphp
 
@@ -50,7 +56,7 @@
         ? 'Ветеринарный врач ' . $doctor->name
             . ($doctor->specialization ? ' — ' . mb_strtolower($doctor->specialization) : '')
             . ($seoClinic ? ', клиника ' . $seoClinic : '')
-            . ' в городе ' . $seoCity
+            . ' в городе ' . $currentCityName
             . '. Узнать стоимость услуг, прочитать отзывы.'
         : 'Сайт про домашних животных'
     }}"
@@ -61,7 +67,7 @@
     {{ $doctor->name
         ? $doctor->name
             . ($seoClinic ? ' — ' . $seoClinic : '')
-            . ' ветеринар ' . $seoCity
+            . ' ветеринар ' . $currentCityName
         : 'Сайт про домашних животных'
     }}
 </title>
@@ -80,7 +86,7 @@
     <title>
         {{ filled($brandname)
             ? $brandname . ' — сайт про домашних животных'
-            : 'Сайт про домашних животных'
+            : 'Сайт отзывов о домашних животных'
         }}
     </title>
 @endif

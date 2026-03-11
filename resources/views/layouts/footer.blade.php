@@ -19,13 +19,13 @@
     <li><a title="Прочие категории" href="legal/about">О нас</a></li>
 </ul>
             </div>
-            <div class="col-md-3">
-<a href="legal/faq"><p>FAQ</p></a>
-<a href="legal/privacy"><p>Политика конфиденциальности</p></a>
-<a href="legal/terms"><p>Пользовательское соглашение</p></a>
-<a href="legal/glossary"><p>Словарь</p></a>
-<a href="legal/news"><p>Новости</p></a>
-            </div>
+<div class="col-md-3">
+    <a href="{{ route('legal/faq') }}"><p>FAQ</p></a>
+    <a href="{{ route('legal/privacy') }}"><p>Политика конфиденциальности</p></a>
+    <a href="{{ route('legal/terms') }}"><p>Пользовательское соглашение</p></a>
+    <a href="{{ route('legal/glossary') }}"><p>Словарь</p></a>
+    <a href="{{ route('legal/news') }}"><p>Новости</p></a>
+</div>
             <div class="col-md-3">
                 <a href="mailto:admin@zverozor.ru"><p>Связаться с нами</p></a>
                 <!-- <h5>Мы в соцсетях</h5>
