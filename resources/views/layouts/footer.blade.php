@@ -16,7 +16,7 @@
     <li><a title="Грумеры" href="#">Грумеры</a></li>
     <li><a title="Зоомагазины" href="#">Зоомагазины</a></li>
     <li><a title="Прочие категории" href="#">Прочие категории</a></li>
-    <li><a title="Прочие категории" href="legal/about">О нас</a></li>
+    <li><a title="Прочие категории" href="{{ route('legal/about') }}">О нас</a></li>
 </ul>
             </div>
 <div class="col-md-3">

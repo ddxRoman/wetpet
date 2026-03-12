@@ -10,7 +10,6 @@
 <meta name="robots" content="all"/>
 
 
-
 <!-- ТУТ НАДО БУДЕТ МАРШРУТЫ СДЕЛАТЬ НОРМАЛЬНО И СЕОшку к ним -->
 
 @if(!request()->routeIs('pages.legal.*'))

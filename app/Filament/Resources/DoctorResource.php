@@ -55,7 +55,6 @@ Forms\Components\DatePicker::make('date_of_birth')
     ->label('Дата рождения')
     ->maxDate(now()->subYears(18))
     ->minDate(now()->subYears(70))
-    ->required()
      ->reactive(),   // 🔥 ВАЖНО
 
         // ───── РЕГИОН (виртуальное поле) ─────

@@ -16,6 +16,8 @@ public function index(Request $request)
     $country = 'Россия';
     $user = auth()->user();
 
+
+
     if ($user && $user->city_id) {
         $city = City::find($user->city_id);
         $selectedCity = $city?->name;
@@ -29,6 +31,8 @@ public function index(Request $request)
             [$city]
         );
     })->get();
+
+    
 
     // 🔴 ВАЖНО: если AJAX — возвращаем ТОЛЬКО список
     if ($request->ajax()) {
