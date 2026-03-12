@@ -1,10 +1,5 @@
-
 @extends('layouts.clinics_catalog')
 @section('content')
-<head>
-
-
-</head>
 <div class="container py-5">
     <h1 class="mb-4 text-center">Каталог ветеринарных врачей
         @if(!empty($selectedCity))
@@ -14,41 +9,32 @@
 
     {{-- Если город не выбран — не показываем всех врачей --}}
     @if(empty($selectedCity))
-
         <div class="alert alert-info text-center">
             Пожалуйста, выберите город — список врачей будет отображён только для выбранного города.
         </div>
-
     @else
 
-        @php
-            $filtered = $doctors->filter(function($doctor) use ($selectedCity) {
-                return isset($doctor->city->name) && trim($doctor->city->name) === trim($selectedCity);
-            })->values();
-        @endphp
-
-        {{-- Если нет врачей для выбранного города --}}
-        @if($filtered->isEmpty())
+        {{-- Если нет врачей для выбранного города (теперь используем $doctors напрямую) --}}
+        @if($doctors->isEmpty())
             <div class="alert alert-warning text-center">
                 Ветеринарные врачи в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
-<button class="btn_add_clinic btn-sm"
-        data-bs-toggle="modal"
-        data-bs-target="#addDoctorModal">
-    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить ветеринара">
-    Добавить ветеринара
-</button>
-
+                <button class="btn_add_clinic btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addDoctorModal">
+                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить ветеринара">
+                    Добавить ветеринара
+                </button>
             </div>
-
         @else
 
         <div class="doctors-list">
             <div class="row g-4">
 
-                @foreach ($filtered as $doctor)
+                @foreach ($doctors as $doctor)
                     @php
                         $reviewsCollection = $doctor->reviews ?? collect();
-                        $avgRating = $reviewsCollection->avg('rating') ? number_format($reviewsCollection->avg('rating'), 1) : '0.0';
+                        // Используем системное поле reviews_avg_rating из контроллера
+                        $avgRating = $doctor->reviews_avg_rating ? number_format($doctor->reviews_avg_rating, 1) : '0.0';
                         $reviewCount = $reviewsCollection->count();
                         $ratingCounts = $reviewsCollection->groupBy('rating')->map->count();
                     @endphp
@@ -98,7 +84,7 @@
                                         </span>
                                     @endif
 
-                                    <p class="card-text mb-1">
+                                    <p class="card-text mb-1 mt-2">
                                         <strong>Специализация:</strong> {{ $doctor->specialization }}
                                     </p>
 
@@ -114,7 +100,6 @@
                                         </p>
                                     @endif
                                 </div>
-
                             </div>
                         </a>
                     </div>
@@ -123,13 +108,13 @@
             </div>
         </div>
 
-        @endif {{-- end filtered block --}}
+        @endif {{-- end empty block --}}
 
     @endif {{-- end city check --}}
 </div>
 
 @section('modals')
-    @include('account.modals.modal-add-specialist', ['cities' => $cities])
+    @include('account.modals.modal-add-specialist', ['cities' => $cities ?? []])
 @endsection
 
 {{-- Tooltip init --}}
@@ -139,6 +124,4 @@ document.addEventListener('DOMContentLoaded', () => {
     [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
 });
 </script>
-
 @endsection
-

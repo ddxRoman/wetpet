@@ -24,8 +24,7 @@ use App\Models\Pet;
 
 <div class="d-flex flex-column min-vh-100 bg-white">
     @include('layouts.header')
-    <main class="flex-grow-1 container py-5">
-        <main class="flex-grow-1 container py-5">
+        <main class="flex-grow-1 container mt-5">
             {{-- 🔙 Кнопка "В каталог" --}}
             <div class="mb-3">
                 <a href="{{ route('clinics.index') }}" title="Вернутся к каталогу всех клиник города" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog">
@@ -70,11 +69,6 @@ use App\Models\Pet;
                         <div class="text-muted small mt-2 reviwes-avarege">Отзывов пока нет</div>
                         @endif
                     </div>
-
-
-
-                    
-
 
             {{-- Вкладки  --}}
 @php

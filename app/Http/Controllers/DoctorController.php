@@ -84,6 +84,9 @@ if ($isOwner && $user) {
     /**
      * 🔹 Список докторов
      */
+/**
+     * 🔹 Список докторов с сортировкой по рейтингу
+     */
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -106,10 +109,13 @@ if ($isOwner && $user) {
             $selectedCity = City::find($cityId)?->name;
         }
 
-        $doctors = Doctor::when($cityId, function ($query) use ($cityId) {
-            $query->where('city_id', $cityId);
-        })
-            ->orderBy('name')
+        // Подгружаем средний рейтинг и сортируем
+        $doctors = Doctor::withAvg('reviews', 'rating')
+            ->when($cityId, function ($query) use ($cityId) {
+                $query->where('city_id', $cityId);
+            })
+            ->orderByDesc('reviews_avg_rating') // Топ по рейтингу в начале
+            ->orderBy('name') // Если рейтинг одинаковый — по алфавиту
             ->get();
 
         return view('pages.doctors.index', compact('doctors', 'selectedCity'));
