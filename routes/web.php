@@ -175,4 +175,27 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::get('/get-organizations/{city_id}', function($city_id) {
+    $organizations = \App\Models\Organization::where('city_id', $city_id)
+        ->select('id', 'name')
+        ->get();
+    return response()->json($organizations);
+});
+
+Route::delete('/specialist/{specialist}', [SpecialistController::class, 'destroy'])->name('specialist.destroy');
+
 Route::get('/api/clinics-search', [ClinicController::class, 'liveSearch'])->name('api.clinics.search');
+
+// Добавь это в web.php
+Route::get('/get-organizations-by-city-id/{city_id}', function($city_id) {
+    $city = \App\Models\City::find($city_id);
+    if (!$city) return response()->json([]);
+
+    // Ищем организации, где текстовое поле city совпадает с именем города
+    $organizations = \App\Models\Organization::where('city', $city->name)
+        ->select('id', 'name')
+        ->orderBy('name')
+        ->get();
+
+    return response()->json($organizations);
+});

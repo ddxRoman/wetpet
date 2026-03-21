@@ -65,34 +65,52 @@ class SpecialistController extends Controller
      */
 public function edit(Specialist $specialist)
 {
-    // Получаем все специализации типа specialist
-    $allFields = \App\Models\FieldOfActivity::where('type', 'specialist')
+    // ВСТАВЬ ЭТО:
+    dd([
+        'message' => 'Да, я работаю из SpecialistController',
+        'specialist_city_id' => $specialist->city_id,
+        'found_region' => $currentRegion
+    ]);
+    // Группировка полей
+    $groupedFields = \App\Models\FieldOfActivity::where('type', 'specialist')
         ->orderBy('activity')
         ->orderBy('name')
-        ->get();
+        ->get()
+        ->groupBy('activity');
 
-    // Группируем их по полю activity (doctor и прочие)
-    $groupedFields = $allFields->groupBy('activity');
-
+    // 1. Получаем город. Если его нет, создаем пустой объект, чтобы не было ошибок
     $currentCity = $specialist->city_id ? City::find($specialist->city_id) : null;
+    
+    // 2. Явно объявляем переменную региона. 
+    // Если города нет, регион будет null, но ПЕРЕМЕННАЯ БУДЕТ СУЩЕСТВОВАТЬ.
+    $currentRegion = $currentCity ? $currentCity->region : null;
 
+    // 3. Регионы для первого селекта
     $regions = City::select('region')
         ->whereNotNull('region')
         ->distinct()
         ->orderBy('region')
         ->pluck('region');
 
-    // Для организаций важно искать по city_id (внешний ключ), а не по имени
+    // 4. Города для текущего региона
+    $cities = $currentRegion 
+        ? City::where('region', $currentRegion)->orderBy('name')->get() 
+        : collect();
+
+    // 5. Организации
     $organizations = $specialist->city_id
         ? Organization::where('city_id', $specialist->city_id)->get()
         : collect();
 
+    // Передаем всё в compact. Проверь, чтобы имя в compact совпадало с именем переменной!
     return view('account.tabs.specialist-profile', compact(
         'specialist',
-        'groupedFields', // Передаем сгруппированные данные
+        'groupedFields',
         'regions',
+        'cities',
         'organizations',
-        'currentCity'
+        'currentCity',
+        'currentRegion' 
     ));
 }
 
@@ -157,4 +175,22 @@ public function edit(Specialist $specialist)
 
         return redirect()->back()->with('success', 'Профиль специалиста обновлён');
     }
+
+public function destroy(Specialist $specialist)
+{
+    // 1. Удаляем фото, если оно есть
+    if ($specialist->photo) {
+        Storage::disk('public')->delete($specialist->photo);
+    }
+
+    // 2. Удаляем связанные контакты (если не настроено каскадное удаление в БД)
+    $specialist->contacts()->delete();
+
+    // 3. Удаляем самого специалиста
+    $specialist->delete();
+
+    return redirect()->route('account')->with('success', 'Специалист успешно удален');
+}
+
+
 }

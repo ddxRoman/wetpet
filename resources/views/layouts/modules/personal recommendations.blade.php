@@ -38,17 +38,6 @@
   margin: 0;
 }
 
-/* Главное изображение */
-.carousel__slide_img_prewiew {
-  width: 75%;
-  height: 350px;
-  aspect-ratio: 2 / 1;
-  object-fit: cover;
-  border-radius: 15px;
-  margin: 0 auto;
-  display: block;
-}
-
 /* ====== Миниатюры ====== */
 .carousel__thumbnails {
   display: flex;

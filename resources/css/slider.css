@@ -80,7 +80,14 @@
     width: 150px;
   }
   .carousel__slide_img_prewiew{
-    width: 350px;
+    margin-top: 50%;
+  width: 50%;
+  height: 500px;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  border-radius: 15px;
+  margin: 0 auto;
+  display: block;
   }
 
   .carousel__slide {

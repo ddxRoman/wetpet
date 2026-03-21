@@ -50,45 +50,33 @@
                 <input type="number" name="experience" class="form-control" value="{{ old('experience', $specialist->experience ?? '0') }}">
             </div>
 
-            {{-- Регион --}}
-            <div class="col-md-4">
-                <label>Регион</label>
-                <select name="region" id="regionSelect_specialist" class="form-select">
-                    <option value="">Выберите регион</option>
-                    @foreach($regions as $region)
-                        <option value="{{ $region }}" {{ (optional($currentCity)->region == $region) ? 'selected' : '' }}>
-                            {{ $region }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+{{-- Поле Город --}}
+<div class="col-md-6">
+    <label>Город</label>
+    <select name="city_id" id="citySelect_specialist" class="form-select">
+        <option value="">Выберите город</option>
+        @foreach($allCities as $city)
+            <option value="{{ $city->id }}" 
+                {{ (old('city_id', $specialist->city_id ?? '') == $city->id) ? 'selected' : '' }}>
+                {{ $city->name }} ({{ $city->region }})
+            </option>
+        @endforeach
+    </select>
+</div>
 
-            {{-- Город --}}
-            <div class="col-md-4">
-                <label>Город</label>
-                <select name="city_id" id="citySelect_specialist" class="form-select">
-                    <option value="">Сначала выберите регион</option>
-                    @foreach($cities as $id => $cityName)
-                        <option value="{{ $id }}" {{ (old('city_id', $specialist->city_id ?? '') == $id) ? 'selected' : '' }}>
-                            {{ $cityName }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- Организация --}}
-            <div class="col-md-4">
-                <label>Организация</label>
-                <select name="organization_id" id="clinicSelect" class="form-select">
-                    <option value="">Выберите организацию</option>
-                    @foreach($organizations as $id => $orgName)
-                        <option value="{{ $id }}" {{ (old('organization_id', $specialist->organization_id ?? '') == $id) ? 'selected' : '' }}>
-                            {{ $orgName }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
+{{-- Поле Организация --}}
+<div class="col-md-6">
+    <label>Организация (клиника)</label>
+    <select name="organization_id" id="clinicSelect" class="form-select">
+        <option value="">Выберите организацию</option>
+        @foreach($organizations as $org)
+            <option value="{{ $org->id }}" 
+                {{ (old('organization_id', $specialist->organization_id ?? '') == $org->id) ? 'selected' : '' }}>
+                {{ $org->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
             {{-- Контакты и Мессенджеры --}}
 {{-- Телефон --}}
 <div class="col-6">
@@ -168,7 +156,22 @@
         </div>
     </div>
 
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-    </div>
+
+
+<div class="modal-footer d-flex justify-content-between">
+    {{-- Кнопка --}}
+    <button type="button" class="btn btn-outline-danger" onclick="deleteSpecialist({{ $specialist->id }})">
+        Удалить специалиста
+    </button>
+
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+</div>
+</form>
+{{-- Форма обязательно должна быть с таким ID --}}
+<form id="delete-specialist-form-{{ $specialist->id }}" 
+      action="{{ route('specialist.destroy', $specialist) }}" 
+      method="POST" 
+      style="display: none;">
+    @csrf
+    @method('DELETE')
 </form>

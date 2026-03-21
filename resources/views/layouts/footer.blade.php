@@ -37,7 +37,7 @@
         </div>
         <hr class="my-4">
         <div class="text-center text-muted">
-            <small>&copy; 2025 Zverozor. Все права защищены. <a href="/privacy" class="text-muted">Политика конфиденциальности</a></small>
+            <small>&copy; 2025 Zverozor. Все права защищены. <a href="{{ route('legal/privacy') }}" class="text-muted">Политика конфиденциальности</a></small>
         </div>
     </div>
 </footer>

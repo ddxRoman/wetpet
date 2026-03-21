@@ -38,46 +38,36 @@ public function index()
 
     $specialist = null;
     $groupedFields = collect();
-    $regions = collect();
     $cities = collect();
     $organizations = collect();
-    $currentCity = null;
 
-    // Списки специализаций
+    // Загружаем специализации
     $allFields = FieldOfActivity::where('type', 'specialist')->orderBy('name')->get();
-    $groupedFields = $allFields->groupBy(function ($item) {
-        return ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты';
-    })->sortByDesc(function ($value, $key) {
-        return $key === 'Врачи';
-    });
+    $groupedFields = $allFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
 
-    // Регионы
-    $regions = City::select('region')->whereNotNull('region')->distinct()->orderBy('region')->pluck('region');
+    // Загружаем ВСЕ города с регионами для селекта
+    // Формируем коллекцию, где ключ - ID, значение - "Город (Регион)"
+    $allCities = City::select('id', 'name', 'region')->orderBy('name')->get();
 
+    if ($specialistOwner) {
+        $specialist = Specialist::with('contacts')->find($specialistOwner->specialist_id);
 
-if ($specialistOwner) {
-    // Подгружаем специалиста сразу с его контактами
-    $specialist = Specialist::with('contacts')->find($specialistOwner->specialist_id);
-
-    if ($specialist) {
-        $currentCity = City::find($specialist->city_id);
-        
-        // Теперь данные контактов будут в $specialist->contacts
-        if ($currentCity) {
-            $cities = City::where('region', $currentCity->region)->orderBy('name')->pluck('name', 'id');
-            $organizations = Organization::where('city', $currentCity->name)->pluck('name', 'id');
+        if ($specialist) {
+            // Подгружаем организации для текущего города специалиста
+            $currentCity = City::find($specialist->city_id);
+            if ($currentCity) {
+                $organizations = Organization::where('city', $currentCity->name)
+                    ->orderBy('name')
+                    ->get();
+            }
         }
     }
-}
 
     return view('account', compact(
         'user', 'pets', 'hasClinic', 'hasOrganization', 'hasSpecialistProfile',
-        'specialist', 'groupedFields', 'regions', 'cities', 'organizations', 'currentCity'
+        'specialist', 'groupedFields', 'allCities', 'organizations'
     ));
 }
-
-
-
 
 
     // === Обновление города ===
