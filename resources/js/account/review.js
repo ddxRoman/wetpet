@@ -36,6 +36,9 @@ function renderCard(r) {
     const isClinic = r.target_type === 'Clinic';
     const isDoctor = r.target_type === 'Doctor';
 
+    // Используем slug, если он пришел с сервера, иначе используем ID
+    const identifier = r.target_slug || r.target_id;
+
     const address = isClinic
         ? [r.region, r.city, r.street, r.house]
             .filter(Boolean)
@@ -50,10 +53,9 @@ function renderCard(r) {
     data-rating="${r.rating ?? 0}">
 
     <header class="review-header">
-    <img src="" alt="">
         <div class="clinic-info-block">
-            <a href="/${isClinic ? 'clinics' : 'doctors'}/${r.target_id}" 
-            title="Открыть"
+            <a href="/${isClinic ? 'clinics' : 'doctors'}/${identifier}" 
+               title="Открыть"
                class="clinic-name">
                ${escapeHtml(r.target_name)}
             </a>

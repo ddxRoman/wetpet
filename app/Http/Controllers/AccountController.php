@@ -151,6 +151,7 @@ public function getReviews()
                 'target_id' => $target?->id,
                 'target_type' => class_basename($target), // Clinic или Doctor, полезно для фронтенда
                 'target_name' => $target?->name ?? '—',
+                'target_slug' => $target ? $target->slug : $review->target_id,
                 'region' => $target?->region ?? null,
                 'city' => $target?->city ?? null,
                 'street' => $target?->street ?? null,
