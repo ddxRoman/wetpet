@@ -95,27 +95,63 @@ $(document).ready(function () {
             });
     });
 
+    // Стаж работы расчитывается по формуле
+    $('#date_of_birth').on('change', function() {
+    const dob = new Date($(this).val());
+    const today = new Date();
+    
+    if (isNaN(dob.getTime())) return;
+
+    // Считаем возраст
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+
+    // Лимит стажа (Возраст - 18)
+    const maxExp = Math.max(0, age - 18);
+    
+    const $expInput = $('#experienceInput');
+    $expInput.attr('max', maxExp);
+    
+    // Если текущее значение стажа больше нового лимита — сбрасываем его
+    if (parseInt($expInput.val()) > maxExp) {
+        $expInput.val(maxExp);
+    }
+    
+    // Обновляем текстовую подсказку (если она есть)
+    $expInput.siblings('.text-muted').text(`Максимум для данного возраста: ${maxExp} лет`);
+});
+
     // 3. Мессенджеры и Фото (оставляем без изменений)
     $(document).on('change', '.messenger-icon input', function() {
         $(this).closest('.messenger-icon').toggleClass('active', this.checked);
     });
 
-    $('#photoPicker').on('click', () => $('#doctorPhotoInput').click());
-    $('#doctorPhotoInput').on('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                $('#doctorPhotoPreview').attr('src', e.target.result);
-                $('#photoPreviewWrapper').removeClass('d-none');
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    // Инициализация кроппера для фото врача
+const fileInput = document.getElementById('doctorPhotoInput');
+const previewImg = document.getElementById('doctorPhotoPreview');
 
-    $('#removePhotoBtn').on('click', function() {
-        $('#doctorPhotoInput').val('');
-        $('#doctorPhotoPreview').attr('src', '#');
-        $('#photoPreviewWrapper').addClass('d-none');
-    });
+if (fileInput && previewImg) {
+    initCropper(fileInput, previewImg);
+}
+
+// Показ/скрытие обертки превью при изменении src (для кроппера)
+const observer = new MutationObserver(() => {
+    if (previewImg.src && previewImg.src !== window.location.href && previewImg.src.indexOf('#') === -1) {
+        $('#photoPreviewWrapper').removeClass('d-none');
+    }
+});
+observer.observe(previewImg, { attributes: true, attributeFilter: ['src'] });
+});
+$('#removePhotoBtn').on('click', function(e) {
+    e.preventDefault();
+    $('#doctorPhotoInput').val(''); // Очищаем инпут
+    $('#doctorPhotoPreview').attr('src', '#'); // Сбрасываем картинку
+    $('#photoPreviewWrapper').addClass('d-none'); // Скрываем обертку
+    
+    // Если хочешь реально удалять файл из БД при нажатии на крестик (без сохранения всей формы),
+    // здесь нужно будет добавить AJAX-запрос. 
+    // Но сейчас при нажатии "Сохранить изменения" с пустым инпутом старое фото останется.
 });

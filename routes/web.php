@@ -170,8 +170,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account/specialist/{specialist}/edit', [SpecialistController::class, 'edit'])
         ->name('specialist.edit');
 
-    Route::post('/account/specialist/{specialist}/update', [SpecialistController::class, 'update'])
-        ->name('specialist.update');
+Route::put('/account/specialist/{specialist}/update', [SpecialistController::class, 'update'])
+    ->name('specialist.update');
 
 });
 
@@ -199,3 +199,5 @@ Route::get('/get-organizations-by-city-id/{city_id}', function($city_id) {
 
     return response()->json($organizations);
 });
+Route::get('/doctors/{specialist:slug}', [DoctorController::class, 'show'])
+    ->name('doctors.show');

@@ -57,8 +57,8 @@
 
 
 @if(auth()->check() && auth()->user()->canAddSelfSpecialist())
-    <div class="col-12">
-        <label class="form-check-label">
+                        <div class="col-12 form-check-label">
+                            <label>
             <input type="checkbox" name="its_me" class="form-check-input">
             <strong>Добавляю себя</strong>
             <div class="label_its_me">

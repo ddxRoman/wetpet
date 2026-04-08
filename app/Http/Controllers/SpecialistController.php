@@ -119,30 +119,57 @@ public function edit(Specialist $specialist)
      * ОБНОВЛЕНИЕ
      * ===============================
      */
-    public function update(Request $request, Specialist $specialist)
-    {
-        $maxBirthDate = now()->subYears(18)->format('Y-m-d');
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'field_of_activity_id' => 'required|exists:field_of_activities,id', // Исправлено
-            'date_of_birth' => "nullable|date|after_or_equal:1950-01-01|before_or_equal:$maxBirthDate",
-            'city_id' => 'required|exists:cities,id',
-            'organization_id' => 'nullable|exists:organizations,id',
-            'experience' => 'nullable|integer|min:0',
-            'exotic_animals' => 'required|in:Да,Нет',
-            'On_site_assistance' => 'required|in:Да,Нет',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'description' => 'nullable|string',
-            'messengers' => 'nullable|array', // Добавлено
-        ]);
 
-    // ... твоя валидация ...
 
-    // 1. Обновляем самого специалиста
-    $specialist->update($request->only(['name', 'city_id', 'organization_id', 'description', 'experience', 'exotic_animals', 'On_site_assistance']));
+public function update(Request $request, Specialist $specialist)
+{
+    // 1. Считаем лимит стажа (на основе даты рождения из запроса)
+    $maxExp = 0;
+    if ($request->date_of_birth) {
+        $yearsOld = \Carbon\Carbon::parse($request->date_of_birth)->age;
+        $maxExp = max(0, $yearsOld - 18);
+    }
 
-    // 2. Обновляем или создаем контакты
+    // 2. ЕДИНАЯ ВАЛИДАЦИЯ (Пишем сюда ВСЕ поля, которые есть в форме)
+    $validated = $request->validate([
+        'name'               => 'required|string|max:255',
+        'specialization'     => 'nullable|string',
+        'date_of_birth'      => 'nullable|date',
+        'experience'         => "nullable|integer|min:0|max:$maxExp",
+        'city_id'            => 'nullable|exists:cities,id',
+        'organization_id'    => 'nullable|exists:organizations,id',
+        'description'        => 'nullable|string',
+        'exotic_animals'     => 'nullable|string',
+        'On_site_assistance' => 'nullable|string',
+        'phone'              => 'nullable|string',
+        'email'              => 'nullable|email',
+        'photo'              => 'nullable|image|max:2048',
+        // Добавь сюда любые другие поля, которые видишь в request_all, но нет в validated
+    ], [
+        'experience.max' => "Стаж не может превышать $maxExp лет.",
+    ]);
+
+    // 3. Обработка фото (если оно пришло)
+    if ($request->hasFile('photo')) {
+        if ($specialist->photo) {
+            Storage::disk('public')->delete($specialist->photo);
+        }
+        $validated['photo'] = $request->file('photo')->store('specialists', 'public');
+    }
+
+    // 4. Добавляем Slug и другие тех. поля в массив для обновления
+    $validated['slug'] = \Illuminate\Support\Str::slug($request->name);
+
+    // --- ПРОВЕРКА ПЕРЕД СОХРАНЕНИЕМ ---
+    // Если после этого исправления в validated_data всё еще меньше полей, 
+    // значит их названия в форме не совпадают с названиями тут.
+    // dd($validated); 
+
+    // 5. Обновление специалиста
+    $specialist->update($validated);
+
+    // 6. Обновление контактов
     $specialist->contacts()->updateOrCreate(
         ['specialist_id' => $specialist->id],
         [
@@ -154,27 +181,9 @@ public function edit(Specialist $specialist)
         ]
     );
 
+    return redirect()->back()->with('success', 'Данные успешно обновлены');
+}
 
-
-        // Получаем название специализации по ID
-        $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
-
-        $data = $request->except('photo', 'messengers');
-        $data['specialization'] = $field->name; // Записываем имя специализации
-        $data['field_of_activity_id'] = $request->field_of_activity_id;
-        $data['messengers'] = json_encode($request->messengers); // Сохраняем как JSON
-
-        if ($request->hasFile('photo')) {
-            if ($specialist->photo) {
-                Storage::delete('public/' . $specialist->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('specialists', 'public');
-        }
-
-        $specialist->update($data);
-
-        return redirect()->back()->with('success', 'Профиль специалиста обновлён');
-    }
 
 public function destroy(Specialist $specialist)
 {

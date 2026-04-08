@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Specialist extends Model
 {
@@ -38,5 +39,24 @@ public function contacts()
 }
 
 
+
+protected static function boot()
+{
+    parent::boot();
+
+    static::saving(function ($specialist) {
+        if (empty($specialist->slug)) {
+            $specialist->slug = Str::slug($specialist->name);
+        }
+    });
+}
+
+/**
+ * Определяет поле для поиска модели в маршрутах.
+ */
+public function getRouteKeyName()
+{
+    return 'slug';
+}
 
 }

@@ -41,11 +41,9 @@ header {
     align-items: flex-start;
 }
 
-
 .logo-block {
     justify-self: center;
 }
-
 
 .right-block {
     justify-self: end;
@@ -64,7 +62,6 @@ header {
     width: 148px;
     margin-top: 0;
 }
-
 
 .profile_block {
     position: relative;
@@ -412,7 +409,6 @@ ol, ul {
 
 .text_menu_btn_category:hover {
     color: #490034e5;
-
 }
 
 .category_icon {
@@ -598,7 +594,7 @@ ol, ul {
     background-color: #F5F7F9;
 }
 
-.footer img{
+.footer img {
     width: 100px;
 }
 
@@ -631,7 +627,7 @@ ol, ul {
 
 /* Навбар */
 .navbar {
-    display: flex;
+    display: none !important;
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
@@ -660,10 +656,6 @@ ol, ul {
 }
 
 .navbar.navbar-expand-md.navbar-light.bg-white.shadow-sm {
-    display: none !important;
-}
-
-.navbar {
     display: none !important;
 }
 
@@ -709,7 +701,7 @@ ol, ul {
 
 .account-content {
     flex: 1;
-    padding: 25px 20px;
+    padding: 15px 10px;
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -973,7 +965,7 @@ select:focus {
     border: none;
 }
 
-.container-flex{
+.container-flex {
     padding: 0 2% 0 2%;
 }
 
@@ -1036,7 +1028,6 @@ select:focus {
     0% {
         background-color: #cfffcdff;
     }
-
     100% {
         background-color: transparent;
     }
@@ -1051,13 +1042,11 @@ select:focus {
         opacity: 0;
         transform: translateY(-10px);
     }
-
     10%,
     90% {
         opacity: 1;
         transform: translateY(0);
     }
-
     100% {
         opacity: 0;
         transform: translateY(-10px);
@@ -1114,8 +1103,7 @@ select:focus {
 
 .review-header {
     display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+    flex-direction: column;
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 8px;
@@ -1708,17 +1696,19 @@ select:focus {
 .caption_mobile {
     background-color: #f3f3f33a;
 }
-    .messenger-icons img {
-        width: 36px;
-        height: 36px;
-        cursor: pointer;
-        transition: 0.2s;
-        opacity: 0.2;
-    }
-    .messenger-icons input:checked + img {
-        opacity: 1;
-        transform: scale(1.2);
-    }
+
+.messenger-icons img {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    transition: 0.2s;
+    opacity: 0.2;
+}
+
+.messenger-icons input:checked + img {
+    opacity: 1;
+    transform: scale(1.2);
+}
 
 /* Подсказки Bootstrap */
 .tooltip-inner {
@@ -1738,14 +1728,12 @@ a {
     cursor: pointer;
 }
 
-
-
 /* Медиа запросы */
 @media (max-width: 768px) {
     .site-header {
         min-height: auto;
     }
-        .city_world{
+    .city_world{
         display: none;
     }
     .description_index_page{
@@ -1865,7 +1853,6 @@ a {
         border-radius: 10px;
     }
 
-
     .review-header .right {
         margin-top: 10px;
         display: flex;
@@ -1887,7 +1874,7 @@ a {
         display: none;
     }
 
-        .city_world{
+    .city_world{
         display: none;
     }
 
@@ -1956,7 +1943,6 @@ a {
 
 /* ================= МОБИЛЬНЫЙ ХЕДЕР ================= */
 @media (max-width: 768px) {
-
     /* Сетка хедера */
     .header-grid {
         display: grid;
@@ -1974,9 +1960,6 @@ a {
     .logo-block {
         justify-self: center;
     }
-
-    /* ГОРОД В ХЕДЕРЕ — СКРЫТ НА МОБИЛКЕ */
-
 
     /* Профиль в хедере скрыт */
     .right-block {
@@ -2019,8 +2002,9 @@ a {
     .offcanvas-body {
         background-color: #a3d3a61c;
     }
+}
 
-    /* ===== ГОРОД: десктоп / мобилка ===== */
+/* ===== ГОРОД: десктоп / мобилка ===== */
 @media (max-width: 768px) {
     .city-block {
         display: none !important; /* прячем город в хедере */
@@ -2033,44 +2017,51 @@ a {
     }
 }
 
-
-}
 .reviwes-avarege{
     margin-left: 1%;
 }
 
-    .photo-wrapper {
+/* Общий контейнер для фото и выбора файла */
+.photo-wrapper {
     position: relative;
-    width: 150px;
+    display: inline-block; /* Чтобы блок не растягивался на всю ширину */
+    width: 150px;          /* Фиксируем ширину под размер фото */
     height: 150px;
 }
 
-#photoPicker {
-    width: 150px;
-    height: 150px;
-    border: 2px dashed #ccc;
+/* Наложение при наведении (только если фото есть) */
+#photoPreviewWrapper:hover::after {
+    content: "Сменить";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
+    border-radius: 10px;
+    font-size: 14px;
     cursor: pointer;
 }
 
+/* Контейнер превью (УБРАЛИ display: none) */
 #photoPreviewWrapper {
-    display: none;
     position: relative;
     width: 150px;
     height: 150px;
+    display: block; /* По умолчанию показываем, если есть src в img */
 }
 
-#photoPreviewWrapper:hover #removePhotoBtn {
-    opacity: 1;
-}
-#removePhotoBtn {
-    opacity: 0;
-    transition: .2s;
+/* Само фото внутри */
+#doctorPhotoPreview {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid #ddd;
 }
 
+/* Кнопка удаления (крестик) */
 #removePhotoBtn {
     position: absolute;
     top: -8px;
@@ -2084,35 +2075,20 @@ a {
     font-size: 18px;
     line-height: 1;
     cursor: pointer;
+    z-index: 10;
+    opacity: 1; /* Чтобы его было видно */
 }
+
 .label_description_clinic{
     font-size: large;
     font-weight: 700;
     color: black;
 }
+
 .legal_h2{
     color: #000000;
     margin-top: 1rem;
     margin-bottom: 3rem;
-}
-.search-container {
-    max-width: 80%;
-    margin: 0 auto;
-}
-
-.search-results-dropdown {
-    position: absolute;
-    text-align: start;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 0 0 10px 10px;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-height: 300px;
-    overflow-y: auto;
 }
 
 .search-result-item:hover {
@@ -2122,6 +2098,7 @@ a {
 .search-result-item:last-child {
     border-bottom: none;
 }
+
 /* Миниатюры в поиске */
 .search-img-thumb {
     width: 40px;
@@ -2155,4 +2132,84 @@ a {
 /* Эффект при наведении */
 .search-result-item:hover {
     background-color: #f1f5f9;
+}
+
+/* Настройка самой иконки */
+.btn-eye-icon {
+    width: 20px;
+    height: auto;
+    filter: grayscale(100%);     /* Делаем иконку спокойной */
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.btn-view-profile:hover .btn-eye-icon {
+    filter: grayscale(0%);       /* Возвращаем цвет при наведении */
+    opacity: 1;
+}
+
+/* Текст кнопки */
+.btn-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-left: 8px;
+    color: #212529;
+}
+
+.btn-eye{
+    padding-right: 0 !important;
+    background-color: #f2f2f299;
+    padding: 1%;
+}
+
+.modal-footer{
+    margin-top: 3%;
+}
+
+/* ================= SELECT2 & ПОИСК ================= */
+.select2-container--default .select2-selection--single {
+    display: flex !important;
+    align-items: center !important;
+    border: 1px solid #ccc !important;
+    border-radius: 8px !important;
+    height: 46px !important;
+}
+
+.search-container {
+    max-width: 80%;
+    margin: 0 auto;
+    position: relative; /* Важно для выпадающего списка */
+}
+
+.search-results-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 10px 10px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Кнопка просмотра профиля */
+.btn-view-profile {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.3s ease;
+}
+
+.btn-view-profile:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
 }

@@ -7,7 +7,27 @@
     @csrf
     @method('PUT')
 
-    <h4 class="modal-title">Редактирование специалиста</h4>
+    {{-- Верхняя панель с заголовком и кнопкой перехода --}}
+<div class="d-flex btn-eye justify-content-between align-items-center mb-3 px-3">
+    <h4 class="modal-title mb-0">Редактирование специалиста</h4>
+    
+    <div class="d-flex gap-2">
+        @if($specialist->slug)
+<a href="{{ route('doctors.show', $specialist->slug) }}" 
+   target="_blank" 
+   class="btn-view-profile d-flex align-items-center justify-content-center shadow-sm"
+   title="Перейти к карточке специалиста">
+    <img class="btn-eye-icon" src="{{ Storage::url('icon/button/eye.svg') }}" alt="Иконка глаз">
+    <span class="btn-text">Просмотр анкеты</span>
+</a>
+        @else
+            <span class="badge bg-warning text-dark d-flex align-items-center">
+                Slug не сгенерирован
+            </span>
+        @endif
+    </div>
+</div>
+
     <div id="doctorErrors" class="alert alert-danger d-none"></div>
 
     <div class="modal-body">
@@ -21,20 +41,19 @@
             {{-- Специализация --}}
             <div class="col-md-4">
                 <label>Специализация</label>
-{{-- Специализация --}}
-<select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select">
-    <option value="">Выберите сферу</option>
-    @foreach($groupedFields as $groupName => $fields)
-        <optgroup label="{{ $groupName }}">
-            @foreach($fields as $field)
-                <option value="{{ $field->id }}" 
-                    {{ (old('field_of_activity_id', $specialist->field_of_activity_id ?? '') == $field->id) ? 'selected' : '' }}>
-                    {{ $field->name }}
-                </option>
-            @endforeach
-        </optgroup>
-    @endforeach
-</select>
+                <select name="specialization" id="fieldOfActivitySelect" class="form-select">
+                    <option value="">Выберите сферу</option>
+                    @foreach($groupedFields as $groupName => $fields)
+                        <optgroup label="{{ $groupName }}">
+                            @foreach($fields as $field)
+                                <option value="{{ $field->name }}" 
+                                    {{ (old('specialization', $specialist->specialization ?? '') == $field->name) ? 'selected' : '' }}>
+                                    {{ $field->name }}
+                                </option>
+                            @endforeach
+                        </optgroup>
+                    @endforeach
+                </select>
             </div>
 
             {{-- Дата рождения --}}
@@ -44,74 +63,89 @@
                        value="{{ old('date_of_birth', isset($specialist->date_of_birth) ? \Carbon\Carbon::parse($specialist->date_of_birth)->format('Y-m-d') : '') }}">
             </div>
 
-            {{-- Стаж --}}
+{{-- Сначала рассчитаем лимит в начале файла --}}
+@php
+    $yearsOld = isset($specialist->date_of_birth) ? \Carbon\Carbon::parse($specialist->date_of_birth)->age : 0;
+    $maxExperience = max(0, $yearsOld - 18);
+@endphp
+
+{{-- Поле Стаж --}}
+<div class="col-md-6">
+    <label>Стаж (лет)</label>
+    <input type="number" 
+           name="experience" 
+           id="experienceInput"
+           class="form-control" 
+           min="0"
+           max="{{ $maxExperience }}" 
+           value="{{ old('experience', $specialist->experience ?? '0') }}">
+    <small class="text-muted">Максимум для данного возраста: {{ $maxExperience }} лет</small>
+</div>
+
+            {{-- Поле Город --}}
             <div class="col-md-6">
-                <label>Стаж (лет)</label>
-                <input type="number" name="experience" class="form-control" value="{{ old('experience', $specialist->experience ?? '0') }}">
+                <label>Город</label>
+                <select name="city_id" id="citySelect_specialist" class="form-select">
+                    <option value="">Выберите город</option>
+                    @foreach($allCities as $city)
+                        <option value="{{ $city->id }}" 
+                            {{ (old('city_id', $specialist->city_id ?? '') == $city->id) ? 'selected' : '' }}>
+                            {{ $city->name }} ({{ $city->region }})
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
-{{-- Поле Город --}}
-<div class="col-md-6">
-    <label>Город</label>
-    <select name="city_id" id="citySelect_specialist" class="form-select">
-        <option value="">Выберите город</option>
-        @foreach($allCities as $city)
-            <option value="{{ $city->id }}" 
-                {{ (old('city_id', $specialist->city_id ?? '') == $city->id) ? 'selected' : '' }}>
-                {{ $city->name }} ({{ $city->region }})
-            </option>
-        @endforeach
-    </select>
-</div>
+            {{-- Поле Организация --}}
+            <div class="col-md-6">
+                <label>Организация (клиника)</label>
+                <select name="organization_id" id="clinicSelect" class="form-select">
+                    <option value="">Выберите организацию</option>
+                    @foreach($organizations as $org)
+                        <option value="{{ $org->id }}" 
+                            {{ (old('organization_id', $specialist->organization_id ?? '') == $org->id) ? 'selected' : '' }}>
+                            {{ $org->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-{{-- Поле Организация --}}
-<div class="col-md-6">
-    <label>Организация (клиника)</label>
-    <select name="organization_id" id="clinicSelect" class="form-select">
-        <option value="">Выберите организацию</option>
-        @foreach($organizations as $org)
-            <option value="{{ $org->id }}" 
-                {{ (old('organization_id', $specialist->organization_id ?? '') == $org->id) ? 'selected' : '' }}>
-                {{ $org->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
-            {{-- Контакты и Мессенджеры --}}
-{{-- Телефон --}}
-<div class="col-6">
-    <label>Телефон</label>
-    <input type="phone" name="phone" class="form-control" 
-           value="{{ old('phone', $specialist->contacts->phone ?? '') }}">
-</div>
+            {{-- Телефон --}}
+            <div class="col-6">
+                <label>Телефон</label>
+                <input type="phone" name="phone" class="form-control" 
+                       value="{{ old('phone', $specialist->contacts->phone ?? '') }}">
+            </div>
+
+            <div class="col-12">
                 <label class="mt-2">Мессенджеры на этом номере:</label>
-{{-- Мессенджеры --}}
-<div id="messendger" class="d-flex gap-3 mt-1 messenger-icons">
-    <label class="messenger-icon {{ ($specialist->contacts->telegram ?? false) ? 'active' : '' }}">
-        <input type="checkbox" name="telegram" value="1" class="d-none" 
-               {{ ($specialist->contacts->telegram ?? false) ? 'checked' : '' }}>
-        <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" width="30">
-    </label>
+                <div id="messendger" class="d-flex gap-3 mt-1 messenger-icons">
+                    <label class="messenger-icon {{ ($specialist->contacts->telegram ?? false) ? 'active' : '' }}">
+                        <input type="checkbox" name="telegram" value="1" class="d-none" 
+                               {{ ($specialist->contacts->telegram ?? false) ? 'checked' : '' }}>
+                        <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" width="30">
+                    </label>
 
-    <label class="messenger-icon {{ ($specialist->contacts->whatsapp ?? false) ? 'active' : '' }}">
-        <input type="checkbox" name="whatsapp" value="1" class="d-none" 
-               {{ ($specialist->contacts->whatsapp ?? false) ? 'checked' : '' }}>
-        <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="30">
-    </label>
+                    <label class="messenger-icon {{ ($specialist->contacts->whatsapp ?? false) ? 'active' : '' }}">
+                        <input type="checkbox" name="whatsapp" value="1" class="d-none" 
+                               {{ ($specialist->contacts->whatsapp ?? false) ? 'checked' : '' }}>
+                        <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="30">
+                    </label>
 
-    <label class="messenger-icon {{ ($specialist->contacts->max ?? false) ? 'active' : '' }}">
-        <input type="checkbox" name="max" value="1" class="d-none" 
-               {{ ($specialist->contacts->max ?? false) ? 'checked' : '' }}>
-        <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" width="30">
-    </label>
-</div>
+                    <label class="messenger-icon {{ ($specialist->contacts->max ?? false) ? 'active' : '' }}">
+                        <input type="checkbox" name="max" value="1" class="d-none" 
+                               {{ ($specialist->contacts->max ?? false) ? 'checked' : '' }}>
+                        <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" width="30">
+                    </label>
+                </div>
+            </div>
 
-{{-- Почта --}}
-<div class="col-6">
-    <label>Почта</label>
-    <input type="text" name="email" class="form-control" 
-           value="{{ old('email', $specialist->contacts->email ?? '') }}">
-</div>
+            {{-- Почта --}}
+            <div class="col-6">
+                <label>Почта</label>
+                <input type="text" name="email" class="form-control" 
+                       value="{{ old('email', $specialist->contacts->email ?? '') }}">
+            </div>
 
             {{-- Селекты Да/Нет --}}
             <div class="col-md-6">
@@ -131,22 +165,32 @@
             </div>
 
             {{-- Фото --}}
-            <div class="col-12">
-                <label>Фото специалиста</label>
-                <div class="photo-wrapper d-flex align-items-center gap-3">
-                    <div id="photoPicker" class="border d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; cursor: pointer; background: #f8f9fa;">
-                        {{ $specialist->photo ? 'Сменить' : '+' }}
-                    </div>
+<div class="col-12">
+    <label class="fw-bold mb-2">Фото специалиста</label>
+    <div class="photo-wrapper d-flex align-items-start gap-3">
+        {{-- Кнопка выбора/смены --}}
+        <div id="photoPicker" class="border rounded d-flex flex-column align-items-center justify-content-center text-secondary" 
+             style="width: 120px; height: 120px; cursor: pointer; background: #f8f9fa; border-style: dashed !important;">
+            <i class="bi bi-camera-fill fs-2"></i>
+            <small class="mt-1">{{ $specialist->photo ? 'Сменить' : 'Добавить' }}</small>
+        </div>
 
-                    <div id="photoPreviewWrapper" class="{{ $specialist->photo ? '' : 'd-none' }}">
-                        <img id="doctorPhotoPreview" 
-                             src="{{ $specialist->photo ? Storage::url($specialist->photo) : '#' }}" 
-                             style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
-                        <button type="button" id="removePhotoBtn" class="btn btn-sm btn-danger mt-1 d-block">Удалить</button>
-                    </div>
-                </div>
-                <input type="file" id="doctorPhotoInput" name="photo" accept="image/*" class="d-none">
-            </div>
+        {{-- Контейнер с текущим фото --}}
+        <div id="photoPreviewWrapper" class="{{ $specialist->photo ? '' : 'd-none' }} position-relative">
+            <img id="doctorPhotoPreview" 
+                 src="{{ $specialist->photo ? Storage::url($specialist->photo) : '#' }}" 
+                 class="img-thumbnail shadow-sm"
+                 style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+            
+            <button type="button" id="removePhotoBtn" 
+                    class="btn btn-danger btn-sm position-absolute" 
+                    style="top: -10px; right: -10px; border-radius: 50%; width: 25px; height: 25px; padding: 0;">
+                ×
+            </button>
+        </div>
+    </div>
+    <input type="file" id="doctorPhotoInput" name="photo" accept="image/*" class="d-none">
+</div>
 
             {{-- Описание --}}
             <div class="col-12">
@@ -156,18 +200,15 @@
         </div>
     </div>
 
-
-
-<div class="modal-footer d-flex justify-content-between">
-    {{-- Кнопка --}}
-    <button type="button" class="btn btn-outline-danger" onclick="deleteSpecialist({{ $specialist->id }})">
-        Удалить специалиста
-    </button>
-
-    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-</div>
+    <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-outline-danger" onclick="deleteSpecialist({{ $specialist->id }})">
+            Удалить специалиста
+        </button>
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    </div>
 </form>
-{{-- Форма обязательно должна быть с таким ID --}}
+
+{{-- Форма удаления СНАРУЖИ основной формы, но ВНУТРИ таба --}}
 <form id="delete-specialist-form-{{ $specialist->id }}" 
       action="{{ route('specialist.destroy', $specialist) }}" 
       method="POST" 
