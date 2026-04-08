@@ -5,15 +5,10 @@ if (typeof $.fn.select2 === 'undefined') {
     select2(window, $);
 }
 
-/**
- * Глобальная функция удаления специалиста
- */
 window.deleteSpecialist = function(id) {
     if (confirm('Вы уверены, что хотите удалить этого специалиста? Это действие нельзя будет отменить.')) {
         const form = document.getElementById('delete-specialist-form-' + id);
-        if (form) {
-            form.submit();
-        }
+        if (form) form.submit();
     }
 };
 
@@ -21,35 +16,21 @@ $(document).ready(function () {
     const regionSelector = '#regionSelect_specialist';
     const citySelector = '#citySelect_specialist';
     const clinicSelector = '#clinicSelect';
-
-    // Флаг "Первой загрузки". Пока он true, мы не делаем AJAX-запросы, 
-    // чтобы не перезаписывать данные, которые PHP уже правильно вывел в Blade.
     let isInitialLoad = true;
 
-    // Инициализируем Select2
+    // Инициализация Select2
     $(regionSelector + ', ' + citySelector + ', ' + clinicSelector).select2({ 
         width: '100%' 
     });
 
-    // 1. Логика: РЕГИОН -> ГОРОД
+    // 1. РЕГИОН -> ГОРОД
     $(document).on('change', regionSelector, function () {
         const region = $(this).val();
         const $citySelect = $(citySelector);
+        if (!region) return;
+        if (isInitialLoad && $citySelect.children('option').length > 1) return;
 
-        if (!region) {
-            $citySelect.html('<option value="">Сначала выберите регион</option>').trigger('change');
-            return;
-        }
-
-        // Если это первая загрузка и PHP уже прислал список городов для этого региона,
-        // мы просто пропускаем fetch, чтобы не затирать выбранный город.
-        if (isInitialLoad && $citySelect.children('option').length > 1) {
-            console.log('JS: Города уже загружены через Blade, пропускаем fetch');
-            return;
-        }
-
-        $citySelect.prop('disabled', true).html('<option>Загрузка городов...</option>').trigger('change');
-
+        $citySelect.prop('disabled', true).trigger('change');
         fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
             .then(res => res.json())
             .then(data => {
@@ -57,33 +38,23 @@ $(document).ready(function () {
                 data.forEach(city => {
                     options += `<option value="${city.id}">${city.name}</option>`;
                 });
-                // Сбрасываем флаг только после того, как пользователь реально изменил регион вручную
                 isInitialLoad = false; 
                 $citySelect.html(options).prop('disabled', false).trigger('change.select2');
             });
     });
 
-    // 2. Логика: ГОРОД -> ОРГАНИЗАЦИЯ
+    // 2. ГОРОД -> ОРГАНИЗАЦИЯ
     $(document).on('change', citySelector, function () {
         const cityId = $(this).val();
         const $clinicSelect = $(clinicSelector);
-
-        // Если это загрузка страницы и клиники уже есть — ничего не трогаем
         if (isInitialLoad && $clinicSelect.children('option').length > 1) {
-            isInitialLoad = false; // После проверки города и клиник при загрузке — выключаем флаг
+            isInitialLoad = false;
             return;
         }
-        
         isInitialLoad = false;
+        if (!cityId) return;
 
-        if (!cityId) {
-            $clinicSelect.html('<option value="">Сначала выберите город</option>').trigger('change');
-            return;
-        }
-
-        $clinicSelect.prop('disabled', true).html('<option>Загрузка клиник...</option>').trigger('change');
-
-        // fetch по маршруту, который ищет организации по ИМЕНИ города (через его ID)
+        $clinicSelect.prop('disabled', true).trigger('change');
         fetch(`/get-organizations-by-city-id/${cityId}`)
             .then(res => res.json())
             .then(data => {
@@ -95,63 +66,84 @@ $(document).ready(function () {
             });
     });
 
-    // Стаж работы расчитывается по формуле
+    // 3. СТАЖ
     $('#date_of_birth').on('change', function() {
-    const dob = new Date($(this).val());
-    const today = new Date();
-    
-    if (isNaN(dob.getTime())) return;
+        const dob = new Date($(this).val());
+        const today = new Date();
+        if (isNaN(dob.getTime())) return;
+        let age = today.getFullYear() - dob.getFullYear();
+        if (new Date(today.getFullYear(), today.getMonth(), today.getDate()) < new Date(today.getFullYear(), dob.getMonth(), dob.getDate())) age--;
+        const maxExp = Math.max(0, age - 18);
+        const $expInput = $('#experienceInput');
+        $expInput.attr('max', maxExp);
+        if (parseInt($expInput.val()) > maxExp) $expInput.val(maxExp);
+        $expInput.siblings('.text-muted').text(`Максимум для данного возраста: ${maxExp} лет`);
+    });
 
-    // Считаем возраст
-    let age = today.getFullYear() - dob.getFullYear();
-    const m = today.getMonth() - dob.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-        age--;
-    }
-
-    // Лимит стажа (Возраст - 18)
-    const maxExp = Math.max(0, age - 18);
-    
-    const $expInput = $('#experienceInput');
-    $expInput.attr('max', maxExp);
-    
-    // Если текущее значение стажа больше нового лимита — сбрасываем его
-    if (parseInt($expInput.val()) > maxExp) {
-        $expInput.val(maxExp);
-    }
-    
-    // Обновляем текстовую подсказку (если она есть)
-    $expInput.siblings('.text-muted').text(`Максимум для данного возраста: ${maxExp} лет`);
-});
-
-    // 3. Мессенджеры и Фото (оставляем без изменений)
+    // 4. МЕССЕНДЖЕРЫ
     $(document).on('change', '.messenger-icon input', function() {
         $(this).closest('.messenger-icon').toggleClass('active', this.checked);
     });
 
-    // Инициализация кроппера для фото врача
-const fileInput = document.getElementById('doctorPhotoInput');
-const previewImg = document.getElementById('doctorPhotoPreview');
+    // --- ФОТО (ФИНАЛЬНЫЙ ИСПРАВЛЕННЫЙ БЛОК) ---
 
-if (fileInput && previewImg) {
-    initCropper(fileInput, previewImg);
-}
+    // Клик по зоне выбора (через контейнер для точности)
+    $(document).on('click', '#photoPicker', function(e) {
+        e.preventDefault();
+        $(this).closest('.photo-section-container').find('#doctorPhotoInput').click();
+    });
 
-// Показ/скрытие обертки превью при изменении src (для кроппера)
-const observer = new MutationObserver(() => {
-    if (previewImg.src && previewImg.src !== window.location.href && previewImg.src.indexOf('#') === -1) {
-        $('#photoPreviewWrapper').removeClass('d-none');
-    }
-});
-observer.observe(previewImg, { attributes: true, attributeFilter: ['src'] });
-});
-$('#removePhotoBtn').on('click', function(e) {
-    e.preventDefault();
-    $('#doctorPhotoInput').val(''); // Очищаем инпут
-    $('#doctorPhotoPreview').attr('src', '#'); // Сбрасываем картинку
-    $('#photoPreviewWrapper').addClass('d-none'); // Скрываем обертку
-    
-    // Если хочешь реально удалять файл из БД при нажатии на крестик (без сохранения всей формы),
-    // здесь нужно будет добавить AJAX-запрос. 
-    // Но сейчас при нажатии "Сохранить изменения" с пустым инпутом старое фото останется.
+    // СОБЫТИЕ ВЫБОРА ФАЙЛА
+    $(document).on('change', '#doctorPhotoInput', function(e) {
+        const file = e.target.files[0];
+        const $container = $(this).closest('.photo-section-container');
+        const $preview = $container.find('#doctorPhotoPreview');
+        const $wrapper = $container.find('#photoPreviewWrapper');
+        const $bg = $container.find('.photo-picker-bg');
+        const $plusSign = $container.find('.fs-2');
+        const $smallText = $container.find('small');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // Обновляем картинку
+                $preview.attr('src', event.target.result);
+                
+                // Показываем превью и кнопку удаления
+                $wrapper.removeClass('d-none').show();
+                
+                // Скрываем серый фон и плюс
+                $bg.addClass('d-none');
+                $plusSign.addClass('d-none');
+                
+                // Меняем текст на "Сменить"
+                $smallText.text('Сменить');
+                console.log('JS: Новое фото отрисовано');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Кнопка удаления
+    $(document).on('click', '#removePhotoBtn', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const $container = $(this).closest('.photo-section-container');
+        
+        // Очищаем инпут и картинку
+        $container.find('#doctorPhotoInput').val(''); 
+        $container.find('#doctorPhotoPreview').attr('src', '#'); 
+        
+        // Скрываем обертку превью
+        $container.find('#photoPreviewWrapper').addClass('d-none').hide();
+        
+        // Возвращаем серый фон и плюс
+        $container.find('.photo-picker-bg').removeClass('d-none');
+        $container.find('.fs-2').removeClass('d-none');
+        $container.find('small').text('Добавить');
+        
+        console.log('JS: Фото полностью удалено');
+    });
+
 });

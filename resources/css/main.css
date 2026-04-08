@@ -1577,6 +1577,15 @@ select:focus {
     display: none;
 }
 
+.fw-medium{
+    font-size: 12pt !important;
+    color: #000;
+}
+.photo-picker-overlay{
+    opacity: 0.6;
+}
+
+
 .photo-box {
     width: 140px;
     height: 140px;

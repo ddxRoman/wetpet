@@ -164,31 +164,45 @@
                 </select>
             </div>
 
-            {{-- Фото --}}
-<div class="col-12">
+ {{-- Фото --}}
+<div class="col-12 mt-3 photo-section-container">
     <label class="fw-bold mb-2">Фото специалиста</label>
-    <div class="photo-wrapper d-flex align-items-start gap-3">
-        {{-- Кнопка выбора/смены --}}
-        <div id="photoPicker" class="border rounded d-flex flex-column align-items-center justify-content-center text-secondary" 
-             style="width: 120px; height: 120px; cursor: pointer; background: #f8f9fa; border-style: dashed !important;">
-            <i class="bi bi-camera-fill fs-2"></i>
-            <small class="mt-1">{{ $specialist->photo ? 'Сменить' : 'Добавить' }}</small>
-        </div>
-
-        {{-- Контейнер с текущим фото --}}
-        <div id="photoPreviewWrapper" class="{{ $specialist->photo ? '' : 'd-none' }} position-relative">
+    
+    <div class="specialist-photo-container position-relative" style="width: 120px; height: 120px;">
+        
+        {{-- 1. Контейнер с превью --}}
+        <div id="photoPreviewWrapper" class="{{ $specialist->photo ? '' : 'd-none' }} w-100 h-100">
             <img id="doctorPhotoPreview" 
                  src="{{ $specialist->photo ? Storage::url($specialist->photo) : '#' }}" 
-                 class="img-thumbnail shadow-sm"
-                 style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                 class="w-100 h-100 border rounded"
+                 style="object-fit: cover; display: block;">
             
+            {{-- Кнопка удаления (Крестик) --}}
             <button type="button" id="removePhotoBtn" 
-                    class="btn btn-danger btn-sm position-absolute" 
-                    style="top: -10px; right: -10px; border-radius: 50%; width: 25px; height: 25px; padding: 0;">
-                ×
+                    class="btn btn-danger position-absolute shadow d-flex align-items-center justify-content-center" 
+                    style="top: -10px; right: -10px; border-radius: 50%; width: 24px; height: 24px; padding: 0; z-index: 10; font-size: 18px;">
+                &times;
             </button>
         </div>
+
+        {{-- 2. КНОПКА-НАЛОЖЕНИЕ --}}
+        <div id="photoPicker" 
+             class="photo-picker-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center border rounded" 
+             style="cursor: pointer; z-index: 5; background: transparent;">
+            
+            <div class="photo-picker-bg {{ $specialist->photo ? 'd-none' : '' }}" 
+                 style="position: absolute; top:0; left:0; width:100%; height:100%; background: #f8f9fa; border: 2px dashed #ccc !important; border-radius: 8px; z-index: -1;">
+            </div>
+            
+            <span class="fs-2 fw-light text-secondary {{ $specialist->photo ? 'd-none' : '' }}" style="pointer-events: none;">+</span>
+            <small class="fw-medium text-secondary" style="pointer-events: none;">
+                {{ $specialist->photo ? 'Сменить' : 'Добавить' }}
+            </small>
+        </div>
+
     </div>
+
+    {{-- Скрытый инпут --}}
     <input type="file" id="doctorPhotoInput" name="photo" accept="image/*" class="d-none">
 </div>
 
