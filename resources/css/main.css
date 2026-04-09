@@ -1577,12 +1577,19 @@ select:focus {
     display: none;
 }
 
-.fw-medium{
+.word_edit_photo{
     font-size: 12pt !important;
-    color: #000;
+    color: #9c9c9c;
+    opacity: 0.1;
+    z-index: 100;
 }
-.photo-picker-overlay{
-    opacity: 0.6;
+.word_edit_photo:hover{
+    font-size: 14pt !important;
+    color: #ffffff;
+    opacity: 1;
+background-color: #00000061;
+border-radius: 15px;
+padding: 1%;
 }
 
 
@@ -2040,7 +2047,7 @@ a {
 
 /* Наложение при наведении (только если фото есть) */
 #photoPreviewWrapper:hover::after {
-    content: "Сменить";
+    content: "Удалить";
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);

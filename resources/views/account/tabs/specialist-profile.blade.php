@@ -194,8 +194,8 @@
                  style="position: absolute; top:0; left:0; width:100%; height:100%; background: #f8f9fa; border: 2px dashed #ccc !important; border-radius: 8px; z-index: -1;">
             </div>
             
-            <span class="fs-2 fw-light text-secondary {{ $specialist->photo ? 'd-none' : '' }}" style="pointer-events: none;">+</span>
-            <small class="fw-medium text-secondary" style="pointer-events: none;">
+            <span class="fs-2 fw-light text-secondary {{ $specialist->photo ? 'd-none' : '' }}">+</span>
+            <small class="word_edit_photo">
                 {{ $specialist->photo ? 'Сменить' : 'Добавить' }}
             </small>
         </div>
