@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\{
     ClinicController,
     AuthController,
@@ -173,6 +174,12 @@ Route::middleware(['auth'])->group(function () {
 Route::put('/account/specialist/{specialist}/update', [SpecialistController::class, 'update'])
     ->name('specialist.update');
 
+Route::resource('organizations-profile', OrganizationController::class);
+// Маршрут для показа формы редактирования
+Route::get('/organizations-profile/{id}/edit', [OrganizationController::class, 'edit'])->name('organizations-profile.edit');
+
+// Маршрут для сохранения (тот самый update)
+Route::put('/organizations-profile/{id}', [OrganizationController::class, 'update'])->name('organizations-profile.update');
 });
 
 Route::get('/get-organizations/{city_id}', function($city_id) {
@@ -201,3 +208,10 @@ Route::get('/get-organizations-by-city-id/{city_id}', function($city_id) {
 });
 Route::get('/doctors/{specialist:slug}', [DoctorController::class, 'show'])
     ->name('doctors.show');
+
+
+    // Было (примерно):
+Route::get('/organizations/{organization}', [OrganizationController::class, 'show']);
+
+// Нужно сделать (добавить ->name):
+Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');

@@ -79,13 +79,10 @@ class User extends Authenticatable implements FilamentUser
         return true;
     }
 
-    public function ownedOrganizations()
-    {
-        return $this->belongsToMany(
-            Organization::class,
-            'organization_owners'
-        )->withTimestamps();
-    }
+public function ownedOrganizations()
+{
+    return $this->belongsToMany(Organization::class, 'organization_owners', 'user_id', 'organization_id');
+}
 
     public function ownedClinics()
     {

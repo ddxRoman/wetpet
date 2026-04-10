@@ -170,9 +170,13 @@
     </div>
 @endif
 
-@if($hasOrganization)
+@if(isset($hasOrganization) && $hasOrganization && isset($organization))
     <div class="tab-content" id="my-organizations" style="display:none;">
-        @include('account.tabs.my-organizations')
+        @include('account.tabs.organizations-profile', [
+            'organization' => $organization,
+            'allCities' => $allCities,
+            'groupedFields' => $groupedFields
+        ])
     </div>
 @endif
 
@@ -181,8 +185,6 @@
         @include('account.tabs.specialist-profile')
     </div>
 @endif
-
-
         </div>
     </div>
 

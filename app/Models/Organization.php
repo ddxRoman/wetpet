@@ -13,13 +13,14 @@ class Organization extends Model
         'city',
         'street',
         'house',
+        'type',
         'description',
         'logo',
         'schedule',
         'workdays',
         'phone',
         'email',
-        'type',
+        'slug',
     ];
 
     public function owners()
@@ -29,5 +30,18 @@ class Organization extends Model
         'organization_owners'
     )->withTimestamps();
 }
+protected static function boot()
+{
+    parent::boot();
 
+    static::creating(function ($organization) {
+        if (empty($organization->slug)) {
+            $organization->slug = \Illuminate\Support\Str::slug($organization->name);
+        }
+    });
+}
+public function getRouteKeyName()
+{
+    return 'slug';
+}
 }

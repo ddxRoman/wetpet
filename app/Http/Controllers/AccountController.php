@@ -31,29 +31,44 @@ public function index()
     $pets = Pet::where('user_id', $user->id)->get();
 
     $hasClinic = ClinicOwner::where('user_id', $user->id)->exists();
-    $hasOrganization = OrganizationOwner::where('user_id', $user->id)->exists();
+    
+    // 1. Ищем связь владельца с организацией
+    $organizationOwner = OrganizationOwner::where('user_id', $user->id)->first();
+    $hasOrganization = (bool) $organizationOwner;
+
+    // 2. Инициализируем переменную organization как null
+    $organization = null;
+
+    // 3. Если связь есть, загружаем саму организацию
+    if ($hasOrganization) {
+        $organization = Organization::find($organizationOwner->organization_id);
+    }
     
     $specialistOwner = SpecialistOwner::where('user_id', $user->id)->first();
     $hasSpecialistProfile = (bool) $specialistOwner;
 
     $specialist = null;
     $groupedFields = collect();
-    $cities = collect();
     $organizations = collect();
 
     // Загружаем специализации
-    $allFields = FieldOfActivity::where('type', 'specialist')->orderBy('name')->get();
-    $groupedFields = $allFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
+// Специализации для вкладки СПЕЦИАЛИСТА
+$allSpecialistFields = FieldOfActivity::where('type', 'specialist')->orderBy('name')->get();
+$groupedFields = $allSpecialistFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
 
-    // Загружаем ВСЕ города с регионами для селекта
-    // Формируем коллекцию, где ключ - ID, значение - "Город (Регион)"
+// Сферы деятельности для вкладки ОРГАНИЗАЦИИ
+// Внутри AccountController.php
+$allOrgFields = FieldOfActivity::where('type', 'organization')
+    ->where('activity', '!=', 'vetclinic')
+    ->orderBy('name')
+    ->get();
+$groupedOrgFields = $allOrgFields->groupBy('category');    // Загружаем ВСЕ города
     $allCities = City::select('id', 'name', 'region')->orderBy('name')->get();
 
     if ($specialistOwner) {
         $specialist = Specialist::with('contacts')->find($specialistOwner->specialist_id);
 
         if ($specialist) {
-            // Подгружаем организации для текущего города специалиста
             $currentCity = City::find($specialist->city_id);
             if ($currentCity) {
                 $organizations = Organization::where('city', $currentCity->name)
@@ -63,10 +78,11 @@ public function index()
         }
     }
 
-    return view('account', compact(
-        'user', 'pets', 'hasClinic', 'hasOrganization', 'hasSpecialistProfile',
-        'specialist', 'groupedFields', 'allCities', 'organizations'
-    ));
+    // 4. Добавляем 'organization' в compact
+return view('account', compact(
+    'user', 'pets', 'hasClinic', 'hasOrganization', 'organization', 'hasSpecialistProfile',
+    'specialist', 'groupedFields', 'groupedOrgFields', 'allCities', 'organizations'
+));
 }
 
 
@@ -180,7 +196,7 @@ public function getReviews()
 }
 
     // === Обновление отзыва ===
-    public function updateReview(Request $request, $id)
+    public function updateRevнiew(Request $request, $id)
     {
         $review = Review::findOrFail($id);
 
