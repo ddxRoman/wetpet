@@ -38,23 +38,23 @@
                 <input type="text" name="name" class="form-control" value="{{ old('name', $specialist->name ?? '') }}">
             </div>
 
-                {{-- Тип/Сфера (из твоего контроллера это поле type) --}}
-                <div class="col-md-4">
-                    <label class="fw-bold">Сфера деятельности</label>
-                    <select name="type" class="form-select" required>
-                        <option style="font-weight: 600;" value="">Выберите сферу:</option>
-                        @foreach($groupedFields as $groupName => $fields)
-                            
-                                @foreach($fields as $field)
-                                    <option  value="{{ $field->activity }}" 
-                                        {{ (old('type', $organization->type) == $field->activity) ? 'selected' : '' }}>
-                                        &#10148; {{ $field->name }}
-                                    </option>
-                                @endforeach
-
-                        @endforeach
-                    </select>
-                </div>
+            {{-- Специализация --}}
+            <div class="col-md-4">
+                <label>Специализация</label>
+                <select name="specialization" id="fieldOfActivitySelect" class="form-select">
+                    <option value="">Выберите сферу</option>
+                    @foreach($groupedFields as $groupName => $fields)
+                        <optgroup label="{{ $groupName }}">
+                            @foreach($fields as $field)
+                                <option value="{{ $field->name }}" 
+                                    {{ (old('specialization', $specialist->specialization ?? '') == $field->name) ? 'selected' : '' }}>
+                                    {{ $field->name }}
+                                </option>
+                            @endforeach
+                        </optgroup>
+                    @endforeach
+                </select>
+            </div>
 
             {{-- Дата рождения --}}
             <div class="col-md-6">
@@ -213,6 +213,7 @@
         </div>
     </div>
 
+    
     <div class="modal-footer d-flex justify-content-between">
         <button type="button" class="btn btn-outline-danger" onclick="deleteSpecialist({{ $specialist->id }})">
             Удалить специалиста
