@@ -209,6 +209,8 @@ Route::get('/get-organizations-by-city-id/{city_id}', function($city_id) {
 Route::get('/doctors/{specialist:slug}', [DoctorController::class, 'show'])
     ->name('doctors.show');
 
+Route::delete('/organizations/{id}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
+    
 
     // Было (примерно):
 Route::get('/organizations/{organization}', [OrganizationController::class, 'show']);

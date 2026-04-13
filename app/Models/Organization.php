@@ -3,45 +3,72 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Organization extends Model
 {
     protected $fillable = [
         'name',
+        'slug',
         'country',
         'region',
         'city',
         'street',
         'house',
-        'type',
-        'description',
+        'address_comment',
         'logo',
+        'description',
+        'phone1',
+        'phone2',
+        'email',
+        'telegram',
+        'whatsapp',
+        'website',
         'schedule',
         'workdays',
-        'phone',
-        'email',
-        'slug',
+        'type'
     ];
 
     public function owners()
-{
-    return $this->belongsToMany(
-        User::class,
-        'organization_owners'
-    )->withTimestamps();
-}
-protected static function boot()
-{
-    parent::boot();
+    {
+        return $this->belongsToMany(
+            User::class,
+            'organization_owners'
+        )->withTimestamps();
+    }
 
-    static::creating(function ($organization) {
-        if (empty($organization->slug)) {
-            $organization->slug = \Illuminate\Support\Str::slug($organization->name);
-        }
-    });
-}
-public function getRouteKeyName()
-{
-    return 'slug';
-}
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($organization) {
+            // Формируем строку: Название-Город-Улица-Дом
+            $sourceString = sprintf(
+                '%s-%s-%s-%s',
+                $organization->name,
+                $organization->city,
+                $organization->street,
+                $organization->house
+            );
+
+            $slug = Str::slug($sourceString);
+
+            // Проверяем, существует ли уже такой слаг
+            // Если есть, добавляем счетчик (напр. wrg-astrakhan-40-let-1, wrg-astrakhan-40-let-2)
+            $originalSlug = $slug;
+            $count = 1;
+
+            while (static::where('slug', $slug)->exists()) {
+                $slug = "{$originalSlug}-{$count}";
+                $count++;
+            }
+
+            $organization->slug = $slug;
+        });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

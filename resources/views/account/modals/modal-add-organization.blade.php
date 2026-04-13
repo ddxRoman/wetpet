@@ -1,5 +1,17 @@
 @vite(['resources/js/app.js'])
 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+
 <div class="modal fade" id="addOrganizationModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -71,7 +83,7 @@
                         
 <div class="col-6">
     <label>Телефон</label>
-    <input type="phone" name="phone" class="form-control">
+    <input type="phone" name="phone1" class="form-control">
 <label for="#messendger">Выберите соц сети к которым привязан этот контакт</label>
     <div id="messendger" class="d-flex gap-3 mt-2 messenger-icons">
 
@@ -92,8 +104,19 @@
             <input type="checkbox" name="messengers[]" value="messenger" class="d-none">
             <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" title="По этому номеру можно связатся в Max" alt="Messenger">
         </label>
-
     </div>
+        <label>Телефон</label>
+    <input type="phone" name="phone2" class="form-control">
+</div>
+
+{{-- Расписание  --}}
+<div class="col-md-6">
+    <label class="fw-bold">График работы (часы)</label>
+    <input type="text" name="schedule" class="form-control" placeholder="09:00-20:00">
+</div>
+<div class="col-md-6">
+    <label class="fw-bold">Рабочие дни</label>
+    <input type="text" name="workdays" class="form-control" placeholder="Пн-Пт">
 </div>
 
 <style>

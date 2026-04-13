@@ -57,3 +57,18 @@ $(document).ready(function () {
         $container.find('.word_edit_photo').text('Добавить');
     });
 });
+
+    $(document).ready(function() {
+    $('.select2-init').select2({
+        theme: 'bootstrap-5',
+        width: '100%',
+        placeholder: 'Начните вводить город...',
+        allowClear: true,
+        // Опционально: поиск без учета регистра уже встроен
+        language: {
+            noResults: function() {
+                return "Город не найден";
+            }
+        }
+    });
+});

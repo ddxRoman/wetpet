@@ -65,7 +65,7 @@
                         @foreach($allCities as $city)
                             <option value="{{ $city->name }}" 
                                 {{ (old('city', $organization->city) == $city->name) ? 'selected' : '' }}>
-                                {{ $city->name }}
+                                {{ $city->name }} ({{ $city->region }})
                             </option>
                         @endforeach
                     </select>
@@ -80,22 +80,29 @@
                     <label class="fw-bold">Дом</label>
                     <input type="text" name="house" class="form-control" value="{{ old('house', $organization->house) }}" required>
                 </div>
+{{-- Контакты --}}
+<div class="col-md-6">
+    <label class="fw-bold">Телефон</label>
+    <input type="text" name="phone1" class="form-control" value="{{ old('phone1', $organization->phone1) }}">
+</div>
+<div class="col-md-6">
+    <label class="fw-bold">Второй телефон</label>
+    <input type="text" name="phone2" class="form-control" value="{{ old('phone2', $organization->phone2) }}">
+</div>
+<div class="col-md-6">
+    <label class="fw-bold">Email</label>
+    <input type="email" name="email" class="form-control" value="{{ old('email', $organization->email) }}">
+</div>
 
-                {{-- Контакты --}}
-                <div class="col-md-6">
-                    <label class="fw-bold">Телефон</label>
-                    <input type="text" name="phone" class="form-control" value="{{ old('phone', $organization->phone) }}">
-                </div>
-                <div class="col-md-6">
-                    <label class="fw-bold">Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ old('email', $organization->email) }}">
-                </div>
-
-                {{-- Расписание --}}
-                <div class="col-12">
-                    <label class="fw-bold">График работы</label>
-                    <input type="text" name="schedule" class="form-control" value="{{ old('schedule', $organization->schedule) }}" placeholder="Например: Пн-Пт 09:00-20:00">
-                </div>
+{{-- Расписание  --}}
+<div class="col-md-6">
+    <label class="fw-bold">График работы (часы)</label>
+    <input type="text" name="schedule" class="form-control" value="{{ old('schedule', $organization->schedule) }}" placeholder="09:00-20:00">
+</div>
+<div class="col-md-6">
+    <label class="fw-bold">Рабочие дни</label>
+    <input type="text" name="workdays" class="form-control" value="{{ old('workdays', $organization->workdays) }}" placeholder="Пн-Пт">
+</div>
 
                 {{-- Логотип --}}
                 <div class="col-12 mt-3">
@@ -117,13 +124,16 @@
         </div>
 
         <div class="modal-footer d-flex justify-content-between mt-4">
-            <button type="button" class="btn btn-outline-danger" 
-                    onclick="if(confirm('Удалить организацию?')) document.getElementById('delete-org-form').submit();">
-                Удалить организацию
-            </button>
+
             <button type="submit" class="btn btn-primary px-5">Сохранить изменения</button>
         </div>
     </form>
+
+    <form action="{{ route('organizations.destroy', $organization->id) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить организацию?');">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-outline-danger">Удалить организацию</button>
+</form>
 
     {{-- Скрытая форма удаления --}}
     <form id="delete-org-form" action="{{ route('organizations-profile.destroy', $organization->id) }}" method="POST" class="d-none">

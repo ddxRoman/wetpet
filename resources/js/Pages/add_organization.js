@@ -148,29 +148,38 @@ remove.addEventListener('click', () => {
 
 
     /* ===== AJAX submit ===== */
-    if (form) {
-        form.addEventListener('submit', async e => {
-            e.preventDefault();
+if (form) {
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        errBox.classList.add('d-none');
+        errBox.innerHTML = '';
 
-            errBox.classList.add('d-none');
-            errBox.innerHTML = '';
-
+        try {
             const res = await fetch(form.action, {
                 method: 'POST',
-                headers: { Accept: 'application/json' },
+                headers: { 'Accept': 'application/json' },
                 body: new FormData(form)
             });
 
             const json = await res.json();
 
-            if (json.errors) {
+            if (res.status === 422) { // Ошибка валидации Laravel
                 errBox.innerHTML = Object.values(json.errors)
-                    .map(e => `<div>${e[0]}</div>`).join(''); 
+                    .flat()
+                    .map(e => `<div>${e}</div>`).join('');
                 errBox.classList.remove('d-none');
-                return;
+                return; // ВАЖНО: выходим, чтобы не было релоада
             }
-            location.reload();
-        });
-    }
+
+            if (json.success) {
+                location.reload();
+            } else {
+                console.error('Server error:', json);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    });
+}
 }
 

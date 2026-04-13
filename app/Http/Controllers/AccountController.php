@@ -22,78 +22,107 @@ use App\Models\FieldOfActivity;
 
 class AccountController extends Controller
 {
-    
     // === Страница аккаунта ===
+    public function index()
+    {
+        $user = Auth::user();
+        $pets = Pet::where('user_id', $user->id)->get();
 
-public function index()
-{
-    $user = Auth::user();
-    $pets = Pet::where('user_id', $user->id)->get();
+        // --- Клиники ---
+        $clinicOwner = ClinicOwner::where('user_id', $user->id)->first();
+        $hasClinic = (bool) $clinicOwner;
+        $clinic = $hasClinic ? Clinic::find($clinicOwner->clinic_id) : null;
 
-    $hasClinic = ClinicOwner::where('user_id', $user->id)->exists();
-    
-    // 1. Ищем связь владельца с организацией
-    $organizationOwner = OrganizationOwner::where('user_id', $user->id)->first();
-    $hasOrganization = (bool) $organizationOwner;
+        // --- Организации ---
+        $organizationOwner = OrganizationOwner::where('user_id', $user->id)->first();
+        $hasOrganization = (bool) $organizationOwner;
+        $organization = $hasOrganization ? Organization::find($organizationOwner->organization_id) : null;
 
-    // 2. Инициализируем переменную organization как null
-    $organization = null;
+        // --- Специалисты ---
+        $specialistOwner = SpecialistOwner::where('user_id', $user->id)->first();
+        $hasSpecialistProfile = (bool) $specialistOwner;
+        $specialist = null;
+        $organizations = collect();
 
-    // 3. Если связь есть, загружаем саму организацию
-    if ($hasOrganization) {
-        $organization = Organization::find($organizationOwner->organization_id);
-    }
-    
-    $specialistOwner = SpecialistOwner::where('user_id', $user->id)->first();
-    $hasSpecialistProfile = (bool) $specialistOwner;
+        // Специализации для вкладки СПЕЦИАЛИСТА
+        $allSpecialistFields = FieldOfActivity::where('type', 'specialist')->orderBy('name')->get();
+        $groupedFields = $allSpecialistFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
 
-    $specialist = null;
-    $groupedFields = collect();
-    $organizations = collect();
+        // Сферы деятельности для вкладки ОРГАНИЗАЦИИ (исключая ветклиники)
+        $allOrgFields = FieldOfActivity::where('type', 'organization')
+            ->where('activity', '!=', 'vetclinic')
+            ->orderBy('name')
+            ->get();
+        $groupedOrgFields = $allOrgFields->groupBy('category');
 
-    // Загружаем специализации
-// Специализации для вкладки СПЕЦИАЛИСТА
-$allSpecialistFields = FieldOfActivity::where('type', 'specialist')->orderBy('name')->get();
-$groupedFields = $allSpecialistFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
+        // Загружаем ВСЕ города для селектов
+        $allCities = City::select('id', 'name', 'region')->orderBy('name')->get();
 
-// Сферы деятельности для вкладки ОРГАНИЗАЦИИ
-// Внутри AccountController.php
-$allOrgFields = FieldOfActivity::where('type', 'organization')
-    ->where('activity', '!=', 'vetclinic')
-    ->orderBy('name')
-    ->get();
-$groupedOrgFields = $allOrgFields->groupBy('category');    // Загружаем ВСЕ города
-    $allCities = City::select('id', 'name', 'region')->orderBy('name')->get();
-
-    if ($specialistOwner) {
-        $specialist = Specialist::with('contacts')->find($specialistOwner->specialist_id);
-
-        if ($specialist) {
-            $currentCity = City::find($specialist->city_id);
-            if ($currentCity) {
-                $organizations = Organization::where('city', $currentCity->name)
-                    ->orderBy('name')
-                    ->get();
+        if ($specialistOwner) {
+            $specialist = Specialist::with('contacts')->find($specialistOwner->specialist_id);
+            if ($specialist) {
+                $currentCity = City::find($specialist->city_id);
+                if ($currentCity) {
+                    $organizations = Organization::where('city', $currentCity->name)
+                        ->orderBy('name')
+                        ->get();
+                }
             }
         }
+
+        return view('account', compact(
+            'user', 'pets', 'hasClinic', 'clinic', 'hasOrganization', 'organization', 
+            'hasSpecialistProfile', 'specialist', 'groupedFields', 'groupedOrgFields', 
+            'allCities', 'organizations'
+        ));
     }
 
-    // 4. Добавляем 'organization' в compact
-return view('account', compact(
-    'user', 'pets', 'hasClinic', 'hasOrganization', 'organization', 'hasSpecialistProfile',
-    'specialist', 'groupedFields', 'groupedOrgFields', 'allCities', 'organizations'
-));
-}
+    // === Обновление профиля (ЕДИНЫЙ МЕТОД) ===
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
 
+        $request->validate([
+            'name'       => 'required|string|max:255',
+            'nickname'   => 'required|string|max:255',
+            'email'      => 'required|email|max:255',
+            'birth_date' => 'nullable|date',
+            // Расширенная валидация для разных форматов
+            'avatar'     => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:8192',
+        ]);
 
-    // === Обновление города ===
+        // Обработка аватара
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
+                Storage::delete('public/' . $user->avatar);
+            }
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
+        }
+
+        $user->fill($request->only('name', 'nickname', 'email', 'birth_date'));
+
+        // Приоритет city_id (из селекта), если нет — ищем по city_slug
+        if ($request->filled('city_id')) {
+            $user->city_id = $request->city_id;
+        } elseif ($request->filled('city_slug')) {
+            $city = City::where('slug', $request->city_slug)->first();
+            if ($city) $user->city_id = $city->id;
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Профиль обновлён');
+    }
+
+    // === Обновление города (AJAX) ===
     public function updateCity(Request $request)
     {
         $request->validate([
             'city_slug' => 'required|string',
         ]);
 
-        $city = \App\Models\City::where('slug', $request->city_slug)->first();
+        $city = City::where('slug', $request->city_slug)->first();
 
         if (!$city) {
             return response()->json(['success' => false, 'message' => 'Город не найден']);
@@ -106,97 +135,63 @@ return view('account', compact(
         return response()->json(['success' => true]);
     }
 
-    // === Обновление профиля ===
-    public function updateProfile(Request $request)
-    {
-        $user = auth()->user();
-
-        $request->validate([
-            'name'       => 'required|string|max:255',
-            'nickname'   => 'required|string|max:255',
-            'email'      => 'required|email|max:255',
-            'birth_date' => 'nullable|date',
-            'avatar'     => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-        ]);
-
-        // Аватар
-        if ($request->hasFile('avatar')) {
-            if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
-                Storage::delete('public/' . $user->avatar);
-            }
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
-        }
-
-        $user->fill($request->only('name', 'nickname', 'email', 'birth_date'));
-
-        if ($request->filled('city_slug')) {
-            $city = \App\Models\City::where('slug', $request->city_slug)->first();
-            if ($city) $user->city_id = $city->id;
-        }
-
-        $user->save();
-
-        return redirect()->back()->with('success', 'Профиль обновлён');
-    }
-
     // === Получение отзывов текущего пользователя ===
-public function getReviews()
-{
-    $userId = auth()->id();
+    public function getReviews()
+    {
+        $userId = auth()->id();
 
-    try {
-        $reviews = Review::where('user_id', $userId)
-            ->with([
-                 'reviewable', // Работает для клиник и врачей, если у них есть эти поля
-                'photos:id,review_id,photo_path',
-                'receipts:id,review_id,path'
-            ])
-            ->latest()
-            ->get();
+        try {
+            $reviews = Review::where('user_id', $userId)
+                ->with([
+                     'reviewable', 
+                    'photos:id,review_id,photo_path',
+                    'receipts:id,review_id,path'
+                ])
+                ->latest()
+                ->get();
 
-        if ($reviews->isEmpty()) {
-            return response()->json([]);
+            if ($reviews->isEmpty()) {
+                return response()->json([]);
+            }
+
+            $formatted = $reviews->map(function ($r) {
+                $target = $r->reviewable;
+
+                return [
+                    'id' => $r->id,
+                    'target_id' => $target?->id,
+                    'target_type' => class_basename($target),
+                    'target_name' => $target?->name ?? '—',
+                    'target_slug' => $target ? $target->slug : null,
+                    'region' => $target?->region ?? null,
+                    'city' => $target?->city ?? null,
+                    'street' => $target?->street ?? null,
+                    'house' => $target?->house ?? null,
+                    'liked' => $r->liked,
+                    'disliked' => $r->disliked,
+                    'content' => $r->content,
+                    'rating' => $r->rating,
+                    'created_at' => $r->created_at->toDateTimeString(),
+                    'photos' => $r->photos->map(fn($p) => [
+                        'id' => $p->id,
+                        'photo_path' => $p->photo_path,
+                    ]),
+                    'receipts' => $r->receipts->map(fn($f) => [
+                        'id' => $f->id,
+                        'receipt_path' => $f->path,
+                    ]),
+                ];
+            });
+
+            return response()->json($formatted);
+        } catch (\Throwable $e) {
+            \Log::error('Ошибка getReviews: ' . $e->getMessage());
+            return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);
         }
-
-        $formatted = $reviews->map(function ($r) {
-            $target = $r->reviewable; // Клиника или врач
-
-            return [
-                'id' => $r->id,
-                'target_id' => $target?->id,
-                'target_type' => class_basename($target), // Clinic или Doctor, полезно для фронтенда
-                'target_name' => $target?->name ?? '—',
-                'target_slug' => $target ? $target->slug : $review->target_id,
-                'region' => $target?->region ?? null,
-                'city' => $target?->city ?? null,
-                'street' => $target?->street ?? null,
-                'house' => $target?->house ?? null,
-                'liked' => $r->liked,
-                'disliked' => $r->disliked,
-                'content' => $r->content,
-                'rating' => $r->rating,
-                'created_at' => $r->created_at->toDateTimeString(),
-                'photos' => $r->photos->map(fn($p) => [
-                    'id' => $p->id,
-                    'photo_path' => $p->photo_path,
-                ]),
-                'receipts' => $r->receipts->map(fn($f) => [
-                    'id' => $f->id,
-                    'receipt_path' => $f->path,
-                ]),
-            ];
-        });
-
-        return response()->json($formatted);
-    } catch (\Throwable $e) {
-        \Log::error('Ошибка getReviews: ' . $e->getMessage());
-        return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);
     }
-}
 
     // === Обновление отзыва ===
-    public function updateRevнiew(Request $request, $id)
+    public function updateReview(Request $request, $id) // Исправил опечатку в названии updateRevнiew
     {
         $review = Review::findOrFail($id);
 
