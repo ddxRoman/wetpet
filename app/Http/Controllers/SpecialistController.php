@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class SpecialistController extends Controller
 {
@@ -65,141 +66,106 @@ class SpecialistController extends Controller
      */
 public function edit(Specialist $specialist)
 {
-    // ВСТАВЬ ЭТО:
-    dd([
-        'message' => 'Да, я работаю из SpecialistController',
-        'specialist_city_id' => $specialist->city_id,
-        'found_region' => $currentRegion
-    ]);
-    // Группировка полей
-    $groupedFields = \App\Models\FieldOfActivity::where('type', 'specialist')
-        ->orderBy('activity')
+    // 1. Врачи (activity == doctor)
+    $doctorFields = \App\Models\FieldOfActivity::where('type', 'specialist')
+        ->where('activity', 'doctor')
         ->orderBy('name')
-        ->get()
-        ->groupBy('activity');
+        ->get();
 
-    // 1. Получаем город. Если его нет, создаем пустой объект, чтобы не было ошибок
+    // 2. НЕ врачи (все остальные)
+    $otherSpecialistFields = \App\Models\FieldOfActivity::where('type', 'specialist')
+        ->where('activity', '!=', 'doctor')
+        ->orderBy('name')
+        ->get();
+
+    // 3. Логика локации (как и была)
     $currentCity = $specialist->city_id ? City::find($specialist->city_id) : null;
-    
-    // 2. Явно объявляем переменную региона. 
-    // Если города нет, регион будет null, но ПЕРЕМЕННАЯ БУДЕТ СУЩЕСТВОВАТЬ.
     $currentRegion = $currentCity ? $currentCity->region : null;
 
-    // 3. Регионы для первого селекта
     $regions = City::select('region')
         ->whereNotNull('region')
         ->distinct()
         ->orderBy('region')
         ->pluck('region');
 
-    // 4. Города для текущего региона
-    $cities = $currentRegion 
-        ? City::where('region', $currentRegion)->orderBy('name')->get() 
-        : collect();
+    // Все города (обязательно для селекта в Blade)
+    $allCities = City::select('id', 'name', 'region')->orderBy('name')->get();
 
-    // 5. Организации
     $organizations = $specialist->city_id
         ? Organization::where('city_id', $specialist->city_id)->get()
         : collect();
 
-    // Передаем всё в compact. Проверь, чтобы имя в compact совпадало с именем переменной!
+    // ВАЖНО: Проверь, чтобы эти имена были в compact
     return view('account.tabs.specialist-profile', compact(
         'specialist',
-        'groupedFields',
+        'doctorFields',
+        'otherSpecialistFields',
         'regions',
-        'cities',
+        'allCities',
         'organizations',
         'currentCity',
         'currentRegion' 
     ));
 }
 
-    /**
-     * ===============================
-     * ОБНОВЛЕНИЕ
-     * ===============================
-     */
+    public function update(Request $request, Specialist $specialist)
+    {
+        $maxExp = 0;
+        if ($request->date_of_birth) {
+            $yearsOld = Carbon::parse($request->date_of_birth)->age;
+            $maxExp = max(0, $yearsOld - 18);
+        }
 
+        $validated = $request->validate([
+            'name'               => 'required|string|max:255',
+            'specialization'     => 'nullable|string',
+            'date_of_birth'      => 'nullable|date',
+            'experience'         => "nullable|integer|min:0|max:$maxExp",
+            'city_id'            => 'nullable|exists:cities,id',
+            'organization_id'    => 'nullable|exists:organizations,id',
+            'description'        => 'nullable|string',
+            'exotic_animals'     => 'nullable|string',
+            'On_site_assistance' => 'nullable|string',
+            'phone'              => 'nullable|string',
+            'email'              => 'nullable|email',
+            'photo'              => 'nullable|image|max:2048',
+        ], [
+            'experience.max' => "Стаж не может превышать $maxExp лет.",
+        ]);
 
+        if ($request->hasFile('photo')) {
+            if ($specialist->photo) {
+                Storage::disk('public')->delete($specialist->photo);
+            }
+            $validated['photo'] = $request->file('photo')->store('specialists', 'public');
+        }
 
-public function update(Request $request, Specialist $specialist)
-{
-    // 1. Считаем лимит стажа (на основе даты рождения из запроса)
-    $maxExp = 0;
-    if ($request->date_of_birth) {
-        $yearsOld = \Carbon\Carbon::parse($request->date_of_birth)->age;
-        $maxExp = max(0, $yearsOld - 18);
+        $validated['slug'] = Str::slug($request->name);
+        $specialist->update($validated);
+
+        $specialist->contacts()->updateOrCreate(
+            ['specialist_id' => $specialist->id],
+            [
+                'phone'    => $request->phone,
+                'email'    => $request->email,
+                'telegram' => $request->has('telegram'),
+                'whatsapp' => $request->has('whatsapp'),
+                'max'      => $request->has('max'),
+            ]
+        );
+
+        return redirect()->to(route('account') . '#specialist-profile')
+        ->with('success', 'Данные успешно обновлены');
     }
 
-    // 2. ЕДИНАЯ ВАЛИДАЦИЯ (Пишем сюда ВСЕ поля, которые есть в форме)
-    $validated = $request->validate([
-        'name'               => 'required|string|max:255',
-        'specialization'     => 'nullable|string',
-        'date_of_birth'      => 'nullable|date',
-        'experience'         => "nullable|integer|min:0|max:$maxExp",
-        'city_id'            => 'nullable|exists:cities,id',
-        'organization_id'    => 'nullable|exists:organizations,id',
-        'description'        => 'nullable|string',
-        'exotic_animals'     => 'nullable|string',
-        'On_site_assistance' => 'nullable|string',
-        'phone'              => 'nullable|string',
-        'email'              => 'nullable|email',
-        'photo'              => 'nullable|image|max:2048',
-        // Добавь сюда любые другие поля, которые видишь в request_all, но нет в validated
-    ], [
-        'experience.max' => "Стаж не может превышать $maxExp лет.",
-    ]);
-
-    // 3. Обработка фото (если оно пришло)
-    if ($request->hasFile('photo')) {
+    public function destroy(Specialist $specialist)
+    {
         if ($specialist->photo) {
             Storage::disk('public')->delete($specialist->photo);
         }
-        $validated['photo'] = $request->file('photo')->store('specialists', 'public');
-    }
+        $specialist->contacts()->delete();
+        $specialist->delete();
 
-    // 4. Добавляем Slug и другие тех. поля в массив для обновления
-    $validated['slug'] = \Illuminate\Support\Str::slug($request->name);
-
-    // --- ПРОВЕРКА ПЕРЕД СОХРАНЕНИЕМ ---
-    // Если после этого исправления в validated_data всё еще меньше полей, 
-    // значит их названия в форме не совпадают с названиями тут.
-    // dd($validated); 
-
-    // 5. Обновление специалиста
-    $specialist->update($validated);
-
-    // 6. Обновление контактов
-    $specialist->contacts()->updateOrCreate(
-        ['specialist_id' => $specialist->id],
-        [
-            'phone'    => $request->phone,
-            'email'    => $request->email,
-            'telegram' => $request->has('telegram'),
-            'whatsapp' => $request->has('whatsapp'),
-            'max'      => $request->has('max'),
-        ]
-    );
-
-    return redirect()->back()->with('success', 'Данные успешно обновлены');
-}
-
-
-public function destroy(Specialist $specialist)
-{
-    // 1. Удаляем фото, если оно есть
-    if ($specialist->photo) {
-        Storage::disk('public')->delete($specialist->photo);
-    }
-
-    // 2. Удаляем связанные контакты (если не настроено каскадное удаление в БД)
-    $specialist->contacts()->delete();
-
-    // 3. Удаляем самого специалиста
-    $specialist->delete();
-
-    return redirect()->route('account')->with('success', 'Специалист успешно удален');
-}
-
-
+ return redirect()->to(route('account') . '#specialist-profile')
+        ->with('success', 'Данные успешно обновлены'); }
 }

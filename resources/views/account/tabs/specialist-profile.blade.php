@@ -38,23 +38,24 @@
                 <input type="text" name="name" class="form-control" value="{{ old('name', $specialist->name ?? '') }}">
             </div>
 
-            {{-- Специализация --}}
-            <div class="col-md-4">
-                <label>Специализация</label>
-                <select name="specialization" id="fieldOfActivitySelect" class="form-select">
-                    <option value="">Выберите сферу</option>
-                    @foreach($groupedFields as $groupName => $fields)
-                        <optgroup label="{{ $groupName }}">
-                            @foreach($fields as $field)
-                                <option value="{{ $field->name }}" 
-                                    {{ (old('specialization', $specialist->specialization ?? '') == $field->name) ? 'selected' : '' }}>
-                                    {{ $field->name }}
-                                </option>
-                            @endforeach
-                        </optgroup>
-                    @endforeach
-                </select>
-            </div>
+{{-- Специализация --}}
+<div class="col-md-4">
+    <label>Специализация</label>
+    <select name="specialization" id="fieldOfActivitySelect" class="form-select">
+        <option value="">Выберите сферу</option>
+        {{-- Секция ОСТАЛЬНЫХ (кинологи, грумеры и т.д.) --}}
+        @isset($otherSpecialistFields)
+            
+                @foreach($otherSpecialistFields as $field)
+                    <option value="{{ $field->name }}" 
+                        {{ (old('specialization', $specialist->specialization ?? '') == $field->name) ? 'selected' : '' }}>
+                        &#10148;{{ $field->name }}
+                    </option>
+                @endforeach
+            
+        @endisset
+    </select>
+</div>
 
             {{-- Дата рождения --}}
             <div class="col-md-6">

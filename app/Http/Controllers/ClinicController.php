@@ -123,51 +123,54 @@ public function store(Request $request)
     /**
      * Обновление клиники
      */
-public function update(Request $request, $id)
-{
-    $clinic = Clinic::findOrFail($id);
+/**
+     * Обновление клиники
+     */
+    public function update(Request $request, $id)
+    {
+        $clinic = Clinic::findOrFail($id);
 
-    $validated = $request->validate([
-        'name'            => 'required|string|max:255',
-        'city_id'         => 'nullable|exists:cities,id', 
-        'street'          => 'required|string|max:255',
-        'house'           => 'nullable|string|max:50',
-        'address_comment' => 'nullable|string|max:255',
-        'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:8192',
-        'description'     => 'nullable|string',
-        'phone1'          => 'nullable|string|max:30',
-        'phone2'          => 'nullable|string|max:30',
-        'email'           => 'nullable|email|max:255',
-        'telegram'        => 'nullable|string|max:255',
-        'whatsapp'        => 'nullable|string|max:255',
-        'schedule'        => 'nullable|string|max:100',
-        'workdays'        => 'nullable|string|max:100',
-    ]);
+        $validated = $request->validate([
+            'name'            => 'required|string|max:255',
+            'city_id'         => 'nullable|exists:cities,id', 
+            'street'          => 'required|string|max:255',
+            'house'           => 'nullable|string|max:50',
+            'address_comment' => 'nullable|string|max:255',
+            'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:8192',
+            'description'     => 'nullable|string',
+            'phone1'          => 'nullable|string|max:30',
+            'phone2'          => 'nullable|string|max:30',
+            'email'           => 'nullable|email|max:255',
+            'telegram'        => 'nullable|string|max:255',
+            'whatsapp'        => 'nullable|string|max:255',
+            'schedule'        => 'nullable|string|max:100',
+            'workdays'        => 'nullable|string|max:100',
+        ]);
 
-    if ($request->filled('city_id')) {
-        $cityModel = City::find($request->city_id);
-        if ($cityModel) {
-            $validated['city'] = $cityModel->name;
-            $validated['region'] = $cityModel->region;
+        if ($request->filled('city_id')) {
+            $cityModel = \App\Models\City::find($request->city_id);
+            if ($cityModel) {
+                $validated['city'] = $cityModel->name;
+                $validated['region'] = $cityModel->region;
+            }
         }
-    }
 
-    if ($request->hasFile('logo')) {
-        if ($clinic->logo) {
-            Storage::disk('public')->delete($clinic->logo);
+        if ($request->hasFile('logo')) {
+            if ($clinic->logo) {
+                Storage::disk('public')->delete($clinic->logo);
+            }
+            $validated['logo'] = $request->file('logo')->store('clinics', 'public');
         }
-        $validated['logo'] = $request->file('logo')->store('clinics', 'public');
+
+        $clinic->update($validated);
+
+        // Редирект на конкретную вкладку личного кабинета
+        return redirect()->to(route('account') . '#my-clinics')
+            ->with('success', 'Данные клиники обновлены');
     }
-
-    $clinic->update($validated);
-
-    return redirect()->to(url('/account'))
-        ->withFragment('my-clinics')
-        ->with('success', 'Данные клиники обновлены');
-}
 
     /**
-     * Удаление
+     * Удаление клиники
      */
     public function destroy($id)
     {
@@ -179,8 +182,8 @@ public function update(Request $request, $id)
         
         $clinic->delete();
 
-        return redirect()->to(url('/account'))
-            ->withFragment('my-clinics')
+        // Редирект на ту же вкладку после удаления
+        return redirect()->to(route('account') . '#my-clinics')
             ->with('success', 'Клиника удалена');
     }
 
