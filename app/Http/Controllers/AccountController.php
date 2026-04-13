@@ -20,6 +20,7 @@ use App\Models\City;
 use App\Models\FieldOfActivity;
 
 
+
 class AccountController extends Controller
 {
     // === Страница аккаунта ===
@@ -38,14 +39,30 @@ class AccountController extends Controller
         $hasOrganization = (bool) $organizationOwner;
         $organization = $hasOrganization ? Organization::find($organizationOwner->organization_id) : null;
 
+// --- Врачи (делаем ТАК ЖЕ, как в специалистах) ---
+$doctorOwner = \App\Models\DoctorOwner::where('user_id', $user->id)->first(); // Используем модель!
+$hasDoctorProfile = (bool) $doctorOwner;
+$doctor = null;
+
+if ($doctorOwner) {
+    // Тянем врача через его модель
+    $doctor = \App\Models\Doctor::with('contacts')->find($doctorOwner->doctor_id);
+}
+
+
+$doctorFields = \App\Models\FieldOfActivity::where('type', 'specialist')
+    ->where('activity', 'doctor')
+    ->get()
+    ->groupBy('category'); // Группируем по категориям (Терапия, Хирургия и т.д.)
+
         // --- Специалисты ---
         $specialistOwner = SpecialistOwner::where('user_id', $user->id)->first();
         $hasSpecialistProfile = (bool) $specialistOwner;
         $specialist = null;
         $organizations = collect();
-
+       
         // Специализации для вкладки СПЕЦИАЛИСТА
-        $allSpecialistFields = FieldOfActivity::where('type', 'specialist')->orderBy('name')->get();
+        $allSpecialistFields = FieldOfActivity::where('type', 'specialist')->where('activity','!=','doctor')-> orderBy('name')->get();
         $groupedFields = $allSpecialistFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
 
         // Сферы деятельности для вкладки ОРГАНИЗАЦИИ (исключая ветклиники)
@@ -70,11 +87,13 @@ class AccountController extends Controller
             }
         }
 
-        return view('account', compact(
-            'user', 'pets', 'hasClinic', 'clinic', 'hasOrganization', 'organization', 
-            'hasSpecialistProfile', 'specialist', 'groupedFields', 'groupedOrgFields', 
-            'allCities', 'organizations'
-        ));
+return view('account', compact(
+    'user', 'pets', 'hasClinic', 'clinic', 'hasOrganization', 'organization', 
+    'hasSpecialistProfile', 'specialist', 
+    'hasDoctorProfile', 'doctor', 
+    'groupedFields', 'groupedOrgFields', 
+    'allCities', 'doctorFields', 'organizations'
+));
     }
 
     // === Обновление профиля (ЕДИНЫЙ МЕТОД) ===
