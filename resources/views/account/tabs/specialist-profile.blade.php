@@ -44,14 +44,14 @@
                 <select name="specialization" id="fieldOfActivitySelect" class="form-select">
                     <option value="">Выберите сферу</option>
                     @foreach($groupedFields as $groupName => $fields)
-                        <optgroup label="{{ $groupName }}">
+
                             @foreach($fields as $field)
                                 <option value="{{ $field->name }}" 
                                     {{ (old('specialization', $specialist->specialization ?? '') == $field->name) ? 'selected' : '' }}>
-                                    {{ $field->name }}
+                                    &#10148;{{ $field->name }}
                                 </option>
                             @endforeach
-                        </optgroup>
+
                     @endforeach
                 </select>
             </div>
@@ -213,7 +213,6 @@
         </div>
     </div>
 
-    
     <div class="modal-footer d-flex justify-content-between">
         <button type="button" class="btn btn-outline-danger" onclick="deleteSpecialist({{ $specialist->id }})">
             Удалить специалиста
