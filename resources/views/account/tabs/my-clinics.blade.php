@@ -86,6 +86,71 @@
     <label class="fw-bold">Дополнительный телефон</label>
     <input type="text" name="phone2" class="form-control" value="{{ old('phone2', $clinic->phone2) }}">
 </div>
+
+                       {{-- Мессенджеры --}}
+<div class="col-12 mt-2">
+    <div class="accordion accordion-flush border-bottom" id="messengerAccordion">
+        <div class="accordion-item" style="border: none;">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed text-primary fw-bold ps-0" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapseMessengers" 
+                        aria-expanded="false" 
+                        aria-controls="collapseMessengers"
+                        style="background: none; box-shadow: none; font-size: 0.9rem;">
+                    + Добавить мессенджеры
+                </button>
+            </h2>
+            {{-- Убрали класс show, теперь он всегда скрыт при загрузке --}}
+            <div id="collapseMessengers" 
+                 class="accordion-collapse collapse" 
+                 aria-labelledby="flush-headingOne" 
+                 data-bs-parent="#messengerAccordion">
+                <div class="accordion-body px-0 py-3">
+                    <div class="d-flex flex-column gap-3">
+                        
+                        {{-- Telegram --}}
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" width="22">
+                            </span>
+                            <input type="text" name="telegram" class="form-control border-start-0" 
+                                   placeholder="Никнейм или телефон Telegram"
+                                   value="{{ old('telegram', $doctor->contacts->telegram ?? '') }}">
+                        </div>
+
+                        {{-- WhatsApp --}}
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="22">
+                            </span>
+                            <input type="text" name="whatsapp" class="form-control border-start-0" 
+                                   placeholder="Номер телефона WhatsApp"
+                                   value="{{ old('whatsapp', $doctor->contacts->whatsapp ?? '') }}">
+                        </div>
+
+                        {{-- Max Messenger --}}
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" width="22">
+                            </span>
+                            <input type="text" name="max" class="form-control border-start-0" 
+                                   placeholder="Данные Max Messenger"
+                                   value="{{ old('max', $doctor->contacts->max ?? '') }}">
+                        </div>
+
+                    </div>
+                    <div class="form-text mt-2" style="font-size: 0.8rem;">
+                        Укажите логин или номер, привязанный к мессенджеру.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
                 <div class="col-md-6">
                     <label class="fw-bold">Email</label>
                     <input type="email" name="email" class="form-control" value="{{ old('email', $clinic->email) }}">

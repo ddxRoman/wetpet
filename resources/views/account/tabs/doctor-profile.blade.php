@@ -82,6 +82,38 @@
                 <small class="text-muted">Максимум для данного возраста: {{ $maxExperience }} лет</small>
             </div>
 
+            {{-- Экзотические животные --}}
+<div class="col-md-3 d-flex align-items-end pb-2">
+    <div class="form-check form-switch">
+        {{-- Скрытое поле: если свитч выключен, отправится "Нет" --}}
+        <input type="hidden" name="exotic_animals" value="Нет">
+        <input class="form-check-input" 
+               type="checkbox" 
+               role="switch" 
+               id="exoticAnimalsSwitch" 
+               name="exotic_animals" 
+               value="Да"
+               {{ (old('exotic_animals', $doctor->exotic_animals ?? '') == 'Да') ? 'checked' : '' }}>
+        <label class="form-check-label ms-2" for="exoticAnimalsSwitch">Экзотические животные</label>
+    </div>
+</div>
+
+{{-- Выезд на дом --}}
+<div class="col-md-3 d-flex align-items-end pb-2">
+    <div class="form-check form-switch">
+        {{-- Скрытое поле: если свитч выключен, отправится "Нет" --}}
+        <input type="hidden" name="On_site_assistance" value="Нет">
+        <input class="form-check-input" 
+               type="checkbox" 
+               role="switch" 
+               id="onSiteAssistanceSwitch" 
+               name="On_site_assistance" 
+               value="Да"
+               {{ (old('On_site_assistance', $doctor->On_site_assistance ?? '') == 'Да') ? 'checked' : '' }}>
+        <label class="form-check-label ms-2" for="onSiteAssistanceSwitch">Выезд на дом</label>
+    </div>
+</div>
+
 
 {{-- Поле Город --}}
 <div class="col-md-6">
@@ -208,22 +240,7 @@
                        value="{{ old('email', $doctor->contacts->email ?? '') }}">
             </div>
 
-            {{-- Селекты Да/Нет --}}
-            <div class="col-md-3">
-                <label class="form-label">Экзотические животные</label>
-                <select name="exotic_animals" class="form-select">
-                    <option value="Нет" {{ (old('exotic_animals', $doctor->exotic_animals ?? '') == 'Нет') ? 'selected' : '' }}>Нет</option>
-                    <option value="Да" {{ (old('exotic_animals', $doctor->exotic_animals ?? '') == 'Да') ? 'selected' : '' }}>Да</option>
-                </select>
-            </div>
 
-            <div class="col-md-3">
-                <label class="form-label">Выезд на дом</label>
-                <select name="On_site_assistance" class="form-select">
-                    <option value="Нет" {{ (old('On_site_assistance', $doctor->On_site_assistance ?? '') == 'Нет') ? 'selected' : '' }}>Нет</option>
-                    <option value="Да" {{ (old('On_site_assistance', $doctor->On_site_assistance ?? '') == 'Да') ? 'selected' : '' }}>Да</option>
-                </select>
-            </div>
 
             {{-- Фото (ID полностью идентичны JS) --}}
             <div class="col-12 mt-3 photo-section-container">

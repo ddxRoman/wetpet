@@ -80,6 +80,25 @@
     <small class="text-muted">Максимум для данного возраста: {{ $maxExperience }} лет</small>
 </div>
 
+{{-- Переключатели (Свитчи) --}}
+<div class="col-md-6 d-flex align-items-center mt-3">
+    <div class="form-check form-switch">
+        <input type="hidden" name="exotic_animals" value="Нет">
+        <input class="form-check-input" type="checkbox" role="switch" id="exoticAnimalsSwitch" name="exotic_animals" value="Да"
+               {{ (old('exotic_animals', $specialist->exotic_animals ?? '') == 'Да') ? 'checked' : '' }}>
+        <label class="form-check-label ms-2" for="exoticAnimalsSwitch">Экзотические животные</label>
+    </div>
+</div>
+
+<div class="col-md-6 d-flex align-items-center mt-3">
+    <div class="form-check form-switch">
+        <input type="hidden" name="On_site_assistance" value="Нет">
+        <input class="form-check-input" type="checkbox" role="switch" id="onSiteAssistanceSwitch" name="On_site_assistance" value="Да"
+               {{ (old('On_site_assistance', $specialist->On_site_assistance ?? '') == 'Да') ? 'checked' : '' }}>
+        <label class="form-check-label ms-2" for="onSiteAssistanceSwitch">Выезд на дом</label>
+    </div>
+</div>
+
             {{-- Поле Город --}}
             <div class="col-md-6">
                 <label>Город</label>
@@ -115,52 +134,43 @@
                        value="{{ old('phone', $specialist->contacts->phone ?? '') }}">
             </div>
 
-            <div class="col-12">
-                <label class="mt-2">Мессенджеры на этом номере:</label>
-                <div id="messendger" class="d-flex gap-3 mt-1 messenger-icons">
-                    <label class="messenger-icon {{ ($specialist->contacts->telegram ?? false) ? 'active' : '' }}">
-                        <input type="checkbox" name="telegram" value="1" class="d-none" 
-                               {{ ($specialist->contacts->telegram ?? false) ? 'checked' : '' }}>
-                        <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" width="30">
-                    </label>
+{{-- Telegram --}}
+<div class="input-group">
+    <span class="input-group-text bg-light border-end-0">
+        <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" width="22">
+    </span>
+    <input type="text" name="telegram" class="form-control border-start-0" 
+           placeholder="@username"
+           value="{{ old('telegram', $specialist->contacts->telegram ?? '') }}">
+</div>
 
-                    <label class="messenger-icon {{ ($specialist->contacts->whatsapp ?? false) ? 'active' : '' }}">
-                        <input type="checkbox" name="whatsapp" value="1" class="d-none" 
-                               {{ ($specialist->contacts->whatsapp ?? false) ? 'checked' : '' }}>
-                        <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="30">
-                    </label>
+{{-- WhatsApp --}}
+<div class="input-group">
+    <span class="input-group-text bg-light border-end-0">
+        <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="22">
+    </span>
+    {{-- Используем type="tel", чтобы на мобилках открывалась цифровая клавиатура --}}
+    <input type="tel" name="whatsapp" class="form-control border-start-0" 
+           placeholder="79991234567"
+           value="{{ old('whatsapp', $specialist->contacts->whatsapp ?? '') }}">
+</div>
 
-                    <label class="messenger-icon {{ ($specialist->contacts->max ?? false) ? 'active' : '' }}">
-                        <input type="checkbox" name="max" value="1" class="d-none" 
-                               {{ ($specialist->contacts->max ?? false) ? 'checked' : '' }}>
-                        <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" width="30">
-                    </label>
-                </div>
-            </div>
+{{-- Max Messenger --}}
+<div class="input-group">
+    <span class="input-group-text bg-light border-end-0">
+        <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" width="22">
+    </span>
+    <input type="text" name="max" class="form-control border-start-0" 
+           placeholder="Введите текст"
+           value="{{ old('max', $specialist->contacts->max ?? '') }}">
+</div>
 
             {{-- Почта --}}
             <div class="col-6">
                 <label>Почта</label>
                 <input type="text" name="email" class="form-control" 
                        value="{{ old('email', $specialist->contacts->email ?? '') }}">
-            </div>
-
-            {{-- Селекты Да/Нет --}}
-            <div class="col-md-6">
-                <label>Экзотические животные</label>
-                <select name="exotic_animals" class="form-select">
-                    <option value="Нет" {{ (old('exotic_animals', $specialist->exotic_animals ?? '') == 'Нет') ? 'selected' : '' }}>Нет</option>
-                    <option value="Да" {{ (old('exotic_animals', $specialist->exotic_animals ?? '') == 'Да') ? 'selected' : '' }}>Да</option>
-                </select>
-            </div>
-
-            <div class="col-md-6">
-                <label>Выезд на дом</label>
-                <select name="On_site_assistance" class="form-select">
-                    <option value="Нет" {{ (old('On_site_assistance', $specialist->On_site_assistance ?? '') == 'Нет') ? 'selected' : '' }}>Нет</option>
-                    <option value="Да" {{ (old('On_site_assistance', $specialist->On_site_assistance ?? '') == 'Да') ? 'selected' : '' }}>Да</option>
-                </select>
-            </div>
+            </div> 
 
  {{-- Фото --}}
 <div class="col-12 mt-3 photo-section-container">

@@ -108,55 +108,67 @@ public function edit(Specialist $specialist)
     ));
 }
 
-    public function update(Request $request, Specialist $specialist)
-    {
-        $maxExp = 0;
-        if ($request->date_of_birth) {
-            $yearsOld = Carbon::parse($request->date_of_birth)->age;
-            $maxExp = max(0, $yearsOld - 18);
-        }
-
-        $validated = $request->validate([
-            'name'               => 'required|string|max:255',
-            'specialization'     => 'nullable|string',
-            'date_of_birth'      => 'nullable|date',
-            'experience'         => "nullable|integer|min:0|max:$maxExp",
-            'city_id'            => 'nullable|exists:cities,id',
-            'organization_id'    => 'nullable|exists:organizations,id',
-            'description'        => 'nullable|string',
-            'exotic_animals'     => 'nullable|string',
-            'On_site_assistance' => 'nullable|string',
-            'phone'              => 'nullable|string',
-            'email'              => 'nullable|email',
-            'photo'              => 'nullable|image|max:2048',
-        ], [
-            'experience.max' => "Стаж не может превышать $maxExp лет.",
-        ]);
-
-        if ($request->hasFile('photo')) {
-            if ($specialist->photo) {
-                Storage::disk('public')->delete($specialist->photo);
-            }
-            $validated['photo'] = $request->file('photo')->store('specialists', 'public');
-        }
-
-        $validated['slug'] = Str::slug($request->name);
-        $specialist->update($validated);
-
-        $specialist->contacts()->updateOrCreate(
-            ['specialist_id' => $specialist->id],
-            [
-                'phone'    => $request->phone,
-                'email'    => $request->email,
-                'telegram' => $request->has('telegram'),
-                'whatsapp' => $request->has('whatsapp'),
-                'max'      => $request->has('max'),
-            ]
-        );
-
-        return redirect()->to(route('account') . '#specialist-profile')
-        ->with('success', 'Данные успешно обновлены');
+public function update(Request $request, Specialist $specialist)
+{
+    $maxExp = 0;
+    if ($request->date_of_birth) {
+        $yearsOld = Carbon::parse($request->date_of_birth)->age;
+        $maxExp = max(0, $yearsOld - 18);
     }
+
+    $validated = $request->validate([
+        'name'               => 'required|string|max:255',
+        'specialization'     => 'nullable|string',
+        'date_of_birth'      => 'nullable|date',
+        'experience'         => "nullable|integer|min:0|max:$maxExp",
+        'city_id'            => 'nullable|exists:cities,id',
+        'organization_id'    => 'nullable|exists:organizations,id',
+        'description'        => 'nullable|string',
+        'exotic_animals'     => 'nullable|string',
+        'On_site_assistance' => 'nullable|string',
+        'phone'              => 'nullable|string',
+        'email'              => 'nullable|email',
+        'photo'              => 'nullable|image|max:2048',
+        'telegram'           => 'nullable|string|max:255',
+        'whatsapp'           => 'nullable|string|max:255', 
+        'max'                => 'nullable|string|max:255',
+    ], [
+        'experience.max' => "Стаж не может превышать $maxExp лет.",
+    ]);
+
+    // Обработка фото
+    if ($request->hasFile('photo')) {
+        if ($specialist->photo) {
+            Storage::disk('public')->delete($specialist->photo);
+        }
+        $validated['photo'] = $request->file('photo')->store('specialists', 'public');
+    }
+
+    // Чистим WhatsApp
+    $whatsappClean = $request->whatsapp ? preg_replace('/[^0-9]/', '', $request->whatsapp) : null;
+    
+    // Генерируем Slug
+    $validated['slug'] = Str::slug($request->name);
+
+    // 1. Обновляем саму модель специалиста
+    // Важно: проверь, чтобы все поля (exotic_animals и т.д.) были в protected $fillable в модели Specialist!
+    $specialist->update($validated);
+
+    // 2. Обновляем связанные контакты
+    $specialist->contacts()->updateOrCreate(
+        ['specialist_id' => $specialist->id],
+        [
+            'phone'    => $request->phone,
+            'email'    => $request->email,
+            'telegram' => $request->telegram,
+            'whatsapp' => $whatsappClean,
+            'max'      => $request->max,
+        ]
+    );
+
+    return redirect()->to(route('account') . '#specialist-profile')
+        ->with('success', 'Данные успешно обновлены');
+}
 
     public function destroy(Specialist $specialist)
     {
