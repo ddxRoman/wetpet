@@ -24,15 +24,14 @@
             Все
         </a>
 
-        @foreach($specializations as $spec)
-            @if(!empty($spec))
-                <a href="{{ route('specialists.index', ['specialization' => $spec]) }}" 
-                   class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}"
-                   style="transition: all 0.3s;">
-                    {{ $spec }}
-                </a>
-            @endif
-        @endforeach
+@foreach($specializations as $spec)
+    @if(!empty($spec))
+        <a href="{{ route('specialists.index', ['specialization' => $spec, 'city_id' => request('city_id')]) }}" 
+           class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}">
+            {{ $spec }}
+        </a>
+    @endif
+@endforeach
     </div>
 </div>
 
@@ -77,13 +76,13 @@ margin-bottom: 2% !important;
             <div class="row g-4">
 
                 @foreach ($doctors as $doctor)
-                    @php
-                        $reviewsCollection = $doctor->reviews ?? collect();
-                        // Используем системное поле reviews_avg_rating из контроллера
-                        $avgRating = $doctor->reviews_avg_rating ? number_format($doctor->reviews_avg_rating, 1) : '0.0';
-                        $reviewCount = $reviewsCollection->count();
-                        $ratingCounts = $reviewsCollection->groupBy('rating')->map->count();
-                    @endphp
+@php
+    // Временно создаем пустую коллекцию, пока не настроены отзывы для врачей
+    $reviewsCollection = collect(); 
+    $avgRating = '0.0';
+    $reviewCount = 0;
+    $ratingCounts = collect();
+@endphp
 
                     <div class="col-lg-3 col-md-4 col-12">
                         <a href="{{ route('specialists.show', $doctor->slug) }}" title="Открыть карточку доктора" class="text-decoration-none text-reset">

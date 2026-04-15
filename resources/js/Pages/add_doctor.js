@@ -184,6 +184,29 @@ function initAddDoctorScripts(modal) {
             picker.style.display = 'flex';
         };
     }
+    const isPrivateCheckbox = modal.querySelector('#is_private');
+    const addressSection = modal.querySelector('#address-section-add'); // Исправлено на правильный ID
+    
+    if (isPrivateCheckbox && addressSection) {
+        isPrivateCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                addressSection.style.display = 'block';
+                
+                // Если используется Choices для клиник, сбрасываем его через API библиотеки
+                if (clinicChoices) {
+                    clinicChoices.setChoiceByValue('');
+                    // Опционально: можно заблокировать выбор, пока стоит чекбокс
+                    clinicChoices.disable();
+                }
+            } else {
+                addressSection.style.display = 'none';
+                
+                if (clinicChoices) {
+                    clinicChoices.enable();
+                }
+            }
+        });
+    }
 }
 
 /* =====================================================================
@@ -238,4 +261,29 @@ document.addEventListener('DOMContentLoaded', () => {
             isSubmitting = false;
         }
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const isPrivateCheckbox = document.getElementById('is_private');
+    const addressSection = document.getElementById('address-section');
+    const organizationSelect = document.querySelector('select[name="organization_id"]');
+
+    if (isPrivateCheckbox) {
+        isPrivateCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Показываем адрес, скрываем/сбрасываем организацию
+                addressSection.style.display = 'block';
+                if (organizationSelect) {
+                    organizationSelect.value = ''; // Сбрасываем выбор
+                    organizationSelect.closest('.mb-3').style.opacity = '0.5'; // Визуально приглушаем
+                }
+            } else {
+                // Прячем адрес
+                addressSection.style.display = 'none';
+                if (organizationSelect) {
+                    organizationSelect.closest('.mb-3').style.opacity = '1';
+                }
+            }
+        });
+    }
 });

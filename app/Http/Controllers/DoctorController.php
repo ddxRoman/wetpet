@@ -59,7 +59,6 @@ class DoctorController extends Controller
                 'error' => $e->getMessage(),
             ]);
         }
-
                             // Для добавления владельца записи специалиста и доктора
         $isOwner = $request->boolean('its_me');
 $user = auth()->user();
@@ -69,21 +68,14 @@ if ($isOwner && $user) {
         $user->id => ['is_confirmed' => false],
     ]);
 }
-
         // 🔹 ВАЖНО: JSON → модалка закрывается
         return response()->json([
             'success' => true,
             'id' => $doctor->id,
             'type' => 'doctor',
         ]);
-
-
-
     }
 
-    /**
-     * 🔹 Список докторов
-     */
 /**
      * 🔹 Список докторов с сортировкой по рейтингу
      */

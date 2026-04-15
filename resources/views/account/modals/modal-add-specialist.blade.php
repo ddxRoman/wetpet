@@ -87,13 +87,38 @@
     </select>
 </div>
 
+
+
                         <div class="col-md-6">
                             <label>Оргнанизация </label>
                             <select name="clinic_id" id="clinicSelect" class="form-select">
     <option value="">Сначала выберите город</option>
 </select>
-
                         </div>
+
+<div class="form-check form-switch mb-3">
+    <input class="form-check-input" type="checkbox" id="is_private" >
+    <label class="form-check-label" for="is_private">Я частный специалист (работаю без привязки к клинике/центру)</label>
+</div>
+
+<div id="address-section-add" style="display: none;">
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <label for="street" class="form-label">Улица</label>
+            <input type="text" name="street" id="street" 
+                   class="form-control" 
+                   placeholder="Напр. ул. Мира">
+        </div>
+        <div class="col-md-6">
+            <label for="house" class="form-label">Дом</label>
+            <input type="text" name="house" id="house" 
+                   class="form-control" 
+                   placeholder="Напр. 10/1">
+        </div>
+    </div>
+</div>
+
+
 
                         <div class="col-6">
     <label>Телефон</label>
@@ -127,21 +152,19 @@
                         </div>    
 
 
-                        <div class="col-md-6">
-                            <label>Экзотические животные</label>
-                            <select name="exotic_animals" class="form-control">
-                                <option value="Нет">Нет</option>
-                                <option value="Да">Да</option>
-                            </select>
-                        </div>
+                     <div class="col-md-6 d-flex align-items-center">
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="exotic_animals" id="exotic_animals" value="Да">
+        <label class="form-check-label" for="exotic_animals">Работаю с экзотическими животными</label>
+    </div>
+</div>
 
-                        <div class="col-md-6">
-                            <label>Выезд на дом</label>
-                            <select name="On_site_assistance" class="form-control">
-                                <option value="Нет">Нет</option>
-                                <option value="Да">Да</option>
-                            </select>
-                        </div>
+<div class="col-md-6 d-flex align-items-center">
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="On_site_assistance" id="On_site_assistance" value="Да">
+        <label class="form-check-label" for="On_site_assistance">Выезд на дом</label>
+    </div>
+</div>
 
 <div class="col-12">
     <label>Фото</label>

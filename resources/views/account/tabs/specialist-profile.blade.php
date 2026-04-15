@@ -113,6 +113,31 @@
                 </select>
             </div>
 
+<div class="form-check form-switch mb-3">
+    <input class="form-check-input" type="checkbox" id="is_private" 
+           {{ is_null($specialist->organization_id) ? 'checked' : '' }}>
+    <label class="form-check-label" for="is_private">Я частный специалист (работаю без привязки к клинике/центру)</label>
+</div>
+
+<div id="address-section" style="{{ is_null($specialist->organization_id) ? '' : 'display: none;' }}">
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <label for="street" class="form-label">Улица</label>
+            <input type="text" name="street" id="street" 
+                   class="form-control" 
+                   value="{{ old('street', $specialist->street) }}" 
+                   placeholder="Напр. ул. Мира">
+        </div>
+        <div class="col-md-6">
+            <label for="house" class="form-label">Дом</label>
+            <input type="text" name="house" id="house" 
+                   class="form-control" 
+                   value="{{ old('house', $specialist->house) }}" 
+                   placeholder="Напр. 10/1">
+        </div>
+    </div>
+</div>
+
             {{-- Поле Организация --}}
             <div class="col-md-6">
                 <label>Организация (клиника)</label>

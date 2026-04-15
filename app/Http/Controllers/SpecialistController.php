@@ -15,23 +15,42 @@ class SpecialistController extends Controller
 {
 public function index(Request $request) 
 {
-    $query = Specialist::with(['contacts', 'city', 'organization']);
+    // Берем ID города из сессии (проверь ключ: city_id или selected_city_id)
+    $cityId = session('selected_city_id') ?? session('city_id');
 
-    // Фильтрация по специализации, если она передана в URL (?specialization=Грумер)
+    // Если города в сессии нет, сразу отдаем пустую коллекцию и пустой город
+    if (!$cityId) {
+        return view('pages.specialists.index', [
+            'doctors' => collect(),
+            'specializations' => collect(),
+            'selectedCity' => null,
+            'selectedSpecialization' => null
+        ]);
+    }
+
+    // Если город есть — работаем дальше
+    $city = \App\Models\City::find($cityId);
+    
+    $query = Specialist::with(['contacts', 'city', 'organization'])
+        ->where('city_id', $cityId);
+
+    // Дополнительный фильтр по тегам (если нажат конкретный тег)
     if ($request->filled('specialization')) {
         $query->where('specialization', $request->specialization);
     }
 
     $specialists = $query->paginate(12);
     
-    // Получаем список всех уникальных специализаций для фильтра (тегов)
-    $allSpecializations = Specialist::distinct()->pluck('specialization');
+    // Теги берем только те, что реально есть в этом городе
+    $allSpecializations = Specialist::where('city_id', $cityId)
+        ->distinct()
+        ->pluck('specialization');
 
     return view('pages.specialists.index', [
         'doctors' => $specialists,
         'specializations' => $allSpecializations,
         'selectedSpecialization' => $request->specialization,
-        'selectedCity' => 'Все регионы' // Или ваша логика городов
+        'selectedCity' => $city ? $city->name : null,
     ]);
 }
 
@@ -42,38 +61,43 @@ public function index(Request $request)
      * СОЗДАНИЕ (НЕ ТРОГАЕМ)
      * ===============================
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'city_id' => 'required|string',
-            'organization_id' => 'nullable|string',
-            'description' => 'nullable|string',
-            'date_of_birth' => 'nullable|date',
-            'experience' => 'nullable|integer',
-            'exotic_animals' => 'nullable|string',
-            'On_site_assistance' => 'nullable|string',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'city_id' => 'required|string',
+        'field_of_activity_id' => 'required|exists:field_of_activities,id',
+        'street' => 'nullable|string',
+        'house' => 'nullable|string',
+    ]);
 
-        $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
+    $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
 
-        $specialist = Specialist::create([
-            'name' => $request->name,
-            'specialization' => $field->name,
-            'city_id' => $request->city_id,
-            'organization_id' => $request->organization_id,
-            'date_of_birth' => $request->date_of_birth,
-            'experience' => $request->experience,
-            'exotic_animals' => $request->exotic_animals,
-            'On_site_assistance' => $request->On_site_assistance,
-            'description' => $request->description,
-        ]);
+    // Логика чекбоксов и организации
+    $exotic = $request->has('exotic_animals') ? 'Да' : 'Нет';
+    $onSite = $request->has('On_site_assistance') ? 'Да' : 'Нет';
+    $orgId = $request->filled('clinic_id') ? $request->clinic_id : null;
 
-        return response()->json([
-            'success' => true,
-            'id' => $specialist->id,
-        ]);
-    }
+    $specialist = Specialist::create([
+        'name' => $request->name,
+        'specialization' => $field->name,
+        'city_id' => $request->city_id,
+        'organization_id' => $orgId,
+        'street' => $orgId ? null : $request->street,
+        'house' => $orgId ? null : $request->house,
+        'date_of_birth' => $request->date_of_birth,
+        'experience' => $request->experience,
+        'exotic_animals' => $exotic,
+        'On_site_assistance' => $onSite,
+        'description' => $request->description,
+        'slug' => Str::slug($request->name) . '-' . rand(100, 999), // Добавляем хвост для уникальности
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'id' => $specialist->id,
+    ]);
+}
 
     /**
      * ===============================
@@ -139,9 +163,9 @@ public function update(Request $request, Specialist $specialist)
         'experience'         => "nullable|integer|min:0|max:$maxExp",
         'city_id'            => 'nullable|exists:cities,id',
         'organization_id'    => 'nullable|exists:organizations,id',
+        'street'             => 'nullable|string|max:255', 
+        'house'              => 'nullable|string|max:20',
         'description'        => 'nullable|string',
-        'exotic_animals'     => 'nullable|string',
-        'On_site_assistance' => 'nullable|string',
         'phone'              => 'nullable|string',
         'email'              => 'nullable|email',
         'photo'              => 'nullable|image|max:2048',
@@ -151,6 +175,19 @@ public function update(Request $request, Specialist $specialist)
     ], [
         'experience.max' => "Стаж не может превышать $maxExp лет.",
     ]);
+
+    // Обработка чекбоксов Да/Нет
+    $validated['exotic_animals'] = $request->has('exotic_animals') ? 'Да' : 'Нет';
+    $validated['On_site_assistance'] = $request->has('On_site_assistance') ? 'Да' : 'Нет';
+
+    // Если организация не выбрана (частник), зануляем связь
+    if (!$request->filled('organization_id')) {
+        $validated['organization_id'] = null;
+    } else {
+        // Если выбрана организация, зануляем ручной адрес
+        $validated['street'] = null;
+        $validated['house'] = null;
+    }
 
     // Обработка фото
     if ($request->hasFile('photo')) {
@@ -166,8 +203,7 @@ public function update(Request $request, Specialist $specialist)
     // Генерируем Slug
     $validated['slug'] = Str::slug($request->name);
 
-    // 1. Обновляем саму модель специалиста
-    // Важно: проверь, чтобы все поля (exotic_animals и т.д.) были в protected $fillable в модели Specialist!
+    // 1. Обновляем модель специалиста
     $specialist->update($validated);
 
     // 2. Обновляем связанные контакты

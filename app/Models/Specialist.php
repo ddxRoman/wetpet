@@ -11,7 +11,9 @@ protected $fillable = [
     'name', 
     'specialization', 
     'city_id', 
-    'organization_id', // обязательно здесь
+    'organization_id', 
+    'street',
+    'house',
     'experience', 
     'description', 
     'slug',
@@ -19,8 +21,6 @@ protected $fillable = [
     'date_of_birth',
     'exotic_animals',
     'On_site_assistance',
-    'street',
-    'house',
 ];
 
     public function owners()
@@ -66,7 +66,11 @@ protected static function boot()
     });
 }
 
-
+public function reviews()
+{
+    // Укажите правильный класс модели отзывов и внешний ключ, если он отличается
+    return $this->hasMany(Review::class); 
+}
 
 /**
  * Определяет поле для поиска модели в маршрутах.
