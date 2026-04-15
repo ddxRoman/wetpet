@@ -217,3 +217,5 @@ Route::get('/organizations/{organization}', [OrganizationController::class, 'sho
 
 // Нужно сделать (добавить ->name):
 Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
+Route::put('/doctor/{doctor}', [DoctorController::class, 'update'])->name('doctor.update');
+Route::delete('/doctor/{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');

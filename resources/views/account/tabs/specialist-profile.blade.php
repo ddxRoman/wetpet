@@ -44,14 +44,12 @@
                 <select name="specialization" id="fieldOfActivitySelect" class="form-select">
                     <option value="">Выберите сферу</option>
                     @foreach($groupedFields as $groupName => $fields)
-
                             @foreach($fields as $field)
                                 <option value="{{ $field->name }}" 
                                     {{ (old('specialization', $specialist->specialization ?? '') == $field->name) ? 'selected' : '' }}>
                                     &#10148;{{ $field->name }}
                                 </option>
                             @endforeach
-
                     @endforeach
                 </select>
             </div>

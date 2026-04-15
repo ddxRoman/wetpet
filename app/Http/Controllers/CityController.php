@@ -158,23 +158,19 @@ public function getCities()
         $request->validate([
             'city_id' => 'required|exists:cities,id',
         ]);
-
         $city = City::findOrFail($request->city_id);
-
         // Сохраняем в сессию
         session([
             'city_id' => $city->id,
             'city_name' => $city->name,
         ]);
         logger()->info('CityController@set session after', session()->all());
-
         // Если пользователь авторизован — обновляем поле city_id в users
         if (auth()->check()) {
             $user = auth()->user();
             $user->city_id = $city->id;
             $user->save();
         }
-
         return response()->json(['city' => $city]);
     }
 }

@@ -10,7 +10,6 @@
     {{-- Верхняя панель --}}
     <div class="d-flex btn-eye justify-content-between align-items-center mb-3 px-3">
         <h4 class="modal-title mb-0">Редактирование врача</h4>
-        
         <div class="d-flex gap-2">
             @if($doctor->slug)
                 <a href="{{ route('doctors.show', $doctor->slug) }}" 
@@ -140,28 +139,67 @@
             </div>
 
             {{-- Мессенджеры --}}
-            <div class="col-12">
-                <label class="form-label mt-2">Мессенджеры на этом номере:</label>
-                <div id="messendger" class="d-flex gap-3 mt-1 messenger-icons">
-                    <label class="messenger-icon {{ ($doctor->contacts->telegram ?? false) ? 'active' : '' }}">
-                        <input type="checkbox" name="telegram" value="1" class="d-none" 
-                               {{ ($doctor->contacts->telegram ?? false) ? 'checked' : '' }}>
-                        <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" width="30">
-                    </label>
+<div class="col-12 mt-2">
+    <div class="accordion accordion-flush border-bottom" id="messengerAccordion">
+        <div class="accordion-item" style="border: none;">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed text-primary fw-bold ps-0" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapseMessengers" 
+                        aria-expanded="false" 
+                        aria-controls="collapseMessengers"
+                        style="background: none; box-shadow: none; font-size: 0.9rem;">
+                    + Добавить мессенджеры
+                </button>
+            </h2>
+            {{-- Убрали класс show, теперь он всегда скрыт при загрузке --}}
+            <div id="collapseMessengers" 
+                 class="accordion-collapse collapse" 
+                 aria-labelledby="flush-headingOne" 
+                 data-bs-parent="#messengerAccordion">
+                <div class="accordion-body px-0 py-3">
+                    <div class="d-flex flex-column gap-3">
+                        
+                        {{-- Telegram --}}
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" width="22">
+                            </span>
+                            <input type="text" name="telegram" class="form-control border-start-0" 
+                                   placeholder="Никнейм или телефон Telegram"
+                                   value="{{ old('telegram', $doctor->contacts->telegram ?? '') }}">
+                        </div>
 
-                    <label class="messenger-icon {{ ($doctor->contacts->whatsapp ?? false) ? 'active' : '' }}">
-                        <input type="checkbox" name="whatsapp" value="1" class="d-none" 
-                               {{ ($doctor->contacts->whatsapp ?? false) ? 'checked' : '' }}>
-                        <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="30">
-                    </label>
+                        {{-- WhatsApp --}}
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="22">
+                            </span>
+                            <input type="text" name="whatsapp" class="form-control border-start-0" 
+                                   placeholder="Номер телефона WhatsApp"
+                                   value="{{ old('whatsapp', $doctor->contacts->whatsapp ?? '') }}">
+                        </div>
 
-                    <label class="messenger-icon {{ ($doctor->contacts->max ?? false) ? 'active' : '' }}">
-                        <input type="checkbox" name="max" value="1" class="d-none" 
-                               {{ ($doctor->contacts->max ?? false) ? 'checked' : '' }}>
-                        <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" width="30">
-                    </label>
+                        {{-- Max Messenger --}}
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" width="22">
+                            </span>
+                            <input type="text" name="max" class="form-control border-start-0" 
+                                   placeholder="Данные Max Messenger"
+                                   value="{{ old('max', $doctor->contacts->max ?? '') }}">
+                        </div>
+
+                    </div>
+                    <div class="form-text mt-2" style="font-size: 0.8rem;">
+                        Укажите логин или номер, привязанный к мессенджеру.
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
             {{-- Почта --}}
             <div class="col-6">
@@ -225,7 +263,7 @@
     </div>
 
     <div class="modal-footer d-flex justify-content-between">
-        <button type="button" class="btn btn-outline-danger" onclick="deleteDoctor({{ $doctor->id }})">
+        <button type="button" class="btn btn-outline-danger" onclick="deleteDoctor ({{ $doctor->id }}) ">
             Удалить врача
         </button>
         <button type="submit" class="btn btn-primary">Сохранить изменения</button>

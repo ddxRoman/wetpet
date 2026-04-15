@@ -48,8 +48,6 @@ if ($doctorOwner) {
     // Тянем врача через его модель
     $doctor = \App\Models\Doctor::with('contacts')->find($doctorOwner->doctor_id);
 }
-
-
 $doctorFields = \App\Models\FieldOfActivity::where('type', 'specialist')
     ->where('activity', 'doctor')
     ->get()
@@ -267,14 +265,11 @@ return view('account', compact(
             Storage::delete('public/' . $photo->photo_path);
             $photo->delete();
         }
-
         foreach ($review->receipts as $receipt) {
             Storage::delete('public/' . $receipt->path);
             $receipt->delete();
         }
-
         $review->delete();
-
         return response()->json(['success' => true]);
     }
 

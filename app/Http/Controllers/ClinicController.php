@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Clinic;
-use Illuminate\Support\Facades\Storage;
 use App\Services\TelegramService;
 use Illuminate\Http\Request;
 
@@ -24,6 +23,7 @@ class ClinicController extends Controller
             $selectedCity = session('city_name');
         }
 
+        // Подгружаем средний рейтинг сразу из базы для сортировки
         $clinics = Clinic::withAvg('reviews', 'rating')
             ->when($selectedCity, function ($query, $city) {
                 $query->whereRaw(
@@ -31,9 +31,10 @@ class ClinicController extends Controller
                     [$city]
                 );
             })
-            ->orderByDesc('reviews_avg_rating')
+            ->orderByDesc('reviews_avg_rating') // Самые рейтинговые сверху
             ->get();
 
+        // 🔴 ВАЖНО: если AJAX — возвращаем ТОЛЬКО список
         if ($request->ajax()) {
             return view('pages.clinics.partials.list', compact('clinics'))->render();
         }
@@ -55,147 +56,108 @@ class ClinicController extends Controller
      */
     public function create()
     {
-        // Для селекта городов в шаблоне создания
-        $allCities = City::orderBy('name')->get();
-        return view('pages.clinics.create', compact('allCities'));
+        return view('pages.clinics.create');
     }
 
     /**
      * Сохранение новой клиники
      */
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'name'            => 'required|string|max:255',
-        'city_id'         => 'required|exists:cities,id', 
-        'street'          => 'required|string|max:255',
-        'house'           => 'nullable|string|max:50',
-        'address_comment' => 'nullable|string|max:255',
-        'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
-        'description'     => 'nullable|string',
-        'phone1'          => 'nullable|string|max:30',
-        'phone2'          => 'nullable|string|max:30',
-        'email'           => 'nullable|email|max:255',
-        'schedule'        => 'nullable|string|max:100',
-        'workdays'        => 'nullable|string|max:100',
-    ]);
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'region' => 'nullable|string|max:100',
+            'city_id' => 'required|exists:cities,id',
+            'street' => 'required|string|max:255',
+            'house' => 'nullable|string|max:50',
+            'address_comment' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
+            'description' => 'nullable|string',
+            'phone1' => 'nullable|string|max:30',
+            'phone2' => 'nullable|string|max:30',
+            'email' => 'nullable|email|max:255',
+            'telegram' => 'nullable|string|max:255',
+            'whatsapp' => 'nullable|string|max:255',
+            'schedule' => 'nullable|string|max:100',
+            'workdays' => 'nullable|string|max:100',
+        ]);
 
-    $cityModel = City::findOrFail($validated['city_id']);
+        $city = City::findOrFail($data['city_id']);
 
-    $path = $request->hasFile('logo') 
-        ? $request->file('logo')->store('clinics', 'public') 
-        : null;
+        $clinic = Clinic::create([
+            'name' => $data['name'],
+            'country' => 'Россия',
+            'region' => $data['region'] ?? null,
+            'city' => $city->name,
+            'street' => $data['street'],
+            'house' => $data['house'] ?? null,
+            'address_comment' => $data['address_comment'] ?? null,
+            'description' => $data['description'] ?? null,
+            'phone1' => $data['phone1'] ?? null,
+            'phone2' => $data['phone2'] ?? null,
+            'email' => $data['email'] ?? null,
+            'schedule' => $data['schedule'] ?? null,
+            'workdays' => $data['workdays'] ?? null,
+        ]);
 
-    // Добавляем город и регион в массив перед созданием
-    $data = array_merge($validated, [
-        'country' => 'Россия',
-        'city'    => $cityModel->name,
-        'region'  => $cityModel->region,
-        'logo'    => $path,
-    ]);
-
-    $clinic = Clinic::create($data);
-
-    try {
+        // 🔔 TELEGRAM
+        $user = auth()->user();
         app(TelegramService::class)->send(
             "🏥 <b>Новая клиника</b>\n\n" .
             "Название: {$clinic->name}\n" .
             "Город: {$clinic->city}\n" .
-            "Регион: {$clinic->region}\n" .
-            "Адрес: {$clinic->street} {$clinic->house}"
+            "Адрес: {$clinic->street} {$clinic->house}\n\n" .
+            "👤 <b>Добавил:</b>\n" .
+            "Имя: " . ($user?->name ?? 'Гость') . "\n" .
+            "Email: " . ($user?->email ?? '—') . "\n\n" .
+            "🏷 <b>Пользователь добавил свою организацию</b>"
         );
-    } catch (\Exception $e) {
-        \Log::error("TG Error: " . $e->getMessage());
+
+        return redirect()
+            ->route('clinics.show', $clinic)
+            ->with('success', 'Клиника добавлена');
     }
 
-    return redirect()->route('clinics.show', $clinic)->with('success', 'Клиника добавлена');
-}
+    /**
+     * API метод получения клиник по городу (тоже с сортировкой)
+     */
+    public function clinicsByCity($cityId)
+    {
+        $city = City::find($cityId);
+
+        if (!$city) {
+            return response()->json([]);
+        }
+
+        $clinics = Clinic::withAvg('reviews', 'rating')
+            ->whereRaw(
+                'LOWER(TRIM(city)) = LOWER(TRIM(?))',
+                [$city->name]
+            )
+            ->orderByDesc('reviews_avg_rating')
+            ->get();
+
+        return response()->json($clinics);
+    }
 
     /**
      * Форма редактирования
      */
     public function edit(Clinic $clinic)
     {
-        $allCities = City::orderBy('name')->get();
-        return view('pages.clinics.edit', compact('clinic', 'allCities'));
+        return view('pages.clinics.edit', compact('clinic'));
     }
 
     /**
-     * Обновление клиники
-     */
-/**
-     * Обновление клиники
-     */
-    public function update(Request $request, $id)
-    {
-        $clinic = Clinic::findOrFail($id);
-
-        $validated = $request->validate([
-            'name'            => 'required|string|max:255',
-            'city_id'         => 'nullable|exists:cities,id', 
-            'street'          => 'required|string|max:255',
-            'house'           => 'nullable|string|max:50',
-            'address_comment' => 'nullable|string|max:255',
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:8192',
-            'description'     => 'nullable|string',
-            'phone1'          => 'nullable|string|max:30',
-            'phone2'          => 'nullable|string|max:30',
-            'email'           => 'nullable|email|max:255',
-            'telegram'        => 'nullable|string|max:255',
-            'whatsapp'        => 'nullable|string|max:255',
-            'schedule'        => 'nullable|string|max:100',
-            'workdays'        => 'nullable|string|max:100',
-        ]);
-
-        if ($request->filled('city_id')) {
-            $cityModel = \App\Models\City::find($request->city_id);
-            if ($cityModel) {
-                $validated['city'] = $cityModel->name;
-                $validated['region'] = $cityModel->region;
-            }
-        }
-
-        if ($request->hasFile('logo')) {
-            if ($clinic->logo) {
-                Storage::disk('public')->delete($clinic->logo);
-            }
-            $validated['logo'] = $request->file('logo')->store('clinics', 'public');
-        }
-
-        $clinic->update($validated);
-
-        // Редирект на конкретную вкладку личного кабинета
-        return redirect()->to(route('account') . '#my-clinics')
-            ->with('success', 'Данные клиники обновлены');
-    }
-
-    /**
-     * Удаление клиники
-     */
-    public function destroy($id)
-    {
-        $clinic = Clinic::findOrFail($id);
-        
-        if ($clinic->logo) {
-            Storage::disk('public')->delete($clinic->logo);
-        }
-        
-        $clinic->delete();
-
-        // Редирект на ту же вкладку после удаления
-        return redirect()->to(route('account') . '#my-clinics')
-            ->with('success', 'Клиника удалена');
-    }
-
-    /**
-     * Живой поиск и API методы (оставляем как были)
+     * Живой поиск
      */
     public function liveSearch(Request $request)
     {
         $query = $request->get('q');
         if (mb_strlen($query) < 2) return response()->json([]);
 
-        $clinics = Clinic::where('name', 'LIKE', "%{$query}%")
+        // 1. Поиск клиник
+        $clinics = \App\Models\Clinic::where('name', 'LIKE', "%{$query}%")
             ->limit(5)
             ->get(['name', 'city', 'street', 'house', 'slug', 'logo'])
             ->map(function($item) {
@@ -204,24 +166,71 @@ public function store(Request $request)
                     'name' => $item->name,
                     'slug' => $item->slug,
                     'address' => "{$item->city}, {$item->street} {$item->house}",
-                    'image' => $item->logo ? Storage::url($item->logo) : asset('storage/clinics/logo/default.webp')
+                    'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default.webp')
                 ];
             });
 
-        // Тут можно добавить поиск врачей, если нужно, как в твоем исходнике
-        return response()->json(['clinics' => $clinics]);
+        // 2. Поиск врачей
+        $doctors = \App\Models\Doctor::with('clinic:id,name')
+            ->where(function($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                  ->orWhere('specialization', 'LIKE', "%{$query}%");
+            })
+            ->limit(5)
+            ->get()
+            ->map(function($item) {
+                return [
+                    'type' => 'doctor',
+                    'name' => $item->name,
+                    'slug' => $item->slug,
+                    'specialization' => $item->specialization,
+                    'clinic_name' => $item->clinic->name ?? 'Частная практика',
+                    'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp')
+                ];
+            });
+
+        return response()->json(['clinics' => $clinics, 'doctors' => $doctors]);
     }
 
-    public function clinicsByCity($cityId)
+    /**
+     * Обновление клиники
+     */
+    public function update(Request $request, $id)
     {
-        $city = City::find($cityId);
-        if (!$city) return response()->json([]);
+        $clinic = Clinic::findOrFail($id);
 
-        $clinics = Clinic::withAvg('reviews', 'rating')
-            ->whereRaw('LOWER(TRIM(city)) LIKE LOWER(TRIM(?))', ["%{$city->name}%"])
-            ->orderByDesc('reviews_avg_rating')
-            ->get();
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'region' => 'nullable|string|max:100',
+            'city' => 'required|string|max:100',
+            'street' => 'required|string|max:255',
+            'house' => 'nullable|string|max:50',
+            'address_comment' => 'nullable|string|max:255',
+            'logo' => 'nullable|image|mimes:webp|max:4096',
+            'description' => 'nullable|string',
+            'phone1' => 'nullable|string|max:30',
+            'phone2' => 'nullable|string|max:30',
+            'email' => 'nullable|email|max:255',
+            'telegram' => 'nullable|string|max:255',
+            'whatsapp' => 'nullable|string|max:255',
+            'schedule' => 'nullable|string|max:100',
+            'workdays' => 'nullable|string|max:100',
+        ]);
 
-        return response()->json($clinics);
+        $clinic->update($data);
+
+        return redirect()->route('pages.clinics.show', $clinic->slug)
+                         ->with('success', 'Клиника обновлена');
+    }
+
+    /**
+     * Удаление
+     */
+    public function destroy($id)
+    {
+        $clinic = Clinic::findOrFail($id);
+        $clinic->delete();
+
+        return redirect()->route('clinics.index')->with('success', 'Клиника удалена');
     }
 }

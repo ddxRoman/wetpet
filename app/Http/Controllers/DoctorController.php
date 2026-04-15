@@ -174,39 +174,60 @@ public function welcome()
     /**
      * 🔹 Обновление врача
      */
-    public function update(Request $request, Doctor $doctor)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'specialization' => 'nullable|string|max:255',
-            'clinic' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'experience' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
-        ]);
+public function update(Request $request, Doctor $doctor)
+{
+    // 1. Валидация
+    $validated = $request->validate([
+        'name'           => 'required|string|max:255',
+        'specialization' => 'nullable|string|max:255',
+        'city_id'        => 'nullable|exists:cities,id',
+        'organization_id'=> 'nullable|exists:clinics,id',
+        'experience'     => 'nullable|integer|min:0',
+        'date_of_birth'  => 'nullable|date',
+        'description'    => 'nullable|string',
+        'photo'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
+        'phone'          => 'nullable|string|max:20',
+        'email'          => 'nullable|email|max:255',
+        'telegram'       => 'nullable|string|max:255',
+        'whatsapp'       => 'nullable|string|max:255',
+        'max'            => 'nullable|string|max:255',
+        'exotic_animals' => 'nullable|string',
+        'On_site_assistance' => 'nullable|string',
+    ]);
 
-        $data = $request->only([
-            'name',
-            'specialization',
-            'clinic',
-            'city',
-            'experience',
-            'description'
-        ]);
+    // 2. Подготовка данных для doctors
+    $doctorData = $request->only([
+        'name', 'specialization', 'city_id', 'organization_id', 
+        'experience', 'description', 'date_of_birth',
+        'exotic_animals', 'On_site_assistance'
+    ]);
 
-        if ($request->hasFile('photo')) {
-            if (!empty($doctor->photo) && \Storage::disk('public')->exists($doctor->photo)) {
-                \Storage::disk('public')->delete($doctor->photo);
-            }
-
-            $data['photo'] = $request->file('photo')->store('doctors', 'public');
+    // 3. Обработка фото
+    if ($request->hasFile('photo')) {
+        if (!empty($doctor->photo) && \Storage::disk('public')->exists($doctor->photo)) {
+            \Storage::disk('public')->delete($doctor->photo);
         }
-
-        $doctor->update($data);
-
-        return redirect()->back()->with('success', 'Данные врача сохранены');
+        $doctorData['photo'] = $request->file('photo')->store('doctors', 'public');
     }
+
+    $doctor->update($doctorData);
+
+    // 4. Обновление контактов
+    $doctor->contacts()->updateOrCreate(
+        ['doctor_id' => $doctor->id],
+        [
+            'phone'    => $request->phone,
+            'email'    => $request->email,
+            'telegram' => $request->telegram,
+            'whatsapp' => $request->whatsapp,
+            'max'      => $request->max,
+        ]
+    );
+
+    // Редирект на конкретный URL с хэшем (анкором)
+    return redirect()->to(url('/account') . '#doctor-profile')
+        ->with('success', 'Данные врача сохранены');
+}
 
     /**
      * 🔹 Удаление врача

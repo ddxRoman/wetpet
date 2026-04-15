@@ -36,6 +36,9 @@
     @if($hasSpecialistProfile)
         <button class="tab-btn" data-tab="specialist-profile">Профиль специалиста</button>
     @endif
+    @if($hasDoctorProfile)
+        <button class="tab-btn" data-tab="doctor-profile">Профиль врача</button>
+    @endif
 
     <button class="tab-btn" data-tab="reviews">Отзывы</button>
 </div>
@@ -183,6 +186,11 @@
 @if($hasSpecialistProfile)
     <div class="tab-content" id="specialist-profile" style="display:none;">
         @include('account.tabs.specialist-profile')
+    </div>
+@endif
+@if($hasDoctorProfile)
+    <div class="tab-content" id="doctor-profile" style="display:none;">
+        @include('account.tabs.doctor-profile')
     </div>
 @endif
         </div>
