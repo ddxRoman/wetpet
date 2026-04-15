@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Organization extends Model
 {
@@ -36,6 +37,14 @@ class Organization extends Model
             'organization_owners'
         )->withTimestamps();
     }
+
+// Исправь сам метод:
+public function fieldOfActivity(): BelongsTo
+{
+    // Важно: проверь, как называется колонка в базе. 
+    // Если в таблице организаций колонка называется 'type', то пиши 'type'.
+    return $this->belongsTo(FieldOfActivity::class, 'type'); 
+}
 
     protected static function boot()
     {

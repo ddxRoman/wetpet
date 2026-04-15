@@ -18,7 +18,9 @@ protected $fillable = [
     'photo',
     'date_of_birth',
     'exotic_animals',
-    'On_site_assistance'
+    'On_site_assistance',
+    'street',
+    'house',
 ];
 
     public function owners()
@@ -42,7 +44,7 @@ public function organization()
 // Внутри класса Specialist
 public function city()
 {
-    return $this->belongsTo(City::class, 'city_id');
+    return $this->belongsTo(City::class);
 }
 
 public function contacts()
