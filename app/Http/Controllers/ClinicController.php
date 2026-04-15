@@ -151,46 +151,76 @@ class ClinicController extends Controller
     /**
      * Живой поиск
      */
-    public function liveSearch(Request $request)
-    {
-        $query = $request->get('q');
-        if (mb_strlen($query) < 2) return response()->json([]);
+public function liveSearch(Request $request)
+{
+    $query = $request->get('q');
+    if (mb_strlen($query) < 2) return response()->json([]);
 
-        // 1. Поиск клиник
-        $clinics = \App\Models\Clinic::where('name', 'LIKE', "%{$query}%")
-            ->limit(5)
-            ->get(['name', 'city', 'street', 'house', 'slug', 'logo'])
-            ->map(function($item) {
-                return [
-                    'type' => 'clinic',
-                    'name' => $item->name,
-                    'slug' => $item->slug,
-                    'address' => "{$item->city}, {$item->street} {$item->house}",
-                    'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default.webp')
-                ];
-            });
+    // 1. Клиники
+    $clinics = \App\Models\Clinic::where('name', 'LIKE', "%{$query}%")
+        ->limit(5)->get()->map(function($item) {
+            return [
+                'type' => 'clinic',
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'address' => "{$item->city}, {$item->street} {$item->house}",
+                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default.webp')
+            ];
+        });
 
-        // 2. Поиск врачей
-        $doctors = \App\Models\Doctor::with('clinic:id,name')
-            ->where(function($q) use ($query) {
-                $q->where('name', 'LIKE', "%{$query}%")
-                  ->orWhere('specialization', 'LIKE', "%{$query}%");
-            })
-            ->limit(5)
-            ->get()
-            ->map(function($item) {
-                return [
-                    'type' => 'doctor',
-                    'name' => $item->name,
-                    'slug' => $item->slug,
-                    'specialization' => $item->specialization,
-                    'clinic_name' => $item->clinic->name ?? 'Частная практика',
-                    'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp')
-                ];
-            });
+    // 2. Врачи (Doctor)
+    $doctors = \App\Models\Doctor::with('clinic:id,name')
+        ->where(function($q) use ($query) {
+            $q->where('name', 'LIKE', "%{$query}%")
+              ->orWhere('specialization', 'LIKE', "%{$query}%");
+        })
+        ->limit(5)->get()->map(function($item) {
+            return [
+                'type' => 'doctor',
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'specialization' => $item->specialization,
+                'clinic_name' => $item->clinic->name ?? 'Частная практика',
+                'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp')
+            ];
+        });
 
-        return response()->json(['clinics' => $clinics, 'doctors' => $doctors]);
-    }
+    // 3. Организации (Вет-центры, груминг-салоны и т.д.)
+    $organizations = \App\Models\Organization::where('name', 'LIKE', "%{$query}%")
+        ->limit(5)->get()->map(function($item) {
+            return [
+                'type' => 'organization',
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'address' => $item->address ?? $item->city->name ?? '',
+                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/organizations/default.webp')
+            ];
+        });
+
+    // 4. Специалисты (Специалисты-частники: грумеры, кинологи и т.д.)
+    $specialists = \App\Models\Specialist::with('organization:id,name')
+        ->where(function($q) use ($query) {
+            $q->where('name', 'LIKE', "%{$query}%")
+              ->orWhere('specialization', 'LIKE', "%{$query}%");
+        })
+        ->limit(5)->get()->map(function($item) {
+            return [
+                'type' => 'specialist',
+                'name' => $item->name,
+                'slug' => $item->slug,
+                'specialization' => $item->specialization,
+                'org_name' => $item->organization->name ?? 'Частный специалист',
+                'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp')
+            ];
+        });
+
+    return response()->json([
+        'clinics' => $clinics, 
+        'doctors' => $doctors,
+        'organizations' => $organizations,
+        'specialists' => $specialists
+    ]);
+}
 
     /**
      * Обновление клиники

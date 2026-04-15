@@ -7,19 +7,19 @@ use Illuminate\Support\Str;
 
 class Specialist extends Model
 {
-    protected $fillable = [
-        'name',
-        'specialization',
-        'date_of_birth',
-        'city_id',
-        'organization_id',
-        'experience',
-        'exotic_animals',
-        'On_site_assistance',
-        'photo',
-        'description',
-        'field_of_activity_id',
-    ];
+protected $fillable = [
+    'name', 
+    'specialization', 
+    'city_id', 
+    'organization_id', // обязательно здесь
+    'experience', 
+    'description', 
+    'slug',
+    'photo',
+    'date_of_birth',
+    'exotic_animals',
+    'On_site_assistance'
+];
 
     public function owners()
 {
@@ -33,8 +33,21 @@ class Specialist extends Model
     ->withTimestamps();
 }
 
+public function organization()
+    {
+        // Предполагается, что в таблице specialists есть поле organization_id
+        return $this->belongsTo(Organization::class, 'organization_id');
+    }
+
+// Внутри класса Specialist
+public function city()
+{
+    return $this->belongsTo(City::class, 'city_id');
+}
+
 public function contacts()
 {
+    // Убедись, что связь с контактами тоже прописана
     return $this->hasOne(SpecialistContact::class);
 }
 
@@ -50,6 +63,8 @@ protected static function boot()
         }
     });
 }
+
+
 
 /**
  * Определяет поле для поиска модели в маршрутах.

@@ -7,18 +7,34 @@ use App\Models\FieldOfActivity;
 use App\Models\City;
 use App\Models\Organization;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class SpecialistController extends Controller
 {
-    public function index() {
+public function index(Request $request) 
+{
+    $query = Specialist::with(['contacts', 'city', 'organization']);
 
-    
-
+    // Фильтрация по специализации, если она передана в URL (?specialization=Грумер)
+    if ($request->filled('specialization')) {
+        $query->where('specialization', $request->specialization);
     }
+
+    $specialists = $query->paginate(12);
+    
+    // Получаем список всех уникальных специализаций для фильтра (тегов)
+    $allSpecializations = Specialist::distinct()->pluck('specialization');
+
+    return view('pages.specialists.index', [
+        'doctors' => $specialists,
+        'specializations' => $allSpecializations,
+        'selectedSpecialization' => $request->specialization,
+        'selectedCity' => 'Все регионы' // Или ваша логика городов
+    ]);
+}
+
     public function create() {}
 
     /**
@@ -168,6 +184,17 @@ public function update(Request $request, Specialist $specialist)
 
     return redirect()->to(route('account') . '#specialist-profile')
         ->with('success', 'Данные успешно обновлены');
+}
+
+public function show($slug)
+{
+    // Ищем специалиста по slug с подгрузкой всех связей
+    $specialist = Specialist::with(['contacts', 'city', 'organization'])
+        ->where('slug', $slug)
+        ->firstOrFail();
+
+    // Передаем в шаблон как $doctor для совместимости с твоим кодом
+    return view('pages.specialists.show', ['doctor' => $specialist]);
 }
 
     public function destroy(Specialist $specialist)

@@ -219,3 +219,8 @@ Route::get('/organizations/{organization}', [OrganizationController::class, 'sho
 Route::get('/organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
 Route::put('/doctor/{doctor}', [DoctorController::class, 'update'])->name('doctor.update');
 Route::delete('/doctor/{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
+
+// Маршрут для страницы всех специалистов
+Route::get('/specialists', [SpecialistController::class, 'index'])->name('specialists.index');
+// Просмотр карточки конкретного специалиста
+Route::get('/specialists/{slug}', [App\Http\Controllers\SpecialistController::class, 'show'])->name('specialists.show');
