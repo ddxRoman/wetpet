@@ -12,7 +12,6 @@ return new class extends Migration
 public function up(): void
 {
     Schema::table('specialists', function (Blueprint $table) {
-        // Добавляем nullable, чтобы старые записи не выдали ошибку при создании поля
         $table->string('slug')->unique()->nullable()->after('name');
     });
 }

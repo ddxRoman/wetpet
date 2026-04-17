@@ -774,7 +774,7 @@ class DoctorSeeder extends Seeder
     'On_site_assistance' => NULL,
     'photo' => 'doctors/chastlivay_morda/shlyahtina_marina_madinovna_schastlivaya_morda.png',
     'description' => '',
-]
+],
             [
                 'name' => 'Коваленко Ольга Игоревна',
                 'date_of_birth' => NULL,

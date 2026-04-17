@@ -8,8 +8,9 @@ class Service extends Model
 {
     use HasFactory;
 
+    protected $table = 'services'; // Явно указываем таблицу из миграции
     protected $fillable = ['name', 'specialization', 'specialization_doctor'];
-
+    
 public function doctors()
 {
     return $this->belongsToMany(Doctor::class, 'doctor_service', 'service_id', 'doctor_id');
