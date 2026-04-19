@@ -55,7 +55,7 @@
                 @if(!empty($contact?->max))
                     <div>
                         💬 MAX:
-                                                <a href="https://max.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank" title="Связаться через мессенджер МАХ">
+                                                <a href="https://max.ru/join/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank" title="Связаться через мессенджер МАХ">
                             {{ $contact->max }}
                             <img width="24" src="{{ asset('storage/icon/contacts/max_messendger.svg') }}" alt="МАХ">
                         </a> 
