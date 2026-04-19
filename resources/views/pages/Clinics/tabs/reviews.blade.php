@@ -1,22 +1,20 @@
-use App\Models\Review;
+ {{-- Отзывы --}}
+    <div class="tab-pane fade {{ $tab === 'reviews' ? 'show active' : '' }}" id="reviews" role="tabpanel">
 
+                        {{-- Отзывы --}}
+                        
+@php
+    // Было: Review::where(...)
+    $reviews = \App\Models\Review::where('reviewable_id', $clinic->id)
+        ->where('reviewable_type', \App\Models\Clinic::class)
+        ->with(['user', 'photos'])
+        ->latest('review_date')
+        ->get();
 
-
-{{-- Отзывы --}}
-                        <div class="tab-pane fade" id="reviews" role="tabpanel">
-                            @php
-                            $reviews = Review::where('reviewable_id', $clinic->id)
-                            ->where('reviewable_type', \App\Models\Clinic::class)
-                            ->with(['user', 'photos'])
-                            ->latest('review_date')
-                            ->get();
-
-// Получаем питомцев с данными из таблицы animals
-$pets = Pet::where('user_id', auth()->id())
-    ->with('animal') // подгружаем связь
-    ->get();
+    $pets = \App\Models\Pet::where('user_id', auth()->id()) // Также добавьте \App\Models\ для Pet на всякий случай
+        ->with('animal')
+        ->get();
 @endphp
-
 
 {{-- 📝 Кнопка открытия / закрытия формы --}}
 @auth
@@ -31,9 +29,6 @@ $pets = Pet::where('user_id', auth()->id())
         aria-controls="openReviewForm">
     ✍️ Оставить отзыв
 </button>
-
-
-
 </div>
 
 {{-- 🔽 Скрытая форма --}}
@@ -57,10 +52,10 @@ $pets = Pet::where('user_id', auth()->id())
                         </ul>
                     </div>
                 @endif
-<input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
-<input type="" name="redirect_slug" value="{{ $clinic->slug }}">
 
-<input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
+                <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
+                <input type="hidden" name="redirect_slug" value="{{ $clinic->slug }}">
+                <input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
 
 {{-- ⭐ Оценка --}}
 <div class="mb-3">
@@ -83,7 +78,6 @@ $pets = Pet::where('user_id', auth()->id())
     </div>
 </div>
 
-
                 {{-- 💚 Понравилось --}}
                 <div class="mb-3">
                     <label class="form-label">Понравилось:</label>
@@ -102,6 +96,7 @@ $pets = Pet::where('user_id', auth()->id())
                     <textarea name="content" id="reviewText" class="form-control small-textarea"
                               placeholder="Напишите свой отзыв..." rows="2"></textarea>
                 </div>
+
 {{-- 🐾 Питомец --}}
 <div class="mb-3">
     <label class="form-label">Ваш питомец:</label>
@@ -118,6 +113,7 @@ $pets = Pet::where('user_id', auth()->id())
         @endforelse
     </select>
 </div>
+
                 {{-- 📎 Загрузка чека --}}
                 <div class="mb-3">
                     <label class="form-label">Чек (для подтверждения отзыва):</label>
@@ -140,21 +136,19 @@ $pets = Pet::where('user_id', auth()->id())
 </div>
 @else
 <p class="text-muted mb-4">
-    Чтобы оставить отзыв,         <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
+        <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
        title="Нажмите чтобы авторизоваться"
-       class="login_link">войдите в аккаунт</a>.
+       class="login_link">
+    
+    войдите в аккаунт</a>.
 </p>
 @endauth
-
-
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" value="1" id="verifiedOnly">
                                 <label class="form-check-label" for="verifiedOnly" title="Будут показываться только те отзывы на которых был прикреплен чек подтверждающий визит в клинику">
                                     Показывать только  "Реальных клиентов"
                                 </label>
                             </div>
-
-
                             {{-- 🔽 Сортировка отзывов --}}
 <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
     <label for="sortReviews" class="form-label mb-0 me-2 fw-semibold">Сортировать по:</label>
@@ -165,24 +159,19 @@ $pets = Pet::where('user_id', auth()->id())
         <option value="rating_asc">Оценке (от низкой к высокой)</option>
     </select>
 </div>
-
                             
                             {{-- 🔽 Список отзывов --}}
-
                             <div id="reviewList" class="list-group">
                                 @foreach($reviews as $review)
                                 <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
                                     data-date="{{ $review->review_date->timestamp }}"
                                     data-rating="{{ $review->rating }}"
                                     data-verified="{{ $review->receipt_verified }}">
-
                                     @if($review->receipt_verified == "verified")
                                     <div class="verified-badge position-absolute top-0 end-0 bg-success text-white small px-2 py-1 rounded-start" title="Этот пользователь подтвердил свой визит в клинику, чеком, электронной квитанцией или заключаем из больницы">
                                         ✅ Реальный клиент
                                     </div>
                                     @endif
-
-
                                     {{-- Пользователь --}}
                                     <div class="d-flex align-items-center mb-3">
                                         @php
@@ -192,26 +181,23 @@ $pets = Pet::where('user_id', auth()->id())
                                         @endphp
                                         <img src="{{ $avatar }}" width="56" height="56" class="rounded-circle me-3 border" alt="{{ $review->user->name }}">
                                         <div>
-                                            <a href="{{ route('user.profile', $review->user->id) }}" title="Перейти в профиль пользователя" class="fw-semibold text-decoration-none text-primary">
+                                            <a href="{{ route('user.profile', $review->user->id) }}" title="Перейти к профилю пользователя" class="fw-semibold text-decoration-none text-primary">
                                                 {{ $review->user->name }}
                                             </a>
                                             <div class="small text-muted">{{ $review->review_date->format('d.m.Y') }}</div>
                                             @if(Auth::id() === $review->user_id)
-
                                             {{-- Отметка "Реальный клиент" --}}
                                             @if($review->receipt_verified == 1)
                                             <span class="verifed_client">
-
-
                                             </span>
                                             @endif
                                             <div class="mt-1">
-                                                <button class="btn btn-sm btn-outline-primary edit-review"
+                                                <!-- <button class="btn btn-sm btn-outline-primary edit-review"
                                                     data-id="{{ $review->id }}"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editReviewModal">
                                                     ✏️ Редактировать
-                                                </button>
+                                                </button> -->
 
                                                 <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" class="d-inline">
                                                     @csrf
@@ -244,7 +230,13 @@ $pets = Pet::where('user_id', auth()->id())
                                     <p class="mt-2">{{ $review->content }}</p>
                                     @endif
 
-
+                                    @php
+$reviews = \App\Models\Review::where('reviewable_id', $clinic->id)
+    ->where('reviewable_type', \App\Models\Clinic::class)
+    ->with(['user', 'photos', 'pet.animal']) // добавили pet и animal
+    ->latest('review_date')
+    ->get();
+@endphp
 
 
 @if($review->pet)
@@ -270,8 +262,8 @@ $pets = Pet::where('user_id', auth()->id())
         @endforeach
     </div>
 @endif
-
                                 </div>
                                 @endforeach
                             </div>
                         </div>
+

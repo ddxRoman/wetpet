@@ -74,9 +74,10 @@ class Clinic extends Model
     {
         return $this->belongsToMany(Service::class, 'clinic_service', 'clinic_id', 'service_id');
     }
-    public function prices()
+public function prices()
 {
-    return $this->hasMany(Price::class);
+    // Важно: второй параметр 'priceable' должен совпадать с тем, что в миграции
+    return $this->morphMany(\App\Models\Price::class, 'priceable');
 }
 
 public function reviews()

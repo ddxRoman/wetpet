@@ -254,10 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 throw new Error();
             }
-        } catch {
-            errorsBox.innerText = 'Ошибка сервера';
-            errorsBox.classList.remove('d-none');
-        } finally {
+// В блоке submit замени catch на этот:
+} catch (err) {
+    console.error('Детальная ошибка:', err); // Это поможет увидеть структуру ошибки
+    errorsBox.innerText = 'Ошибка сервера. Проверьте вкладку Network в консоли.';
+    errorsBox.classList.remove('d-none');
+} finally {
             isSubmitting = false;
         }
     });

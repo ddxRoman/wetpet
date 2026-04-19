@@ -66,8 +66,8 @@ margin-bottom: 2% !important;
                 <button class="btn_add_clinic btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#addDoctorModal">
-                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить ветеринара">
-                    Добавить ветеринара
+                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить Специалиста">
+                    Добавить Специалиста
                 </button>
             </div>
         @else

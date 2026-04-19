@@ -3,26 +3,37 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Price;
+use App\Models\Service;
+use App\Models\Specialist;
+use App\Models\Organization;
 
 class PriceSeeder extends Seeder
 {
-    public function run(): void
-    {
-        // Очищаем таблицу
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('prices')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+public function run(): void
+{
+    $models = [
+        \App\Models\Clinic::class,
+        \App\Models\Organization::class,
+        \App\Models\Doctor::class,
+        \App\Models\Specialist::class,
+    ];
 
-        DB::table('prices')->insert([
-            'clinic_id' => 1,
-            'service_id' => 1,
-            'price' => 700,
-            'currency' => 'RUB',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        $this->command->info('✅ Добавлена 1 запись в таблицу prices.');
+    foreach ($models as $modelClass) {
+        $entities = $modelClass::all();
+        
+        foreach ($entities as $entity) {
+            // Создаем по 3 случайные услуги для каждой сущности
+            for ($i = 0; $i < 3; $i++) {
+                \App\Models\Price::create([
+                    'service_id' => \App\Models\Service::inRandomOrder()->first()->id,
+                    'price' => rand(1000, 5000),
+                    'currency' => '₽',
+                    'priceable_id' => $entity->id,
+                    'priceable_type' => $modelClass, // Запишет полный путь к модели
+                ]);
+            }
+        }
     }
+}
 }

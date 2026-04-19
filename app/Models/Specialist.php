@@ -66,6 +66,11 @@ protected static function boot()
     });
 }
 
+public function prices()
+{
+    return $this->morphMany(Price::class, 'priceable');
+}
+
 public function reviews()
 {
     // Укажите правильный класс модели отзывов и внешний ключ, если он отличается

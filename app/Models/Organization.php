@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+
 class Organization extends Model
 {
     protected $fillable = [
@@ -80,4 +81,11 @@ public function fieldOfActivity(): BelongsTo
     {
         return 'slug';
     }
+    
+public function prices()
+{
+    // Важно: второй параметр 'priceable' должен совпадать с тем, что в миграции
+    return $this->morphMany(\App\Models\Price::class, 'priceable');
+}
+
 }
