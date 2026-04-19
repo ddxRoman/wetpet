@@ -15,11 +15,11 @@
 
 {{-- Отзывы --}}
                             @php
-                            $reviews = Review::where('reviewable_id', $doctor->id)
-                            ->where('reviewable_type', \App\Models\doctor::class)
-                            ->with(['user', 'photos'])
-                            ->latest('review_date')
-                            ->get();
+$reviews = Review::where('reviewable_id', $doctor->id)
+    ->where('reviewable_type', 'App\Models\Doctor') // Указываем строку точно как в базе
+    ->with(['user', 'photos', 'pet.animal'])
+    ->latest('review_date')
+    ->get();
 
 // Получаем питомцев с данными из таблицы animals
 $pets = Pet::where('user_id', auth()->id())
@@ -190,7 +190,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                             {{-- 🔽 Список отзывов --}}
 
                             <div id="reviewList" class="list-group">
-                                @foreach($doctor->reviews as $review)
+                                @foreach($reviews as $review)
                                 <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"
                                     data-date="{{ $review->review_date->timestamp }}"
                                     data-rating="{{ $review->rating }}"

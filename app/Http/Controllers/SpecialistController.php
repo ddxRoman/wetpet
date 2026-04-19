@@ -63,21 +63,30 @@ public function index(Request $request)
      */
 public function store(Request $request)
 {
+    // 1. Валидация (добавили поля контактов)
     $request->validate([
         'name' => 'required|string|max:255',
-        'city_id' => 'required|string',
+        'city_id' => 'required|exists:cities,id',
         'field_of_activity_id' => 'required|exists:field_of_activities,id',
-        'street' => 'nullable|string',
-        'house' => 'nullable|string',
+        'phone' => 'nullable|string',
+        'mail' => 'nullable|email', // в модалке поле называется "mail"
+        'photo' => 'nullable|image|max:2048',
     ]);
 
     $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
 
-    // Логика чекбоксов и организации
+    // 2. Логика чекбоксов и организации
     $exotic = $request->has('exotic_animals') ? 'Да' : 'Нет';
     $onSite = $request->has('On_site_assistance') ? 'Да' : 'Нет';
     $orgId = $request->filled('clinic_id') ? $request->clinic_id : null;
 
+    // 3. Обработка фото (если загружено)
+    $photoPath = null;
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->store('specialists', 'public');
+    }
+
+    // 4. Создание специалиста
     $specialist = Specialist::create([
         'name' => $request->name,
         'specialization' => $field->name,
@@ -90,7 +99,22 @@ public function store(Request $request)
         'exotic_animals' => $exotic,
         'On_site_assistance' => $onSite,
         'description' => $request->description,
-        'slug' => Str::slug($request->name) . '-' . rand(100, 999), // Добавляем хвост для уникальности
+        'photo' => $photoPath, // Не забудьте сохранить путь к фото
+        'slug' => Str::slug($request->name) . '-' . rand(100, 999),
+    ]);
+
+    // 5. СОХРАНЕНИЕ КОНТАКТОВ
+    // Очистка WhatsApp если нужно (как в методе update)
+    $whatsapp = null;
+    if ($request->has('messengers') && in_array('whatsapp', $request->messengers)) {
+        $whatsapp = preg_replace('/[^0-9]/', '', $request->phone);
+    }
+
+    $specialist->contacts()->create([
+        'phone'    => $request->phone,
+        'email'    => $request->mail, // в форме input name="mail"
+        'telegram' => ($request->has('messengers') && in_array('telegram', $request->messengers)) ? $request->phone : null,
+        'whatsapp' => $whatsapp,
     ]);
 
     return response()->json([

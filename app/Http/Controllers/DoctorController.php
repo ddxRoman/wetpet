@@ -15,66 +15,88 @@ class DoctorController extends Controller
     /**
      * 🔹 Создание врача (AJAX, модалка, Telegram)
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'field_of_activity_id' => 'required|exists:field_of_activities,id',
-            'city_id' => 'nullable|exists:cities,id',
-            'clinic_id' => 'nullable|exists:clinics,id',
-            'experience' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
-        // 🔹 Получаем специализацию
-        $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
-
-        // 🔹 Создаём врача
-        $doctor = Doctor::create([
-            'name' => $validated['name'],
-            'specialization' => $field->name,
-            'field_of_activity_id' => $field->id,
-            'city_id' => $validated['city_id'] ?? null,
-            'clinic_id' => $validated['clinic_id'] ?? null,
-            'experience' => $validated['experience'] ?? null,
-            'description' => $validated['description'] ?? null,
-            'slug' => Str::slug($validated['name']),
-        ]);
-
-        // 🔹 Уведомление в Telegram
-        try {
-            Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
-                'chat_id' => config('services.telegram.chat_id'),
-                'parse_mode' => 'HTML',
-                'text' =>
-                    "🩺 <b>Новый специалист</b>\n\n" .
-                    "👤 <b>Имя:</b> {$doctor->name}\n" .
-                    "📌 <b>Специализация:</b> {$doctor->specialization}\n" .
-                    ($doctor->city?->name ? "🏙 <b>Город:</b> {$doctor->city->name}\n" : '') .
-                    ($doctor->clinic?->name ? "🏥 <b>Клиника:</b> {$doctor->clinic->name}\n" : ''),
-            ]);
-        } catch (\Throwable $e) {
-            // намеренно игнорируем, чтобы не ломать создание врача
-            logger()->warning('Telegram notify failed', [
-                'error' => $e->getMessage(),
-            ]);
-        }
-                            // Для добавления владельца записи специалиста и доктора
-        $isOwner = $request->boolean('its_me');
-$user = auth()->user();
-
-if ($isOwner && $user) {
-    $doctor->owners()->syncWithoutDetaching([
-        $user->id => ['is_confirmed' => false],
+public function store(Request $request)
+{
+    // 1. Валидация (добавил недостающие поля из вашей формы)
+    $validated = $request->validate([
+        'name'                 => 'required|string|max:255',
+        'field_of_activity_id' => 'required|exists:field_of_activities,id',
+        'city_id'              => 'nullable|exists:cities,id',
+        'clinic_id'            => 'nullable|exists:clinics,id',
+        'experience'           => 'nullable|string|max:255',
+        'description'          => 'nullable|string',
+        'exotic_animals'       => 'nullable|string', // Добавлено
+        'On_site_assistance'   => 'nullable|string', // Добавлено
+        'phone'                => 'nullable|string|max:255', // Для таблицы контактов
+        'mail'                 => 'nullable|string|email|max:255', // Для таблицы контактов
+        'messengers'           => 'nullable|array', // Для таблицы контактов
     ]);
-}
-        // 🔹 ВАЖНО: JSON → модалка закрывается
-        return response()->json([
-            'success' => true,
-            'id' => $doctor->id,
-            'type' => 'doctor',
+
+    // 🔹 Получаем специализацию
+    $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
+
+    // 🔹 Создаём врача
+    $doctor = Doctor::create([
+        'name'                 => $validated['name'],
+        'specialization'       => $field->name,
+        'field_of_activity_id' => $field->id,
+        'city_id'              => $validated['city_id'] ?? null,
+        'clinic_id'            => $validated['clinic_id'] ?? null,
+        'experience'           => $validated['experience'] ?? null,
+        'description'          => $validated['description'] ?? null,
+        'exotic_animals'       => $request->exotic_animals ?? 'Нет',
+        'On_site_assistance'   => $request->On_site_assistance ?? 'Нет',
+        'slug'                 => Str::slug($validated['name']) . '-' . rand(100, 999),
+    ]);
+
+    /* ============================================================
+       🔥 СОХРАНЕНИЕ КОНТАКТОВ (doctor_contacts)
+    ============================================================ */
+    $telegram = ($request->messengers && in_array('telegram', $request->messengers)) ? $request->phone : null;
+    $whatsapp = ($request->messengers && in_array('whatsapp', $request->messengers)) ? $request->phone : null;
+    $max      = ($request->messengers && in_array('messenger', $request->messengers)) ? $request->phone : null;
+
+    $doctor->contacts()->create([
+        'phone'    => $request->phone,
+        'email'    => $request->mail, // в форме поле называется mail
+        'telegram' => $telegram,
+        'whatsapp' => $whatsapp,
+        'max'      => $max,
+    ]);
+
+    // 🔹 Уведомление в Telegram (оставляем вашу логику)
+    try {
+        Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
+            'chat_id' => config('services.telegram.chat_id'),
+            'parse_mode' => 'HTML',
+            'text' =>
+                "🩺 <b>Новый специалист</b>\n\n" .
+                "👤 <b>Имя:</b> {$doctor->name}\n" .
+                "📌 <b>Специализация:</b> {$doctor->specialization}\n" .
+                ($doctor->city?->name ? "🏙 <b>Город:</b> {$doctor->city->name}\n" : '') .
+                ($doctor->clinic?->name ? "🏥 <b>Клиника:</b> {$doctor->clinic->name}\n" : ''),
+        ]);
+    } catch (\Throwable $e) {
+        logger()->warning('Telegram notify failed', ['error' => $e->getMessage()]);
+    }
+
+    // Для добавления владельца (ваша логика "Это я")
+    $isOwner = $request->boolean('its_me');
+    $user = auth()->user();
+
+    if ($isOwner && $user) {
+        $doctor->owners()->syncWithoutDetaching([
+            $user->id => ['is_confirmed' => false],
         ]);
     }
+
+    // 🔹 ВАЖНО: JSON → модалка закрывается
+    return response()->json([
+        'success' => true,
+        'id' => $doctor->id,
+        'type' => 'doctor',
+    ]);
+}
 
 /**
      * 🔹 Список докторов с сортировкой по рейтингу

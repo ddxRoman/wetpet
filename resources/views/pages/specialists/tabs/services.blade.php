@@ -6,13 +6,22 @@
 
 <div class="tab-pane fade" id="services" role="tabpanel">
     @php
-        // Получаем цены через полиморфную связь
-        $pricesCollection = $clinic->prices()->with('service')->get();
+    // Автоматически определяем, какая переменная у нас есть: $clinic или $doctor
+    $currentModel = $clinic ?? $doctor ?? $specialist ?? null;
 
-        // Группировка
-        $grouped = $pricesCollection->groupBy(function($priceItem) {
-            return $priceItem->service->specialization ?? 'Общие услуги';
-        })->sortKeys();
+    if (!$currentModel) {
+        $pricesCollection = collect();
+    } else {
+        // Получаем цены для текущей модели (клиника, врач или специалист)
+        $pricesCollection = $currentModel->prices()->with('service')->get();
+    }
+
+    // Группировка (оставляем ваш код без изменений, но используем новую переменную)
+    $grouped = $pricesCollection->groupBy(function($priceItem) {
+        return $priceItem->service->specialization ?? 'Общие услуги';
+    })->sortKeys();
+    
+
 
         // Сортировка внутри групп
         foreach ($grouped as $key => $group) {

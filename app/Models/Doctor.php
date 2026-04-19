@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 
+
 class Doctor extends Model
 {
     use HasFactory;
@@ -69,9 +70,11 @@ public function services()
     return $this->belongsToMany(Service::class, 'doctor_service', 'doctor_id', 'service_id');
 }
 
+
 public function contacts()
 {
-    return $this->hasOne(DoctorContact::class);
+    // Убедись, что связь hasOne, а не hasMany
+    return $this->hasOne(DoctorContact::class, 'doctor_id');
 }
 
 

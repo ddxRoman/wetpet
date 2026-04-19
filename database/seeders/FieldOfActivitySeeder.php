@@ -67,7 +67,7 @@ class FieldOfActivitySeeder extends Seeder
             'Ветеринарная клиника'  => 'doctor',
             'Зооцентр'              => 'doctor',
             'Ветаптека'             => 'doctor',
-            'Зоомагазин'             => 'zooshop',
+            'Зоомагазин'            => 'zooshop',
             'Груминг салон'         => 'grooming',
             'Кинологический центр'  => 'cynology',
             'Фелинологический клуб' => 'felinology',
