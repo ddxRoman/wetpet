@@ -264,13 +264,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                     <p class="mt-2">{{ $review->content }}</p>
                                     @endif
 
-                                    @php
-$reviews = Review::where('reviewable_id', $doctor->id)
-    ->where('reviewable_type', \App\Models\doctor::class)
-    ->with(['user', 'photos', 'pet.animal']) // добавили pet и animal
-    ->latest('review_date')
-    ->get();
-@endphp
+
 
 
 @if($review->pet)

@@ -1,4 +1,4 @@
-@extends('layouts.clinics_catalog')
+@extends('layouts.catalog')
 @section('content')
 <div class="container header-specialist py-2">
     <h1 class="text-center">Специалисты
@@ -14,25 +14,25 @@
         </div>
     @else
 
-    {{-- Фильтр по специализациям (Теги) --}}
-<div class="specialization-filter mb-4 py-2" style="overflow-x: auto; text-align:center; white-space: nowrap; -webkit-overflow-scrolling: touch;">
-    <div class="d-inline-flex gap-2">
-        {{-- Кнопка "Все" --}}
-        <a href="{{ route('specialists.index') }}" 
-           class="btn btn-sm rounded-pill px-3 {{ empty($selectedSpecialization) ? 'btn-primary' : 'btn-outline-secondary' }}"
-           style="transition: all 0.3s;">
-            Все
-        </a>
+{{-- Фильтр по специализациям (Теги) --}}
+<div class="d-inline-flex gap-2">
+    {{-- Ссылка "Все" --}}
+    <a href="{{ route('specialists.index', ['city_id' => $currentCityId]) }}" 
+       class="btn btn-sm rounded-pill px-3 {{ empty($selectedSpecialization) ? 'btn-primary' : 'btn-outline-secondary' }}">
+        Все
+    </a>
 
-@foreach($specializations as $spec)
-    @if(!empty($spec))
-        <a href="{{ route('specialists.index', ['specialization' => $spec, 'city_id' => request('city_id')]) }}" 
-           class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}">
-            {{ $spec }}
-        </a>
-    @endif
-@endforeach
-    </div>
+    @foreach($specializations as $spec)
+        @if(!empty($spec))
+            <a href="{{ route('specialists.index', [
+                    'specialization' => $spec, 
+                    'city_id' => $currentCityId 
+                ]) }}" 
+               class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}">
+                {{ $spec }}
+            </a>
+        @endif
+    @endforeach
 </div>
 
 <style>
@@ -59,10 +59,9 @@ margin-bottom: 2% !important;
     }
 </style>
 
-        {{-- Если нет врачей для выбранного города (теперь используем $doctors напрямую) --}}
-        @if($doctors->isEmpty())
+  @if($doctors->isEmpty())
             <div class="alert alert-warning text-center">
-                Ветеринарные врачи в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
+                Специалисты в городе <strong> {{ $selectedCity }}</strong> не найдены. <br>
                 <button class="btn_add_clinic btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#addDoctorModal">

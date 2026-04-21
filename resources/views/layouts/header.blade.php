@@ -9,7 +9,6 @@
     <link rel="icon" href="{{ url('favicon.ico') }}" type="image/vnd.microsoft.icon">
 <meta name="robots" content="all"/>
 
-
 <!-- ТУТ НАДО БУДЕТ МАРШРУТЫ СДЕЛАТЬ НОРМАЛЬНО И СЕОшку к ним -->
 @if(request()->is('/'))
     {{-- СТРОГИЕ ДАННЫЕ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ --}}

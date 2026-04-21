@@ -1,4 +1,4 @@
-@extends('layouts.clinics_catalog')
+@extends('layouts.catalog')
 
 @section('title', 'Каталог ветеринарных клиник')
 

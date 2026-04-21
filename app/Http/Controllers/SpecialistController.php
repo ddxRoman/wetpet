@@ -15,33 +15,35 @@ class SpecialistController extends Controller
 {
 public function index(Request $request) 
 {
-    // Берем ID города из сессии (проверь ключ: city_id или selected_city_id)
+    // Проверяем все возможные ключи сессии
     $cityId = session('selected_city_id') ?? session('city_id');
 
-    // Если города в сессии нет, сразу отдаем пустую коллекцию и пустой город
+    // Если в сессии пусто, но ID пришел в ссылке (через фильтр) — берем его
+    if (!$cityId && $request->has('city_id')) {
+        $cityId = $request->city_id;
+    }
+
     if (!$cityId) {
         return view('pages.specialists.index', [
             'doctors' => collect(),
             'specializations' => collect(),
             'selectedCity' => null,
-            'selectedSpecialization' => null
+            'selectedSpecialization' => null,
+            'currentCityId' => null // Обязательно передаем, чтобы не было 500
         ]);
     }
 
-    // Если город есть — работаем дальше
     $city = \App\Models\City::find($cityId);
     
     $query = Specialist::with(['contacts', 'city', 'organization'])
         ->where('city_id', $cityId);
 
-    // Дополнительный фильтр по тегам (если нажат конкретный тег)
     if ($request->filled('specialization')) {
         $query->where('specialization', $request->specialization);
     }
 
     $specialists = $query->paginate(12);
     
-    // Теги берем только те, что реально есть в этом городе
     $allSpecializations = Specialist::where('city_id', $cityId)
         ->distinct()
         ->pluck('specialization');
@@ -51,6 +53,7 @@ public function index(Request $request)
         'specializations' => $allSpecializations,
         'selectedSpecialization' => $request->specialization,
         'selectedCity' => $city ? $city->name : null,
+        'currentCityId' => $cityId, // ПЕРЕДАЕМ ЭТУ ПЕРЕМЕННУЮ
     ]);
 }
 
@@ -159,7 +162,6 @@ public function edit(Specialist $specialist)
         ? Organization::where('city_id', $specialist->city_id)->get()
         : collect();
 
-    // ВАЖНО: Проверь, чтобы эти имена были в compact
     return view('account.tabs.specialist-profile', compact(
         'specialist',
         'doctorFields',

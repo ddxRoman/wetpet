@@ -65,6 +65,9 @@ public function store(Request $request)
     ]);
 
     // 🔹 Уведомление в Telegram (оставляем вашу логику)
+$url = route('doctors.show', $doctor->slug); 
+
+    // 🔹 Уведомление в Telegram
     try {
         Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
             'chat_id' => config('services.telegram.chat_id'),
@@ -74,7 +77,8 @@ public function store(Request $request)
                 "👤 <b>Имя:</b> {$doctor->name}\n" .
                 "📌 <b>Специализация:</b> {$doctor->specialization}\n" .
                 ($doctor->city?->name ? "🏙 <b>Город:</b> {$doctor->city->name}\n" : '') .
-                ($doctor->clinic?->name ? "🏥 <b>Клиника:</b> {$doctor->clinic->name}\n" : ''),
+                ($doctor->clinic?->name ? "🏥 <b>Клиника:</b> {$doctor->clinic->name}\n" : '') .
+                "\n🔗 <a href=\"{$url}\">Открыть профиль на сайте</a>",
         ]);
     } catch (\Throwable $e) {
         logger()->warning('Telegram notify failed', ['error' => $e->getMessage()]);

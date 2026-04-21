@@ -7,107 +7,82 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Models\City;
-use App\Http\Controllers\SpecialistCreateController;
+use Illuminate\Support\Facades\Auth;
 
 class DetectUserCity
 {
     public function handle(Request $request, Closure $next)
     {
-        logger()->info('=== DetectUserCity START ===');
+        // 1. ПРИОРИТЕТ №1: Проверяем, есть ли уже город в сессии (ручной выбор)
+        // Если пользователь уже выбрал город сам, мы ничего не перезаписываем.
+        if (session()->has('city_id')) {
+            return $next($request);
+        }
 
+        // 2. ПРИОРИТЕТ №2: Если в сессии пусто, проверяем авторизацию
+        // Если юзер залогинен, берем город из его профиля в БД
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->city_id) {
+                $city = City::find($user->city_id);
+                if ($city) {
+                    $this->setCityToSession($city, false); // false означает, что это не авто-определение
+                    return $next($request);
+                }
+            }
+        }
+
+        // 3. ПРИОРИТЕТ №3: Только если в сессии и БД пусто — идем в GeoIP
         try {
-            // STEP 1 — IP
             $ip = $request->ip();
-            logger()->info('STEP 1: IP', ['ip' => $ip]);
+            
+            // Пропускаем локальный IP, чтобы не тратить запросы
+            if ($ip === '127.0.0.1' || $ip === '::1') {
+                return $next($request);
+            }
 
-            // STEP 2 — ipwho.is
-            $response = Http::timeout(5)
+            $response = Http::timeout(3)
                 ->withHeaders(['User-Agent' => 'Mozilla/5.0'])
                 ->get("https://ipwho.is/{$ip}");
 
-            logger()->info('STEP 2: HTTP STATUS', [
-                'status' => $response->status(),
-            ]);
+            if ($response->ok()) {
+                $data = $response->json();
 
-            if (! $response->ok()) {
-                logger()->warning('STEP 2 FAILED: response not ok');
-                return $next($request);
-            }
+                if (($data['success'] ?? false) === true && !empty($data['city'])) {
+                    $cityName = trim($data['city']);
+                    $citySlug = Str::slug($cityName);
 
-            $data = $response->json();
+                    // Ищем город в нашей базе
+                    $city = City::where('slug', $citySlug)
+                                ->orWhereRaw('LOWER(name) = LOWER(?)', [$cityName])
+                                ->first();
 
-            logger()->info('STEP 3: RAW RESPONSE', $data);
-
-            if (($data['success'] ?? false) !== true) {
-                logger()->warning('STEP 3 FAILED: success !== true');
-                return $next($request);
-            }
-
-            if (empty($data['city'])) {
-                logger()->warning('STEP 3 FAILED: city empty');
-                return $next($request);
-            }
-
-            // STEP 4 — normalize
-            $cityName = trim($data['city']);
-            $citySlug = Str::slug($cityName);
-
-            logger()->info('STEP 4: NORMALIZED', [
-                'city_name' => $cityName,
-                'city_slug' => $citySlug,
-            ]);
-
-            // STEP 5 — DB by slug
-            logger()->info('STEP 5: DB search by slug');
-            $city = City::where('slug', $citySlug)->first();
-
-            if ($city) {
-                logger()->info('STEP 5 SUCCESS', [
-                    'id' => $city->id,
-                    'name' => $city->name,
-                ]);
-            } else {
-                logger()->warning('STEP 5 FAILED');
-            }
-
-            // STEP 6 — DB by name
-            if (! $city) {
-                logger()->info('STEP 6: DB search by name');
-                $city = City::whereRaw(
-                    'LOWER(name) = LOWER(?)',
-                    [$cityName]
-                )->first();
-
-                if ($city) {
-                    logger()->info('STEP 6 SUCCESS', [
-                        'id' => $city->id,
-                        'name' => $city->name,
-                    ]);
-                } else {
-                    logger()->warning('STEP 6 FAILED');
+                    if ($city) {
+                        // Записываем в сессию как авто-определенный
+                        $this->setCityToSession($city, true);
+                        
+                        // ВНИМАНИЕ: Мы НЕ вызываем $user->update(). 
+                        // Город остается только в сессии до тех пор, пока юзер сам не сменит его в ЛК.
+                    }
                 }
             }
-
-            // STEP 7 — session
-            if ($city) {
-                session([
-                    'city_id'   => $city->id,
-                    'city_name' => $city->name,
-                    'city_slug' => $city->slug,
-                    'city_auto' => true,
-                ]);
-
-                logger()->info('STEP 7: SESSION SAVED', session()->all());
-            }
-
         } catch (\Throwable $e) {
-            logger()->error('DetectUserCity EXCEPTION', [
-                'message' => $e->getMessage(),
-            ]);
+            logger()->error('DetectUserCity GeoIP Error: ' . $e->getMessage());
         }
 
-        logger()->info('=== DetectUserCity END ===');
-
         return $next($request);
+    }
+
+    /**
+     * Вспомогательный метод для записи данных в сессию
+     */
+    private function setCityToSession($city, $isAuto = false)
+    {
+        session([
+            'city_id'   => $city->id,
+            'city_name' => $city->name,
+            'city_slug' => $city->slug,
+            'city_auto' => $isAuto, // Метка, что город определен автоматически
+        ]);
     }
 }

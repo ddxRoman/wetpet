@@ -13,7 +13,7 @@ class ReviewController extends Controller
     /**
      * Сохранение нового отзыва
      */
-    public function store(Request $request)
+public function store(Request $request)
 {
     $validated = $request->validate([
         'reviewable_id' => 'required|integer',
@@ -25,13 +25,17 @@ class ReviewController extends Controller
         'pet_id' => 'nullable|integer',
         'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         'photos.*' => 'nullable|image|max:5120',
-        'redirect_slug'   => 'required|string',
+        'redirect_slug' => 'required|string',
     ]);
 
     $review = new Review();
     $review->user_id = Auth::id();
     $review->reviewable_id = $validated['reviewable_id'];
-    $review->reviewable_type = str_replace('\\\\', '\\', $validated['reviewable_type']);
+    
+    // Очищаем бэкслеши на случай двойного экранирования из формы
+    $rawType = str_replace('\\\\', '\\', $validated['reviewable_type']);
+    $review->reviewable_type = $rawType;
+    
     $review->rating = $validated['rating'];
     $review->liked = $validated['liked'] ?? null;
     $review->disliked = $validated['disliked'] ?? null;
@@ -40,10 +44,9 @@ class ReviewController extends Controller
     $review->review_date = now();
     $review->save();
 
-    // чек
+    // Загрузка чека
     if ($request->hasFile('receipt')) {
         $path = $request->file('receipt')->store('reviews/receipts', 'public');
-
         ReviewReceipt::create([
             'review_id' => $review->id,
             'path' => $path,
@@ -51,7 +54,7 @@ class ReviewController extends Controller
         ]);
     }
 
-    // фотографии
+    // Загрузка фотографий
     if ($request->hasFile('photos')) {
         foreach ($request->file('photos') as $photo) {
             $path = $photo->store('reviews/photos', 'public');
@@ -63,13 +66,14 @@ class ReviewController extends Controller
     }
 
     // === КОРРЕКТНЫЙ РЕДИРЕКТ ===
-    $model = $review->reviewable;
-    $route = $model instanceof \App\Models\Doctor
-        ? 'doctors.show'
-        : 'clinics.show';
+    // Используем динамическое определение роута на основе типа модели
+    // Сравниваем строку типа, чтобы избежать проблем с именованием
+    $isSpecialist = str_contains(strtolower($rawType), 'specialist') || str_contains(strtolower($rawType), 'doctor');
+    
+    $routeName = $isSpecialist ? 'specialists.show' : 'clinics.show';
 
     return redirect()
-        ->route($route, [$model->slug, 'tab' => 'reviews'])
+        ->route($routeName, $validated['redirect_slug'])
         ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
 }
 
@@ -144,9 +148,4 @@ public function destroy($id)
         ->route($route, $model->slug)
         ->with('success', 'Отзыв удалён');
 }
-
-
-
-
-
 }
