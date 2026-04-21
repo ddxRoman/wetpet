@@ -16,7 +16,7 @@
         Пожалуйста, выберите город и обновите страницу — список клиник будет отображён только для выбранного города.
     </div>
     @else
-    <div class="row g-4">
+    <div class="row g-4" id="clinics-grid">
 
         @if($clinics->isEmpty())
         <div class="col-12">
@@ -44,7 +44,7 @@
             $ratingCounts = $reviewsCollection->groupBy('rating')->map->count();
         @endphp
 
-        <div class="col-lg-3 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12 clinic-item">
             <a href="{{ route('clinics.show', $clinic->slug) }}" title="Перейти в карточку клиники" class="text-decoration-none text-reset">
                 <div class="card h-100 shadow-sm hover-shadow position-relative transition">
                     {{-- Rating badge --}}
@@ -83,8 +83,20 @@
             </a>
         </div>
         @endforeach
+
+        {{-- Кнопка пагинации --}}
+        @if($clinics->hasMorePages())
+        <div class="col-12 text-center mt-5 mb-4" id="load-more-container">
+            <button id="load-more" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm" 
+                    data-url="{{ $clinics->nextPageUrl() }}">
+                Показать еще
+            </button>
+        </div>
+        @endif
+
         @endif
     </div>
+    
     @endif
 </div>
 
@@ -94,5 +106,7 @@
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
     });
+
+    
 </script>
 @endsection

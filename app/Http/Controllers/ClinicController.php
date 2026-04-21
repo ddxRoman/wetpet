@@ -12,35 +12,37 @@ class ClinicController extends Controller
     /**
      * Список всех клиник с сортировкой по рейтингу
      */
-    public function index(Request $request)
-    {
-        $user = auth()->user();
+public function index(Request $request)
+{
+    $user = auth()->user();
 
-        if ($user && $user->city_id) {
-            $city = City::find($user->city_id);
-            $selectedCity = $city?->name;
-        } else {
-            $selectedCity = session('city_name');
-        }
-
-        // Подгружаем средний рейтинг сразу из базы для сортировки
-        $clinics = Clinic::withAvg('reviews', 'rating')
-            ->when($selectedCity, function ($query, $city) {
-                $query->whereRaw(
-                    'LOWER(TRIM(city)) = LOWER(TRIM(?))',
-                    [$city]
-                );
-            })
-            ->orderByDesc('reviews_avg_rating') // Самые рейтинговые сверху
-            ->get();
-
-        // 🔴 ВАЖНО: если AJAX — возвращаем ТОЛЬКО список
-        if ($request->ajax()) {
-            return view('pages.clinics.partials.list', compact('clinics'))->render();
-        }
-
-        return view('pages.clinics.index', compact('clinics', 'selectedCity'));
+    // Определяем город (ваша текущая логика)
+    if ($user && $user->city_id) {
+        $city = City::find($user->city_id);
+        $selectedCity = $city?->name;
+    } else {
+        $selectedCity = session('city_name');
     }
+
+    // Включаем пагинацию
+    $clinics = Clinic::withAvg('reviews', 'rating')
+        ->when($selectedCity, function ($query, $city) {
+            $query->whereRaw(
+                'LOWER(TRIM(city)) = LOWER(TRIM(?))',
+                [$city]
+            );
+        })
+        ->orderByDesc('reviews_avg_rating')
+        ->paginate(16); // Было ->get()
+
+// Если это AJAX (нажатие "Показать еще")
+if ($request->ajax()) {
+    // Возвращаем ту же вьюху index, JS сам вырежет из неё новые карточки и кнопку
+    return view('pages.clinics.index', compact('clinics', 'selectedCity'));
+}
+
+    return view('pages.clinics.index', compact('clinics', 'selectedCity'));
+}
 
     /**
      * Просмотр одной клиники

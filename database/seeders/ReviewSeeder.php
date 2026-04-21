@@ -46,7 +46,6 @@ $reviews = [
         'pet_id' => null,
         'receipt_path' => null,
     ],
-
 ];
 
         foreach ($reviews as $review) {

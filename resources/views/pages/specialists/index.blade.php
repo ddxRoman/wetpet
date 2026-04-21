@@ -1,5 +1,7 @@
 @extends('layouts.catalog')
 @section('content')
+
+
 <div class="container header-specialist py-2">
     <h1 class="text-center">Специалисты
         @if(!empty($selectedCity))
@@ -15,7 +17,7 @@
     @else
 
 {{-- Фильтр по специализациям (Теги) --}}
-<div class="d-inline-flex gap-2">
+<div class="d-inline-flex gap-2 navbar">
     {{-- Ссылка "Все" --}}
     <a href="{{ route('specialists.index', ['city_id' => $currentCityId]) }}" 
        class="btn btn-sm rounded-pill px-3 {{ empty($selectedSpecialization) ? 'btn-primary' : 'btn-outline-secondary' }}">
@@ -151,6 +153,20 @@ margin-bottom: 2% !important;
 
             </div>
         </div>
+
+        {{-- Кнопка "Показать еще" --}}
+@if($doctors->hasMorePages())
+    <div class="text-center mt-5 mb-5" id="load-more-container">
+        <button id="load-more" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm" data-url="{{ $doctors->nextPageUrl() }}">
+            Показать еще
+        </button>
+    </div>
+@endif
+
+{{-- Скрытый контейнер для стандартной пагинации (нужен для SEO) --}}
+<div class="d-none">
+    {{ $doctors->links() }}
+</div>
 
         @endif {{-- end empty block --}}
 

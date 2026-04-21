@@ -16,16 +16,16 @@ class ReviewController extends Controller
 public function store(Request $request)
 {
     $validated = $request->validate([
-        'reviewable_id' => 'required|integer',
+        'reviewable_id'   => 'required|integer',
         'reviewable_type' => 'required|string',
-        'rating' => 'required|integer|min:1|max:5',
-        'liked' => 'nullable|string|max:255',
-        'disliked' => 'nullable|string|max:255',
-        'content' => 'nullable|string|max:2000',
-        'pet_id' => 'nullable|integer',
-        'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-        'photos.*' => 'nullable|image|max:5120',
-        'redirect_slug' => 'required|string',
+        'rating'          => 'required|integer|min:1|max:5',
+        'liked'           => 'nullable|string|max:255',
+        'disliked'        => 'nullable|string|max:255',
+        'content'         => 'nullable|string|max:2000',
+        'pet_id'          => 'nullable|integer',
+        'receipt'         => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+        'photos.*'        => 'nullable|image|max:5120',
+        'redirect_slug'   => 'required|string',
     ]);
 
     $review = new Review();
@@ -70,12 +70,19 @@ public function store(Request $request)
     // Сравниваем строку типа, чтобы избежать проблем с именованием
     $isSpecialist = str_contains(strtolower($rawType), 'specialist') || str_contains(strtolower($rawType), 'doctor');
     
-    $routeName = $isSpecialist ? 'specialists.show' : 'clinics.show';
+    $routeName = 'clinics.show'; // По умолчанию
+    
+    if (str_contains($rawType, 'Specialist')) {
+        $routeName = 'specialists.show';
+    } elseif (str_contains($rawType, 'Doctor')) {
+        $routeName = 'doctors.show';
+    }
 
     return redirect()
-        ->route($routeName, $validated['redirect_slug'])
+        ->route($routeName, [$validated['redirect_slug'], 'tab' => 'reviews'])
         ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
 }
+
 
 
     /**
@@ -137,15 +144,20 @@ public function destroy($id)
         abort(403);
     }
 
-    $model = $review->reviewable;
+    $model = $review->reviewable; // Ларавель сам поймет, это Doctor или Specialist
+    $type = $review->reviewable_type;
     $review->delete();
 
-    $route = $model instanceof \App\Models\Doctor
-        ? 'doctors.show'
-        : 'clinics.show';
+    // Определяем роут на основе типа удаленного отзыва
+    $routeName = 'clinics.show';
+    if (str_contains($type, 'Specialist')) {
+        $routeName = 'specialists.show';
+    } elseif (str_contains($type, 'Doctor')) {
+        $routeName = 'doctors.show';
+    }
 
     return redirect()
-        ->route($route, $model->slug)
+        ->route($routeName, $model->slug)
         ->with('success', 'Отзыв удалён');
 }
 }

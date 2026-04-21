@@ -108,6 +108,21 @@
             </div>
         </div>
 
+        {{-- Кнопка "Показать еще" --}}
+        @if($doctors->hasMorePages())
+            <div class="text-center mt-5 mb-5" id="load-more-container">
+                <button id="load-more" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm" 
+                        data-url="{{ $doctors->nextPageUrl() }}">
+                    Показать еще
+                </button>
+            </div>
+        @endif
+
+        {{-- Скрытая стандартная пагинация для SEO --}}
+        <div class="d-none">
+            {{ $doctors->links() }}
+        </div>
+
         @endif {{-- end empty block --}}
 
     @endif {{-- end city check --}}

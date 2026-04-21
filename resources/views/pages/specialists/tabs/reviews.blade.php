@@ -1,30 +1,26 @@
-
 @php
     use App\Models\Review;
     use App\Models\Pet;
 
-
     $user = $user ?? auth()->user();
-@endphp
 
+    // 1. Определяем целевую модель (универсальность)
+    $targetModel = $doctor ?? $specialist; 
 
-@php
-    $user = $user ?? auth()->user();
-@endphp
+    // 2. Получаем точный класс (Doctor или Specialist)
+    $currentType = get_class($targetModel); 
 
+    // 3. Загружаем отзывы именно для ЭТОЙ модели
+    $reviews = Review::where('reviewable_id', $targetModel->id)
+        ->where('reviewable_type', $currentType)
+        ->with(['user', 'photos', 'pet.animal'])
+        ->latest('review_date')
+        ->get();
 
-{{-- Отзывы --}}
-                            @php
-$reviews = Review::where('reviewable_id', $doctor->id)
-    ->where('reviewable_type', 'App\Models\Doctor') // Указываем строку точно как в базе
-    ->with(['user', 'photos', 'pet.animal'])
-    ->latest('review_date')
-    ->get();
-
-// Получаем питомцев с данными из таблицы animals
-$pets = Pet::where('user_id', auth()->id())
-    ->with('animal') // подгружаем связь
-    ->get();
+    // 4. Получаем питомцев
+    $pets = Pet::where('user_id', auth()->id())
+        ->with('animal')
+        ->get();
 @endphp
 
 {{-- 📝 Кнопка открытия / закрытия формы --}}
@@ -68,10 +64,10 @@ $pets = Pet::where('user_id', auth()->id())
                     </div>
                 @endif
 
-<input type="hidden" name="reviewable_id" value="{{ $doctor->id }}">
-<input type="hidden" name="redirect_slug" value="{{ $doctor->slug }}">
-
-<input type="hidden" name="reviewable_type" value="{{ \App\Models\Doctor::class }}">
+{{-- Используем $targetModel вместо $doctor --}}
+<input type="hidden" name="reviewable_id" value="{{ $targetModel->id }}">
+<input type="hidden" name="redirect_slug" value="{{ $targetModel->slug }}">
+<input type="hidden" name="reviewable_type" value="{{ get_class($targetModel) }}">
 
 
 {{-- ⭐ Оценка --}}

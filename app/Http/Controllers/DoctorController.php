@@ -105,39 +105,38 @@ $url = route('doctors.show', $doctor->slug);
 /**
      * 🔹 Список докторов с сортировкой по рейтингу
      */
-    public function index(Request $request)
-    {
-        $user = auth()->user();
-        $cityId = null;
-        $selectedCity = null;
+public function index(Request $request)
+{
+    $user = auth()->user();
+    $cityId = null;
+    $selectedCity = null;
 
-        if ($request->filled('city_id')) {
-            $cityId = (int) $request->get('city_id');
-
-            if (!$user) {
-                session(['city_id' => $cityId]);
-            }
-        } elseif ($user && $user->city_id) {
-            $cityId = $user->city_id;
-        } else {
-            $cityId = session('city_id');
+    if ($request->filled('city_id')) {
+        $cityId = (int) $request->get('city_id');
+        if (!$user) {
+            session(['city_id' => $cityId]);
         }
-
-        if ($cityId) {
-            $selectedCity = City::find($cityId)?->name;
-        }
-
-        // Подгружаем средний рейтинг и сортируем
-        $doctors = Doctor::withAvg('reviews', 'rating')
-            ->when($cityId, function ($query) use ($cityId) {
-                $query->where('city_id', $cityId);
-            })
-            ->orderByDesc('reviews_avg_rating') // Топ по рейтингу в начале
-            ->orderBy('name') // Если рейтинг одинаковый — по алфавиту
-            ->get();
-
-        return view('pages.doctors.index', compact('doctors', 'selectedCity'));
+    } elseif ($user && $user->city_id) {
+        $cityId = $user->city_id;
+    } else {
+        $cityId = session('city_id');
     }
+
+    if ($cityId) {
+        $selectedCity = City::find($cityId)?->name;
+    }
+
+    // Заменяем ->get() на ->paginate(15)
+    $doctors = Doctor::withAvg('reviews', 'rating')
+        ->when($cityId, function ($query) use ($cityId) {
+            $query->where('city_id', $cityId);
+        })
+        ->orderByDesc('reviews_avg_rating') 
+        ->orderBy('name')
+        ->paginate(16); // Теперь здесь пагинация
+
+    return view('pages.doctors.index', compact('doctors', 'selectedCity'));
+}
 
     /**
      * 🔹 Доктора на главную

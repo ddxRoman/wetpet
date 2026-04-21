@@ -42,7 +42,7 @@ public function index(Request $request)
         $query->where('specialization', $request->specialization);
     }
 
-    $specialists = $query->paginate(12);
+    $specialists = $query->paginate(16);
     
     $allSpecializations = Specialist::where('city_id', $cityId)
         ->distinct()
