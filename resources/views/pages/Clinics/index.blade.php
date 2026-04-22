@@ -52,11 +52,7 @@
                         data-bs-toggle="tooltip"
                         data-bs-html="true"
                         title="
-                            Всего отзывов: {{ $reviewCount }}
-                            @for ($rating = 5; $rating >= 1; $rating--)
-                                {{ str_repeat('⭐', $rating) }} — {{ $ratingCounts[$rating] ?? 0 }}
-                            @endfor
-                        ">
+                            Всего отзывов: {{ $reviewCount }}">
                         ⭐ <span class="ms-1 fw-semibold">{{ $avgRating }}</span>
                     </div>
 

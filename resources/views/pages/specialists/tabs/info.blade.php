@@ -47,19 +47,27 @@
 
 <table class="doctor-info-table">
     <tbody>
+        {{-- 1. Вывод Адреса (если заполнены street или house) --}}
+        @if(!empty($doctor->street) || !empty($doctor->house))
+        <tr>
+            <td>Адрес:</td>
+            <td>
+                {{ $doctor->street }}{{ !empty($doctor->house) ? ', д.' . $doctor->house : '' }}
+            </td>
+        </tr>
+        @endif
+
+        @if($doctor->organization)
         <tr>
             <td>Клиника:</td>
             <td>
-                @if($doctor->clinic)
-                    <a href="{{ route('clinics.show', $doctor->clinic->slug) }}" title="Перейти на страницу клиники" class="text-decoration-none">
-                        {{ $doctor->clinic->name }}
-                        <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
-                    </a>
-                @else
-                    —
-                @endif
+                <a href="{{ route('organizations.show', $doctor->organization->slug) }}" title="Перейти на страницу клиники" class="text-decoration-none">
+                    {{ $doctor->organization->name }}
+                    <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
+                </a>
             </td>
         </tr>
+        @endif
 
         <tr>
             <td>Город:</td>
@@ -83,24 +91,23 @@
             </td>
         </tr>
 
-        
-                <tr>
-                    <!-- <td>Образование:</td>
-                    <td style="color: red;"> Надо сделать проверку, и выводить образование если указано</td> -->
-                </tr>
-                        @if($doctor->exotic_animals == 'Да')
+        {{-- 3. Специалист по экзотам --}}
+        @if($doctor->exotic_animals == 'Да')
         <tr>
              <td colspan="2">
                 <span class="exotic-badge">Специалист по экзотическим животным</span>
             </td>
         </tr>
         @endif
-                <tr>
-                    <td colspan="2"> {{ $doctor->description }}</td>
-                </tr>
 
-
-
-
+        {{-- 4. Описание --}}
+        @if(!empty($doctor->description))
+        <tr>
+            <td colspan="2" class="pt-3">
+                <div class="text-muted small mb-1">О себе:</div>
+                {{ $doctor->description }}
+            </td>
+        </tr>
+        @endif
     </tbody>
 </table>

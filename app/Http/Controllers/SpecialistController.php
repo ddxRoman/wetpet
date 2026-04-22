@@ -259,12 +259,14 @@ public function update(Request $request, Specialist $specialist)
 
 public function show($slug)
 {
-    // Ищем специалиста по slug с подгрузкой всех связей
+    // Ищем специалиста по slug с подгрузкой связей и АГРЕГАТНЫМИ данными
     $specialist = Specialist::with(['contacts', 'city', 'organization'])
+        ->withCount('reviews') // Это создаст переменную $doctor->reviews_count
+        ->withAvg('reviews', 'rating') // Это создаст переменную $doctor->reviews_avg_rating
         ->where('slug', $slug)
         ->firstOrFail();
 
-    // Передаем в шаблон как $doctor для совместимости с твоим кодом
+    // Передаем в шаблон как $doctor
     return view('pages.specialists.show', ['doctor' => $specialist]);
 }
 

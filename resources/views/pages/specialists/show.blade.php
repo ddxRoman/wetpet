@@ -46,26 +46,36 @@
                     <span class="badge bg-warning text-dark" title="Работает с экзотическими животными">🦎</span>
                 @endif
 
-                {{-- Рейтинг --}}
-                @php
-                    $reviewCount = $doctor->reviews_count ?? 0; // Или используй связь reviews
-                    $averageRating = $doctor->reviews_avg_rating ?? 0;
-                @endphp
+{{-- Рейтинг --}}
+@php
+    $reviewCount = $doctor->reviews_count;
+    // Округляем средний рейтинг до 1 знака после запятой
+    $averageRating = round($doctor->reviews_avg_rating, 1);
+@endphp
 
-                <div class="rating-badge-container d-flex align-items-center px-2 py-1 rounded shadow-sm" style="background-color: #fff8e1; border: 1px solid #ffe082;">
-                    <div class="d-flex align-items-center me-2">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <img src="{{ asset('storage/icon/button/' . ($i <= round($averageRating) ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
-                                 width="18" alt="звезда">
-                        @endfor
-                    </div>
-                    @if($reviewCount > 0)
-                        <span class="fw-bold text-dark me-1" style="font-size: 0.9rem;">{{ number_format($averageRating, 1) }}</span>
-                        <span class="text-muted small">({{ $reviewCount }})</span>
-                    @else
-                        <span class="text-muted small">Нет отзывов</span>
-                    @endif
-                </div>
+<div class="rating-badge-container d-flex align-items-center px-2 py-1 rounded shadow-sm" 
+     style="background-color: #fff8e1; border: 1px solid #ffe082;">
+    
+    <div class="d-flex align-items-center me-2">
+        @for ($i = 1; $i <= 5; $i++)
+            {{-- Если текущая звезда меньше или равна рейтингу — рисуем активную --}}
+            <img src="{{ asset('storage/icon/button/' . ($i <= round($averageRating) ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
+                 width="18" 
+                 alt="звезда">
+        @endfor
+    </div>
+
+    @if($reviewCount > 0)
+        <span class="fw-bold text-dark me-1" style="font-size: 0.9rem;">
+            {{ number_format($averageRating, 1) }}
+        </span>
+        <span class="text-muted small">
+            ({{ $reviewCount }} {{ trans_choice('отзыв|отзыва|отзывов', $reviewCount, [], 'ru') }})
+        </span>
+    @else
+        <span class="text-muted small">Нет отзывов</span>
+    @endif
+</div>
             </div>
 
             <div class="text-muted">
