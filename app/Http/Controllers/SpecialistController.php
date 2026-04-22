@@ -13,47 +13,56 @@ use Illuminate\Support\Str;
 
 class SpecialistController extends Controller
 {
-public function index(Request $request) 
+public function index(Request $request)
 {
-    // Проверяем все возможные ключи сессии
-    $cityId = session('selected_city_id') ?? session('city_id');
+    $user = auth()->user();
+    $cityId = null;
+    $selectedCity = null;
 
-    // Если в сессии пусто, но ID пришел в ссылке (через фильтр) — берем его
-    if (!$cityId && $request->has('city_id')) {
-        $cityId = $request->city_id;
+    // 1. Определение города
+    if ($request->filled('city_id')) {
+        $cityId = (int) $request->get('city_id');
+        if (!$user) { session(['city_id' => $cityId]); }
+    } elseif ($user && $user->city_id) {
+        $cityId = $user->city_id;
+    } else {
+        $cityId = session('city_id');
     }
 
-    if (!$cityId) {
-        return view('pages.specialists.index', [
-            'doctors' => collect(),
-            'specializations' => collect(),
-            'selectedCity' => null,
-            'selectedSpecialization' => null,
-            'currentCityId' => null // Обязательно передаем, чтобы не было 500
-        ]);
+    if ($cityId) { 
+        $selectedCity = City::find($cityId)?->name; 
     }
 
-    $city = \App\Models\City::find($cityId);
-    
-    $query = Specialist::with(['contacts', 'city', 'organization'])
-        ->where('city_id', $cityId);
+    $selectedSpecialization = $request->get('specialization');
 
-    if ($request->filled('specialization')) {
-        $query->where('specialization', $request->specialization);
-    }
+    // 2. ТЕГИ: Берем только те, что относятся к специалистам, а не к врачам
+    $specializations = FieldOfActivity::query()
+        ->where('type', 'specialist') 
+        ->where('activity', '!=', 'doctor') // Исключаем врачебные специальности
+        ->orderBy('name') 
+        ->pluck('name'); 
 
-    $specialists = $query->paginate(16);
-    
-    $allSpecializations = Specialist::where('city_id', $cityId)
-        ->distinct()
-        ->pluck('specialization');
+    // 3. ЗАПРОС: Фильтруем список специалистов
+    $items = Specialist::withAvg('reviews', 'rating')
+        ->when($cityId, function ($q) use ($cityId) {
+            $q->where('city_id', $cityId);
+        })
+        ->when($selectedSpecialization, function ($q) use ($selectedSpecialization) {
+            $searchTerm = mb_substr($selectedSpecialization, 0, -3);
+            if (mb_strlen($searchTerm) < 3) { $searchTerm = $selectedSpecialization; }
+            $q->where('specialization', 'LIKE', '%' . $searchTerm . '%');
+        })
+        ->orderByDesc('reviews_avg_rating') 
+        ->orderBy('name')
+        ->paginate(16)
+        ->withQueryString();
 
     return view('pages.specialists.index', [
-        'doctors' => $specialists,
-        'specializations' => $allSpecializations,
-        'selectedSpecialization' => $request->specialization,
-        'selectedCity' => $city ? $city->name : null,
-        'currentCityId' => $cityId, // ПЕРЕДАЕМ ЭТУ ПЕРЕМЕННУЮ
+        'specialists' => $items, 
+        'selectedCity' => $selectedCity,
+        'specializations' => $specializations, // Теперь тут только нужные теги
+        'selectedSpecialization' => $selectedSpecialization,
+        'currentCityId' => $cityId
     ]);
 }
 
