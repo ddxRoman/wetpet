@@ -1,9 +1,8 @@
 @extends('layouts.catalog')
+
 @section('content')
-
-
-<div class="container header-specialist py-2">
-    <h1 class="text-center">Специалисты
+<div class="container py-5">
+    <h1 class="mb-4 text-center">Каталог ветеринарных врачей
         @if(!empty($selectedCity))
             <small class="text-muted d-block fs-6"> {{ $selectedCity }}</small>
         @endif
@@ -16,89 +15,87 @@
         </div>
     @else
 
-{{-- Фильтр по специализациям (Теги) --}}
-<div class="d-inline-flex gap-2 navbar">
-    {{-- Ссылка "Все" --}}
-    <a href="{{ route('specialists.index', ['city_id' => $currentCityId]) }}" 
-       class="btn btn-sm rounded-pill px-3 {{ empty($selectedSpecialization) ? 'btn-primary' : 'btn-outline-secondary' }}">
-        Все
-    </a>
+        {{-- БЛОК ТЕГОВ (Фильтр по специализациям) --}}
+        <div class="specialization-filter-wrapper mb-4">
+            <div class="d-inline-flex gap-2 specialization-filter pb-2">
+                {{-- Ссылка "Все" --}}
+                <a href="{{ route('doctors.index', ['city_id' => $currentCityId ?? request('city_id')]) }}" 
+                   class="btn btn-sm rounded-pill px-3 {{ empty($selectedSpecialization) ? 'btn-primary' : 'btn-outline-secondary' }}">
+                    Все
+                </a>
 
-    @foreach($specializations as $spec)
-        @if(!empty($spec))
-            <a href="{{ route('specialists.index', [
-                    'specialization' => $spec, 
-                    'city_id' => $currentCityId 
-                ]) }}" 
-               class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}">
-                {{ $spec }}
-            </a>
-        @endif
-    @endforeach
-</div>
+                @foreach($specializations as $spec)
+                    @if(!empty($spec))
+                        <a href="{{ route('doctors.index', [
+                                'specialization' => $spec, 
+                                'city_id' => $currentCityId ?? request('city_id')
+                            ]) }}" 
+                           class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}">
+                            {{ $spec }}
+                        </a>
+                    @endif
+                @endforeach
+            </div>
+        </div>
 
-<style>
-    /* Стили для скрытия скроллбара, но сохранения прокрутки */
-    .specialization-filter::-webkit-scrollbar {
-        display: none;
-    }
-    .specialization-filter {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-    .btn-outline-secondary {
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
-        color: #333;
-    }
-    .btn-outline-secondary:hover {
-        background-color: #e9ecef;
-        color: #000;
-        border-color: #adb5bd;
-    }
-    .header-search{
-margin-bottom: 2% !important;
-    }
-</style>
+        <style>
+            /* Стили для горизонтального скролла тегов на мобилках */
+            .specialization-filter-wrapper {
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .specialization-filter::-webkit-scrollbar {
+                display: none; /* Скрываем скроллбар */
+            }
+            .specialization-filter {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .btn-outline-secondary {
+                background-color: #f8f9fa;
+                border-color: #dee2e6;
+                color: #333;
+            }
+            .btn-outline-secondary:hover {
+                background-color: #e9ecef;
+                color: #000;
+                border-color: #adb5bd;
+            }
+        </style>
 
-  @if($doctors->isEmpty())
+        @if($doctors->isEmpty())
             <div class="alert alert-warning text-center">
-                Специалисты в городе <strong> {{ $selectedCity }}</strong> не найдены. <br>
+                Ветеринарные врачи в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
                 <button class="btn_add_clinic btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#addDoctorModal">
-                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить Специалиста">
-                    Добавить Специалиста
+                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить ветеринара">
+                    Добавить ветеринара
                 </button>
             </div>
         @else
 
         <div class="doctors-list">
-            <div class="row g-4">
+            <div class="row g-4" id="clinics-grid"> {{-- Добавил ID для работы твоего JS пагинации --}}
 
                 @foreach ($doctors as $doctor)
-@php
-    // Временно создаем пустую коллекцию, пока не настроены отзывы для врачей
-    $reviewsCollection = collect(); 
-    $avgRating = '0.0';
-    $reviewCount = 0;
-    $ratingCounts = collect();
-@endphp
+                    @php
+                        $reviewsCollection = $doctor->reviews ?? collect();
+                        $avgRating = $doctor->reviews_avg_rating ? number_format($doctor->reviews_avg_rating, 1) : '0.0';
+                        $reviewCount = $reviewsCollection->count();
+                        $ratingCounts = $reviewsCollection->groupBy('rating')->map->count();
+                    @endphp
 
-                    <div class="col-lg-3 col-md-4 col-12">
-                        <a href="{{ route('specialists.show', $doctor->slug) }}" title="Открыть карточку доктора" class="text-decoration-none text-reset">
+                    <div class="col-lg-3 col-md-4 col-12 doctor-item"> {{-- Класс для JS --}}
+                        <a href="{{ route('doctors.show', $doctor->slug) }}" title="Открыть карточку доктора" class="text-decoration-none text-reset">
                             <div class="card h-100 shadow-sm hover-shadow position-relative transition">
 
                                 {{-- ⭐ Рейтинг --}}
                                 <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"
                                      data-bs-toggle="tooltip"
                                      data-bs-html="true"
-                                     title="
-                                        Всего отзывов: {{ $reviewCount }}
-                                        @for ($r = 5; $r >= 1; $r--)
-                                            ⭐ {{ $r }} — {{ $ratingCounts[$r] ?? 0 }} отзыв{{ ($ratingCounts[$r] ?? 0) == 1 ? '' : 'ов' }}
-                                        @endfor
-                                     ">
+                                     title="Всего отзывов: {{ $reviewCount }}">
                                     ⭐ <span class="ms-1 fw-semibold">{{ $avgRating }}</span>
                                 </div>
 
@@ -108,7 +105,7 @@ margin-bottom: 2% !important;
                                          style="width:34px;height:34px;font-size:18px; z-index: 20;">
                                         <img src="{{ asset('storage/icon/stars/exotic.png') }}"
                                             alt="Экзотические животные"
-                                            title="Данный специалист работает с экзотическими животными, рептилиями, амфибиями, птицами, грызунами, зайцеобразными и мелкими млекопитающими"
+                                            title="Работает с экзотами"
                                             style="width:32px; height:32px; border-radius: 25px;">
                                     </div>
                                 @endif
@@ -123,26 +120,12 @@ margin-bottom: 2% !important;
 
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $doctor->name }}</h5>
-
-                                    @if($doctor->exotic_animals == 'Да' || $doctor->exotic_animals == 1)
-                                        <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">
-                                            Экзотические животные
-                                        </span>
-                                    @endif
-
                                     <p class="card-text mb-1 mt-2">
                                         <strong>Специализация:</strong> {{ $doctor->specialization }}
                                     </p>
-
                                     @if(!empty($doctor->city))
                                         <p class="card-text mb-1">
                                             <strong>Город:</strong> {{ $doctor->city->name }}
-                                        </p>
-                                    @endif
-
-                                    @if(!empty($doctor->experience))
-                                        <p class="text-muted mb-0">
-                                            <strong>Стаж:</strong> {{ $doctor->experience }}
                                         </p>
                                     @endif
                                 </div>
@@ -150,38 +133,23 @@ margin-bottom: 2% !important;
                         </a>
                     </div>
                 @endforeach
-
             </div>
         </div>
 
-        {{-- Кнопка "Показать еще" --}}
-@if($doctors->hasMorePages())
-    <div class="text-center mt-5 mb-5" id="load-more-container">
-        <button id="load-more" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm" data-url="{{ $doctors->nextPageUrl() }}">
-            Показать еще
-        </button>
-    </div>
-@endif
-
-{{-- Скрытый контейнер для стандартной пагинации (нужен для SEO) --}}
-<div class="d-none">
-    {{ $doctors->links() }}
-</div>
+        @if($doctors->hasMorePages())
+            <div class="text-center mt-5 mb-5" id="load-more-container">
+                <button id="load-more" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm" 
+                        data-url="{{ $doctors->nextPageUrl() }}">
+                    Показать еще
+                </button>
+            </div>
+        @endif
 
         @endif {{-- end empty block --}}
-
     @endif {{-- end city check --}}
 </div>
 
 @section('modals')
     @include('account.modals.modal-add-specialist', ['cities' => $cities ?? []])
 @endsection
-
-{{-- Tooltip init --}}
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
-});
-</script>
 @endsection

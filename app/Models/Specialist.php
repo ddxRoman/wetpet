@@ -71,10 +71,10 @@ public function prices()
     return $this->morphMany(Price::class, 'priceable');
 }
 
+// В модели Specialist.php (и в Doctor.php)
 public function reviews()
 {
-    // Укажите правильный класс модели отзывов и внешний ключ, если он отличается
-    return $this->hasMany(Review::class); 
+    return $this->morphMany(Review::class, 'reviewable');
 }
 
 /**

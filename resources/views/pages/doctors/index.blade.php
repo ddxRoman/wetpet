@@ -14,7 +14,29 @@
         </div>
     @else
 
-        {{-- Если нет врачей для выбранного города (теперь используем $doctors напрямую) --}}
+        {{-- Фильтр по специализациям (Теги) --}}
+<div class="specialization-filter-container mb-4">
+    <div class="scroll-wrapper">
+        <div class="specialization-filter">
+            {{-- Ссылка "Все" --}}
+            <a href="{{ route('doctors.index', ['city_id' => request('city_id')]) }}" 
+               class="btn btn-sm rounded-pill px-3 {{ empty($selectedSpecialization) ? 'btn-primary' : 'btn-outline-secondary' }}">
+                Все
+            </a>
+
+            @foreach($specializations as $spec)
+                @if(!empty($spec))
+                    <a href="{{ route('doctors.index', ['specialization' => $spec, 'city_id' => request('city_id')]) }}" 
+                       class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}">
+                        {{ $spec }}
+                    </a>
+                @endif
+            @endforeach
+        </div>
+    </div>
+</div>
+
+        {{-- Если нет врачей для выбранного города --}}
         @if($doctors->isEmpty())
             <div class="alert alert-warning text-center">
                 Ветеринарные врачи в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
@@ -29,11 +51,9 @@
 
         <div class="doctors-list">
             <div class="row g-4">
-
                 @foreach ($doctors as $doctor)
                     @php
                         $reviewsCollection = $doctor->reviews ?? collect();
-                        // Используем системное поле reviews_avg_rating из контроллера
                         $avgRating = $doctor->reviews_avg_rating ? number_format($doctor->reviews_avg_rating, 1) : '0.0';
                         $reviewCount = $reviewsCollection->count();
                         $ratingCounts = $reviewsCollection->groupBy('rating')->map->count();
@@ -47,12 +67,7 @@
                                 <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"
                                      data-bs-toggle="tooltip"
                                      data-bs-html="true"
-                                     title="
-                                        Всего отзывов: {{ $reviewCount }}
-                                        @for ($r = 5; $r >= 1; $r--)
-                                            ⭐ {{ $r }} — {{ $ratingCounts[$r] ?? 0 }} отзыв{{ ($ratingCounts[$r] ?? 0) == 1 ? '' : 'ов' }}
-                                        @endfor
-                                     ">
+                                     title="Всего отзывов: {{ $reviewCount }}">
                                     ⭐ <span class="ms-1 fw-semibold">{{ $avgRating }}</span>
                                 </div>
 
@@ -62,7 +77,7 @@
                                          style="width:34px;height:34px;font-size:18px; z-index: 20;">
                                         <img src="{{ asset('storage/icon/stars/exotic.png') }}"
                                             alt="Экзотические животные"
-                                            title="Данный специалист работает с экзотическими животными, рептилиями, амфибиями, птицами, грызунами, зайцеобразными и мелкими млекопитающими"
+                                            title="Данный специалист работает с экзотическими животными"
                                             style="width:32px; height:32px; border-radius: 25px;">
                                     </div>
                                 @endif
@@ -79,12 +94,12 @@
                                     <h5 class="card-title">{{ $doctor->name }}</h5>
 
                                     @if($doctor->exotic_animals == 'Да' || $doctor->exotic_animals == 1)
-                                        <span class="badge bg-warning text-dark" style="font-size: 0.8rem;">
+                                        <span class="badge bg-warning text-dark mb-2" style="font-size: 0.8rem;">
                                             Экзотические животные
                                         </span>
                                     @endif
 
-                                    <p class="card-text mb-1 mt-2">
+                                    <p class="card-text mb-1">
                                         <strong>Специализация:</strong> {{ $doctor->specialization }}
                                     </p>
 
@@ -104,11 +119,9 @@
                         </a>
                     </div>
                 @endforeach
-
             </div>
         </div>
 
-        {{-- Кнопка "Показать еще" --}}
         @if($doctors->hasMorePages())
             <div class="text-center mt-5 mb-5" id="load-more-container">
                 <button id="load-more" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm" 
@@ -118,21 +131,97 @@
             </div>
         @endif
 
-        {{-- Скрытая стандартная пагинация для SEO --}}
         <div class="d-none">
             {{ $doctors->links() }}
         </div>
 
-        @endif {{-- end empty block --}}
-
-    @endif {{-- end city check --}}
+        @endif 
+    @endif 
 </div>
+
+<style>
+    /* Горизонтальный скролл для фильтров на мобильных устройствах */
+    .specialization-filter-container {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .specialization-filter-container::-webkit-scrollbar {
+        display: none;
+    }
+    .specialization-filter {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .btn-outline-secondary {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+        color: #333;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #e9ecef;
+        color: #000;
+        border-color: #adb5bd;
+    }
+    /* Контейнер для управления отступами */
+    .specialization-filter-container {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Основной блок с прокруткой */
+    .specialization-filter {
+        display: flex;
+        flex-wrap: nowrap; /* Запрещаем перенос строк */
+        overflow-x: auto;  /* Включаем горизонтальную прокрутку */
+        padding-bottom: 12px; /* Место для ползунка, чтобы он не перекрывал кнопки */
+        gap: 8px;
+        -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    }
+
+    /* Стилизация полосы прокрутки (Scrollbar) */
+    /* 1. Ширина/высота дорожки */
+    .specialization-filter::-webkit-scrollbar {
+        height: 6px; /* Высота ползунка */
+    }
+
+    /* 2. Фон дорожки */
+    .specialization-filter::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    /* 3. Сам ползунок (бегунок) */
+    .specialization-filter::-webkit-scrollbar-thumb {
+        background: #ccc; /* Цвет ползунка */
+        border-radius: 10px;
+        transition: background 0.3s ease;
+    }
+
+    /* 4. Цвет при наведении */
+    .specialization-filter::-webkit-scrollbar-thumb:hover {
+        background: #adb5bd; 
+    }
+
+    /* Кнопки-теги (чтобы текст не переносился внутри кнопки) */
+    .specialization-filter .btn {
+        flex: 0 0 auto; /* Не дает кнопкам сжиматься */
+        white-space: nowrap;
+    }
+
+    /* Для Firefox (у него свои свойства для скролла) */
+    .specialization-filter {
+        scrollbar-width: thin;
+        scrollbar-color: #ccc #f1f1f1;
+    }
+</style>
+
 
 @section('modals')
     @include('account.modals.modal-add-specialist', ['cities' => $cities ?? []])
 @endsection
 
-{{-- Tooltip init --}}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');

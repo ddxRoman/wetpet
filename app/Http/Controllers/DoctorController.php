@@ -105,12 +105,22 @@ $url = route('doctors.show', $doctor->slug);
 /**
      * 🔹 Список докторов с сортировкой по рейтингу
      */
+/**
+ * 🔹 Список докторов с фильтрацией по городу и специализации
+ */
+/**
+ * 🔹 Список докторов с фильтрацией
+ */
+/**
+ * 🔹 Список докторов с фильтрацией по городу и гибким поиском по специализации
+ */
 public function index(Request $request)
 {
     $user = auth()->user();
     $cityId = null;
     $selectedCity = null;
 
+    // 1. Логика определения города
     if ($request->filled('city_id')) {
         $cityId = (int) $request->get('city_id');
         if (!$user) {
@@ -126,18 +136,47 @@ public function index(Request $request)
         $selectedCity = City::find($cityId)?->name;
     }
 
-    // Заменяем ->get() на ->paginate(15)
+    // 2. Текущий фильтр специализации (из тега)
+    $selectedSpecialization = $request->get('specialization');
+
+    // 3. ТЕГИ: Выводим справочник (activity=doctor, type=specialist)
+    $specializations = FieldOfActivity::query()
+        ->where('activity', 'doctor')
+        ->where('type', 'specialist')
+        ->orderBy('name') 
+        ->pluck('name'); 
+
+    // 4. Запрос списка врачей
     $doctors = Doctor::withAvg('reviews', 'rating')
         ->when($cityId, function ($query) use ($cityId) {
             $query->where('city_id', $cityId);
         })
+        ->when($selectedSpecialization, function ($query) use ($selectedSpecialization) {
+            /** * Логика сопоставления:
+             * Отрезаем последние 3 буквы от тега (например, "Кардиолог" -> "Кардиол")
+             * и ищем вхождение этой части в поле специализации доктора.
+             */
+            $searchTerm = mb_substr($selectedSpecialization, 0, -3);
+            
+            // Если слово слишком короткое (меньше 3 букв после обрезки), ищем как есть
+            if (mb_strlen($searchTerm) < 3) {
+                $searchTerm = $selectedSpecialization;
+            }
+
+            $query->where('specialization', 'LIKE', '%' . $searchTerm . '%');
+        })
         ->orderByDesc('reviews_avg_rating') 
         ->orderBy('name')
-        ->paginate(16); // Теперь здесь пагинация
+        ->paginate(16)
+        ->withQueryString();
 
-    return view('pages.doctors.index', compact('doctors', 'selectedCity'));
+    return view('pages.doctors.index', compact(
+        'doctors', 
+        'selectedCity', 
+        'specializations', 
+        'selectedSpecialization'
+    ));
 }
-
     /**
      * 🔹 Доктора на главную
      */
