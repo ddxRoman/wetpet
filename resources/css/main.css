@@ -170,6 +170,10 @@ header {
     z-index: 9999;
 }
 
+.modal{
+    z-index: 100 !important;
+}
+
 #city-modal .modal-content {
     background: #f8f9ff;
     max-width: 600px;

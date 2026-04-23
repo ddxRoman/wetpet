@@ -11,86 +11,55 @@
 
 <!-- ТУТ НАДО БУДЕТ МАРШРУТЫ СДЕЛАТЬ НОРМАЛЬНО И СЕОшку к ним -->
 @if(request()->is('/'))
-    {{-- СТРОГИЕ ДАННЫЕ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ --}}
     <title>Зверозор — отзывы о ветеринарных клиниках и врачах города</title>
     <meta name="description" content="Честный рейтинг ветеринарных клиник и врачей. Отзывы владельцев животных, находите проверенных специалистов и делитесь опытом. Все услуги для ваших питомцев.">
 
-@elseif(!request()->routeIs('pages.legal.*'))
-<meta name="robots" content="index, follow"/>
-<!--Робот выберет значение all, текст и ссылки будут проиндексированы.-->
-@endif
-@if(Route::currentRouteName() === 'clinics.show')
-@php
-    $currentCityName = $pageCityName ?? $currentCityName;
-@endphp
+@elseif(Route::currentRouteName() === 'specialists.show')
+    {{-- СЕО ДЛЯ СТРАНИЦЫ СПЕЦИАЛИСТА --}}
+    @php
+        $currentCityName = $doctor->city->name ?? $currentCityName;
+        $workPlace = $doctor->organization->name ?? '';
+    @endphp
+    <link rel="canonical" href="{{ route('specialists.show', $doctor->slug) }}">
+    <title>{{ $doctor->name }}{{ $workPlace ? ' — ' . $workPlace : '' }} {{ $doctor->specialization }} | {{ $currentCityName }}</title>
+    <meta name="description" content="{{ $doctor->specialization }} {{ $doctor->name }}. {{ $workPlace ? 'Место работы: ' . $workPlace . '.' : '' }} Город {{ $currentCityName }}. Прочитать отзывы от реальных клиентов, узнать стоимость услуг.">
 
-<meta
-    name="description"
-    content="{{ $clinic->name
-        ? 'Ветеринарная клиника ' . $clinic->name . ' в городе ' . $currentCityName . ', стоимость услуг, посмотреть график работы, прочитать и оставить отзывы, найти контакты'
-        : 'Сайт про домашних животных в вашем городе'
-    }}"
->
+@elseif(Route::currentRouteName() === 'specialists.index')
+    {{-- СЕО ДЛЯ СПИСКА СПЕЦИАЛИСТОВ --}}
+    <title>Специалисты по работе с животными в г. {{ $currentCityName }}</title>
+    <meta name="description" content="Полный список специалистов: грумеры, кинологи, ветеринары и другие эксперты в городе {{ $currentCityName }}. Рейтинг на основе отзывов, поиск по услугам.">
 
-<title>
-    {{ $clinic->name
-        ? $clinic->name . ' ' . $currentCityName . ' — адрес, отзывы о клинике'
-        : 'Сайт про домашних животных в твоём городе'
-    }}
-</title>
-
+@elseif(Route::currentRouteName() === 'clinics.show')
+    {{-- (Ваш существующий код для клиник) --}}
+    @php $currentCityName = $pageCityName ?? $currentCityName; @endphp
+    <title>{{ $clinic->name ? $clinic->name . ' ' . $currentCityName . ' — адрес, отзывы' : 'Сайт про животных' }}</title>
+    <meta name="description" content="{{ $clinic->name ? 'Ветеринарная клиника ' . $clinic->name . ' в городе ' . $currentCityName . ', услуги, график работы, отзывы' : 'Сайт про животных' }}">
 
 @elseif(Route::currentRouteName() === 'clinics.index')
-    <meta name="description" content="Найти ветеринарную клинику в городе, ' . $currentCityName . ', узнать рейтинг, прочитать отзывы, найти по услуге контакты клиники, ретинг и список врачей">
     <title>{{ 'Все ветеринарные клиники города ' . $currentCityName }}</title>
+    <meta name="description" content="Найти ветеринарную клинику в городе {{ $currentCityName }}, узнать рейтинг, прочитать отзывы и контакты.">
 
 @elseif(Route::currentRouteName() === 'doctors.show')
-@php
-    $currentCityName   = $pageCityName ?? $doctor->city?->name ?? $currentCityName;
-    $seoClinic = $doctor->clinic?->name;
-@endphp
-
-<link rel="canonical" href="{{ route('doctors.show', $doctor->slug) }}">
-
-<meta
-    name="description"
-    content="{{ $doctor->name
-        ? 'Ветеринарный врач ' . $doctor->name
-            . ($doctor->specialization ? ' — ' . mb_strtolower($doctor->specialization) : '')
-            . ($seoClinic ? ', клиника ' . $seoClinic : '')
-            . ' в городе ' . $currentCityName
-            . '. Узнать стоимость услуг, прочитать отзывы.'
-        : 'Сайт про домашних животных'
-    }}"
->
-
-
-<title>
-    {{ $doctor->name
-        ? $doctor->name
-            . ($seoClinic ? ' — ' . $seoClinic : '')
-            . ' ветеринар ' . $currentCityName
-        : 'Сайт про домашних животных'
-    }}
-</title>
-
+    {{-- (Ваш существующий код для врачей) --}}
+    @php
+        $currentCityName = $pageCityName ?? $doctor->city?->name ?? $currentCityName;
+        $seoClinic = $doctor->clinic?->name;
+    @endphp
+    <link rel="canonical" href="{{ route('doctors.show', $doctor->slug) }}">
+    <title>{{ $doctor->name }}{{ $seoClinic ? ' — ' . $seoClinic : '' }} ветеринар {{ $currentCityName }}</title>
+    <meta name="description" content="Ветеринарный врач {{ $doctor->name }} {{ $doctor->specialization ? ' — ' . mb_strtolower($doctor->specialization) : '' }}{{ $seoClinic ? ', клиника ' . $seoClinic : '' }} в г. {{ $currentCityName }}.">
 
 @elseif(Route::currentRouteName() === 'doctors.index')
-    <meta name="description" content="Узнать стоимость услуг, записаться на приём, прочитать и оставить отзывы на ветеринарного врача">
     <title>{{ 'Список ветеринарных врачей города ' . $currentCityName }}</title>
+    <meta name="description" content="Узнать стоимость услуг, записаться на приём, прочитать отзывы на ветеринарного врача в г. {{ $currentCityName }}">
 
 @elseif(Route::currentRouteName() === 'auth.login')
-    <title>Авторизация</title>
-    <meta name="description" content="Зарегистрироваться на сайте зверозор оставить отзыв о ветеринаре и клинике, прочесть отзывы реальных людей, найти клинику в вашем городе">
+    <title>Авторизация | Зверозор</title>
+    <meta name="description" content="Войдите в личный кабинет Зверозор, чтобы оставить отзыв или добавить специалиста.">
 
 @else
-    <meta name="description" content="Зверозор прочитать отзывы о домашних животных, ветеринарных клиниках, и врачах - делимся опытом, находим лучших врачей и проверенные клиники">
-    <title>
-        {{ filled($brandname)
-            ? $brandname . ' — сайт про домашних животных'
-            : 'Сайт отзывов о домашних животных'
-        }}
-    </title>
+    <meta name="description" content="Зверозор — делимся опытом, находим лучших врачей и проверенные клиники для ваших питомцев.">
+    <title>{{ filled($brandname) ? $brandname . ' — сайт про домашних животных' : 'Сайт отзывов о домашних животных' }}</title>
 @endif
 
 

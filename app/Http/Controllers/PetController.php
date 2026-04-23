@@ -108,7 +108,6 @@ public function store(Request $request)
     }
 }
 
-
     // === Просмотр одного питомца ===
     public function show($id)
     {
@@ -121,7 +120,6 @@ public function store(Request $request)
         return response()->json(['success' => true, 'pet' => $pet]);
     }
 
-    // === Обновление питомца ===
 // === Обновление питомца ===
 public function update(Request $request, Pet $pet)
 {

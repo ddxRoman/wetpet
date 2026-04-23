@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-
         <style>
             /* Стили для горизонтального скролла тегов */
             .specialization-filter-wrapper {
@@ -30,8 +28,6 @@
                 border-color: #adb5bd;
             }
         </style>
-
-
 
 <div class="container py-5">
     <h1 class="mb-4 text-center">Каталог ветеринарных специалистов
@@ -91,7 +87,11 @@
                         <a href="{{ route('specialists.show', $specialist->slug) }}" class="text-decoration-none text-reset">
                             <div class="card h-100 shadow-sm hover-shadow position-relative transition">
                                 
-                                <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill">
+                                {{-- ⭐ Рейтинг --}}
+                                <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"
+                                     data-bs-toggle="tooltip"
+                                     data-bs-html="true"
+                                     title="Всего отзывов: {{ $reviewCount }}">
                                     ⭐ <span class="ms-1 fw-semibold">{{ $avgRating }}</span>
                                 </div>
 
@@ -130,5 +130,14 @@
         @endif 
     @endif
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
+});
+</script>
+
+
 @endsection
 
