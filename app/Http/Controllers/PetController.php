@@ -265,7 +265,33 @@ public function showAnimalTypes()
     return view('pages.animals.index', compact('animalTypes'));
 }
 
+public function showBreeds($species)
+{
+    // Получаем уникальные породы для данного вида
+    $breeds = Animal::where('species', $species)
+        ->whereNotNull('breed')
+        ->where('breed', '<>', '')
+        ->select('breed', 'species') // берем species, чтобы знать заголовок
+        ->distinct()
+        ->orderBy('breed')
+        ->get();
 
+    // Если пород нет (вдруг ошибочный URL), можно вернуть 404 или редирект
+    if ($breeds->isEmpty()) {
+        abort(404, 'Породы для данного вида не найдены');
+    }
+
+    return view('pages.animals.breeds', compact('breeds', 'species'));
+}
+
+public function showBreedPage($species, $breed)
+{
+    // Пока просто передаем названия в шаблон-заглушку
+    return view('pages.animals.breed_details', [
+        'species' => $species,
+        'breed' => $breed
+    ]);
+}
 
     // === Удаление питомца ===
     public function destroy(Pet $pet)

@@ -170,6 +170,14 @@ header {
     z-index: 9999;
 }
 
+    .breadcrumb-item a {
+        text-decoration: none;
+        color: #6c757d;
+    }
+    .breadcrumb-item a:hover {
+        color: #0d6efd;
+    }
+
 .modal{
     z-index: 100 !important;
 }

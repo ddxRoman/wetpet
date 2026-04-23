@@ -58,7 +58,7 @@ Route::get('legal/news', function () {
 
 // 🔐 Аутентификация
 Auth::routes();
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 // Регистрация / Логин / Логаут
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
@@ -97,24 +97,28 @@ Route::middleware(['auth'])->group(function () {
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
-    // 🧾 Отзывы пользователя (всегда для текущего пользователя)
-    Route::get('/account/reviews', [AccountController::class, 'getReviews'])
-        ->name('account.reviews');
-    // ✅ Обновление, удаление и управление отзывами
-    Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('reviews.update');
-    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-    // ✅ Удаление фото и чеков
-    Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])->name('review_photos.delete');
-    Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])->name('review_receipts.delete');
+// 🧾 Отзывы пользователя (всегда для текущего пользователя)
+Route::get('/account/reviews', [AccountController::class, 'getReviews'])
+    ->name('account.reviews');
+// ✅ Обновление, удаление и управление отзывами
+Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('reviews.update');
+Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+// ✅ Удаление фото и чеков
+Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])->name('review_photos.delete');
+Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])->name('review_receipts.delete');
 
 
-    // 🐾 Питомцы
-    Route::get('/animals', [PetController::class, 'showAnimalTypes'])->name('animals.index');
-    Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
-    Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
-    Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
-    Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
-    Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
+// 🐾 Питомцы
+Route::get('/animals', [PetController::class, 'showAnimalTypes'])->name('animals.index');
+Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
+Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
+Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
+Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
+Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
+// Страница конкретного вида животных 
+Route::get('/animals/{species}', [PetController::class, 'showBreeds'])->name('animals.breeds');
+// Страница конкретной породы 
+Route::get('/animals/{species}/{breed}', [App\Http\Controllers\PetController::class, 'showBreedPage'])->name('animals.breed.details');
 
 
 Route::get('/breeds', [PetController::class, 'getBreeds']);
@@ -133,7 +137,7 @@ Route::get('/user/{id}', function ($id) {
 // Страница всех докторов
 Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
 
-    Route::get('/doctors/update/{slug}', [DoctorController::class, 'update'])->name('doctors.update');
+Route::get('/doctors/update/{slug}', [DoctorController::class, 'update'])->name('doctors.update');
 // Доктор Редактирование
 Route::post('/doctors/{id}/update', [DoctorController::class, 'update'])
     ->name('doctor.update')
@@ -154,14 +158,13 @@ Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityControll
 
 Route::post('/add-organization', [OrganizationController::class, 'submit'])
     ->name('add-organization');
-    Route::post('/submit-organization', [OrganizationController::class, 'submit'])->name('submit-organization');
+Route::post('/submit-organization', [OrganizationController::class, 'submit'])->name('submit-organization');
 
 Route::get('/clinics/{clinic:slug}', [ClinicController::class, 'show'])
     ->name('clinics.show');
 
-    Route::post('/add-specialist', [SpecialistCreateController::class, 'store']);
+Route::post('/add-specialist', [SpecialistCreateController::class, 'store']);
 
-// web.php
 Route::middleware(['auth'])->group(function () {
 
     // создание (у тебя уже используется)
@@ -172,18 +175,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account/specialist/{specialist}/edit', [SpecialistController::class, 'edit'])
         ->name('specialist.edit');
 
-Route::put('/account/specialist/{specialist}/update', [SpecialistController::class, 'update'])
-    ->name('specialist.update');
+    Route::put('/account/specialist/{specialist}/update', [SpecialistController::class, 'update'])
+        ->name('specialist.update');
 
-Route::resource('organizations-profile', OrganizationController::class);
-// Маршрут для показа формы редактирования
-Route::get('/organizations-profile/{id}/edit', [OrganizationController::class, 'edit'])->name('organizations-profile.edit');
+    Route::resource('organizations-profile', OrganizationController::class);
+    // Маршрут для показа формы редактирования
+    Route::get('/organizations-profile/{id}/edit', [OrganizationController::class, 'edit'])->name('organizations-profile.edit');
 
-// Маршрут для сохранения (тот самый update)
-Route::put('/organizations-profile/{id}', [OrganizationController::class, 'update'])->name('organizations-profile.update');
+    // Маршрут для сохранения
+    Route::put('/organizations-profile/{id}', [OrganizationController::class, 'update'])->name('organizations-profile.update');
 });
 
-Route::get('/get-organizations/{city_id}', function($city_id) {
+Route::get('/get-organizations/{city_id}', function ($city_id) {
     $organizations = \App\Models\Organization::where('city_id', $city_id)
         ->select('id', 'name')
         ->get();
@@ -194,8 +197,7 @@ Route::delete('/specialist/{specialist}', [SpecialistController::class, 'destroy
 
 Route::get('/api/clinics-search', [ClinicController::class, 'liveSearch'])->name('api.clinics.search');
 
-// Добавь это в web.php
-Route::get('/get-organizations-by-city-id/{city_id}', function($city_id) {
+Route::get('/get-organizations-by-city-id/{city_id}', function ($city_id) {
     $city = \App\Models\City::find($city_id);
     if (!$city) return response()->json([]);
 
@@ -211,9 +213,9 @@ Route::get('/doctors/{specialist:slug}', [DoctorController::class, 'show'])
     ->name('doctors.show');
 
 Route::delete('/organizations/{id}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
-    
 
-    // Было (примерно):
+
+// Было (примерно):
 Route::get('/organizations/{organization}', [OrganizationController::class, 'show']);
 
 // Нужно сделать (добавить ->name):
