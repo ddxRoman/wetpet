@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // 🐾 Питомцы
+    Route::get('/animals', [PetController::class, 'showAnimalTypes'])->name('animals.index');
     Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
     Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
     Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');

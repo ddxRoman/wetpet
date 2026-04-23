@@ -2,7 +2,7 @@
     <div class="row g-3 justify-content-center">
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <!-- <a class="text-decoration-none" href="#"> -->
+            <a class="text-decoration-none" href="{{ route('animals.index') }}">
                 <div class="div_btn_category category_disabled">
                     <div class="text_menu_btn_category">Животные</div>
                     <div class="div_btn_category_icon">
@@ -10,7 +10,7 @@
                     </div>
                     <div class="will_be_soon">Скоро</div>
                 </div>
-            <!-- </a> -->
+            </a>
         </div>
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">

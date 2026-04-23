@@ -181,6 +181,91 @@ public function update(Request $request, Pet $pet)
     ]);
 }
 
+public function showAnimalTypes()
+{
+    $animalTypes = \App\Models\Animal::select('species')
+        ->distinct()
+        ->whereNotNull('species')
+        ->get() // Сначала получаем данные
+        ->map(function ($item) {
+            // 1. Карта имен (множественное число)
+            $pluralMap = [
+                'Собака' => 'Собаки', 
+                'Кошка' => 'Кошки', 
+                'Кот' => 'Коты',
+                'Птица' => 'Птицы', 
+                'Грызун' => 'Грызуны', 
+                'Змея' => 'Змеи',
+                'Бабочка' => 'Бабочки', 
+                'Варан' => 'Вараны', 
+                'Волк' => 'Волки',
+                'Енот' => 'Еноты', 
+                'Кролик' => 'Кролики', 
+                'Лисица' => 'Лисы',
+                'Муравей' => 'Муравьи', 
+                'Лошадь' => 'Лошади', 
+                'Минипиг' => 'Минипиги',
+                'Насекомое' => 'Насекомые',
+                'Норка' => 'Норки', 
+                'Обезьяна' => 'Обезьяны',
+                'Паук' => 'Пауки', 
+                'Попугай' => 'Попугаи', 
+                'Рыбка' => 'Рыбки',
+                'Суслик' => 'Суслики', 
+                'Хомяк' => 'Хомяки', 
+                'Черепаха' => 'Черепахи',
+                'Ящерица' => 'Ящерицы',
+            ];
+
+            // 2. Карта иконок (species из базы => название файла)
+            $iconMap = [
+                'Собака'   => 'dog.webp',
+                'Кошка'    => 'cat.webp',
+                'Бабочка'  => 'butterfly.webp',
+                'Варан'    => 'varan.webp',
+                'Волк'     => 'wolf.webp',
+                'Змея'     => 'snake.webp',
+                'Кот'      => 'cat.webp',
+                'Птица'    => 'bird.webp',
+                'Попугай'  => 'parrot.webp',
+                'Хомяк'    => 'hamster.webp',
+                'Рыбка'    => 'fish.webp',
+                'Лисица'   => 'fox.webp',
+                'Муравей'  => 'ants.webp',
+                'Минипиг'  => 'minipig.webp',
+                'Норка'    => 'mink.webp',
+                'Обезьяна' => 'monkey.webp',
+                'Паук'     => 'spider.webp',
+                'Кролик'   => 'rabbit.webp',
+                'Лошадь'   => 'horse.webp',
+                'Енот'     => 'raccoon.webp',
+                'Насекомое'=> 'insect.webp',
+                'Суслик'   => 'gopher.webp',
+                'Грызун'   => 'rodents.webp',
+                'Черепаха' => 'turtle.webp',
+                'Ящерица'  => 'lizards.webp',
+            ];
+
+            $fileName = $iconMap[$item->species] ?? 'default.svg';
+            $item->icon_url = asset('images/animals/' . $fileName);
+            $item->display_name = $pluralMap[$item->species] ?? $item->species;
+            
+            return $item;
+        })
+        // 3. Кастомная сортировка
+        ->sortBy(function ($item) {
+            // Присваиваем веса: чем меньше число, тем выше в списке
+            if ($item->species === 'Собака') return 1;
+            if ($item->species === 'Кошка' || $item->species === 'Кот') return 2;
+            
+            // Для всех остальных возвращаем 3 + само название для алфавитного порядка
+            return 3 . $item->display_name;
+        });
+
+    return view('pages.animals.index', compact('animalTypes'));
+}
+
+
 
     // === Удаление питомца ===
     public function destroy(Pet $pet)
