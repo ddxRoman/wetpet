@@ -107,8 +107,8 @@ var po="2.1.15",Rt="[data-trix-attachment]",mi={preview:{presentation:"gallery",
 }
 
 %t img {
-    max-width: 150px;
-    height: 150px;
+    max-width: 100%;
+    height: auto;
 }
 
 %t `.concat(Rt,` figcaption textarea {

@@ -15,4 +15,15 @@ class Animal extends Model
     {
         return $this->hasMany(Pet::class);
     }
+
+    public function details()
+{
+    return $this->hasOne(AnimalDetail::class);
+}
+
+public function reviews()
+{
+    return $this->hasMany(AnimalReview::class);
+}
+
 }

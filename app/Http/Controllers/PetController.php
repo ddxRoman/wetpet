@@ -286,11 +286,29 @@ public function showBreeds($species)
 
 public function showBreedPage($species, $breed)
 {
-    // Пока просто передаем названия в шаблон-заглушку
-    return view('pages.animals.breed_details', [
-        'species' => $species,
-        'breed' => $breed
-    ]);
+    $animal = Animal::with(['details', 'reviews.user'])
+        ->where('species', $species)
+        ->where('breed', $breed)
+        ->firstOrFail();
+
+    // Справочник для формы отзыва
+    $options = [
+        'temperaments' => [
+            'Холерик' => 'Активный, быстро реагирует, легко возбудим',
+            'Сангвиник' => 'Живой, уравновешенный, легко приспосабливается',
+            'Флегматик' => 'Спокойный, невозмутимый, медлительный',
+            'Меланхолик' => 'Чувствительный, тревожный, тихий'
+        ],
+        'scales' => [
+            1 => 'Низкий',
+            2 => 'Ниже среднего',
+            3 => 'Средний',
+            4 => 'Высокий',
+            5 => 'Исключительный'
+        ]
+    ];
+
+    return view('pages.animals.breed_details', compact('animal', 'options', 'species', 'breed'));
 }
 
     // === Удаление питомца ===
