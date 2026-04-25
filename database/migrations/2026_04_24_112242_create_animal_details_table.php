@@ -13,7 +13,10 @@ public function up(): void
 {
     Schema::create('animal_details', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('animal_id')->constrained('animals')->onDelete('cascade');
+        $table->foreignId('animal_breed') // Создает колонку animal_id
+      ->constrained('animals') // Говорит, что она ссылается на таблицу animals
+      ->onDelete('cascade');   // САМОЕ ВАЖНОЕ: если вы удалите животное из animals,
+                               // его детали удалятся сами автоматически.
         
         // Характеристики
         $table->string('weight_range')->nullable(); 

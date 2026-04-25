@@ -21,8 +21,9 @@ class AnimalDetail extends Model
         'features' => 'array', // Это критично для Filament
     ];
 
-    public function animal()
-    {
-        return $this->belongsTo(Animal::class);
-    }
+// В модели AnimalDetail
+public function animal()
+{
+    return $this->belongsTo(Animal::class, 'animal_breed');
+}
 }

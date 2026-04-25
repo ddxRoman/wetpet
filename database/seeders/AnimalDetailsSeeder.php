@@ -4,21 +4,20 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\AnimalDetail;
+use App\Models\Animal;
 use Illuminate\Support\Facades\DB;
 
 class AnimalDetailsSeeder extends Seeder
 {
     public function run(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('animal_details')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-    DB::table('animal_details')->truncate();
-    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-        $data = [
-
-            [
-                'animal_id' => 1,
+                                $data = [ 
+             
+                 ['animal_breed' => 'Лабрадор-ретривер',
                 'weight_range' => '25–36 кг',
                 'height_range' => '54–57 см',
                 'lifespan' => '10–12 лет',
@@ -26,17 +25,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Labrador_retriever.webp',
                 'short_description' => 'Дружелюбная, умная и очень популярная семейная собака.',
                 'full_description' => "Лабрадор-ретривер — одна из самых популярных пород в мире. Отличается дружелюбным характером, высокой обучаемостью и любовью к людям. Используется как компаньон, поводырь и служебная собака.",
-                'features' => [
+                 'features' => [
                     'Тип' => 'Компаньон',
                     'Линька' => 'Сильная',
                     'Активность' => 'Высокая',
                     'Обучаемость' => 'Высокая',
-                    'Особенности' => 'Любит воду'
-                ]
-            ],
-
-            [
-                'animal_id' => 2,
+                    'Особенности' => 'Любит воду']
+                 ],
+                 
+                 ['animal_breed' => 'Немецкая овчарка',
                 'weight_range' => '22–40 кг',
                 'height_range' => '55–65 см',
                 'lifespan' => '9–13 лет',
@@ -44,17 +41,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/German_shepherd.webp',
                 'short_description' => 'Умная, преданная и универсальная рабочая собака.',
                 'full_description' => "Немецкая овчарка — одна из самых универсальных пород. Используется в полиции, армии и как семейный защитник. Отличается высоким интеллектом и преданностью.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Служебная',
                     'Линька' => 'Сильная',
                     'Активность' => 'Очень высокая',
                     'Обучаемость' => 'Очень высокая',
                     'Особенности' => 'Нуждается в нагрузке'
-                ]
-            ],
-
-            [
-                'animal_id' => 3,
+             
+             
+                 ]],['animal_breed' => 'Золотистый ретривер',
                 'weight_range' => '25–34 кг',
                 'height_range' => '51–61 см',
                 'lifespan' => '10–12 лет',
@@ -62,17 +57,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Golden_retriever.webp',
                 'short_description' => 'Добрая, терпеливая и дружелюбная собака.',
                 'full_description' => "Золотистый ретривер — идеальная семейная собака. Обладает мягким характером, хорошо ладит с детьми и легко обучается.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Охотничья',
                     'Линька' => 'Сильная',
                     'Активность' => 'Высокая',
                     'Обучаемость' => 'Высокая',
                     'Особенности' => 'Очень дружелюбный'
-                ]
-            ],
-
-            [
-                'animal_id' => 4,
+             
+             
+                 ]],['animal_breed' => 'Французский бульдог',
                 'weight_range' => '9–13 кг',
                 'height_range' => '28–33 см',
                 'lifespan' => '10–12 лет',
@@ -80,17 +73,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/French_bulldog.webp',
                 'short_description' => 'Компактная и ласковая собака с яркой внешностью.',
                 'full_description' => "Французский бульдог — популярная городская порода. Любит внимание, плохо переносит жару и не требует длительных прогулок.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Компаньон',
                     'Линька' => 'Низкая',
                     'Активность' => 'Низкая',
                     'Обучаемость' => 'Средняя',
                     'Особенности' => 'Плохо переносит жару'
-                ]
-            ],
-
-            [
-                'animal_id' => 5,
+             
+             
+                 ]],['animal_breed' => 'Бульдог',
                 'weight_range' => '18–25 кг',
                 'height_range' => '31–40 см',
                 'lifespan' => '8–10 лет',
@@ -98,17 +89,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Bulldog.webp',
                 'short_description' => 'Спокойная и упрямая собака с мощным телосложением.',
                 'full_description' => "Бульдог — спокойная и флегматичная собака. Подходит для жизни в квартире, но требует контроля здоровья.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Компаньон',
                     'Линька' => 'Низкая',
                     'Активность' => 'Низкая',
                     'Обучаемость' => 'Низкая',
                     'Особенности' => 'Склонен к перегреву'
-                ]
-            ],
-
-            [
-                'animal_id' => 6,
+             
+             
+                 ]],['animal_breed' => 'Пудель',
                 'weight_range' => '18–32 кг',
                 'height_range' => '45–60 см',
                 'lifespan' => '12–15 лет',
@@ -116,17 +105,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Poodle.webp',
                 'short_description' => 'Очень умная и элегантная собака.',
                 'full_description' => "Пудель — одна из самых умных пород. Легко обучается, почти не линяет и подходит аллергикам.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Компаньон',
                     'Линька' => 'Минимальная',
                     'Активность' => 'Высокая',
                     'Обучаемость' => 'Очень высокая',
                     'Особенности' => 'Требует стрижки'
-                ]
-            ],
-
-            [
-                'animal_id' => 7,
+             
+             
+                 ]],['animal_breed' => 'Бигль',
                 'weight_range' => '9–14 кг',
                 'height_range' => '33–40 см',
                 'lifespan' => '12–15 лет',
@@ -134,17 +121,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Beagle.webp',
                 'short_description' => 'Весёлая и активная собака с отличным нюхом.',
                 'full_description' => "Бигль — гончая собака с сильным охотничьим инстинктом. Очень дружелюбный, но склонен убегать по запаху.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Охотничья',
                     'Линька' => 'Средняя',
                     'Активность' => 'Очень высокая',
                     'Обучаемость' => 'Средняя',
                     'Особенности' => 'Склонен к побегам'
-                ]
-            ],
-
-            [
-                'animal_id' => 8,
+             
+             
+                 ]],['animal_breed' => 'Ротвейлер',
                 'weight_range' => '35–60 кг',
                 'height_range' => '56–69 см',
                 'lifespan' => '8–10 лет',
@@ -152,17 +137,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Rottweiler.webp',
                 'short_description' => 'Сильная и уверенная собака-защитник.',
                 'full_description' => "Ротвейлер — мощная служебная собака. Предан семье, но требует строгого воспитания.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Служебная',
                     'Линька' => 'Средняя',
                     'Активность' => 'Высокая',
                     'Обучаемость' => 'Высокая',
                     'Особенности' => 'Нужен опытный владелец'
-                ]
-            ],
-
-            [
-                'animal_id' => 9,
+             
+             
+                 ]],['animal_breed' => 'Йоркширский терьер',
                 'weight_range' => '2–3 кг',
                 'height_range' => '15–23 см',
                 'lifespan' => '13–16 лет',
@@ -170,16 +153,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Yorkshire_terrier.webp',
                 'short_description' => 'Маленькая, смелая и энергичная собака.',
                 'full_description' => "Йоркширский терьер — декоративная порода с характером большой собаки. Очень активен и предан владельцу.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Компаньон',
                     'Линька' => 'Минимальная',
                     'Активность' => 'Высокая',
                     'Обучаемость' => 'Высокая',
                     'Особенности' => 'Требует ухода за шерстью'
-                ]
-            ],
-            [
-                'animal_id' => 10,
+             
+             
+                 ]],['animal_breed' => 'Доберман',
                 'weight_range' => '30–45 кг',
                 'height_range' => '63–72 см',
                 'lifespan' => '10–13 лет',
@@ -187,16 +169,15 @@ class AnimalDetailsSeeder extends Seeder
                 'photo' => 'animal/dog/breed/Doberman.webp',
                 'short_description' => 'Энергичная и преданная собака-защитник.',
                 'full_description' => "Доберман — элегантная и мощная служебная собака. Обладает высоким интеллектом и отличными охранными качествами.",
-                'features' => [
+                 'features' =>[
                     'Тип' => 'Служебная',
                     'Линька' => 'Низкая',
                     'Активность' => 'Очень высокая',
                     'Обучаемость' => 'Очень высокая',
                     'Особенности' => 'Требует дрессировки'
-                ]
-            ],
-                [
-    'animal_id' => 11,
+             
+             
+                 ]],['animal_breed' => 'Миниатюрный шнауцер',
     'weight_range' => '5–9 кг',
     'height_range' => '30–35 см',
     'lifespan' => '12–15 лет',
@@ -204,16 +185,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Miniature_schnauzer.webp',
     'short_description' => 'Энергичная и умная собака с выразительной внешностью.',
     'full_description' => "Миниатюрный шнауцер — активная и сообразительная собака. Хорошо поддаётся дрессировке, обладает сторожевыми качествами и подходит для семьи.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Служебная',
         'Линька' => 'Минимальная',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Требует тримминга'
-    ]
-],
-[
-    'animal_id' => 12,
+             
+             
+                 ]],['animal_breed' => 'Ши-тцу',
     'weight_range' => '4–7 кг',
     'height_range' => '20–28 см',
     'lifespan' => '10–16 лет',
@@ -221,17 +201,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Shih_tzu.webp',
     'short_description' => 'Ласковая и дружелюбная декоративная собака.',
     'full_description' => "Ши-тцу — идеальная собака-компаньон. Любит внимание, хорошо подходит для квартиры и семьи.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Минимальная',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Требует ухода за шерстью'
-    ]
-],
-
-[
-    'animal_id' => 13,
+             
+             
+                 ]],['animal_breed' => 'Кокер-спаниель',
     'weight_range' => '12–15 кг',
     'height_range' => '38–41 см',
     'lifespan' => '12–15 лет',
@@ -239,17 +217,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Cocker_spaniel.webp',
     'short_description' => 'Весёлая и активная собака с мягким характером.',
     'full_description' => "Кокер-спаниель — охотничья собака с дружелюбным нравом. Любит игры, прогулки и общение с людьми.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Чувствительные уши'
-    ]
-],
-
-[
-    'animal_id' => 14,
+             
+             
+                 ]],['animal_breed' => 'Померанский шпиц',
     'weight_range' => '1.8–3.5 кг',
     'height_range' => '18–22 см',
     'lifespan' => '12–16 лет',
@@ -257,17 +233,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Pomeranian_spitz.webp',
     'short_description' => 'Маленькая, пушистая и очень активная собака.',
     'full_description' => "Померанский шпиц — декоративная собака с ярким характером. Очень энергичен и любит внимание.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Сильная',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Громкий лай'
-    ]
-],
-
-[
-    'animal_id' => 15,
+             
+             
+                 ]],['animal_breed' => 'Чихуахуа',
     'weight_range' => '1.5–3 кг',
     'height_range' => '15–23 см',
     'lifespan' => '12–18 лет',
@@ -275,17 +249,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Chihuahua.webp',
     'short_description' => 'Самая маленькая порода собак с большим характером.',
     'full_description' => "Чихуахуа — миниатюрная, но смелая собака. Очень привязана к владельцу и может быть ревнивой.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Низкая',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Боится холода'
-    ]
-],
-
-[
-    'animal_id' => 16,
+             
+             
+                 ]],['animal_breed' => 'Сибирский хаски',
     'weight_range' => '16–27 кг',
     'height_range' => '50–60 см',
     'lifespan' => '12–15 лет',
@@ -293,17 +265,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Siberian_husky.webp',
     'short_description' => 'Выносливая и энергичная собака с северным характером.',
     'full_description' => "Сибирский хаски — ездовая собака, выведенная для работы в упряжке. Очень активен, дружелюбен, но склонен к побегам.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Ездовая',
         'Линька' => 'Сильная',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Любит убегать'
-    ]
-],
-
-[
-    'animal_id' => 17,
+             
+             
+                 ]],['animal_breed' => 'Алабай (Центральноазиатская овчарка)',
     'weight_range' => '40–80 кг',
     'height_range' => '65–78 см',
     'lifespan' => '10–12 лет',
@@ -311,17 +281,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Alabai.webp',
     'short_description' => 'Мощная и независимая собака-защитник.',
     'full_description' => "Алабай — древняя сторожевая порода. Обладает сильным охранным инстинктом и требует опытного владельца.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Сторожевая',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Ниже средней',
         'Особенности' => 'Территориален'
-    ]
-],
-
-[
-    'animal_id' => 18,
+             
+             
+                 ]],['animal_breed' => 'Боксёр',
     'weight_range' => '25–32 кг',
     'height_range' => '53–63 см',
     'lifespan' => '10–12 лет',
@@ -329,17 +297,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Boxer.webp',
     'short_description' => 'Энергичная и игривая собака с сильным характером.',
     'full_description' => "Боксёр — активная и преданная собака. Любит играть, хорошо подходит для семьи и охраны.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Служебная',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит играть'
-    ]
-],
-
-[
-    'animal_id' => 19,
+             
+             
+                 ]],['animal_breed' => 'Кавказская овчарка',
     'weight_range' => '45–70 кг',
     'height_range' => '64–75 см',
     'lifespan' => '10–12 лет',
@@ -347,17 +313,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Caucasian_shepherd.webp',
     'short_description' => 'Крупная и мощная собака с выраженными охранными качествами.',
     'full_description' => "Кавказская овчарка — сильная и независимая порода. Отлично подходит для охраны территории, требует строгого воспитания.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Сторожевая',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Ниже средней',
         'Особенности' => 'Очень защитная'
-    ]
-],
-
-[
-    'animal_id' => 20,
+             
+             
+                 ]],['animal_breed' => 'Австралийская овчарка',
     'weight_range' => '18–30 кг',
     'height_range' => '46–58 см',
     'lifespan' => '12–15 лет',
@@ -365,16 +329,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Australian_shepherd.webp',
     'short_description' => 'Очень умная и активная рабочая собака.',
     'full_description' => "Австралийская овчарка — пастушья порода с высоким интеллектом. Требует постоянной активности и отлично обучается.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Пастушья',
         'Линька' => 'Средняя',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Очень высокая',
         'Особенности' => 'Нуждается в нагрузке'
-    ]
-],
-[
-    'animal_id' => 21,
+             
+             
+                 ]],['animal_breed' => 'Далматин',
     'weight_range' => '20–32 кг',
     'height_range' => '54–61 см',
     'lifespan' => '10–13 лет',
@@ -382,17 +345,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Dalmatian.webp',
     'short_description' => 'Энергичная и выносливая собака с характерным пятнистым окрасом.',
     'full_description' => "Далматин — активная и дружелюбная порода. Обладает высоким уровнем энергии и требует регулярных нагрузок.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Сильная',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Нуждается в длительных прогулках'
-    ]
-],
-
-[
-    'animal_id' => 22,
+             
+             
+                 ]],['animal_breed' => 'Бассет-хаунд',
     'weight_range' => '20–30 кг',
     'height_range' => '28–38 см',
     'lifespan' => '10–12 лет',
@@ -400,17 +361,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Basset_hound.webp',
     'short_description' => 'Спокойная собака с отличным нюхом и длинными ушами.',
     'full_description' => "Бассет-хаунд — гончая порода с развитым обонянием. Отличается упрямством, но дружелюбен и хорошо ладит с людьми.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Ниже средней',
         'Особенности' => 'Склонен к ожирению'
-    ]
-],
-
-[
-    'animal_id' => 23,
+             
+             
+                 ]],['animal_breed' => 'Мальтезе',
     'weight_range' => '3–4 кг',
     'height_range' => '20–25 см',
     'lifespan' => '12–15 лет',
@@ -418,17 +377,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Maltese.webp',
     'short_description' => 'Маленькая и элегантная собака с длинной белой шерстью.',
     'full_description' => "Мальтезе — декоративная порода с мягким характером. Очень привязана к владельцу и требует ухода за шерстью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Минимальная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Требует ухода за шерстью'
-    ]
-],
-
-[
-    'animal_id' => 24,
+             
+             
+                 ]],['animal_breed' => 'Бордоский дог',
     'weight_range' => '45–65 кг',
     'height_range' => '60–68 см',
     'lifespan' => '8–10 лет',
@@ -436,17 +393,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Dogue_de_bordeaux.webp',
     'short_description' => 'Мощная и спокойная собака с сильным охранным инстинктом.',
     'full_description' => "Бордоский дог — крупная и сильная порода. Отличается преданностью и хорошими сторожевыми качествами.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Сторожевая',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Склонен к слюнотечению'
-    ]
-],
-
-[
-    'animal_id' => 25,
+             
+             
+                 ]],['animal_breed' => 'Такса',
     'weight_range' => '7–15 кг',
     'height_range' => '20–27 см',
     'lifespan' => '12–16 лет',
@@ -454,17 +409,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Dachshund.webp',
     'short_description' => 'Небольшая охотничья собака с вытянутым телом.',
     'full_description' => "Такса — смелая и упрямая порода. Выведена для норной охоты, обладает сильным характером.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Низкая',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Проблемы со спиной'
-    ]
-],
-
-[
-    'animal_id' => 26,
+             
+             
+                 ]],['animal_breed' => 'Белый швейцарский грюнендаль',
     'weight_range' => '25–40 кг',
     'height_range' => '55–66 см',
     'lifespan' => '12–14 лет',
@@ -472,17 +425,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/White_swiss_shepherd.webp',
     'short_description' => 'Дружелюбная и уравновешенная собака.',
     'full_description' => "Белая швейцарская овчарка — умная и преданная порода. Хорошо обучается и подходит для семьи.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Пастушья',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Хорошо ладит с детьми'
-    ]
-],
-
-[
-    'animal_id' => 27,
+             
+             
+                 ]],['animal_breed' => 'Американский бульдог',
     'weight_range' => '30–58 кг',
     'height_range' => '50–70 см',
     'lifespan' => '10–15 лет',
@@ -490,17 +441,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/American_bulldog.webp',
     'short_description' => 'Сильная и уверенная собака с защитными качествами.',
     'full_description' => "Американский бульдог — мощная рабочая собака. Предан семье и требует воспитания.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Сторожевая',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Нуждается в социализации'
-    ]
-],
-
-[
-    'animal_id' => 28,
+             
+             
+                 ]],['animal_breed' => 'Стандартный шнауцер',
     'weight_range' => '14–20 кг',
     'height_range' => '44–50 см',
     'lifespan' => '13–16 лет',
@@ -508,17 +457,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Standard_schnauzer.webp',
     'short_description' => 'Умная и энергичная собака с выразительной внешностью.',
     'full_description' => "Стандартный шнауцер — активная и универсальная порода. Обладает хорошими охранными качествами.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Служебная',
         'Линька' => 'Минимальная',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Требует тримминга'
-    ]
-],
-
-[
-    'animal_id' => 29,
+             
+             
+                 ]],['animal_breed' => 'Мопс',
     'weight_range' => '6–8 кг',
     'height_range' => '25–32 см',
     'lifespan' => '12–15 лет',
@@ -526,16 +473,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Pug.webp',
     'short_description' => 'Милая и спокойная собака с морщинистой мордой.',
     'full_description' => "Мопс — декоративная порода с дружелюбным характером. Любит внимание и плохо переносит жару.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Сильная',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Проблемы с дыханием'
-    ]
-],
-[
-    'animal_id' => 30,
+             
+             
+                 ]],['animal_breed' => 'Акита-ину',
     'weight_range' => '30–45 кг',
     'height_range' => '58–70 см',
     'lifespan' => '10–14 лет',
@@ -543,17 +489,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Akita_inu.webp',
     'short_description' => 'Спокойная и независимая собака с сильным характером.',
     'full_description' => "Акита-ину — древняя японская порода. Отличается преданностью, сдержанностью и независимостью. Требует опытного владельца.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Сторожевая',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Независимый характер'
-    ]
-],
-
-[
-    'animal_id' => 31,
+             
+             
+                 ]],['animal_breed' => 'Самоедская собака',
     'weight_range' => '16–30 кг',
     'height_range' => '50–60 см',
     'lifespan' => '12–14 лет',
@@ -561,17 +505,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Samoyed.webp',
     'short_description' => 'Дружелюбная и улыбчивая северная собака.',
     'full_description' => "Самоедская собака — выносливая и дружелюбная порода. Любит людей, требует активности и плохо переносит одиночество.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Ездовая',
         'Линька' => 'Очень сильная',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Не любит одиночество'
-    ]
-],
-
-[
-    'animal_id' => 32,
+             
+             
+                 ]],['animal_breed' => 'Колли',
     'weight_range' => '20–34 кг',
     'height_range' => '51–61 см',
     'lifespan' => '12–14 лет',
@@ -579,17 +521,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Collie.webp',
     'short_description' => 'Умная и чувствительная пастушья собака.',
     'full_description' => "Колли — преданная и ласковая собака. Хорошо подходит для семьи, легко обучается и любит детей.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Пастушья',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Очень чувствительная'
-    ]
-],
-
-[
-    'animal_id' => 33,
+             
+             
+                 ]],['animal_breed' => 'Вельш-корги пемброк',
     'weight_range' => '10–14 кг',
     'height_range' => '25–30 см',
     'lifespan' => '12–15 лет',
@@ -597,17 +537,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Welsh_corgi_pembroke.webp',
     'short_description' => 'Маленькая пастушья собака с большим характером.',
     'full_description' => "Вельш-корги пемброк — активная и умная порода. Любит людей, легко обучается и отлично подходит для семьи.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Пастушья',
         'Линька' => 'Сильная',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит лаять'
-    ]
-],
-
-[
-    'animal_id' => 34,
+             
+             
+                 ]],['animal_breed' => 'Джек-рассел-терьер',
     'weight_range' => '18–23 кг',
     'height_range' => '46–48 см',
     'lifespan' => '13–16 лет',
@@ -615,17 +553,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Jack_russell_terrier.webp',
     'short_description' => 'Очень энергичная и смелая маленькая собака.',
     'full_description' => "Джек-рассел-терьер — охотничья порода с огромным запасом энергии. Требует активных игр и нагрузок.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Средняя',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Очень энергичный'
-    ]
-],
-
-[
-    'animal_id' => 35,
+             
+             
+                 ]],['animal_breed' => 'Блю-хевалер-кинг-чарльз-спаниель',
     'weight_range' => '5–8 кг',
     'height_range' => '30–33 см',
     'lifespan' => '12–15 лет',
@@ -633,17 +569,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Cavalier_king_charles_spaniel.webp',
     'short_description' => 'Ласковая и дружелюбная декоративная собака.',
     'full_description' => "Кавалер-кинг-чарльз-спаниель — идеальный компаньон. Любит людей, хорошо ладит с детьми и другими животными.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит внимание'
-    ]
-],
-
-[
-    'animal_id' => 36,
+             
+             
+                 ]],['animal_breed' => 'Вест-хайленд-уайт-терьер',
     'weight_range' => '7–10 кг',
     'height_range' => '25–28 см',
     'lifespan' => '12–15 лет',
@@ -651,17 +585,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/West_highland_white_terrier.webp',
     'short_description' => 'Жизнерадостная и независимая собака.',
     'full_description' => "Вест-хайленд-уайт-терьер — активная и смелая порода. Любит играть и исследовать окружающий мир.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Упрямый характер'
-    ]
-],
-
-[
-    'animal_id' => 37,
+             
+             
+                 ]],['animal_breed' => 'Лхасский апсо',
     'weight_range' => '6–8 кг',
     'height_range' => '25–28 см',
     'lifespan' => '12–15 лет',
@@ -669,17 +601,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Lhasa_apso.webp',
     'short_description' => 'Небольшая, но уверенная в себе собака.',
     'full_description' => "Лхасский апсо — древняя тибетская порода. Хорошо охраняет дом и привязывается к владельцу.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Низкая',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Недоверчив к чужим'
-    ]
-],
-
-[
-    'animal_id' => 38,
+             
+             
+                 ]],['animal_breed' => 'Тибетский мастиф',
     'weight_range' => '48–82 кг',
     'height_range' => '61–76 см',
     'lifespan' => '10–12 лет',
@@ -687,17 +617,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Tibetan_mastiff.webp',
     'short_description' => 'Огромная и независимая собака-защитник.',
     'full_description' => "Тибетский мастиф — древняя сторожевая порода. Обладает мощным телосложением и сильным характером.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Сторожевая',
         'Линька' => 'Сильная',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Ниже средней',
         'Особенности' => 'Очень территориален'
-    ]
-],
-
-[
-    'animal_id' => 39,
+             
+             
+                 ]],['animal_breed' => 'Сенбернар',
     'weight_range' => '64–120 кг',
     'height_range' => '65–90 см',
     'lifespan' => '8–10 лет',
@@ -705,16 +633,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Saint_bernard.webp',
     'short_description' => 'Добродушная и огромная собака-спасатель.',
     'full_description' => "Сенбернар — известная спасательная порода. Очень добрый, терпеливый и отлично ладит с детьми.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Сторожевая',
         'Линька' => 'Сильная',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Слюнявый'
-    ]
-],
-[
-    'animal_id' => 40,
+             
+             
+                 ]],['animal_breed' => 'Ньюфаундленд',
     'weight_range' => '50–70 кг',
     'height_range' => '66–71 см',
     'lifespan' => '8–10 лет',
@@ -722,17 +649,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Newfoundland.webp',
     'short_description' => 'Крупная и добрая собака с отличными спасательными качествами.',
     'full_description' => "Ньюфаундленд — мощная и спокойная собака. Известен как отличный спасатель на воде, очень добрый и терпеливый.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Спасательная',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит воду'
-    ]
-],
-
-[
-    'animal_id' => 41,
+             
+             
+                 ]],['animal_breed' => 'Гриффон',
     'weight_range' => '3.5–6 кг',
     'height_range' => '18–22 см',
     'lifespan' => '12–15 лет',
@@ -740,35 +665,31 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Brussels_griffon.webp',
     'short_description' => 'Маленькая собака с выразительной мордой и ярким характером.',
     'full_description' => "Брюссельский гриффон — декоративная порода. Очень привязывается к владельцу и не любит одиночество.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Минимальная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Эмоционален'
-    ]
-],
-
-[
-    'animal_id' => 42,
+             
+             
+                 ]],['animal_breed' => 'Пти-брабансон',
     'weight_range' => '3.5–6 кг',
-    'height_range' => '18–22 см',
+    'height_range' => '18–26 см',
     'lifespan' => '12–15 лет',
     'type' => 'Компаньон',
-    'photo' => 'animal/dog/breed/Belgian_griffon.webp',
-    'short_description' => 'Живая и внимательная декоративная собака.',
-    'full_description' => "Бельгийский гриффон — маленькая, но смелая собака. Очень ориентирован на человека и любит внимание.",
-    'features' => [
-        'Тип' => 'Компаньон',
-        'Линька' => 'Минимальная',
+    'photo' => 'animal/dog/breed/Petit_Brabancon.webp',
+    'short_description' => 'Гладкошерстный гриффон с почти человеческой мимикой.',
+    'full_description' => "Пти-брабансон — это маленькая, крепкая собака с чувством собственного достоинства. В отличие от других гриффонов, обладает гладкой шерстью, которая не требует тримминга. Отличается чрезвычайной привязанностью к владельцу, развитым интеллектом и отсутствием агрессии. Идеально подходит для содержания в квартире.",
+     'features' =>[
+        'Тип' => 'Гладкошерстный',
+        'Линька' => 'Умеренная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
-        'Особенности' => 'Плохо переносит одиночество'
-    ]
-],
-
-[
-    'animal_id' => 43,
+        'Особенности' => 'Богатая мимика'
+             
+             
+                 ]],['animal_breed' => 'Болонка',
     'weight_range' => '2–5 кг',
     'height_range' => '20–28 см',
     'lifespan' => '12–15 лет',
@@ -776,17 +697,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Bolonka.webp',
     'short_description' => 'Маленькая декоративная собака с мягкой шерстью.',
     'full_description' => "Болонка — ласковая и спокойная собака. Отлично подходит для квартиры и семьи.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Минимальная',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Подходит для квартиры'
-    ]
-],
-
-[
-    'animal_id' => 44,
+             
+             
+                 ]],['animal_breed' => 'Тибетский спаниель',
     'weight_range' => '4–7 кг',
     'height_range' => '25–28 см',
     'lifespan' => '12–15 лет',
@@ -794,17 +713,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Tibetan_spaniel.webp',
     'short_description' => 'Небольшая и умная собака с независимым характером.',
     'full_description' => "Тибетский спаниель — древняя порода. Любит наблюдать за окружающим и привязывается к хозяину.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Независимый'
-    ]
-],
-
-[
-    'animal_id' => 45,
+             
+             
+                 ]],['animal_breed' => 'Фокстерьер',
     'weight_range' => '6–8 кг',
     'height_range' => '35–40 см',
     'lifespan' => '12–15 лет',
@@ -812,17 +729,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Fox_terrier.webp',
     'short_description' => 'Активная и смелая охотничья собака.',
     'full_description' => "Фокстерьер — энергичная и жизнерадостная порода. Любит движение и игры.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Очень энергичный'
-    ]
-],
-
-[
-    'animal_id' => 46,
+             
+             
+                 ]],['animal_breed' => 'Русская гончая',
     'weight_range' => '25–35 кг',
     'height_range' => '55–68 см',
     'lifespan' => '10–12 лет',
@@ -830,17 +745,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Russian_hound.webp',
     'short_description' => 'Выносливая и быстрая гончая собака.',
     'full_description' => "Русская гончая — охотничья порода с отличным нюхом. Используется для охоты и требует активности.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Средняя',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Нуждается в нагрузке'
-    ]
-],
-
-[
-    'animal_id' => 47,
+             
+             
+                 ]],['animal_breed' => 'Борзая',
     'weight_range' => '25–48 кг',
     'height_range' => '65–85 см',
     'lifespan' => '10–12 лет',
@@ -848,17 +761,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Borzoi.webp',
     'short_description' => 'Элегантная и быстрая борзая собака.',
     'full_description' => "Борзая — грациозная и спокойная порода. Обладает высокой скоростью и независимым характером.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Любит бегать'
-    ]
-],
-
-[
-    'animal_id' => 48,
+             
+             
+                 ]],['animal_breed' => 'Салюки',
     'weight_range' => '18–30 кг',
     'height_range' => '58–71 см',
     'lifespan' => '10–14 лет',
@@ -866,17 +777,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Saluki.webp',
     'short_description' => 'Одна из самых древних и быстрых пород.',
     'full_description' => "Салюки — древняя борзая. Очень быстрая, независимая и элегантная собака.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Независимый характер'
-    ]
-],
-
-[
-    'animal_id' => 49,
+             
+             
+                 ]],['animal_breed' => 'Метис',
     'weight_range' => '5–30 кг',
     'height_range' => '25–60 см',
     'lifespan' => '10–16 лет',
@@ -884,17 +793,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Mixed_breed.webp',
     'short_description' => 'Собаки смешанного происхождения с уникальными качествами.',
     'full_description' => "Метис — собака без определённой породы. Может сочетать лучшие качества разных пород и отличается разнообразием.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Компаньон',
         'Линька' => 'Разная',
         'Активность' => 'Разная',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Индивидуальные качества'
-    ]
-],
-
-[
-    'animal_id' => 50,
+             
+             
+                 ]],['animal_breed' => 'Хантерьер',
     'weight_range' => '9–12 кг',
     'height_range' => '46–48 см',
     'lifespan' => '12–14 лет',
@@ -902,16 +809,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Pointer.webp',
     'short_description' => 'Энергичная охотничья собака с отличным нюхом.',
     'full_description' => "Хантер-терьер (пойнтер) — активная и выносливая порода. Используется для охоты, требует много движения.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Охотничья',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Нуждается в активности'
-    ]
-],
-[
-    'animal_id' => 51,
+             
+             
+                 ]],['animal_breed' => 'Питбуль-терьер',
     'weight_range' => '16–30 кг',
     'height_range' => '45–53 см',
     'lifespan' => '12–15 лет',
@@ -919,17 +825,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/Pitbull_terrier.webp',
     'short_description' => 'Сильная, энергичная и преданная собака.',
     'full_description' => "Питбуль-терьер — мощная и выносливая порода. При правильном воспитании становится отличным компаньоном.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Бойцовская',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Требует социализации'
-    ]
-],
-
-[
-    'animal_id' => 52,
+             
+             
+                 ]],['animal_breed' => 'Американский стаффордширский терьер',
     'weight_range' => '25–32 кг',
     'height_range' => '43–48 см',
     'lifespan' => '12–16 лет',
@@ -937,17 +841,1193 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/dog/breed/American_staffordshire_terrier.webp',
     'short_description' => 'Мускулистая и энергичная собака с добрым характером.',
     'full_description' => "Американский стаффордширский терьер — сильная и преданная порода. Любит людей и хорошо обучается.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Бойцовская',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Сильный характер'
-    ]
-],
-
-[
-    'animal_id' => 53,
+             
+             
+                 ]],['animal_breed' => 'Сиба-ину',
+        'weight_range' => '7–11 кг',
+        'height_range' => '35–41 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/shiba_inu.webp',
+        'short_description' => 'Древняя японская порода, похожая на лису.',
+        'full_description' => "Сиба-ину — энергичная и независимая собака. Отличается чистоплотностью, острым умом и знаменитым «криком сибы». Верный компаньон, но требует терпения в дрессировке.",
+         'features' =>[
+            'Темперамент' => 'Независимый', 'Уход' => 'Чистоплотные', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Вельш-корги кардиган',
+        'weight_range' => '11–17 кг',
+        'height_range' => '26–31 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/welsh_corgi_cardigan.webp',
+        'short_description' => 'Маленькая овчарка с большим сердцем и длинным хвостом.',
+        'full_description' => "В отличие от пемброка, кардиган чуть крупнее и обладает длинным хвостом. Это серьезная пастушья собака в компактном теле, очень преданная семье.",
+         'features' =>['Хвост' => 'Длинный', 'Интеллект' => 'Высокий', 'Охранник' => 'Бдительный'
+             
+             
+                 ]],['animal_breed' => 'Бельгийская овчарка (Малинуа)',
+        'weight_range' => '20–30 кг',
+        'height_range' => '58–62 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/malinois.webp',
+        'short_description' => 'Эталон рабочей собаки для спецслужб.',
+        'full_description' => "Малинуа обладает невероятной работоспособностью и скоростью реакции. Требует огромных физических и умственных нагрузок.",
+         'features' =>['Служба' => 'Идеальна', 'Драйв' => 'Экстремальный', 'Обучаемость' => 'Максимальная'
+             
+             
+                 ]],['animal_breed' => 'Бернский зенненхунд',
+        'weight_range' => '36–50 кг',
+        'height_range' => '60–70 см',
+        'lifespan' => '7–10 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bernese_mountain_dog.webp',
+        'short_description' => 'Добрый пушистый великан из Швейцарии.',
+        'full_description' => "Прекрасная семейная собака с трехцветным окрасом. Очень привязаны к людям, спокойны и миролюбивы.",
+         'features' =>['Характер' => 'Миролюбивый', 'Шерсть' => 'Длинная', 'Семья' => 'Отличный выбор'
+             
+             
+                 ]],['animal_breed' => 'Шелти',
+        'weight_range' => '6–12 кг',
+        'height_range' => '33–40 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/sheltie.webp',
+        'short_description' => 'Миниатюрная колли с роскошной гривой.',
+        'full_description' => "Шетландская овчарка — невероятно умная и чуткая порода. Легко обучается трюкам и обожает угождать хозяину.",
+         'features' =>['Ум' => 'Выдающийся', 'Шум' => 'Любят лаять', 'Красота' => 'Выставочная'
+             
+             
+                 ]],['animal_breed' => 'Кане-корсо',
+        'weight_range' => '40–50 кг',
+        'height_range' => '60–68 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/cane_corso.webp',
+        'short_description' => 'Мощный итальянский защитник и атлет.',
+        'full_description' => "Древнеримская порода. Преданный телохранитель, который тонко чувствует грань между игрой и реальной угрозой.",
+         'features' =>['Защита' => 'Врожденная', 'Вид' => 'Устрашающий', 'Верность' => 'Абсолютная'
+             
+             
+                 ]],['animal_breed' => 'Аляскинский маламут',
+        'weight_range' => '32–38 кг',
+        'height_range' => '58–63 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/alaskan_malamute.webp',
+        'short_description' => 'Сильный и выносливый «поезд» Севера.',
+        'full_description' => "Самая крупная из ездовых собак. Обладает густой шерстью и независимым нравом. Не лают, а «разговаривают» воем.",
+         'features' =>['Сила' => 'Огромная', 'Голос' => 'Вой', 'Мороз' => 'Не страшен'
+             
+             
+                 ]],['animal_breed' => 'Китайская хохлатая собака',
+        'weight_range' => '2–5.5 кг',
+        'height_range' => '23–33 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/chinese_crested.webp',
+        'short_description' => 'Экзотическая собака с изящным хохолком.',
+        'full_description' => "Бывает двух видов: голая и пуховая (паудерпафф). Очень привязана к хозяину, почти «кошачье» поведение.",
+         'features' =>['Кожа' => 'Чувствительная', 'Запах' => 'Отсутствует', 'Характер' => 'Нежный'
+             
+             
+                 ]],['animal_breed' => 'Кавалер-кинг-чарльз-спаниель',
+        'weight_range' => '5.4–8.2 кг',
+        'height_range' => '30–33 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/cavalier_king_charles.webp',
+        'short_description' => 'Королевский спаниель с добрыми глазами.',
+        'full_description' => "Идеальная собака-терапевт и компаньон. Всегда в хорошем настроении, обожают сидеть на коленях.",
+         'features' =>['Дружелюбие' => 'Максимальное', 'Взгляд' => 'Выразительный', 'Спорт' => 'АдStandard'
+             
+             
+                 ]],['animal_breed' => 'Басенджи',
+        'weight_range' => '9–11 кг',
+        'height_range' => '40–43 см',
+        'lifespan' => '12–16 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/basenji.webp',
+        'short_description' => 'Африканская нелающая собака.',
+        'full_description' => "Вместо лая издает звуки, похожие на тирольское пение. Умывается лапой как кошка, не имеет запаха.",
+         'features' =>['Тишина' => 'Не лает', 'Запах' => 'Нет', 'Активность' => 'Очень высокая'
+             
+             
+                 ]],['animal_breed' => 'Афганская борзая',
+        'weight_range' => '20–27 кг',
+        'height_range' => '63–74 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/afghan_hound.webp',
+        'short_description' => 'Аристократка с роскошной шелковистой шерстью.',
+        'full_description' => "Восточная борзая с независимым и гордым характером. Требует сложного ухода за уникальной шерстью.",
+         'features' =>['Стиль' => 'Элегантный', 'Шерсть' => 'Требует ухода', 'Скорость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Бишон фризе',
+        'weight_range' => '3–5 кг',
+        'height_range' => '23–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bichon_frise.webp',
+        'short_description' => 'Белое «облако» с веселым нравом.',
+        'full_description' => "Маленькая кудрявая собака, которая почти не линяет. Очень общительна и любит внимание.",
+         'features' =>['Гипоаллергенно' => 'Да', 'Линька' => 'Нет', 'Радость' => 'Постоянная'
+             
+             
+                 ]],['animal_breed' => 'Американский кокер-спаниель',
+        'weight_range' => '7–14 кг',
+        'height_range' => '34–39 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/american_cocker_spaniel.webp',
+        'short_description' => 'Охотник с роскошными ушами и богатой шерстью.',
+        'full_description' => "Отличается от английского собрата более короткой мордой и обильной шерстью. Веселый и игривый друг.",
+         'features' =>['Уши' => 'Длинные', 'Друг' => 'Для детей', 'Шерсть' => 'Шелковистая'
+             
+             
+                 ]],['animal_breed' => 'Веймаранер',
+        'weight_range' => '25–40 кг',
+        'height_range' => '57–70 см',
+        'lifespan' => '11–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/weimaraner.webp',
+        'short_description' => '«Серебряный призрак» с янтарными глазами.',
+        'full_description' => "Элегантная охотничья собака необычного серого окраса. Обладает феноменальной выносливостью.",
+         'features' =>['Окрас' => 'Серебристый', 'Энергия' => 'Неисчерпаема', 'Привязанность' => 'Тень хозяина'
+             
+             
+                 ]],['animal_breed' => 'Ризеншнауцер',
+        'weight_range' => '35–47 кг',
+        'height_range' => '60–70 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/giant_schnauzer.webp',
+        'short_description' => 'Самый крупный и мощный из шнауцеров.',
+        'full_description' => "Серьезная служебная собака. Черный гигант с бородой, очень умный и преданный защитник.",
+         'features' =>['Служба' => 'Отличная', 'Защита' => 'Надежная', 'Борода' => 'Фирменная'
+             
+             
+                 ]],['animal_breed' => 'Ирландский сеттер',
+        'weight_range' => '24–32 кг',
+        'height_range' => '55–67 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/irish_setter.webp',
+        'short_description' => 'Ярко-рыжий неутомимый охотник.',
+        'full_description' => "Обладает огненным окрасом и безграничным дружелюбием. Обожает бегать и играть с семьей.",
+         'features' =>['Цвет' => 'Каштановый', 'Движение' => 'Много', 'Доброта' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Курцхаар',
+        'weight_range' => '20–32 кг',
+        'height_range' => '58–66 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/gsp.webp',
+        'short_description' => 'Немецкая короткошерстная легавая.',
+        'full_description' => "Универсальный охотник. Пятнистый атлет, который готов сопровождать хозяина в любых походах.",
+         'features' =>['Универсал' => 'Да', 'Охота' => 'В крови', 'Выносливость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Шарпей',
+        'weight_range' => '18–30 кг',
+        'height_range' => '44–51 см',
+        'lifespan' => '9–11 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/shar_pei.webp',
+        'short_description' => 'Древняя порода со складками и синим языком.',
+        'full_description' => "Спокойная и независимая собака. Известна своей необычной внешностью и преданностью одному хозяину.",
+         'features' =>['Складки' => 'Много', 'Язык' => 'Синий', 'Характер' => 'Сдержанный'
+             
+             
+                 ]],['animal_breed' => 'Чау-чау',
+        'weight_range' => '20–32 кг',
+        'height_range' => '46–56 см',
+        'lifespan' => '9–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/chow_chow.webp',
+        'short_description' => 'Древняя порода из Китая с синим языком и внешностью льва.',
+        'full_description' => "Чау-чау — независимая, гордая и спокойная собака. Известна своей густой «гривой» и уникальным сине-черным языком. Это собака одного хозяина, требующая уважительного отношения.",
+         'features' =>['Язык' => 'Синий', 'Характер' => 'Независимый', 'Шерсть' => 'Очень густая'
+             
+             
+                 ]],['animal_breed' => 'Австралийская пастушья собака (Хилер)',
+        'weight_range' => '15–20 кг',
+        'height_range' => '43–51 см',
+        'lifespan' => '12–16 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/australian_cattle_dog.webp',
+        'short_description' => 'Неутомимый пастух с невероятной выносливостью.',
+        'full_description' => "Хилеры были выведены для перегона скота на огромные расстояния. Это очень умные, преданные и физически крепкие собаки, которым жизненно необходима работа или активный спорт.",
+         'features' =>['Выносливость' => 'Экстремальная', 'Интеллект' => 'Высокий', 'Окрас' => 'Крапчатый'
+             
+             
+                 ]],['animal_breed' => 'Венгерская выжла',
+        'weight_range' => '18–30 кг',
+        'height_range' => '54–64 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/vizsla.webp',
+        'short_description' => 'Элегантная золотистая легавая, «собака-липучка».',
+        'full_description' => "Выжла — грациозный охотник и ласковый компаньон. Они очень привязаны к хозяину и плохо переносят одиночество. Обладают отличным нюхом и мягким характером.",
+         'features' =>['Контакт' => 'Постоянный', 'Нюх' => 'Острый', 'Цвет' => 'Золотисто-рыжий'
+             
+             
+                 ]],['animal_breed' => 'Риджбек родезийский',
+        'weight_range' => '30–38 кг',
+        'height_range' => '61–69 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/rhodesian_ridgeback.webp',
+        'short_description' => 'Африканская львиная собака с гребнем на спине.',
+        'full_description' => "Единственная южноафриканская порода, признанная FCI. Характерная черта — ридж (гребень из шерсти) на спине. Сильная, смелая и сдержанная собака.",
+         'features' =>['Особенность' => 'Ридж на спине', 'Смелость' => 'Высокая', 'Сила' => 'Атлетическая'
+             
+             
+                 ]],['animal_breed' => 'Бордер-колли',
+        'weight_range' => '12–20 кг',
+        'height_range' => '47–53 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/border_collie.webp',
+        'short_description' => 'Самая умная порода собак в мире по шкале Корена.',
+        'full_description' => "Бордер-колли — трудоголик из мира собак. Они схватывают команды на лету и нуждаются в постоянной интеллектуальной стимуляции. Идеальны для аджилити и фрисби.",
+         'features' =>['Ум' => 'Гениальный', 'Активность' => 'Неисчерпаемая', 'Пастух' => 'Врожденный'
+             
+             
+                 ]],['animal_breed' => 'Бельгийский гриффон',
+        'weight_range' => '3.5–6 кг',
+        'height_range' => '18–26 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/belgian_griffon.webp',
+        'short_description' => 'Жесткошерстный гриффон черного или черно-подпалого окраса.',
+        'full_description' => "Компактная собака с забавной «бородкой». Очень общительный, умный и привязанный к семье. Обладает человеческой мимикой и чувством собственного достоинства.",
+         'features' =>['Окрас' => 'Черный/Подпалый', 'Тип' => 'Жесткошерстный', 'Мимика' => 'Человеческая'
+             
+             
+                 ]],['animal_breed' => 'Брюссельский гриффон',
+        'weight_range' => '3.5–6 кг',
+        'height_range' => '18–26 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/brussels_griffon.webp',
+        'short_description' => 'Рыжий жесткошерстный гриффон с выразительной мордочкой.',
+        'full_description' => "В отличие от бельгийца, брюссельский гриффон всегда рыжий. Это маленькая собака с большим характером, которая обожает быть центром внимания.",
+         'features' =>['Окрас' => 'Рыжий', 'Шерсть' => 'Проволокообразная', 'Характер' => 'Смелый'
+             
+             
+                 ]],['animal_breed' => 'Папильон',
+        'weight_range' => '2.5–5 кг',
+        'height_range' => '20–28 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/papillon.webp',
+        'short_description' => 'Континентальный той-спаниель с ушами-бабочками.',
+        'full_description' => "Папильон входит в топ-10 самых умных собак. Очень энергичный, легкий на подъем и ласковый друг, который отлично поддается дрессировке.",
+         'features' =>['Уши' => 'Похожи на бабочку', 'Интеллект' => 'Топ-10', 'Линька' => 'Минимальная'
+             
+             
+                 ]],['animal_breed' => 'Русский той-терьер',
+        'weight_range' => '1.5–3 кг',
+        'height_range' => '20–28 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/russian_toy.webp',
+        'short_description' => 'Элегантная крошечная собака с большими ушами.',
+        'full_description' => "Бывает гладкошерстным и длинношерстным. Несмотря на размер, считает себя большой и отважной собакой. Очень привязан к владельцу.",
+         'features' =>['Размер' => 'Миниатюрный', 'Вес' => 'До 3 кг', 'Темперамент' => 'Живой'
+             
+             
+                 ]],['animal_breed' => 'Уиппет',
+        'weight_range' => '7–14 кг',
+        'height_range' => '44–51 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/whippet.webp',
+        'short_description' => 'Малая английская борзая, мастер спринта.',
+        'full_description' => "Грациозная собака, способная развивать скорость до 50–60 км/ч. Дома — тихий и ласковый «диванный» житель, на улице — стремительный атлет.",
+         'features' =>['Скорость' => 'Высокая', 'Уход' => 'Минимальный', 'Голос' => 'Тихая'
+             
+             
+                 ]],['animal_breed' => 'Пиренейская горная собака',
+        'weight_range' => '40–55 кг',
+        'height_range' => '65–80 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/great_pyrenees.webp',
+        'short_description' => 'Белоснежный великан-хранитель из гор.',
+        'full_description' => "Обладает спокойным, величественным характером. Исторически охраняла стада от волков. Требует пространства и уверенного хозяина.",
+         'features' =>['Окрас' => 'Белый', 'Рост' => 'Впечатляющий', 'Защита' => 'Врожденная'
+             
+             
+                 ]],['animal_breed' => 'Леонбергер',
+        'weight_range' => '41–75 кг',
+        'height_range' => '65–80 см',
+        'lifespan' => '8–10 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/leonberger.webp',
+        'short_description' => 'Собака с внешностью льва и сердцем ангела.',
+        'full_description' => "Порода была выведена, чтобы напоминать льва на гербе города Леонберг. Очень уравновешенная, семейная собака, которая обожает детей и воду.",
+         'features' =>['Вид' => 'Львиный', 'Семья' => 'Идеален', 'Размер' => 'Гигантский'
+             
+             
+                 ]],['animal_breed' => 'Английский мастиф',
+        'weight_range' => '70–100 кг',
+        'height_range' => '70–90 см',
+        'lifespan' => '6–10 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/english_mastiff.webp',
+        'short_description' => 'Одна из самых тяжелых собак в мире.',
+        'full_description' => "Спокойный, благородный гигант. Обладает огромной силой, но при этом миролюбив и флегматичен. Преданный защитник семьи.",
+         'features' =>['Вес' => 'Огромный', 'Спокойствие' => 'Высокое', 'Защита' => 'Надежная'
+             
+             
+                 ]],['animal_breed' => 'Пражский крысарик',
+        'weight_range' => '1.5–2.6 кг',
+        'height_range' => '20–23 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/prague_ratter.webp',
+        'short_description' => 'Самая маленькая порода в мире (по стандарту роста).',
+        'full_description' => "Чешская порода, исторически использовавшаяся для борьбы с грызунами. Азартный, быстрый и очень ласковый со своими людьми.",
+         'features' =>['Размер' => 'Крошечный', 'Азарт' => 'Высокий', 'Обучаемость' => 'Хорошая'
+             
+             
+                 ]],['animal_breed' => 'Шипперке',
+        'weight_range' => '3–9 кг',
+        'height_range' => '25–33 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/schipperke.webp',
+        'short_description' => '«Маленький капитан» — черная овчарка в миниатюре.',
+        'full_description' => "Бельгийская порода. Энергичная, бдительная и любопытная собака. Несмотря на размер, обладает повадками настоящей овчарки.",
+         'features' =>['Окрас' => 'Черный', 'Энергия' => 'Очень высокая', 'Бдительность' => 'Острая'
+             
+             
+                 ]],['animal_breed' => 'Американский булли',
+        'weight_range' => '30–50 кг',
+        'height_range' => '33–50 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/american_bully.webp',
+        'short_description' => 'Мощный атлет с дружелюбным характером.',
+        'full_description' => "Несмотря на суровую внешность, булли выводился как идеальный компаньон. Обладает широкой грудью и массивным костяком при полном отсутствии агрессии к человеку.",
+         'features' =>['Внешность' => 'Внушительная', 'Доброта' => 'Удивительная', 'Костяк' => 'Массивный'
+             
+             
+                 ]],['animal_breed' => 'Стаффордширский бультерьер',
+        'weight_range' => '11–17 кг',
+        'height_range' => '35–40 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/staffie.webp',
+        'short_description' => '«Собака-нянька» с широкой улыбкой.',
+        'full_description' => "Стаффи — невероятно человекоориентированная собака. Они обожают детей и игры. Сильные, ловкие и очень смелые.",
+         'features' =>['Отношение к детям' => 'Лучшее', 'Сила' => 'Концентрированная', 'Улыбка' => 'Фирменная'
+             
+             
+                 ]],['animal_breed' => 'Английский кокер-спаниель',
+        'weight_range' => '12–15 кг',
+        'height_range' => '38–41 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/english_cocker_spaniel.webp',
+        'short_description' => 'Веселый охотник и преданный друг.',
+        'full_description' => "Постоянно виляющий хвостом спаниель. Очень общительный, умный и азартный. Требует регулярного ухода за ушами и шерстью.",
+         'features' =>['Темперамент' => 'Жизнерадостный', 'Охота' => 'Активный', 'Уши' => 'Длинные'
+             
+             
+                 ]],['animal_breed' => 'Японский шпиц',
+        'weight_range' => '5–8 кг',
+        'height_range' => '30–38 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/japanese_spitz.webp',
+        'short_description' => 'Белоснежная собака-солнце.',
+        'full_description' => "Маленький, но смелый шпиц с густой белой шерстью. Очень чистоплотен, весел и бдителен. Отличный звоночек в доме.",
+         'features' =>['Окрас' => 'Кипенно-белый', 'Уход' => 'Проще, чем кажется', 'Дружелюбие' => 'Высокое'
+             
+             
+                 ]],['animal_breed' => 'Американский акита',
+        'weight_range' => '32–59 кг',
+        'height_range' => '61–71 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/american_akita.webp',
+        'short_description' => 'Крупная, мощная собака с медвежьей внешностью.',
+        'full_description' => "В отличие от японской акиты, американская крупнее и может иметь любой окрас. Обладает серьезным характером и отличными охранными качествами.",
+         'features' =>['Вид' => 'Медвежий', 'Охрана' => 'Серьезная', 'Лидерство' => 'Требуется'
+             
+             
+                 ]],['animal_breed' => 'Дратхаар',
+        'weight_range' => '23–32 кг',
+        'height_range' => '57–68 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/german_wirehaired_pointer.webp',
+        'short_description' => 'Универсальный жесткошерстный охотник.',
+        'full_description' => "Немецкая легавая с «бородкой». Ее жесткая шерсть защищает от колючек и холодной воды. Очень работоспособная и выносливая собака.",
+         'features' =>['Шерсть' => 'Жесткая', 'Работа' => 'Универсал', 'Энергия' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Пойнтер',
+        'weight_range' => '20–34 кг',
+        'height_range' => '61–69 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/english_pointer.webp',
+        'short_description' => 'Классическая английская легавая с идеальной стойкой.',
+        'full_description' => "Пойнтер — аристократ среди охотников. Обладает мгновенной реакцией и характерной «стойкой» на дичь. Очень спортивный и азартный.",
+         'features' =>['Стойка' => 'Эталонная', 'Скорость' => 'Высокая', 'Грация' => 'Спортивная'
+             
+             
+                 ]],['animal_breed' => 'Азавак',
+        'weight_range' => '15–25 кг',
+        'height_range' => '60–74 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/azawakh.webp',
+        'short_description' => 'Африканская борзая, воплощение изящества и скорости.',
+        'full_description' => "Азавак — редкая и древняя порода из долины Азавак (Сахель). Это невероятно стройная, высокая и преданная собака, которая веками охраняла кочевников Сахары. Обладает независимым нравом и огромной выносливостью к жаре.",
+         'features' =>['Телосложение' => 'Сверхтонкое', 'Выносливость' => 'Высокая', 'Характер' => 'Сдержанный'
+             
+             
+                 ]],['animal_breed' => 'Эрдельтерьер',
+        'weight_range' => '18–29 кг',
+        'height_range' => '56–61 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/airedale_terrier.webp',
+        'short_description' => '«Король терьеров» — самый крупный и универсальный в своей группе.',
+        'full_description' => "Эрдельтерьер — энергичная и бесстрашная собака. Исторически использовался как охотник, вестовой и служебный пес. Обладает жесткой шерстью, которая почти не линяет, и очень острым умом.",
+         'features' =>['Шерсть' => 'Жесткая', 'Интеллект' => 'Высокий', 'Работа' => 'Универсал'
+             
+             
+                 ]],['animal_breed' => 'Бульмастиф',
+        'weight_range' => '41–59 кг',
+        'height_range' => '61–68 см',
+        'lifespan' => '8–10 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bullmastiff.webp',
+        'short_description' => 'Мощный хранитель с мягким сердцем.',
+        'full_description' => "Порода была выведена в Англии для охраны поместий от браконьеров. Бульмастиф сочетает в себе силу мастифа и скорость бульдога. Очень преданный семье и спокойный дома пес.",
+         'features' =>['Охрана' => 'Природная', 'Сила' => 'Внушительная', 'Нрав' => 'Уравновешенный'
+             
+             
+                 ]],['animal_breed' => 'Аргентинский дог',
+        'weight_range' => '40–45 кг',
+        'height_range' => '60–68 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/dogo_argentino.webp',
+        'short_description' => 'Белоснежный атлет, выведенный для серьезной охоты.',
+        'full_description' => "Единственная порода родом из Аргентины. Это мощный охотник на крупного зверя, который при правильном воспитании становится верным защитником и ласковым членом семьи.",
+         'features' =>['Окрас' => 'Белый', 'Мускулатура' => 'Рельефная', 'Смелость' => 'Беспредельная'
+             
+             
+                 ]],['animal_breed' => 'Южнорусская овчарка',
+        'weight_range' => '35–50 кг',
+        'height_range' => '62–66 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/south_russian_ovcharka.webp',
+        'short_description' => '«Белый медведь» с молниеносной реакцией.',
+        'full_description' => "Крупная собака с обильной белой шерстью. Под внешностью гигантской болонки скрывается серьезный охранник, способный самостоятельно принимать решения в опасных ситуациях.",
+         'features' =>['Шерсть' => 'Длинная белая', 'Реакция' => 'Мгновенная', 'Служба' => 'Охранная'
+             
+             
+                 ]],['animal_breed' => 'Ховаварт',
+        'weight_range' => '25–40 кг',
+        'height_range' => '58–70 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/hovawart.webp',
+        'short_description' => 'Универсальная немецкая рабочая собака.',
+        'full_description' => "Название породы означает «страж двора». Это уравновешенная, умная и физически крепкая собака с прекрасными охранными качествами. Бывает трех окрасов: черный, черно-подпалый и палевый.",
+         'features' =>['Охрана' => 'Страж', 'Здоровье' => 'Крепкое', 'Характер' => 'Спокойный'
+             
+             
+                 ]],['animal_breed' => 'Пекинес',
+        'weight_range' => '3–5.5 кг',
+        'height_range' => '15–23 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/pekingese.webp',
+        'short_description' => 'Древняя священная собака китайских императоров.',
+        'full_description' => "Пекинес обладает чувством собственного достоинства и львиной храбростью. Они не требуют долгих прогулок и очень преданы своему владельцу, сохраняя независимый нрав.",
+         'features' =>['Внешность' => 'Львиная', 'Активность' => 'Низкая', 'Гордость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Бишон-фризе',
+        'weight_range' => '3–5 кг',
+        'height_range' => '23–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bichon_frise.webp',
+        'short_description' => 'Белоснежное «облако» с веселым и ласковым нравом.',
+        'full_description' => "Маленькая кудрявая собака, которая почти не линяет и считается гипоаллергенной. Бишоны обожают внимание, игры и очень легко находят общий язык с детьми.",
+         'features' =>['Линька' => 'Нет', 'Радость' => 'Постоянная', 'Уход' => 'Требует груминга'
+             
+             
+                 ]],['animal_breed' => 'Мальтийская болонка (Мальтезе)',
+        'weight_range' => '3–4 кг',
+        'height_range' => '20–25 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/maltese.webp',
+        'short_description' => 'Аристократичная собака с шелковистой белоснежной шерстью.',
+        'full_description' => "Мальтезе — древнейшая порода компаньонов. Очень ласковые, умные и бесстрашные для своего размера. Их шерсть не имеет подшерстка и по структуре напоминает человеческий волос.",
+         'features' =>['Шерсть' => 'Шелковистая', 'Привязанность' => 'Сильная', 'Запах' => 'Нет'
+             
+             
+                 ]],['animal_breed' => 'Японский хин',
+        'weight_range' => '2–4 кг',
+        'height_range' => '20–27 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/japanese_chin.webp',
+        'short_description' => 'Грациозная собака с почти «кошачьими» повадками.',
+        'full_description' => "Хины веками жили в японских дворцах. Они тихие, чистоплотные и любят забираться повыше, как кошки. Отличаются очень выразительным взглядом и плоской мордочкой.",
+         'features' =>['Повадки' => 'Кошачьи', 'Мимика' => 'Богатая', 'Голос' => 'Тихая'
+             
+             
+                 ]],['animal_breed' => 'Китайская хохлатая',
+        'weight_range' => '2–5 кг',
+        'height_range' => '23–33 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/chinese_crested.webp',
+        'short_description' => 'Экзотическая собака, символ преданности и нежности.',
+        'full_description' => "Бывает голой (с хохолком на голове и хвосте) и пуховой (паудерпафф). Невероятно чувствительны к настроению хозяина и очень любят тактильный контакт.",
+         'features' =>['Кожа' => 'Чувствительная', 'Верность' => 'Высокая', 'Гипоаллергенно' => 'Да'
+             
+             
+                 ]],['animal_breed' => 'Норвич-терьер',
+        'weight_range' => '5–5.5 кг',
+        'height_range' => '25–26 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/norwich_terrier.webp',
+        'short_description' => 'Один из самых маленьких, но очень отважных терьеров.',
+        'full_description' => "Норвич — это сгусток энергии. Общительный, неагрессивный и очень азартный пес. Отличается стоячими ушами (в отличие от норфолк-терьера) и крепким телосложением.",
+         'features' =>['Уши' => 'Стоячие', 'Активность' => 'Высокая', 'Дружелюбие' => 'Высокое'
+             
+             
+                 ]],['animal_breed' => 'Керн-терьер',
+        'weight_range' => '6–7.5 кг',
+        'height_range' => '28–31 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/cairn_terrier.webp',
+        'short_description' => 'Лохматый шотландский охотник с задорным характером.',
+        'full_description' => "Керн-терьер — это «лучший маленький друг в мире». Прославился ролью Тотошки в «Волшебнике страны Оз». Очень выносливый, неприхотливый и веселый пес.",
+         'features' =>['Выносливость' => 'Высокая', 'Характер' => 'Задорный', 'Шерсть' => 'Косматая'
+             
+             
+                 ]],['animal_breed' => 'Бородатая колли',
+        'weight_range' => '18–27 кг',
+        'height_range' => '51–56 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bearded_collie.webp',
+        'short_description' => 'Лохматый пастух с неугасающим оптимизмом.',
+        'full_description' => "«Бирди» известны своей привычкой подпрыгивать, чтобы увидеть овец в высокой траве. Это очень жизнерадостные, активные собаки с длинной, густой шерстью.",
+         'features' =>['Оптимизм' => 'Зашкаливает', 'Шерсть' => 'Длинная', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Энтлебухер зенненхунд',
+        'weight_range' => '20–30 кг',
+        'height_range' => '42–50 см',
+        'lifespan' => '11–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/entlebucher.webp',
+        'short_description' => 'Самый маленький и быстрый из четырех зенненхундов.',
+        'full_description' => "Энергичная пастушья собака из Швейцарии. Обладает компактным телом, гладкой шерстью и огромным желанием работать. Идеальный напарник для активных людей.",
+         'features' =>['Работа' => 'Трудоголик', 'Размер' => 'Средний', 'Окрас' => 'Триколор'
+             
+             
+                 ]],['animal_breed' => 'Бобтейл',
+        'weight_range' => '27–45 кг',
+        'height_range' => '51–61 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/old_english_sheepdog.webp',
+        'short_description' => 'Староанглийская овчарка с характерным «медвежьим» шагом.',
+        'full_description' => "Бобтейлы — добродушные великаны с густой, лохматой шерстью, закрывающей глаза. Несмотря на массивный вид, это очень ловкие и преданные семейные собаки.",
+         'features' =>['Шерсть' => 'Обильная', 'Лай' => 'Хриплый', 'Семья' => 'Любит детей'
+             
+             
+                 ]],['animal_breed' => 'Тайский риджбек',
+        'weight_range' => '16–32 кг',
+        'height_range' => '51–61 см',
+        'lifespan' => '12–13 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/thai_ridgeback.webp',
+        'short_description' => 'Древняя атлетичная собака с гребнем на спине.',
+        'full_description' => "Национальная гордость Таиланда. Самостоятельная, умная и физически мощная собака. Риджбек очень предан семье, но подозрителен к посторонним.",
+         'features' =>['Особенность' => 'Ридж на спине', 'Прыжки' => 'Феноменальные', 'Ум' => 'Независимый'
+             
+             
+                 ]],['animal_breed' => 'Ксолоитцкуинтли (Мексиканская голая собака)',
+        'weight_range' => '4–25 кг',
+        'height_range' => '25–60 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/xoloitzcuintli.webp',
+        'short_description' => 'Древняя сакральная собака ацтеков.',
+        'full_description' => "Ксоло бывают трех размеров: стандартный, средний и миниатюрный. Они считаются земным воплощением бога Шолотля. Очень спокойные, чуткие и чистоплотные собаки.",
+         'features' =>['Кожа' => 'Теплая на ощупь', 'История' => 'Культовая', 'Запах' => 'Нет'
+             
+             
+                 ]],['animal_breed' => 'Фараонова собака',
+        'weight_range' => '18–27 кг',
+        'height_range' => '53–64 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/pharaoh_hound.webp',
+        'short_description' => 'Изящная борзая, умеющая «краснеть» от радости.',
+        'full_description' => "Одна из самых древних пород. Обладает благородным обликом, напоминающим изображения бога Анубиса. Уникальная черта: при сильном возбуждении у них розовеют нос и уши.",
+         'features' =>['Эмоции' => 'Умеет краснеть', 'Слух' => 'Острый', 'Грация' => 'Сверхвысокая'
+             
+             
+                 ]],['animal_breed' => 'Перуанская голая собака',
+        'weight_range' => '4–25 кг',
+        'height_range' => '25–65 см',
+        'lifespan' => '11–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/peruvian_hairless.webp',
+        'short_description' => 'Элегантный и быстрый «Лунный цветок» инков.',
+        'full_description' => "Грациозная бесшерстная собака, очень преданная своим владельцам. Перуанцы — отличные охранники и компаньоны, требующие защиты кожи от солнца и холода.",
+         'features' =>['Температура' => 'Высокая', 'Верность' => 'Абсолютная', 'Уход' => 'За кожей'
+             
+             
+                 ]],['animal_breed' => 'Бедлингтон-терьер',
+        'weight_range' => '8–10 кг',
+        'height_range' => '38–44 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bedlington_terrier.webp',
+        'short_description' => 'Собака с внешностью ягненка и сердцем льва.',
+        'full_description' => "Бедлингтоны обладают уникальной выгнутой спиной и мягкой, кудрявой шерстью. Несмотря на кроткий вид, это быстрые и решительные терьеры с сильным охотничьим инстинктом.",
+         'features' =>['Внешность' => 'Как овечка', 'Бег' => 'Очень быстрый', 'Линька' => 'Нет'
+             
+             
+                 ]],['animal_breed' => 'Чехословацкая волчья собака (Влчак)',
+        'weight_range' => '20–26 кг',
+        'height_range' => '60–65 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/czechoslovakian_wolfdog.webp',
+        'short_description' => 'Уникальный гибрид немецкой овчарки и карпатского волка.',
+        'full_description' => "Влчак обладает внешностью и выносливостью волка в сочетании с обучаемостью собаки. Это крайне преданная, но сложная порода, требующая серьезной социализации и понимания психологии стаи.",
+         'features' =>['Выносливость' => 'Экстремальная', 'Внешность' => 'Волчья', 'Верность' => 'Стайная'
+             
+             
+                 ]],['animal_breed' => 'Тибетский терьер',
+        'weight_range' => '8–14 кг',
+        'height_range' => '35–41 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/tibetan_terrier.webp',
+        'short_description' => '«Святая собака Тибета», приносящая удачу.',
+        'full_description' => "Несмотря на название, это не терьер, а пастушья собака. Обладает уникальными широкими лапами («снегоступами») для передвижения по горам и богатой двойной шерстью.",
+         'features' =>['Лапы' => 'Плоские/Широкие', 'Шерсть' => 'Обильная', 'История' => 'Монастырская'
+             
+             
+                 ]],['animal_breed' => 'Левхен (Малая львиная собака)',
+        'weight_range' => '4–8 кг',
+        'height_range' => '26–32 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/lowchen.webp',
+        'short_description' => 'Редкая европейская порода с характерной стрижкой под льва.',
+        'full_description' => "Левхен — ласковый и бесстрашный компаньон. Когда-то была одной из самых редких пород в мире. Очень умная, игривая и преданная собака, идеально подходящая для квартиры.",
+         'features' =>['Статус' => 'Редкая', 'Характер' => 'Бесстрашный', 'Стрижка' => 'Львиный стиль'
+             
+             
+                 ]],['animal_breed' => 'Грейхаунд (Английская борзая)',
+        'weight_range' => '27–40 кг',
+        'height_range' => '68–76 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/greyhound.webp',
+        'short_description' => 'Самая быстрая собака в мире на коротких дистанциях.',
+        'full_description' => "Грейхаунд способен развивать скорость до 70 км/ч. Удивительно, но дома это очень ленивая и тихая собака, которую часто называют «диванным атлетом».",
+         'features' =>['Скорость' => 'До 70 км/ч', 'Энергия' => 'Спринтерская', 'Уход' => 'Легкий'
+             
+             
+                 ]],['animal_breed' => 'Ирландский волкодав',
+        'weight_range' => '47–55 кг',
+        'height_range' => '71–86 см',
+        'lifespan' => '6–8 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/irish_wolfhound.webp',
+        'short_description' => 'Добродушный гигант, одна из самых высоких собак в мире.',
+        'full_description' => "Древняя порода кельтских борзых. Обладает колоссальным ростом, жесткой шерстью и удивительно мягким, неагрессивным характером. Прекрасно ладит с семьей.",
+         'features' =>['Рост' => 'Гигантский', 'Нрав' => 'Очень добрый', 'Тип' => 'Борзая'
+             
+             
+                 ]],['animal_breed' => 'Испанский мастиф',
+        'weight_range' => '70–100 кг',
+        'height_range' => '72–88 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/spanish_mastiff.webp',
+        'short_description' => 'Мощный и благородный защитник стад.',
+        'full_description' => "Огромная рабочая собака с суровым взглядом, но любящим сердцем. Исторически охраняли овец от волков и медведей. Обладают низким, рокочущим лаем.",
+         'features' =>['Вес' => 'До 100 кг', 'Голос' => 'Бас', 'Охрана' => 'Природная'
+             
+             
+                 ]],['animal_breed' => 'Бладхаунд',
+        'weight_range' => '36–50 кг',
+        'height_range' => '58–69 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bloodhound.webp',
+        'short_description' => 'Непревзойденный мастер следовой работы.',
+        'full_description' => "Обладает самым острым нюхом среди всех собак. Известен своими длинными ушами и складками на морде, которые помогают «собирать» запахи с земли.",
+         'features' =>['Нюх' => 'Феноменальный', 'Уши' => 'Очень длинные', 'Тип' => 'Гончая'
+             
+             
+                 ]],['animal_breed' => 'Португальская водяная собака',
+        'weight_range' => '16–25 кг',
+        'height_range' => '43–57 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/portuguese_water_dog.webp',
+        'short_description' => 'Энергичный пловец и помощник рыбаков.',
+        'full_description' => "Порода прославилась тем, что жила в Белом доме при Бараке Обаме. Шерсть не линяет, очень умная и атлетичная собака, обожающая воду.",
+         'features' =>['Плавание' => 'Любит воду', 'Линька' => 'Нет', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Английский сеттер',
+        'weight_range' => '20–36 кг',
+        'height_range' => '61–68 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/english_setter.webp',
+        'short_description' => 'Грациозный охотник с уникальным крапчатым окрасом.',
+        'full_description' => "Изысканная легавая, известная своей «кошачьей» манерой подкрадываться к дичи. Очень ласковая, спокойная дома и азартная на прогулках.",
+         'features' =>['Окрас' => 'Бельтон (крап)', 'Грация' => 'Высокая', 'Дружелюбие' => 'Высокое'
+             
+             
+                 ]],['animal_breed' => 'Шотландский сеттер (Гордон)',
+        'weight_range' => '20–36 кг',
+        'height_range' => '62–66 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/gordon_setter.webp',
+        'short_description' => 'Самый мощный и серьезный из сеттеров.',
+        'full_description' => "Обладает красивым черно-подпалым окрасом. Гордоны более медлительны, чем другие сеттеры, но отличаются невероятной выносливостью и преданностью.",
+         'features' =>['Окрас' => 'Черно-подпалый', 'Стойкость' => 'Высокая', 'Охрана' => 'Присутствует'
+             
+             
+                 ]],['animal_breed' => 'Новошотландский ретривер (Толлер)',
+        'weight_range' => '17–23 кг',
+        'height_range' => '45–51 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/toller.webp',
+        'short_description' => 'Самый маленький из ретриверов, мастер приманивания уток.',
+        'full_description' => "Толлер — рыжий сгусток энергии. Обладает уникальной техникой охоты, приманивая дичь игрой. Очень умный, трудолюбивый и подвижный пес.",
+         'features' =>['Цвет' => 'Рыжий/Оранжевый', 'Работа' => 'Азартная', 'Размер' => 'Компактный'
+             
+             
+                 ]],['animal_breed' => 'Прямошерстный ретривер',
+        'weight_range' => '25–36 кг',
+        'height_range' => '56–61 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/flat_coated_retriever.webp',
+        'short_description' => '«Питер Пэн» собачьего мира, вечный щенок.',
+        'full_description' => "Элегантная собака с черной или шоколадной шерстью. Отличается невероятным дружелюбием, постоянным вилянием хвоста и жизнерадостным характером до старости.",
+         'features' =>['Оптимизм' => 'Бесконечный', 'Окрас' => 'Черный/Ливерный', 'Элегантность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Ирландский мягкошерстный пшеничный терьер',
+        'weight_range' => '14–18 кг',
+        'height_range' => '43–48 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/wheaten_terrier.webp',
+        'short_description' => 'Мягкий, как шелк, и веселый, как ребенок.',
+        'full_description' => "В отличие от других терьеров, у него мягкая волнистая шерсть цвета спелой пшеницы. Не линяет, очень общителен и обожает «пшеничные прыжки» при встрече хозяина.",
+         'features' =>['Линька' => 'Нет', 'Шерсть' => 'Шелковистая', 'Прыжки' => 'Фирменные'
+             
+             
+                 ]],['animal_breed' => 'Керри-блю-терьер',
+        'weight_range' => '15–18 кг',
+        'height_range' => '44–50 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/kerry_blue_terrier.webp',
+        'short_description' => 'Ирландский терьер с уникальной голубой кудрявой шерстью.',
+        'full_description' => "Керри — универсальная собака: охотник, сторож и верный друг. Котята рождаются черными и «перецветают» в серо-голубой к двум годам. Не линяет.",
+         'features' =>['Цвет' => 'Голубой/Стальной', 'Универсал' => 'Да', 'Линька' => 'Нет'
+             
+             
+                 ]],['animal_breed' => 'Скотч-терьер (Шотландский терьер)',
+        'weight_range' => '8.5–10.5 кг',
+        'height_range' => '25–28 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/scottie.webp',
+        'short_description' => '«Джентльмен» в черном пальто с твердым характером.',
+        'full_description' => "Небольшая, но очень крепкая собака с характерным профилем. Скотти независимы, решительны и обладают огромным чувством собственного достоинства.",
+         'features' =>['Характер' => 'Независимый', 'Профиль' => 'Узнаваемый', 'Борода' => 'Густая'
+             
+             
+                 ]],['animal_breed' => 'Скай-терьер',
+        'weight_range' => '11–18 кг',
+        'height_range' => '24–26 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/skye_terrier.webp',
+        'short_description' => 'Длинная собака с роскошной ниспадающей шерстью.',
+        'full_description' => "Редкая шотландская порода. Скай-терьеры известны своей легендарной преданностью (как Грейфрайерс Бобби). Очень серьезная и верная собака.",
+         'features' =>['Формат' => 'Очень длинный', 'Верность' => 'Легендарная', 'Уши' => 'Заросшие'
+             
+             
+                 ]],['animal_breed' => 'Булльтерьер миниатюрный(минибулли)',
+        'weight_range' => '11–15 кг',
+        'height_range' => '25–35 см',
+        'lifespan' => '11–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/mini_bull_terrier.webp',
+        'short_description' => 'Концентрированная энергия в компактном теле.',
+        'full_description' => "Полная копия стандартного бультерьера, но в меньшем размере. Веселый, упрямый и невероятно харизматичный пес с «яйцевидной» головой.",
+         'features' =>['Голова' => 'Яйцевидная', 'Упрямство' => 'Высокое', 'Юмор' => 'Есть'
+             
+             
+                 ]],['animal_breed' => 'Гаванский бишон (Хаванез)',
+        'weight_range' => '3–6 кг',
+        'height_range' => '23–27 см',
+        'lifespan' => '14–16 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/havanese.webp',
+        'short_description' => 'Национальная собака Кубы, воплощение радости.',
+        'full_description' => "Хаванез — липучая и нежная собака. Они обожают людей, легко обучаются трюкам и имеют мягкую, длинную шерсть, которая почти не линяет.",
+         'features' =>['Дружелюбие' => 'Максимальное', 'Линька' => 'Минимальная', 'Обучаемость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Котон-де-тулеар',
+        'weight_range' => '3.5–6 кг',
+        'height_range' => '23–28 см',
+        'lifespan' => '14–16 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/coton_de_tulear.webp',
+        'short_description' => 'Мадагаскарская собака с шерстью, похожей на хлопок.',
+        'full_description' => "Невероятно мягкая и пушистая собака. Котоны славятся своим вокалом (умеют «разговаривать») и привычкой ходить на задних лапах.",
+         'features' =>['Шерсть' => 'Хлопковая', 'Голос' => 'Разговорчивый', 'Привязанность' => 'Тень хозяина'
+             
+             
+                 ]],['animal_breed' => 'Аффенпинчер',
+        'weight_range' => '4–6 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/affenpinscher.webp',
+        'short_description' => '«Обезьяний пинчер» с дерзким характером.',
+        'full_description' => "Маленькая собака с мордочкой, напоминающей обезьянку. Аффенпинчеры очень серьезно относятся к себе, они бесстрашны, забавны и очень умны.",
+         'features' =>['Мимика' => 'Обезьянья', 'Смелость' => 'Огромная', 'Шерсть' => 'Жесткая'
+             
+             
+                 ]],['animal_breed' => 'Левретка (Малая итальянская борзая)',
+        'weight_range' => '3–5 кг',
+        'height_range' => '32–38 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/italian_greyhound.webp',
+        'short_description' => 'Самая маленькая и утонченная из борзых.',
+        'full_description' => "Левретка — это воплощение грации. Хрупкая на вид, но быстрая и азартная внутри. Очень привязана к теплу и комфорту, обожает спать под пледом вместе с хозяином.",
+         'features' =>['Темперамент' => 'Чувствительный', 'Уход' => 'Минимальный', 'Активность' => 'Спринтер'
+             
+             
+                 ]],['animal_breed' => 'Пиренейская горная собака',
+        'weight_range' => '40–55 кг',
+        'height_range' => '65–80 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/great_pyrenees.webp',
+        'short_description' => 'Величественный белоснежный гигант-хранитель.',
+        'full_description' => "Спокойная и уверенная в себе собака. Веками охраняла отары в Пиренеях. Обладает густой белой шерстью и независимым характером, требует пространства и уважения.",
+         'features' =>['Окрас' => 'Белый', 'Охрана' => 'Врожденная', 'Размер' => 'Гигант'
+             
+             
+                 ]],['animal_breed' => 'Эштрельская овчарка',
+        'weight_range' => '30–50 кг',
+        'height_range' => '62–73 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/estrela_mountain_dog.webp',
+        'short_description' => 'Древний португальский пастух и охранник.',
+        'full_description' => "Одна из старейших пород Пиренейского полуострова. Выносливая, бдительная и очень преданная своей «стае». Отлично переносит суровые погодные условия.",
+         'features' =>['Сила' => 'Высокая', 'Бдительность' => 'Острая', 'Тип' => 'Горная собака'
+             
+             
+                 ]],['animal_breed' => 'Мареммо-абруццкая овчарка',
+        'weight_range' => '30–45 кг',
+        'height_range' => '60–73 см',
+        'lifespan' => '10–13 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/maremma_sheepdog.webp',
+        'short_description' => 'Белоснежный итальянский рыцарь.',
+        'full_description' => "Идеальная собака для охраны территории. Маремма самостоятельна и неподкупна. В семье это спокойный и достойный компаньон, знающий себе цену.",
+         'features' =>['Инстинкт' => 'Защитник', 'Нрав' => 'Независимый', 'Шерсть' => 'Самоочищающаяся'
+             
+             
+                 ]],['animal_breed' => 'Тоса-ину',
+        'weight_range' => '40–90 кг',
+        'height_range' => '60–80 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/tosa_inu.webp',
+        'short_description' => 'Японский мастиф, символ спокойной силы.',
+        'full_description' => "Редкая порода, выведенная для борьбы. Это атлетичный гигант, обладающий невероятным терпением и безмолвным мужеством. Требует опытного владельца.",
+         'features' =>['Вес' => 'До 90 кг', 'Характер' => 'Флегматичный', 'Статус' => 'Редкая'
+             
+             
+                 ]],['animal_breed' => 'Кишу (Кисю)',
+        'weight_range' => '14–27 кг',
+        'height_range' => '43–55 см',
+        'lifespan' => '11–13 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/kishu.webp',
+        'short_description' => 'Благородный белый охотник из Японии.',
+        'full_description' => "Национальное достояние Японии. Кисю — молчаливая, чистоплотная и очень выносливая собака. Верный друг, который склонен к лидерству.",
+         'features' =>['Чистоплотность' => 'Высокая', 'Верность' => 'Глубокая', 'Окрас' => 'Преимущественно белый'
+             
+             
+                 ]],['animal_breed' => 'Сикоку',
+        'weight_range' => '15–25 кг',
+        'height_range' => '43–55 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/shikoku.webp',
+        'short_description' => '«Японский волк» — азартный и редкий охотник.',
+        'full_description' => "Порода внешне напоминает волка. Сикоку более энергичны и контактны, чем акиты, обладают острым умом и великолепно ориентируются на местности.",
+         'features' =>['Внешность' => 'Дикая', 'Энергия' => 'Высокая', 'Интеллект' => 'Острый'
+             
+             
+                 ]],['animal_breed' => 'Тайваньская собака',
+        'weight_range' => '12–18 кг',
+        'height_range' => '43–52 см',
+        'lifespan' => '10–13 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/taiwan_dog.webp',
+        'short_description' => 'Умная и атлетичная собака острова Тайвань.',
+        'full_description' => "Древняя порода, известная своей преданностью и способностью к обучению. Очень быстрая, смелая и бдительная, отличный сторож и компаньон.",
+         'features' =>['Обучаемость' => 'Высокая', 'Здоровье' => 'Крепкое', 'Характер' => 'Верный'
+             
+             
+                 ]],['animal_breed' => 'Мальтипу',
+        'weight_range' => '2–5 кг',
+        'height_range' => '20–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/maltipoo.webp',
+        'short_description' => 'Гибрид мальтийской болонки и пуделя.',
+        'full_description' => "Популярная дизайнерская порода. Мальтипу не линяют, обладают кукольной внешностью и очень ласковым характером. Идеальны для жизни в городе.",
+         'features' =>['Линька' => 'Нет', 'Гипоаллергенно' => 'Да', 'Характер' => 'Игривый'
+             
+             
+                 ]],['animal_breed' => 'Лабрадудль',
+        'weight_range' => '10–30 кг',
+        'height_range' => '35–60 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/labradoodle.webp',
+        'short_description' => 'Энергичный гибрид лабрадора и пуделя.',
+        'full_description' => "Одна из первых «дизайнерских» пород. Сочетает интеллект пуделя и дружелюбие лабрадора. Часто используются как собаки-терапевты.",
+         'features' =>['Дружелюбие' => 'Огромное', 'Шерсть' => 'Кудрявая/Волнистая', 'Ум' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Кокапу',
+        'weight_range' => '5–11 кг',
+        'height_range' => '25–38 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/cockapoo.webp',
+        'short_description' => 'Веселый гибрид кокер-спаниеля и пуделя.',
+        'full_description' => "Старейшая гибридная порода. Кокапу ориентированы на человека, обожают детей и очень легко дрессируются. Обладают шелковистой кудрявой шерстью.",
+         'features' =>['Семья' => 'Идеально', 'Радость' => 'Постоянная', 'Уход' => 'Требует стрижки'
+             
+             
+                 ]],['animal_breed' => 'Помски',
+        'weight_range' => '4–15 кг',
+        'height_range' => '25–40 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/pomsky.webp',
+        'short_description' => 'Миниатюрная версия хаски (гибрид с померанским шпицем).',
+        'full_description' => "Внешность хаски в компактном размере. Помски — активные, любознательные и очень харизматичные собаки. Могут быть упрямыми, как их северные предки.",
+         'features' =>['Внешность' => 'Эффектная', 'Активность' => 'Высокая', 'Голос' => 'Разговорчивые'
+             
+             
+                 ]],['animal_breed' => 'Бельгийская овчарка (Тервюрен)',
+        'weight_range' => '20–30 кг',
+        'height_range' => '58–62 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/tervuren.webp',
+        'short_description' => 'Длинношерстная бельгийская овчарка рыжего окраса.',
+        'full_description' => "Элегантная и умная собака с богатой шерстью и черной маской. Очень энергична, требует постоянной интеллектуальной работы и активных прогулок.",
+         'features' =>['Шерсть' => 'Роскошная', 'Ум' => 'Рабочий', 'Верность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Бельгийская овчарка (Грюнендаль)',
+        'weight_range' => '20–30 кг',
+        'height_range' => '58–62 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/groenendael.webp',
+        'short_description' => 'Черная длинношерстная бельгийская овчарка.',
+        'full_description' => "Грациозная собака с угольно-черной шерстью. Обладает молниеносной реакцией, очень чуткая и преданная. Идеальна для спорта и защиты.",
+         'features' =>['Цвет' => 'Черный', 'Скорость' => 'Высокая', 'Элегантность' => 'Максимальная'
+             
+             
+                 ]],['animal_breed' => 'Бельгийская овчарка (Лакенуа)',
+        'weight_range' => '20–30 кг',
+        'height_range' => '58–62 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/laekenois.webp',
+        'short_description' => 'Самая редкая бельгийская овчарка с жесткой шерстью.',
+        'full_description' => "Отличается жесткой, взъерошенной шерстью песочного цвета. Лакенуа серьезная, бдительная и очень выносливая рабочая собака.",
+         'features' =>['Шерсть' => 'Жесткая/Клокстая', 'Характер' => 'Бдительный', 'Эксклюзив' => 'Редкая'
+             
+             
+                 ]],['animal_breed' => 'Голландская овчарка (Хердер)',
+        'weight_range' => '23–30 кг',
+        'height_range' => '55–62 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/dutch_shepherd.webp',
+        'short_description' => 'Умный пастух с узнаваемым тигровым окрасом.',
+        'full_description' => "Невероятно способная к обучению собака. Хердеры универсальны: от пастьбы до службы в полиции. Очень выносливы и неприхотливы.",
+         'features' =>['Окрас' => 'Тигровый', 'Обучаемость' => 'Экстремальная', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Хорватская овчарка',
+        'weight_range' => '13–20 кг',
+        'height_range' => '40–50 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/croatian_sheepdog.webp',
+        'short_description' => 'Черная кудрявая пастушья собака.',
+        'full_description' => "Маневренная, быстрая и сообразительная. Хорватская овчарка очень привязывается к одному хозяину и обладает врожденным талантом к управлению стадом.",
+         'features' =>['Шерсть' => 'Кудрявая черная', 'Ловкость' => 'Высокая', 'Привязанность' => 'Один хозяин'
+             
+             
+                 ]],['animal_breed' => 'Кинг-чарльз-спаниель',
+        'weight_range' => '3.6–6.3 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/king_charles_spaniel.webp',
+        'short_description' => 'Аристократичный спаниель (не путать с кавалером).',
+        'full_description' => "Более редкая и компактная порода, чем кавалер-кинг-чарльз. Обладает характерной курносой мордочкой и очень преданным, тихим характером.",
+         'features' =>['Размер' => 'Компактный', 'Нрав' => 'Сдержанный', 'Морда' => 'Курносая'
+             
+             
+                 ]],['animal_breed' => 'Шипперке',
+        'weight_range' => '3–9 кг',
+        'height_range' => '25–33 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/schipperke.webp',
+        'short_description' => '«Маленький капитан», черная овчарка в миниатюре.',
+        'full_description' => "Бельгийская порода. Энергичная, бдительная и любопытная собака. Несмотря на малый размер, обладает повадками настоящей овчарки и отличным сторожевым инстинктом.",
+         'features' =>['Окрас' => 'Всегда черный', 'Энергия' => 'Неисчерпаемая', 'Бдительность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Португальская водяная собака',
+        'weight_range' => '16–25 кг',
+        'height_range' => '43–57 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/portuguese_water_dog.webp',
+        'short_description' => 'Умный пловец и неутомимый помощник.',
+        'full_description' => "Исторически помогала рыбакам: загоняла рыбу в сети и доставляла записки между судами. Обладает гипоаллергенной шерстью и очень веселым, активным нравом. Обожает воду и физические нагрузки.",
+         'features' =>['Шерсть' => 'Не линяет', 'Спорт' => 'Плавание', 'Интеллект' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Австралийский келпи',
+        'weight_range' => '11–20 кг',
+        'height_range' => '43–51 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/australian_kelpie.webp',
+        'short_description' => 'Легендарный пастух с неиссякаемой энергией.',
+        'full_description' => "Келпи славится своей способностью пробегать огромные расстояния за день. Очень внимательная, быстрая и самостоятельная собака. Нуждается в серьезной интеллектуальной и физической работе.",
+         'features' =>['Выносливость' => 'Максимальная', 'Взгляд' => 'Гипнотический', 'Активность' => 'Экстремальная'
+             
+             
+                 ]],['animal_breed' => 'Стаффордширский бультерьер',
+        'weight_range' => '11–17 кг',
+        'height_range' => '35–40 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/staffordshire_bull_terrier.webp',
+        'short_description' => 'Компактный атлет с «улыбкой» до ушей.',
+        'full_description' => "Стаффи — воплощение любви к людям. Несмотря на мускулистое телосложение, это очень нежная и преданная порода, которую в Англии называют «собакой-нянькой» за терпение к детям.",
+         'features' =>['Сила' => 'Концентрированная', 'Характер' => 'Дружелюбный', 'Уход' => 'Простой'
+             
+             
+                 ]],['animal_breed' => 'Бурбуль',
+        'weight_range' => '60–90 кг',
+        'height_range' => '59–70 см',
+        'lifespan' => '10–12 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/boerboel.webp',
+        'short_description' => 'Мощный защитник родом из Южной Африки.',
+        'full_description' => "Крупная, доминантная и уверенная в себе собака. Обладает врожденным защитным инстинктом и огромной физической силой. Требует опытного владельца и ранней социализации.",
+         'features' =>['Вес' => 'Гигантский', 'Охрана' => 'Бескомпромиссная', 'Здоровье' => 'Крепкое'
+             
+             
+                 ]],['animal_breed' => 'Ховаварт',
+        'weight_range' => '25–40 кг',
+        'height_range' => '58–70 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/hovawart.webp',
+        'short_description' => 'Уравновешенный «страж двора» из Германии.',
+        'full_description' => "Универсальная рабочая собака. Ховаварты поздно взрослеют, сохраняя игривость, но при этом они очень бдительны и преданы своей территории и семье.",
+         'features' =>['Универсальность' => 'Высокая', 'Нюх' => 'Отличный', 'Психика' => 'Стабильная'
+             
+             
+                 ]],['animal_breed' => 'Веймаранер',
+        'weight_range' => '25–40 кг',
+        'height_range' => '57–70 см',
+        'lifespan' => '11–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/weimaraner.webp',
+        'short_description' => '«Серебряный призрак» охотничьего мира.',
+        'full_description' => "Элегантная легавая с необычным серым окрасом и янтарными глазами. Очень привязана к хозяину («собака-тень»), обладает огромной скоростью и страстью к поиску.",
+         'features' =>['Окрас' => 'Серебристый', 'Энергия' => 'Высокая', 'Привязанность' => 'Сильная'
+             
+             
+                 ]],['animal_breed' => 'Баварская горная гончая',
+        'weight_range' => '17–25 кг',
+        'height_range' => '44–52 см',
+        'lifespan' => '12–14 лет',
+        'type' => 'Собака',
+        'photo' => 'animal/dog/breed/bavarian_mountain_hound.webp',
+        'short_description' => 'Специалист по работе по «кровяному следу».',
+        'full_description' => "Спокойная и уравновешенная собака, которая на охоте превращается в сосредоточенного профессионала. Обладает феноменальным чутьем и способностью работать в сложной горной местности.",
+         'features' =>['Нюх' => 'Профессиональный', 'Размер' => 'Средний', 'Характер' => 'Сдержанный'
+             
+             
+                 ]],['animal_breed' => 'Персидская',
     'weight_range' => '3–5.5 кг',
     'height_range' => '23–25 см',
     'lifespan' => '12–17 лет',
@@ -955,17 +2035,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Persian.webp',
     'short_description' => 'Спокойная и ласковая кошка с длинной шерстью.',
     'full_description' => "Персидская кошка — одна из самых популярных пород. Отличается спокойным характером и требует ухода за шерстью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Сильная',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Требует ухода за шерстью'
-    ]
-],
-
-[
-    'animal_id' => 54,
+             
+             
+                 ]],['animal_breed' => 'Мейн-кун',
     'weight_range' => '4–8 кг',
     'height_range' => '25–35 см',
     'lifespan' => '12–15 лет',
@@ -973,17 +2051,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Maine_coon.webp',
     'short_description' => 'Крупная и дружелюбная кошка.',
     'full_description' => "Мейн-кун — одна из самых крупных пород кошек. Обладает дружелюбным характером и хорошо ладит с людьми.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Очень крупная'
-    ]
-],
-
-[
-    'animal_id' => 55,
+             
+             
+                 ]],['animal_breed' => 'Рэгдолл',
     'weight_range' => '3–6 кг',
     'height_range' => '23–30 см',
     'lifespan' => '12–16 лет',
@@ -991,17 +2067,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Ragdoll.webp',
     'short_description' => 'Спокойная и очень ласковая кошка.',
     'full_description' => "Рэгдолл — мягкая и дружелюбная порода. Любит людей и часто расслабляется на руках.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Очень спокойная'
-    ]
-],
-
-[
-    'animal_id' => 56,
+             
+             
+                 ]],['animal_breed' => 'Британская короткошерстная',
     'weight_range' => '4–8 кг',
     'height_range' => '25–30 см',
     'lifespan' => '12–15 лет',
@@ -1009,17 +2083,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/British_shorthair.webp',
     'short_description' => 'Спокойная и независимая кошка.',
     'full_description' => "Британская короткошерстная — уравновешенная и ненавязчивая порода. Хорошо подходит для спокойной жизни.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Независимая'
-    ]
-],
-
-[
-    'animal_id' => 57,
+             
+             
+                 ]],['animal_breed' => 'Американская короткошёрстная',
     'weight_range' => '4–7 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -1027,17 +2099,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/American_shorthair.webp',
     'short_description' => 'Выносливая и дружелюбная кошка.',
     'full_description' => "Американская короткошерстная — активная и здоровая порода. Хорошо адаптируется к жизни в доме.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Крепкое здоровье'
-    ]
-],
-
-[
-    'animal_id' => 58,
+             
+             
+                 ]],['animal_breed' => 'Сиамская',
     'weight_range' => '3–5 кг',
     'height_range' => '23–25 см',
     'lifespan' => '12–15 лет',
@@ -1045,17 +2115,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Siamese.webp',
     'short_description' => 'Активная и разговорчивая кошка.',
     'full_description' => "Сиамская кошка — умная и общительная порода. Сильно привязывается к хозяину и любит внимание.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Очень разговорчивая'
-    ]
-],
-
-[
-    'animal_id' => 59,
+             
+             
+                 ]],['animal_breed' => 'Экзотическая короткошерстная',
     'weight_range' => '3–6 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -1063,17 +2131,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Exotic_shorthair.webp',
     'short_description' => 'Спокойная кошка с плюшевой внешностью.',
     'full_description' => "Экзотическая короткошерстная — родственник персидской кошки. Обладает мягким характером и не требует сложного ухода.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Похожа на персидскую'
-    ]
-],
-
-[
-    'animal_id' => 60,
+             
+             
+                 ]],['animal_breed' => 'Бенгальская',
     'weight_range' => '4–7 кг',
     'height_range' => '25–32 см',
     'lifespan' => '12–16 лет',
@@ -1081,16 +2147,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Bengal.webp',
     'short_description' => 'Активная кошка с леопардовым окрасом.',
     'full_description' => "Бенгальская кошка — энергичная и любознательная порода. Любит играть и требует внимания.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Очень активная'
-    ]
-],
-    [
-        'animal_id' => 61,
+             
+             
+                 ]],['animal_breed' => 'Сфинкс',
         'weight_range' => '3–6 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -1098,16 +2163,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Sphynx.webp',
         'short_description' => 'Умная и ласковая кошка без шерсти.',
         'full_description' => "Сфинкс — это порода, известная отсутствием шерсти и чрезвычайной привязанностью к человеку. Они очень теплые на ощупь и требуют регулярного ухода за кожей.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Линька' => 'Отсутствует',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Требует частого купания'
-        ]
-    ],
-    [
-        'animal_id' => 62,
+             
+             
+                 ]],['animal_breed' => 'Абиссинская',
         'weight_range' => '4–7 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -1115,16 +2179,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Abyssinian.webp',
         'short_description' => 'Элегантная и активная кошка с «диким» окрасом.',
         'full_description' => "Абиссинская кошка — одна из самых старых пород. Очень любознательны, обожают высоту и активные игры с хозяином.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Активный',
             'Линька' => 'Слабая',
             'Активность' => 'Очень высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Постоянно в движении'
-        ]
-    ],
-    [
-        'animal_id' => 63,
+             
+             
+                 ]],['animal_breed' => 'Бирманская',
         'weight_range' => '4–7 кг',
         'height_range' => '23–25 см',
         'lifespan' => '13–15 лет',
@@ -1132,16 +2195,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Birman.webp',
         'short_description' => 'Священная кошка с голубыми глазами и белыми лапками.',
         'full_description' => "Бирманская кошка отличается спокойным нравом и необычным окрасом колор-пойнт с белыми «перчатками».",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Линька' => 'Средняя',
             'Активность' => 'Низкая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Шелковистая шерсть'
-        ]
-    ],
-    [
-        'animal_id' => 64,
+             
+             
+                 ]],['animal_breed' => 'Шотландская вислоухая',
         'weight_range' => '3–6 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -1149,16 +2211,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Scottish_Fold.webp',
         'short_description' => 'Очаровательная кошка с характерными загнутыми ушами.',
         'full_description' => "Шотландская вислоухая обладает спокойным характером и часто принимает забавные позы.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Семейная',
             'Линька' => 'Средняя',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Уникальная форма ушей'
-        ]
-    ],
-    [
-        'animal_id' => 65,
+             
+             
+                 ]],['animal_breed' => 'Ориентальная',
         'weight_range' => '2.5–4.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -1166,16 +2227,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Oriental.webp',
         'short_description' => 'Изящная и очень разговорчивая кошка.',
         'full_description' => "Ориентальная кошка — родственница сиамской, отличается большими ушами и стройным телом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Разговорчивый',
             'Линька' => 'Минимальная',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Очень высокая',
             'Особенности' => 'Требует много внимания'
-        ]
-    ],
-    [
-        'animal_id' => 66,
+             
+             
+                 ]],['animal_breed' => 'Русская голубая',
         'weight_range' => '3–5.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '15–20 лет',
@@ -1183,16 +2243,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Russian_Blue.webp',
         'short_description' => 'Тихая и грациозная кошка с серебристо-голубой шерстью.',
         'full_description' => "Русская голубая — застенчивая с незнакомцами, но очень преданная своим хозяевам порода.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Тихий',
             'Линька' => 'Слабая',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Изумрудные глаза'
-        ]
-    ],
-    [
-        'animal_id' => 67,
+             
+             
+                 ]],['animal_breed' => 'Турецкая ангора',
         'weight_range' => '2.5–5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -1200,16 +2259,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Turkish_Angora.webp',
         'short_description' => 'Белоснежная красавица с пушистым хвостом.',
         'full_description' => "Турецкая ангора — элегантная кошка, часто с глазами разного цвета. Очень умная и своенравная.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Элегантный',
             'Линька' => 'Высокая',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Часто бывает гетерохромия'
-        ]
-    ],
-    [
-        'animal_id' => 68,
+             
+             
+                 ]],['animal_breed' => 'Турецкий ван',
         'weight_range' => '4–9 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -1217,16 +2275,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Turkish_Van.webp',
         'short_description' => 'Редкая кошка, которая обожает плавать.',
         'full_description' => "Турецкий ван известен своей любовью к воде и характерным окрасом: цветные пятна только на голове и хвосте.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Охотник',
             'Линька' => 'Средняя',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Любит воду'
-        ]
-    ],
-    [
-        'animal_id' => 69,
+             
+             
+                 ]],['animal_breed' => 'Норвежская лесная',
         'weight_range' => '5–9 кг',
         'height_range' => '25–35 см',
         'lifespan' => '14–16 лет',
@@ -1234,16 +2291,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Norwegian_Forest.webp',
         'short_description' => 'Крупная северная кошка с двойной шерстью.',
         'full_description' => "Норвежская лесная — настоящий викинг в мире кошек. Отличный верхолаз с очень густым мехом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Крупный',
             'Линька' => 'Очень сильная',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Водостойкий мех'
-        ]
-    ],
-    [
-        'animal_id' => 70,
+             
+             
+                 ]],['animal_breed' => 'Саванна',
         'weight_range' => '6–12 кг',
         'height_range' => '35–45 см',
         'lifespan' => '15–20 лет',
@@ -1251,16 +2307,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Savannah.webp',
         'short_description' => 'Домашний леопард с потрясающей прыгучестью.',
         'full_description' => "Саванна — гибрид домашней кошки и сервала. Одна из самых дорогих и крупных пород в мире.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Экзотический',
             'Линька' => 'Слабая',
             'Активность' => 'Экстремальная',
             'Обучаемость' => 'Очень высокая',
             'Особенности' => 'Может прыгать на 2.5 метра'
-        ]
-    ],
-    [
-        'animal_id' => 71,
+             
+             
+                 ]],['animal_breed' => 'Бомбейская',
         'weight_range' => '3–6 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–16 лет',
@@ -1268,16 +2323,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Bombay.webp',
         'short_description' => 'Маленькая домашняя пантера с медными глазами.',
         'full_description' => "Бомбейская кошка — это исключительно черный окрас и блестящая, плотно прилегающая шерсть.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Линька' => 'Минимальная',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Только черный окрас'
-        ]
-    ],
-    [
-        'animal_id' => 72,
+             
+             
+                 ]],['animal_breed' => 'Египетская мау',
         'weight_range' => '3–5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -1285,16 +2339,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Egyptian_Mau.webp',
         'short_description' => 'Быстрая кошка с природным пятнистым окрасом.',
         'full_description' => "Египетская мау — древняя порода, способная развивать скорость до 48 км/ч.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Спортивный',
             'Линька' => 'Средняя',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Пятна на коже и шерсти'
-        ]
-    ],
-    [
-        'animal_id' => 73,
+             
+             
+                 ]],['animal_breed' => 'Корниш-рекс',
         'weight_range' => '3–5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -1302,16 +2355,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Cornish_Rex.webp',
         'short_description' => 'Кошка с каракулевой шерстью и огромными ушами.',
         'full_description' => "Корниш-рекс отличается мягкой волнистой шерстью и очень активным, игровым характером.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Игривый',
             'Линька' => 'Почти нет',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Шерсть без остевого волоса'
-        ]
-    ],
-    [
-        'animal_id' => 74,
+             
+             
+                 ]],['animal_breed' => 'Девон-рекс',
         'weight_range' => '2.5–4.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '10–15 лет',
@@ -1319,33 +2371,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/cat/breed/Devon_Rex.webp',
         'short_description' => '«Эльф» из мира кошек с кудрявой шерстью.',
         'full_description' => "Девон-рекс имеет уникальную внешность с низко посаженными огромными ушами и короткими усами.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Линька' => 'Минимальная',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Очень социальны'
-        ]
-    ],
-    [
-        'animal_id' => 75,
-        'weight_range' => '3.5–7 кг',
-        'height_range' => '22–25 см',
-        'lifespan' => '12–15 лет',
-        'type' => 'Короткошерстная',
-        'photo' => 'animal/cat/breed/Chartreux.webp',
-        'short_description' => 'Французская «улыбающаяся» кошка.',
-        'full_description' => "Шартрез — массивная кошка с плотной голубой шерстью и оранжевыми глазами, известная своим спокойствием.",
-        'features' => [
-            'Тип' => 'Спокойный',
-            'Линька' => 'Средняя',
-            'Активность' => 'Низкая',
-            'Обучаемость' => 'Средняя',
-            'Особенности' => 'Мало мяукает'
-        ]
-    ],
-    [
-    'animal_id' => 75,
+             
+             
+                 ]],['animal_breed' => 'Шартрез',
     'weight_range' => '3–5 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -1353,17 +2387,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Chartreux.webp',
     'short_description' => 'Спокойная и молчаливая кошка с густой шерстью.',
     'full_description' => "Шартрез — французская порода с мягким характером. \n\nОтличается спокойствием и привязанностью к хозяину.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Молчаливая'
-    ]
-],
-
-[
-    'animal_id' => 76,
+             
+             
+                 ]],['animal_breed' => 'Сибирская',
     'weight_range' => '4–8 кг',
     'height_range' => '25–35 см',
     'lifespan' => '12–17 лет',
@@ -1371,17 +2403,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Siberian_cat.webp',
     'short_description' => 'Крупная и пушистая кошка с сильным характером.',
     'full_description' => "Сибирская кошка — выносливая и дружелюбная порода. \n\nХорошо переносит холод и отличается крепким здоровьем.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Гипоаллергенная (условно)'
-    ]
-],
-
-[
-    'animal_id' => 77,
+             
+             
+                 ]],['animal_breed' => 'Балинезийская',
     'weight_range' => '3–5 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–16 лет',
@@ -1389,16 +2419,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Balinese.webp',
     'short_description' => 'Элегантная и общительная кошка.',
     'full_description' => "Балинезийская кошка — длинношёрстный вариант сиамской. \n\nОчень умная и разговорчивая.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит общение'
-    ]
-],
-[
-    'animal_id' => 78,
+             
+             
+                 ]],['animal_breed' => 'Тойгер',
     'weight_range' => '3–7 кг',
     'height_range' => '25–30 см',
     'lifespan' => '12–15 лет',
@@ -1406,16 +2435,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Toyger.webp',
     'short_description' => 'Кошка с внешностью маленького тигра.',
     'full_description' => "Тойгер — декоративная порода с полосатым окрасом. \n\nАктивная, умная и дружелюбная.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Экзотическая внешность'
-    ]
-],
-[
-    'animal_id' => 79,
+             
+             
+                 ]],['animal_breed' => 'Оцикет',
     'weight_range' => '3–6 кг',
     'height_range' => '25–32 см',
     'lifespan' => '12–15 лет',
@@ -1423,16 +2451,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Ocicat.webp',
     'short_description' => 'Активная кошка с пятнистым окрасом.',
     'full_description' => "Оцикет — порода с дикой внешностью, но домашним характером. \n\nОчень общительная и энергичная.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит играть'
-    ]
-],
-[
-    'animal_id' => 80,
+             
+             
+                 ]],['animal_breed' => 'Манчкин',
     'weight_range' => '2–4 кг',
     'height_range' => '18–23 см',
     'lifespan' => '12–16 лет',
@@ -1440,16 +2467,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Munchkin.webp',
     'short_description' => 'Кошка с короткими лапами и игривым характером.',
     'full_description' => "Манчкин — необычная порода с короткими лапами. \n\nОчень игривая и дружелюбная.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Короткие лапы'
-    ]
-],
-[
-    'animal_id' => 81,
+             
+             
+                 ]],['animal_breed' => 'Сомали',
     'weight_range' => '2.5–5 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–16 лет',
@@ -1457,16 +2483,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Somali.webp',
     'short_description' => 'Активная и грациозная кошка с пушистым хвостом.',
     'full_description' => "Сомали — длинношёрстный вариант абиссинской кошки. \n\nОчень энергичная и любознательная.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит высоту'
-    ]
-],
-[
-    'animal_id' => 82,
+             
+             
+                 ]],['animal_breed' => 'Нибелунг',
     'weight_range' => '3–6 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -1474,16 +2499,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Nebelung.webp',
     'short_description' => 'Спокойная кошка с длинной голубой шерстью.',
     'full_description' => "Нибелунг — редкая порода с мягким характером. \n\nПривязывается к одному владельцу.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Предан одному хозяину'
-    ]
-],
-[
-    'animal_id' => 83,
+             
+             
+                 ]],['animal_breed' => 'Метис',
     'weight_range' => '3–7 кг',
     'height_range' => '25–35 см',
     'lifespan' => '10–16 лет',
@@ -1491,16 +2515,345 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/cat/breed/Mixed_cat.webp',
     'short_description' => 'Кошка без определённой породы с уникальным характером.',
     'full_description' => "Метис — кошка смешанного происхождения. \n\nМожет сочетать различные черты и отличается разнообразием.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Разная',
         'Активность' => 'Разная',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Индивидуальные качества'
-    ]
-],
-[
-    'animal_id' => 84,
+             
+             
+                 ]],['animal_breed' => 'Бурманская',
+        'weight_range' => '3.5–6 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–16 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/burmese.webp',
+        'short_description' => '«Кирпич в шелковой пижаме» с золотыми глазами.',
+        'full_description' => "Бурма обладает необычайно тяжелым для своего размера телом и атласным мехом. Это кошка-собака, которая будет ходить за вами по пятам и активно «рассказывать» о своих делах.",
+         'features' =>['Шерсть' => 'Шелковистая', 'Контактность' => 'Очень высокая', 'Взгляд' => 'Гипнотический'
+             
+             
+                 ]],['animal_breed' => 'Европейская короткошерстная',
+        'weight_range' => '4–7 кг',
+        'height_range' => '25–32 см',
+        'lifespan' => '15–20 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/european_shorthair.webp',
+        'short_description' => 'Воплощение классической домашней кошки.',
+        'full_description' => "Настоящий охотник и символ домашнего уюта. Отличается крепким здоровьем, уравновешенным характером и неприхотливостью в содержании. Легко адаптируется к любым условиям.",
+         'features' =>['Здоровье' => 'Железное', 'Уход' => 'Минимальный', 'Характер' => 'Универсальный'
+             
+             
+                 ]],['animal_breed' => 'Шотландская прямоухая (Скоттиш-страйт)',
+        'weight_range' => '3–6 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/scottish_straight.webp',
+        'short_description' => 'Миловидная кошка с «плюшевой» шерстью и круглыми глазами.',
+        'full_description' => "Близкий родственник фолдов, но со стоячими ушками. Обладает спокойным, миролюбивым характером. Скоттиш-страйты очень привязаны к дому и любят тишину.",
+         'features' =>['Шерсть' => 'Плотная/Плюшевая', 'Форма морды' => 'Круглая', 'Нрав' => 'Спокойный'
+             
+             
+                 ]],['animal_breed' => 'Селкирк-рекс',
+        'weight_range' => '3–7 кг',
+        'height_range' => '25–33 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/selkirk_rex.webp',
+        'short_description' => '«Кошка в овечьей шкуре» с кудрявой шерстью.',
+        'full_description' => "Уникальная порода с вьющейся шерстью, которая закручивается даже на усах. Это крупные, добрые кошки с очень терпеливым и ласковым характером.",
+         'features' =>['Шерсть' => 'Кудрявая', 'Телосложение' => 'Мощное', 'Ощупь' => 'Мягкие'
+             
+             
+                 ]],['animal_breed' => 'Японский бобтейл',
+        'weight_range' => '2.5–5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/japanese_bobtail.webp',
+        'short_description' => 'Символ удачи с хвостом в виде хризантемы.',
+        'full_description' => "Активная и прыгучая кошка. Их короткий хвост уникален для каждой особи, как отпечаток пальца. Очень общительны, часто издают мелодичные звуки, похожие на пение.",
+         'features' =>['Хвост' => 'Короткий/Помпон', 'Прыгучесть' => 'Высокая', 'Голос' => 'Певчий'
+             
+             
+                 ]],['animal_breed' => 'Курильский бобтейл',
+        'weight_range' => '4–8 кг',
+        'height_range' => '28–35 см',
+        'lifespan' => '15–17 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/kurilian_bobtail.webp',
+        'short_description' => 'Аборигенный рыболов с внешностью рыси.',
+        'full_description' => "Мощный кот с коротким хвостом-закарючкой. Курильцы не боятся воды, отлично охотятся и преданы хозяину не меньше, чем собаки. Обладают очень крепким иммунитетом.",
+         'features' =>['Хвост' => 'Закарючка', 'Вода' => 'Не боятся', 'Сила' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Ликой (Кошка-оборотень)',
+        'weight_range' => '3–5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/lykoi.webp',
+        'short_description' => 'Необычная кошка с внешностью мифического существа.',
+        'full_description' => "Из-за генетической мутации их шерсть растет пучками, создавая образ оборотня. Несмотря на пугающий вид, это очень ласковые, игривые и интеллектуально развитые питомцы.",
+         'features' =>['Внешность' => 'Экзотическая', 'Шерсть' => 'Редкая/Седая', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Сингапура',
+        'weight_range' => '2–3.5 кг',
+        'height_range' => '20–25 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/singapura.webp',
+        'short_description' => 'Самая маленькая порода домашних кошек.',
+        'full_description' => "Крошечная кошка с огромными глазами и ушами. Обладает окрасом «сепия» (золотисто-кремовый). Очень нежная, тихая, но при этом любопытная и любящая высоту.",
+         'features' =>['Размер' => 'Миниатюрный', 'Глаза' => 'Огромные', 'Шерсть' => 'Тикированная'
+             
+             
+                 ]],['animal_breed' => 'Бурмилла',
+        'weight_range' => '3.5–6.5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/burmilla.webp',
+        'short_description' => 'Элегантная смесь бурмы и шиншиллы.',
+        'full_description' => "Обладает серебристым мехом с «подводкой» вокруг глаз, носа и губ. Бурмиллы спокойнее бурм, очень тактичны и обожают внимание всех членов семьи.",
+         'features' =>['Окрас' => 'Серебристый затушеванный', 'Взгляд' => 'Накрашенный', 'Нрав' => 'Миролюбивый'
+             
+             
+                 ]],['animal_breed' => 'Корат',
+        'weight_range' => '2.5–5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '15–18 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/korat.webp',
+        'short_description' => 'Голубая кошка из Таиланда, приносящая счастье.',
+        'full_description' => "Древняя порода с сердцевидной мордочкой и светящимися зелеными глазами. Очень чувствительны к шуму и запахам, предпочитают спокойную обстановку и тесный контакт с хозяином.",
+         'features' =>['Голова' => 'Сердцевидная', 'Окрас' => 'Серебристо-голубой', 'Чувства' => 'Острые'
+             
+             
+                 ]],['animal_breed' => 'Гавана браун',
+        'weight_range' => '3–5.5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/havana_brown.webp',
+        'short_description' => 'Шоколадный бриллиант в мире кошек.',
+        'full_description' => "Единственная порода, чей стандарт требует коричневого цвета усов. Гавана очень общительна и часто использует лапы, чтобы привлечь внимание хозяина или изучить предмет.",
+         'features' =>['Окрас' => 'Насыщенный шоколадный', 'Усы' => 'Коричневые', 'Интеллект' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Тайская',
+        'weight_range' => '3–6 кг',
+        'height_range' => '25–32 см',
+        'lifespan' => '15–20 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/thai.webp',
+        'short_description' => 'Старотипная сиамская кошка с округлыми формами.',
+        'full_description' => "Тайцы — это интеллектуалы и говоруны. Обладают характерным окрасом колор-пойнт и ярко-синими глазами. Очень преданы семье, часто выбирают одного «главного» человека.",
+         'features' =>['Глаза' => 'Сапфировые', 'Голос' => 'Громкий', 'Верность' => 'Собачья'
+             
+             
+                 ]],['animal_breed' => 'Донской сфинкс',
+        'weight_range' => '3–6 кг',
+        'height_range' => '25–32 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/don_sphynx.webp',
+        'short_description' => 'Российская бесшерстная кошка с магическим взглядом.',
+        'full_description' => "Горячие на ощупь, ласковые и полностью лишенные агрессии. Дончаки бывают абсолютно голыми или с легким пушком. Нуждаются в частом купании и защите от сквозняков.",
+         'features' =>['Кожа' => 'Горячая/Складчатая', 'Линька' => 'Отсутствует', 'Характер' => 'Очень нежный'
+             
+             
+                 ]],['animal_breed' => 'Петерболд (Невская бесшерстная)',
+        'weight_range' => '3–5 кг',
+        'height_range' => '23–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/peterbald.webp',
+        'short_description' => 'Элегантная бесшерстная кошка с грацией ориентала.',
+        'full_description' => "Порода выведена в Санкт-Петербурге. Петерболды отличаются стройным телом, длинными лапами и большими ушами. Это очень социальные кошки, которые не выносят одиночества и обожают тактильный контакт.",
+         'features' =>['Тип' => 'Бесшерстная/Велюр', 'Тело' => 'Утонченное', 'Характер' => 'Дружелюбный'
+             
+             
+                 ]],['animal_breed' => 'Украинский левкой',
+        'weight_range' => '3–6 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/ukrainian_levkoy.webp',
+        'short_description' => 'Вислоухий сфинкс с необычной внешностью.',
+        'full_description' => "Уникальная порода с загнутыми вперед ушами и отсутствием шерсти. Левкои обладают мягким характером, очень любознательны и привязаны к хозяину. Кожа складчатая и бархатистая на ощупь.",
+         'features' =>['Уши' => 'Загнуты вперед', 'Кожа' => 'Голая', 'Нрав' => 'Преданный'
+             
+             
+                 ]],['animal_breed' => 'Герман-рекс',
+        'weight_range' => '3–6 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–16 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/german_rex.webp',
+        'short_description' => 'Немецкая порода с мягкой каракулевой шерстью.',
+        'full_description' => "Одна из первых пород рексов. Шерсть короткая, плюшевая и завитая. Эти кошки очень терпеливы, уравновешенны и прекрасно ладят с другими животными в доме.",
+         'features' =>['Шерсть' => 'Кудрявая', 'Уход' => 'Простой', 'Темперамент' => 'Спокойный'
+             
+             
+                 ]],['animal_breed' => 'Лаперм',
+        'weight_range' => '3–5.5 кг',
+        'height_range' => '25–32 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/laperm.webp',
+        'short_description' => 'Кошка с эффектом «перманентной завивки».',
+        'full_description' => "Шерсть лапермов может варьироваться от легких волн до тугих спиралей. Это очень ласковые кошки, которые часто мурлыкают и стараются всегда находиться рядом с человеком.",
+         'features' =>['Завиток' => 'Спиралевидный', 'Линька' => 'Минимальная', 'Контакт' => 'Любит обниматься'
+             
+             
+                 ]],['animal_breed' => 'Чаузи',
+        'weight_range' => '6–12 кг',
+        'height_range' => '35–45 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/chausie.webp',
+        'short_description' => 'Миниатюрная копия камышового кота.',
+        'full_description' => "Гибрид домашней кошки и дикого камышового кота. Чаузи — крупные, атлетичные животные с кисточками на ушах. Очень активны, требуют много пространства для игр и высокого интеллекта владельца.",
+         'features' =>['Размер' => 'Крупный', 'Активность' => 'Экстремальная', 'Вид' => 'Дикий'
+             
+             
+                 ]],['animal_breed' => 'Пиксибоб',
+        'weight_range' => '4–9 кг',
+        'height_range' => '30–38 см',
+        'lifespan' => '13–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/pixie_bob.webp',
+        'short_description' => 'Домашняя кошка, похожая на североамериканскую рысь.',
+        'full_description' => "Часто имеют многопалость (полидактилия) и короткий хвост. Пиксибобы преданы хозяину, как собаки, легко приучаются к поводку и обладают спокойным, уверенным нравом.",
+         'features' =>['Лапы' => 'Часто многопалые', 'Хвост' => 'Короткий', 'Верность' => 'Собачья'
+             
+             
+                 ]],['animal_breed' => 'Серенгети',
+        'weight_range' => '5–10 кг',
+        'height_range' => '30–40 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/serengeti.webp',
+        'short_description' => 'Домашний сервал без использования дикой крови.',
+        'full_description' => "Порода создана путем скрещивания бенгалов и ориенталов. У серенгети самые длинные лапы среди домашних кошек и огромные уши. Очень разговорчивы и энергичны.",
+         'features' =>['Лапы' => 'Очень длинные', 'Окрас' => 'Пятнистый', 'Энергия' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Каракал (домашний)',
+        'weight_range' => '11–20 кг',
+        'height_range' => '40–50 см',
+        'lifespan' => '15–19 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/caracal.webp',
+        'short_description' => 'Дикая кошка с эффектными черными кисточками.',
+        'full_description' => "Прирученный хищник, требующий вольерного или просторного домашнего содержания. Каракалы грациозны, прыгучи и независимы. Нуждаются в специальном питании и профессиональном воспитании.",
+         'features' =>['Уши' => 'Длинные кисточки', 'Рацион' => 'Сырое мясо', 'Статус' => 'Экзот'
+             
+             
+                 ]],['animal_breed' => 'Сервал (домашний)',
+        'weight_range' => '8–18 кг',
+        'height_range' => '50–65 см',
+        'lifespan' => '15–20 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/serval.webp',
+        'short_description' => 'Длинноногий пятнистый аристократ из Африки.',
+        'full_description' => "Сервалы обладают самым чутким слухом среди кошачьих. В домашних условиях это очень активные, прыгучие и требующие внимания питомцы. Не рекомендуются для семей с маленькими детьми.",
+         'features' =>['Рост' => 'Высокий', 'Окрас' => 'Леопардовый', 'Слух' => 'Исключительный'
+             
+             
+                 ]],['animal_breed' => 'Невская маскарадная',
+        'weight_range' => '5–9 кг',
+        'height_range' => '30–35 см',
+        'lifespan' => '15–20 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/neva_masquerade.webp',
+        'short_description' => 'Сибирская кошка с окрасом колор-пойнт и голубыми глазами.',
+        'full_description' => "Обладает роскошной длинной шерстью, которая считается гипоаллергенной. Это крупные, тактичные и очень умные животные, которые сохраняют достоинство в любой ситуации.",
+         'features' =>['Глаза' => 'Голубые', 'Шерсть' => 'Водоотталкивающая', 'Здоровье' => 'Крепкое'
+             
+             
+                 ]],['animal_breed' => 'Рагамаффин',
+        'weight_range' => '5–9 кг',
+        'height_range' => '25–35 см',
+        'lifespan' => '12–16 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/ragamuffin.webp',
+        'short_description' => 'Крупный пушистый добряк, разновидность рэгдолла.',
+        'full_description' => "Рагамаффины отличаются разнообразием окрасов. Это кошки с «обмякающим» телом, когда их берут на руки. Идеальные семейные питомцы, очень спокойные и ласковые.",
+         'features' =>['Темперамент' => 'Флегматичный', 'Шерсть' => 'Шелковистая', 'Семья' => 'Для детей'
+             
+             
+                 ]],['animal_breed' => 'Сомали',
+        'weight_range' => '3–5.5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/somali.webp',
+        'short_description' => 'Длинношерстная абиссинская кошка с лисьим хвостом.',
+        'full_description' => "Яркая, активная и невероятно красивая кошка с тикированным окрасом. Сомали очень любопытны и любят участвовать во всех домашних делах, используя свои ловкие лапки.",
+         'features' =>['Хвост' => 'Очень пушистый', 'Окрас' => 'Тикированный', 'Ум' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Гималайская',
+        'weight_range' => '4–6.5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/himalayan.webp',
+        'short_description' => 'Персидская кошка с окрасом сиамской.',
+        'full_description' => "Сочетает в себе длинную шерсть перса и «пойнтовый» окрас сиамцев. Это спокойные, нежные кошки, требующие ежедневного ухода за шерстью и внимания к глазам.",
+         'features' =>['Внешность' => 'Кукольная', 'Шерсть' => 'Длинная/Густая', 'Активность' => 'Низкая'
+             
+             
+                 ]],['animal_breed' => 'Американский керл',
+        'weight_range' => '3–5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/american_curl.webp',
+        'short_description' => 'Кошка с ушками, загнутыми назад.',
+        'full_description' => "Ушки керлов на ощупь твердые, как человеческий хрящ. Это очень интеллигентные, игривые и дружелюбные кошки, которые сохраняют щенячий восторг от игр до глубокой старости.",
+         'features' =>['Уши' => 'Завиток назад', 'Характер' => 'Жизнерадостный', 'Здоровье' => 'Хорошее'
+             
+             
+                 ]],['animal_breed' => 'Кимрик',
+        'weight_range' => '4–6 кг',
+        'height_range' => '25–32 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/cymric.webp',
+        'short_description' => 'Длинношерстная версия бесхвостого мэнкса.',
+        'full_description' => "Кимрики имеют плотное телосложение и прыгают, как кролики, из-за длинных задних лап. Отсутствие хвоста — результат естественной мутации. Очень спокойные и верные.",
+         'features' =>['Хвост' => 'Отсутствует/Короткий', 'Походка' => 'Прыгающая', 'Шерсть' => 'Двойная'
+             
+             
+                 ]],['animal_breed' => 'Мэнкс (Бесхвостая кошка)',
+        'weight_range' => '3.5–5.5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/manx.webp',
+        'short_description' => 'Аборигенная кошка с острова Мэн.',
+        'full_description' => "Мэнксы известны своим округлым телом и полным отсутствием хвоста (хотя встречаются особи с короткими хвостиками). Отличные охотники, любят воду и очень привязаны к хозяину.",
+         'features' =>['Особенность' => 'Бесхвостость', 'Лапы' => 'Длинные задние', 'Нрав' => 'Спокойный'
+             
+             
+                 ]],['animal_breed' => 'Сноу-шу',
+        'weight_range' => '3–5.5 кг',
+        'height_range' => '25–30 см',
+        'lifespan' => '12–15 лет',
+        'type' => 'Кошка',
+        'photo' => 'animal/cat/breed/snowshoe.webp',
+        'short_description' => 'Сиамская кошка в «белых тапочках».',
+        'full_description' => "Порода с белыми отметинами на лапах и морде (в форме V). Сноу-шу любят воду, очень разговорчивы и ласковы. Это активные кошки, которые обожают высоту.",
+         'features' =>['Лапы' => 'Белые носочки', 'Глаза' => 'Синие', 'Характер' => 'Общительный'
+             
+             
+                 ]],['animal_breed' => 'Волнистый попугайчик',
     'weight_range' => '30–50 г',
     'height_range' => '16–18 см',
     'lifespan' => '5–10 лет',
@@ -1508,16 +2861,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Budgerigar.webp',
     'short_description' => 'Маленький и общительный попугай.',
     'full_description' => "Волнистый попугайчик — популярная домашняя птица. \n\nЛегко приручается и может имитировать речь.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Незначительная',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Может говорить'
-    ]
-],
-[
-    'animal_id' => 85,
+             
+             
+                 ]],['animal_breed' => 'Корелла',
     'weight_range' => '80–120 г',
     'height_range' => '30–33 см',
     'lifespan' => '10–15 лет',
@@ -1525,16 +2877,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Cockatiel.webp',
     'short_description' => 'Дружелюбный попугай с хохолком.',
     'full_description' => "Корелла — популярная домашняя птица. \n\nЛегко приручается, любит общение и может издавать разнообразные звуки.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Незначительная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Любит внимание'
-    ]
-],
-    [
-        'animal_id' => 86,
+             
+             
+                 ]],['animal_breed' => 'Какаду',
         'weight_range' => '300–900 г',
         'height_range' => '30–70 см',
         'lifespan' => '40–70 лет',
@@ -1542,16 +2893,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Cockatoo.webp',
         'short_description' => 'Умная птица с эффектным хохолком и сильным клювом.',
         'full_description' => "Какаду славятся своей способностью имитировать звуки и сильной привязанностью к человеку. \n\nТребуют очень много внимания и интеллектуальных нагрузок.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Экзотический',
             'Шумность' => 'Очень высокая',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Наличие хохолка'
-        ]
-    ],
-    [
-        'animal_id' => 87,
+             
+             
+                 ]],['animal_breed' => 'Гала',
         'weight_range' => '270–350 г',
         'height_range' => '35 см',
         'lifespan' => '30–50 лет',
@@ -1559,16 +2909,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Galah.webp',
         'short_description' => 'Розово-серый какаду с нежным характером.',
         'full_description' => "Гала (розовый какаду) — один из самых дружелюбных видов. Обладает красивым пастельным оперением и игривым нравом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Шумность' => 'Средняя',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Яркое розовое брюшко'
-        ]
-    ],
-    [
-        'animal_id' => 88,
+             
+             
+                 ]],['animal_breed' => 'Жако',
         'weight_range' => '400–600 г',
         'height_range' => '30–35 см',
         'lifespan' => '50–60 лет',
@@ -1576,16 +2925,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/African_Grey.webp',
         'short_description' => 'Интеллектуальный лидер среди попугаев.',
         'full_description' => "Жако считается самым способным к разговору попугаем. \n\nОбладает интеллектом ребенка и требует постоянного общения.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Интеллектуал',
             'Шумность' => 'Средняя',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Экстремальная',
             'Особенности' => 'Лучший имитатор речи'
-        ]
-    ],
-    [
-        'animal_id' => 89,
+             
+             
+                 ]],['animal_breed' => 'Ара',
         'weight_range' => '900–1300 г',
         'height_range' => '80–95 см',
         'lifespan' => '50–80 лет',
@@ -1593,16 +2941,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Ara.webp',
         'short_description' => 'Величественный попугай с ярким оперением и длинным хвостом.',
         'full_description' => "Ара — символ тропиков. Эти птицы очень социальны, но из-за мощного клюва и громкого голоса подходят только опытным владельцам.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Экзотический',
             'Шумность' => 'Очень высокая',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Мощный клюв'
-        ]
-    ],
-    [
-        'animal_id' => 90,
+             
+             
+                 ]],['animal_breed' => 'Зелёный ара',
         'weight_range' => '250–350 г',
         'height_range' => '45–50 см',
         'lifespan' => '30–50 лет',
@@ -1610,16 +2957,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Severe_Macaw.webp',
         'short_description' => 'Компактная версия большого ара с зеленым оперением.',
         'full_description' => "Зеленый ара (карликовый) сохраняет интеллект крупных сородичей, но более удобен для домашнего содержания.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Шумность' => 'Высокая',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Преобладающий зеленый цвет'
-        ]
-    ],
-    [
-        'animal_id' => 91,
+             
+             
+                 ]],['animal_breed' => 'Голубой ара',
         'weight_range' => '300–400 г',
         'height_range' => '55 см',
         'lifespan' => '20–40 лет',
@@ -1627,16 +2973,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Lear_Macaw.webp',
         'short_description' => 'Уникальная птица с глубоким синим окрасом.',
         'full_description' => "Голубой ара — редчайший представитель семейства. Отличается невероятной красотой и спокойным нравом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Редкий',
             'Шумность' => 'Средняя',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Находится под охраной'
-        ]
-    ],
-    [
-        'animal_id' => 92,
+             
+             
+                 ]],['animal_breed' => 'Краснохвостый ара',
         'weight_range' => '300–450 г',
         'height_range' => '45–50 см',
         'lifespan' => '30–40 лет',
@@ -1644,16 +2989,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Red_Tailed_Macaw.webp',
         'short_description' => 'Красивая птица с ярким акцентом на хвосте.',
         'full_description' => "Этот вид ара выделяется контрастным оперением. Достаточно общительны и любознательны.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Экзотический',
             'Шумность' => 'Высокая',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Яркий красный хвост'
-        ]
-    ],
-    [
-        'animal_id' => 93,
+             
+             
+                 ]],['animal_breed' => 'Эклектус',
         'weight_range' => '350–600 г',
         'height_range' => '35–40 см',
         'lifespan' => '30–40 лет',
@@ -1661,16 +3005,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Eclectus.webp',
         'short_description' => 'Попугай с удивительным половым диморфизмом.',
         'full_description' => "Эклектусы уникальны: самцы ярко-зеленые, а самки — ярко-красные. У них очень спокойный и рассудительный характер.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Шумность' => 'Низкая',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Разный окрас у самцов и самок'
-        ]
-    ],
-    [
-        'animal_id' => 94,
+             
+             
+                 ]],['animal_breed' => 'Ожереловый попугай',
         'weight_range' => '120–150 г',
         'height_range' => '40 см',
         'lifespan' => '20–30 лет',
@@ -1678,16 +3021,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Ringnecked_Parrot.webp',
         'short_description' => 'Грациозная птица с характерным «ожерельем».',
         'full_description' => "Ожереловые попугаи неприхотливы и быстро привыкают к людям. Самцы имеют четкую полоску вокруг шеи.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Семейный',
             'Шумность' => 'Высокая',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Длинный ступенчатый хвост'
-        ]
-    ],
-    [
-        'animal_id' => 95,
+             
+             
+                 ]],['animal_breed' => 'Кольчатый попугай',
         'weight_range' => '100–130 г',
         'height_range' => '35–40 см',
         'lifespan' => '15–25 лет',
@@ -1695,16 +3037,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Psittacula.webp',
         'short_description' => 'Элегантный попугай, близкий родственник ожерелового.',
         'full_description' => "Кольчатые попугаи хорошо летают и любят пространство. Обладают звонким голосом и ярким зеленым окрасом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Активный',
             'Шумность' => 'Высокая',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Тонкое телосложение'
-        ]
-    ],
-    [
-        'animal_id' => 96,
+             
+             
+                 ]],['animal_breed' => 'Неразлучник',
         'weight_range' => '40–60 г',
         'height_range' => '10–17 см',
         'lifespan' => '10–15 лет',
@@ -1712,16 +3053,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Lovebird.webp',
         'short_description' => 'Маленькая и очень преданная птичка.',
         'full_description' => "Неразлучники известны тем, что образуют крепкие пары. Очень активные, задиристые и смелые птицы.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Компаньон',
             'Шумность' => 'Средняя',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Низкая',
             'Особенности' => 'Сильная привязанность к паре'
-        ]
-    ],
-    [
-        'animal_id' => 97,
+             
+             
+                 ]],['animal_breed' => 'Неразлучник Фишера',
         'weight_range' => '45–55 г',
         'height_range' => '14–15 см',
         'lifespan' => '12–15 лет',
@@ -1729,16 +3069,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Fischers_Lovebird.webp',
         'short_description' => 'Яркий подвид неразлучника с оранжевой головой.',
         'full_description' => "Неразлучник Фишера — один из самых красивых видов. Общительные и любопытные птицы, за которыми интересно наблюдать.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Декоративный',
             'Шумность' => 'Средняя',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Белое кольцо вокруг глаз'
-        ]
-    ],
-    [
-        'animal_id' => 98,
+             
+             
+                 ]],['animal_breed' => 'Розелла',
         'weight_range' => '90–120 г',
         'height_range' => '25–35 см',
         'lifespan' => '15–20 лет',
@@ -1746,16 +3085,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Rosella.webp',
         'short_description' => 'Пестрая птица с чешуйчатым рисунком на спине.',
         'full_description' => "Розеллы ценятся за свое невероятно яркое оперение. Они не очень склонны к разговору, но прекрасно поют.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Певчий',
             'Шумность' => 'Низкая',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Низкая',
             'Особенности' => 'Красивое пение'
-        ]
-    ],
-    [
-        'animal_id' => 99,
+             
+             
+                 ]],['animal_breed' => 'Красноспинный попугай',
         'weight_range' => '50–70 г',
         'height_range' => '25–28 см',
         'lifespan' => '10–15 лет',
@@ -1763,16 +3101,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Red_Rumped_Parrot.webp',
         'short_description' => 'Тихая и мирная певчая птица.',
         'full_description' => "Красноспинный попугай отличается спокойным характером. Самцы имеют яркое красное пятно на пояснице.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Певчий',
             'Шумность' => 'Низкая',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Мелодичный голос'
-        ]
-    ],
-    [
-        'animal_id' => 100,
+             
+             
+                 ]],['animal_breed' => 'Лори',
         'weight_range' => '100–150 г',
         'height_range' => '25–30 см',
         'lifespan' => '15–25 лет',
@@ -1780,16 +3117,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/bird/breed/Lory.webp',
         'short_description' => 'Яркий любитель нектара и фруктов.',
         'full_description' => "Лори — очень активные и дружелюбные попугаи. В отличие от других, питаются преимущественно мягкой пищей и нектаром.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Экзотический',
             'Шумность' => 'Высокая',
             'Активность' => 'Очень высокая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Питается нектаром'
-        ]
-    ],
-    [
-    'animal_id' => 101,
+             
+             
+                 ]],['animal_breed' => 'Лорикет',
     'weight_range' => '100–200 г',
     'height_range' => '25–30 см',
     'lifespan' => '10–20 лет',
@@ -1797,16 +3133,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Lorikeet.webp',
     'short_description' => 'Яркий и активный попугай, питающийся нектаром.',
     'full_description' => "Лорикет — красочный попугай с особым рационом. \n\nОчень активный, общительный и требует специального питания.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Незначительная',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Питается нектаром'
-    ]
-],
-[
-    'animal_id' => 102,
+             
+             
+                 ]],['animal_breed' => 'Кеа',
     'weight_range' => '800–1000 г',
     'height_range' => '45–50 см',
     'lifespan' => '30–50 лет',
@@ -1814,17 +3149,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Kea.webp',
     'short_description' => 'Очень умный и любопытный горный попугай.',
     'full_description' => "Кеа — один из самых умных попугаев. \n\nЛюбит исследовать и может быть очень озорным.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Экзотическая',
         'Линька' => 'Средняя',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Очень высокая',
         'Особенности' => 'Очень любопытный'
-    ]
-],
-
-[
-    'animal_id' => 103,
+             
+             
+                 ]],['animal_breed' => 'Малый ара',
     'weight_range' => '300–500 г',
     'height_range' => '30–35 см',
     'lifespan' => '25–40 лет',
@@ -1832,17 +3165,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Mini_macaw.webp',
     'short_description' => 'Компактный вариант ара с яркой окраской.',
     'full_description' => "Малый ара — умный и активный попугай. \n\nТребует внимания и общения.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Громкий'
-    ]
-],
-
-[
-    'animal_id' => 104,
+             
+             
+                 ]],['animal_breed' => 'Попугай-монах',
     'weight_range' => '400–600 г',
     'height_range' => '30–35 см',
     'lifespan' => '20–30 лет',
@@ -1850,17 +3181,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Monk_parakeet.webp',
     'short_description' => 'Общительный попугай, умеющий строить гнёзда.',
     'full_description' => "Попугай-монах — социальная и активная птица. \n\nОтличается способностью строить сложные гнезда.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Незначительная',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Строит гнёзда'
-    ]
-],
-
-[
-    'animal_id' => 105,
+             
+             
+                 ]],['animal_breed' => 'Буроголовый попугай',
     'weight_range' => '90–120 г',
     'height_range' => '23–26 см',
     'lifespan' => '15–20 лет',
@@ -1868,17 +3197,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Plum_headed_parakeet.webp',
     'short_description' => 'Красивый попугай с яркой окраской головы.',
     'full_description' => "Буроголовый попугай — спокойная и красивая птица. \n\nПодходит для содержания в домашних условиях.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Незначительная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Спокойный характер'
-    ]
-],
-
-[
-    'animal_id' => 106,
+             
+             
+                 ]],['animal_breed' => 'Мейеров попугай',
     'weight_range' => '100–140 г',
     'height_range' => '20–23 см',
     'lifespan' => '20–30 лет',
@@ -1886,17 +3213,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Meyers_parrot.webp',
     'short_description' => 'Небольшой и спокойный попугай.',
     'full_description' => "Попугай Мейера — уравновешенная и тихая птица. \n\nХорошо подходит для дома.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Незначительная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Тихий'
-    ]
-],
-
-[
-    'animal_id' => 107,
+             
+             
+                 ]],['animal_breed' => 'Андский высокогорный попугай',
     'weight_range' => '200–300 г',
     'height_range' => '30–35 см',
     'lifespan' => '15–25 лет',
@@ -1904,17 +3229,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Andean_parrot.webp',
     'short_description' => 'Редкий попугай, обитающий в горах.',
     'full_description' => "Андский высокогорный попугай — редкая и выносливая птица. \n\nАдаптирован к холодному климату.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Экзотическая',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Живёт в горах'
-    ]
-],
-
-[
-    'animal_id' => 108,
+             
+             
+                 ]],['animal_breed' => 'Дятловый попугайчик',
     'weight_range' => '30–40 г',
     'height_range' => '14–16 см',
     'lifespan' => '10–15 лет',
@@ -1922,17 +3245,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/bird/breed/Woodpecker_parrot.webp',
     'short_description' => 'Маленький активный попугайчик.',
     'full_description' => "Дятловый попугайчик — миниатюрная птица. \n\nОчень подвижный и любопытный.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Незначительная',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Очень маленький'
-    ]
-],
-
-[
-    'animal_id' => 109,
+             
+             
+                 ]],['animal_breed' => 'Средиземноморская черепаха',
     'weight_range' => '1.5–2.5 кг',
     'height_range' => '20–30 см',
     'lifespan' => '50–100 лет',
@@ -1940,17 +3261,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Mediterranean_tortoise.webp',
     'short_description' => 'Популярная домашняя сухопутная черепаха.',
     'full_description' => "Средиземноморская черепаха — неприхотливая рептилия. \n\nТребует правильного температурного режима.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Нет',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Долгожитель'
-    ]
-],
-
-[
-    'animal_id' => 110,
+             
+             
+                 ]],['animal_breed' => 'Степная черепаха',
     'weight_range' => '2–4 кг',
     'height_range' => '20–35 см',
     'lifespan' => '50–100 лет',
@@ -1958,16 +3277,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Steppe_tortoise.webp',
     'short_description' => 'Выносливая сухопутная черепаха.',
     'full_description' => "Степная черепаха — популярный вид для домашнего содержания. \n\nХорошо переносит сухой климат.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Нет',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Неприхотлива'
-    ]
-    ],
-    [
-        'animal_id' => 111,
+             
+             
+                 ]],['animal_breed' => 'Красноухая черепаха',
         'weight_range' => '1.5–3 кг',
         'height_range' => '18–30 см (длина)',
         'lifespan' => '20–40 лет',
@@ -1975,33 +3293,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Red_Eared_Slider.webp',
         'short_description' => 'Самая популярная домашняя водная черепаха.',
         'full_description' => "Красноухая черепаха получила название из-за характерных красных полос за глазами. \n\nАктивный хищник, требует просторного акватеррариума с выходом на сушу.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Водная',
             'Сложность' => 'Средняя',
             'Активность' => 'Высокая',
             'Питание' => 'Всеядная',
             'Особенности' => 'Быстро растет'
-        ]
-    ],
-    [
-        'animal_id' => 112,
-        'weight_range' => '0.5–1 кг',
-        'height_range' => '15–20 см',
-        'lifespan' => '30–50 лет',
-        'type' => 'Сухопутная',
-        'photo' => 'animal/reptile/breed/Bohemian_Tortoise.webp',
-        'short_description' => 'Небольшая сухопутная черепаха с красивым панцирем.',
-        'full_description' => "Богемская (или средиземноморская) черепаха — спокойное травоядное животное. \n\nХорошо подходит для террариумного содержания при правильном УФ-освещении.",
-        'features' => [
-            'Тип' => 'Сухопутная',
-            'Сложность' => 'Низкая',
-            'Активность' => 'Низкая',
-            'Питание' => 'Травоядная',
-            'Особенности' => 'Нуждается в кальции'
-        ]
-    ],
-    [
-        'animal_id' => 113,
+             
+             
+                 ]],['animal_breed' => 'Американская болотная черепаха',
         'weight_range' => '1–2 кг',
         'height_range' => '15–25 см',
         'lifespan' => '40–60 лет',
@@ -2009,16 +3309,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Blanding_Turtle.webp',
         'short_description' => 'Черепаха с «постоянной улыбкой» и желтым горлом.',
         'full_description' => "Американская болотная черепаха отличается высокой выносливостью и способностью зимовать под льдом в дикой природе.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Водная',
             'Сложность' => 'Средняя',
             'Активность' => 'Средняя',
             'Питание' => 'Хищник',
             'Особенности' => 'Характерный желтый подбородок'
-        ]
-    ],
-    [
-        'animal_id' => 114,
+             
+             
+                 ]],['animal_breed' => 'Галапагосская гигантская черепаха',
         'weight_range' => '200–400 кг',
         'height_range' => '120–150 см',
         'lifespan' => '100–170 лет',
@@ -2026,16 +3325,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Galapagos_Tortoise.webp',
         'short_description' => 'Одна из самых крупных и долгоживущих черепах в мире.',
         'full_description' => "Галапагосская черепаха — живой символ эволюции. Это медлительный гигант, способный обходиться без еды и воды долгое время.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Экзотический гигант',
             'Сложность' => 'Экстремальная',
             'Активность' => 'Очень низкая',
             'Питание' => 'Травоядная',
             'Особенности' => 'Рекордсмен долголетия'
-        ]
-    ],
-    [
-        'animal_id' => 115,
+             
+             
+                 ]],['animal_breed' => 'Альдабранская гигантская черепаха',
         'weight_range' => '150–250 кг',
         'height_range' => '100–120 см',
         'lifespan' => '80–150 лет',
@@ -2043,16 +3341,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Aldabra_Tortoise.webp',
         'short_description' => 'Массивный обитатель островов Индийского океана.',
         'full_description' => "Альдабранская черепаха обладает мощным панцирем и длинной шеей, позволяющей дотягиваться до веток кустарников.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Экзотический гигант',
             'Сложность' => 'Высокая',
             'Активность' => 'Низкая',
             'Питание' => 'Травоядная',
             'Особенности' => 'Общительный характер (для рептилий)'
-        ]
-    ],
-    [
-        'animal_id' => 116,
+             
+             
+                 ]],['animal_breed' => 'Египетская черепаха',
         'weight_range' => '0.2–0.5 кг',
         'height_range' => '10–13 см',
         'lifespan' => '20–30 лет',
@@ -2060,16 +3357,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Egyptian_Tortoise.webp',
         'short_description' => 'Самая маленькая сухопутная черепаха Северного полушария.',
         'full_description' => "Египетская черепаха — редкий и миниатюрный вид. Имеет окрас под цвет пустынного песка.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Пустынная',
             'Сложность' => 'Высокая',
             'Активность' => 'Средняя',
             'Питание' => 'Травоядная',
             'Особенности' => 'Миниатюрный размер'
-        ]
-    ],
-    [
-        'animal_id' => 117,
+             
+             
+                 ]],['animal_breed' => 'Окаймлённая черепаха',
         'weight_range' => '2–4 кг',
         'height_range' => '25–35 см',
         'lifespan' => '30–50 лет',
@@ -2077,16 +3373,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Marginated_Tortoise.webp',
         'short_description' => 'Черепаха с необычным расширенным краем панциря.',
         'full_description' => "Окаймленная черепаха — крупнейшая сухопутная черепаха Европы. Задние щитки панциря образуют подобие «юбки».",
-        'features' => [
+         'features' =>[
             'Тип' => 'Европейская',
             'Сложность' => 'Средняя',
             'Активность' => 'Средняя',
             'Питание' => 'Травоядная',
             'Особенности' => 'Зубчатый край панциря'
-        ]
-    ],
-    [
-        'animal_id' => 118,
+             
+             
+                 ]],['animal_breed' => 'Красноногая черепаха',
         'weight_range' => '8–15 кг',
         'height_range' => '40–50 см',
         'lifespan' => '40–50 лет',
@@ -2094,16 +3389,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Red_Footed_Tortoise.webp',
         'short_description' => 'Яркая тропическая черепаха с красными пятнами на лапах.',
         'full_description' => "Красноногая черепаха (Угольная) обитает в лесах Южной Америки. Очень любознательна и имеет яркий окрас.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Лесная',
             'Сложность' => 'Средняя',
             'Активность' => 'Высокая',
             'Питание' => 'Всеядная',
             'Особенности' => 'Любит высокую влажность'
-        ]
-    ],
-    [
-        'animal_id' => 119,
+             
+             
+                 ]],['animal_breed' => 'Жёлтоногая черепаха',
         'weight_range' => '10–20 кг',
         'height_range' => '40–60 см',
         'lifespan' => '50–60 лет',
@@ -2111,16 +3405,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Yellow_Footed_Tortoise.webp',
         'short_description' => 'Близкий родственник красноногой черепахи с желтыми отметинами.',
         'full_description' => "Желтоногая черепаха крупнее своей родственницы и предпочитает более густые и влажные леса.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Тропическая',
             'Сложность' => 'Средняя',
             'Активность' => 'Средняя',
             'Питание' => 'Всеядная',
             'Особенности' => 'Мощное телосложение'
-        ]
-    ],
-    [
-        'animal_id' => 120,
+             
+             
+                 ]],['animal_breed' => 'Розовая каймановая черепаха',
         'weight_range' => '15–35 кг',
         'height_range' => '40–50 см',
         'lifespan' => '30–50 лет',
@@ -2128,16 +3421,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Pink_Snapping_Turtle.webp',
         'short_description' => 'Хищная черепаха с необычным розовым оттенком.',
         'full_description' => "Розовая каймановая черепаха — это редкая цветовая вариация каймановой черепахи. Обладает мощными челюстями и суровым нравом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Засадный хищник',
             'Сложность' => 'Высокая',
             'Активность' => 'Низкая',
             'Питание' => 'Хищник',
             'Особенности' => 'Опасный укус'
-        ]
-    ],
-    [
-        'animal_id' => 121,
+             
+             
+                 ]],['animal_breed' => 'Кожистая черепаха',
         'weight_range' => '300–600 кг',
         'height_range' => '180–220 см',
         'lifespan' => '30–50 лет',
@@ -2145,16 +3437,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Leatherback_Turtle.webp',
         'short_description' => 'Самая большая черепаха в мире, не имеющая костного панциря.',
         'full_description' => "Кожистая черепаха покрыта плотной кожей вместо щитков. Способна погружаться на глубину более 1000 метров.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Океаническая',
             'Сложность' => 'Не для дома',
             'Активность' => 'Очень высокая',
             'Питание' => 'Медузы',
             'Особенности' => 'Мягкий панцирь'
-        ]
-    ],
-    [
-        'animal_id' => 122,
+             
+             
+                 ]],['animal_breed' => 'Гребнистая черепаха',
         'weight_range' => '100–150 кг',
         'height_range' => '100–120 см',
         'lifespan' => '50–70 лет',
@@ -2162,16 +3453,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Flatback_Turtle.webp',
         'short_description' => 'Австралийская морская черепаха с плоским панцирем.',
         'full_description' => "Гребнистая (плоскоспинная) черепаха обитает исключительно в прибрежных водах Австралии и отличается формой щита.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Морская',
             'Сложность' => 'Запрещена к владению',
             'Активность' => 'Высокая',
             'Питание' => 'Беспозвоночные',
             'Особенности' => 'Ограниченный ареал'
-        ]
-    ],
-    [
-        'animal_id' => 123,
+             
+             
+                 ]],['animal_breed' => 'Зелёная морская черепаха',
         'weight_range' => '150–200 кг',
         'height_range' => '80–150 см',
         'lifespan' => '70–80 лет',
@@ -2179,16 +3469,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Green_Sea_Turtle.webp',
         'short_description' => 'Миролюбивый гигант океана, питающийся водорослями.',
         'full_description' => "Зеленая морская черепаха получила название не из-за панциря, а из-за цвета своего жира. Важнейший вид для экосистемы рифов.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Морская',
             'Сложность' => 'Не для дома',
             'Активность' => 'Высокая',
             'Питание' => 'Травоядная (взрослые)',
             'Особенности' => 'Миграции на тысячи км'
-        ]
-    ],
-    [
-        'animal_id' => 124,
+             
+             
+                 ]],['animal_breed' => 'Каретта',
         'weight_range' => '45–80 кг',
         'height_range' => '60–90 см',
         'lifespan' => '30–50 лет',
@@ -2196,16 +3485,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Hawksbill_Turtle.webp',
         'short_description' => 'Морская черепаха с красивейшим узором панциря.',
         'full_description' => "Каретта (бисса) известна своим клювом, похожим на ястребиный, и тем, что её панцирь исторически использовался для изготовления украшений.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Рифовая',
             'Сложность' => 'Под угрозой',
             'Активность' => 'Средняя',
             'Питание' => 'Губки/кораллы',
             'Особенности' => 'Крючковатый клюв'
-        ]
-    ],
-    [
-        'animal_id' => 125,
+             
+             
+                 ]],['animal_breed' => 'Логгерхед',
         'weight_range' => '90–160 кг',
         'height_range' => '90–110 см',
         'lifespan' => '40–60 лет',
@@ -2213,16 +3501,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Loggerhead.webp',
         'short_description' => 'Головастая морская черепаха с мощными челюстями.',
         'full_description' => "Логгерхед обладает массивной головой, которая позволяет ему дробить раковины моллюсков и панцири крабов.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Морская',
             'Сложность' => 'Охраняемая',
             'Активность' => 'Высокая',
             'Питание' => 'Хищник',
             'Особенности' => 'Крупная голова'
-        ]
-    ],
-    [
-        'animal_id' => 126,
+             
+             
+                 ]],['animal_breed' => 'Малазийская плосконосая черепаха',
         'weight_range' => '0.8–1.5 кг',
         'height_range' => '15–20 см',
         'lifespan' => '15–25 лет',
@@ -2230,16 +3517,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Malayan_Flat_Shell.webp',
         'short_description' => 'Скрытный обитатель тропических болот.',
         'full_description' => "Малайзийская плосконосая черепаха имеет очень плоский панцирь, помогающий ей прятаться под корягами и камнями.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Водная',
             'Сложность' => 'Высокая',
             'Активность' => 'Низкая (ночная)',
             'Питание' => 'Улитки/черви',
             'Особенности' => 'Плоская форма'
-        ]
-    ],
-    [
-        'animal_id' => 127,
+             
+             
+                 ]],['animal_breed' => 'Дальневосточная черепаха',
         'weight_range' => '2–4 кг',
         'height_range' => '20–35 см',
         'lifespan' => '20–30 лет',
@@ -2247,16 +3533,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Trionyx_Sinensis.webp',
         'short_description' => 'Черепаха с мягким панцирем и длинным носом-хоботком.',
         'full_description' => "Дальневосточная черепаха (Трионикс) — агрессивный хищник, который очень быстро плавает и может глубоко кусаться.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Водная',
             'Сложность' => 'Высокая',
             'Активность' => 'Очень высокая',
             'Питание' => 'Хищник',
             'Особенности' => 'Кожаный панцирь'
-        ]
-    ],
-    [
-        'animal_id' => 128,
+             
+             
+                 ]],['animal_breed' => 'Евфратский трионикс',
         'weight_range' => '5–10 кг',
         'height_range' => '40–60 см',
         'lifespan' => '25–40 лет',
@@ -2264,16 +3549,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Euphrates_Softshell.webp',
         'short_description' => 'Редкий обитатель рек Ближнего Востока.',
         'full_description' => "Евфратский трионикс ведет скрытный образ жизни, зарываясь в песок на дне рек. Имеет гладкий, оливковый панцирь.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Речная',
             'Сложность' => 'Высокая',
             'Активность' => 'Средняя',
             'Питание' => 'Хищник',
             'Особенности' => 'Высокая чувствительность к воде'
-        ]
-    ],
-    [
-        'animal_id' => 129,
+             
+             
+                 ]],['animal_breed' => 'Индийская лопастная черепаха',
         'weight_range' => '1.5–3 кг',
         'height_range' => '25–35 см',
         'lifespan' => '20–30 лет',
@@ -2281,16 +3565,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Indian_Flapshell.webp',
         'short_description' => 'Черепаха с кожными «клапанами», закрывающими лапы.',
         'full_description' => "Индийская лопастная черепаха уникальна тем, что может полностью спрятать конечности под специальные кожные складки на пластроне.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Водная',
             'Сложность' => 'Средняя',
             'Активность' => 'Средняя',
             'Питание' => 'Всеядная',
             'Особенности' => 'Кожные лопасти'
-        ]
-    ],
-    [
-        'animal_id' => 130,
+             
+             
+                 ]],['animal_breed' => 'Колючий трионикс',
         'weight_range' => '3–6 кг',
         'height_range' => '30–45 см',
         'lifespan' => '25–35 лет',
@@ -2298,16 +3581,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/reptile/breed/Spiny_Softshell.webp',
         'short_description' => 'Трионикс с небольшими шипами на переднем крае панциря.',
         'full_description' => "Колючий трионикс — очень быстрая и активная черепаха. Свое название получила за характерные бугорки-шипы на мягком карапаксе.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Водная',
             'Сложность' => 'Средняя',
             'Активность' => 'Высокая',
             'Питание' => 'Хищник',
             'Особенности' => 'Нос-трубочка'
-        ]
-    ],
-    [
-    'animal_id' => 131,
+             
+             
+                 ]],['animal_breed' => 'Узкоголовая черепаха',
     'weight_range' => '3–6 кг',
     'height_range' => '20–30 см',
     'lifespan' => '20–40 лет',
@@ -2315,17 +3597,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Narrow_headed_turtle.webp',
     'short_description' => 'Редкая черепаха с вытянутой головой.',
     'full_description' => "Узкоголовая черепаха — необычный вид с характерной формой головы. \n\nТребует специальных условий содержания.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Нет',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Редкий вид'
-    ]
-],
-
-[
-    'animal_id' => 132,
+             
+             
+                 ]],['animal_breed' => 'Полосатая черепаха',
     'weight_range' => '2–5 кг',
     'height_range' => '20–30 см',
     'lifespan' => '20–30 лет',
@@ -2333,17 +3613,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Striped_turtle.webp',
     'short_description' => 'Черепаха с характерным полосатым окрасом.',
     'full_description' => "Полосатая черепаха — популярный вид для содержания. \n\nОтличается ярким рисунком панциря.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Яркий окрас'
-    ]
-],
-
-[
-    'animal_id' => 133,
+             
+             
+                 ]],['animal_breed' => 'Килеватая мускусная черепаха',
     'weight_range' => '0.5–1 кг',
     'height_range' => '10–15 см',
     'lifespan' => '30–50 лет',
@@ -2351,17 +3629,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Musk_turtle.webp',
     'short_description' => 'Небольшая водная черепаха.',
     'full_description' => "Килеватая мускусная черепаха — компактный вид. \n\nПодходит для аквариумного содержания.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Живёт в воде'
-    ]
-],
-
-[
-    'animal_id' => 134,
+             
+             
+                 ]],['animal_breed' => 'Белый Великан',
     'weight_range' => '5–8 кг',
     'height_range' => '50–60 см',
     'lifespan' => '5–8 лет',
@@ -2369,17 +3645,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Belgian_giant.webp',
     'short_description' => 'Очень крупный кролик.',
     'full_description' => "Бельгийский великан — одна из самых крупных пород кроликов. \n\nСпокойный и дружелюбный.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Очень крупный'
-    ]
-],
-
-[
-    'animal_id' => 135,
+             
+             
+                 ]],['animal_breed' => 'Серый Великан',
     'weight_range' => '5–7 кг',
     'height_range' => '45–55 см',
     'lifespan' => '5–8 лет',
@@ -2387,17 +3661,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Grey_giant.webp',
     'short_description' => 'Крупный и выносливый кролик.',
     'full_description' => "Серый великан — популярная мясо-шкурковая порода. \n\nОтличается выносливостью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Выносливый'
-    ]
-],
-
-[
-    'animal_id' => 136,
+             
+             
+                 ]],['animal_breed' => 'Советская шиншилла',
     'weight_range' => '3–5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '6–9 лет',
@@ -2405,17 +3677,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Soviet_chinchilla.webp',
     'short_description' => 'Кролик с густой мягкой шерстью.',
     'full_description' => "Советская шиншилла — порода с ценным мехом. \n\nСпокойная и неприхотливая.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Ценный мех'
-    ]
-],
-
-[
-    'animal_id' => 137,
+             
+             
+                 ]],['animal_breed' => 'Новозеландский белый',
     'weight_range' => '4–5 кг',
     'height_range' => '40–50 см',
     'lifespan' => '5–8 лет',
@@ -2423,17 +3693,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/New_zealand_white.webp',
     'short_description' => 'Популярный белый кролик.',
     'full_description' => "Новозеландский белый — распространённая порода. \n\nОтличается быстрым ростом.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Быстро растёт'
-    ]
-],
-
-[
-    'animal_id' => 138,
+             
+             
+                 ]],['animal_breed' => 'Новозеландский красный',
     'weight_range' => '4–5 кг',
     'height_range' => '40–50 см',
     'lifespan' => '5–8 лет',
@@ -2441,17 +3709,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/New_zealand_red.webp',
     'short_description' => 'Кролик с рыжим окрасом.',
     'full_description' => "Новозеландский красный — выносливая порода. \n\nИспользуется в разведении.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Яркий окрас'
-    ]
-],
-
-[
-    'animal_id' => 139,
+             
+             
+                 ]],['animal_breed' => 'Калифорнийский',
     'weight_range' => '3–5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '5–8 лет',
@@ -2459,16 +3725,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Californian_rabbit.webp',
     'short_description' => 'Кролик с характерными тёмными отметинами.',
     'full_description' => "Калифорнийский кролик — популярная порода. \n\nХорошо адаптируется к условиям содержания.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Контрастный окрас'
-    ]
-],
-[
-    'animal_id' => 140,
+             
+             
+                 ]],['animal_breed' => 'Бабочка',
     'weight_range' => '3–4 кг',
     'height_range' => '30–40 см',
     'lifespan' => '5–8 лет',
@@ -2476,16 +3741,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Butterfly_rabbit.webp',
     'short_description' => 'Кролик с пятнистым рисунком.',
     'full_description' => "Кролик «Бабочка» — декоративная порода. \n\nИзвестен своим необычным рисунком на шерсти.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Пятнистый окрас'
-    ]
-],
-    [
-        'animal_id' => 141,
+             
+             
+                 ]],['animal_breed' => 'Венский голубой',
         'weight_range' => '4.5–5.5 кг',
         'height_range' => '50–57 см',
         'lifespan' => '8–12 лет',
@@ -2493,16 +3757,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Vienna_Blue.webp',
         'short_description' => 'Кролик с эффектным сизо-голубым мехом.',
         'full_description' => "Венский голубой — порода с гармоничным телосложением и очень густым, мягким мехом. \n\nОтличаются выносливостью и спокойным темпераментом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Средний',
             'Мех' => 'Густой, ровный',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Чистый стальной окрас'
-        ]
-    ],
-    [
-        'animal_id' => 142,
+             
+             
+                 ]],['animal_breed' => 'Серебристый',
         'weight_range' => '4.5–5 кг',
         'height_range' => '50–55 см',
         'lifespan' => '7–10 лет',
@@ -2510,16 +3773,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Silver.webp',
         'short_description' => 'Порода с необычным «серебристым» налетом на мехе.',
         'full_description' => "Серебристый кролик ценится за качество шкурки. Крольчата рождаются черными, а серебристость проявляется к 4 месяцам.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Средний',
             'Мех' => 'Серебристый тиккинг',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Крепкая конституция'
-        ]
-    ],
-    [
-        'animal_id' => 143,
+             
+             
+                 ]],['animal_breed' => 'Чёрно-бурый кролик',
         'weight_range' => '5–7 кг',
         'height_range' => '60–65 см',
         'lifespan' => '8–10 лет',
@@ -2527,16 +3789,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Black_Brown.webp',
         'short_description' => 'Крупный кролик с мехом, напоминающим лисий.',
         'full_description' => "Чёрно-бурый кролик — отечественная порода. Окрас неоднородный: черные кончики волос создают вуаль на буром фоне.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Крупный',
             'Мех' => 'Длинный, плотный',
             'Активность' => 'Низкая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Высокая плодовитость'
-        ]
-    ],
-    [
-        'animal_id' => 144,
+             
+             
+                 ]],['animal_breed' => 'Большое светлое серебро',
         'weight_range' => '4.5–5.5 кг',
         'height_range' => '52–56 см',
         'lifespan' => '7–9 лет',
@@ -2544,16 +3805,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Champagne_d_Argent.webp',
         'short_description' => 'Аристократичная порода с мехом цвета старого серебра.',
         'full_description' => "Большое светлое серебро (БСС) — быстрорастущая порода. Мех очень мягкий и блестящий, высоко ценится в производстве.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Средне-крупный',
             'Мех' => 'Светло-серебристый',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Быстрый набор веса'
-        ]
-    ],
-    [
-        'animal_id' => 145,
+             
+             
+                 ]],['animal_breed' => 'Ангорский',
         'weight_range' => '3–5 кг',
         'height_range' => '40–50 см',
         'lifespan' => '7–12 лет',
@@ -2561,16 +3821,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Angora.webp',
         'short_description' => 'Экстремально пушистый кролик, похожий на облако.',
         'full_description' => "Ангорский кролик требует тщательного ухода и регулярной стрижки. Его шерсть на 90% состоит из нежного пуха.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Декоративный',
             'Мех' => 'Длинный пух (до 20 см)',
             'Активность' => 'Низкая',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Нуждается в ежедневном расчесывании'
-        ]
-    ],
-    [
-        'animal_id' => 146,
+             
+             
+                 ]],['animal_breed' => 'Белый пуховый',
         'weight_range' => '4–4.5 кг',
         'height_range' => '50–54 см',
         'lifespan' => '8–10 лет',
@@ -2578,16 +3837,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/White_Downy.webp',
         'short_description' => 'Отечественная порода для получения белоснежного пуха.',
         'full_description' => "Белый пуховый кролик хорошо адаптирован к холодному климату. Обладает крепким здоровьем и спокойным нравом.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Средний',
             'Мех' => 'Чисто белый пух',
             'Активность' => 'Низкая',
             'Обучаемость' => 'Низкая',
             'Особенности' => 'Не образует колтунов (при уходе)'
-        ]
-    ],
-    [
-        'animal_id' => 147,
+             
+             
+                 ]],['animal_breed' => 'Рекс',
         'weight_range' => '3–4.5 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–10 лет',
@@ -2595,16 +3853,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Rex.webp',
         'short_description' => 'Кролик с бархатным мехом, напоминающим плюш.',
         'full_description' => "Порода Рекс отличается тем, что остевые и пуховые волосы имеют одну длину. Мех на ощупь как велюр.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Средний',
             'Мех' => 'Короткий, плюшевый',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Чувствительные лапы'
-        ]
-    ],
-    [
-        'animal_id' => 148,
+             
+             
+                 ]],['animal_breed' => 'Рекс карликовый',
         'weight_range' => '1.2–1.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '8–12 лет',
@@ -2612,16 +3869,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Dwarf_Rex.webp',
         'short_description' => 'Уменьшенная копия рекса для домашнего содержания.',
         'full_description' => "Карликовый рекс — идеальный питомец для квартиры. Маленький, ласковый и невероятно приятный на ощупь.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Карликовый',
             'Мех' => 'Короткий бархат',
             'Активность' => 'Высокая',
             'Обучаемость' => 'Очень высокая',
             'Особенности' => 'Короткие усы'
-        ]
-    ],
-    [
-        'animal_id' => 149,
+             
+             
+                 ]],['animal_breed' => 'Польский кролик',
         'weight_range' => '0.8–1.2 кг',
         'height_range' => '15–20 см',
         'lifespan' => '7–10 лет',
@@ -2629,16 +3885,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Polish_Rabbit.webp',
         'short_description' => 'Крошечный кролик с большими глазами и короткими ушками.',
         'full_description' => "Польский кролик (Гермелин) — одна из самых маленьких пород. Чисто белый окрас и компактное телосложение.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Карликовый',
             'Мех' => 'Короткий, плотный',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Средняя',
             'Особенности' => 'Очень компактный размер'
-        ]
-    ],
-    [
-        'animal_id' => 150,
+             
+             
+                 ]],['animal_breed' => 'Русский горностаевый',
         'weight_range' => '2–2.5 кг',
         'height_range' => '30–35 см',
         'lifespan' => '8–12 лет',
@@ -2646,16 +3901,15 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Russian_Himalayan.webp',
         'short_description' => 'Кролик с окрасом как у сиамской кошки.',
         'full_description' => "Русский горностаевый отличается темными пятнами на носу, ушах, лапах и хвосте при общем белом окрасе тела.",
-        'features' => [
+         'features' =>[
             'Тип' => 'Мелкий',
             'Мех' => 'Гладкий, блестящий',
             'Активность' => 'Средняя',
             'Обучаемость' => 'Высокая',
             'Особенности' => 'Контрастный окрас'
-        ]
-    ],
-    [
-        'animal_id' => 151,
+             
+             
+                 ]],['animal_breed' => 'Гавана',
         'weight_range' => '2.5–4.5 кг',
         'height_range' => '35–45 см',
         'lifespan' => '7–10 лет',
@@ -2663,10 +3917,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Havana.webp',
         'short_description' => 'Кролик с глубоким шоколадным окрасом.',
         'full_description' => "Гавана — порода с блестящим мехом и очень спокойным характером. Популярны как на выставках, так и в качестве домашних любимцев.",
-        'features' => ['Тип' => 'Средний', 'Мех' => 'Насыщенный', 'Активность' => 'Низкая']
-    ],
-    [
-        'animal_id' => 152,
+         'features' =>['Тип' => 'Средний', 'Мех' => 'Насыщенный', 'Активность' => 'Низкая'
+             
+             
+                 ]],['animal_breed' => 'Гермелин',
         'weight_range' => '1.1–1.3 кг',
         'height_range' => '15–20 см',
         'lifespan' => '8–12 лет',
@@ -2674,10 +3928,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Hermelin.webp',
         'short_description' => 'Белоснежный карлик с голубыми или красными глазами.',
         'full_description' => "Гермелин — классический комнатный кролик. Компактный, с короткими ушками и очень густым мехом.",
-        'features' => ['Тип' => 'Карликовый', 'Мех' => 'Плотный', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 153,
+         'features' =>['Тип' => 'Карликовый', 'Мех' => 'Плотный', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Баран',
         'weight_range' => '5.5–8 кг',
         'height_range' => '60–70 см',
         'lifespan' => '7–10 лет',
@@ -2685,10 +3939,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/French_Lop.webp',
         'short_description' => 'Гигант среди вислоухих кроликов.',
         'full_description' => "Баран — порода, отличающаяся длинными свисающими ушами и массивным телом. Очень дружелюбны и вальяжны.",
-        'features' => ['Тип' => 'Гигант', 'Уши' => 'Вислоухие', 'Активность' => 'Низкая']
-    ],
-    [
-        'animal_id' => 154,
+         'features' =>['Тип' => 'Гигант', 'Уши' => 'Вислоухие', 'Активность' => 'Низкая'
+             
+             
+                 ]],['animal_breed' => 'Баран карликовый',
         'weight_range' => '1.5–2 кг',
         'height_range' => '25–30 см',
         'lifespan' => '8–12 лет',
@@ -2696,10 +3950,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Mini_Lop.webp',
         'short_description' => 'Маленький вислоухий кролик с «бараньей» мордочкой.',
         'full_description' => "Карликовый баран — одна из самых популярных пород для дома благодаря милой внешности и ласковому нраву.",
-        'features' => ['Тип' => 'Карликовый', 'Уши' => 'Вислоухие', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 155,
+         'features' =>['Тип' => 'Карликовый', 'Уши' => 'Вислоухие', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Баран львиноголовый',
         'weight_range' => '1.3–1.7 кг',
         'height_range' => '20–25 см',
         'lifespan' => '8–11 лет',
@@ -2707,10 +3961,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Lionhead_Lop.webp',
         'short_description' => 'Вислоухий кролик с пышной гривой вокруг головы.',
         'full_description' => "Львиноголовый баран сочетает в себе вислоухость и длинную шерсть на шее, напоминающую гриву льва.",
-        'features' => ['Тип' => 'Декоративный', 'Мех' => 'Смешанный', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 156,
+         'features' =>['Тип' => 'Декоративный', 'Мех' => 'Смешанный', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Нидерландский карликовый',
         'weight_range' => '0.8–1.1 кг',
         'height_range' => '15–18 см',
         'lifespan' => '9–12 лет',
@@ -2718,10 +3972,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Netherland_Dwarf.webp',
         'short_description' => 'Самый маленький кролик в мире.',
         'full_description' => "Нидерландский карликовый кролик отличается крошечными размерами и энергичным, иногда задиристым характером.",
-        'features' => ['Тип' => 'Миниатюрный', 'Активность' => 'Высокая', 'Обучаемость' => 'Высокая']
-    ],
-    [
-        'animal_id' => 157,
+         'features' =>['Тип' => 'Миниатюрный', 'Активность' => 'Высокая', 'Обучаемость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Песцовый кролик',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–9 лет',
@@ -2729,10 +3983,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Arctic_Rabbit.webp',
         'short_description' => 'Кролик с мехом, напоминающим песца.',
         'full_description' => "Песцовый кролик обладает уникальной текстурой шерсти — очень густой и устойчивой к сваливанию.",
-        'features' => ['Тип' => 'Средний', 'Мех' => 'Очень густой', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 158,
+         'features' =>['Тип' => 'Средний', 'Мех' => 'Очень густой', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Котиковый кролик',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '8–10 лет',
@@ -2740,10 +3994,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Seal_Rabbit.webp',
         'short_description' => 'Кролик с мехом, имитирующим морского котика.',
         'full_description' => "Котиковый кролик имеет короткий, очень плотный и блестящий мех темных оттенков.",
-        'features' => ['Тип' => 'Шкурковый', 'Мех' => 'Блестящий', 'Активность' => 'Низкая']
-    ],
-    [
-        'animal_id' => 159,
+         'features' =>['Тип' => 'Шкурковый', 'Мех' => 'Блестящий', 'Активность' => 'Низкая'
+             
+             
+                 ]],['animal_breed' => 'Сатиновый',
         'weight_range' => '3.5–5 кг',
         'height_range' => '45–55 см',
         'lifespan' => '7–10 лет',
@@ -2751,10 +4005,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Satin.webp',
         'short_description' => 'Порода с невероятным атласным блеском шерсти.',
         'full_description' => "Сатиновый кролик знаменит структурой волоса, которая отражает свет, создавая эффект сияния.",
-        'features' => ['Тип' => 'Средний', 'Мех' => 'Атласный', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 160,
+         'features' =>['Тип' => 'Средний', 'Мех' => 'Атласный', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Советский мардер',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '50–54 см',
         'lifespan' => '8–10 лет',
@@ -2762,12 +4016,13 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Soviet_Marder.webp',
         'short_description' => 'Отечественная порода с окрасом куницы.',
         'full_description' => "Советский мардер ценится за коричневый окрас с затемнениями на мордочке и лапах. Очень выносливы.",
-        'features' => ['Тип' => 'Средний', 'Окрас' => 'Сложный', 'Активность' => 'Средняя']
-    ],
+         'features' =>['Тип' => 'Средний', 'Окрас' => 'Сложный', 'Активность' => 'Средняя' 
+          
 
     // --- Группа 161-170 ---
-    [
-        'animal_id' => 161,
+             
+             
+                 ]],['animal_breed' => 'Трианта',
         'weight_range' => '2–2.5 кг',
         'height_range' => '30–35 см',
         'lifespan' => '8–11 лет',
@@ -2775,10 +4030,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Thrianta.webp',
         'short_description' => 'Кролик ярко-оранжевого, огненного цвета.',
         'full_description' => "Трианта — голландская порода. Главная особенность — равномерный насыщенно-красный окрас всего тела.",
-        'features' => ['Тип' => 'Декоративный', 'Окрас' => 'Огненный', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 162,
+         'features' =>['Тип' => 'Декоративный', 'Окрас' => 'Огненный', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Хотот',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '45–50 см',
         'lifespan' => '7–10 лет',
@@ -2786,10 +4041,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Hotot.webp',
         'short_description' => 'Белый кролик с черными «очками» вокруг глаз.',
         'full_description' => "Хотот — эффектная порода с абсолютно белым телом и тонкими черными кольцами вокруг глаз.",
-        'features' => ['Тип' => 'Средний', 'Окрас' => 'Белый с окантовкой', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 163,
+         'features' =>['Тип' => 'Средний', 'Окрас' => 'Белый с окантовкой', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Карликовый хотот',
         'weight_range' => '1–1.3 кг',
         'height_range' => '15–20 см',
         'lifespan' => '8–12 лет',
@@ -2797,10 +4052,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Dwarf_Hotot.webp',
         'short_description' => 'Миниатюрная версия хотота с подведенными глазами.',
         'full_description' => "Карликовый хотот — очень популярный домашний питомец с необычной «косметической» внешностью.",
-        'features' => ['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Особенности' => 'Черные кольца глаз']
-    ],
-    [
-        'animal_id' => 164,
+         'features' =>['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Особенности' => 'Черные кольца глаз'
+             
+             
+                 ]],['animal_breed' => 'Белый хотот',
         'weight_range' => '3.5–4 кг',
         'height_range' => '40–48 см',
         'lifespan' => '8–10 лет',
@@ -2808,10 +4063,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/White_Hotot.webp',
         'short_description' => 'Крупная вариация белого хотота.',
         'full_description' => "Белый хотот отличается от стандартного более массивным телом, но сохраняет свой уникальный окрас.",
-        'features' => ['Тип' => 'Средний', 'Мех' => 'Плотный', 'Активность' => 'Низкая']
-    ],
-    [
-        'animal_id' => 165,
+         'features' =>['Тип' => 'Средний', 'Мех' => 'Плотный', 'Активность' => 'Низкая'
+             
+             
+                 ]],['animal_breed' => 'Чешский пёстрый',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–10 лет',
@@ -2819,10 +4074,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Czech_Spotted.webp',
         'short_description' => 'Пятнистый кролик чешской селекции.',
         'full_description' => "Чешский пёстрый кролик имеет характерную темную полосу на спине и пятна на боках. Очень подвижен.",
-        'features' => ['Тип' => 'Средний', 'Окрас' => 'Пятнистый', 'Активность' => 'Высокая']
-    ],
-    [
-        'animal_id' => 166,
+         'features' =>['Тип' => 'Средний', 'Окрас' => 'Пятнистый', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Чешский красный',
         'weight_range' => '4–5 кг',
         'height_range' => '45–55 см',
         'lifespan' => '7–9 лет',
@@ -2830,10 +4085,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Czech_Red.webp',
         'short_description' => 'Кролик насыщенного каштаново-красного цвета.',
         'full_description' => "Чешский красный отличается крепким здоровьем и быстрым ростом. Окрас теплый, золотисто-красный.",
-        'features' => ['Тип' => 'Средний', 'Окрас' => 'Рыжий', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 167,
+         'features' =>['Тип' => 'Средний', 'Окрас' => 'Рыжий', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Японский',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '45–50 см',
         'lifespan' => '8–11 лет',
@@ -2841,10 +4096,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Japanese_Rabbit.webp',
         'short_description' => 'Кролик с «шахматным» или двухцветным окрасом.',
         'full_description' => "Японский кролик уникален разделением цветов: одна сторона головы может быть черной, а другая — рыжей.",
-        'features' => ['Тип' => 'Средний', 'Окрас' => 'Двухцветный', 'Активность' => 'Высокая']
-    ],
-    [
-        'animal_id' => 168,
+         'features' =>['Тип' => 'Средний', 'Окрас' => 'Двухцветный', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Американский польский',
         'weight_range' => '1.2–1.8 кг',
         'height_range' => '25–30 см',
         'lifespan' => '8–12 лет',
@@ -2852,10 +4107,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/American_Polish.webp',
         'short_description' => 'Американская линия польского кролика.',
         'full_description' => "Более изящная и тонкая версия польского кролика, популярная в США как выставочная порода.",
-        'features' => ['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Обучаемость' => 'Средняя']
-    ],
-    [
-        'animal_id' => 169,
+         'features' =>['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Обучаемость' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Британский польский',
         'weight_range' => '1–1.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '8–12 лет',
@@ -2863,10 +4118,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/British_Polish.webp',
         'short_description' => 'Классический британский выставочный кролик.',
         'full_description' => "Британский польский кролик имеет вертикальную стойку и очень короткий, плотно прилегающий мех.",
-        'features' => ['Тип' => 'Карликовый', 'Активность' => 'Средняя', 'Особенности' => 'Узкое тело']
-    ],
-    [
-        'animal_id' => 170,
+         'features' =>['Тип' => 'Карликовый', 'Активность' => 'Средняя', 'Особенности' => 'Узкое тело'
+             
+             
+                 ]],['animal_breed' => 'Макленбургский пятнистый',
         'weight_range' => '5–7 кг',
         'height_range' => '55–65 см',
         'lifespan' => '7–10 лет',
@@ -2874,12 +4129,13 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Mecklenburg_Piebald.webp',
         'short_description' => 'Массивный пятнистый кролик из Германии.',
         'full_description' => "Макленбургский пятнистый — крупная порода с нарядным рисунком. Обычно это черные пятна на белом фоне.",
-        'features' => ['Тип' => 'Крупный', 'Окрас' => 'Пегий', 'Активность' => 'Низкая']
-    ],
-
+         'features' =>['Тип' => 'Крупный', 'Окрас' => 'Пегий', 'Активность' => 'Низкая' 
+      
+ 
     // --- Группа 171-179 ---
-    [
-        'animal_id' => 171,
+             
+             
+                 ]],['animal_breed' => 'Земплинский пастеловый',
         'weight_range' => '3–4 кг',
         'height_range' => '40–50 см',
         'lifespan' => '7–9 лет',
@@ -2887,10 +4143,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Zemplin_Pastel.webp',
         'short_description' => 'Кролик нежного пастельного, бежевого цвета.',
         'full_description' => "Земплинский пастельный — словацкая порода. Мех очень мягкий, окрас однородный и теплый.",
-        'features' => ['Тип' => 'Средний', 'Окрас' => 'Пастельный', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 172,
+         'features' =>['Тип' => 'Средний', 'Окрас' => 'Пастельный', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Дейлинаар',
         'weight_range' => '2.5–3.5 кг',
         'height_range' => '35–40 см',
         'lifespan' => '8–11 лет',
@@ -2898,10 +4154,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Deilenaar.webp',
         'short_description' => 'Кролик с эффектным «диким» рыже-бурым окрасом.',
         'full_description' => "Дейлинаар — голландская порода с очень густым мехом и черным тикингом (кончиками волос).",
-        'features' => ['Тип' => 'Средний', 'Мех' => 'Тикированный', 'Активность' => 'Высокая']
-    ],
-    [
-        'animal_id' => 173,
+         'features' =>['Тип' => 'Средний', 'Мех' => 'Тикированный', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Паломино',
         'weight_range' => '4–5 кг',
         'height_range' => '50–55 см',
         'lifespan' => '7–10 лет',
@@ -2909,10 +4165,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Palomino.webp',
         'short_description' => 'Золотисто-бежевый кролик из США.',
         'full_description' => "Паломино — порода, названная в честь масти лошадей. Обладает приятным золотистым цветом и крепким телом.",
-        'features' => ['Тип' => 'Средне-крупный', 'Окрас' => 'Золотистый', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 174,
+         'features' =>['Тип' => 'Средне-крупный', 'Окрас' => 'Золотистый', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Тюрингенский',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '45–52 см',
         'lifespan' => '7–10 лет',
@@ -2920,10 +4176,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Thuringian.webp',
         'short_description' => 'Кролик с окрасом, напоминающим серну.',
         'full_description' => "Тюрингенский кролик имеет охристый основной цвет с темной «вуалью» на морде, ушах и боках.",
-        'features' => ['Тип' => 'Средний', 'Окрас' => 'Маска на морде', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 175,
+         'features' =>['Тип' => 'Средний', 'Окрас' => 'Маска на морде', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Голландский',
         'weight_range' => '2–2.5 кг',
         'height_range' => '30–35 см',
         'lifespan' => '8–12 лет',
@@ -2931,10 +4187,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Dutch_Rabbit.webp',
         'short_description' => 'Кролик с характерным «поясом» посередине тела.',
         'full_description' => "Голландский кролик узнаваем по четкому разделению цветов: передняя часть тела белая, задняя — темная.",
-        'features' => ['Тип' => 'Декоративный', 'Окрас' => 'Двухцветный пояс', 'Активность' => 'Очень высокая']
-    ],
-    [
-        'animal_id' => 176,
+         'features' =>['Тип' => 'Декоративный', 'Окрас' => 'Двухцветный пояс', 'Активность' => 'Очень высокая'
+             
+             
+                 ]],['animal_breed' => 'Аляска',
         'weight_range' => '3–4 кг',
         'height_range' => '40–48 см',
         'lifespan' => '7–10 лет',
@@ -2942,10 +4198,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Alaska_Rabbit.webp',
         'short_description' => 'Кролик с абсолютно черным, блестящим мехом.',
         'full_description' => "Аляска — порода с интенсивным черным глянцевым окрасом. Подшерсток обычно темно-голубой.",
-        'features' => ['Тип' => 'Средний', 'Мех' => 'Глянцевый', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 177,
+         'features' =>['Тип' => 'Средний', 'Мех' => 'Глянцевый', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Белка',
         'weight_range' => '2–3 кг',
         'height_range' => '30–40 см',
         'lifespan' => '8–11 лет',
@@ -2953,10 +4209,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Squirrel_Rabbit.webp',
         'short_description' => 'Кролик с мехом, похожим на шкурку белки.',
         'full_description' => "Белка — порода с серо-голубым тикированным мехом и белым животиком. Очень изящные животные.",
-        'features' => ['Тип' => 'Средне-мелкий', 'Окрас' => 'Зонарный', 'Активность' => 'Высокая']
-    ],
-    [
-        'animal_id' => 178,
+         'features' =>['Тип' => 'Средне-мелкий', 'Окрас' => 'Зонарный', 'Активность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Шведская белка',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–10 лет',
@@ -2964,10 +4220,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Swedish_Squirrel.webp',
         'short_description' => 'Шведская вариация породы «белка».',
         'full_description' => "Шведская белка крупнее стандартной и отличается более плотным, «зимним» типом меха.",
-        'features' => ['Тип' => 'Средний', 'Мех' => 'Плотный', 'Активность' => 'Средняя']
-    ],
-    [
-        'animal_id' => 179,
+         'features' =>['Тип' => 'Средний', 'Мех' => 'Плотный', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Марбургская белка',
         'weight_range' => '2.5–3.5 кг',
         'height_range' => '35–42 см',
         'lifespan' => '8–11 лет',
@@ -2975,10 +4231,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rabbit/breed/Marburger_Fee.webp',
         'short_description' => 'Кролик с нежным сиренево-голубым мехом.',
         'full_description' => "Марбургская белка (Fee — фея) ценится за уникальный «фиалковый» оттенок шерсти и светящийся взгляд.",
-        'features' => ['Тип' => 'Средне-мелкий', 'Окрас' => 'Сиреневый', 'Активность' => 'Средняя']
-    ],
-    [
-    'animal_id' => 180,
+         'features' =>['Тип' => 'Средне-мелкий', 'Окрас' => 'Сиреневый', 'Активность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Люкс',
     'weight_range' => '2–3 кг',
     'height_range' => '25–30 см',
     'lifespan' => '5–8 лет',
@@ -2986,17 +4242,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Lux_rabbit.webp',
     'short_description' => 'Кролик с мягкой и плотной шерстью.',
     'full_description' => "Кролик Люкс — декоративная порода. \n\nЦенится за красивый мех и спокойный характер.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Мягкий мех'
-    ]
-],
-
-[
-    'animal_id' => 181,
+             
+             
+                 ]],['animal_breed' => 'Карликовый лисий',
     'weight_range' => '2–4 кг',
     'height_range' => '30–35 см',
     'lifespan' => '6–9 лет',
@@ -3004,17 +4258,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Dwarf_fox_rabbit.webp',
     'short_description' => 'Кролик с длинной пушистой шерстью.',
     'full_description' => "Карликовый лисий кролик — декоративная порода. \n\nОтличается густой шерстью и милой внешностью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Длинная шерсть'
-    ]
-],
-
-[
-    'animal_id' => 182,
+             
+             
+                 ]],['animal_breed' => 'Сепаратор',
     'weight_range' => '3–5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '5–8 лет',
@@ -3022,17 +4274,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Separtor_rabbit.webp',
     'short_description' => 'Кролик с плотным телосложением.',
     'full_description' => "Сепаратор — редкая порода кроликов. \n\nОтличается выносливостью и спокойствием.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Редкая порода'
-    ]
-],
-
-[
-    'animal_id' => 183,
+             
+             
+                 ]],['animal_breed' => 'Сашенгольд',
     'weight_range' => '4–6 кг',
     'height_range' => '40–50 см',
     'lifespan' => '5–8 лет',
@@ -3040,17 +4290,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Sassenau_rabbit.webp',
     'short_description' => 'Крупный и выносливый кролик.',
     'full_description' => "Сашенгольд — крепкая и выносливая порода. \n\nПодходит для разведения.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Выносливый'
-    ]
-],
-
-[
-    'animal_id' => 184,
+             
+             
+                 ]],['animal_breed' => 'Рен',
     'weight_range' => '2–3 кг',
     'height_range' => '25–30 см',
     'lifespan' => '6–10 лет',
@@ -3058,17 +4306,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Rex_rabbit.webp',
     'short_description' => 'Кролик с бархатистой шерстью.',
     'full_description' => "Рекс — популярная декоративная порода. \n\nОтличается короткой мягкой шерстью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Бархатистый мех'
-    ]
-],
-
-[
-    'animal_id' => 185,
+             
+             
+                 ]],['animal_breed' => 'Арабская',
     'weight_range' => '400–600 кг',
     'height_range' => '150–160 см',
     'lifespan' => '25–30 лет',
@@ -3076,17 +4322,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Arabian_horse.webp',
     'short_description' => 'Грациозная и выносливая лошадь.',
     'full_description' => "Арабская лошадь — одна из самых древних пород. \n\nОтличается выносливостью и элегантностью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Выносливая'
-    ]
-],
-
-[
-    'animal_id' => 186,
+             
+             
+                 ]],['animal_breed' => 'Ахалтекинская',
     'weight_range' => '400–500 кг',
     'height_range' => '145–155 см',
     'lifespan' => '20–30 лет',
@@ -3094,17 +4338,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Akhal_teke.webp',
     'short_description' => 'Стройная лошадь с блестящей шерстью.',
     'full_description' => "Ахалтекинская лошадь — редкая и красивая порода. \n\nИзвестна своей выносливостью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Редкая порода'
-    ]
-],
-
-[
-    'animal_id' => 187,
+             
+             
+                 ]],['animal_breed' => 'Орловский рысак',
     'weight_range' => '450–550 кг',
     'height_range' => '155–165 см',
     'lifespan' => '20–25 лет',
@@ -3112,17 +4354,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Orlov_trotter.webp',
     'short_description' => 'Быстрая и выносливая лошадь.',
     'full_description' => "Орловский рысак — знаменитая русская порода. \n\nИспользуется в упряжке и спорте.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Упряжная',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Быстрый бег'
-    ]
-],
-
-[
-    'animal_id' => 188,
+             
+             
+                 ]],['animal_breed' => 'Фризская',
     'weight_range' => '600–800 кг',
     'height_range' => '160–170 см',
     'lifespan' => '20–25 лет',
@@ -3130,17 +4370,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Friesian_horse.webp',
     'short_description' => 'Крупная и мощная лошадь с длинной гривой.',
     'full_description' => "Фризская лошадь — эффектная порода. \n\nОтличается силой и элегантной внешностью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Тяжеловоз',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Длинная грива'
-    ]
-],
-
-[
-    'animal_id' => 189,
+             
+             
+                 ]],['animal_breed' => 'Першерон',
     'weight_range' => '800–1000 кг',
     'height_range' => '160–175 см',
     'lifespan' => '20–25 лет',
@@ -3148,17 +4386,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Percheron.webp',
     'short_description' => 'Сильная упряжная лошадь.',
     'full_description' => "Першерон — мощная и выносливая порода. \n\nИспользуется для тяжёлых работ.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Тяжеловоз',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Очень сильная'
-    ]
-],
-
-[
-    'animal_id' => 190,
+             
+             
+                 ]],['animal_breed' => 'Шетлендский пони',
     'weight_range' => '200–300 кг',
     'height_range' => '90–110 см',
     'lifespan' => '25–30 лет',
@@ -3166,16 +4402,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Shetland_pony.webp',
     'short_description' => 'Небольшая и выносливая лошадь.',
     'full_description' => "Шетлендский пони — маленькая, но очень сильная порода. \n\nПодходит для детей и обучения.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Пони',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Очень выносливый'
-    ]
-],
-[
-    'animal_id' => 191,
+             
+             
+                 ]],['animal_breed' => 'Казахская',
     'weight_range' => '400–500 кг',
     'height_range' => '140–150 см',
     'lifespan' => '20–25 лет',
@@ -3183,17 +4418,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Kazakh_horse.webp',
     'short_description' => 'Выносливая степная лошадь.',
     'full_description' => "Казахская лошадь — адаптирована к суровым условиям степи. \n\nОтличается выносливостью и неприхотливостью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Неприхотливая'
-    ]
-],
-
-[
-    'animal_id' => 192,
+             
+             
+                 ]],['animal_breed' => 'Алтайская',
     'weight_range' => '400–550 кг',
     'height_range' => '140–155 см',
     'lifespan' => '20–25 лет',
@@ -3201,17 +4434,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Altai_horse.webp',
     'short_description' => 'Горная лошадь с высокой выносливостью.',
     'full_description' => "Алтайская лошадь — крепкая и выносливая порода. \n\nХорошо приспособлена к горной местности.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Универсальная',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Вынослива в горах'
-    ]
-],
-
-[
-    'animal_id' => 193,
+             
+             
+                 ]],['animal_breed' => 'Якутская',
     'weight_range' => '350–450 кг',
     'height_range' => '135–145 см',
     'lifespan' => '20–25 лет',
@@ -3219,17 +4450,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Yakut_horse.webp',
     'short_description' => 'Лошадь, приспособленная к экстремальному холоду.',
     'full_description' => "Якутская лошадь — одна из самых морозостойких пород. \n\nМожет выживать в суровых климатических условиях.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Сильная',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Переносит сильный холод'
-    ]
-],
-
-[
-    'animal_id' => 194,
+             
+             
+                 ]],['animal_breed' => 'Латвийская',
     'weight_range' => '450–550 кг',
     'height_range' => '160–170 см',
     'lifespan' => '20–25 лет',
@@ -3237,17 +4466,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Latvian_horse.webp',
     'short_description' => 'Крупная и спокойная лошадь.',
     'full_description' => "Латвийская лошадь — универсальная порода. \n\nИспользуется в спорте и хозяйстве.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Спортивная',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Спокойный характер'
-    ]
-],
-
-[
-    'animal_id' => 195,
+             
+             
+                 ]],['animal_breed' => 'Аппалуза',
     'weight_range' => '380–450 кг',
     'height_range' => '140–155 см',
     'lifespan' => '20–30 лет',
@@ -3255,17 +4482,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Appaloosa.webp',
     'short_description' => 'Лошадь с пятнистым окрасом.',
     'full_description' => "Аппалуза — известна своим уникальным окрасом. \n\nИспользуется в спорте и верховой езде.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Пятнистый окрас'
-    ]
-],
-
-[
-    'animal_id' => 196,
+             
+             
+                 ]],['animal_breed' => 'Пинто',
     'weight_range' => '400–550 кг',
     'height_range' => '145–160 см',
     'lifespan' => '20–25 лет',
@@ -3273,17 +4498,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Pinto.webp',
     'short_description' => 'Лошадь с контрастным пятнистым окрасом.',
     'full_description' => "Пинто — не столько порода, сколько тип окраса. \n\nПопулярен в шоу и верховой езде.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Контрастный окрас'
-    ]
-],
-
-[
-    'animal_id' => 197,
+             
+             
+                 ]],['animal_breed' => 'Квотерхорс',
     'weight_range' => '450–600 кг',
     'height_range' => '155–165 см',
     'lifespan' => '20–25 лет',
@@ -3291,17 +4514,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Quarter_horse.webp',
     'short_description' => 'Быстрая и мощная лошадь.',
     'full_description' => "Квотерхорс — американская порода. \n\nОтличается высокой скоростью на коротких дистанциях.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Спортивная',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Быстрый старт'
-    ]
-],
-
-[
-    'animal_id' => 198,
+             
+             
+                 ]],['animal_breed' => 'Тракененская',
     'weight_range' => '450–550 кг',
     'height_range' => '160–170 см',
     'lifespan' => '20–25 лет',
@@ -3309,17 +4530,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Trakehner.webp',
     'short_description' => 'Элегантная и спортивная лошадь.',
     'full_description' => "Тракененская лошадь — известна в конном спорте. \n\nОбладает отличной выездкой.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Спортивная',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Подходит для спорта'
-    ]
-],
-
-[
-    'animal_id' => 199,
+             
+             
+                 ]],['animal_breed' => 'Андалузская',
     'weight_range' => '400–500 кг',
     'height_range' => '155–165 см',
     'lifespan' => '20–30 лет',
@@ -3327,17 +4546,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Andalusian_horse.webp',
     'short_description' => 'Грациозная лошадь с красивыми движениями.',
     'full_description' => "Андалузская лошадь — испанская порода. \n\nИзвестна своей элегантностью и послушанием.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Средняя',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Красивые движения'
-    ]
-],
-
-[
-    'animal_id' => 200,
+             
+             
+                 ]],['animal_breed' => 'Кабардинская',
     'weight_range' => '400–500 кг',
     'height_range' => '150–160 см',
     'lifespan' => '20–25 лет',
@@ -3345,16 +4562,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/horse/breed/Kabarda_horse.webp',
     'short_description' => 'Горная выносливая лошадь.',
     'full_description' => "Кабардинская лошадь — порода Кавказа. \n\nОтличается выносливостью и устойчивостью в горах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Верховая',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Горная порода'
-    ]
-],
-    [
-        'animal_id' => 201,
+             
+             
+                 ]],['animal_breed' => 'Донская',
         'weight_range' => '500–600 кг',
         'height_range' => '160–166 см',
         'lifespan' => '25–30 лет',
@@ -3362,10 +4578,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Donskaya.webp',
         'short_description' => 'Старинная казачья порода верхово-упряжных лошадей.',
         'full_description' => "Донская лошадь известна своей неприхотливостью и выносливостью. Традиционно обладает золотисто-рыжей мастью.",
-        'features' => ['Порода' => 'Донская', 'Тип' => 'Верхово-упряжная', 'Выносливость' => 'Высокая']
-    ],
-    [
-        'animal_id' => 202,
+         'features' =>['Порода' => 'Донская', 'Тип' => 'Верхово-упряжная', 'Выносливость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Будённовская',
         'weight_range' => '500–550 кг',
         'height_range' => '162–167 см',
         'lifespan' => '25–30 лет',
@@ -3373,10 +4589,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Budyonnovskaya.webp',
         'short_description' => 'Спортивная порода, выведенная на основе донской и чистокровной верховой.',
         'full_description' => "Будённовская лошадь сочетает в себе резвость и отличные прыжковые качества, что делает её популярной в конном спорте.",
-        'features' => ['Порода' => 'Будённовская', 'Спорт' => 'Конкур/Троеборье', 'Темперамент' => 'Энергичный']
-    ],
-    [
-        'animal_id' => 203,
+         'features' =>['Порода' => 'Будённовская', 'Спорт' => 'Конкур/Троеборье', 'Темперамент' => 'Энергичный'
+             
+             
+                 ]],['animal_breed' => 'Чистокровная верховая',
         'weight_range' => '450–550 кг',
         'height_range' => '160–175 см',
         'lifespan' => '23–28 лет',
@@ -3384,10 +4600,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Thoroughbred.webp',
         'short_description' => 'Самая быстрая скаковая порода в мире.',
         'full_description' => "Чистокровная верховая обладает исключительным атлетизмом. Требует профессионального подхода из-за горячего нрава.",
-        'features' => ['Порода' => 'Чистокровная верховая', 'Специализация' => 'Гладкие скачки', 'Скорость' => 'Экстремальная']
-    ],
-    [
-        'animal_id' => 204,
+         'features' =>['Порода' => 'Чистокровная верховая', 'Специализация' => 'Гладкие скачки', 'Скорость' => 'Экстремальная'
+             
+             
+                 ]],['animal_breed' => 'Мерин',
         'weight_range' => '400–600 кг',
         'height_range' => '155–170 см',
         'lifespan' => '25–35 лет',
@@ -3395,10 +4611,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Gelding.webp',
         'short_description' => 'Кастрированный жеребец, идеальный для обучения и прогулок.',
         'full_description' => "Мерин отличается более спокойным и предсказуемым поведением по сравнению с жеребцами, что ценится в конном туризме.",
-        'features' => ['Статус' => 'Мерин', 'Характер' => 'Уравновешенный', 'Применение' => 'Обучение/Хобби']
-    ],
-    [
-        'animal_id' => 205,
+         'features' =>['Статус' => 'Мерин', 'Характер' => 'Уравновешенный', 'Применение' => 'Обучение/Хобби'
+             
+             
+                 ]],['animal_breed' => 'Ганноверская',
         'weight_range' => '550–650 кг',
         'height_range' => '160–175 см',
         'lifespan' => '25–30 лет',
@@ -3406,10 +4622,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Hanoverian.webp',
         'short_description' => 'Одна из самых успешных спортивных пород Европы.',
         'full_description' => "Ганноверская лошадь доминирует в выездке и конкуре благодаря правильному экстерьеру и дисциплинированности.",
-        'features' => ['Порода' => 'Ганноверская', 'Тип' => 'Полукровная', 'Стиль' => 'Элегантный']
-    ],
-    [
-        'animal_id' => 206,
+         'features' =>['Порода' => 'Ганноверская', 'Тип' => 'Полукровная', 'Стиль' => 'Элегантный'
+             
+             
+                 ]],['animal_breed' => 'Гольштинская',
         'weight_range' => '550–650 кг',
         'height_range' => '165–175 см',
         'lifespan' => '25–30 лет',
@@ -3417,10 +4633,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Holsteiner.webp',
         'short_description' => 'Мощная атлетическая лошадь для прыжков мирового уровня.',
         'full_description' => "Гольштинская лошадь считается элитой конкурных арен. Обладает мощным толчком и сильным костяком.",
-        'features' => ['Порода' => 'Гольштинская', 'Специализация' => 'Конкур', 'Сила' => 'Высокая']
-    ],
-    [
-        'animal_id' => 207,
+         'features' =>['Порода' => 'Гольштинская', 'Специализация' => 'Конкур', 'Сила' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Клиппер',
         'weight_range' => '350–450 кг',
         'height_range' => '145–155 см',
         'lifespan' => '25–30 лет',
@@ -3428,10 +4644,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Clipper.webp',
         'short_description' => 'Универсальная лошадь легкого типа.',
         'full_description' => "Клиппер — исторический тип быстроходной лошади, использовавшийся для перевозки легких экипажей и верховой езды.",
-        'features' => ['Тип' => 'Клиппер', 'Компактность' => 'Средняя', 'Ход' => 'Легкий']
-    ],
-    [
-        'animal_id' => 208,
+         'features' =>['Тип' => 'Клиппер', 'Компактность' => 'Средняя', 'Ход' => 'Легкий'
+             
+             
+                 ]],['animal_breed' => 'Исландская лошадь',
         'weight_range' => '330–400 кг',
         'height_range' => '132–142 см',
         'lifespan' => '30–40 лет',
@@ -3439,10 +4655,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Icelandic.webp',
         'short_description' => 'Крепкая северная лошадь с уникальными аллюрами.',
         'full_description' => "Исландская лошадь способна передвигаться тольтом и иноходью. Очень вынослива и долговечна.",
-        'features' => ['Порода' => 'Исландская', 'Аллюры' => '4 и 5 аллюров', 'Морозостойкость' => 'Экстремальная']
-    ],
-    [
-        'animal_id' => 209,
+         'features' =>['Порода' => 'Исландская', 'Аллюры' => '4 и 5 аллюров', 'Морозостойкость' => 'Экстремальная'
+             
+             
+                 ]],['animal_breed' => 'Фелл-пони',
         'weight_range' => '350–450 кг',
         'height_range' => '132–142 см',
         'lifespan' => '25–30 лет',
@@ -3450,10 +4666,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Fell_Pony.webp',
         'short_description' => 'Горный пони с нарядными фризами на ногах.',
         'full_description' => "Фелл-пони — универсальная рабочая порода из Англии. Отличается силой и густым волосяным покровом.",
-        'features' => ['Порода' => 'Фелл-пони', 'Окрас' => 'Обычно вороной', 'Универсальность' => 'Высокая']
-    ],
-    [
-        'animal_id' => 210,
+         'features' =>['Порода' => 'Фелл-пони', 'Окрас' => 'Обычно вороной', 'Универсальность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Эрджелейская',
         'weight_range' => '450–550 кг',
         'height_range' => '155–165 см',
         'lifespan' => '25–30 лет',
@@ -3461,10 +4677,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Airedale.webp',
         'short_description' => 'Редкая региональная порода.',
         'full_description' => "Эрджелейская лошадь — специфическая селекционная группа, адаптированная к местным условиям содержания.",
-        'features' => ['Порода' => 'Эрджелейская', 'Адаптация' => 'Высокая', 'Тип' => 'Верхово-вьючная']
-    ],
-    [
-        'animal_id' => 211,
+         'features' =>['Порода' => 'Эрджелейская', 'Адаптация' => 'Высокая', 'Тип' => 'Верхово-вьючная'
+             
+             
+                 ]],['animal_breed' => 'Тувинская',
         'weight_range' => '400–450 кг',
         'height_range' => '140–145 см',
         'lifespan' => '25–30 лет',
@@ -3472,10 +4688,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Tuvinskaya.webp',
         'short_description' => 'Аборигенная лошадь Центральной Азии.',
         'full_description' => "Тувинская лошадь идеально приспособлена к круглогодовому пастбищному содержанию в горах и степях.",
-        'features' => ['Порода' => 'Тувинская', 'Тип' => 'Аборигенная', 'Выживаемость' => 'Очень высокая']
-    ],
-    [
-        'animal_id' => 212,
+         'features' =>['Порода' => 'Тувинская', 'Тип' => 'Аборигенная', 'Выживаемость' => 'Очень высокая'
+             
+             
+                 ]],['animal_breed' => 'Башкирская',
         'weight_range' => '450–480 кг',
         'height_range' => '142–145 см',
         'lifespan' => '25–30 лет',
@@ -3483,10 +4699,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Bashkirskaya.webp',
         'short_description' => 'Уникальная порода с ценным молоком и шерстью.',
         'full_description' => "Башкирская лошадь используется как в сельском хозяйстве, так и для получения целебного кумыса.",
-        'features' => ['Порода' => 'Башкирская', 'Особенность' => 'Кудрявая шерсть', 'Польза' => 'Молочная/Рабочая']
-    ],
-    [
-        'animal_id' => 213,
+         'features' =>['Порода' => 'Башкирская', 'Особенность' => 'Кудрявая шерсть', 'Польза' => 'Молочная/Рабочая'
+             
+             
+                 ]],['animal_breed' => 'Монгольская',
         'weight_range' => '300–400 кг',
         'height_range' => '130–140 см',
         'lifespan' => '25–35 лет',
@@ -3494,10 +4710,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Mongolskaya.webp',
         'short_description' => 'Маленькая, но невероятно сильная лошадь кочевников.',
         'full_description' => "Монгольская лошадь — основа культуры кочевников, способная преодолевать сотни километров без отдыха.",
-        'features' => ['Порода' => 'Монгольская', 'Тип' => 'Степная', 'Неприхотливость' => 'Максимальная']
-    ],
-    [
-        'animal_id' => 214,
+         'features' =>['Порода' => 'Монгольская', 'Тип' => 'Степная', 'Неприхотливость' => 'Максимальная'
+             
+             
+                 ]],['animal_breed' => 'Саумская',
         'weight_range' => '400–500 кг',
         'height_range' => '145–155 см',
         'lifespan' => '25–30 лет',
@@ -3505,11 +4721,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/horse/breed/Saumskaya.webp',
         'short_description' => 'Редкая вьючная порода.',
         'full_description' => "Саумская лошадь используется в труднодоступных районах для перевозки грузов и верховой езды.",
-        'features' => ['Порода' => 'Саумская', 'Тип' => 'Вьючная', 'Копыта' => 'Очень крепкие']
-    ],
-
-    [
-        'animal_id' => 215,
+         'features' =>['Порода' => 'Саумская', 'Тип' => 'Вьючная', 'Копыта' => 'Очень крепкие'
+             
+             
+                 ]],['animal_breed' => 'Вьетнамская вислобрюхая свинья',
         'weight_range' => '50–100 кг',
         'height_range' => '40–60 см',
         'lifespan' => '12–15 лет',
@@ -3517,10 +4732,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/minipig/breed/Vietnamese.webp',
         'short_description' => 'Популярная травоядная свинья с провисшим животом.',
         'full_description' => "Вьетнамская вислобрюхая свинья отличается добрым нравом и чистоплотностью при правильном содержании.",
-        'features' => ['Порода' => 'Вьетнамская вислобрюхая', 'Интеллект' => 'Высокий', 'Питание' => 'Растительное']
-    ],
-    [
-        'animal_id' => 216,
+         'features' =>['Порода' => 'Вьетнамская вислобрюхая', 'Интеллект' => 'Высокий', 'Питание' => 'Растительное'
+             
+             
+                 ]],['animal_breed' => 'Геттингенский минипиг',
         'weight_range' => '35–45 кг',
         'height_range' => '35–45 см',
         'lifespan' => '15–20 лет',
@@ -3528,10 +4743,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/minipig/breed/Gottingen.webp',
         'short_description' => 'Компактная порода немецкой селекции.',
         'full_description' => "Геттингенский минипиг — одна из самых маленьких и сообразительных пород, часто соревнуется по уму с собаками.",
-        'features' => ['Порода' => 'Геттингенский минипиг', 'Размер' => 'Мелкий', 'Обучаемость' => 'Высокая']
-    ],
-    [
-        'animal_id' => 217,
+         'features' =>['Порода' => 'Геттингенский минипиг', 'Размер' => 'Мелкий', 'Обучаемость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Визенау',
         'weight_range' => '20–30 кг',
         'height_range' => '30–35 см',
         'lifespan' => '12–18 лет',
@@ -3539,10 +4754,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/minipig/breed/Wiesenau.webp',
         'short_description' => 'Миниатюрная свинья с квадратным корпусом.',
         'full_description' => "Визенау — компактный минипиг с характерным окрасом (часто черно-белым) и спокойным поведением.",
-        'features' => ['Порода' => 'Визенау', 'Тип' => 'Декоративный', 'Конституция' => 'Крепкая']
-    ],
-    [
-        'animal_id' => 218,
+         'features' =>['Порода' => 'Визенау', 'Тип' => 'Декоративный', 'Конституция' => 'Крепкая'
+             
+             
+                 ]],['animal_breed' => 'Бергштрессер книрт',
         'weight_range' => '10–15 кг',
         'height_range' => '25–30 см',
         'lifespan' => '15–20 лет',
@@ -3550,10 +4765,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/minipig/breed/Bergstresser.webp',
         'short_description' => 'Крошечный «книрт» для квартирного содержания.',
         'full_description' => "Бергштрессер книрт — одна из самых популярных микро-пород благодаря крошечному весу и привязчивости к хозяину.",
-        'features' => ['Порода' => 'Бергштрессер книрт', 'Размер' => 'Микро', 'Характер' => 'Ласковый']
-    ],
-    [
-        'animal_id' => 219,
+         'features' =>['Порода' => 'Бергштрессер книрт', 'Размер' => 'Микро', 'Характер' => 'Ласковый'
+             
+             
+                 ]],['animal_breed' => 'Минимайялино',
         'weight_range' => '9–12 кг',
         'height_range' => '20–25 см',
         'lifespan' => '15–20 лет',
@@ -3561,10 +4776,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/minipig/breed/Minimayalino.webp',
         'short_description' => 'Самая маленькая свинья в мире.',
         'full_description' => "Минимаялино — итальянская селекция. Из-за экстремально малых размеров требует особого ухода и питания.",
-        'features' => ['Порода' => 'Минимаялино', 'Статус' => 'Рекордсмен', 'Уход' => 'Сложный']
-    ],
-    [
-        'animal_id' => 220,
+         'features' =>['Порода' => 'Минимаялино', 'Статус' => 'Рекордсмен', 'Уход' => 'Сложный'
+             
+             
+                 ]],['animal_breed' => 'Choctaw hog',
         'weight_range' => '50–80 кг',
         'height_range' => '45–55 см',
         'lifespan' => '12–15 лет',
@@ -3572,10 +4787,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/minipig/breed/Choctaw.webp',
         'short_description' => 'Американская порода с «серьгами» на шее.',
         'full_description' => "Choctaw hog — порода, имеющая историческую ценность. Активны и обладают развитым инстинктом поиска пищи.",
-        'features' => ['Порода' => 'Choctaw hog', 'Происхождение' => 'США', 'Особенность' => 'Кожные выросты']
-    ],
-    [
-        'animal_id' => 221,
+         'features' =>['Порода' => 'Choctaw hog', 'Происхождение' => 'США', 'Особенность' => 'Кожные выросты'
+             
+             
+                 ]],['animal_breed' => 'Kunekune',
         'weight_range' => '60–100 кг',
         'height_range' => '50–60 см',
         'lifespan' => '15–20 лет',
@@ -3583,22 +4798,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/minipig/breed/Kunekune.webp',
         'short_description' => 'Новозеландская порода с уникальными кисточками под челюстью.',
         'full_description' => "Кун-кун — очень дружелюбные и общительные свиньи. Их отличает густая шерсть и «пири-пири» (кожные выросты) на шее.",
-        'features' => ['Порода' => 'Кун-кун', 'Темперамент' => 'Очень мирный', 'Особенность' => 'Кисточки на шее']
-    ],
-
-    [
-        'animal_id' => 222,
-        'weight_range' => '0.1–0.5 г',
-        'height_range' => '0.6–1.2 см',
-        'lifespan' => '1–2 года',
-        'type' => 'Паук',
-        'photo' => 'animal/spider/breed/House_Spider.webp',
-        'short_description' => 'Самый частый сосед человека в домах.',
-        'full_description' => "Домовой паук плетет воронкообразные сети в углах. Безобиден для человека и помогает контролировать популяцию насекомых.",
-        'features' => ['Тип' => 'Воронковый', 'Среда' => 'Здания', 'Опасность' => 'Нет']
-    ],
-    [
-        'animal_id' => 223,
+         'features' =>['Порода' => 'Кун-кун', 'Темперамент' => 'Очень мирный', 'Особенность' => 'Кисточки на шее'
+             
+             
+                 ]],['animal_breed' => 'Паук-скакун',
         'weight_range' => '0.05–0.2 г',
         'height_range' => '0.5–1.5 см',
         'lifespan' => '1–3 года',
@@ -3606,10 +4809,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Jumping_Spider.webp',
         'short_description' => 'Любознательный паук с отличным зрением.',
         'full_description' => "Паук-скакун не плетет сетей, а охотится прыжками. Обладает самым острым зрением среди беспозвоночных.",
-        'features' => ['Тип' => 'Активный охотник', 'Зрение' => '8 глаз', 'Интеллект' => 'Высокий (для паука)']
-    ],
-    [
-        'animal_id' => 224,
+         'features' =>['Тип' => 'Активный охотник', 'Зрение' => '8 глаз', 'Интеллект' => 'Высокий (для паука)'
+             
+             
+                 ]],['animal_breed' => 'Крестовик',
         'weight_range' => '0.2–0.8 г',
         'height_range' => '1–2.5 см',
         'lifespan' => '1–2 года',
@@ -3617,10 +4820,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Orb_Weaver.webp',
         'short_description' => 'Мастер классических круговых сетей.',
         'full_description' => "Паук-крестовик узнаваем по характерному рисунку на брюшке. Его паутина — венец инженерного искусства природы.",
-        'features' => ['Тип' => 'Кругопряд', 'Сеть' => 'Радиальная', 'Узор' => 'Белый крест']
-    ],
-    [
-        'animal_id' => 225,
+         'features' =>['Тип' => 'Кругопряд', 'Сеть' => 'Радиальная', 'Узор' => 'Белый крест'
+             
+             
+                 ]],['animal_breed' => 'Черная вдова',
         'weight_range' => '0.5–1 г',
         'height_range' => '1–3.5 см',
         'lifespan' => '1–3 года',
@@ -3628,10 +4831,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Black_Widow.webp',
         'short_description' => 'Опасный хищник с красными «песочными часами».',
         'full_description' => "Черная вдова обладает сильным нейротоксичным ядом. Ведет скрытный образ жизни, предпочитая темные углы.",
-        'features' => ['Тип' => 'Тенетник', 'Яд' => 'Опасен', 'Метка' => 'Красный символ']
-    ],
-    [
-        'animal_id' => 226,
+         'features' =>['Тип' => 'Тенетник', 'Яд' => 'Опасен', 'Метка' => 'Красный символ'
+             
+             
+                 ]],['animal_breed' => 'Каракурт',
         'weight_range' => '0.5–1.2 г',
         'height_range' => '1–2 см',
         'lifespan' => '1–2 года',
@@ -3639,10 +4842,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Karakurt.webp',
         'short_description' => 'Степной вариант вдовы, крайне ядовит.',
         'full_description' => "Каракурт распространен в засушливых регионах. Черное тело часто украшено 13 красными пятнами.",
-        'features' => ['Тип' => 'Ядовитый', 'Регион' => 'Степи/Пустыни', 'Активность' => 'Ночная']
-    ],
-    [
-        'animal_id' => 227,
+         'features' =>['Тип' => 'Ядовитый', 'Регион' => 'Степи/Пустыни', 'Активность' => 'Ночная'
+             
+             
+                 ]],['animal_breed' => 'Паук-птицеед',
         'weight_range' => '50–150 г',
         'height_range' => '15–25 см (с лапами)',
         'lifespan' => '5–20 лет',
@@ -3650,10 +4853,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Tarantula.webp',
         'short_description' => 'Пушистый гигант среди пауков.',
         'full_description' => "Паук-птицеед популярен как экзотический питомец. Несмотря на грозный вид, многие виды обладают мирным нравом.",
-        'features' => ['Тип' => 'Терафозид', 'Размер' => 'Гигантский', 'Защита' => 'Стрекательные волоски']
-    ],
-    [
-        'animal_id' => 228,
+         'features' =>['Тип' => 'Терафозид', 'Размер' => 'Гигантский', 'Защита' => 'Стрекательные волоски'
+             
+             
+                 ]],['animal_breed' => 'Волковый паук',
         'weight_range' => '0.5–1.5 г',
         'height_range' => '1–3 см',
         'lifespan' => '1–3 года',
@@ -3661,10 +4864,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Wolf_Spider.webp',
         'short_description' => 'Бродячий охотник, не знающий сетей.',
         'full_description' => "Волковый паук полагается на скорость и силу. Самки — заботливые матери, носящие кокон и паучат на себе.",
-        'features' => ['Тип' => 'Бродячий', 'Охота' => 'Засада/Преследование', 'Забота' => 'Высокая']
-    ],
-    [
-        'animal_id' => 229,
+         'features' =>['Тип' => 'Бродячий', 'Охота' => 'Засада/Преследование', 'Забота' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Паук-лучник',
         'weight_range' => '0.1–0.3 г',
         'height_range' => '0.5–1.2 см',
         'lifespan' => '1 год',
@@ -3672,10 +4875,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Lynx_Spider.webp',
         'short_description' => 'Ловкий охотник, обитающий на растениях.',
         'full_description' => "Паук-лучник (или паук-рысь) умеет быстро бегать по листьям и совершать точные прыжки на добычу.",
-        'features' => ['Тип' => 'Растительный', 'Окрас' => 'Маскировочный', 'Активность' => 'Дневная']
-    ],
-    [
-        'animal_id' => 230,
+         'features' =>['Тип' => 'Растительный', 'Окрас' => 'Маскировочный', 'Активность' => 'Дневная'
+             
+             
+                 ]],['animal_breed' => 'Паук-листоверт',
         'weight_range' => '0.05–0.15 г',
         'height_range' => '0.4–1 см',
         'lifespan' => '1 год',
@@ -3683,10 +4886,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Leaf_Roller.webp',
         'short_description' => 'Строитель домиков из свернутых листьев.',
         'full_description' => "Паук-листоверт сворачивает лист растения при помощи паутины, создавая надежное убежище от хищников.",
-        'features' => ['Тип' => 'Скрытный', 'Дом' => 'Свернутый лист', 'Сеть' => 'Ловчая рядом с домом']
-    ],
-    [
-        'animal_id' => 231,
+         'features' =>['Тип' => 'Скрытный', 'Дом' => 'Свернутый лист', 'Сеть' => 'Ловчая рядом с домом'
+             
+             
+                 ]],['animal_breed' => 'Паук-сенокосец',
         'weight_range' => '0.01–0.1 г',
         'height_range' => '0.3–1 см (тело)',
         'lifespan' => '1 год',
@@ -3694,10 +4897,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Daddy_Long_Legs.webp',
         'short_description' => 'Паук с невероятно длинными и тонкими ногами.',
         'full_description' => "Паук-сенокосец (фолькус) часто встречается в домах. При опасности начинает быстро вибрировать в паутине.",
-        'features' => ['Тип' => 'Длинноногий', 'Защита' => 'Вибрация', 'Среда' => 'Затененные места']
-    ],
-    [
-        'animal_id' => 232,
+         'features' =>['Тип' => 'Длинноногий', 'Защита' => 'Вибрация', 'Среда' => 'Затененные места'
+             
+             
+                 ]],['animal_breed' => 'Паук-тетрагната',
         'weight_range' => '0.05–0.2 г',
         'height_range' => '0.6–1.5 см',
         'lifespan' => '1 год',
@@ -3705,10 +4908,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Tetragnatha.webp',
         'short_description' => 'Тонкий паук, живущий у воды.',
         'full_description' => "Паук-тетрагната имеет вытянутое тело и очень длинные челюсти. В покое вытягивается вдоль травинки, становясь незаметным.",
-        'features' => ['Тип' => 'Вытянутый', 'Среда' => 'Берега водоемов', 'Маскировка' => 'Отличная']
-    ],
-    [
-        'animal_id' => 233,
+         'features' =>['Тип' => 'Вытянутый', 'Среда' => 'Берега водоемов', 'Маскировка' => 'Отличная'
+             
+             
+                 ]],['animal_breed' => 'Паук-тенетник',
         'weight_range' => '0.1–0.4 г',
         'height_range' => '0.5–1 см',
         'lifespan' => '1–2 года',
@@ -3716,10 +4919,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Cobweb_Spider.webp',
         'short_description' => 'Создатель хаотичных, запутанных сетей.',
         'full_description' => "Паук-тенетник плетет не ровные круги, а беспорядочные нити. К этому семейству относятся многие домашние пауки.",
-        'features' => ['Тип' => 'Тенетный', 'Сеть' => 'Хаотичная', 'Тело' => 'Округлое']
-    ],
-    [
-        'animal_id' => 234,
+         'features' =>['Тип' => 'Тенетный', 'Сеть' => 'Хаотичная', 'Тело' => 'Округлое'
+             
+             
+                 ]],['animal_breed' => 'Паук-амауробиус',
         'weight_range' => '0.2–0.6 г',
         'height_range' => '0.8–1.5 см',
         'lifespan' => '2 года',
@@ -3727,10 +4930,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Amaurobius.webp',
         'short_description' => 'Паук, предпочитающий трещины в камнях и коре.',
         'full_description' => "Паук-амауробиус плетет кружевную паутину вокруг своего убежища. Ведет ночной образ жизни.",
-        'features' => ['Тип' => 'Кружевник', 'Активность' => 'Ночная', 'Среда' => 'Кора/Камни']
-    ],
-    [
-        'animal_id' => 235,
+         'features' =>['Тип' => 'Кружевник', 'Активность' => 'Ночная', 'Среда' => 'Кора/Камни'
+             
+             
+                 ]],['animal_breed' => 'Паук-домовик',
         'weight_range' => '0.1–0.4 г',
         'height_range' => '0.6–1.1 см',
         'lifespan' => '1–2 года',
@@ -3738,10 +4941,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Tegenaria.webp',
         'short_description' => 'Быстрый паук, часто попадающий в раковины и ванны.',
         'full_description' => "Паук-домовик (Tegenaria) — один из самых быстрых бегунов среди пауков. Часто пугает людей своими размерами и скоростью.",
-        'features' => ['Тип' => 'Воронковый', 'Скорость' => 'Очень высокая', 'Опасность' => 'Нет']
-    ],
-    [
-        'animal_id' => 236,
+         'features' =>['Тип' => 'Воронковый', 'Скорость' => 'Очень высокая', 'Опасность' => 'Нет'
+             
+             
+                 ]],['animal_breed' => 'Паук-листолаз',
         'weight_range' => '0.1–0.3 г',
         'height_range' => '0.5–1.2 см',
         'lifespan' => '1 год',
@@ -3749,10 +4952,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Anyphaenidae.webp',
         'short_description' => 'Паук, активно перемещающийся по листве.',
         'full_description' => "Паук-листолаз не строит постоянных сетей. Его можно узнать по характерному быстрому бегу по верхушкам растений.",
-        'features' => ['Тип' => 'Активный', 'Среда' => 'Кустарники', 'Охота' => 'Поиск']
-    ],
-    [
-        'animal_id' => 237,
+         'features' =>['Тип' => 'Активный', 'Среда' => 'Кустарники', 'Охота' => 'Поиск'
+             
+             
+                 ]],['animal_breed' => 'Паук-рыболов',
         'weight_range' => '1–2.5 г',
         'height_range' => '1.5–2.5 см',
         'lifespan' => '2 года',
@@ -3760,10 +4963,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Fishing_Spider.webp',
         'short_description' => 'Охотник, способный бегать по воде.',
         'full_description' => "Паук-рыболов охотится на головастиков и мелкую рыбешку, удерживаясь на поверхности воды за счет натяжения.",
-        'features' => ['Тип' => 'Полуводный', 'Рацион' => 'Мелкая рыба/Насекомые', 'Навык' => 'Хождение по воде']
-    ],
-    [
-        'animal_id' => 238,
+         'features' =>['Тип' => 'Полуводный', 'Рацион' => 'Мелкая рыба/Насекомые', 'Навык' => 'Хождение по воде'
+             
+             
+                 ]],['animal_breed' => 'Паук-незабудка',
         'weight_range' => '0.05–0.1 г',
         'height_range' => '0.4–0.8 см',
         'lifespan' => '1 год',
@@ -3771,10 +4974,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Forget_Me_Not_Spider.webp',
         'short_description' => 'Маленький паук с яркими цветовыми акцентами.',
         'full_description' => "Паук-незабудка назван так за свой необычный окрас, помогающий ему прятаться среди весенних цветов.",
-        'features' => ['Тип' => 'Цветочный', 'Окрас' => 'Яркий', 'Размер' => 'Крошечный']
-    ],
-    [
-        'animal_id' => 239,
+         'features' =>['Тип' => 'Цветочный', 'Окрас' => 'Яркий', 'Размер' => 'Крошечный'
+             
+             
+                 ]],['animal_breed' => 'Паук-трубковик',
         'weight_range' => '0.1–0.5 г',
         'height_range' => '0.7–1.4 см',
         'lifespan' => '1–2 года',
@@ -3782,10 +4985,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Tube_Web_Spider.webp',
         'short_description' => 'Строитель длинных шелковых трубок.',
         'full_description' => "Паук-трубковик живет в цилиндрических сетях, спрятанных в стенах или дуплах, выбегая наружу только за добычей.",
-        'features' => ['Тип' => 'Трубковый', 'Дом' => 'Шелковый туннель', 'Охота' => 'Вибрационная']
-    ],
-    [
-        'animal_id' => 240,
+         'features' =>['Тип' => 'Трубковый', 'Дом' => 'Шелковый туннель', 'Охота' => 'Вибрационная'
+             
+             
+                 ]],['animal_breed' => 'Паук-пещерник',
         'weight_range' => '0.2–0.7 г',
         'height_range' => '1–1.8 см',
         'lifespan' => '2–4 года',
@@ -3793,10 +4996,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Cave_Spider.webp',
         'short_description' => 'Житель вечной тьмы подземелий.',
         'full_description' => "Паук-пещерник адаптирован к жизни в пещерах и подвалах. Часто обладает бледным окрасом и редуцированным зрением.",
-        'features' => ['Тип' => 'Троглофил', 'Среда' => 'Гроты/Пещеры', 'Свет' => 'Боится']
-    ],
-[
-    'animal_id' => 240,
+         'features' =>['Тип' => 'Троглофил', 'Среда' => 'Гроты/Пещеры', 'Свет' => 'Боится'
+             
+             
+                 ]],['animal_breed' => 'Паук-пещерник',
     'weight_range' => '5–15 г',
     'height_range' => '5–8 см',
     'lifespan' => '3–8 лет',
@@ -3804,17 +5007,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Cave_spider.webp',
     'short_description' => 'Паук, обитающий в тёмных и влажных местах.',
     'full_description' => "Паук-пещерник предпочитает укромные и тёмные места. \n\nОбладает хорошей адаптацией к жизни без света.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Живёт в темноте'
-    ]
-],
-
-[
-    'animal_id' => 241,
+             
+             
+                 ]],['animal_breed' => 'Паук-златоглаз',
     'weight_range' => '10–25 г',
     'height_range' => '6–10 см',
     'lifespan' => '5–10 лет',
@@ -3822,17 +5023,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Golden_eye_spider.webp',
     'short_description' => 'Паук с яркими глазами и активным поведением.',
     'full_description' => "Паук-златоглаз — отличается яркими глазами. \n\nАктивный охотник, реагирует на движение.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Яркие глаза'
-    ]
-],
-
-[
-    'animal_id' => 242,
+             
+             
+                 ]],['animal_breed' => 'Паук-воронок',
     'weight_range' => '2–5 г',
     'height_range' => '3–6 см',
     'lifespan' => '1–3 года',
@@ -3840,17 +5039,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Wolf_spider.webp',
     'short_description' => 'Быстрый паук-охотник.',
     'full_description' => "Паук-воронок (волчий паук) — активный хищник. \n\nНе плетёт сеть, а охотится напрямую.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Охотится без сети'
-    ]
-],
-
-[
-    'animal_id' => 243,
+             
+             
+                 ]],['animal_breed' => 'Паук-паутинщик',
     'weight_range' => '1–3 г',
     'height_range' => '2–4 см',
     'lifespan' => '1–2 года',
@@ -3858,17 +5055,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Net_spider.webp',
     'short_description' => 'Паук, плетущий сложные сети.',
     'full_description' => "Паук-паутинщик — известен своими сложными сетями. \n\nЛовит добычу с помощью паутины.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Плетёт сети'
-    ]
-],
-
-[
-    'animal_id' => 244,
+             
+             
+                 ]],['animal_breed' => 'Паук-мечник',
     'weight_range' => '50–150 г',
     'height_range' => '10–20 см',
     'lifespan' => '10–20 лет',
@@ -3876,17 +5071,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Tarantula.webp',
     'short_description' => 'Крупный и волосатый паук.',
     'full_description' => "Паук-мечник (тарантул) — популярен как экзотический питомец. \n\nОбладает спокойным характером.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Крупный размер'
-    ]
-],
-
-[
-    'animal_id' => 245,
+             
+             
+                 ]],['animal_breed' => 'Паук-сенокосец',
     'weight_range' => '2–6 г',
     'height_range' => '3–5 см',
     'lifespan' => '2–4 года',
@@ -3894,17 +5087,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Harvestman_spider.webp',
     'short_description' => 'Паук с длинными тонкими ногами.',
     'full_description' => "Паук-сенокосец — известен своими длинными ногами. \n\nПредпочитает влажные места.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Длинные ноги'
-    ]
-],
-
-[
-    'animal_id' => 246,
+             
+             
+                 ]],['animal_breed' => 'Паук-бродяга',
     'weight_range' => '3–8 г',
     'height_range' => '4–7 см',
     'lifespan' => '2–5 лет',
@@ -3912,17 +5103,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Bearded_spider.webp',
     'short_description' => 'Паук с характерным внешним видом.',
     'full_description' => "Паук-бородяга — отличается необычной внешностью. \n\nВедёт скрытный образ жизни.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Скрытный'
-    ]
-],
-
-[
-    'animal_id' => 247,
+             
+             
+                 ]],['animal_breed' => 'Паук-серебрянка',
     'weight_range' => '1–4 г',
     'height_range' => '2–5 см',
     'lifespan' => '1–3 года',
@@ -3930,17 +5119,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Silver_spider.webp',
     'short_description' => 'Небольшой паук с серебристым оттенком.',
     'full_description' => "Паук-серебрянка — известен своим блеском. \n\nМожет жить вблизи воды.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Серебристый цвет'
-    ]
-],
-
-[
-    'animal_id' => 248,
+             
+             
+                 ]],['animal_breed' => 'Паук-линифиид',
     'weight_range' => '5–12 г',
     'height_range' => '5–9 см',
     'lifespan' => '3–6 лет',
@@ -3948,17 +5135,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Linyphiid_spider.webp',
     'short_description' => 'Паук, плетущий плотные сети.',
     'full_description' => "Паук-линифиид — мелкий, но активный. \n\nПлетёт плотные паутины.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Плотная паутина'
-    ]
-],
-
-[
-    'animal_id' => 249,
+             
+             
+                 ]],['animal_breed' => 'Паук-мисмена',
     'weight_range' => '3–7 г',
     'height_range' => '4–8 см',
     'lifespan' => '2–5 лет',
@@ -3966,17 +5151,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Mysmena_spider.webp',
     'short_description' => 'Миниатюрный паук с необычной формой тела.',
     'full_description' => "Паук-мисмена — редкий и маленький вид. \n\nОбладает необычным строением тела.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Редкий вид'
-    ]
-],
-
-[
-    'animal_id' => 250,
+             
+             
+                 ]],['animal_breed' => 'Паук-ханиида',
     'weight_range' => '4–10 г',
     'height_range' => '5–9 см',
     'lifespan' => '3–7 лет',
@@ -3984,16 +5167,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/spider/breed/Hahniidae_spider.webp',
     'short_description' => 'Небольшой паук с быстрыми реакциями.',
     'full_description' => "Паук-ханнида — активный и быстрый. \n\nОбитает в траве и на почве.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Паукообразное',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Быстрая реакция'
-    ]
-],
-    [
-        'animal_id' => 251,
+             
+             
+                 ]],['animal_breed' => 'Паук-диктин',
         'weight_range' => '0.05–0.15 г',
         'height_range' => '0.3–0.6 см',
         'lifespan' => '1 год',
@@ -4001,12 +5183,13 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/spider/breed/Dictyna.webp',
         'short_description' => 'Маленький сетчатый паук, плетущий ловчие сети на верхушках растений.',
         'full_description' => "Паук-диктин строит небольшие, но очень прочные сетчатые ловушки на сухих стеблях или листьях. Встречается повсеместно в садах и на лугах.",
-        'features' => ['Тип' => 'Сетчатый', 'Среда' => 'Травянистые растения', 'Размер' => 'Миниатюрный']
-    ],
-
+         'features' =>['Тип' => 'Сетчатый', 'Среда' => 'Травянистые растения', 'Размер' => 'Миниатюрный' 
+     
+ 
     // --- СУСЛИКИ (252-262) ---
-    [
-        'animal_id' => 252,
+             
+             
+                 ]],['animal_breed' => 'Европейский суслик',
         'weight_range' => '200–450 г',
         'height_range' => '18–24 см',
         'lifespan' => '4–6 лет',
@@ -4014,10 +5197,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/European.webp',
         'short_description' => 'Типичный обитатель равнин Центральной и Восточной Европы.',
         'full_description' => "Европейский суслик ведет колониальный образ жизни. Отличается ровным желтовато-серым окрасом без выраженных пятен.",
-        'features' => ['Вид' => 'Европейский', 'Образ жизни' => 'Дневной', 'Спячка' => 'Длительная']
-    ],
-    [
-        'animal_id' => 253,
+         'features' =>['Вид' => 'Европейский', 'Образ жизни' => 'Дневной', 'Спячка' => 'Длительная'
+             
+             
+                 ]],['animal_breed' => 'Жёлтый суслик',
         'weight_range' => '300–900 г',
         'height_range' => '23–38 см',
         'lifespan' => '5–7 лет',
@@ -4025,10 +5208,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Yellow.webp',
         'short_description' => 'Самый крупный представитель рода сусликов.',
         'full_description' => "Жёлтый суслик (или песчаник) обитает в пустынях и полупустынях. Имеет однотонный песчано-желтый окрас, помогающий маскироваться.",
-        'features' => ['Вид' => 'Жёлтый', 'Размер' => 'Крупный', 'Среда' => 'Песчаные почвы']
-    ],
-    [
-        'animal_id' => 254,
+         'features' =>['Вид' => 'Жёлтый', 'Размер' => 'Крупный', 'Среда' => 'Песчаные почвы'
+             
+             
+                 ]],['animal_breed' => 'Крапчатый суслик',
         'weight_range' => '180–300 г',
         'height_range' => '17–22 см',
         'lifespan' => '4–5 лет',
@@ -4036,10 +5219,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Speckled.webp',
         'short_description' => 'Суслик с нарядным пятнистым узором на спине.',
         'full_description' => "Крапчатый суслик легко узнаваем по четким беловатым пятнам на темном фоне спины. Обитает в степях и на окраинах полей.",
-        'features' => ['Вид' => 'Крапчатый', 'Узор' => 'Пятнистый', 'Статус' => 'Редкий вид']
-    ],
-    [
-        'animal_id' => 255,
+         'features' =>['Вид' => 'Крапчатый', 'Узор' => 'Пятнистый', 'Статус' => 'Редкий вид'
+             
+             
+                 ]],['animal_breed' => 'Горный суслик',
         'weight_range' => '250–500 г',
         'height_range' => '20–28 см',
         'lifespan' => '5–6 лет',
@@ -4047,10 +5230,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Mountain.webp',
         'short_description' => 'Житель высокогорных лугов Кавказа.',
         'full_description' => "Горный суслик приспособлен к жизни на высоте до 3000 метров. Питается альпийским разнотравьем и строит глубокие норы.",
-        'features' => ['Вид' => 'Горный', 'Регион' => 'Кавказ', 'Выносливость' => 'Высокая']
-    ],
-    [
-        'animal_id' => 256,
+         'features' =>['Вид' => 'Горный', 'Регион' => 'Кавказ', 'Выносливость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Даурский суслик',
         'weight_range' => '150–250 г',
         'height_range' => '15–20 см',
         'lifespan' => '3–5 лет',
@@ -4058,10 +5241,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Daurian.webp',
         'short_description' => 'Небольшой суслик из степей Забайкалья и Монголии.',
         'full_description' => "Даурский суслик отличается светлым хвостом с темным кончиком. Активен с весны до конца лета.",
-        'features' => ['Вид' => 'Даурский', 'Регион' => 'Сибирь/Монголия', 'Активность' => 'Дневная']
-    ],
-    [
-        'animal_id' => 257,
+         'features' =>['Вид' => 'Даурский', 'Регион' => 'Сибирь/Монголия', 'Активность' => 'Дневная'
+             
+             
+                 ]],['animal_breed' => 'Краснощёкий суслик',
         'weight_range' => '200–400 г',
         'height_range' => '20–25 см',
         'lifespan' => '4–5 лет',
@@ -4069,10 +5252,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Red_Cheeked.webp',
         'short_description' => 'Суслик с характерными рыжими пятнами на щеках.',
         'full_description' => "Краснощёкий суслик обитает в равнинных степях. Главный признак — яркие каштаново-рыжие пятна под глазами.",
-        'features' => ['Вид' => 'Краснощёкий', 'Особенность' => 'Яркие щеки', 'Среда' => 'Степи']
-    ],
-    [
-        'animal_id' => 258,
+         'features' =>['Вид' => 'Краснощёкий', 'Особенность' => 'Яркие щеки', 'Среда' => 'Степи'
+             
+             
+                 ]],['animal_breed' => 'Большой суслик',
         'weight_range' => '400–800 г',
         'height_range' => '25–35 см',
         'lifespan' => '5–6 лет',
@@ -4080,10 +5263,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Great.webp',
         'short_description' => 'Массивный суслик, предпочитающий целинные степи.',
         'full_description' => "Большой суслик имеет рыжеватый окрас с легкой рябью. Занимает промежуточное положение по размеру между жёлтым и европейским.",
-        'features' => ['Вид' => 'Большой', 'Телосложение' => 'Плотное', 'Среда' => 'Разнотравные степи']
-    ],
-    [
-        'animal_id' => 259,
+         'features' =>['Вид' => 'Большой', 'Телосложение' => 'Плотное', 'Среда' => 'Разнотравные степи'
+             
+             
+                 ]],['animal_breed' => 'Малый суслик',
         'weight_range' => '100–250 г',
         'height_range' => '17–22 см',
         'lifespan' => '3–5 лет',
@@ -4091,10 +5274,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Little.webp',
         'short_description' => 'Мелкий вид, обитающий в сухих степях и полупустынях.',
         'full_description' => "Малый суслик отличается скромными размерами и тусклым серо-землистым окрасом, помогающим сливаться с почвой.",
-        'features' => ['Вид' => 'Малый', 'Размер' => 'Компактный', 'Спячка' => 'Может впадать летом']
-    ],
-    [
-        'animal_id' => 260,
+         'features' =>['Вид' => 'Малый', 'Размер' => 'Компактный', 'Спячка' => 'Может впадать летом'
+             
+             
+                 ]],['animal_breed' => 'Реликтовый суслик',
         'weight_range' => '250–400 г',
         'height_range' => '20–25 см',
         'lifespan' => '4–6 лет',
@@ -4102,10 +5285,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Relict.webp',
         'short_description' => 'Древний вид, сохранившийся в горах Тянь-Шаня.',
         'full_description' => "Реликтовый суслик — изолированный вид, обитающий в высокогорье. Важное звено в экосистеме горных лугов.",
-        'features' => ['Вид' => 'Реликтовый', 'Статус' => 'Эндемик', 'Среда' => 'Высокогорье']
-    ],
-    [
-        'animal_id' => 261,
+         'features' =>['Вид' => 'Реликтовый', 'Статус' => 'Эндемик', 'Среда' => 'Высокогорье'
+             
+             
+                 ]],['animal_breed' => 'Алашанский суслик',
         'weight_range' => '150–220 г',
         'height_range' => '18–21 см',
         'lifespan' => '4 года',
@@ -4113,10 +5296,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Alashan.webp',
         'short_description' => 'Редкий суслик из пустынных районов Китая и Монголии.',
         'full_description' => "Алашанский суслик приспособлен к крайне засушливому климату пустыни Алашань. Имеет очень светлый мех.",
-        'features' => ['Вид' => 'Алашанский', 'Регион' => 'Пустыня Гоби', 'Размер' => 'Мелкий']
-    ],
-    [
-        'animal_id' => 262,
+         'features' =>['Вид' => 'Алашанский', 'Регион' => 'Пустыня Гоби', 'Размер' => 'Мелкий'
+             
+             
+                 ]],['animal_breed' => 'Малоазиатский суслик',
         'weight_range' => '180–300 г',
         'height_range' => '19–23 см',
         'lifespan' => '4–5 лет',
@@ -4124,12 +5307,13 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/gopher/breed/Asia_Minor.webp',
         'short_description' => 'Вид, распространенный в Турции и на Кавказе.',
         'full_description' => "Малоазиатский суслик внешне схож с европейским, но отличается генетически и деталями строения черепа.",
-        'features' => ['Вид' => 'Малоазиатский', 'Регион' => 'Передняя Азия', 'Окрас' => 'Однотонный']
-    ],
-
+         'features' =>['Вид' => 'Малоазиатский', 'Регион' => 'Передняя Азия', 'Окрас' => 'Однотонный' 
+             
+ 
     // --- ХОМЯКИ (263-270) ---
-    [
-        'animal_id' => 263,
+             
+             
+                 ]],['animal_breed' => 'Сирийский',
         'weight_range' => '100–150 г',
         'height_range' => '13–18 см',
         'lifespan' => '2–3 года',
@@ -4137,10 +5321,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/hamster/breed/Syrian.webp',
         'short_description' => 'Классический домашний хомяк, часто называемый «золотистым».',
         'full_description' => "Сирийский хомяк — самый популярный вид для домашнего содержания. Одиночка по натуре, очень территориален.",
-        'features' => ['Тип' => 'Крупный', 'Характер' => 'Одиночный', 'Окрас' => 'Множество вариаций']
-    ],
-    [
-        'animal_id' => 264,
+         'features' =>['Тип' => 'Крупный', 'Характер' => 'Одиночный', 'Окрас' => 'Множество вариаций'
+             
+             
+                 ]],['animal_breed' => 'Хомячок Кэмпбелла',
         'weight_range' => '30–50 г',
         'height_range' => '8–10 см',
         'lifespan' => '1.5–2.5 года',
@@ -4148,10 +5332,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/hamster/breed/Campbells.webp',
         'short_description' => 'Карликовый хомяк с характерной темной полосой на спине.',
         'full_description' => "Хомячок Кэмпбелла внешне похож на джунгарского, но имеет более широкую мордочку и склонен к диабету.",
-        'features' => ['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Особенность' => 'Полоса на спине']
-    ],
-    [
-        'animal_id' => 265,
+         'features' =>['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Особенность' => 'Полоса на спине'
+             
+             
+                 ]],['animal_breed' => 'Джунгарский хомячок',
         'weight_range' => '35–65 г',
         'height_range' => '7–10 см',
         'lifespan' => '2 года',
@@ -4159,10 +5343,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/hamster/breed/Dzungarian.webp',
         'short_description' => 'Миниатюрный хомячок, способный менять окрас зимой.',
         'full_description' => "Джунгарский хомячок — очень общительный и популярный питомец. Зимой его мех может заметно светлеть.",
-        'features' => ['Тип' => 'Карликовый', 'Окрас' => 'Серый с полосой', 'Популярность' => 'Высокая']
-    ],
-    [
-        'animal_id' => 266,
+         'features' =>['Тип' => 'Карликовый', 'Окрас' => 'Серый с полосой', 'Популярность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Хомячок Роборовского',
         'weight_range' => '20–30 г',
         'height_range' => '4–5 см',
         'lifespan' => '3–3.5 года',
@@ -4170,10 +5354,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/hamster/breed/Roborovski.webp',
         'short_description' => 'Самый маленький и быстрый среди домашних хомяков.',
         'full_description' => "Хомячок Роборовского отличается крошечным размером и отсутствием полосы на спине. Очень энергичен и пуглив.",
-        'features' => ['Тип' => 'Микро', 'Скорость' => 'Очень высокая', 'Вид' => 'Социальный (иногда)']
-    ],
-    [
-        'animal_id' => 267,
+         'features' =>['Тип' => 'Микро', 'Скорость' => 'Очень высокая', 'Вид' => 'Социальный (иногда)'
+             
+             
+                 ]],['animal_breed' => 'Кэмпбелла',
         'weight_range' => '30–50 г',
         'height_range' => '8–10 см',
         'lifespan' => '2 года',
@@ -4181,10 +5365,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rodent/breed/Campbells_Generic.webp',
         'short_description' => 'Общее описание грызуна вида Кэмпбелла.',
         'full_description' => "Представитель семейства хомяковых, выделенный в общую категорию грызунов для классификации.",
-        'features' => ['Группа' => 'Мелкие грызуны', 'Питание' => 'Зерноядные']
-    ],
-    [
-        'animal_id' => 268,
+         'features' =>['Группа' => 'Мелкие грызуны', 'Питание' => 'Зерноядные'
+             
+             
+                 ]],['animal_breed' => 'Китайский хомячок',
         'weight_range' => '40–50 г',
         'height_range' => '9–12 см',
         'lifespan' => '2–3 года',
@@ -4192,10 +5376,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/hamster/breed/Chinese.webp',
         'short_description' => 'Хомяк с необычно длинным для этого семейства хвостом.',
         'full_description' => "Китайский хомячок больше напоминает мышь из-за формы тела и хвоста. Умеет хорошо лазать.",
-        'features' => ['Тип' => 'Крысовидный', 'Хвост' => 'Удлиненный', 'Ловкость' => 'Высокая']
-    ],
-    [
-        'animal_id' => 269,
+         'features' =>['Тип' => 'Крысовидный', 'Хвост' => 'Удлиненный', 'Ловкость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Сирийский хомяк',
         'weight_range' => '100–150 г',
         'height_range' => '13–18 см',
         'lifespan' => '2–3 года',
@@ -4203,10 +5387,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rodent/breed/Syrian_Generic.webp',
         'short_description' => 'Сирийский хомяк в общей классификации грызунов.',
         'full_description' => "Запись дублирует вид для расширенной фильтрации в категории «Грызуны».",
-        'features' => ['Группа' => 'Средние грызуны', 'Статус' => 'Домашний']
-    ],
-    [
-        'animal_id' => 270,
+         'features' =>['Группа' => 'Средние грызуны', 'Статус' => 'Домашний'
+             
+             
+                 ]],['animal_breed' => 'Джунгарский хомячок',
         'weight_range' => '35–65 г',
         'height_range' => '7–10 см',
         'lifespan' => '2 года',
@@ -4214,10 +5398,10 @@ class AnimalDetailsSeeder extends Seeder
         'photo' => 'animal/rodent/breed/Dzungarian_Generic.webp',
         'short_description' => 'Джунгарский хомяк в общей классификации грызунов.',
         'full_description' => "Запись дублирует вид для расширенной фильтрации в категории «Грызуны».",
-        'features' => ['Группа' => 'Мелкие грызуны', 'Среда' => 'Степи']
-    ],
-    [
-    'animal_id' => 271,
+         'features' =>['Группа' => 'Мелкие грызуны', 'Среда' => 'Степи'
+             
+             
+                 ]],['animal_breed' => 'Роборовский хомячок',
     'weight_range' => '20–30 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–3 года',
@@ -4225,17 +5409,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Roborovski_hamster.webp',
     'short_description' => 'Очень маленький и быстрый хомяк.',
     'full_description' => "Хомячок Роборовского — самый маленький вид домашних хомяков. \n\nОчень активный и плохо приручается.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Очень быстрый'
-    ]
-],
-
-[
-    'animal_id' => 272,
+             
+             
+                 ]],['animal_breed' => 'Китайский хомячок',
     'weight_range' => '30–50 г',
     'height_range' => '6–10 см',
     'lifespan' => '2–3 года',
@@ -4243,17 +5425,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Chinese_hamster.webp',
     'short_description' => 'Стройный хомяк с длинным телом.',
     'full_description' => "Китайский хомяк отличается вытянутым телом. \n\nСпокойнее других видов и легче приручается.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Длинное тело'
-    ]
-],
-
-[
-    'animal_id' => 273,
+             
+             
+                 ]],['animal_breed' => 'Дегу',
     'weight_range' => '200–300 г',
     'height_range' => '20–25 см',
     'lifespan' => '5–8 лет',
@@ -4261,17 +5441,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Degu.webp',
     'short_description' => 'Социальный и умный грызун.',
     'full_description' => "Дегу — очень общительный грызун. \n\nЛучше содержать в паре или группе.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Высокая',
         'Особенности' => 'Живёт группами'
-    ]
-],
-
-[
-    'animal_id' => 274,
+             
+             
+                 ]],['animal_breed' => 'Шиншилла',
     'weight_range' => '400–700 г',
     'height_range' => '25–35 см',
     'lifespan' => '10–15 лет',
@@ -4279,17 +5457,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Chinchilla.webp',
     'short_description' => 'Грызун с очень мягким мехом.',
     'full_description' => "Шиншилла — известна своим густым мехом. \n\nТребует особого ухода и песочных ванн.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Очень мягкий мех'
-    ]
-],
-
-[
-    'animal_id' => 275,
+             
+             
+                 ]],['animal_breed' => 'Морская свинка',
     'weight_range' => '700–1200 г',
     'height_range' => '20–25 см',
     'lifespan' => '5–8 лет',
@@ -4297,17 +5473,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Guinea_pig.webp',
     'short_description' => 'Дружелюбный и спокойный грызун.',
     'full_description' => "Морская свинка — популярный домашний питомец. \n\nЛюбит общение и заботу.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Средняя',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Любит общение'
-    ]
-],
-
-[
-    'animal_id' => 276,
+             
+             
+                 ]],['animal_breed' => 'Декоративная крыса',
     'weight_range' => '250–500 г',
     'height_range' => '20–25 см',
     'lifespan' => '2–3 года',
@@ -4315,17 +5489,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Fancy_rat.webp',
     'short_description' => 'Умный и легко обучаемый грызун.',
     'full_description' => "Декоративная крыса — очень умное животное. \n\nЛегко обучается и привязывается к человеку.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Очень высокая',
         'Особенности' => 'Высокий интеллект'
-    ]
-],
-
-[
-    'animal_id' => 277,
+             
+             
+                 ]],['animal_breed' => 'Декоративная мышь',
     'weight_range' => '20–40 г',
     'height_range' => '7–10 см',
     'lifespan' => '1–2 года',
@@ -4333,17 +5505,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Fancy_mouse.webp',
     'short_description' => 'Маленький и подвижный грызун.',
     'full_description' => "Декоративная мышь — активный и любознательный питомец. \n\nЛегко содержится в домашних условиях.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Очень подвижная'
-    ]
-],
-
-[
-    'animal_id' => 278,
+             
+             
+                 ]],['animal_breed' => 'Песчанка',
     'weight_range' => '50–100 г',
     'height_range' => '10–15 см',
     'lifespan' => '2–4 года',
@@ -4351,17 +5521,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Gerbil.webp',
     'short_description' => 'Активный грызун, любящий копать.',
     'full_description' => "Песчанка — социальное животное. \n\nЛюбит рыть норы и жить в группах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Домашняя',
         'Линька' => 'Низкая',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Любит копать'
-    ]
-],
-
-[
-    'animal_id' => 279,
+             
+             
+                 ]],['animal_breed' => 'Тушканчик',
     'weight_range' => '80–150 г',
     'height_range' => '15–20 см',
     'lifespan' => '2–4 года',
@@ -4369,17 +5537,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Jerboa.webp',
     'short_description' => 'Грызун с длинными задними лапами.',
     'full_description' => "Тушканчик — обитатель пустынь. \n\nПередвигается прыжками.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Дикая',
         'Линька' => 'Низкая',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Прыгает как кенгуру'
-    ]
-],
-
-[
-    'animal_id' => 280,
+             
+             
+                 ]],['animal_breed' => 'Бурундук',
     'weight_range' => '50–150 г',
     'height_range' => '15–18 см',
     'lifespan' => '3–6 лет',
@@ -4387,17 +5553,19 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Chipmunk.webp',
     'short_description' => 'Небольшой полосатый грызун.',
     'full_description' => "Бурундук — активный и запасливый зверёк. \n\nСобирает пищу и хранит её в норах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Дикая',
         'Линька' => 'Средняя',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Низкая',
         'Особенности' => 'Делает запасы'
-    ]
-],
-// --- ГРЫЗУНЫ (281-287) ---
-[
-    'animal_id' => 281,
+     
+     
+ 
+// --- ГРЫЗУНЫ  ---
+             
+             
+                 ]],['animal_breed' => 'Соня',
     'weight_range' => '150–200 г',
     'height_range' => '10–15 см',
     'lifespan' => '3–5 лет',
@@ -4405,10 +5573,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Dormouse.webp',
     'short_description' => 'Небольшой зверек с пушистым хвостом, активный ночью.',
     'full_description' => "Соня — это древесный грызун, внешне напоминающий миниатюрную белку. Большую часть зимы проводит в глубокой спячке.",
-    'features' => ['Вид' => 'Соня', 'Активность' => 'Ночная', 'Особенность' => 'Пушистый хвост']
-],
-[
-    'animal_id' => 282,
+     'features' =>['Вид' => 'Соня', 'Активность' => 'Ночная', 'Особенность' => 'Пушистый хвост'
+             
+             
+                 ]],['animal_breed' => 'Гамбийская крыса (кролик-крыса)',
     'weight_range' => '1–1.5 кг',
     'height_range' => '25–45 см',
     'lifespan' => '5–7 лет',
@@ -4416,10 +5584,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Gambian_Rat.webp',
     'short_description' => 'Огромная крыса, известная своим феноменальным нюхом.',
     'full_description' => "Гамбийская хомяковая крыса — один из крупнейших грызунов в мире. Обладают высоким интеллектом и поддаются дрессировке.",
-    'features' => ['Вид' => 'Гамбийская крыса', 'Размер' => 'Очень крупный', 'Интеллект' => 'Высокий']
-],
-[
-    'animal_id' => 283,
+     'features' =>['Вид' => 'Гамбийская крыса', 'Размер' => 'Очень крупный', 'Интеллект' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Африканский дегу',
     'weight_range' => '170–300 г',
     'height_range' => '12–19 см',
     'lifespan' => '6–8 лет',
@@ -4427,10 +5595,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/African_Degus.webp',
     'short_description' => 'Общительный грызун, также известный как «чилийская белка».',
     'full_description' => "Дегу — социальные животные, которые любят общение. Важной особенностью является их предрасположенность к диабету.",
-    'features' => ['Вид' => 'Африканский дегу', 'Социальность' => 'Групповая', 'Питание' => 'Строгая диета']
-],
-[
-    'animal_id' => 284,
+     'features' =>['Вид' => 'Африканский дегу', 'Социальность' => 'Групповая', 'Питание' => 'Строгая диета'
+             
+             
+                 ]],['animal_breed' => 'Когтистая песчанка',
     'weight_range' => '50–120 г',
     'height_range' => '10–14 см',
     'lifespan' => '3–4 года',
@@ -4438,10 +5606,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Gerbil.webp',
     'short_description' => 'Активный и любознательный житель пустынь.',
     'full_description' => "Когтистая песчанка почти не имеет запаха и очень чистоплотна. Любит копать сложные системы туннелей.",
-    'features' => ['Вид' => 'Песчанка', 'Энергия' => 'Очень высокая', 'Запах' => 'Минимальный']
-],
-[
-    'animal_id' => 285,
+     'features' =>['Вид' => 'Песчанка', 'Энергия' => 'Очень высокая', 'Запах' => 'Минимальный'
+             
+             
+                 ]],['animal_breed' => 'Кролик-русак (декоративный)',
     'weight_range' => '2–4 кг',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -4449,10 +5617,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/European_Hare.webp',
     'short_description' => 'Декоративная форма классического длинноухого прыгуна.',
     'full_description' => "Кролик-русак в декоративном варианте отличается атлетичным телосложением и мощными задними лапами.",
-    'features' => ['Вид' => 'Кролик-русак', 'Тип' => 'Спортивный', 'Прыжки' => 'До 2 метров']
-],
-[
-    'animal_id' => 286,
+     'features' =>['Вид' => 'Кролик-русак', 'Тип' => 'Спортивный', 'Прыжки' => 'До 2 метров'
+             
+             
+                 ]],['animal_breed' => 'Сурок (мини-сурок)',
     'weight_range' => '1–1.5 кг',
     'height_range' => '20–30 см',
     'lifespan' => '10–12 лет',
@@ -4460,10 +5628,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Mini_Marmot.webp',
     'short_description' => 'Обаятельный толстячок, склонный к долгому сну.',
     'full_description' => "Мини-сурок — это селекционная форма, адаптированная для более комфортного содержания. Требует условий для спячки.",
-    'features' => ['Вид' => 'Сурок', 'Характер' => 'Спокойный', 'Сон' => 'Длительный']
-],
-[
-    'animal_id' => 287,
+     'features' =>['Вид' => 'Сурок', 'Характер' => 'Спокойный', 'Сон' => 'Длительный'
+             
+             
+                 ]],['animal_breed' => 'Капибара (карликовая форма)',
     'weight_range' => '8–12 кг',
     'height_range' => '35–45 см',
     'lifespan' => '10–12 лет',
@@ -4471,12 +5639,13 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/rodent/breed/Mini_Capybara.webp',
     'short_description' => 'Уменьшенная форма самого дружелюбного грызуна планеты.',
     'full_description' => "Карликовая форма капибары сохраняет все черты характера своего гигантского сородича: миролюбие и любовь к воде.",
-    'features' => ['Вид' => 'Капибара', 'Среда' => 'Нужен водоем', 'Дружелюбие' => 'Максимальное']
-],
-
+     'features' =>['Вид' => 'Капибара', 'Среда' => 'Нужен водоем', 'Дружелюбие' => 'Максимальное' 
+     
+ 
 // --- РЫБКИ (288-300) ---
-[
-    'animal_id' => 288,
+             
+             
+                 ]],['animal_breed' => 'Гуппи',
     'weight_range' => '5–10 г',
     'height_range' => '3–5 см',
     'lifespan' => '2–3 года',
@@ -4484,10 +5653,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Guppy.webp',
     'short_description' => 'Самая популярная и неприхотливая аквариумная рыбка.',
     'full_description' => "Гуппи славятся бесконечным разнообразием форм и расцветок хвостов. Идеальны для начинающих аквариумистов.",
-    'features' => ['Сложность' => 'Легко', 'Размножение' => 'Живородящие', 'Миролюбие' => 'Высокое']
-],
-[
-    'animal_id' => 289,
+     'features' =>['Сложность' => 'Легко', 'Размножение' => 'Живородящие', 'Миролюбие' => 'Высокое'
+             
+             
+                 ]],['animal_breed' => 'Меченосец',
     'weight_range' => '10–15 г',
     'height_range' => '8–12 см',
     'lifespan' => '3–5 лет',
@@ -4495,10 +5664,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Swordtail.webp',
     'short_description' => 'Яркая рыбка с характерным «мечом» на хвосте у самцов.',
     'full_description' => "Меченосец — активная рыбка, предпочитающая заросшие растениями аквариумы. Бывают красных, черных и пятнистых окрасов.",
-    'features' => ['Сложность' => 'Легко', 'Особенность' => 'Нижний луч хвоста', 'Поведение' => 'Прыгучие']
-],
-[
-    'animal_id' => 290,
+     'features' =>['Сложность' => 'Легко', 'Особенность' => 'Нижний луч хвоста', 'Поведение' => 'Прыгучие'
+             
+             
+                 ]],['animal_breed' => 'Петушок (бойцовая рыбка)',
     'weight_range' => '10–20 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–4 года',
@@ -4506,10 +5675,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Betta.webp',
     'short_description' => 'Красавец с роскошными плавниками и боевым характером.',
     'full_description' => "Петушок (Сиамская бойцовая рыбка) может жить в небольших объемах без аэрации благодаря лабиринтовому органу дыхания.",
-    'features' => ['Сложность' => 'Средне', 'Агрессия' => 'Высокая к самцам', 'Дыхание' => 'Атмосферный воздух']
-],
-[
-    'animal_id' => 291,
+     'features' =>['Сложность' => 'Средне', 'Агрессия' => 'Высокая к самцам', 'Дыхание' => 'Атмосферный воздух'
+             
+             
+                 ]],['animal_breed' => 'Скалярия',
     'weight_range' => '30–60 г',
     'height_range' => '15–20 см',
     'lifespan' => '10–15 лет',
@@ -4517,10 +5686,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Angelfish.webp',
     'short_description' => 'Грациозная рыбка дисковидной формы.',
     'full_description' => "Скалярии — аристократы аквариума. Требуют высокого объема воды и стабильной температуры.",
-    'features' => ['Сложность' => 'Средне', 'Форма' => 'Ромбовидная', 'Соседство' => 'С крупными видами']
-],
-[
-    'animal_id' => 292,
+     'features' =>['Сложность' => 'Средне', 'Форма' => 'Ромбовидная', 'Соседство' => 'С крупными видами'
+             
+             
+                 ]],['animal_breed' => 'Данио-рерио',
     'weight_range' => '2–5 г',
     'height_range' => '4–6 см',
     'lifespan' => '3–5 лет',
@@ -4528,10 +5697,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Danio.webp',
     'short_description' => 'Стремительная рыбка в «пижамную» полоску.',
     'full_description' => "Данио-рерио — стайная рыбка, которая всегда находится в движении. Очень выносливы и просты в уходе.",
-    'features' => ['Сложность' => 'Легко', 'Стиль' => 'Стайный', 'Скорость' => 'Высокая']
-],
-[
-    'animal_id' => 293,
+     'features' =>['Сложность' => 'Легко', 'Стиль' => 'Стайный', 'Скорость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Тернеция',
     'weight_range' => '5–12 г',
     'height_range' => '4–5 см',
     'lifespan' => '3–5 лет',
@@ -4539,10 +5708,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Ternetia.webp',
     'short_description' => 'Плоская рыбка, особенно популярная в флуоресцентных цветах.',
     'full_description' => "Тернеция — активная стайная рыбка. Современные вариации 'GloFish' светятся под ультрафиолетом.",
-    'features' => ['Сложность' => 'Легко', 'Форма' => 'Высокое тело', 'Окрас' => 'Яркий/Неоновый']
-],
-[
-    'animal_id' => 294,
+     'features' =>['Сложность' => 'Легко', 'Форма' => 'Высокое тело', 'Окрас' => 'Яркий/Неоновый'
+             
+             
+                 ]],['animal_breed' => 'Барбус',
     'weight_range' => '15–40 г',
     'height_range' => '6–10 см',
     'lifespan' => '5–7 лет',
@@ -4550,10 +5719,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Barbus.webp',
     'short_description' => 'Шустрая и иногда задиристая стайная рыбка.',
     'full_description' => "Барбусы (суматранские, вишневые) — очень активные рыбки. Могут обкусывать длинные плавники медленным соседям.",
-    'features' => ['Сложность' => 'Средне', 'Активность' => 'Экстремальная', 'Тип' => 'Стайный']
-],
-[
-    'animal_id' => 295,
+     'features' =>['Сложность' => 'Средне', 'Активность' => 'Экстремальная', 'Тип' => 'Стайный'
+             
+             
+                 ]],['animal_breed' => 'Сомик (коридорас)',
     'weight_range' => '10–25 г',
     'height_range' => '4–7 см',
     'lifespan' => '5–8 лет',
@@ -4561,10 +5730,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Corydoras.webp',
     'short_description' => 'Полезный и миролюбивый донный санитар.',
     'full_description' => "Сомик коридорас постоянно «пылесосит» дно в поисках корма. Очень забавные и стайные рыбки.",
-    'features' => ['Сложность' => 'Легко', 'Слой' => 'Донный', 'Миролюбие' => 'Высокое']
-],
-[
-    'animal_id' => 296,
+     'features' =>['Сложность' => 'Легко', 'Слой' => 'Донный', 'Миролюбие' => 'Высокое'
+             
+             
+                 ]],['animal_breed' => 'Анциструс',
     'weight_range' => '20–50 г',
     'height_range' => '10–13 см',
     'lifespan' => '6–10 лет',
@@ -4572,10 +5741,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Ancistrus.webp',
     'short_description' => 'Знаменитый «сом-присоска», чистящий стекла.',
     'full_description' => "Анциструс поедает водорослевые обрастания. У взрослых самцов на морде вырастают эффектные разветвленные «рога».",
-    'features' => ['Сложность' => 'Легко', 'Функция' => 'Чистильщик', 'Питание' => 'Растительное']
-],
-[
-    'animal_id' => 297,
+     'features' =>['Сложность' => 'Легко', 'Функция' => 'Чистильщик', 'Питание' => 'Растительное'
+             
+             
+                 ]],['animal_breed' => 'Неон',
     'weight_range' => '1–3 г',
     'height_range' => '2–4 см',
     'lifespan' => '2–4 года',
@@ -4583,10 +5752,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Neon.webp',
     'short_description' => 'Крошечный огонек аквариума с сияющей полосой.',
     'full_description' => "Неоны эффектнее всего смотрятся в больших стаях. Их светящаяся голубая полоса видна даже в сумерках.",
-    'features' => ['Сложность' => 'Средне', 'Эффект' => 'Светящийся', 'Миролюбие' => 'Высокое']
-],
-[
-    'animal_id' => 298,
+     'features' =>['Сложность' => 'Средне', 'Эффект' => 'Светящийся', 'Миролюбие' => 'Высокое'
+             
+             
+                 ]],['animal_breed' => 'Расбора',
     'weight_range' => '2–4 г',
     'height_range' => '3–5 см',
     'lifespan' => '3–5 лет',
@@ -4594,10 +5763,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Rasbora.webp',
     'short_description' => 'Изящная и спокойная рыбка для травников.',
     'full_description' => "Расбора клинопятнистая — классика аквариумистики. Не конфликтует с другими видами и любит мягкую воду.",
-    'features' => ['Сложность' => 'Средне', 'Особенность' => 'Темный клин на теле', 'Тип' => 'Стайный']
-],
-[
-    'animal_id' => 299,
+     'features' =>['Сложность' => 'Средне', 'Особенность' => 'Темный клин на теле', 'Тип' => 'Стайный'
+             
+             
+                 ]],['animal_breed' => 'Лабео',
     'weight_range' => '40–100 г',
     'height_range' => '10–15 см',
     'lifespan' => '8–12 лет',
@@ -4605,10 +5774,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Labeo.webp',
     'short_description' => 'Территориальная рыбка с акульим силуэтом.',
     'full_description' => "Лабео (двуцветный или альбинос) выглядит очень эффектно. С возрастом становится неуживчивым с сородичами.",
-    'features' => ['Сложность' => 'Тяжело', 'Характер' => 'Одиночный', 'Внешность' => 'Акулообразная']
-],
-[
-    'animal_id' => 300,
+     'features' =>['Сложность' => 'Тяжело', 'Характер' => 'Одиночный', 'Внешность' => 'Акулообразная'
+             
+             
+                 ]],['animal_breed' => 'Золотая рыбка',
     'weight_range' => '100–300 г',
     'height_range' => '15–25 см',
     'lifespan' => '15–25 лет',
@@ -4616,9 +5785,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Goldfish.webp',
     'short_description' => 'Символ аквариумистики с огромным числом форм.',
     'full_description' => "Золотая рыбка — долгожитель. Существует множество вариаций: вуалехвосты, телескопы, оранды. Требует мощной фильтрации.",
-    'features' => ['Сложность' => 'Средне', 'Долголетие' => 'Высокое', 'Особенность' => 'Холодноводная']
-],[
-    'animal_id' => 301,
+     'features' =>['Сложность' => 'Средне', 'Долголетие' => 'Высокое', 'Особенность' => 'Холодноводная'
+             
+             
+                 ]],['animal_breed' => 'Вуалехвост',
     'weight_range' => '50–200 г',
     'height_range' => '15–25 см',
     'lifespan' => '5–10 лет',
@@ -4626,17 +5796,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Veiltail.webp',
     'short_description' => 'Декоративная рыбка с длинными плавниками.',
     'full_description' => "Вуалехвост — разновидность золотой рыбки. \n\nИзвестен своими длинными плавниками и спокойным характером.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Аквариумная',
         'Линька' => 'Нет',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Длинные плавники'
-    ]
-],
-
-[
-    'animal_id' => 302,
+             
+             
+                 ]],['animal_breed' => 'Рыбка-бабочка',
     'weight_range' => '20–50 г',
     'height_range' => '10–20 см',
     'lifespan' => '5–8 лет',
@@ -4644,17 +5812,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Butterfly_fish.webp',
     'short_description' => 'Яркая рыбка с необычной формой тела.',
     'full_description' => "Рыбка-бабочка — красивая и популярная аквариумная рыба. \n\nТребует чистой воды и ухода.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Аквариумная',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Яркий окрас'
-    ]
-],
-
-[
-    'animal_id' => 303,
+             
+             
+                 ]],['animal_breed' => 'Рыбка-моллинезия',
     'weight_range' => '30–80 г',
     'height_range' => '6–10 см',
     'lifespan' => '3–5 лет',
@@ -4662,17 +5828,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Molly.webp',
     'short_description' => 'Неприхотливая живородящая рыбка.',
     'full_description' => "Моллинезия — популярная аквариумная рыба. \n\nЛегко содержится и подходит новичкам.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Аквариумная',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Живородящая'
-    ]
-],
-
-[
-    'animal_id' => 304,
+             
+             
+                 ]],['animal_breed' => 'Пецилия',
     'weight_range' => '100–300 г',
     'height_range' => '20–30 см',
     'lifespan' => '10–15 лет',
@@ -4680,17 +5844,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Pecilia.webp',
     'short_description' => 'Спокойная и яркая рыбка.',
     'full_description' => "Пецилия — дружелюбная и неприхотливая рыба. \n\nПодходит для общего аквариума.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Аквариумная',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Подходит новичкам'
-    ]
-],
-
-[
-    'animal_id' => 305,
+             
+             
+                 ]],['animal_breed' => 'Апистограмма',
     'weight_range' => '50–150 г',
     'height_range' => '12–15 см',
     'lifespan' => '5–10 лет',
@@ -4698,17 +5860,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Ancistrus.webp',
     'short_description' => 'Сомик, очищающий аквариум.',
     'full_description' => "Анциструс — полезная аквариумная рыба. \n\nОчищает стекла и декор от налёта.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Аквариумная',
         'Линька' => 'Нет',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Чистит аквариум'
-    ]
-],
-
-[
-    'animal_id' => 306,
+             
+             
+                 ]],['animal_breed' => 'Рыбка-пила',
     'weight_range' => '1–3 кг',
     'height_range' => '50–120 см',
     'lifespan' => '10–20 лет',
@@ -4716,17 +5876,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Sawfish.webp',
     'short_description' => 'Рыба с длинным «пилой»-рострумом.',
     'full_description' => "Рыба-пила — необычный морской вид. \n\nИспользует рострум для охоты.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Хищная',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Длинный рострум'
-    ]
-],
-
-[
-    'animal_id' => 307,
+             
+             
+                 ]],['animal_breed' => 'Рыбка-клоун',
     'weight_range' => '200–500 г',
     'height_range' => '10–18 см',
     'lifespan' => '6–10 лет',
@@ -4734,17 +5892,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Clownfish.webp',
     'short_description' => 'Яркая оранжевая рыбка с белыми полосами.',
     'full_description' => "Рыба-клоун — популярна благодаря симбиозу с актиниями. \n\nПодходит для морских аквариумов.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Аквариумная',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Живёт с актиниями'
-    ]
-],
-
-[
-    'animal_id' => 308,
+             
+             
+                 ]],['animal_breed' => 'Тетра',
     'weight_range' => '5–20 г',
     'height_range' => '3–6 см',
     'lifespan' => '3–5 лет',
@@ -4752,17 +5908,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Tetra.webp',
     'short_description' => 'Маленькая стайная рыбка.',
     'full_description' => "Тетра — популярная аквариумная рыба. \n\nЛучше содержать группами.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Аквариумная',
         'Линька' => 'Нет',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Живёт стаями'
-    ]
-],
-
-[
-    'animal_id' => 309,
+             
+             
+                 ]],['animal_breed' => 'Красноперка',
     'weight_range' => '200–800 г',
     'height_range' => '20–35 см',
     'lifespan' => '8–15 лет',
@@ -4770,17 +5924,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Rudd.webp',
     'short_description' => 'Рыба с яркими красными плавниками.',
     'full_description' => "Краснопёрка — пресноводная рыба. \n\nОбитает в реках и озёрах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Пресноводная',
         'Линька' => 'Нет',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Красные плавники'
-    ]
-],
-
-[
-    'animal_id' => 310,
+             
+             
+                 ]],['animal_breed' => 'Голец',
     'weight_range' => '100–500 г',
     'height_range' => '15–30 см',
     'lifespan' => '5–10 лет',
@@ -4788,17 +5940,18 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Loach.webp',
     'short_description' => 'Подвижная донная рыба.',
     'full_description' => "Голец — активная донная рыба. \n\nЛюбит укрытия и чистую воду.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Пресноводная',
         'Линька' => 'Нет',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Живёт у дна'
-    ]
-],
+     
+  
 // --- РЫБКИ (311-317) ---
-[
-    'animal_id' => 311,
+             
+             
+                 ]],['animal_breed' => 'Орнатус',
     'weight_range' => '2–4 г',
     'height_range' => '3–4.5 см',
     'lifespan' => '3–5 лет',
@@ -4806,10 +5959,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Ornatus.webp',
     'short_description' => 'Элегантная тетра с полупрозрачным телом.',
     'full_description' => "Орнатус (обыкновенный или красноточечный) — миролюбивая стайная рыбка. Отличается красивым спинным плавником с темным пятном.",
-    'features' => ['Сложность' => 'Легко', 'Стиль' => 'Стайный', 'Соседство' => 'Мирные виды']
-],
-[
-    'animal_id' => 312,
+     'features' =>['Сложность' => 'Легко', 'Стиль' => 'Стайный', 'Соседство' => 'Мирные виды'
+             
+             
+                 ]],['animal_breed' => 'Коридорас панда',
     'weight_range' => '5–15 г',
     'height_range' => '3–5 см',
     'lifespan' => '5–8 лет',
@@ -4817,10 +5970,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Corydoras_Panda.webp',
     'short_description' => 'Очаровательный донный сомик с окрасом панды.',
     'full_description' => "Коридорас панда получил название за характерные черные пятна вокруг глаз и у хвоста. Очень активный и дружелюбный чистильщик дна.",
-    'features' => ['Сложность' => 'Легко', 'Слой' => 'Донный', 'Миролюбие' => 'Максимальное']
-],
-[
-    'animal_id' => 313,
+     'features' =>['Сложность' => 'Легко', 'Слой' => 'Донный', 'Миролюбие' => 'Максимальное'
+             
+             
+                 ]],['animal_breed' => 'Электрический угорь',
     'weight_range' => '15–20 кг',
     'height_range' => '100–250 см',
     'lifespan' => '10–15 лет',
@@ -4828,10 +5981,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Electric_Eel.webp',
     'short_description' => 'Опасный хищник, способный генерировать мощный ток.',
     'full_description' => "Электрический угорь — уникальная рыба, использующая разряды для охоты и защиты. Требует огромных специфических аквариумов.",
-    'features' => ['Сложность' => 'Очень тяжело', 'Особенность' => 'Электрический разряд', 'Опасность' => 'Высокая']
-],
-[
-    'animal_id' => 314,
+     'features' =>['Сложность' => 'Очень тяжело', 'Особенность' => 'Электрический разряд', 'Опасность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Рыбка-фугу',
     'weight_range' => '0.5–1.5 кг',
     'height_range' => '20–50 см',
     'lifespan' => '5–10 лет',
@@ -4839,10 +5992,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Pufferfish.webp',
     'short_description' => 'Рыба, способная раздуваться в шар при опасности.',
     'full_description' => "Рыбка-фугу (тетраодон) обладает необычным интеллектом для рыб. Имеет острые зубы-пластины и часто агрессивна к соседям.",
-    'features' => ['Сложность' => 'Тяжело', 'Защита' => 'Иглы и раздувание', 'Интеллект' => 'Высокий']
-],
-[
-    'animal_id' => 315,
+     'features' =>['Сложность' => 'Тяжело', 'Защита' => 'Иглы и раздувание', 'Интеллект' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Морской конёк',
     'weight_range' => '50–200 г',
     'height_range' => '2–35 см',
     'lifespan' => '2–5 лет',
@@ -4850,10 +6003,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Seahorse.webp',
     'short_description' => 'Экзотическая морская рыба с вертикальным плаванием.',
     'full_description' => "Морской конёк — одно из самых необычных существ. У них потомство вынашивает самец в специальной сумке.",
-    'features' => ['Среда' => 'Морская вода', 'Питание' => 'Живой корм', 'Особенность' => 'Хватательный хвост']
-],
-[
-    'animal_id' => 316,
+     'features' =>['Среда' => 'Морская вода', 'Питание' => 'Живой корм', 'Особенность' => 'Хватательный хвост'
+             
+             
+                 ]],['animal_breed' => 'Рыбка-парусник',
     'weight_range' => '50–100 кг',
     'height_range' => '150–300 см',
     'lifespan' => '10–15 лет',
@@ -4861,10 +6014,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Sailfish.webp',
     'short_description' => 'Одна из самых быстрых рыб в океане с огромным плавником.',
     'full_description' => "Рыбка-парусник узнаваема по высокому спинному плавнику, напоминающему парус. Способна развивать огромную скорость при бросках.",
-    'features' => ['Тип' => 'Океаническая', 'Скорость' => 'До 100 км/ч', 'Статус' => 'Объект рыбалки']
-],
-[
-    'animal_id' => 317,
+     'features' =>['Тип' => 'Океаническая', 'Скорость' => 'До 100 км/ч', 'Статус' => 'Объект рыбалки'
+             
+             
+                 ]],['animal_breed' => 'Рыбка-ангел',
     'weight_range' => '100–300 г',
     'height_range' => '15–30 см',
     'lifespan' => '10–15 лет',
@@ -4872,12 +6025,14 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fish/breed/Marine_Angelfish.webp',
     'short_description' => 'Яркая морская рыба с плоским телом.',
     'full_description' => "Рыбка-ангел — украшение любого рифового аквариума. Отличается невероятно контрастными и сложными узорами.",
-    'features' => ['Среда' => 'Рифовая', 'Окрас' => 'Экстремально яркий', 'Сложность' => 'Высокая']
-],
+     'features' =>['Среда' => 'Рифовая', 'Окрас' => 'Экстремально яркий', 'Сложность' => 'Высокая' 
+     
+ 
 
 // --- ЯЩЕРИЦЫ (318-330) ---
-[
-    'animal_id' => 318,
+             
+             
+                 ]],['animal_breed' => 'Бородатая агама',
     'weight_range' => '300–500 г',
     'height_range' => '40–60 см',
     'lifespan' => '10–15 лет',
@@ -4885,10 +6040,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Bearded_Dragon.webp',
     'short_description' => 'Дружелюбная ящерица с характерной «бородой» из шипов.',
     'full_description' => "Бородатая агама — идеальный питомец среди рептилий. Легко привыкает к рукам и обладает спокойным нравом.",
-    'features' => ['Тип' => 'Пустынная', 'Питание' => 'Всеядная', 'Контактность' => 'Высокая']
-],
-[
-    'animal_id' => 319,
+     'features' =>['Тип' => 'Пустынная', 'Питание' => 'Всеядная', 'Контактность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Хамелеон-вуали',
     'weight_range' => '100–200 г',
     'height_range' => '25–45 см',
     'lifespan' => '5–8 лет',
@@ -4896,10 +6051,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Veiled_Chameleon.webp',
     'short_description' => 'Мастер маскировки с высоким костным шлемом.',
     'full_description' => "Йеменский хамелеон (вуалевый) известен способностью менять цвет и независимым движением глаз.",
-    'features' => ['Тип' => 'Древесный', 'Особенность' => 'Смена цвета', 'Сложность' => 'Средняя']
-],
-[
-    'animal_id' => 320,
+     'features' =>['Тип' => 'Древесный', 'Особенность' => 'Смена цвета', 'Сложность' => 'Средняя'
+             
+             
+                 ]],['animal_breed' => 'Гребнепалый геккон',
     'weight_range' => '40–80 г',
     'height_range' => '15–20 см',
     'lifespan' => '10–15 лет',
@@ -4907,10 +6062,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Crested_Gecko.webp',
     'short_description' => 'Геккон с «ресницами» и цепким хвостом.',
     'full_description' => "Гребнепалый (реснитчатый) геккон — ночная ящерица. У них нет век, поэтому они очищают глаза языком.",
-    'features' => ['Тип' => 'Ночной', 'Питание' => 'Фруктово-белковое', 'Особенность' => 'Реснички над глазами']
-],
-[
-    'animal_id' => 321,
+     'features' =>['Тип' => 'Ночной', 'Питание' => 'Фруктово-белковое', 'Особенность' => 'Реснички над глазами'
+             
+             
+                 ]],['animal_breed' => 'Леопардовый геккон',
     'weight_range' => '50–100 г',
     'height_range' => '20–28 см',
     'lifespan' => '15–20 лет',
@@ -4918,10 +6073,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Leopard_Gecko.webp',
     'short_description' => 'Пятнистая ящерица с толстым хвостом-запасником.',
     'full_description' => "Леопардовый геккон (эублефар) — популярнейшая ящерица для новичков. Хранит запасы жира в хвосте.",
-    'features' => ['Тип' => 'Наземный', 'Уход' => 'Простой', 'Особенность' => 'Пятнистый окрас']
-],
-[
-    'animal_id' => 322,
+     'features' =>['Тип' => 'Наземный', 'Уход' => 'Простой', 'Особенность' => 'Пятнистый окрас'
+             
+             
+                 ]],['animal_breed' => 'Зеленый красногорлый анолис',
     'weight_range' => '5–10 г',
     'height_range' => '12–20 см',
     'lifespan' => '4–6 лет',
@@ -4929,10 +6084,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Green_Anole.webp',
     'short_description' => 'Маленькая древесная ящерица с ярким горловым мешком.',
     'full_description' => "Зеленый красногорлый анолис способен менять цвет с ярко-зеленого на темно-коричневый. Самцы демонстрируют ярко-красный флаг на горле.",
-    'features' => ['Тип' => 'Древесный', 'Активность' => 'Дневная', 'Особенность' => 'Горловой флаг']
-],
-[
-    'animal_id' => 323,
+     'features' =>['Тип' => 'Древесный', 'Активность' => 'Дневная', 'Особенность' => 'Горловой флаг'
+             
+             
+                 ]],['animal_breed' => 'Игуана зеленая',
     'weight_range' => '4–8 кг',
     'height_range' => '120–200 см',
     'lifespan' => '15–20 лет',
@@ -4940,10 +6095,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Green_Iguana.webp',
     'short_description' => 'Гигант среди домашних ящериц.',
     'full_description' => "Зеленая игуана — растительноядная рептилия внушительных размеров. Требует очень большого террариума (вертикального).",
-    'features' => ['Тип' => 'Крупный', 'Питание' => 'Растительноядная', 'Сложность' => 'Высокая']
-],
-[
-    'animal_id' => 324,
+     'features' =>['Тип' => 'Крупный', 'Питание' => 'Растительноядная', 'Сложность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Тегу черно-белый',
     'weight_range' => '3–5 кг',
     'height_range' => '100–140 см',
     'lifespan' => '15–20 лет',
@@ -4951,10 +6106,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Black_White_Tegu.webp',
     'short_description' => 'Высокоинтеллектуальная ящерица, напоминающая собаку.',
     'full_description' => "Черно-белый тегу — один из самых умных видов. Способен узнавать владельца и обучаться простым командам.",
-    'features' => ['Тип' => 'Интеллектуальный', 'Размер' => 'Крупный', 'Контактность' => 'Высокая']
-],
-[
-    'animal_id' => 325,
+     'features' =>['Тип' => 'Интеллектуальный', 'Размер' => 'Крупный', 'Контактность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Шипохвост (дабб)',
     'weight_range' => '200–600 г',
     'height_range' => '25–40 см',
     'lifespan' => '10–15 лет',
@@ -4962,10 +6117,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Uromastyx.webp',
     'short_description' => 'Пустынная ящерица с колючим мощным хвостом.',
     'full_description' => "Шипохвост (дабб) — специализированный житель жарких пустынь. Хвост используется как оружие защиты в норах.",
-    'features' => ['Тип' => 'Пустынный', 'Температура' => 'Нужен сильный прогрев', 'Особенность' => 'Шипастый хвост']
-],
-[
-    'animal_id' => 326,
+     'features' =>['Тип' => 'Пустынный', 'Температура' => 'Нужен сильный прогрев', 'Особенность' => 'Шипастый хвост'
+             
+             
+                 ]],['animal_breed' => 'Сцинк синеязыкий',
     'weight_range' => '400–600 г',
     'height_range' => '45–60 см',
     'lifespan' => '15–20 лет',
@@ -4973,10 +6128,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Blue_Tongued_Skink.webp',
     'short_description' => 'Медлительная ящерица с ярко-синим языком.',
     'full_description' => "Синеязыкий сцинк — спокойная наземная ящерица. Синий язык служит для отпугивания хищников.",
-    'features' => ['Тип' => 'Наземный', 'Особенность' => 'Синий язык', 'Характер' => 'Флегматичный']
-],
-[
-    'animal_id' => 327,
+     'features' =>['Тип' => 'Наземный', 'Особенность' => 'Синий язык', 'Характер' => 'Флегматичный'
+             
+             
+                 ]],['animal_breed' => 'Красногубый тегу',
     'weight_range' => '2–4 кг',
     'height_range' => '80–110 см',
     'lifespan' => '12–15 лет',
@@ -4984,10 +6139,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Red_Tegu.webp',
     'short_description' => 'Массивная ящерица с красноватым оттенком чешуи.',
     'full_description' => "Красногоубый тегу (или просто красный тегу) отличается мощным телосложением и красивым кирпичным окрасом.",
-    'features' => ['Тип' => 'Крупный', 'Окрас' => 'Красно-коричневый', 'Рацион' => 'Всеядный']
-],
-[
-    'animal_id' => 328,
+     'features' =>['Тип' => 'Крупный', 'Окрас' => 'Красно-коричневый', 'Рацион' => 'Всеядный'
+             
+             
+                 ]],['animal_breed' => 'Желтопузик',
     'weight_range' => '300–500 г',
     'height_range' => '100–120 см',
     'lifespan' => '15–20 лет',
@@ -4995,10 +6150,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Sheltopusik.webp',
     'short_description' => 'Крупная безногая ящерица, часто принимаемая за змею.',
     'full_description' => "Желтопузик — самая крупная безногая ящерица Европы. Безобиден для человека, питается улитками и насекомыми.",
-    'features' => ['Тип' => 'Безногая ящерица', 'Защита' => 'Крепкая чешуя', 'Польза' => 'Истребляет вредителей']
-],
-[
-    'animal_id' => 329,
+     'features' =>['Тип' => 'Безногая ящерица', 'Защита' => 'Крепкая чешуя', 'Польза' => 'Истребляет вредителей'
+             
+             
+                 ]],['animal_breed' => 'Крестная ящерица',
     'weight_range' => '15–30 г',
     'height_range' => '20–25 см',
     'lifespan' => '5–10 лет',
@@ -5006,10 +6161,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Sand_Lizard.webp',
     'short_description' => 'Классическая европейская ящерица с яркими боками.',
     'full_description' => "Крестная (прыткая) ящерица — частый гость садов. Самцы в брачный период окрашиваются в сочно-зеленый цвет.",
-    'features' => ['Тип' => 'Местная фауна', 'Активность' => 'Дневная', 'Навык' => 'Отбрасывание хвоста']
-],
-[
-    'animal_id' => 330,
+     'features' =>['Тип' => 'Местная фауна', 'Активность' => 'Дневная', 'Навык' => 'Отбрасывание хвоста'
+             
+             
+                 ]],['animal_breed' => 'Среднеазиатская круглоголовка',
     'weight_range' => '10–20 г',
     'height_range' => '10–14 см',
     'lifespan' => '3–6 лет',
@@ -5017,11 +6172,13 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Toadhead_Agama.webp',
     'short_description' => 'Маленькая ящерица с необычной формой головы.',
     'full_description' => "Среднеазиатская круглоголовка — мастер маскировки в песках. При опасности быстро зарывается в песок боковыми движениями тела.",
-    'features' => ['Тип' => 'Песчаная', 'Особенность' => 'Закручивающийся хвост', 'Маскировка' => 'Идеальная']
-],
+     'features' =>['Тип' => 'Песчаная', 'Особенность' => 'Закручивающийся хвост', 'Маскировка' => 'Идеальная' 
+     
+ 
 // --- ЯЩЕРИЦЫ (331-332) ---
-[
-    'animal_id' => 331,
+             
+             
+                 ]],['animal_breed' => 'Молох (египетский колючий дракон)',
     'weight_range' => '30–90 г',
     'height_range' => '15–20 см',
     'lifespan' => '10–20 лет',
@@ -5029,10 +6186,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Thorny_Devil.webp',
     'short_description' => 'Удивительная колючая ящерица из пустынь Австралии.',
     'full_description' => "Молох (или колючий дракон) покрыт острыми шипами. Обладает уникальной способностью собирать влагу кожей и направлять её прямо в рот по микроскопическим канальцам.",
-    'features' => ['Вид' => 'Молох', 'Питание' => 'Специализированный муравьед', 'Защита' => 'Шипы']
-],
-[
-    'animal_id' => 332,
+     'features' =>['Вид' => 'Молох', 'Питание' => 'Специализированный муравьед', 'Защита' => 'Шипы'
+             
+             
+                 ]],['animal_breed' => 'Ушастый дракон',
     'weight_range' => '20–50 г',
     'height_range' => '15–25 см',
     'lifespan' => '5–8 лет',
@@ -5040,12 +6197,14 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/lizard/breed/Earless_Dragon.webp',
     'short_description' => 'Небольшая агама с выразительной мимикой.',
     'full_description' => "Ушастый дракон (ушастая круглоголовка) известна своими кожными складками в углах рта, которые при опасности расправляются, пугая врага ярким цветом.",
-    'features' => ['Вид' => 'Ушастая круглоголовка', 'Поведение' => 'Устрашающая поза', 'Среда' => 'Пески']
-],
+     'features' =>['Вид' => 'Ушастая круглоголовка', 'Поведение' => 'Устрашающая поза', 'Среда' => 'Пески' 
+     
+ 
 
 // --- ЗМЕИ (333-350) ---
-[
-    'animal_id' => 333,
+             
+             
+                 ]],['animal_breed' => 'Королевская уж',
     'weight_range' => '100–300 г',
     'height_range' => '50–100 см',
     'lifespan' => '10–15 лет',
@@ -5053,10 +6212,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Kingsnake.webp',
     'short_description' => 'Красивая и неагрессивная змея с ярким узором.',
     'full_description' => "Королевская змея (уж) популярна в террариумистике. В природе известна тем, что может поедать других змей, в том числе ядовитых.",
-    'features' => ['Ядовитость' => 'Нет', 'Рацион' => 'Мелкие позвоночные', 'Сложность' => 'Для новичков']
-],
-[
-    'animal_id' => 334,
+     'features' =>['Ядовитость' => 'Нет', 'Рацион' => 'Мелкие позвоночные', 'Сложность' => 'Для новичков'
+             
+             
+                 ]],['animal_breed' => 'Питон розовый (шарпей)',
     'weight_range' => '1.5–3 кг',
     'height_range' => '100–180 см',
     'lifespan' => '15–25 лет',
@@ -5064,10 +6223,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Pink_Python.webp',
     'short_description' => 'Селекционная морфа питона с необычной текстурой кожи.',
     'full_description' => "Розовый питон (шарпей) ценится за уникальный пастельный оттенок и складчатую чешую, напоминающую кожу одноименной породы собак.",
-    'features' => ['Вид' => 'Ковровый питон (морфа)', 'Окрас' => 'Розово-бежевый', 'Тип' => 'Полудревесный']
-],
-[
-    'animal_id' => 335,
+     'features' =>['Вид' => 'Ковровый питон (морфа)', 'Окрас' => 'Розово-бежевый', 'Тип' => 'Полудревесный'
+             
+             
+                 ]],['animal_breed' => 'Питон сетчатый',
     'weight_range' => '40–100 кг',
     'height_range' => '300–700 см',
     'lifespan' => '20–30 лет',
@@ -5075,10 +6234,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Reticulated_Python.webp',
     'short_description' => 'Самая длинная змея в мире.',
     'full_description' => "Сетчатый питон — настоящий гигант. Требует огромных пространств для содержания и профессиональных навыков обращения.",
-    'features' => ['Размер' => 'Экстремальный', 'Узор' => 'Геометрический сетчатый', 'Сила' => 'Очень высокая']
-],
-[
-    'animal_id' => 336,
+     'features' =>['Размер' => 'Экстремальный', 'Узор' => 'Геометрический сетчатый', 'Сила' => 'Очень высокая'
+             
+             
+                 ]],['animal_breed' => 'Питон альбинос',
     'weight_range' => '2–5 кг',
     'height_range' => '150–300 см',
     'lifespan' => '20–25 лет',
@@ -5086,10 +6245,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Albino_Python.webp',
     'short_description' => 'Бело-желтая вариация тигрового питона.',
     'full_description' => "Питон-альбинос лишен темного пигмента, что делает его очень эффектным. Часто используется в фотосессиях из-за спокойного нрава.",
-    'features' => ['Морфа' => 'Альбинос', 'Характер' => 'Медлительный', 'Тип' => 'Засадный хищник']
-],
-[
-    'animal_id' => 337,
+     'features' =>['Морфа' => 'Альбинос', 'Характер' => 'Медлительный', 'Тип' => 'Засадный хищник'
+             
+             
+                 ]],['animal_breed' => 'Удав королевский',
     'weight_range' => '1–2 кг',
     'height_range' => '120–150 см',
     'lifespan' => '20–30 лет',
@@ -5097,10 +6256,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Royal_Boa.webp',
     'short_description' => 'Популярная змея-компаньон, также известная как питон-мяч.',
     'full_description' => "Королевский питон (или удав в обиходе) при опасности сворачивается в тугой шар. Идеален для домашнего террариума.",
-    'features' => ['Размер' => 'Компактный', 'Защита' => 'Сворачивание в шар', 'Уход' => 'Простой']
-],
-[
-    'animal_id' => 338,
+     'features' =>['Размер' => 'Компактный', 'Защита' => 'Сворачивание в шар', 'Уход' => 'Простой'
+             
+             
+                 ]],['animal_breed' => 'Удав альбинос',
     'weight_range' => '1–2.5 кг',
     'height_range' => '130–160 см',
     'lifespan' => '20–25 лет',
@@ -5108,10 +6267,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Albino_Boa.webp',
     'short_description' => 'Яркая светлая форма обыкновенного удава.',
     'full_description' => "Удав альбинос отличается отсутствием черного пигмента и ярко-красными или розовыми глазами. Обладает цепким хвостом.",
-    'features' => ['Тип' => 'Ложноногие', 'Окрас' => 'Желто-оранжевый', 'Размножение' => 'Живородящие']
-],
-[
-    'animal_id' => 339,
+     'features' =>['Тип' => 'Ложноногие', 'Окрас' => 'Желто-оранжевый', 'Размножение' => 'Живородящие'
+             
+             
+                 ]],['animal_breed' => 'Гремучая змея',
     'weight_range' => '1.5–5 кг',
     'height_range' => '100–200 см',
     'lifespan' => '10–20 лет',
@@ -5119,10 +6278,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Rattlesnake.webp',
     'short_description' => 'Знаменитая змея с погремушкой на кончике хвоста.',
     'full_description' => "Гремучая змея предупреждает о своем присутствии громким треском роговых колец хвоста. Обладает опасным ядом.",
-    'features' => ['Ядовитость' => 'Да', 'Орган чувств' => 'Термолокаторы', 'Звук' => 'Погремушка']
-],
-[
-    'animal_id' => 340,
+     'features' =>['Ядовитость' => 'Да', 'Орган чувств' => 'Термолокаторы', 'Звук' => 'Погремушка'
+             
+             
+                 ]],['animal_breed' => 'Гадюка обыкновенная',
     'weight_range' => '100–200 г',
     'height_range' => '50–70 см',
     'lifespan' => '10–15 лет',
@@ -5130,10 +6289,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Viper.webp',
     'short_description' => 'Самая распространенная ядовитая змея в Европе.',
     'full_description' => "Гадюка обыкновенная легко узнаваема по зигзагообразному узору на спине. Активна в дневное время, любит греться на солнце.",
-    'features' => ['Ядовитость' => 'Да', 'Узор' => 'Зигзаг', 'Среда' => 'Леса и болота']
-],
-[
-    'animal_id' => 341,
+     'features' =>['Ядовитость' => 'Да', 'Узор' => 'Зигзаг', 'Среда' => 'Леса и болота'
+             
+             
+                 ]],['animal_breed' => 'Кобра обыкновенная',
     'weight_range' => '1–2 кг',
     'height_range' => '120–180 см',
     'lifespan' => '15–20 лет',
@@ -5141,10 +6300,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Cobra.webp',
     'short_description' => 'Змея, способная раздувать капюшон.',
     'full_description' => "Кобра обыкновенная (индийская или очковая) использует расширение шейных ребер для демонстрации угрозы врагу.",
-    'features' => ['Ядовитость' => 'Да', 'Особенность' => 'Капюшон', 'Поведение' => 'Предупреждающая стойка']
-],
-[
-    'animal_id' => 342,
+     'features' =>['Ядовитость' => 'Да', 'Особенность' => 'Капюшон', 'Поведение' => 'Предупреждающая стойка'
+             
+             
+                 ]],['animal_breed' => 'Кобра королевская',
     'weight_range' => '6–12 кг',
     'height_range' => '300–550 см',
     'lifespan' => '20 лет',
@@ -5152,10 +6311,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/King_Cobra.webp',
     'short_description' => 'Крупнейшая ядовитая змея в мире.',
     'full_description' => "Королевская кобра питается преимущественно другими змеями. Ее яд способен убить даже взрослого слона.",
-    'features' => ['Размер' => 'Очень крупный', 'Питание' => 'Змееядная', 'Интеллект' => 'Высокий']
-],
-[
-    'animal_id' => 343,
+     'features' =>['Размер' => 'Очень крупный', 'Питание' => 'Змееядная', 'Интеллект' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Тайпан',
     'weight_range' => '2–4 кг',
     'height_range' => '150–250 см',
     'lifespan' => '10–15 лет',
@@ -5163,10 +6322,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Taipan.webp',
     'short_description' => 'Обладатель самого токсичного яда среди наземных змей.',
     'full_description' => "Тайпан — стремительная и очень опасная змея из Австралии. Обладает крайне высокой скоростью реакции.",
-    'features' => ['Ядовитость' => 'Экстремальная', 'Скорость' => 'Очень высокая', 'Регион' => 'Австралия']
-],
-[
-    'animal_id' => 344,
+     'features' =>['Ядовитость' => 'Экстремальная', 'Скорость' => 'Очень высокая', 'Регион' => 'Австралия'
+             
+             
+                 ]],['animal_breed' => 'Морская змея',
     'weight_range' => '0.5–1.5 кг',
     'height_range' => '100–150 см',
     'lifespan' => '5–10 лет',
@@ -5174,10 +6333,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Sea_Snake.webp',
     'short_description' => 'Змея, полностью приспособленная к жизни в океане.',
     'full_description' => "Морская змея имеет веслообразный хвост для плавания. Большинство видов обладают очень сильным нейротоксичным ядом.",
-    'features' => ['Среда' => 'Морская вода', 'Хвост' => 'Плоский веслообразный', 'Дыхание' => 'Легочное']
-],
-[
-    'animal_id' => 345,
+     'features' =>['Среда' => 'Морская вода', 'Хвост' => 'Плоский веслообразный', 'Дыхание' => 'Легочное'
+             
+             
+                 ]],['animal_breed' => 'Гремучая змея степная',
     'weight_range' => '0.5–1 кг',
     'height_range' => '60–100 см',
     'lifespan' => '10–15 лет',
@@ -5185,10 +6344,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Prairie_Rattlesnake.webp',
     'short_description' => 'Обитатель открытых пространств и прерий.',
     'full_description' => "Гремучая змея степная адаптирована к жизни в засушливых регионах. Охотится на мелких грызунов и птиц.",
-    'features' => ['Тип' => 'Ямкоголовые', 'Среда' => 'Степи/Равнины', 'Активность' => 'Сумеречная']
-],
-[
-    'animal_id' => 346,
+     'features' =>['Тип' => 'Ямкоголовые', 'Среда' => 'Степи/Равнины', 'Активность' => 'Сумеречная'
+             
+             
+                 ]],['animal_breed' => 'Гадюка степная',
     'weight_range' => '50–150 г',
     'height_range' => '30–55 см',
     'lifespan' => '10–12 лет',
@@ -5196,10 +6355,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Steppe_Viper.webp',
     'short_description' => 'Небольшая гадюка, живущая в засушливых степях.',
     'full_description' => "Гадюка степная меньше обыкновенной и предпочитает открытые, сухие ландшафты. Питается в основном насекомыми и ящерицами.",
-    'features' => ['Ядовитость' => 'Да', 'Регион' => 'Южные степи', 'Размер' => 'Мелкий']
-],
-[
-    'animal_id' => 347,
+     'features' =>['Ядовитость' => 'Да', 'Регион' => 'Южные степи', 'Размер' => 'Мелкий'
+             
+             
+                 ]],['animal_breed' => 'Полоз жёлтобрюхий',
     'weight_range' => '0.5–1 кг',
     'height_range' => '120–200 см',
     'lifespan' => '10–15 лет',
@@ -5207,10 +6366,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Caspian_Whip_Snake.webp',
     'short_description' => 'Одна из самых быстрых и агрессивных неядовитых змей.',
     'full_description' => "Полоз жёлтобрюхий (каспийский) известен своим бесстрашием. При встрече с человеком не убегает, а активно атакует.",
-    'features' => ['Ядовитость' => 'Нет', 'Характер' => 'Агрессивный', 'Скорость' => 'Высокая']
-],
-[
-    'animal_id' => 348,
+     'features' =>['Ядовитость' => 'Нет', 'Характер' => 'Агрессивный', 'Скорость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Полоз обыкновенный',
     'weight_range' => '200–500 г',
     'height_range' => '100–150 см',
     'lifespan' => '12–18 лет',
@@ -5218,10 +6377,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Rat_Snake.webp',
     'short_description' => 'Ловкая змея, способная лазать по деревьям.',
     'full_description' => "Полоз обыкновенный (эскулапов) — отличный древолаз. В древности считался священным символом медицины.",
-    'features' => ['Ядовитость' => 'Нет', 'Тип' => 'Лазающая змея', 'Особенность' => 'Длинный хвост']
-],
-[
-    'animal_id' => 349,
+     'features' =>['Ядовитость' => 'Нет', 'Тип' => 'Лазающая змея', 'Особенность' => 'Длинный хвост'
+             
+             
+                 ]],['animal_breed' => 'Полоз лестровидный',
     'weight_range' => '100–300 г',
     'height_range' => '80–120 см',
     'lifespan' => '10–15 лет',
@@ -5229,10 +6388,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Ladder_Snake.webp',
     'short_description' => 'Змея с характерным узором в виде лесенки на спине.',
     'full_description' => "Полоз лестровидный (лестничный) обитает в Южной Европе. У молодых особей узор очень четкий, у взрослых — превращается в две параллельные линии.",
-    'features' => ['Узор' => 'Лестничный', 'Регион' => 'Средиземноморье', 'Тип' => 'Наземный']
-],
-[
-    'animal_id' => 350,
+     'features' =>['Узор' => 'Лестничный', 'Регион' => 'Средиземноморье', 'Тип' => 'Наземный'
+             
+             
+                 ]],['animal_breed' => 'Медянка',
     'weight_range' => '50–100 г',
     'height_range' => '40–65 см',
     'lifespan' => '12–15 лет',
@@ -5240,10 +6399,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Smooth_Snake.webp',
     'short_description' => 'Мелкая скрытная змея с гладкой чешуей.',
     'full_description' => "Медянка часто ошибочно считается ядовитой, хотя она абсолютно безопасна для людей. Питается преимущественно ящерицами.",
-    'features' => ['Ядовитость' => 'Нет', 'Чешуя' => 'Гладкая', 'Окрас' => 'Медно-серый']
-],
-[
-    'animal_id' => 351,
+     'features' =>['Ядовитость' => 'Нет', 'Чешуя' => 'Гладкая', 'Окрас' => 'Медно-серый'
+             
+             
+                 ]],['animal_breed' => 'Обыкновенный уж',
     'weight_range' => '100–300 г',
     'height_range' => '60–120 см',
     'lifespan' => '10–20 лет',
@@ -5251,17 +6410,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Grass_snake.webp',
     'short_description' => 'Неядовитая змея, часто встречающаяся у водоёмов.',
     'full_description' => "Обыкновенный уж — безвредная для человека змея. \n\nОбитает возле воды и питается амфибиями.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Неядовитая'
-    ]
-],
-
-[
-    'animal_id' => 352,
+             
+             
+                 ]],['animal_breed' => 'Червеобразная слепозмейка',
     'weight_range' => '20–50 г',
     'height_range' => '20–40 см',
     'lifespan' => '5–10 лет',
@@ -5269,17 +6426,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Blind_snake.webp',
     'short_description' => 'Маленькая подземная змея.',
     'full_description' => "Червеобразная слепозмейка — миниатюрная змея. \n\nВедёт скрытный подземный образ жизни.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Живёт под землёй'
-    ]
-],
-
-[
-    'animal_id' => 353,
+             
+             
+                 ]],['animal_breed' => 'Лучистая змея',
     'weight_range' => '200–500 г',
     'height_range' => '80–150 см',
     'lifespan' => '10–15 лет',
@@ -5287,17 +6442,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Radiant_snake.webp',
     'short_description' => 'Змея с ярким переливающимся окрасом.',
     'full_description' => "Лучистая змея — отличается блестящей чешуёй. \n\nВедёт ночной образ жизни.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Блестящая чешуя'
-    ]
-],
-
-[
-    'animal_id' => 354,
+             
+             
+                 ]],['animal_breed' => 'Змея-пескострел',
     'weight_range' => '150–400 г',
     'height_range' => '70–120 см',
     'lifespan' => '8–12 лет',
@@ -5305,17 +6458,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Sand_snake.webp',
     'short_description' => 'Змея, обитающая в песчаных районах.',
     'full_description' => "Змея-пескострел — приспособлена к жизни в пустыне. \n\nБыстро передвигается по песку.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Живёт в песке'
-    ]
-],
-
-[
-    'animal_id' => 355,
+             
+             
+                 ]],['animal_breed' => 'Змея-плющ',
     'weight_range' => '300–800 г',
     'height_range' => '100–180 см',
     'lifespan' => '10–20 лет',
@@ -5323,17 +6474,19 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/reptile/breed/Whip_snake.webp',
     'short_description' => 'Быстрая и стройная змея.',
     'full_description' => "Змея-плеть — известна своей скоростью. \n\nАктивный дневной хищник.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Рептилия',
         'Линька' => 'Есть',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Очень быстрая'
-    ]
-],
+     
+     
+ 
 // --- ЗМЕИ (356-357) ---
-[
-    'animal_id' => 356,
+             
+             
+                 ]],['animal_breed' => 'Молохова змея',
     'weight_range' => '50–100 г',
     'height_range' => '30–50 см',
     'lifespan' => '10–12 лет',
@@ -5341,10 +6494,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Moloch_Snake.webp',
     'short_description' => 'Редкая змея с необычной чешуей, напоминающей молоха.',
     'full_description' => "Молохова змея получила свое название за специфическую форму чешуи и окрас, помогающий ей маскироваться в каменистой местности.",
-    'features' => ['Вид' => 'Молохова змея', 'Маскировка' => 'Высокая', 'Тип' => 'Наземный']
-],
-[
-    'animal_id' => 357,
+     'features' =>['Вид' => 'Молохова змея', 'Маскировка' => 'Высокая', 'Тип' => 'Наземный'
+             
+             
+                 ]],['animal_breed' => 'Эритроламус',
     'weight_range' => '200–400 г',
     'height_range' => '60–90 см',
     'lifespan' => '12–15 лет',
@@ -5352,12 +6505,14 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/snake/breed/Erythrolamprus.webp',
     'short_description' => 'Яркая южноамериканская змея.',
     'full_description' => "Эритроламус часто имитирует окраску ядовитых коралловых змей для защиты от хищников, хотя сам не представляет серьезной опасности.",
-    'features' => ['Вид' => 'Эритроламус', 'Окрас' => 'Мимикрия', 'Ядовитость' => 'Слабая']
-],
+     'features' =>['Вид' => 'Эритроламус', 'Окрас' => 'Мимикрия', 'Ядовитость' => 'Слабая' 
+     
+ 
 
 // --- НАСЕКОМЫЕ (358-380) ---
-[
-    'animal_id' => 358,
+             
+             
+                 ]],['animal_breed' => 'Муравей',
     'weight_range' => '1–5 мг',
     'height_range' => '0.2–1 см',
     'lifespan' => '1–3 года',
@@ -5365,10 +6520,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Ant.webp',
     'short_description' => 'Социальное насекомое, известное своим трудолюбием.',
     'full_description' => "Муравьи живут огромными колониями со строгой иерархией. Способны поднимать вес, во много раз превышающий их собственный.",
-    'features' => ['Тип' => 'Общественное', 'Сила' => 'Экстремальная', 'Роль' => 'Строитель']
-],
-[
-    'animal_id' => 359,
+     'features' =>['Тип' => 'Общественное', 'Сила' => 'Экстремальная', 'Роль' => 'Строитель'
+             
+             
+                 ]],['animal_breed' => 'Пчела',
     'weight_range' => '100–120 мг',
     'height_range' => '1.2–1.5 см',
     'lifespan' => '1–5 месяцев',
@@ -5376,76 +6531,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Bee.webp',
     'short_description' => 'Главный опылитель растений и производитель мёда.',
     'full_description' => "Медоносная пчела играет ключевую роль в экосистеме. Общается с сородичами с помощью специальных «танцев».",
-    'features' => ['Продукт' => 'Мёд', 'Особенность' => 'Жало с зазубринами', 'Статус' => 'Опылитель']
-],
-[
-    'animal_id' => 360,
-    'weight_range' => '50–90 мг',
-    'height_range' => '1.5–2.5 см',
-    'lifespan' => '12–22 дня',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Wasp.webp',
-    'short_description' => 'Хищное насекомое с ярким черно-желтым окрасом.',
-    'full_description' => "Оса в отличие от пчел может жалить многократно. Является важным регулятором численности садовых вредителей.",
-    'features' => ['Тип' => 'Хищник', 'Агрессия' => 'Средняя', 'Особенность' => 'Гладкое жало']
-],
-[
-    'animal_id' => 361,
-    'weight_range' => '200–600 мг',
-    'height_range' => '1.5–3 см',
-    'lifespan' => 'до 1 года',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Bumblebee.webp',
-    'short_description' => 'Миролюбивое пушистое насекомое.',
-    'full_description' => "Шмель — один из самых холодостойких видов насекомых благодаря густому волосяному покрову и работе грудных мышц.",
-    'features' => ['Тип' => 'Опылитель', 'Темперамент' => 'Спокойный', 'Особенность' => 'Пушистое тело']
-],
-[
-    'animal_id' => 362,
-    'weight_range' => '10–20 мг',
-    'height_range' => '0.5–1 см',
-    'lifespan' => '15–30 дней',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Fly.webp',
-    'short_description' => 'Вездесущее двукрылое насекомое.',
-    'full_description' => "Мухи обладают невероятной скоростью реакции и способностью передвигаться по любым поверхностям благодаря липким подушечкам на лапках.",
-    'features' => ['Зрение' => 'Фасеточное', 'Скорость' => 'Высокая', 'Тип' => 'Летающее']
-],
-[
-    'animal_id' => 363,
-    'weight_range' => '12–25 мг',
-    'height_range' => '0.6–0.8 см',
-    'lifespan' => '20–30 дней',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Housefly.webp',
-    'short_description' => 'Типичный обитатель человеческих жилищ.',
-    'full_description' => "Домашняя муха является переносчиком многих заболеваний, но также служит важным объектом для биологических исследований.",
-    'features' => ['Среда' => 'Синантропный вид', 'Питание' => 'Жидкая пища', 'Активность' => 'Дневная']
-],
-[
-    'animal_id' => 364,
-    'weight_range' => '1–2 мг',
-    'height_range' => '0.3–0.7 см',
-    'lifespan' => '2–4 недели',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Mosquito.webp',
-    'short_description' => 'Насекомое, известное своими укусами в летний период.',
-    'full_description' => "Комар питается нектаром, но самкам необходима кровь для продолжения рода. Личинки развиваются в стоячей воде.",
-    'features' => ['Питание' => 'Кровососущее (самки)', 'Личинка' => 'Водная', 'Активность' => 'Ночная/Сумеречная']
-],
-[
-    'animal_id' => 365,
-    'weight_range' => '10–50 мг',
-    'height_range' => '1–4 см',
-    'lifespan' => 'от нескольких дней до месяца',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Moth.webp',
-    'short_description' => 'Ночная бабочка с неброским окрасом.',
-    'full_description' => "Мотыльки ориентируются по свету луны (и ламп). В отличие от дневных бабочек, имеют более толстое тело и перистые усики.",
-    'features' => ['Тип' => 'Чешуекрылое', 'Активность' => 'Ночная', 'Ориентация' => 'Фототаксис']
-],
-[
-    'animal_id' => 366,
+     'features' =>['Продукт' => 'Мёд', 'Особенность' => 'Жало с зазубринами', 'Статус' => 'Опылитель'
+             
+             
+                 ]],['animal_breed' => 'Жук-носорог',
     'weight_range' => '10–20 г',
     'height_range' => '2.5–4.5 см',
     'lifespan' => '3–5 лет (с личинкой)',
@@ -5453,10 +6542,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Rhinoceros_Beetle.webp',
     'short_description' => 'Крупный жук с мощным выростом на голове.',
     'full_description' => "Жук-носорог — один из самых сильных обитателей леса. Его рог используется для турнирных боев с другими самцами.",
-    'features' => ['Вид' => 'Жук-носорог', 'Сила' => 'Высокая', 'Особенность' => 'Хитиновый рог']
-],
-[
-    'animal_id' => 367,
+     'features' =>['Вид' => 'Жук-носорог', 'Сила' => 'Высокая', 'Особенность' => 'Хитиновый рог'
+             
+             
+                 ]],['animal_breed' => 'Жук-олень',
     'weight_range' => '15–25 г',
     'height_range' => '5–9 см',
     'lifespan' => '4–7 лет (с личинкой)',
@@ -5464,10 +6553,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Stag_Beetle.webp',
     'short_description' => 'Крупнейший жук Европы с огромными челюстями.',
     'full_description' => "Жук-олень занесен в Красную книгу. Его «рога» — это сильно развитые верхние челюсти, необходимые для борьбы за самок.",
-    'features' => ['Вид' => 'Жук-олень', 'Статус' => 'Охраняемый', 'Особенность' => 'Челюсти-рога']
-],
-[
-    'animal_id' => 368,
+     'features' =>['Вид' => 'Жук-олень', 'Статус' => 'Охраняемый', 'Особенность' => 'Челюсти-рога'
+             
+             
+                 ]],['animal_breed' => 'Жук-плавунец',
     'weight_range' => '2–4 г',
     'height_range' => '3–4 см',
     'lifespan' => '1–2 года',
@@ -5475,54 +6564,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Diving_Beetle.webp',
     'short_description' => 'Водный хищник, отличный пловец.',
     'full_description' => "Жук-плавунец обитает в пресных водоемах. Под водой он дышит запасом воздуха, который удерживает под надкрыльями.",
-    'features' => ['Среда' => 'Водная', 'Тип' => 'Хищник', 'Дыхание' => 'Атмосферное']
-],
-[
-    'animal_id' => 369,
-    'weight_range' => '20–40 мг',
-    'height_range' => '0.4–1 см',
-    'lifespan' => '1–2 года',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Ladybug.webp',
-    'short_description' => 'Полезный жук, истребляющий тлю.',
-    'full_description' => "Божья коровка — символ удачи и верный помощник садовода. Яркий окрас предупреждает птиц о несъедобности насекомого.",
-    'features' => ['Тип' => 'Полезный хищник', 'Защита' => 'Предупреждающий окрас', 'Питание' => 'Тля']
-],
-[
-    'animal_id' => 370,
-    'weight_range' => '500–1000 мг',
-    'height_range' => '1.5–5 см',
-    'lifespan' => '6–12 месяцев',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Cockroach.webp',
-    'short_description' => 'Чрезвычайно выносливое насекомое.',
-    'full_description' => "Тараканы способны выживать в экстремальных условиях и долгое время обходиться без пищи. Ведут преимущественно ночной образ жизни.",
-    'features' => ['Выживаемость' => 'Экстремальная', 'Скорость' => 'Высокая', 'Активность' => 'Ночная']
-],
-[
-    'animal_id' => 371,
-    'weight_range' => '300–600 мг',
-    'height_range' => '1.5–2.5 см',
-    'lifespan' => '3–4 месяца',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Cricket.webp',
-    'short_description' => 'Музыкальное насекомое, символ домашнего уюта.',
-    'full_description' => "Сверчок издает характерные звуки, потирая крылья друг о друга. Поют только самцы для привлечения внимания самок.",
-    'features' => ['Звук' => 'Стрекотание', 'Тип' => 'Прыгающее', 'Активность' => 'Сумеречная']
-],
-[
-    'animal_id' => 372,
-    'weight_range' => '0.5–2 г',
-    'height_range' => '2–6 см',
-    'lifespan' => '1 сезон',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Grasshopper.webp',
-    'short_description' => 'Мастер прыжков и маскировки в траве.',
-    'full_description' => "Кузнечик обладает мощными задними ногами. Органы слуха у него расположены на голенях передних ног.",
-    'features' => ['Тип' => 'Прыгающее', 'Слух' => 'На ногах', 'Маскировка' => 'Под зелень']
-],
-[
-    'animal_id' => 373,
+     'features' =>['Среда' => 'Водная', 'Тип' => 'Хищник', 'Дыхание' => 'Атмосферное'
+             
+             
+                 ]],['animal_breed' => 'Паук-скакун',
     'weight_range' => '10–50 мг',
     'height_range' => '0.5–2 см',
     'lifespan' => '1–2 года',
@@ -5530,10 +6575,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Jumping_Spider.webp',
     'short_description' => 'Миловидный паук с отличным зрением.',
     'full_description' => "Паук-скакун не плетет ловчих сетей, а охотится, прыгая на добычу с большого расстояния. Имеет 8 глаз и видит в 360 градусов.",
-    'features' => ['Тип' => 'Активный охотник', 'Зрение' => 'Бинокулярное', 'Прыжок' => 'До 50 длин тела']
-],
-[
-    'animal_id' => 374,
+     'features' =>['Тип' => 'Активный охотник', 'Зрение' => 'Бинокулярное', 'Прыжок' => 'До 50 длин тела'
+             
+             
+                 ]],['animal_breed' => 'Богомол',
     'weight_range' => '0.5–2 г',
     'height_range' => '4–10 см',
     'lifespan' => '6–12 месяцев',
@@ -5541,76 +6586,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Mantis.webp',
     'short_description' => 'Грациозный хищник в позе молящегося.',
     'full_description' => "Богомол — единственный вид насекомых, способный поворачивать голову на 180 градусов. Обладает молниеносной реакцией при атаке.",
-    'features' => ['Тип' => 'Засадный хищник', 'Особенность' => 'Поворот головы', 'Маскировка' => 'Мимикрия']
-],
-[
-    'animal_id' => 375,
-    'weight_range' => '200–500 мг',
-    'height_range' => '2–5 см',
-    'lifespan' => 'от нескольких недель до 17 лет',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Cicada.webp',
-    'short_description' => 'Самое громкое насекомое в мире.',
-    'full_description' => "Цикада знаменита своим оглушительным пением в жаркие дни. Личинки некоторых видов проводят под землей долгие годы перед выходом на свет.",
-    'features' => ['Звук' => 'Тимбальные органы', 'Цикл жизни' => 'Длительный (у личинок)', 'Питание' => 'Сок растений']
-],
-[
-    'animal_id' => 376,
-    'weight_range' => '0.1–0.5 мг',
-    'height_range' => '0.2–0.4 см',
-    'lifespan' => '30–40 дней',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Louse.webp',
-    'short_description' => 'Мелкий бескрылый паразит.',
-    'full_description' => "Вши — узкоспециализированные паразиты, живущие в волосяном покрове млекопитающих. Не умеют прыгать или летать.",
-    'features' => ['Тип' => 'Паразит', 'Крылья' => 'Отсутствуют', 'Среда' => 'Волосяной покров']
-],
-[
-    'animal_id' => 377,
-    'weight_range' => '0.5–1 мг',
-    'height_range' => '0.1–0.3 см',
-    'lifespan' => 'от нескольких месяцев до года',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Flea.webp',
-    'short_description' => 'Чемпион по прыжкам в мире насекомых.',
-    'full_description' => "Блоха способна прыгать на высоту, превышающую ее рост в сотни раз. Питается исключительно кровью хозяина.",
-    'features' => ['Тип' => 'Паразит', 'Прыжок' => 'Экстремальный', 'Тело' => 'Сплюснутое с боков']
-],
-[
-    'animal_id' => 378,
-    'weight_range' => '10–50 мг',
-    'height_range' => '0.3–1.5 см',
-    'lifespan' => 'до 1.5 лет',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Bug.webp',
-    'short_description' => 'Насекомое с характерным колюще-сосущим аппаратом.',
-    'full_description' => "Клопы крайне разнообразны: от садовых щитников до постельных паразитов. Многие виды выделяют пахучий секрет для защиты.",
-    'features' => ['Тип' => 'Полужесткокрылое', 'Защита' => 'Пахучие железы', 'Питание' => 'Сок или кровь']
-],
-[
-    'animal_id' => 379,
-    'weight_range' => '20–60 мг',
-    'height_range' => '1.5–3.5 см',
-    'lifespan' => '1 сезон',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Water_Strider.webp',
-    'short_description' => 'Насекомое, «бегающее» по поверхности воды.',
-    'full_description' => "Клоп-водомерка использует поверхностное натяжение воды для перемещения. Кончики их лапок покрыты водоотталкивающими волосками.",
-    'features' => ['Среда' => 'Поверхность воды', 'Скорость' => 'Высокая', 'Тип' => 'Хищник']
-],
-[
-    'animal_id' => 380,
-    'weight_range' => '10–30 мг',
-    'height_range' => '0.7–1.2 см',
-    'lifespan' => 'до 1 года',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Fire_Bug.webp',
-    'short_description' => 'Яркий красно-черный садовый клоп.',
-    'full_description' => "Клоп-солдатик часто встречается большими скоплениями на пнях и заборах весной. Питается опавшими семенами и соком растений.",
-    'features' => ['Окрас' => 'Орнаментальный', 'Тип' => 'Групповой', 'Питание' => 'Растительное']
-],
-[
-    'animal_id' => 381,
+     'features' =>['Тип' => 'Засадный хищник', 'Особенность' => 'Поворот головы', 'Маскировка' => 'Мимикрия'
+             
+             
+                 ]],['animal_breed' => 'Стрекоза',
     'weight_range' => '1–3 г',
     'height_range' => '5–10 см',
     'lifespan' => '1–2 года',
@@ -5618,53 +6597,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Dragonfly.webp',
     'short_description' => 'Летающее насекомое с длинным телом и прозрачными крыльями.',
     'full_description' => "Стрекоза — быстрый и ловкий хищник. \n\nПитается мелкими насекомыми и обитает возле воды.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Быстрый полёт'
-    ]
-],
-
-[
-    'animal_id' => 382,
-    'weight_range' => '2–6 г',
-    'height_range' => '1–3 см',
-    'lifespan' => '1–3 года',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Chafer_beetle.webp',
-    'short_description' => 'Жук с металлическим блеском.',
-    'full_description' => "Бронзовка — красивый жук с зелёным или золотистым оттенком. \n\nПитается нектаром и плодами.",
-    'features' => [
-        'Тип' => 'Насекомое',
-        'Линька' => 'Есть',
-        'Активность' => 'Средняя',
-        'Обучаемость' => 'Отсутствует',
-        'Особенности' => 'Металлический блеск'
-    ]
-],
-
-[
-    'animal_id' => 383,
-    'weight_range' => '2–5 г',
-    'height_range' => '2–3 см',
-    'lifespan' => '1–2 года',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/May_beetle.webp',
-    'short_description' => 'Известный жук, появляющийся весной.',
-    'full_description' => "Майский жук — распространённое насекомое. \n\nЛичинки могут вредить растениям.",
-    'features' => [
-        'Тип' => 'Насекомое',
-        'Линька' => 'Есть',
-        'Активность' => 'Средняя',
-        'Обучаемость' => 'Отсутствует',
-        'Особенности' => 'Появляется весной'
-    ]
-],
-
-[
-    'animal_id' => 384,
+             
+             
+                 ]],['animal_breed' => 'Листоблошка',
     'weight_range' => '0.5–2 г',
     'height_range' => '2–5 см',
     'lifespan' => '2–4 недели',
@@ -5672,35 +6613,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Leaf_beetle.webp',
     'short_description' => 'Жук, питающийся листьями растений.',
     'full_description' => "Листоблошка — мелкое насекомое. \n\nПитается соками растений и может быть вредителем.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Питается листьями'
-    ]
-],
-
-[
-    'animal_id' => 385,
-    'weight_range' => '0.1–1 г',
-    'height_range' => '1–3 мм',
-    'lifespan' => '2–6 недель',
-    'type' => 'Насекомое',
-    'photo' => 'animal/insect/breed/Aphid.webp',
-    'short_description' => 'Мелкое насекомое-вредитель растений.',
-    'full_description' => "Тля — широко распространённый вредитель. \n\nПитается соками растений и быстро размножается.",
-    'features' => [
-        'Тип' => 'Насекомое',
-        'Линька' => 'Есть',
-        'Активность' => 'Средняя',
-        'Обучаемость' => 'Отсутствует',
-        'Особенности' => 'Быстро размножается'
-    ]
-],
-
-[
-    'animal_id' => 386,
+             
+             
+                 ]],['animal_breed' => 'Палочник',
     'weight_range' => '2–10 г',
     'height_range' => '10–30 см',
     'lifespan' => '6–12 месяцев',
@@ -5708,16 +6629,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Stick_insect.webp',
     'short_description' => 'Насекомое, маскирующееся под ветку.',
     'full_description' => "Палочник — мастер маскировки. \n\nВыглядит как ветка и защищается за счёт камуфляжа.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Отличная маскировка'
-    ]
-],
-[
-    'animal_id' => 387,
+             
+             
+                 ]],['animal_breed' => 'Восточный енот-полоскун',
     'weight_range' => '5–9 кг',
     'height_range' => '45–60 см',
     'lifespan' => '12–15 лет',
@@ -5725,10 +6645,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Eastern_Raccoon.webp',
     'short_description' => 'Восточный енот-полоскун с классическим окрасом.',
     'full_description' => "Восточный енот-полоскун — наиболее распространенный подвид, известный своим интеллектом и ловкостью передних лап.",
-    'features' => ['Вид' => 'Полоскун', 'Регион' => 'Восток США', 'Навык' => 'Полоскание еды']
-],
-[
-    'animal_id' => 388,
+     'features' =>['Вид' => 'Полоскун', 'Регион' => 'Восток США', 'Навык' => 'Полоскание еды'
+             
+             
+                 ]],['animal_breed' => 'Ключ-Вака енот-полоскун',
     'weight_range' => '4–7 кг',
     'height_range' => '40–50 см',
     'lifespan' => '10–13 лет',
@@ -5736,10 +6656,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Key_Vaca_Raccoon.webp',
     'short_description' => 'Редкий островной подвид енота.',
     'full_description' => "Ключ-Вака енот-полоскун обитает на ограниченной территории островов Флорида-Кис. Отличается чуть меньшими размерами.",
-    'features' => ['Подвид' => 'Островной', 'Статус' => 'Редкий', 'Окрас' => 'Светло-серый']
-],
-[
-    'animal_id' => 389,
+     'features' =>['Подвид' => 'Островной', 'Статус' => 'Редкий', 'Окрас' => 'Светло-серый'
+             
+             
+                 ]],['animal_breed' => 'Флоридский енот-полоскун',
     'weight_range' => '4–8 кг',
     'height_range' => '45–55 см',
     'lifespan' => '12–15 лет',
@@ -5747,10 +6667,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Florida_Raccoon.webp',
     'short_description' => 'Енот, адаптированный к субтропическому климату.',
     'full_description' => "Флоридский енот-полоскун имеет более короткую шерсть по сравнению с северными сородичами и темную «маску».",
-    'features' => ['Регион' => 'Флорида', 'Шерсть' => 'Короткая', 'Активность' => 'Ночная']
-],
-[
-    'animal_id' => 390,
+     'features' =>['Регион' => 'Флорида', 'Шерсть' => 'Короткая', 'Активность' => 'Ночная'
+             
+             
+                 ]],['animal_breed' => 'Техасский енот-полоскун',
     'weight_range' => '5–9 кг',
     'height_range' => '50–65 см',
     'lifespan' => '12–14 лет',
@@ -5758,10 +6678,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Texas_Raccoon.webp',
     'short_description' => 'Крупный представитель техасских популяций.',
     'full_description' => "Техасский енот-полоскун отличается выносливостью и способностью выживать в засушливых районах штата.",
-    'features' => ['Размер' => 'Крупный', 'Регион' => 'Техас', 'Климат' => 'Засушливый']
-],
-[
-    'animal_id' => 391,
+     'features' =>['Размер' => 'Крупный', 'Регион' => 'Техас', 'Климат' => 'Засушливый'
+             
+             
+                 ]],['animal_breed' => 'Миссисипский енот-полоскун',
     'weight_range' => '5–8.5 кг',
     'height_range' => '45–60 см',
     'lifespan' => '11–15 лет',
@@ -5769,10 +6689,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Mississippi_Raccoon.webp',
     'short_description' => 'Енот из долины реки Миссисипи.',
     'full_description' => "Миссисипский енот-полоскун часто встречается вблизи водоемов, где он активно охотится на мелких ракообразных.",
-    'features' => ['Среда' => 'Прибрежная', 'Рацион' => 'Всеядный', 'Окрас' => 'Буро-серый']
-],
-[
-    'animal_id' => 392,
+     'features' =>['Среда' => 'Прибрежная', 'Рацион' => 'Всеядный', 'Окрас' => 'Буро-серый'
+             
+             
+                 ]],['animal_breed' => 'Тресмариарсский енот-полоскун',
     'weight_range' => '3–6 кг',
     'height_range' => '35–50 см',
     'lifespan' => '10–12 лет',
@@ -5780,10 +6700,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Tres_Marias_Raccoon.webp',
     'short_description' => 'Один из самых мелких подвидов енота.',
     'full_description' => "Тресмариарсский енот-полоскун — эндемик островов Мария (Мексика). Имеет более угловатый череп и светлый мех.",
-    'features' => ['Эндемик' => 'Острова Мария', 'Вес' => 'Небольшой', 'Череп' => 'Вытянутый']
-],
-[
-    'animal_id' => 393,
+     'features' =>['Эндемик' => 'Острова Мария', 'Вес' => 'Небольшой', 'Череп' => 'Вытянутый'
+             
+             
+                 ]],['animal_breed' => 'Торч-Кей енот-полоскун',
     'weight_range' => '4–7.5 кг',
     'height_range' => '40–55 см',
     'lifespan' => '10–14 лет',
@@ -5791,10 +6711,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Torch_Key_Raccoon.webp',
     'short_description' => 'Светлоокрашенный енот с островов Торч-Кей.',
     'full_description' => "Торч-Кей енот-полоскун адаптирован к жизни в мангровых зарослях и имеет характерный бледный окрас.",
-    'features' => ['Среда' => 'Мангры', 'Окрас' => 'Бледный', 'Размер' => 'Средний']
-],
-[
-    'animal_id' => 394,
+     'features' =>['Среда' => 'Мангры', 'Окрас' => 'Бледный', 'Размер' => 'Средний'
+             
+             
+                 ]],['animal_breed' => 'Гвателупский енот-полоскун',
     'weight_range' => '4–7 кг',
     'height_range' => '40–50 см',
     'lifespan' => '10–13 лет',
@@ -5802,10 +6722,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Guadeloupe_Raccoon.webp',
     'short_description' => 'Островной енот с Гваделупы.',
     'full_description' => "Гваделупский енот-полоскун долгое время считался отдельным видом из-за своей изоляции на Малых Антильских островах.",
-    'features' => ['Острова' => 'Гваделупа', 'Статус' => 'Охраняемый', 'Тип' => 'Полоскун']
-],
-[
-    'animal_id' => 395,
+     'features' =>['Острова' => 'Гваделупа', 'Статус' => 'Охраняемый', 'Тип' => 'Полоскун'
+             
+             
+                 ]],['animal_breed' => 'Северогерманский тёмный енот',
     'weight_range' => '6–10 кг',
     'height_range' => '50–70 см',
     'lifespan' => '12–16 лет',
@@ -5813,10 +6733,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/North_German_Dark_Raccoon.webp',
     'short_description' => 'Темная вариация енота, интродуцированная в Европе.',
     'full_description' => "Северогерманский тёмный енот — это популяция, сформировавшаяся в Германии, отличающаяся очень густым и темным мехом.",
-    'features' => ['Мех' => 'Очень густой', 'Цвет' => 'Темно-бурый', 'Регион' => 'Германия']
-],
-[
-    'animal_id' => 396,
+     'features' =>['Мех' => 'Очень густой', 'Цвет' => 'Темно-бурый', 'Регион' => 'Германия'
+             
+             
+                 ]],['animal_breed' => 'Японский енот',
     'weight_range' => '4–8 кг',
     'height_range' => '45–60 см',
     'lifespan' => '12–15 лет',
@@ -5824,10 +6744,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/raccoon/breed/Japanese_Raccoon.webp',
     'short_description' => 'Японская популяция североамериканского енота.',
     'full_description' => "Японский енот (не путать с тануки) — это потомки домашних животных, ставших инвазивным видом в Японии.",
-    'features' => ['Регион' => 'Япония', 'Статус' => 'Инвазивный', 'Интеллект' => 'Высокий']
-],
-[
-    'animal_id' => 397,
+     'features' =>['Регион' => 'Япония', 'Статус' => 'Инвазивный', 'Интеллект' => 'Высокий'
+             
+             
+                 ]],['animal_breed' => 'Американская норка (Mustela vison)',
     'weight_range' => '0.8–1.6 кг',
     'height_range' => '35–45 см',
     'lifespan' => '8–10 лет',
@@ -5835,10 +6755,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mink/breed/American_Mink.webp',
     'short_description' => 'Крупная хищная норка родом из Америки.',
     'full_description' => "Американская норка (Mustela vison) — полуводный хищник с блестящим влагозащитным мехом и перепонками на лапах.",
-    'features' => ['Вид' => 'Mustela vison', 'Образ жизни' => 'Полуводный', 'Мех' => 'Водоотталкивающий']
-],
-[
-    'animal_id' => 398,
+     'features' =>['Вид' => 'Mustela vison', 'Образ жизни' => 'Полуводный', 'Мех' => 'Водоотталкивающий'
+             
+             
+                 ]],['animal_breed' => 'Европейская норка (Mustela lutreola)',
     'weight_range' => '0.5–1.2 кг',
     'height_range' => '30–40 см',
     'lifespan' => '7–10 лет',
@@ -5846,10 +6766,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mink/breed/European_Mink.webp',
     'short_description' => 'Редкий вид европейской норки.',
     'full_description' => "Европейская норка (Mustela lutreola) — исчезающий вид, отличающийся от американской наличием белого пятна на верхней губе.",
-    'features' => ['Вид' => 'Mustela lutreola', 'Статус' => 'Критический', 'Метка' => 'Белая губа']
-],
-[
-    'animal_id' => 399,
+     'features' =>['Вид' => 'Mustela lutreola', 'Статус' => 'Критический', 'Метка' => 'Белая губа'
+             
+             
+                 ]],['animal_breed' => 'Чёрная норка',
     'weight_range' => '0.9–1.8 кг',
     'height_range' => '35–48 см',
     'lifespan' => '8–11 лет',
@@ -5857,10 +6777,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mink/breed/Black_Mink.webp',
     'short_description' => 'Селекционная форма с глубоким черным окрасом.',
     'full_description' => "Чёрная норка — результат многолетней селекции, ценится за ровный угольный цвет и исключительную мягкость остевого волоса.",
-    'features' => ['Окрас' => 'Черный уголь', 'Тип' => 'Селекционная', 'Мех' => 'Шелковистый']
-],
-[
-    'animal_id' => 400,
+     'features' =>['Окрас' => 'Черный уголь', 'Тип' => 'Селекционная', 'Мех' => 'Шелковистый'
+             
+             
+                 ]],['animal_breed' => 'Сапфировая норка',
     'weight_range' => '0.7–1.4 кг',
     'height_range' => '30–40 см',
     'lifespan' => '8–10 лет',
@@ -5868,10 +6788,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mink/breed/Sapphire_Mink.webp',
     'short_description' => 'Ценная цветовая вариация норки.',
     'full_description' => "Сапфировая норка — это селекционная форма, обладающая уникальным серо-голубым («сапфировым») блестящим мехом.",
-    'features' => ['Морфа' => 'Сапфир', 'Цвет' => 'Серо-голубой', 'Качество' => 'Высокий блеск']
-],
-[
-    'animal_id' => 401,
+     'features' =>['Морфа' => 'Сапфир', 'Цвет' => 'Серо-голубой', 'Качество' => 'Высокий блеск'
+             
+             
+                 ]],['animal_breed' => 'Пастельная норка',
     'weight_range' => '700–1200 г',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -5879,17 +6799,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mammal/breed/Pastel_mink.webp',
     'short_description' => 'Норка с мягким пастельным окрасом.',
     'full_description' => "Пастельная норка — декоративный вариант норки. \n\nОбладает мягким мехом и активным характером.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Хищник',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Ценный мех'
-    ]
-],
-
-[
-    'animal_id' => 402,
+             
+             
+                 ]],['animal_breed' => 'Палиндромная норка',
     'weight_range' => '800–1300 г',
     'height_range' => '35–50 см',
     'lifespan' => '8–12 лет',
@@ -5897,17 +6815,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mammal/breed/Sapphire_mink.webp',
     'short_description' => 'Норка с серо-голубым оттенком меха.',
     'full_description' => "Палиндромная норка — редкая разновидность. \n\nЦенится за необычный окрас.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Хищник',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Редкий окрас'
-    ]
-],
-
-[
-    'animal_id' => 403,
+             
+             
+                 ]],['animal_breed' => 'Серебристая норка',
     'weight_range' => '700–1200 г',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -5915,17 +6831,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mammal/breed/Silver_mink.webp',
     'short_description' => 'Норка с серебристым мехом.',
     'full_description' => "Серебристая норка — популярный вид в меховой промышленности. \n\nОтличается густым мехом.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Хищник',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Густой мех'
-    ]
-],
-
-[
-    'animal_id' => 404,
+             
+             
+                 ]],['animal_breed' => 'Карамельная норка',
     'weight_range' => '700–1100 г',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -5933,17 +6847,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mammal/breed/Caramel_mink.webp',
     'short_description' => 'Норка с тёплым карамельным оттенком.',
     'full_description' => "Карамельная норка — декоративная разновидность. \n\nИмеет мягкий и приятный окрас.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Хищник',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Тёплый оттенок меха'
-    ]
-],
-
-[
-    'animal_id' => 405,
+             
+             
+                 ]],['animal_breed' => 'Арктическая норка',
     'weight_range' => '800–1400 г',
     'height_range' => '35–50 см',
     'lifespan' => '8–12 лет',
@@ -5951,16 +6863,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mammal/breed/Arctic_mink.webp',
     'short_description' => 'Норка, приспособленная к холодному климату.',
     'full_description' => "Арктическая норка — отличается плотным мехом. \n\nХорошо переносит низкие температуры.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Хищник',
         'Линька' => 'Средняя',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Переносит холод'
-    ]
-],
-[
-    'animal_id' => 406,
+             
+             
+                 ]],['animal_breed' => 'Махагоновая норка',
     'weight_range' => '0.8–1.5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '8–12 лет',
@@ -5968,10 +6879,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mink/breed/Mahogany_Mink.webp',
     'short_description' => 'Норка с насыщенным темно-коричневым мехом.',
     'full_description' => "Махагоновая норка ценится за глубокий, шоколадный оттенок («махагон») и высокую плотность подшерстка.",
-    'features' => ['Окрас' => 'Махагон', 'Текстура' => 'Плотная', 'Блеск' => 'Шелковистый']
-],
-[
-    'animal_id' => 407,
+     'features' =>['Окрас' => 'Махагон', 'Текстура' => 'Плотная', 'Блеск' => 'Шелковистый'
+             
+             
+                 ]],['animal_breed' => 'Обыкновенная лисица (рыжая)',
     'weight_range' => '6–10 кг',
     'height_range' => '35–50 см (в холке)',
     'lifespan' => '10–12 лет',
@@ -5979,10 +6890,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Red_Fox.webp',
     'short_description' => 'Классическая рыжая лисица.',
     'full_description' => "Обыкновенная лисица — самый распространенный вид лисиц, отличающийся ярко-рыжим окрасом и пушистым хвостом с белым кончиком.",
-    'features' => ['Вид' => 'Рыжая', 'Хвост' => 'Пушистый', 'Ареал' => 'Повсеместный']
-],
-[
-    'animal_id' => 408,
+     'features' =>['Вид' => 'Рыжая', 'Хвост' => 'Пушистый', 'Ареал' => 'Повсеместный'
+             
+             
+                 ]],['animal_breed' => 'Серебристо-чёрная лисица',
     'weight_range' => '5–9 кг',
     'height_range' => '35–48 см',
     'lifespan' => '10–13 лет',
@@ -5990,10 +6901,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Silver_Black_Fox.webp',
     'short_description' => 'Лисица с эффектным черно-серебристым мехом.',
     'full_description' => "Серебристо-чёрная лисица (чернобурка) — морфа обыкновенной лисицы с красивым сочетанием черного волоса и серебристых участков.",
-    'features' => ['Морфа' => 'Серебристая', 'Мех' => 'Длинный', 'Популярность' => 'Высокая']
-],
-[
-    'animal_id' => 409,
+     'features' =>['Морфа' => 'Серебристая', 'Мех' => 'Длинный', 'Популярность' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Лисица-сиводушка',
     'weight_range' => '5–8 кг',
     'height_range' => '35–45 см',
     'lifespan' => '10–12 лет',
@@ -6001,10 +6912,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Cross_Fox_Sivodushka.webp',
     'short_description' => 'Лисица-сиводушка с комбинированным окрасом.',
     'full_description' => "Лисица-сиводушка имеет характерный темный «крест» на плечах и спине на фоне рыжего или бурого основного окраса.",
-    'features' => ['Окрас' => 'Сиводушка', 'Рисунок' => 'Темный крест', 'Тип' => 'Природная морфа']
-],
-[
-    'animal_id' => 410,
+     'features' =>['Окрас' => 'Сиводушка', 'Рисунок' => 'Темный крест', 'Тип' => 'Природная морфа'
+             
+             
+                 ]],['animal_breed' => 'Лисица-красавец',
     'weight_range' => '5–8.5 кг',
     'height_range' => '35–47 см',
     'lifespan' => '10–12 лет',
@@ -6012,10 +6923,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Beauty_Fox.webp',
     'short_description' => 'Декоративная вариация лисицы.',
     'full_description' => "Лисица-красавец — селекционная форма, выведенная для достижения максимально гармоничного экстерьера и чистого цвета меха.",
-    'features' => ['Тип' => 'Селекционная', 'Экстерьер' => 'Выставочный', 'Окрас' => 'Насыщенный']
-],
-[
-    'animal_id' => 411,
+     'features' =>['Тип' => 'Селекционная', 'Экстерьер' => 'Выставочный', 'Окрас' => 'Насыщенный'
+             
+             
+                 ]],['animal_breed' => 'Лисица-фенек',
     'weight_range' => '0.8–1.5 кг',
     'height_range' => '18–22 см',
     'lifespan' => '12–15 лет',
@@ -6023,10 +6934,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Fennec_Fox.webp',
     'short_description' => 'Миниатюрная лисица с огромными ушами.',
     'full_description' => "Лисица-фенек — самая маленькая лисица в мире, обитающая в пустынях Северной Африки. Уши помогают охлаждать тело.",
-    'features' => ['Уши' => 'Большие', 'Размер' => 'Мини', 'Среда' => 'Пустыня']
-],
-[
-    'animal_id' => 412,
+     'features' =>['Уши' => 'Большие', 'Размер' => 'Мини', 'Среда' => 'Пустыня'
+             
+             
+                 ]],['animal_breed' => 'Арктическая лисица (песец)',
     'weight_range' => '3–8 кг',
     'height_range' => '25–30 см',
     'lifespan' => '8–10 лет',
@@ -6034,10 +6945,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Arctic_Fox.webp',
     'short_description' => 'Полярная лисица, меняющая цвет меха.',
     'full_description' => "Арктическая лисица (песец) обладает густым мехом, который зимой становится белоснежным, а летом — серо-бурым.",
-    'features' => ['Вид' => 'Песец', 'Мех' => 'Зимний/летний', 'Морозостойкость' => 'Экстремальная']
-],
-[
-    'animal_id' => 413,
+     'features' =>['Вид' => 'Песец', 'Мех' => 'Зимний/летний', 'Морозостойкость' => 'Экстремальная'
+             
+             
+                 ]],['animal_breed' => 'Лисица-блестянка',
     'weight_range' => '5–9 кг',
     'height_range' => '35–48 см',
     'lifespan' => '10–12 лет',
@@ -6045,10 +6956,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Shiny_Fox.webp',
     'short_description' => 'Лисица с особенно блестящим остевым волосом.',
     'full_description' => "Лисица-блестянка отличается уникальной структурой меха, который отражает свет сильнее обычного, создавая эффект сияния.",
-    'features' => ['Особенность' => 'Сильный блеск', 'Текстура' => 'Гладкая', 'Тип' => 'Редкая']
-],
-[
-    'animal_id' => 414,
+     'features' =>['Особенность' => 'Сильный блеск', 'Текстура' => 'Гладкая', 'Тип' => 'Редкая'
+             
+             
+                 ]],['animal_breed' => 'Лисица-крестовка',
     'weight_range' => '5–8 кг',
     'height_range' => '35–46 см',
     'lifespan' => '10–12 лет',
@@ -6056,10 +6967,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Cross_Fox.webp',
     'short_description' => 'Крестовка с четко выраженным рисунком.',
     'full_description' => "Лисица-крестовка — это результат скрещивания рыжей и серебристо-черной лисиц, имеющий темные полосы в форме креста.",
-    'features' => ['Рисунок' => 'Крест', 'Происхождение' => 'Гибрид морф', 'Окрас' => 'Темно-рыжий']
-],
-[
-    'animal_id' => 415,
+     'features' =>['Рисунок' => 'Крест', 'Происхождение' => 'Гибрид морф', 'Окрас' => 'Темно-рыжий'
+             
+             
+                 ]],['animal_breed' => 'Лисица-альбинос',
     'weight_range' => '4–7 кг',
     'height_range' => '30–42 см',
     'lifespan' => '9–12 лет',
@@ -6067,10 +6978,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Albino_Fox.webp',
     'short_description' => 'Редкая лисица-альбинос с чисто-белым мехом.',
     'full_description' => "Лисица-альбинос лишена пигмента меланина, из-за чего имеет полностью белый мех и красные или розовые глаза.",
-    'features' => ['Генетика' => 'Альбинизм', 'Цвет' => 'Белый', 'Глаза' => 'Розовые/Красные']
-],
-[
-    'animal_id' => 416,
+     'features' =>['Генетика' => 'Альбинизм', 'Цвет' => 'Белый', 'Глаза' => 'Розовые/Красные'
+             
+             
+                 ]],['animal_breed' => 'Лисица-меланист',
     'weight_range' => '5–9 кг',
     'height_range' => '35–48 см',
     'lifespan' => '10–13 лет',
@@ -6078,10 +6989,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/fox/breed/Melanistic_Fox.webp',
     'short_description' => 'Полностью черная лисица.',
     'full_description' => "Лисица-меланист обладает избытком черного пигмента, что делает её мех угольно-черным без серебристых включений.",
-    'features' => ['Генетика' => 'Меланизм', 'Цвет' => 'Угольно-черный', 'Редкость' => 'Высокая']
-],
-[
-    'animal_id' => 417,
+     'features' =>['Генетика' => 'Меланизм', 'Цвет' => 'Угольно-черный', 'Редкость' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Капуцин (Cebus apella)',
     'weight_range' => '1.5–4.5 кг',
     'height_range' => '30–55 см',
     'lifespan' => '30–45 лет',
@@ -6089,10 +7000,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Capuchin.webp',
     'short_description' => 'Умная и активная обезьяна-капуцин.',
     'full_description' => "Капуцин (Cebus apella) — одна из самых сообразительных обезьян Нового Света, известная использованием орудий труда.",
-    'features' => ['Вид' => 'Cebus apella', 'Интеллект' => 'Высокий', 'Хвост' => 'Цепкий']
-],
-[
-    'animal_id' => 418,
+     'features' =>['Вид' => 'Cebus apella', 'Интеллект' => 'Высокий', 'Хвост' => 'Цепкий'
+             
+             
+                 ]],['animal_breed' => 'Макака (Macaca spp.)',
     'weight_range' => '4–15 кг',
     'height_range' => '40–70 см',
     'lifespan' => '25–30 лет',
@@ -6100,10 +7011,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Macaque.webp',
     'short_description' => 'Макака — социальный примат из Азии и Африки.',
     'full_description' => "Макака (Macaca spp.) — род приматов с очень развитой социальной структурой и способностью адаптироваться к разным средам.",
-    'features' => ['Род' => 'Macaca', 'Социальность' => 'Групповая', 'Адаптация' => 'Высокая']
-],
-[
-    'animal_id' => 419,
+     'features' =>['Род' => 'Macaca', 'Социальность' => 'Групповая', 'Адаптация' => 'Высокая'
+             
+             
+                 ]],['animal_breed' => 'Мартышка (Cercopithecus spp.)',
     'weight_range' => '2–7 кг',
     'height_range' => '35–65 см',
     'lifespan' => '20–25 лет',
@@ -6111,10 +7022,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Guenon.webp',
     'short_description' => 'Яркая и подвижная мартышка.',
     'full_description' => "Мартышка (Cercopithecus spp.) отличается длинным хвостом и яркими отметинами на морде, обитает преимущественно в лесах Африки.",
-    'features' => ['Род' => 'Cercopithecus', 'Хвост' => 'Очень длинный', 'Среда' => 'Лес']
-],
-[
-    'animal_id' => 420,
+     'features' =>['Род' => 'Cercopithecus', 'Хвост' => 'Очень длинный', 'Среда' => 'Лес'
+             
+             
+                 ]],['animal_breed' => 'Лори (Lorisidae)',
     'weight_range' => '0.3–1.5 кг',
     'height_range' => '20–40 см',
     'lifespan' => '15–20 лет',
@@ -6122,10 +7033,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Loris.webp',
     'short_description' => 'Медленный и скрытный лори.',
     'full_description' => "Лори (Lorisidae) — ночные приматы с огромными глазами, ведущие неторопливый образ жизни на деревьях.",
-    'features' => ['Семейство' => 'Lorisidae', 'Активность' => 'Ночная', 'Глаза' => 'Крупные']
-],
-[
-    'animal_id' => 421,
+     'features' =>['Семейство' => 'Lorisidae', 'Активность' => 'Ночная', 'Глаза' => 'Крупные'
+             
+             
+                 ]],['animal_breed' => 'Шимпанзе',
     'weight_range' => '40–60 кг',
     'height_range' => '100–150 см',
     'lifespan' => '35–45 лет',
@@ -6133,10 +7044,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Chimpanzee.webp',
     'short_description' => 'Один из самых близких к человеку приматов.',
     'full_description' => "Шимпанзе обладают сложным социальным поведением, развитой мимикой и способны изготавливать простейшие инструменты для добычи пищи.",
-    'features' => ['Интеллект' => 'Выдающийся', 'Сообщество' => 'Групповое', 'ДНК' => '98% сходства']
-],
-[
-    'animal_id' => 422,
+     'features' =>['Интеллект' => 'Выдающийся', 'Сообщество' => 'Групповое', 'ДНК' => '98% сходства'
+             
+             
+                 ]],['animal_breed' => 'Орангутан',
     'weight_range' => '50–100 кг',
     'height_range' => '110–150 см',
     'lifespan' => '30–40 лет',
@@ -6144,10 +7055,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Orangutan.webp',
     'short_description' => 'Крупная рыжая обезьяна, обитающая на деревьях.',
     'full_description' => "Орангутан проводит почти всю жизнь на деревьях. Отличается длинными руками и характерным красно-рыжим цветом шерсти.",
-    'features' => ['Локация' => 'Борнео/Суматра', 'Образ жизни' => 'Одиночный', 'Руки' => 'Очень длинные']
-],
-[
-    'animal_id' => 423,
+     'features' =>['Локация' => 'Борнео/Суматра', 'Образ жизни' => 'Одиночный', 'Руки' => 'Очень длинные'
+             
+             
+                 ]],['animal_breed' => 'Горилла',
     'weight_range' => '135–200 кг',
     'height_range' => '160–180 см',
     'lifespan' => '35–50 лет',
@@ -6155,10 +7066,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Gorilla.webp',
     'short_description' => 'Самый крупный и мощный представитель приматов.',
     'full_description' => "Гориллы — мирные лесные гиганты. Несмотря на огромную силу, они ведут преимущественно вегетарианский образ жизни.",
-    'features' => ['Сила' => 'Экстремальная', 'Рацион' => 'Растительный', 'Среда' => 'Тропический лес']
-],
-[
-    'animal_id' => 424,
+     'features' =>['Сила' => 'Экстремальная', 'Рацион' => 'Растительный', 'Среда' => 'Тропический лес'
+             
+             
+                 ]],['animal_breed' => 'Павиан',
     'weight_range' => '15–35 кг',
     'height_range' => '50–75 см',
     'lifespan' => '20–30 лет',
@@ -6166,10 +7077,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Baboon.webp',
     'short_description' => 'Африканская обезьяна с характерной мордой.',
     'full_description' => "Павиан (бабуин) ведет наземный образ жизни. У них очень острые клыки и жесткая иерархия внутри стада.",
-    'features' => ['Тип' => 'Наземный', 'Зубы' => 'Крупные клыки', 'Характер' => 'Агрессивный']
-],
-[
-    'animal_id' => 425,
+     'features' =>['Тип' => 'Наземный', 'Зубы' => 'Крупные клыки', 'Характер' => 'Агрессивный'
+             
+             
+                 ]],['animal_breed' => 'Тамарин',
     'weight_range' => '0.2–0.9 кг',
     'height_range' => '18–30 см',
     'lifespan' => '10–15 лет',
@@ -6177,10 +7088,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Tamarin.webp',
     'short_description' => 'Маленькая игрунковая обезьяна с необычной внешностью.',
     'full_description' => "Тамарины часто имеют причудливые «усы» или гривы. Это очень подвижные и общительные крошечные приматы.",
-    'features' => ['Размер' => 'Крошечный', 'Особенность' => 'Усы/Грива', 'Активность' => 'Дневная']
-],
-[
-    'animal_id' => 426,
+     'features' =>['Размер' => 'Крошечный', 'Особенность' => 'Усы/Грива', 'Активность' => 'Дневная'
+             
+             
+                 ]],['animal_breed' => 'Сакк',
     'weight_range' => '1.5–3 кг',
     'height_range' => '30–45 см',
     'lifespan' => '15–20 лет',
@@ -6188,10 +7099,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Saki.webp',
     'short_description' => 'Необычная обезьяна с «лицом-маской».',
     'full_description' => "Саки — скрытные обитатели лесов Южной Америки. У самцов часто встречается яркий белый мех на морде, напоминающий маску.",
-    'features' => ['Вид' => 'Бледный саки', 'Хвост' => 'Нецепкий, пушистый', 'Среда' => 'Лесной полог']
-],
-[
-    'animal_id' => 427,
+     'features' =>['Вид' => 'Бледный саки', 'Хвост' => 'Нецепкий, пушистый', 'Среда' => 'Лесной полог'
+             
+             
+                 ]],['animal_breed' => 'Мандрил',
     'weight_range' => '11–35 кг',
     'height_range' => '55–95 см',
     'lifespan' => '20–30 лет',
@@ -6199,10 +7110,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Mandrill.webp',
     'short_description' => 'Самая яркоокрашенная обезьяна в мире.',
     'full_description' => "Мандрил выделяется сине-красным окрасом морды и задней части тела. Обитает в тропических лесах Экваториальной Африки.",
-    'features' => ['Окрас' => 'Яркая морда', 'Семья' => 'Мартышковые', 'Зубы' => 'Длинные клыки']
-],
-[
-    'animal_id' => 428,
+     'features' =>['Окрас' => 'Яркая морда', 'Семья' => 'Мартышковые', 'Зубы' => 'Длинные клыки'
+             
+             
+                 ]],['animal_breed' => 'Ушастый лори',
     'weight_range' => '0.5–1.2 кг',
     'height_range' => '25–35 см',
     'lifespan' => '12–15 лет',
@@ -6210,10 +7121,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Long-eared_Loris.webp',
     'short_description' => 'Ночной примат с выразительными ушами.',
     'full_description' => "Ушастый лори ведет ночной образ жизни, охотясь на насекомых и мелких позвоночных. Уши помогают улавливать малейшие звуки.",
-    'features' => ['Слух' => 'Острый', 'Глаза' => 'Ночное зрение', 'Движения' => 'Медленные']
-],
-[
-    'animal_id' => 429,
+     'features' =>['Слух' => 'Острый', 'Глаза' => 'Ночное зрение', 'Движения' => 'Медленные'
+             
+             
+                 ]],['animal_breed' => 'Бонобо',
     'weight_range' => '30–45 кг',
     'height_range' => '70–90 см',
     'lifespan' => '35–40 лет',
@@ -6221,10 +7132,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Bonobo.webp',
     'short_description' => 'Карликовый шимпанзе, известный мирным нравом.',
     'full_description' => "Бонобо — грациозный примат, чье общество построено на матриархате и разрешении конфликтов через социальные связи, а не агрессию.",
-    'features' => ['Интеллект' => 'Высокий', 'Социум' => 'Миролюбивый', 'Сходство' => 'Ближайший родич']
-],
-[
-    'animal_id' => 430,
+     'features' =>['Интеллект' => 'Высокий', 'Социум' => 'Миролюбивый', 'Сходство' => 'Ближайший родич'
+             
+             
+                 ]],['animal_breed' => 'Саванная мартышка',
     'weight_range' => '3–6 кг',
     'height_range' => '40–55 см',
     'lifespan' => '18–25 лет',
@@ -6232,10 +7143,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Savannah_Monkey.webp',
     'short_description' => 'Ловкая мартышка открытых пространств.',
     'full_description' => "Саванная мартышка адаптирована к жизни в степях и редколесьях, обладая отличным зрением для обнаружения хищников.",
-    'features' => ['Регион' => 'Африка', 'Окрас' => 'Зеленовато-серый', 'Поведение' => 'Бдительное']
-],
-[
-    'animal_id' => 431,
+     'features' =>['Регион' => 'Африка', 'Окрас' => 'Зеленовато-серый', 'Поведение' => 'Бдительное'
+             
+             
+                 ]],['animal_breed' => 'Колобус',
     'weight_range' => '5–14 кг',
     'height_range' => '45–70 см',
     'lifespan' => '20–25 лет',
@@ -6243,10 +7154,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monkey/breed/Colobus.webp',
     'short_description' => 'Контрастная черно-белая обезьяна.',
     'full_description' => "Колобус знаменит своей длинной шелковистой шерстью и отсутствием больших пальцев на руках, что помогает быстро прыгать по ветвям.",
-    'features' => ['Цвет' => 'Черно-белый', 'Шерсть' => 'Длинная', 'Питание' => 'Листва']
-],
-[
-    'animal_id' => 432,
+     'features' =>['Цвет' => 'Черно-белый', 'Шерсть' => 'Длинная', 'Питание' => 'Листва'
+             
+             
+                 ]],['animal_breed' => 'Комодский варан',
     'weight_range' => '70–130 кг',
     'height_range' => '200–300 см',
     'lifespan' => '30–50 лет',
@@ -6254,10 +7165,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Komodo_Dragon.webp',
     'short_description' => 'Крупнейшая ящерица на планете.',
     'full_description' => "Комодский варан — высший хищник, способный охотиться на крупную добычу благодаря ядовитой слюне и мощным челюстям.",
-    'features' => ['Статус' => 'Опасный хищник', 'Длина' => 'До 3 метров', 'Оружие' => 'Яд и зубы']
-],
-[
-    'animal_id' => 433,
+     'features' =>['Статус' => 'Опасный хищник', 'Длина' => 'До 3 метров', 'Оружие' => 'Яд и зубы'
+             
+             
+                 ]],['animal_breed' => 'Полосатый варан',
     'weight_range' => '15–20 кг',
     'height_range' => '150–250 см',
     'lifespan' => '15–20 лет',
@@ -6265,10 +7176,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Water_Monitor.webp',
     'short_description' => 'Отличный пловец с характерными полосами.',
     'full_description' => "Полосатый варан ведет полуводный образ жизни, часто встречается у берегов рек и болот Юго-Восточной Азии.",
-    'features' => ['Навык' => 'Плавание', 'Узор' => 'Желтые пятна', 'Среда' => 'Прибрежная']
-],
-[
-    'animal_id' => 434,
+     'features' =>['Навык' => 'Плавание', 'Узор' => 'Желтые пятна', 'Среда' => 'Прибрежная'
+             
+             
+                 ]],['animal_breed' => 'Зелёный варан (смарагдовый)',
     'weight_range' => '0.3–0.6 кг',
     'height_range' => '70–100 см',
     'lifespan' => '10–15 лет',
@@ -6276,10 +7187,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Green_Monitor.webp',
     'short_description' => 'Ярко-зеленый древесный варан.',
     'full_description' => "Изумрудный (зеленый) варан идеально маскируется в листве тропических лесов и имеет цепкий хвост для лазания.",
-    'features' => ['Цвет' => 'Изумрудный', 'Тип' => 'Древесный', 'Хвост' => 'Цепкий']
-],
-[
-    'animal_id' => 435,
+     'features' =>['Цвет' => 'Изумрудный', 'Тип' => 'Древесный', 'Хвост' => 'Цепкий'
+             
+             
+                 ]],['animal_breed' => 'Жёлтый варан',
     'weight_range' => '0.5–1 кг',
     'height_range' => '60–90 см',
     'lifespan' => '10–15 лет',
@@ -6287,10 +7198,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Yellow_Monitor.webp',
     'short_description' => 'Варан с золотистым оттенком кожи.',
     'full_description' => "Жёлтый варан обитает в засушливых и пойменных районах Южной Азии, отличаясь характерной расцветкой чешуи.",
-    'features' => ['Окрас' => 'Желто-бурый', 'Регион' => 'Индия/Пакистан', 'Активность' => 'Дневная']
-],
-[
-    'animal_id' => 436,
+     'features' =>['Окрас' => 'Желто-бурый', 'Регион' => 'Индия/Пакистан', 'Активность' => 'Дневная'
+             
+             
+                 ]],['animal_breed' => 'Гигантский варан',
     'weight_range' => '15–25 кг',
     'height_range' => '180–240 см',
     'lifespan' => '20–25 лет',
@@ -6298,10 +7209,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Perentie_Monitor.webp',
     'short_description' => 'Гигантский варан австралийских пустынь.',
     'full_description' => "Перенти (Гигантский варан) — самая большая ящерица Австралии, способная развивать огромную скорость при беге.",
-    'features' => ['Локация' => 'Австралия', 'Скорость' => 'Высокая', 'Рисунок' => 'Пятнистый']
-],
-[
-    'animal_id' => 437,
+     'features' =>['Локация' => 'Австралия', 'Скорость' => 'Высокая', 'Рисунок' => 'Пятнистый'
+             
+             
+                 ]],['animal_breed' => 'Белогорлый варан',
     'weight_range' => '5–12 кг',
     'height_range' => '120–200 см',
     'lifespan' => '15–20 лет',
@@ -6309,10 +7220,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/White-throated_Monitor.webp',
     'short_description' => 'Массивный африканский варан.',
     'full_description' => "Белогорлый варан обладает мощным телосложением и закругленной мордой. Это один из самых умных видов варанов.",
-    'features' => ['Особенность' => 'Интеллект', 'Тело' => 'Крепкое', 'Регион' => 'Южная Африка']
-],
-[
-    'animal_id' => 438,
+     'features' =>['Особенность' => 'Интеллект', 'Тело' => 'Крепкое', 'Регион' => 'Южная Африка'
+             
+             
+                 ]],['animal_breed' => 'Пёстрый варан',
     'weight_range' => '10–20 кг',
     'height_range' => '150–210 см',
     'lifespan' => '15–20 лет',
@@ -6320,10 +7231,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Lace_Monitor.webp',
     'short_description' => 'Красивый пестрый варан из Австралии.',
     'full_description' => "Пёстрый варан часто взбирается на деревья в поисках пищи (яиц и птиц). Имеет выразительный темный узор с полосами.",
-    'features' => ['Рисунок' => 'Сетчатый', 'Умение' => 'Лазание', 'Питание' => 'Всеядный']
-],
-[
-    'animal_id' => 439,
+     'features' =>['Рисунок' => 'Сетчатый', 'Умение' => 'Лазание', 'Питание' => 'Всеядный'
+             
+             
+                 ]],['animal_breed' => 'Варан Шлегеля',
     'weight_range' => '0.2–0.5 кг',
     'height_range' => '60–85 см',
     'lifespan' => '10–13 лет',
@@ -6331,10 +7242,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Schlegels_Monitor.webp',
     'short_description' => 'Редкий варан Шлегеля.',
     'full_description' => "Варан Шлегеля — небольшая скрытная ящерица, обитающая на островах Индонезии, названа в честь зоолога Германа Шлегеля.",
-    'features' => ['Редкость' => 'Высокая', 'Размер' => 'Средний', 'Среда' => 'Тропики']
-],
-[
-    'animal_id' => 440,
+     'features' =>['Редкость' => 'Высокая', 'Размер' => 'Средний', 'Среда' => 'Тропики'
+             
+             
+                 ]],['animal_breed' => 'Капский варан',
     'weight_range' => '3–6 кг',
     'height_range' => '80–120 см',
     'lifespan' => '12–18 лет',
@@ -6342,10 +7253,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Savannah_Monitor.webp',
     'short_description' => 'Популярный домашний капский варан.',
     'full_description' => "Капский (степной) варан — спокойный вид, обитающий в Африке. В природе питается преимущественно насекомыми и моллюсками.",
-    'features' => ['Характер' => 'Спокойный', 'Тело' => 'Коренастое', 'Питание' => 'Инсектоядный']
-],
-[
-    'animal_id' => 441,
+     'features' =>['Характер' => 'Спокойный', 'Тело' => 'Коренастое', 'Питание' => 'Инсектоядный'
+             
+             
+                 ]],['animal_breed' => 'Нильский варан',
     'weight_range' => '6–15 кг',
     'height_range' => '140–220 см',
     'lifespan' => '15–20 лет',
@@ -6353,10 +7264,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Nile_Monitor.webp',
     'short_description' => 'Агрессивный прибрежный хищник.',
     'full_description' => "Нильский варан — отличный пловец с сильным хвостом и острыми когтями, обитающий по берегам рек почти по всей Африке.",
-    'features' => ['Хвост' => 'Сжат с боков', 'Нрав' => 'Боевой', 'Стихия' => 'Вода/Суша']
-],
-[
-    'animal_id' => 442,
+     'features' =>['Хвост' => 'Сжат с боков', 'Нрав' => 'Боевой', 'Стихия' => 'Вода/Суша'
+             
+             
+                 ]],['animal_breed' => 'Серый варан',
     'weight_range' => '1–3 кг',
     'height_range' => '100–150 см',
     'lifespan' => '12–15 лет',
@@ -6364,10 +7275,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Grey_Monitor.webp',
     'short_description' => 'Варан пустынь и полупустынь.',
     'full_description' => "Серый варан распространен в Средней Азии и Северной Африке. Активен днем, быстро бегает по песку.",
-    'features' => ['Среда' => 'Пустыня', 'Окрас' => 'Маскировочный', 'Активность' => 'Дневная']
-],
-[
-    'animal_id' => 443,
+     'features' =>['Среда' => 'Пустыня', 'Окрас' => 'Маскировочный', 'Активность' => 'Дневная'
+             
+             
+                 ]],['animal_breed' => 'Кольцехвостый варан',
     'weight_range' => '0.1–0.3 кг',
     'height_range' => '30–50 см',
     'lifespan' => '10–12 лет',
@@ -6375,10 +7286,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Ridge-tailed_Monitor.webp',
     'short_description' => 'Карликовый варан с шипастым хвостом.',
     'full_description' => "Кольцехвостый варан — небольшая ящерица из Австралии, использующая свой хвост с колючей чешуей для защиты в расщелинах скал.",
-    'features' => ['Размер' => 'Карликовый', 'Хвост' => 'Колючий', 'Локация' => 'Скалы']
-],
-[
-    'animal_id' => 444,
+     'features' =>['Размер' => 'Карликовый', 'Хвост' => 'Колючий', 'Локация' => 'Скалы'
+             
+             
+                 ]],['animal_breed' => 'Черноголовый варан',
     'weight_range' => '0.1–0.2 кг',
     'height_range' => '25–40 см',
     'lifespan' => '8–12 лет',
@@ -6386,10 +7297,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Black-headed_Monitor.webp',
     'short_description' => 'Маленький варан с темной головой.',
     'full_description' => "Черноголовый варан ведет древесный образ жизни в северной Австралии. Очень юркий и скрытный охотник.",
-    'features' => ['Голова' => 'Черная', 'Тип' => 'Древесный', 'Размер' => 'Мелкий']
-],
-[
-    'animal_id' => 445,
+     'features' =>['Голова' => 'Черная', 'Тип' => 'Древесный', 'Размер' => 'Мелкий'
+             
+             
+                 ]],['animal_breed' => 'Варан Гульда',
     'weight_range' => '3–6 кг',
     'height_range' => '120–160 см',
     'lifespan' => '12–15 лет',
@@ -6397,10 +7308,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Goulds_Monitor.webp',
     'short_description' => 'Варан Гульда (песчаный варан).',
     'full_description' => "Варан Гульда часто встает на задние лапы (поза «треноги»), чтобы осмотреть окрестности в поисках добычи или врагов.",
-    'features' => ['Стойка' => 'Тренога', 'Почва' => 'Песчаная', 'Локация' => 'Австралия']
-],
-[
-    'animal_id' => 446,
+     'features' =>['Стойка' => 'Тренога', 'Почва' => 'Песчаная', 'Локация' => 'Австралия'
+             
+             
+                 ]],['animal_breed' => 'Варан Мертенса',
     'weight_range' => '2–5 кг',
     'height_range' => '100–130 см',
     'lifespan' => '12–15 лет',
@@ -6408,10 +7319,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Mertens_Monitor.webp',
     'short_description' => 'Водный варан Мертенса.',
     'full_description' => "Варан Мертенса проводит большую часть времени в воде. Его ноздри расположены сверху морды, что позволяет дышать, почти не высовываясь.",
-    'features' => ['Стихия' => 'Вода', 'Ноздри' => 'Клапанные', 'Питание' => 'Рыба/Раки']
-],
-[
-    'animal_id' => 447,
+     'features' =>['Стихия' => 'Вода', 'Ноздри' => 'Клапанные', 'Питание' => 'Рыба/Раки'
+             
+             
+                 ]],['animal_breed' => 'Тиморский варан',
     'weight_range' => '0.1–0.3 кг',
     'height_range' => '40–60 см',
     'lifespan' => '10–12 лет',
@@ -6419,10 +7330,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Timor_Monitor.webp',
     'short_description' => 'Небольшой и скрытный тиморский варан.',
     'full_description' => "Тиморский варан — древесный вид, обитающий на острове Тимор. Имеет красивый пятнистый узор и ведет дневной образ жизни.",
-    'features' => ['Тип' => 'Древесный', 'Узор' => 'Глазчатые пятна', 'Размер' => 'Компактный']
-],
-[
-    'animal_id' => 448,
+     'features' =>['Тип' => 'Древесный', 'Узор' => 'Глазчатые пятна', 'Размер' => 'Компактный'
+             
+             
+                 ]],['animal_breed' => 'Береговой варан',
     'weight_range' => '0.5–1.5 кг',
     'height_range' => '80–110 см',
     'lifespan' => '12–15 лет',
@@ -6430,10 +7341,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Coastal_Monitor.webp',
     'short_description' => 'Варан, обитающий в прибрежных мангровых зарослях.',
     'full_description' => "Береговой (мангровый) варан — отличный пловец и древолаз. Питается рыбой, крабами и мелкими млекопитающими.",
-    'features' => ['Среда' => 'Манглы', 'Навык' => 'Универсальный охотник', 'Хвост' => 'Сильный']
-],
-[
-    'animal_id' => 449,
+     'features' =>['Среда' => 'Манглы', 'Навык' => 'Универсальный охотник', 'Хвост' => 'Сильный'
+             
+             
+                 ]],['animal_breed' => 'Короткохвостый варан',
     'weight_range' => '0.05–0.1 кг',
     'height_range' => '20–25 см',
     'lifespan' => '8–10 лет',
@@ -6441,10 +7352,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Short-tailed_Monitor.webp',
     'short_description' => 'Самый маленький варан в мире.',
     'full_description' => "Короткохвостый варан — крошечный обитатель австралийских пустынь. Его размер редко превышает 25 см вместе с хвостом.",
-    'features' => ['Рекорд' => 'Минимальный размер', 'Локация' => 'Австралия', 'Тип' => 'Копающий']
-],
-[
-    'animal_id' => 450,
+     'features' =>['Рекорд' => 'Минимальный размер', 'Локация' => 'Австралия', 'Тип' => 'Копающий'
+             
+             
+                 ]],['animal_breed' => 'Пустынный варан',
     'weight_range' => '1–2 кг',
     'height_range' => '80–120 см',
     'lifespan' => '12–15 лет',
@@ -6452,10 +7363,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Desert_Monitor.webp',
     'short_description' => 'Пустынный варан, адаптированный к жаре.',
     'full_description' => "Пустынный варан обладает светлым песочным окрасом и способен долгое время обходиться без воды, получая влагу из пищи.",
-    'features' => ['Климат' => 'Аридный', 'Окрас' => 'Песочный', 'Активность' => 'Дневная']
-],
-[
-    'animal_id' => 451,
+     'features' =>['Климат' => 'Аридный', 'Окрас' => 'Песочный', 'Активность' => 'Дневная'
+             
+             
+                 ]],['animal_breed' => 'Варан Дюмериля',
     'weight_range' => '0.8–1.5 кг',
     'height_range' => '100–130 см',
     'lifespan' => '12–15 лет',
@@ -6463,10 +7374,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/monitor/breed/Dumerils_Monitor.webp',
     'short_description' => 'Варан Дюмериля, мастер маскировки.',
     'full_description' => "Этот вид варанов обитает в Юго-Восточной Азии. Известен своей способностью питаться крабами и менять окраску головы в зависимости от возраста.",
-    'features' => ['Рацион' => 'Специализируется на крабах', 'Среда' => 'Тропические леса', 'Особенность' => 'Древесно-водный']
-],
-[
-    'animal_id' => 452,
+     'features' =>['Рацион' => 'Специализируется на крабах', 'Среда' => 'Тропические леса', 'Особенность' => 'Древесно-водный'
+             
+             
+                 ]],['animal_breed' => 'Серый волк (Canis lupus)',
     'weight_range' => '30–65 кг',
     'height_range' => '80–90 см (в холке)',
     'lifespan' => '10–15 лет',
@@ -6474,10 +7385,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Grey_Wolf.webp',
     'short_description' => 'Классический лесной хищник.',
     'full_description' => "Серый волк — это умное и социальное животное, живущее в стаях. Является предком всех домашних собак и играет ключевую роль в экосистеме.",
-    'features' => ['Социум' => 'Стайный образ жизни', 'Интеллект' => 'Высокий', 'Вид' => 'Canis lupus']
-],
-[
-    'animal_id' => 453,
+     'features' =>['Социум' => 'Стайный образ жизни', 'Интеллект' => 'Высокий', 'Вид' => 'Canis lupus'
+             
+             
+                 ]],['animal_breed' => 'Арктический волк',
     'weight_range' => '45–70 кг',
     'height_range' => '65–80 см (в холке)',
     'lifespan' => '7–10 лет',
@@ -6485,10 +7396,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Arctic_Wolf.webp',
     'short_description' => 'Белоснежный обитатель Крайнего Севера.',
     'full_description' => "Арктический волк идеально приспособлен к жизни в экстремально низких температурах. Его густой белый мех обеспечивает отличную маскировку в снегах.",
-    'features' => ['Окрас' => 'Белоснежный', 'Среда' => 'Тундра/Арктика', 'Стойкость' => 'Морозоустойчив']
-],
-[
-    'animal_id' => 454,
+     'features' =>['Окрас' => 'Белоснежный', 'Среда' => 'Тундра/Арктика', 'Стойкость' => 'Морозоустойчив'
+             
+             
+                 ]],['animal_breed' => 'Альпийский волк',
     'weight_range' => '25–40 кг',
     'height_range' => '60–75 см (в холке)',
     'lifespan' => '10–13 лет',
@@ -6496,10 +7407,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Alpine_Wolf.webp',
     'short_description' => 'Ловкий хищник горных массивов.',
     'full_description' => "Альпийский волк обитает в труднодоступных горных районах. Он обладает мощными лапами для передвижения по крутым склонам и скалам.",
-    'features' => ['Локация' => 'Горы Европы', 'Выносливость' => 'Высокая', 'Окрас' => 'Серо-рыжеватый']
-],
-[
-    'animal_id' => 455,
+     'features' =>['Локация' => 'Горы Европы', 'Выносливость' => 'Высокая', 'Окрас' => 'Серо-рыжеватый'
+             
+             
+                 ]],['animal_breed' => 'Итальянский волк',
     'weight_range' => '25–35 кг',
     'height_range' => '50–70 см (в холке)',
     'lifespan' => '10–14 лет',
@@ -6507,10 +7418,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Italian_Wolf.webp',
     'short_description' => 'Национальное животное Италии.',
     'full_description' => "Итальянский волк — подвид серого волка, обитающий в Апеннинских горах. Отличается более стройным телосложением и уникальной генетикой.",
-    'features' => ['Регион' => 'Апеннины', 'Статус' => 'Охраняемый', 'Тип' => 'Среднеразмерный']
-],
-[
-    'animal_id' => 456,
+     'features' =>['Регион' => 'Апеннины', 'Статус' => 'Охраняемый', 'Тип' => 'Среднеразмерный'
+             
+             
+                 ]],['animal_breed' => 'Мексиканский волк',
     'weight_range' => '25–45 кг',
     'height_range' => '60–80 см (в холке)',
     'lifespan' => '10–15 лет',
@@ -6518,10 +7429,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Mexican_Wolf.webp',
     'short_description' => 'Редкий подвид волка из Северной Америки.',
     'full_description' => "Мексиканский волк — самый мелкий и редкий подвид серого волка в Северной Америке. Находится под строгой защитой из-за угрозы исчезновения.",
-    'features' => ['Редкость' => 'Крайне высокая', 'Размер' => 'Мелкий подвид', 'Окрас' => 'Пестрый/Рыжеватый']
-],
-[
-    'animal_id' => 457,
+     'features' =>['Редкость' => 'Крайне высокая', 'Размер' => 'Мелкий подвид', 'Окрас' => 'Пестрый/Рыжеватый'
+             
+             
+                 ]],['animal_breed' => 'Красный волк (Canis rufus)',
     'weight_range' => '20–40 кг',
     'height_range' => '65–80 см (в холке)',
     'lifespan' => '8–12 лет',
@@ -6529,10 +7440,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Red_Wolf.webp',
     'short_description' => 'Рыжий волк, балансирующий на грани вымирания.',
     'full_description' => "Красный (рыжий) волк морфологически занимает промежуточное положение между койотом и серым волком. Имеет характерный рыжевато-коричневый окрас.",
-    'features' => ['Вид' => 'Canis rufus', 'Окрас' => 'Рыжий', 'Статус' => 'На грани исчезновения']
-],
-[
-    'animal_id' => 458,
+     'features' =>['Вид' => 'Canis rufus', 'Окрас' => 'Рыжий', 'Статус' => 'На грани исчезновения'
+             
+             
+                 ]],['animal_breed' => 'Берингово-чукотский волк',
     'weight_range' => '40–60 кг',
     'height_range' => '75–85 см (в холке)',
     'lifespan' => '10–12 лет',
@@ -6540,10 +7451,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Beringian_Wolf.webp',
     'short_description' => 'Мощный хищник северных широт.',
     'full_description' => "Берингово-чукотский волк приспособлен к суровому климату Чукотки и Камчатки. Обладает очень крупными размерами и густой шерстью.",
-    'features' => ['Размер' => 'Крупный', 'Шерсть' => 'Очень плотная', 'Регион' => 'Дальний Восток']
-],
-[
-    'animal_id' => 459,
+     'features' =>['Размер' => 'Крупный', 'Шерсть' => 'Очень плотная', 'Регион' => 'Дальний Восток'
+             
+             
+                 ]],['animal_breed' => 'Хищный волк (рабочее название, гибрид с собакой)',
     'weight_range' => '30–50 кг',
     'height_range' => '60–75 см (в холке)',
     'lifespan' => '10–15 лет',
@@ -6551,10 +7462,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Wolf_Hybrid.webp',
     'short_description' => 'Гибрид волка и собаки (Волкособ).',
     'full_description' => "Хищный волк — рабочее название для гибридов первого или последующих поколений. Сочетает физическую мощь дикого волка и преданность собаки.",
-    'features' => ['Генетика' => 'Гибрид', 'Характер' => 'Непредсказуемый', 'Выносливость' => 'Экстремальная']
-],
-[
-    'animal_id' => 460,
+     'features' =>['Генетика' => 'Гибрид', 'Характер' => 'Непредсказуемый', 'Выносливость' => 'Экстремальная'
+             
+             
+                 ]],['animal_breed' => 'Таймырский волк',
     'weight_range' => '35–55 кг',
     'height_range' => '70–85 см (в холке)',
     'lifespan' => '10–14 лет',
@@ -6562,10 +7473,10 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/wolf/breed/Taimyr_Wolf.webp',
     'short_description' => 'Таймырский волк, следующий за оленями.',
     'full_description' => "Обитатель полуострова Таймыр. Этот волк совершает длительные сезонные миграции вслед за стадами диких северных оленей.",
-    'features' => ['Поведение' => 'Кочевое', 'Среда' => 'Арктическая тундра', 'Добыча' => 'Северный олень']
-],
-[
-    'animal_id' => 460,
+     'features' =>['Поведение' => 'Кочевое', 'Среда' => 'Арктическая тундра', 'Добыча' => 'Северный олень'
+             
+             
+                 ]],['animal_breed' => 'Таймырский волк',
     'weight_range' => '30–50 кг',
     'height_range' => '70–90 см',
     'lifespan' => '10–14 лет',
@@ -6573,17 +7484,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/mammal/breed/Taimyr_wolf.webp',
     'short_description' => 'Крупный северный волк.',
     'full_description' => "Таймырский волк — подвид серого волка. \n\nОтличается выносливостью и густым мехом.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Хищник',
         'Линька' => 'Сильная',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Средняя',
         'Особенности' => 'Живёт в холоде'
-    ]
-],
-
-[
-    'animal_id' => 461,
+             
+             
+                 ]],['animal_breed' => 'Монарх (Danaus plexippus)',
     'weight_range' => '0.3–0.7 г',
     'height_range' => '8–10 см',
     'lifespan' => '2–6 недель',
@@ -6591,17 +7500,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Monarch_butterfly.webp',
     'short_description' => 'Известная мигрирующая бабочка.',
     'full_description' => "Монарх — знаменит своими миграциями. \n\nПреодолевает тысячи километров.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Дальние миграции'
-    ]
-],
-
-[
-    'animal_id' => 462,
+             
+             
+                 ]],['animal_breed' => 'Капустница (Pieris brassicae)',
     'weight_range' => '0.2–0.5 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–3 недели',
@@ -6609,17 +7516,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Cabbage_white.webp',
     'short_description' => 'Белая бабочка-вредитель.',
     'full_description' => "Капустница — часто встречается на огородах. \n\nЕё гусеницы вредят растениям.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Вредитель'
-    ]
-],
-
-[
-    'animal_id' => 463,
+             
+             
+                 ]],['animal_breed' => 'Адмирал (Vanessa atalanta)',
     'weight_range' => '0.3–0.6 г',
     'height_range' => '6–8 см',
     'lifespan' => '2–4 недели',
@@ -6627,17 +7532,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Red_admiral.webp',
     'short_description' => 'Яркая бабочка с красными полосами.',
     'full_description' => "Адмирал — красивая и заметная бабочка. \n\nЧасто встречается в садах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Контрастный окрас'
-    ]
-],
-
-[
-    'animal_id' => 464,
+             
+             
+                 ]],['animal_breed' => 'Красный махаон (Papilio machaon)',
     'weight_range' => '0.4–0.8 г',
     'height_range' => '8–9 см',
     'lifespan' => '2–3 недели',
@@ -6645,17 +7548,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Swallowtail.webp',
     'short_description' => 'Крупная бабочка с хвостиками на крыльях.',
     'full_description' => "Красный махаон — одна из самых красивых бабочек. \n\nОбитает на лугах и полях.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Крупный размер'
-    ]
-],
-
-[
-    'animal_id' => 465,
+             
+             
+                 ]],['animal_breed' => 'Бражник винный (Deilephila porcellus)',
     'weight_range' => '1–2 г',
     'height_range' => '6–7 см',
     'lifespan' => '2–4 недели',
@@ -6663,17 +7564,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Wine_hawk_moth.webp',
     'short_description' => 'Ночная бабочка с розовым оттенком.',
     'full_description' => "Бражник винный — активен ночью. \n\nИмеет яркий окрас.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Ночной образ жизни'
-    ]
-],
-
-[
-    'animal_id' => 466,
+             
+             
+                 ]],['animal_breed' => 'Бражник тутового шелкопряда (Acherontia atropos)',
     'weight_range' => '2–5 г',
     'height_range' => '10–13 см',
     'lifespan' => '2–3 недели',
@@ -6681,17 +7580,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Death_head_moth.webp',
     'short_description' => 'Бабочка с рисунком «черепа».',
     'full_description' => "Бражник мёртвая голова — известен своим рисунком. \n\nВызывает интерес своим видом.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Рисунок черепа'
-    ]
-],
-
-[
-    'animal_id' => 467,
+             
+             
+                 ]],['animal_breed' => 'Павлиноглазка (Aglia tau)',
     'weight_range' => '1–3 г',
     'height_range' => '6–9 см',
     'lifespan' => '2–3 недели',
@@ -6699,17 +7596,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Peacock_moth.webp',
     'short_description' => 'Бабочка с «глазами» на крыльях.',
     'full_description' => "Павлиноглазка — защищается с помощью рисунка. \n\nОтпугивает хищников.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Глазки на крыльях'
-    ]
-],
-
-[
-    'animal_id' => 468,
+             
+             
+                 ]],['animal_breed' => 'Ночной павлиний глаз (Saturnia pyri)',
     'weight_range' => '2–6 г',
     'height_range' => '12–15 см',
     'lifespan' => '1–2 недели',
@@ -6717,17 +7612,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Night_peacock.webp',
     'short_description' => 'Крупная ночная бабочка.',
     'full_description' => "Ночной павлиний глаз — одна из крупнейших бабочек. \n\nАктивна ночью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Крупные размеры'
-    ]
-],
-
-[
-    'animal_id' => 469,
+             
+             
+                 ]],['animal_breed' => 'Аполлон (Parnassius apollo)',
     'weight_range' => '0.3–0.7 г',
     'height_range' => '7–9 см',
     'lifespan' => '2–4 недели',
@@ -6735,17 +7628,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Apollo_butterfly.webp',
     'short_description' => 'Редкая белая бабочка с красными пятнами.',
     'full_description' => "Аполлон — редкий и охраняемый вид. \n\nОбитает в горах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Редкий вид'
-    ]
-],
-
-[
-    'animal_id' => 470,
+             
+             
+                 ]],['animal_breed' => 'Данаида хризипп (Danaus chrysippus)',
     'weight_range' => '0.3–0.6 г',
     'height_range' => '8–10 см',
     'lifespan' => '2–5 недель',
@@ -6753,17 +7644,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Chrysippus_butterfly.webp',
     'short_description' => 'Яркая оранжевая бабочка.',
     'full_description' => "Данаида хризипп — тропическая бабочка. \n\nИзвестна ярким окрасом.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Яркий цвет'
-    ]
-],
-
-[
-    'animal_id' => 471,
+             
+             
+                 ]],['animal_breed' => 'Белянка (Artogeia napi)',
     'weight_range' => '0.2–0.4 г',
     'height_range' => '5–6 см',
     'lifespan' => '2–3 недели',
@@ -6771,17 +7660,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/White_butterfly.webp',
     'short_description' => 'Небольшая светлая бабочка.',
     'full_description' => "Белянка — распространённая бабочка. \n\nОбитает в садах и полях.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Светлый окрас'
-    ]
-],
-
-[
-    'animal_id' => 472,
+             
+             
+                 ]],['animal_breed' => 'Лимонница (Gonepteryx rhamni)',
     'weight_range' => '0.2–0.4 г',
     'height_range' => '4–5 см',
     'lifespan' => '2–3 недели',
@@ -6789,17 +7676,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Brimstone_butterfly.webp',
     'short_description' => 'Жёлтая бабочка с острыми крыльями.',
     'full_description' => "Лимонница — одна из первых весенних бабочек. \n\nОтличается ярким цветом.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Ранний вылет'
-    ]
-],
-
-[
-    'animal_id' => 473,
+             
+             
+                 ]],['animal_breed' => 'Синяя (Polyommatus icarus)',
     'weight_range' => '0.1–0.3 г',
     'height_range' => '3–4 см',
     'lifespan' => '2–3 недели',
@@ -6807,17 +7692,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Common_blue.webp',
     'short_description' => 'Маленькая голубая бабочка.',
     'full_description' => "Синяя — мелкая и яркая бабочка. \n\nЧасто встречается на лугах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Голубой цвет'
-    ]
-],
-
-[
-    'animal_id' => 474,
+             
+             
+                 ]],['animal_breed' => 'Голубянка',
     'weight_range' => '0.1–0.3 г',
     'height_range' => '2–4 см',
     'lifespan' => '2–3 недели',
@@ -6825,17 +7708,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Blue_butterfly.webp',
     'short_description' => 'Небольшая бабочка голубых оттенков.',
     'full_description' => "Голубянка — распространённая группа бабочек. \n\nОтличается яркими крыльями.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Яркий цвет'
-    ]
-],
-
-[
-    'animal_id' => 475,
+             
+             
+                 ]],['animal_breed' => 'Медведица',
     'weight_range' => '1–3 г',
     'height_range' => '4–6 см',
     'lifespan' => '2–4 недели',
@@ -6843,16 +7724,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Tiger_moth.webp',
     'short_description' => 'Пёстрая ночная бабочка.',
     'full_description' => "Медведица — яркая ночная бабочка. \n\nОтличается пёстрым окрасом.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Пёстрый окрас'
-    ]
-],
-[
-    'animal_id' => 476,
+             
+             
+                 ]],['animal_breed' => 'Крапивница',
     'weight_range' => '0.2–0.5 г',
     'height_range' => '4–6 см',
     'lifespan' => '2–4 недели',
@@ -6860,17 +7740,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Tortoiseshell_butterfly.webp',
     'short_description' => 'Яркая бабочка с оранжево-чёрным узором.',
     'full_description' => "Крапивница — распространённая бабочка. \n\nПитается нектаром и часто встречается в садах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Яркий окрас'
-    ]
-],
-
-[
-    'animal_id' => 477,
+             
+             
+                 ]],['animal_breed' => 'Траурница',
     'weight_range' => '0.3–0.6 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–3 недели',
@@ -6878,17 +7756,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Mourning_cloak.webp',
     'short_description' => 'Тёмная бабочка со светлой каймой.',
     'full_description' => "Траурница — узнаваема по тёмным крыльям. \n\nЧасто встречается в лесах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Контрастная окраска'
-    ]
-],
-
-[
-    'animal_id' => 478,
+             
+             
+                 ]],['animal_breed' => 'Лесной хвостоносец',
     'weight_range' => '0.2–0.4 г',
     'height_range' => '6–8 см',
     'lifespan' => '2–3 недели',
@@ -6896,17 +7772,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Forest_swallowtail.webp',
     'short_description' => 'Крупная бабочка с хвостиками на крыльях.',
     'full_description' => "Лесной хвостоносец — элегантная бабочка. \n\nОбитает в лесах и на полянах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Хвостики на крыльях'
-    ]
-],
-
-[
-    'animal_id' => 479,
+             
+             
+                 ]],['animal_breed' => 'Пяденица',
     'weight_range' => '0.1–0.3 г',
     'height_range' => '2–4 см',
     'lifespan' => '1–2 недели',
@@ -6914,17 +7788,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Moth.webp',
     'short_description' => 'Ночная бабочка с неброской окраской.',
     'full_description' => "Пяденица — ночная бабочка. \n\nАктивна в тёмное время суток.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Ночная активность'
-    ]
-],
-
-[
-    'animal_id' => 480,
+             
+             
+                 ]],['animal_breed' => 'Совка',
     'weight_range' => '0.2–0.5 г',
     'height_range' => '3–5 см',
     'lifespan' => '2–3 недели',
@@ -6932,17 +7804,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Owlet_moth.webp',
     'short_description' => 'Ночная бабочка с плотным телом.',
     'full_description' => "Совка — распространённая ночная бабочка. \n\nМожет быть вредителем сельского хозяйства.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть (метаморфоз)',
         'Активность' => 'Низкая',
         'Обучаемость' => 'Отсутствует',
         'Особенности' => 'Активна ночью'
-    ]
-],
-
-[
-    'animal_id' => 481,
+             
+             
+                 ]],['animal_breed' => 'Messor structor (степной муравей-жнец)',
     'weight_range' => '5–10 мг',
     'height_range' => '4–6 мм',
     'lifespan' => '1–3 года',
@@ -6950,17 +7820,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Messor_structor.webp',
     'short_description' => 'Муравей, собирающий семена.',
     'full_description' => "Messor structor — степной муравей-жнец. \n\nПитается семенами и создаёт крупные колонии.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Собирает семена'
-    ]
-],
-
-[
-    'animal_id' => 482,
+             
+             
+                 ]],['animal_breed' => 'Lasius niger (чёрный садовый муравей)',
     'weight_range' => '2–5 мг',
     'height_range' => '3–5 мм',
     'lifespan' => '1–2 года',
@@ -6968,17 +7836,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Lasius_niger.webp',
     'short_description' => 'Чёрный садовый муравей.',
     'full_description' => "Lasius niger — один из самых распространённых видов. \n\nОбитает рядом с человеком.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Живёт рядом с людьми'
-    ]
-],
-
-[
-    'animal_id' => 483,
+             
+             
+                 ]],['animal_breed' => 'Formica rufa (рыжий лесной муравей)',
     'weight_range' => '5–10 мг',
     'height_range' => '6–9 мм',
     'lifespan' => '2–3 года',
@@ -6986,17 +7852,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Formica_rufa.webp',
     'short_description' => 'Крупный лесной муравей.',
     'full_description' => "Formica rufa — рыжий лесной муравей. \n\nСтроит большие муравейники.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Крупные муравейники'
-    ]
-],
-
-[
-    'animal_id' => 484,
+             
+             
+                 ]],['animal_breed' => 'Myrmica rubra (рыжая муравьиная огнёвка)',
     'weight_range' => '3–6 мг',
     'height_range' => '4–6 мм',
     'lifespan' => '1–2 года',
@@ -7004,17 +7868,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Myrmica_rubra.webp',
     'short_description' => 'Муравей с болезненным укусом.',
     'full_description' => "Myrmica rubra — известен как огнёвка. \n\nМожет болезненно жалить.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Болезненный укус'
-    ]
-],
-
-[
-    'animal_id' => 485,
+             
+             
+                 ]],['animal_breed' => 'Camponotus pennsylvanicus (чёрный лесной муравей)',
     'weight_range' => '10–20 мг',
     'height_range' => '6–13 мм',
     'lifespan' => '2–5 лет',
@@ -7022,17 +7884,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Camponotus_pennsylvanicus.webp',
     'short_description' => 'Крупный чёрный муравей.',
     'full_description' => "Camponotus pennsylvanicus — древесный муравей. \n\nСтроит гнёзда в древесине.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Живёт в древесине'
-    ]
-],
-
-[
-    'animal_id' => 486,
+             
+             
+                 ]],['animal_breed' => 'Camponotus herculeanus (гигантский муравей)',
     'weight_range' => '15–25 мг',
     'height_range' => '10–15 мм',
     'lifespan' => '3–6 лет',
@@ -7040,17 +7900,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Camponotus_herculeanus.webp',
     'short_description' => 'Крупный муравей северных лесов.',
     'full_description' => "Camponotus herculeanus — гигантский муравей. \n\nОбитает в холодных регионах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Крупный размер'
-    ]
-],
-
-[
-    'animal_id' => 487,
+             
+             
+                 ]],['animal_breed' => 'Pheidole megacephala (головач)',
     'weight_range' => '20–40 мг',
     'height_range' => '8–12 мм',
     'lifespan' => '2–4 года',
@@ -7058,17 +7916,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Pheidole_megacephala.webp',
     'short_description' => 'Муравей с крупной головой.',
     'full_description' => "Pheidole megacephala — имеет касту солдат с большой головой. \n\nОчень организованная колония.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Крупная голова'
-    ]
-],
-
-[
-    'animal_id' => 488,
+             
+             
+                 ]],['animal_breed' => 'Tetramorium caespitum (муравей-пастушок)',
     'weight_range' => '5–15 мг',
     'height_range' => '3–6 мм',
     'lifespan' => '1–3 года',
@@ -7076,17 +7932,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Tetramorium_caespitum.webp',
     'short_description' => 'Муравей-пастушок.',
     'full_description' => "Tetramorium caespitum — разводит тлю ради сладких выделений. \n\nЧасто встречается в городах.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Средняя',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Разводит тлю'
-    ]
-],
-
-[
-    'animal_id' => 489,
+             
+             
+                 ]],['animal_breed' => 'Solenopsis invicta (огневка-мирмика)',
     'weight_range' => '3–10 мг',
     'height_range' => '3–6 мм',
     'lifespan' => '1–3 года',
@@ -7094,17 +7948,15 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Solenopsis_invicta.webp',
     'short_description' => 'Агрессивный муравей с ядовитым укусом.',
     'full_description' => "Solenopsis invicta — огненный муравей. \n\nИзвестен своей агрессивностью.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Очень высокая',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Ядовитый укус'
-    ]
-],
-
-[
-    'animal_id' => 490,
+             
+             
+                 ]],['animal_breed' => 'Atta cephalotes (листорез-атта)',
     'weight_range' => '10–20 мг',
     'height_range' => '5–15 мм',
     'lifespan' => '3–10 лет',
@@ -7112,35 +7964,59 @@ class AnimalDetailsSeeder extends Seeder
     'photo' => 'animal/insect/breed/Atta_cephalotes.webp',
     'short_description' => 'Муравей, вырезающий листья.',
     'full_description' => "Atta cephalotes — листорез. \n\nИспользует листья для выращивания грибов.",
-    'features' => [
+     'features' =>[
         'Тип' => 'Насекомое',
         'Линька' => 'Есть',
         'Активность' => 'Высокая',
         'Обучаемость' => 'Коллективная',
         'Особенности' => 'Выращивает грибы'
-    ]
-]
-        ];
-
+             
+             
+                 ]],['animal_breed' => 'Кангал (анатолийская овчарка)',
+    'weight_range' => '40–65 кг',
+    'height_range' => '71–81 см',
+    'lifespan' => '12–15 лет',
+    'type' => 'Служебная',
+    'photo' => 'animal/dog/breed/Kangal.webp',
+    'short_description' => 'Мощная охранная собака, одна из самых сильных в мире.',
+    'full_description' => "Кангал — древняя пастушья порода из Турции. Обладает невероятной силой, выносливостью и спокойным, но решительным характером. Известен своим защитным инстинктом и преданностью семье.",
+     'features' =>[
+        'Тип' => 'Служебная',
+        'Линька' => 'Средняя',
+        'Активность' => 'Средняя',
+        'Обучаемость' => 'Высокая',
+        'Особенности' => 'Сильнейший укус'
+             
+        ]
+                 ]
+                                ];
 foreach ($data as $index => $item) {
-    // 1. Проверка на корректность данных
-    if (!is_array($item) || !isset($item['animal_id'])) {
-        // Это выведет в консоль индекс проблемного элемента, чтобы вы могли его найти
-        $this->command->error("Ошибка в сидере! Элемент под индексом {$index} имеет неверную структуру.");
-        dump($item); // Позволит увидеть содержимое "битого" элемента
-        continue; // Пропускаем плохую запись и идем дальше
+    // 1. Ищем ID животного в таблице animals по текстовому названию из сидера
+    // Мы берем значение из 'animal_breed' и ищем его в колонке 'breed'
+    $animal = \App\Models\Animal::where('breed', $item['animal_breed'])->first();
+
+    if (!$animal) {
+        $this->command->warn("Животное с породой '{$item['animal_breed']}' не найдено в таблице animals. Пропускаем...");
+        continue;
     }
 
-    // 2. Очистка от лишних полей (типа 'type', если его нет в БД)
+    // 2. Подготавливаем данные для вставки
     $cleanData = $item;
-    unset($cleanData['type']); 
+    
+    // 3. САМЫЙ ВАЖНЫЙ МОМЕНТ:
+    // Мы заменяем текстовое название породы на числовой ID перед сохранением.
+    // Если в вашей таблице колонка называется 'animal_breed' и она типа Integer:
+    $cleanData['animal_breed'] = $animal->id; 
+    
+    // Если вы добавили колонку для вида (species), ее тоже можно подтянуть автоматом:
+    // $cleanData['animal_species'] = $animal->species;
 
-    // 3. Обновляем или создаем
-    AnimalDetail::updateOrCreate(
-        ['animal_id' => $cleanData['animal_id']],
+    // 4. Обновляем или создаем запись
+    // В качестве ключа поиска используем полученный ID
+    \App\Models\AnimalDetail::updateOrCreate(
+        ['animal_breed' => $cleanData['animal_breed']], 
         $cleanData
     );
 }
     }
-
-    }
+}

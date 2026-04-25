@@ -5,71 +5,73 @@
     {{-- Хлебные крошки --}}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
+            {{-- Используем данные из объекта $animal, чтобы всё было динамично --}}
             <li class="breadcrumb-item"><a href="{{ route('animals.index') }}" class="text-decoration-none">Категории</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('animals.breeds', ['species' => $species]) }}" class="text-decoration-none">{{ $species }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $breed }}</li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('animals.breeds', ['species' => $animal->species]) }}" class="text-decoration-none">
+                    {{ $animal->species }}
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $animal->breed }}</li>
         </ol>
     </nav>
 
     {{-- Основная карточка породы --}}
-{{-- Основная карточка породы --}}
-<div class="card border-0 shadow-sm overflow-hidden mb-5" style="border-radius: 20px;">
-    <div class="row g-0">
-        <div class="col-md-4 bg-light d-flex align-items-center justify-content-center border-end" style="min-height: 400px;">
-            @if($animal->details && $animal->details->photo)
-                <img src="{{ asset('storage/' . $animal->details->photo) }}" class="img-fluid object-fit-cover h-100" alt="{{ $breed }}">
-            @else
-                <div class="text-center text-muted">
-                    <i class="bi bi-camera" style="font-size: 4rem;"></i>
-                    <p>Фото {{ $breed }} скоро появится</p>
-                </div>
-            @endif
-        </div>
-        <div class="col-md-8">
-            <div class="card-body p-4 p-lg-5">
-                {{-- Вывод "Тип" из JSON поля features --}}
-                @if(isset($animal->details->features['Тип']))
-                    <div class="mb-3">
-                        <span class="badge bg-primary px-3 py-2" style="border-radius: 8px; font-weight: 500; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px;">
-                            {{ $animal->details->features['Тип'] }}
-                        </span>
+    <div class="card border-0 shadow-sm overflow-hidden mb-5" style="border-radius: 20px;">
+        <div class="row g-0">
+            <div class="col-md-4 bg-light d-flex align-items-center justify-content-center border-end" style="min-height: 400px;">
+                @if($animal->details && $animal->details->photo)
+                    <img src="{{ asset('storage/' . $animal->details->photo) }}" class="img-fluid object-fit-cover h-100" alt="{{ $animal->breed }}">
+                @else
+                    <div class="text-center text-muted">
+                        <i class="bi bi-camera" style="font-size: 4rem;"></i>
+                        <p>Фото {{ $animal->breed }} скоро появится</p>
                     </div>
                 @endif
-                
-                <h1 class="fw-bold mb-4 display-5">{{ $breed }}</h1>
-                
-                <div class="row g-3 mb-4">
-                    <div class="col-6 col-sm-4">
-                        <div class="p-3 border rounded-4 text-center h-100 bg-white shadow-sm">
-                            <small class="text-muted d-block mb-1">Вес</small>
-                            <span class="fw-bold text-primary">{{ $animal->details->weight_range ?? '—' }}</span>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body p-4 p-lg-5">
+                    {{-- Тип из JSON --}}
+                    @if(isset($animal->details->features['Тип']))
+                        <div class="mb-3">
+                            <span class="badge bg-primary px-3 py-2" style="border-radius: 8px; font-weight: 500; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px;">
+                                {{ $animal->details->features['Тип'] }}
+                            </span>
+                        </div>
+                    @endif
+                    
+                    <h1 class="fw-bold mb-4 display-5">{{ $animal->breed }}</h1>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-sm-4">
+                            <div class="p-3 border rounded-4 text-center h-100 bg-white shadow-sm">
+                                <small class="text-muted d-block mb-1">Вес</small>
+                                <span class="fw-bold text-primary">{{ $animal->details->weight_range ?? '—' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="p-3 border rounded-4 text-center h-100 bg-white shadow-sm">
+                                <small class="text-muted d-block mb-1">Рост</small>
+                                <span class="fw-bold text-primary">{{ $animal->details->height_range ?? '—' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="p-3 border rounded-4 text-center h-100 bg-white shadow-sm">
+                                <small class="text-muted d-block mb-1">Жизнь</small>
+                                <span class="fw-bold text-primary">{{ $animal->details->lifespan ?? '—' }}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6 col-sm-4">
-                        <div class="p-3 border rounded-4 text-center h-100 bg-white shadow-sm">
-                            <small class="text-muted d-block mb-1">Рост</small>
-                            <span class="fw-bold text-primary">{{ $animal->details->height_range ?? '—' }}</span>
+
+                    @if($animal->details && $animal->details->short_description)
+                        <div class="p-3 bg-light rounded-4 border-start border-primary border-4">
+                            <p class="mb-0 fst-italic">{{ $animal->details->short_description }}</p>
                         </div>
-                    </div>
-                    <div class="col-6 col-sm-4">
-                        <div class="p-3 border rounded-4 text-center h-100 bg-white shadow-sm">
-                            <small class="text-muted d-block mb-1">Жизнь</small>
-                            <span class="fw-bold text-primary">{{ $animal->details->lifespan ?? '—' }}</span>
-                        </div>
-                    </div>
+                    @endif
                 </div>
-
-                @if($animal->details && $animal->details->short_description)
-                    <div class="p-3 bg-light rounded-4 border-start border-primary border-4">
-                        <p class="mb-0 fst-italic">{{ $animal->details->short_description }}</p>
-                    </div>
-                @endif
-
-                {{-- Кнопки удалены --}}
             </div>
         </div>
     </div>
-</div>
 
     {{-- Описание и детали --}}
     @if($animal->details && $animal->details->full_description)
@@ -77,13 +79,14 @@
         <div class="col-lg-8">
             <h3 class="fw-bold mb-4">Особенности и характер породы</h3>
             <div class="article-text text-secondary lh-lg" style="font-size: 1.1rem;">
-{!! $animal->details->full_description !!}
+                {{-- Используем nl2br если описание без HTML тегов из сидера --}}
+                {!! nl2br(e($animal->details->full_description)) !!}
             </div>
         </div>
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm p-4 sticky-top" style="border-radius: 20px; top: 20px;">
                 <h5 class="fw-bold mb-3 border-bottom pb-2">Характеристики</h5>
-                @if($animal->details && $animal->details->features)
+                @if($animal->details && is_array($animal->details->features))
                     @foreach($animal->details->features as $key => $value)
                         <div class="d-flex justify-content-between py-2 border-bottom border-light">
                             <span class="text-muted small">{{ $key }}</span>

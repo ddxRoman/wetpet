@@ -16,9 +16,11 @@ class Animal extends Model
         return $this->hasMany(Pet::class);
     }
 
-    public function details()
+// В модели Animal
+public function details()
 {
-    return $this->hasOne(AnimalDetail::class);
+    // Второй параметр — это имя колонки в таблице animal_details
+    return $this->hasOne(AnimalDetail::class, 'animal_breed');
 }
 
 public function reviews()
