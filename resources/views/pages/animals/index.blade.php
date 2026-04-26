@@ -12,9 +12,8 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         @foreach($animalTypes as $type)
             <div class="col">
-                {{-- Ссылка ведет на каталог с фильтром по виду (оригинальное название из БД) --}}
-                <a href="{{ route('animals.breeds', ['species' => $type->species]) }}" class="text-decoration-none text-dark">
-                    <div class="card h-100 border-0 shadow-sm animal-type-card">
+                {{-- Ссылка ведет на каталог с фильтром по виду (оригинальное название из БД) --}}  
+<a href="{{ route('animals.breeds', ['species_slug' => $type->species_slug]) }}" class="text-decoration-none text-dark">                    <div class="card h-100 border-0 shadow-sm animal-type-card">
                         <div class="card-body text-center p-4">
                             <div class="animal-icon-wrapper mb-3">
                                 <img class="icon_animals" src="{{ $type->icon_url }}" alt="{{ $type->display_name }}" style="width: 50px; height: 50px; object-fit: contain;">

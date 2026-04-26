@@ -49,7 +49,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Нуждается в нагрузке'
              
              
-                 ]],['animal_breed' => 'Золотистый ретривер',
+                 ]],
+['animal_breed' => 'Золотистый ретривер',
                 'weight_range' => '25–34 кг',
                 'height_range' => '51–61 см',
                 'lifespan' => '10–12 лет',
@@ -65,7 +66,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Очень дружелюбный'
              
              
-                 ]],['animal_breed' => 'Французский бульдог',
+                 ]],
+['animal_breed' => 'Французский бульдог',
                 'weight_range' => '9–13 кг',
                 'height_range' => '28–33 см',
                 'lifespan' => '10–12 лет',
@@ -81,7 +83,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Плохо переносит жару'
              
              
-                 ]],['animal_breed' => 'Бульдог',
+                 ]],
+['animal_breed' => 'Бульдог',
                 'weight_range' => '18–25 кг',
                 'height_range' => '31–40 см',
                 'lifespan' => '8–10 лет',
@@ -97,7 +100,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Склонен к перегреву'
              
              
-                 ]],['animal_breed' => 'Пудель',
+                 ]],
+['animal_breed' => 'Пудель',
                 'weight_range' => '18–32 кг',
                 'height_range' => '45–60 см',
                 'lifespan' => '12–15 лет',
@@ -113,7 +117,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Требует стрижки'
              
              
-                 ]],['animal_breed' => 'Бигль',
+                 ]],
+['animal_breed' => 'Бигль',
                 'weight_range' => '9–14 кг',
                 'height_range' => '33–40 см',
                 'lifespan' => '12–15 лет',
@@ -129,7 +134,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Склонен к побегам'
              
              
-                 ]],['animal_breed' => 'Ротвейлер',
+                 ]],
+['animal_breed' => 'Ротвейлер',
                 'weight_range' => '35–60 кг',
                 'height_range' => '56–69 см',
                 'lifespan' => '8–10 лет',
@@ -145,7 +151,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Нужен опытный владелец'
              
              
-                 ]],['animal_breed' => 'Йоркширский терьер',
+                 ]],
+['animal_breed' => 'Йоркширский терьер',
                 'weight_range' => '2–3 кг',
                 'height_range' => '15–23 см',
                 'lifespan' => '13–16 лет',
@@ -161,7 +168,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Требует ухода за шерстью'
              
              
-                 ]],['animal_breed' => 'Доберман',
+                 ]],
+['animal_breed' => 'Доберман',
                 'weight_range' => '30–45 кг',
                 'height_range' => '63–72 см',
                 'lifespan' => '10–13 лет',
@@ -177,7 +185,8 @@ class AnimalDetailsSeeder extends Seeder
                     'Особенности' => 'Требует дрессировки'
              
              
-                 ]],['animal_breed' => 'Миниатюрный шнауцер',
+                 ]],
+['animal_breed' => 'Миниатюрный шнауцер',
     'weight_range' => '5–9 кг',
     'height_range' => '30–35 см',
     'lifespan' => '12–15 лет',
@@ -193,7 +202,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Требует тримминга'
              
              
-                 ]],['animal_breed' => 'Ши-тцу',
+                 ]],
+['animal_breed' => 'Ши-тцу',
     'weight_range' => '4–7 кг',
     'height_range' => '20–28 см',
     'lifespan' => '10–16 лет',
@@ -209,7 +219,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Требует ухода за шерстью'
              
              
-                 ]],['animal_breed' => 'Кокер-спаниель',
+                 ]],
+['animal_breed' => 'Кокер-спаниель',
     'weight_range' => '12–15 кг',
     'height_range' => '38–41 см',
     'lifespan' => '12–15 лет',
@@ -225,7 +236,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Чувствительные уши'
              
              
-                 ]],['animal_breed' => 'Померанский шпиц',
+                 ]],
+['animal_breed' => 'Померанский шпиц',
     'weight_range' => '1.8–3.5 кг',
     'height_range' => '18–22 см',
     'lifespan' => '12–16 лет',
@@ -241,7 +253,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Громкий лай'
              
              
-                 ]],['animal_breed' => 'Чихуахуа',
+                 ]],
+['animal_breed' => 'Чихуахуа',
     'weight_range' => '1.5–3 кг',
     'height_range' => '15–23 см',
     'lifespan' => '12–18 лет',
@@ -257,7 +270,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Боится холода'
              
              
-                 ]],['animal_breed' => 'Сибирский хаски',
+                 ]],
+['animal_breed' => 'Сибирский хаски',
     'weight_range' => '16–27 кг',
     'height_range' => '50–60 см',
     'lifespan' => '12–15 лет',
@@ -273,7 +287,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит убегать'
              
              
-                 ]],['animal_breed' => 'Алабай (Центральноазиатская овчарка)',
+                 ]],
+['animal_breed' => 'Алабай (Центральноазиатская овчарка)',
     'weight_range' => '40–80 кг',
     'height_range' => '65–78 см',
     'lifespan' => '10–12 лет',
@@ -289,7 +304,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Территориален'
              
              
-                 ]],['animal_breed' => 'Боксёр',
+                 ]],
+['animal_breed' => 'Боксёр',
     'weight_range' => '25–32 кг',
     'height_range' => '53–63 см',
     'lifespan' => '10–12 лет',
@@ -305,7 +321,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит играть'
              
              
-                 ]],['animal_breed' => 'Кавказская овчарка',
+                 ]],
+['animal_breed' => 'Кавказская овчарка',
     'weight_range' => '45–70 кг',
     'height_range' => '64–75 см',
     'lifespan' => '10–12 лет',
@@ -321,7 +338,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень защитная'
              
              
-                 ]],['animal_breed' => 'Австралийская овчарка',
+                 ]],
+['animal_breed' => 'Австралийская овчарка',
     'weight_range' => '18–30 кг',
     'height_range' => '46–58 см',
     'lifespan' => '12–15 лет',
@@ -337,7 +355,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Нуждается в нагрузке'
              
              
-                 ]],['animal_breed' => 'Далматин',
+                 ]],
+['animal_breed' => 'Далматин',
     'weight_range' => '20–32 кг',
     'height_range' => '54–61 см',
     'lifespan' => '10–13 лет',
@@ -353,7 +372,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Нуждается в длительных прогулках'
              
              
-                 ]],['animal_breed' => 'Бассет-хаунд',
+                 ]],
+['animal_breed' => 'Бассет-хаунд',
     'weight_range' => '20–30 кг',
     'height_range' => '28–38 см',
     'lifespan' => '10–12 лет',
@@ -369,23 +389,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Склонен к ожирению'
              
              
-                 ]],['animal_breed' => 'Мальтезе',
-    'weight_range' => '3–4 кг',
-    'height_range' => '20–25 см',
-    'lifespan' => '12–15 лет',
-    'type' => 'Компаньон',
-    'photo' => 'animal/dog/breed/Maltese.webp',
-    'short_description' => 'Маленькая и элегантная собака с длинной белой шерстью.',
-    'full_description' => "Мальтезе — декоративная порода с мягким характером. Очень привязана к владельцу и требует ухода за шерстью.",
-     'features' =>[
-        'Тип' => 'Компаньон',
-        'Линька' => 'Минимальная',
-        'Активность' => 'Средняя',
-        'Обучаемость' => 'Высокая',
-        'Особенности' => 'Требует ухода за шерстью'
-             
-             
-                 ]],['animal_breed' => 'Бордоский дог',
+                 ]],
+['animal_breed' => 'Бордоский дог',
     'weight_range' => '45–65 кг',
     'height_range' => '60–68 см',
     'lifespan' => '8–10 лет',
@@ -401,7 +406,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Склонен к слюнотечению'
              
              
-                 ]],['animal_breed' => 'Такса',
+                 ]],
+['animal_breed' => 'Такса',
     'weight_range' => '7–15 кг',
     'height_range' => '20–27 см',
     'lifespan' => '12–16 лет',
@@ -417,7 +423,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Проблемы со спиной'
              
              
-                 ]],['animal_breed' => 'Белый швейцарский грюнендаль',
+                 ]],
+['animal_breed' => 'Белый швейцарский грюнендаль',
     'weight_range' => '25–40 кг',
     'height_range' => '55–66 см',
     'lifespan' => '12–14 лет',
@@ -433,7 +440,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Хорошо ладит с детьми'
              
              
-                 ]],['animal_breed' => 'Американский бульдог',
+                 ]],
+['animal_breed' => 'Американский бульдог',
     'weight_range' => '30–58 кг',
     'height_range' => '50–70 см',
     'lifespan' => '10–15 лет',
@@ -449,7 +457,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Нуждается в социализации'
              
              
-                 ]],['animal_breed' => 'Стандартный шнауцер',
+                 ]],
+['animal_breed' => 'Стандартный шнауцер',
     'weight_range' => '14–20 кг',
     'height_range' => '44–50 см',
     'lifespan' => '13–16 лет',
@@ -465,7 +474,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Требует тримминга'
              
              
-                 ]],['animal_breed' => 'Мопс',
+                 ]],
+['animal_breed' => 'Мопс',
     'weight_range' => '6–8 кг',
     'height_range' => '25–32 см',
     'lifespan' => '12–15 лет',
@@ -481,7 +491,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Проблемы с дыханием'
              
              
-                 ]],['animal_breed' => 'Акита-ину',
+                 ]],
+['animal_breed' => 'Акита-ину',
     'weight_range' => '30–45 кг',
     'height_range' => '58–70 см',
     'lifespan' => '10–14 лет',
@@ -497,7 +508,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Независимый характер'
              
              
-                 ]],['animal_breed' => 'Самоедская собака',
+                 ]],
+['animal_breed' => 'Самоедская собака',
     'weight_range' => '16–30 кг',
     'height_range' => '50–60 см',
     'lifespan' => '12–14 лет',
@@ -513,7 +525,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Не любит одиночество'
              
              
-                 ]],['animal_breed' => 'Колли',
+                 ]],
+['animal_breed' => 'Колли',
     'weight_range' => '20–34 кг',
     'height_range' => '51–61 см',
     'lifespan' => '12–14 лет',
@@ -529,7 +542,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень чувствительная'
              
              
-                 ]],['animal_breed' => 'Вельш-корги пемброк',
+                 ]],
+['animal_breed' => 'Вельш-корги пемброк',
     'weight_range' => '10–14 кг',
     'height_range' => '25–30 см',
     'lifespan' => '12–15 лет',
@@ -545,7 +559,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит лаять'
              
              
-                 ]],['animal_breed' => 'Джек-рассел-терьер',
+                 ]],
+['animal_breed' => 'Джек-рассел-терьер',
     'weight_range' => '18–23 кг',
     'height_range' => '46–48 см',
     'lifespan' => '13–16 лет',
@@ -561,23 +576,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень энергичный'
              
              
-                 ]],['animal_breed' => 'Блю-хевалер-кинг-чарльз-спаниель',
-    'weight_range' => '5–8 кг',
-    'height_range' => '30–33 см',
-    'lifespan' => '12–15 лет',
-    'type' => 'Компаньон',
-    'photo' => 'animal/dog/breed/Cavalier_king_charles_spaniel.webp',
-    'short_description' => 'Ласковая и дружелюбная декоративная собака.',
-    'full_description' => "Кавалер-кинг-чарльз-спаниель — идеальный компаньон. Любит людей, хорошо ладит с детьми и другими животными.",
-     'features' =>[
-        'Тип' => 'Компаньон',
-        'Линька' => 'Средняя',
-        'Активность' => 'Средняя',
-        'Обучаемость' => 'Высокая',
-        'Особенности' => 'Любит внимание'
-             
-             
-                 ]],['animal_breed' => 'Вест-хайленд-уайт-терьер',
+                 ]],
+['animal_breed' => 'Вест-хайленд-уайт-терьер',
     'weight_range' => '7–10 кг',
     'height_range' => '25–28 см',
     'lifespan' => '12–15 лет',
@@ -593,7 +593,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Упрямый характер'
              
              
-                 ]],['animal_breed' => 'Лхасский апсо',
+                 ]],
+['animal_breed' => 'Лхасский апсо',
     'weight_range' => '6–8 кг',
     'height_range' => '25–28 см',
     'lifespan' => '12–15 лет',
@@ -609,7 +610,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Недоверчив к чужим'
              
              
-                 ]],['animal_breed' => 'Тибетский мастиф',
+                 ]],
+['animal_breed' => 'Тибетский мастиф',
     'weight_range' => '48–82 кг',
     'height_range' => '61–76 см',
     'lifespan' => '10–12 лет',
@@ -625,7 +627,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень территориален'
              
              
-                 ]],['animal_breed' => 'Сенбернар',
+                 ]],
+['animal_breed' => 'Сенбернар',
     'weight_range' => '64–120 кг',
     'height_range' => '65–90 см',
     'lifespan' => '8–10 лет',
@@ -641,7 +644,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Слюнявый'
              
              
-                 ]],['animal_breed' => 'Ньюфаундленд',
+                 ]],
+['animal_breed' => 'Ньюфаундленд',
     'weight_range' => '50–70 кг',
     'height_range' => '66–71 см',
     'lifespan' => '8–10 лет',
@@ -657,7 +661,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит воду'
              
              
-                 ]],['animal_breed' => 'Гриффон',
+                 ]],
+['animal_breed' => 'Гриффон',
     'weight_range' => '3.5–6 кг',
     'height_range' => '18–22 см',
     'lifespan' => '12–15 лет',
@@ -673,7 +678,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Эмоционален'
              
              
-                 ]],['animal_breed' => 'Пти-брабансон',
+                 ]],
+['animal_breed' => 'Пти-брабансон',
     'weight_range' => '3.5–6 кг',
     'height_range' => '18–26 см',
     'lifespan' => '12–15 лет',
@@ -689,7 +695,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Богатая мимика'
              
              
-                 ]],['animal_breed' => 'Болонка',
+                 ]],
+['animal_breed' => 'Болонка',
     'weight_range' => '2–5 кг',
     'height_range' => '20–28 см',
     'lifespan' => '12–15 лет',
@@ -705,7 +712,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Подходит для квартиры'
              
              
-                 ]],['animal_breed' => 'Тибетский спаниель',
+                 ]],
+['animal_breed' => 'Тибетский спаниель',
     'weight_range' => '4–7 кг',
     'height_range' => '25–28 см',
     'lifespan' => '12–15 лет',
@@ -721,7 +729,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Независимый'
              
              
-                 ]],['animal_breed' => 'Фокстерьер',
+                 ]],
+['animal_breed' => 'Фокстерьер',
     'weight_range' => '6–8 кг',
     'height_range' => '35–40 см',
     'lifespan' => '12–15 лет',
@@ -737,7 +746,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень энергичный'
              
              
-                 ]],['animal_breed' => 'Русская гончая',
+                 ]],
+['animal_breed' => 'Русская гончая',
     'weight_range' => '25–35 кг',
     'height_range' => '55–68 см',
     'lifespan' => '10–12 лет',
@@ -753,7 +763,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Нуждается в нагрузке'
              
              
-                 ]],['animal_breed' => 'Борзая',
+                 ]],
+['animal_breed' => 'Борзая',
     'weight_range' => '25–48 кг',
     'height_range' => '65–85 см',
     'lifespan' => '10–12 лет',
@@ -769,7 +780,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит бегать'
              
              
-                 ]],['animal_breed' => 'Салюки',
+                 ]],
+['animal_breed' => 'Салюки',
     'weight_range' => '18–30 кг',
     'height_range' => '58–71 см',
     'lifespan' => '10–14 лет',
@@ -785,7 +797,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Независимый характер'
              
              
-                 ]],['animal_breed' => 'Метис',
+                 ]],
+['animal_breed' => 'Метис собака',
     'weight_range' => '5–30 кг',
     'height_range' => '25–60 см',
     'lifespan' => '10–16 лет',
@@ -801,7 +814,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Индивидуальные качества'
              
              
-                 ]],['animal_breed' => 'Хантерьер',
+                 ]],
+['animal_breed' => 'Хантерьер',
     'weight_range' => '9–12 кг',
     'height_range' => '46–48 см',
     'lifespan' => '12–14 лет',
@@ -817,7 +831,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Нуждается в активности'
              
              
-                 ]],['animal_breed' => 'Питбуль-терьер',
+                 ]],
+['animal_breed' => 'Питбуль-терьер',
     'weight_range' => '16–30 кг',
     'height_range' => '45–53 см',
     'lifespan' => '12–15 лет',
@@ -833,7 +848,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Требует социализации'
              
              
-                 ]],['animal_breed' => 'Американский стаффордширский терьер',
+                 ]],
+['animal_breed' => 'Американский стаффордширский терьер',
     'weight_range' => '25–32 кг',
     'height_range' => '43–48 см',
     'lifespan' => '12–16 лет',
@@ -849,7 +865,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Сильный характер'
              
              
-                 ]],['animal_breed' => 'Сиба-ину',
+                 ]],
+['animal_breed' => 'Сиба-ину',
         'weight_range' => '7–11 кг',
         'height_range' => '35–41 см',
         'lifespan' => '12–15 лет',
@@ -861,7 +878,8 @@ class AnimalDetailsSeeder extends Seeder
             'Темперамент' => 'Независимый', 'Уход' => 'Чистоплотные', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Вельш-корги кардиган',
+                 ]],
+['animal_breed' => 'Вельш-корги кардиган',
         'weight_range' => '11–17 кг',
         'height_range' => '26–31 см',
         'lifespan' => '12–15 лет',
@@ -872,7 +890,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Хвост' => 'Длинный', 'Интеллект' => 'Высокий', 'Охранник' => 'Бдительный'
              
              
-                 ]],['animal_breed' => 'Бельгийская овчарка (Малинуа)',
+                 ]],
+['animal_breed' => 'Бельгийская овчарка (Малинуа)',
         'weight_range' => '20–30 кг',
         'height_range' => '58–62 см',
         'lifespan' => '12–14 лет',
@@ -883,7 +902,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Служба' => 'Идеальна', 'Драйв' => 'Экстремальный', 'Обучаемость' => 'Максимальная'
              
              
-                 ]],['animal_breed' => 'Бернский зенненхунд',
+                 ]],
+['animal_breed' => 'Бернский зенненхунд',
         'weight_range' => '36–50 кг',
         'height_range' => '60–70 см',
         'lifespan' => '7–10 лет',
@@ -894,7 +914,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Характер' => 'Миролюбивый', 'Шерсть' => 'Длинная', 'Семья' => 'Отличный выбор'
              
              
-                 ]],['animal_breed' => 'Шелти',
+                 ]],
+['animal_breed' => 'Шелти',
         'weight_range' => '6–12 кг',
         'height_range' => '33–40 см',
         'lifespan' => '12–15 лет',
@@ -905,7 +926,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Ум' => 'Выдающийся', 'Шум' => 'Любят лаять', 'Красота' => 'Выставочная'
              
              
-                 ]],['animal_breed' => 'Кане-корсо',
+                 ]],
+['animal_breed' => 'Кане-корсо',
         'weight_range' => '40–50 кг',
         'height_range' => '60–68 см',
         'lifespan' => '10–12 лет',
@@ -916,7 +938,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Защита' => 'Врожденная', 'Вид' => 'Устрашающий', 'Верность' => 'Абсолютная'
              
              
-                 ]],['animal_breed' => 'Аляскинский маламут',
+                 ]],
+['animal_breed' => 'Аляскинский маламут',
         'weight_range' => '32–38 кг',
         'height_range' => '58–63 см',
         'lifespan' => '10–12 лет',
@@ -927,18 +950,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Сила' => 'Огромная', 'Голос' => 'Вой', 'Мороз' => 'Не страшен'
              
              
-                 ]],['animal_breed' => 'Китайская хохлатая собака',
-        'weight_range' => '2–5.5 кг',
-        'height_range' => '23–33 см',
-        'lifespan' => '13–15 лет',
-        'type' => 'Собака',
-        'photo' => 'animal/dog/breed/chinese_crested.webp',
-        'short_description' => 'Экзотическая собака с изящным хохолком.',
-        'full_description' => "Бывает двух видов: голая и пуховая (паудерпафф). Очень привязана к хозяину, почти «кошачье» поведение.",
-         'features' =>['Кожа' => 'Чувствительная', 'Запах' => 'Отсутствует', 'Характер' => 'Нежный'
-             
-             
-                 ]],['animal_breed' => 'Кавалер-кинг-чарльз-спаниель',
+                 ]],
+['animal_breed' => 'Кавалер-кинг-чарльз-спаниель',
         'weight_range' => '5.4–8.2 кг',
         'height_range' => '30–33 см',
         'lifespan' => '12–15 лет',
@@ -949,7 +962,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Дружелюбие' => 'Максимальное', 'Взгляд' => 'Выразительный', 'Спорт' => 'АдStandard'
              
              
-                 ]],['animal_breed' => 'Басенджи',
+                 ]],
+['animal_breed' => 'Басенджи',
         'weight_range' => '9–11 кг',
         'height_range' => '40–43 см',
         'lifespan' => '12–16 лет',
@@ -960,7 +974,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тишина' => 'Не лает', 'Запах' => 'Нет', 'Активность' => 'Очень высокая'
              
              
-                 ]],['animal_breed' => 'Афганская борзая',
+                 ]],
+['animal_breed' => 'Афганская борзая',
         'weight_range' => '20–27 кг',
         'height_range' => '63–74 см',
         'lifespan' => '12–14 лет',
@@ -971,7 +986,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Стиль' => 'Элегантный', 'Шерсть' => 'Требует ухода', 'Скорость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Бишон фризе',
+                 ]],
+['animal_breed' => 'Бишон фризе',
         'weight_range' => '3–5 кг',
         'height_range' => '23–30 см',
         'lifespan' => '12–15 лет',
@@ -982,7 +998,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Гипоаллергенно' => 'Да', 'Линька' => 'Нет', 'Радость' => 'Постоянная'
              
              
-                 ]],['animal_breed' => 'Американский кокер-спаниель',
+                 ]],
+['animal_breed' => 'Американский кокер-спаниель',
         'weight_range' => '7–14 кг',
         'height_range' => '34–39 см',
         'lifespan' => '12–15 лет',
@@ -993,7 +1010,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Уши' => 'Длинные', 'Друг' => 'Для детей', 'Шерсть' => 'Шелковистая'
              
              
-                 ]],['animal_breed' => 'Веймаранер',
+                 ]],
+['animal_breed' => 'Веймаранер',
         'weight_range' => '25–40 кг',
         'height_range' => '57–70 см',
         'lifespan' => '11–14 лет',
@@ -1004,7 +1022,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Серебристый', 'Энергия' => 'Неисчерпаема', 'Привязанность' => 'Тень хозяина'
              
              
-                 ]],['animal_breed' => 'Ризеншнауцер',
+                 ]],
+['animal_breed' => 'Ризеншнауцер',
         'weight_range' => '35–47 кг',
         'height_range' => '60–70 см',
         'lifespan' => '10–12 лет',
@@ -1015,7 +1034,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Служба' => 'Отличная', 'Защита' => 'Надежная', 'Борода' => 'Фирменная'
              
              
-                 ]],['animal_breed' => 'Ирландский сеттер',
+                 ]],
+['animal_breed' => 'Ирландский сеттер',
         'weight_range' => '24–32 кг',
         'height_range' => '55–67 см',
         'lifespan' => '12–15 лет',
@@ -1026,7 +1046,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Цвет' => 'Каштановый', 'Движение' => 'Много', 'Доброта' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Курцхаар',
+                 ]],
+['animal_breed' => 'Курцхаар',
         'weight_range' => '20–32 кг',
         'height_range' => '58–66 см',
         'lifespan' => '12–14 лет',
@@ -1037,7 +1058,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Универсал' => 'Да', 'Охота' => 'В крови', 'Выносливость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Шарпей',
+                 ]],
+['animal_breed' => 'Шарпей',
         'weight_range' => '18–30 кг',
         'height_range' => '44–51 см',
         'lifespan' => '9–11 лет',
@@ -1048,7 +1070,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Складки' => 'Много', 'Язык' => 'Синий', 'Характер' => 'Сдержанный'
              
              
-                 ]],['animal_breed' => 'Чау-чау',
+                 ]],
+['animal_breed' => 'Чау-чау',
         'weight_range' => '20–32 кг',
         'height_range' => '46–56 см',
         'lifespan' => '9–12 лет',
@@ -1059,7 +1082,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Язык' => 'Синий', 'Характер' => 'Независимый', 'Шерсть' => 'Очень густая'
              
              
-                 ]],['animal_breed' => 'Австралийская пастушья собака (Хилер)',
+                 ]],
+['animal_breed' => 'Австралийская пастушья собака (Хилер)',
         'weight_range' => '15–20 кг',
         'height_range' => '43–51 см',
         'lifespan' => '12–16 лет',
@@ -1068,9 +1092,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Неутомимый пастух с невероятной выносливостью.',
         'full_description' => "Хилеры были выведены для перегона скота на огромные расстояния. Это очень умные, преданные и физически крепкие собаки, которым жизненно необходима работа или активный спорт.",
          'features' =>['Выносливость' => 'Экстремальная', 'Интеллект' => 'Высокий', 'Окрас' => 'Крапчатый'
-             
-             
-                 ]],['animal_breed' => 'Венгерская выжла',
+                 ]],
+['animal_breed' => 'Выжла (Венгерская короткошерстная легавая)',
         'weight_range' => '18–30 кг',
         'height_range' => '54–64 см',
         'lifespan' => '12–15 лет',
@@ -1079,9 +1102,53 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Элегантная золотистая легавая, «собака-липучка».',
         'full_description' => "Выжла — грациозный охотник и ласковый компаньон. Они очень привязаны к хозяину и плохо переносят одиночество. Обладают отличным нюхом и мягким характером.",
          'features' =>['Контакт' => 'Постоянный', 'Нюх' => 'Острый', 'Цвет' => 'Золотисто-рыжий'
-             
-             
-                 ]],['animal_breed' => 'Риджбек родезийский',
+                 ]],
+                 [
+    'animal_breed' => 'Большой швейцарский зенненхунд',
+    'weight_range' => '48–64 кг',
+    'height_range' => '60–72 см',
+    'lifespan' => '8–11 лет',
+    'type' => 'Собака',
+    'photo' => 'animal/dog/breed/greater_swiss_mountain_dog.webp',
+    'short_description' => 'Мощный гигант с эффектным трехцветным окрасом.',
+    'full_description' => "Сильная и уверенная в себе рабочая собака. В прошлом зенненхунды использовались для перевозки грузов и охраны стад. Это спокойные гиганты, которые очень привязаны к своей семье и территории, проявляя бдительность без излишней агрессии.",
+    'features' => [
+        'Сила' => 'Колоссальная',
+        'Окрас' => 'Трехцветный',
+        'Спокойствие' => 'Олимпийское'
+    ]
+],
+                 [
+    'animal_breed' => 'Цвергпинчер',
+    'weight_range' => '4–6 кг',
+    'height_range' => '25–30 см',
+    'lifespan' => '13–15 лет',
+    'type' => 'Собака',
+    'photo' => 'animal/dog/breed/zwergpinscher.webp',
+    'short_description' => 'Крошечный атлет с отважным сердцем.',
+    'full_description' => "Несмотря на малый рост, обладает характером большой служебной собаки. Энергичен, уверен в себе и очень предан. Идеален для содержания в квартире, но требует активных прогулок.",
+    'features' => [
+        'Размер' => 'Карликовый',
+        'Характер' => 'Бесстрашный',
+        'Энергия' => 'Высокая'
+    ]
+],
+[
+    'animal_breed' => 'Немецкий дог',
+    'weight_range' => '45–90 кг',
+    'height_range' => '72–90 см',
+    'lifespan' => '6–8 лет',
+    'type' => 'Собака',
+    'photo' => 'animal/dog/breed/great_dane.webp',
+    'short_description' => 'Благородный гигант, сочетающий в себе мощь и аристократизм.',
+    'full_description' => "Немецкий дог считается одной из самых крупных пород в мире («Аполлон среди собак»). Несмотря на свои колоссальные размеры, это очень нежная, преданная и чувствительная собака. Они обладают спокойным темпераментом, лишены суетливости и при должном воспитании становятся идеальными домашними гигантами.",
+    'features' => [
+        'Размер' => 'Гигантский',
+        'Характер' => 'Миролюбивый',
+        'Статус' => 'Аристократичный'
+    ]
+],
+['animal_breed' => 'Риджбек родезийский',
         'weight_range' => '30–38 кг',
         'height_range' => '61–69 см',
         'lifespan' => '10–12 лет',
@@ -1090,9 +1157,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Африканская львиная собака с гребнем на спине.',
         'full_description' => "Единственная южноафриканская порода, признанная FCI. Характерная черта — ридж (гребень из шерсти) на спине. Сильная, смелая и сдержанная собака.",
          'features' =>['Особенность' => 'Ридж на спине', 'Смелость' => 'Высокая', 'Сила' => 'Атлетическая'
-             
-             
-                 ]],['animal_breed' => 'Бордер-колли',
+                 ]],
+['animal_breed' => 'Бордер-колли',
         'weight_range' => '12–20 кг',
         'height_range' => '47–53 см',
         'lifespan' => '12–15 лет',
@@ -1101,31 +1167,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Самая умная порода собак в мире по шкале Корена.',
         'full_description' => "Бордер-колли — трудоголик из мира собак. Они схватывают команды на лету и нуждаются в постоянной интеллектуальной стимуляции. Идеальны для аджилити и фрисби.",
          'features' =>['Ум' => 'Гениальный', 'Активность' => 'Неисчерпаемая', 'Пастух' => 'Врожденный'
-             
-             
-                 ]],['animal_breed' => 'Бельгийский гриффон',
-        'weight_range' => '3.5–6 кг',
-        'height_range' => '18–26 см',
-        'lifespan' => '12–15 лет',
-        'type' => 'Собака',
-        'photo' => 'animal/dog/breed/belgian_griffon.webp',
-        'short_description' => 'Жесткошерстный гриффон черного или черно-подпалого окраса.',
-        'full_description' => "Компактная собака с забавной «бородкой». Очень общительный, умный и привязанный к семье. Обладает человеческой мимикой и чувством собственного достоинства.",
-         'features' =>['Окрас' => 'Черный/Подпалый', 'Тип' => 'Жесткошерстный', 'Мимика' => 'Человеческая'
-             
-             
-                 ]],['animal_breed' => 'Брюссельский гриффон',
-        'weight_range' => '3.5–6 кг',
-        'height_range' => '18–26 см',
-        'lifespan' => '12–15 лет',
-        'type' => 'Собака',
-        'photo' => 'animal/dog/breed/brussels_griffon.webp',
-        'short_description' => 'Рыжий жесткошерстный гриффон с выразительной мордочкой.',
-        'full_description' => "В отличие от бельгийца, брюссельский гриффон всегда рыжий. Это маленькая собака с большим характером, которая обожает быть центром внимания.",
-         'features' =>['Окрас' => 'Рыжий', 'Шерсть' => 'Проволокообразная', 'Характер' => 'Смелый'
-             
-             
-                 ]],['animal_breed' => 'Папильон',
+                 ]],
+                 ['animal_breed' => 'Папильон',
         'weight_range' => '2.5–5 кг',
         'height_range' => '20–28 см',
         'lifespan' => '13–15 лет',
@@ -1134,9 +1177,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Континентальный той-спаниель с ушами-бабочками.',
         'full_description' => "Папильон входит в топ-10 самых умных собак. Очень энергичный, легкий на подъем и ласковый друг, который отлично поддается дрессировке.",
          'features' =>['Уши' => 'Похожи на бабочку', 'Интеллект' => 'Топ-10', 'Линька' => 'Минимальная'
-             
-             
-                 ]],['animal_breed' => 'Русский той-терьер',
+                 ]],
+['animal_breed' => 'Русский той-терьер',
         'weight_range' => '1.5–3 кг',
         'height_range' => '20–28 см',
         'lifespan' => '12–14 лет',
@@ -1145,9 +1187,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Элегантная крошечная собака с большими ушами.',
         'full_description' => "Бывает гладкошерстным и длинношерстным. Несмотря на размер, считает себя большой и отважной собакой. Очень привязан к владельцу.",
          'features' =>['Размер' => 'Миниатюрный', 'Вес' => 'До 3 кг', 'Темперамент' => 'Живой'
-             
-             
-                 ]],['animal_breed' => 'Уиппет',
+                 ]],
+['animal_breed' => 'Уиппет',
         'weight_range' => '7–14 кг',
         'height_range' => '44–51 см',
         'lifespan' => '12–15 лет',
@@ -1156,20 +1197,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Малая английская борзая, мастер спринта.',
         'full_description' => "Грациозная собака, способная развивать скорость до 50–60 км/ч. Дома — тихий и ласковый «диванный» житель, на улице — стремительный атлет.",
          'features' =>['Скорость' => 'Высокая', 'Уход' => 'Минимальный', 'Голос' => 'Тихая'
-             
-             
-                 ]],['animal_breed' => 'Пиренейская горная собака',
-        'weight_range' => '40–55 кг',
-        'height_range' => '65–80 см',
-        'lifespan' => '10–12 лет',
-        'type' => 'Собака',
-        'photo' => 'animal/dog/breed/great_pyrenees.webp',
-        'short_description' => 'Белоснежный великан-хранитель из гор.',
-        'full_description' => "Обладает спокойным, величественным характером. Исторически охраняла стада от волков. Требует пространства и уверенного хозяина.",
-         'features' =>['Окрас' => 'Белый', 'Рост' => 'Впечатляющий', 'Защита' => 'Врожденная'
-             
-             
-                 ]],['animal_breed' => 'Леонбергер',
+                 ]],
+                 ['animal_breed' => 'Леонбергер',
         'weight_range' => '41–75 кг',
         'height_range' => '65–80 см',
         'lifespan' => '8–10 лет',
@@ -1178,9 +1207,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Собака с внешностью льва и сердцем ангела.',
         'full_description' => "Порода была выведена, чтобы напоминать льва на гербе города Леонберг. Очень уравновешенная, семейная собака, которая обожает детей и воду.",
          'features' =>['Вид' => 'Львиный', 'Семья' => 'Идеален', 'Размер' => 'Гигантский'
-             
-             
-                 ]],['animal_breed' => 'Английский мастиф',
+                 ]],
+['animal_breed' => 'Английский мастиф',
         'weight_range' => '70–100 кг',
         'height_range' => '70–90 см',
         'lifespan' => '6–10 лет',
@@ -1189,9 +1217,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Одна из самых тяжелых собак в мире.',
         'full_description' => "Спокойный, благородный гигант. Обладает огромной силой, но при этом миролюбив и флегматичен. Преданный защитник семьи.",
          'features' =>['Вес' => 'Огромный', 'Спокойствие' => 'Высокое', 'Защита' => 'Надежная'
-             
-             
-                 ]],['animal_breed' => 'Пражский крысарик',
+                 ]],
+['animal_breed' => 'Пражский крысарик',
         'weight_range' => '1.5–2.6 кг',
         'height_range' => '20–23 см',
         'lifespan' => '12–14 лет',
@@ -1200,9 +1227,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Самая маленькая порода в мире (по стандарту роста).',
         'full_description' => "Чешская порода, исторически использовавшаяся для борьбы с грызунами. Азартный, быстрый и очень ласковый со своими людьми.",
          'features' =>['Размер' => 'Крошечный', 'Азарт' => 'Высокий', 'Обучаемость' => 'Хорошая'
-             
-             
-                 ]],['animal_breed' => 'Шипперке',
+                 ]],
+['animal_breed' => 'Шипперке',
         'weight_range' => '3–9 кг',
         'height_range' => '25–33 см',
         'lifespan' => '13–15 лет',
@@ -1211,9 +1237,8 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => '«Маленький капитан» — черная овчарка в миниатюре.',
         'full_description' => "Бельгийская порода. Энергичная, бдительная и любопытная собака. Несмотря на размер, обладает повадками настоящей овчарки.",
          'features' =>['Окрас' => 'Черный', 'Энергия' => 'Очень высокая', 'Бдительность' => 'Острая'
-             
-             
-                 ]],['animal_breed' => 'Американский булли',
+                 ]],
+['animal_breed' => 'Американский булли',
         'weight_range' => '30–50 кг',
         'height_range' => '33–50 см',
         'lifespan' => '10–12 лет',
@@ -1222,9 +1247,24 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Мощный атлет с дружелюбным характером.',
         'full_description' => "Несмотря на суровую внешность, булли выводился как идеальный компаньон. Обладает широкой грудью и массивным костяком при полном отсутствии агрессии к человеку.",
          'features' =>['Внешность' => 'Внушительная', 'Доброта' => 'Удивительная', 'Костяк' => 'Массивный'
-             
-             
-                 ]],['animal_breed' => 'Стаффордширский бультерьер',
+                 ]],
+                 [
+    'animal_breed' => 'Русский охотничий спаниель',
+    'weight_range' => '10–18 кг',
+    'height_range' => '38–45 см',
+    'lifespan' => '12–15 лет',
+    'type' => 'Собака',
+    'photo' => 'animal/dog/breed/russian_spaniel.webp',
+    'short_description' => 'Универсальный охотник и преданный напарник.',
+    'full_description' => "Единственная отечественная порода подружейных собак. Обладает великолепным чутьем, выносливостью и врожденной страстью к работе. В быту это спокойная, ласковая и неприхотливая собака, которая легко адаптируется к жизни в городе при условии активных прогулок.",
+    'features' => [
+        'Работоспособность' => 'Высокая',
+        'Характер' => 'Уравновешенный',
+        'Шерсть' => 'Неприхотливая'
+    ]
+],
+                 
+                 ['animal_breed' => 'Стаффордширский бультерьер',
         'weight_range' => '11–17 кг',
         'height_range' => '35–40 см',
         'lifespan' => '12–14 лет',
@@ -1235,7 +1275,9 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Отношение к детям' => 'Лучшее', 'Сила' => 'Концентрированная', 'Улыбка' => 'Фирменная'
              
              
-                 ]],['animal_breed' => 'Английский кокер-спаниель',
+                 ]],
+                
+                 ['animal_breed' => 'Английский кокер-спаниель',
         'weight_range' => '12–15 кг',
         'height_range' => '38–41 см',
         'lifespan' => '12–15 лет',
@@ -1244,9 +1286,9 @@ class AnimalDetailsSeeder extends Seeder
         'short_description' => 'Веселый охотник и преданный друг.',
         'full_description' => "Постоянно виляющий хвостом спаниель. Очень общительный, умный и азартный. Требует регулярного ухода за ушами и шерстью.",
          'features' =>['Темперамент' => 'Жизнерадостный', 'Охота' => 'Активный', 'Уши' => 'Длинные'
-             
-             
-                 ]],['animal_breed' => 'Японский шпиц',
+                 ]],
+                 
+                 ['animal_breed' => 'Японский шпиц',
         'weight_range' => '5–8 кг',
         'height_range' => '30–38 см',
         'lifespan' => '12–14 лет',
@@ -1257,7 +1299,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Кипенно-белый', 'Уход' => 'Проще, чем кажется', 'Дружелюбие' => 'Высокое'
              
              
-                 ]],['animal_breed' => 'Американский акита',
+                 ]],
+['animal_breed' => 'Американский акита',
         'weight_range' => '32–59 кг',
         'height_range' => '61–71 см',
         'lifespan' => '10–12 лет',
@@ -1268,7 +1311,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Медвежий', 'Охрана' => 'Серьезная', 'Лидерство' => 'Требуется'
              
              
-                 ]],['animal_breed' => 'Дратхаар',
+                 ]],
+['animal_breed' => 'Дратхаар',
         'weight_range' => '23–32 кг',
         'height_range' => '57–68 см',
         'lifespan' => '12–14 лет',
@@ -1279,7 +1323,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Жесткая', 'Работа' => 'Универсал', 'Энергия' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Пойнтер',
+                 ]],
+['animal_breed' => 'Пойнтер',
         'weight_range' => '20–34 кг',
         'height_range' => '61–69 см',
         'lifespan' => '12–15 лет',
@@ -1290,7 +1335,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Стойка' => 'Эталонная', 'Скорость' => 'Высокая', 'Грация' => 'Спортивная'
              
              
-                 ]],['animal_breed' => 'Азавак',
+                 ]],
+['animal_breed' => 'Азавак',
         'weight_range' => '15–25 кг',
         'height_range' => '60–74 см',
         'lifespan' => '12–15 лет',
@@ -1301,7 +1347,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Телосложение' => 'Сверхтонкое', 'Выносливость' => 'Высокая', 'Характер' => 'Сдержанный'
              
              
-                 ]],['animal_breed' => 'Эрдельтерьер',
+                 ]],
+['animal_breed' => 'Эрдельтерьер',
         'weight_range' => '18–29 кг',
         'height_range' => '56–61 см',
         'lifespan' => '10–12 лет',
@@ -1312,7 +1359,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Жесткая', 'Интеллект' => 'Высокий', 'Работа' => 'Универсал'
              
              
-                 ]],['animal_breed' => 'Бульмастиф',
+                 ]],
+['animal_breed' => 'Бульмастиф',
         'weight_range' => '41–59 кг',
         'height_range' => '61–68 см',
         'lifespan' => '8–10 лет',
@@ -1323,7 +1371,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Охрана' => 'Природная', 'Сила' => 'Внушительная', 'Нрав' => 'Уравновешенный'
              
              
-                 ]],['animal_breed' => 'Аргентинский дог',
+                 ]],
+['animal_breed' => 'Аргентинский дог',
         'weight_range' => '40–45 кг',
         'height_range' => '60–68 см',
         'lifespan' => '10–12 лет',
@@ -1334,7 +1383,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Белый', 'Мускулатура' => 'Рельефная', 'Смелость' => 'Беспредельная'
              
              
-                 ]],['animal_breed' => 'Южнорусская овчарка',
+                 ]],
+['animal_breed' => 'Южнорусская овчарка',
         'weight_range' => '35–50 кг',
         'height_range' => '62–66 см',
         'lifespan' => '13–15 лет',
@@ -1345,7 +1395,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Длинная белая', 'Реакция' => 'Мгновенная', 'Служба' => 'Охранная'
              
              
-                 ]],['animal_breed' => 'Ховаварт',
+                 ]],
+['animal_breed' => 'Ховаварт',
         'weight_range' => '25–40 кг',
         'height_range' => '58–70 см',
         'lifespan' => '12–14 лет',
@@ -1356,7 +1407,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Охрана' => 'Страж', 'Здоровье' => 'Крепкое', 'Характер' => 'Спокойный'
              
              
-                 ]],['animal_breed' => 'Пекинес',
+                 ]],
+['animal_breed' => 'Пекинес',
         'weight_range' => '3–5.5 кг',
         'height_range' => '15–23 см',
         'lifespan' => '12–15 лет',
@@ -1367,18 +1419,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Внешность' => 'Львиная', 'Активность' => 'Низкая', 'Гордость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Бишон-фризе',
-        'weight_range' => '3–5 кг',
-        'height_range' => '23–30 см',
-        'lifespan' => '12–15 лет',
-        'type' => 'Собака',
-        'photo' => 'animal/dog/breed/bichon_frise.webp',
-        'short_description' => 'Белоснежное «облако» с веселым и ласковым нравом.',
-        'full_description' => "Маленькая кудрявая собака, которая почти не линяет и считается гипоаллергенной. Бишоны обожают внимание, игры и очень легко находят общий язык с детьми.",
-         'features' =>['Линька' => 'Нет', 'Радость' => 'Постоянная', 'Уход' => 'Требует груминга'
-             
-             
-                 ]],['animal_breed' => 'Мальтийская болонка (Мальтезе)',
+                 ]],
+['animal_breed' => 'Мальтийская болонка (Мальтезе)',
         'weight_range' => '3–4 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -1389,7 +1431,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Шелковистая', 'Привязанность' => 'Сильная', 'Запах' => 'Нет'
              
              
-                 ]],['animal_breed' => 'Японский хин',
+                 ]],
+['animal_breed' => 'Японский хин',
         'weight_range' => '2–4 кг',
         'height_range' => '20–27 см',
         'lifespan' => '12–14 лет',
@@ -1400,7 +1443,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Повадки' => 'Кошачьи', 'Мимика' => 'Богатая', 'Голос' => 'Тихая'
              
              
-                 ]],['animal_breed' => 'Китайская хохлатая',
+                 ]],
+['animal_breed' => 'Китайская хохлатая',
         'weight_range' => '2–5 кг',
         'height_range' => '23–33 см',
         'lifespan' => '13–15 лет',
@@ -1411,7 +1455,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Кожа' => 'Чувствительная', 'Верность' => 'Высокая', 'Гипоаллергенно' => 'Да'
              
              
-                 ]],['animal_breed' => 'Норвич-терьер',
+                 ]],
+['animal_breed' => 'Норвич-терьер',
         'weight_range' => '5–5.5 кг',
         'height_range' => '25–26 см',
         'lifespan' => '12–15 лет',
@@ -1422,7 +1467,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Уши' => 'Стоячие', 'Активность' => 'Высокая', 'Дружелюбие' => 'Высокое'
              
              
-                 ]],['animal_breed' => 'Керн-терьер',
+                 ]],
+['animal_breed' => 'Керн-терьер',
         'weight_range' => '6–7.5 кг',
         'height_range' => '28–31 см',
         'lifespan' => '12–15 лет',
@@ -1433,7 +1479,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Выносливость' => 'Высокая', 'Характер' => 'Задорный', 'Шерсть' => 'Косматая'
              
              
-                 ]],['animal_breed' => 'Бородатая колли',
+                 ]],
+['animal_breed' => 'Бородатая колли',
         'weight_range' => '18–27 кг',
         'height_range' => '51–56 см',
         'lifespan' => '12–14 лет',
@@ -1444,7 +1491,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Оптимизм' => 'Зашкаливает', 'Шерсть' => 'Длинная', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Энтлебухер зенненхунд',
+                 ]],
+['animal_breed' => 'Энтлебухер зенненхунд',
         'weight_range' => '20–30 кг',
         'height_range' => '42–50 см',
         'lifespan' => '11–15 лет',
@@ -1455,7 +1503,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Работа' => 'Трудоголик', 'Размер' => 'Средний', 'Окрас' => 'Триколор'
              
              
-                 ]],['animal_breed' => 'Бобтейл',
+                 ]],
+['animal_breed' => 'Бобтейл',
         'weight_range' => '27–45 кг',
         'height_range' => '51–61 см',
         'lifespan' => '10–12 лет',
@@ -1466,7 +1515,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Обильная', 'Лай' => 'Хриплый', 'Семья' => 'Любит детей'
              
              
-                 ]],['animal_breed' => 'Тайский риджбек',
+                 ]],
+['animal_breed' => 'Тайский риджбек',
         'weight_range' => '16–32 кг',
         'height_range' => '51–61 см',
         'lifespan' => '12–13 лет',
@@ -1477,7 +1527,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Особенность' => 'Ридж на спине', 'Прыжки' => 'Феноменальные', 'Ум' => 'Независимый'
              
              
-                 ]],['animal_breed' => 'Ксолоитцкуинтли (Мексиканская голая собака)',
+                 ]],
+['animal_breed' => 'Ксолоитцкуинтли (Мексиканская голая собака)',
         'weight_range' => '4–25 кг',
         'height_range' => '25–60 см',
         'lifespan' => '12–15 лет',
@@ -1488,7 +1539,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Кожа' => 'Теплая на ощупь', 'История' => 'Культовая', 'Запах' => 'Нет'
              
              
-                 ]],['animal_breed' => 'Фараонова собака',
+                 ]],
+['animal_breed' => 'Фараонова собака',
         'weight_range' => '18–27 кг',
         'height_range' => '53–64 см',
         'lifespan' => '12–14 лет',
@@ -1499,7 +1551,9 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Эмоции' => 'Умеет краснеть', 'Слух' => 'Острый', 'Грация' => 'Сверхвысокая'
              
              
-                 ]],['animal_breed' => 'Перуанская голая собака',
+                 ]],
+                 
+                 ['animal_breed' => 'Перуанская голая собака',
         'weight_range' => '4–25 кг',
         'height_range' => '25–65 см',
         'lifespan' => '11–12 лет',
@@ -1510,7 +1564,9 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Температура' => 'Высокая', 'Верность' => 'Абсолютная', 'Уход' => 'За кожей'
              
              
-                 ]],['animal_breed' => 'Бедлингтон-терьер',
+                 ]]
+                 
+                 ,['animal_breed' => 'Бедлингтон-терьер',
         'weight_range' => '8–10 кг',
         'height_range' => '38–44 см',
         'lifespan' => '12–14 лет',
@@ -1521,7 +1577,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Внешность' => 'Как овечка', 'Бег' => 'Очень быстрый', 'Линька' => 'Нет'
              
              
-                 ]],['animal_breed' => 'Чехословацкая волчья собака (Влчак)',
+                 ]],
+['animal_breed' => 'Чехословацкая волчья собака (Влчак)',
         'weight_range' => '20–26 кг',
         'height_range' => '60–65 см',
         'lifespan' => '12–15 лет',
@@ -1531,8 +1588,9 @@ class AnimalDetailsSeeder extends Seeder
         'full_description' => "Влчак обладает внешностью и выносливостью волка в сочетании с обучаемостью собаки. Это крайне преданная, но сложная порода, требующая серьезной социализации и понимания психологии стаи.",
          'features' =>['Выносливость' => 'Экстремальная', 'Внешность' => 'Волчья', 'Верность' => 'Стайная'
              
-             
-                 ]],['animal_breed' => 'Тибетский терьер',
+            
+                 ]],
+['animal_breed' => 'Тибетский терьер',
         'weight_range' => '8–14 кг',
         'height_range' => '35–41 см',
         'lifespan' => '12–15 лет',
@@ -1543,7 +1601,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Лапы' => 'Плоские/Широкие', 'Шерсть' => 'Обильная', 'История' => 'Монастырская'
              
              
-                 ]],['animal_breed' => 'Левхен (Малая львиная собака)',
+                 ]],
+['animal_breed' => 'Левхен (Малая львиная собака)',
         'weight_range' => '4–8 кг',
         'height_range' => '26–32 см',
         'lifespan' => '12–14 лет',
@@ -1554,7 +1613,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Статус' => 'Редкая', 'Характер' => 'Бесстрашный', 'Стрижка' => 'Львиный стиль'
              
              
-                 ]],['animal_breed' => 'Грейхаунд (Английская борзая)',
+                 ]],
+['animal_breed' => 'Грейхаунд (Английская борзая)',
         'weight_range' => '27–40 кг',
         'height_range' => '68–76 см',
         'lifespan' => '10–12 лет',
@@ -1565,7 +1625,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Скорость' => 'До 70 км/ч', 'Энергия' => 'Спринтерская', 'Уход' => 'Легкий'
              
              
-                 ]],['animal_breed' => 'Ирландский волкодав',
+                 ]],
+['animal_breed' => 'Ирландский волкодав',
         'weight_range' => '47–55 кг',
         'height_range' => '71–86 см',
         'lifespan' => '6–8 лет',
@@ -1576,7 +1637,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Рост' => 'Гигантский', 'Нрав' => 'Очень добрый', 'Тип' => 'Борзая'
              
              
-                 ]],['animal_breed' => 'Испанский мастиф',
+                 ]],
+['animal_breed' => 'Испанский мастиф',
         'weight_range' => '70–100 кг',
         'height_range' => '72–88 см',
         'lifespan' => '10–12 лет',
@@ -1587,7 +1649,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вес' => 'До 100 кг', 'Голос' => 'Бас', 'Охрана' => 'Природная'
              
              
-                 ]],['animal_breed' => 'Бладхаунд',
+                 ]],
+['animal_breed' => 'Бладхаунд',
         'weight_range' => '36–50 кг',
         'height_range' => '58–69 см',
         'lifespan' => '10–12 лет',
@@ -1598,7 +1661,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Нюх' => 'Феноменальный', 'Уши' => 'Очень длинные', 'Тип' => 'Гончая'
              
              
-                 ]],['animal_breed' => 'Португальская водяная собака',
+                 ]],
+['animal_breed' => 'Португальская водяная собака',
         'weight_range' => '16–25 кг',
         'height_range' => '43–57 см',
         'lifespan' => '12–15 лет',
@@ -1609,7 +1673,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Плавание' => 'Любит воду', 'Линька' => 'Нет', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Английский сеттер',
+                 ]],
+['animal_breed' => 'Английский сеттер',
         'weight_range' => '20–36 кг',
         'height_range' => '61–68 см',
         'lifespan' => '10–12 лет',
@@ -1620,7 +1685,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Бельтон (крап)', 'Грация' => 'Высокая', 'Дружелюбие' => 'Высокое'
              
              
-                 ]],['animal_breed' => 'Шотландский сеттер (Гордон)',
+                 ]],
+['animal_breed' => 'Шотландский сеттер (Гордон)',
         'weight_range' => '20–36 кг',
         'height_range' => '62–66 см',
         'lifespan' => '10–12 лет',
@@ -1631,7 +1697,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Черно-подпалый', 'Стойкость' => 'Высокая', 'Охрана' => 'Присутствует'
              
              
-                 ]],['animal_breed' => 'Новошотландский ретривер (Толлер)',
+                 ]],
+['animal_breed' => 'Новошотландский ретривер (Толлер)',
         'weight_range' => '17–23 кг',
         'height_range' => '45–51 см',
         'lifespan' => '12–14 лет',
@@ -1642,7 +1709,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Цвет' => 'Рыжий/Оранжевый', 'Работа' => 'Азартная', 'Размер' => 'Компактный'
              
              
-                 ]],['animal_breed' => 'Прямошерстный ретривер',
+                 ]],
+['animal_breed' => 'Прямошерстный ретривер',
         'weight_range' => '25–36 кг',
         'height_range' => '56–61 см',
         'lifespan' => '10–12 лет',
@@ -1653,7 +1721,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Оптимизм' => 'Бесконечный', 'Окрас' => 'Черный/Ливерный', 'Элегантность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Ирландский мягкошерстный пшеничный терьер',
+                 ]],
+['animal_breed' => 'Ирландский мягкошерстный пшеничный терьер',
         'weight_range' => '14–18 кг',
         'height_range' => '43–48 см',
         'lifespan' => '12–15 лет',
@@ -1664,7 +1733,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Линька' => 'Нет', 'Шерсть' => 'Шелковистая', 'Прыжки' => 'Фирменные'
              
              
-                 ]],['animal_breed' => 'Керри-блю-терьер',
+                 ]],
+['animal_breed' => 'Керри-блю-терьер',
         'weight_range' => '15–18 кг',
         'height_range' => '44–50 см',
         'lifespan' => '12–15 лет',
@@ -1675,7 +1745,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Цвет' => 'Голубой/Стальной', 'Универсал' => 'Да', 'Линька' => 'Нет'
              
              
-                 ]],['animal_breed' => 'Скотч-терьер (Шотландский терьер)',
+                 ]],
+['animal_breed' => 'Скотч-терьер (Шотландский терьер)',
         'weight_range' => '8.5–10.5 кг',
         'height_range' => '25–28 см',
         'lifespan' => '12–15 лет',
@@ -1686,7 +1757,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Характер' => 'Независимый', 'Профиль' => 'Узнаваемый', 'Борода' => 'Густая'
              
              
-                 ]],['animal_breed' => 'Скай-терьер',
+                 ]],
+['animal_breed' => 'Скай-терьер',
         'weight_range' => '11–18 кг',
         'height_range' => '24–26 см',
         'lifespan' => '12–15 лет',
@@ -1697,7 +1769,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Формат' => 'Очень длинный', 'Верность' => 'Легендарная', 'Уши' => 'Заросшие'
              
              
-                 ]],['animal_breed' => 'Булльтерьер миниатюрный(минибулли)',
+                 ]],
+['animal_breed' => 'Булльтерьер миниатюрный(минибулли)',
         'weight_range' => '11–15 кг',
         'height_range' => '25–35 см',
         'lifespan' => '11–14 лет',
@@ -1708,7 +1781,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Голова' => 'Яйцевидная', 'Упрямство' => 'Высокое', 'Юмор' => 'Есть'
              
              
-                 ]],['animal_breed' => 'Гаванский бишон (Хаванез)',
+                 ]],
+['animal_breed' => 'Гаванский бишон (Хаванез)',
         'weight_range' => '3–6 кг',
         'height_range' => '23–27 см',
         'lifespan' => '14–16 лет',
@@ -1719,7 +1793,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Дружелюбие' => 'Максимальное', 'Линька' => 'Минимальная', 'Обучаемость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Котон-де-тулеар',
+                 ]],
+['animal_breed' => 'Котон-де-тулеар',
         'weight_range' => '3.5–6 кг',
         'height_range' => '23–28 см',
         'lifespan' => '14–16 лет',
@@ -1730,7 +1805,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Хлопковая', 'Голос' => 'Разговорчивый', 'Привязанность' => 'Тень хозяина'
              
              
-                 ]],['animal_breed' => 'Аффенпинчер',
+                 ]],
+['animal_breed' => 'Аффенпинчер',
         'weight_range' => '4–6 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -1741,7 +1817,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Мимика' => 'Обезьянья', 'Смелость' => 'Огромная', 'Шерсть' => 'Жесткая'
              
              
-                 ]],['animal_breed' => 'Левретка (Малая итальянская борзая)',
+                 ]],
+['animal_breed' => 'Левретка (Малая итальянская борзая)',
         'weight_range' => '3–5 кг',
         'height_range' => '32–38 см',
         'lifespan' => '12–15 лет',
@@ -1752,7 +1829,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Темперамент' => 'Чувствительный', 'Уход' => 'Минимальный', 'Активность' => 'Спринтер'
              
              
-                 ]],['animal_breed' => 'Пиренейская горная собака',
+                 ]],
+['animal_breed' => 'Пиренейская горная собака',
         'weight_range' => '40–55 кг',
         'height_range' => '65–80 см',
         'lifespan' => '10–12 лет',
@@ -1763,7 +1841,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Белый', 'Охрана' => 'Врожденная', 'Размер' => 'Гигант'
              
              
-                 ]],['animal_breed' => 'Эштрельская овчарка',
+                 ]],
+['animal_breed' => 'Эштрельская овчарка',
         'weight_range' => '30–50 кг',
         'height_range' => '62–73 см',
         'lifespan' => '10–12 лет',
@@ -1774,7 +1853,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Сила' => 'Высокая', 'Бдительность' => 'Острая', 'Тип' => 'Горная собака'
              
              
-                 ]],['animal_breed' => 'Мареммо-абруццкая овчарка',
+                 ]],
+['animal_breed' => 'Мареммо-абруццкая овчарка',
         'weight_range' => '30–45 кг',
         'height_range' => '60–73 см',
         'lifespan' => '10–13 лет',
@@ -1785,7 +1865,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Инстинкт' => 'Защитник', 'Нрав' => 'Независимый', 'Шерсть' => 'Самоочищающаяся'
              
              
-                 ]],['animal_breed' => 'Тоса-ину',
+                 ]],
+['animal_breed' => 'Тоса-ину',
         'weight_range' => '40–90 кг',
         'height_range' => '60–80 см',
         'lifespan' => '10–12 лет',
@@ -1796,7 +1877,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вес' => 'До 90 кг', 'Характер' => 'Флегматичный', 'Статус' => 'Редкая'
              
              
-                 ]],['animal_breed' => 'Кишу (Кисю)',
+                 ]],
+['animal_breed' => 'Кишу (Кисю)',
         'weight_range' => '14–27 кг',
         'height_range' => '43–55 см',
         'lifespan' => '11–13 лет',
@@ -1807,7 +1889,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Чистоплотность' => 'Высокая', 'Верность' => 'Глубокая', 'Окрас' => 'Преимущественно белый'
              
              
-                 ]],['animal_breed' => 'Сикоку',
+                 ]],
+['animal_breed' => 'Сикоку',
         'weight_range' => '15–25 кг',
         'height_range' => '43–55 см',
         'lifespan' => '10–12 лет',
@@ -1818,7 +1901,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Внешность' => 'Дикая', 'Энергия' => 'Высокая', 'Интеллект' => 'Острый'
              
              
-                 ]],['animal_breed' => 'Тайваньская собака',
+                 ]],
+['animal_breed' => 'Тайваньская собака',
         'weight_range' => '12–18 кг',
         'height_range' => '43–52 см',
         'lifespan' => '10–13 лет',
@@ -1829,7 +1913,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Обучаемость' => 'Высокая', 'Здоровье' => 'Крепкое', 'Характер' => 'Верный'
              
              
-                 ]],['animal_breed' => 'Мальтипу',
+                 ]],
+['animal_breed' => 'Мальтипу',
         'weight_range' => '2–5 кг',
         'height_range' => '20–30 см',
         'lifespan' => '12–15 лет',
@@ -1840,7 +1925,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Линька' => 'Нет', 'Гипоаллергенно' => 'Да', 'Характер' => 'Игривый'
              
              
-                 ]],['animal_breed' => 'Лабрадудль',
+                 ]],
+['animal_breed' => 'Лабрадудль',
         'weight_range' => '10–30 кг',
         'height_range' => '35–60 см',
         'lifespan' => '12–14 лет',
@@ -1851,7 +1937,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Дружелюбие' => 'Огромное', 'Шерсть' => 'Кудрявая/Волнистая', 'Ум' => 'Высокий'
              
              
-                 ]],['animal_breed' => 'Кокапу',
+                 ]],
+['animal_breed' => 'Кокапу',
         'weight_range' => '5–11 кг',
         'height_range' => '25–38 см',
         'lifespan' => '13–15 лет',
@@ -1862,7 +1949,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Семья' => 'Идеально', 'Радость' => 'Постоянная', 'Уход' => 'Требует стрижки'
              
              
-                 ]],['animal_breed' => 'Помски',
+                 ]],
+['animal_breed' => 'Помски',
         'weight_range' => '4–15 кг',
         'height_range' => '25–40 см',
         'lifespan' => '12–15 лет',
@@ -1873,7 +1961,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Внешность' => 'Эффектная', 'Активность' => 'Высокая', 'Голос' => 'Разговорчивые'
              
              
-                 ]],['animal_breed' => 'Бельгийская овчарка (Тервюрен)',
+                 ]],
+['animal_breed' => 'Бельгийская овчарка (Тервюрен)',
         'weight_range' => '20–30 кг',
         'height_range' => '58–62 см',
         'lifespan' => '12–14 лет',
@@ -1884,7 +1973,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Роскошная', 'Ум' => 'Рабочий', 'Верность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Бельгийская овчарка (Грюнендаль)',
+                 ]],
+['animal_breed' => 'Бельгийская овчарка (Грюнендаль)',
         'weight_range' => '20–30 кг',
         'height_range' => '58–62 см',
         'lifespan' => '12–14 лет',
@@ -1895,7 +1985,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Цвет' => 'Черный', 'Скорость' => 'Высокая', 'Элегантность' => 'Максимальная'
              
              
-                 ]],['animal_breed' => 'Бельгийская овчарка (Лакенуа)',
+                 ]],
+['animal_breed' => 'Бельгийская овчарка (Лакенуа)',
         'weight_range' => '20–30 кг',
         'height_range' => '58–62 см',
         'lifespan' => '12–14 лет',
@@ -1906,7 +1997,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Жесткая/Клокстая', 'Характер' => 'Бдительный', 'Эксклюзив' => 'Редкая'
              
              
-                 ]],['animal_breed' => 'Голландская овчарка (Хердер)',
+                 ]],
+['animal_breed' => 'Голландская овчарка (Хердер)',
         'weight_range' => '23–30 кг',
         'height_range' => '55–62 см',
         'lifespan' => '12–15 лет',
@@ -1917,7 +2009,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Тигровый', 'Обучаемость' => 'Экстремальная', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Хорватская овчарка',
+                 ]],
+['animal_breed' => 'Хорватская овчарка',
         'weight_range' => '13–20 кг',
         'height_range' => '40–50 см',
         'lifespan' => '12–14 лет',
@@ -1928,7 +2021,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Кудрявая черная', 'Ловкость' => 'Высокая', 'Привязанность' => 'Один хозяин'
              
              
-                 ]],['animal_breed' => 'Кинг-чарльз-спаниель',
+                 ]],
+['animal_breed' => 'Кинг-чарльз-спаниель',
         'weight_range' => '3.6–6.3 кг',
         'height_range' => '25–30 см',
         'lifespan' => '10–12 лет',
@@ -1939,7 +2033,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Размер' => 'Компактный', 'Нрав' => 'Сдержанный', 'Морда' => 'Курносая'
              
              
-                 ]],['animal_breed' => 'Шипперке',
+                 ]],
+['animal_breed' => 'Шипперке',
         'weight_range' => '3–9 кг',
         'height_range' => '25–33 см',
         'lifespan' => '13–15 лет',
@@ -1950,18 +2045,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Всегда черный', 'Энергия' => 'Неисчерпаемая', 'Бдительность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Португальская водяная собака',
-        'weight_range' => '16–25 кг',
-        'height_range' => '43–57 см',
-        'lifespan' => '12–15 лет',
-        'type' => 'Собака',
-        'photo' => 'animal/dog/breed/portuguese_water_dog.webp',
-        'short_description' => 'Умный пловец и неутомимый помощник.',
-        'full_description' => "Исторически помогала рыбакам: загоняла рыбу в сети и доставляла записки между судами. Обладает гипоаллергенной шерстью и очень веселым, активным нравом. Обожает воду и физические нагрузки.",
-         'features' =>['Шерсть' => 'Не линяет', 'Спорт' => 'Плавание', 'Интеллект' => 'Высокий'
-             
-             
-                 ]],['animal_breed' => 'Австралийский келпи',
+                 ]],
+                 ['animal_breed' => 'Австралийский келпи',
         'weight_range' => '11–20 кг',
         'height_range' => '43–51 см',
         'lifespan' => '12–15 лет',
@@ -1972,18 +2057,9 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Выносливость' => 'Максимальная', 'Взгляд' => 'Гипнотический', 'Активность' => 'Экстремальная'
              
              
-                 ]],['animal_breed' => 'Стаффордширский бультерьер',
-        'weight_range' => '11–17 кг',
-        'height_range' => '35–40 см',
-        'lifespan' => '12–14 лет',
-        'type' => 'Собака',
-        'photo' => 'animal/dog/breed/staffordshire_bull_terrier.webp',
-        'short_description' => 'Компактный атлет с «улыбкой» до ушей.',
-        'full_description' => "Стаффи — воплощение любви к людям. Несмотря на мускулистое телосложение, это очень нежная и преданная порода, которую в Англии называют «собакой-нянькой» за терпение к детям.",
-         'features' =>['Сила' => 'Концентрированная', 'Характер' => 'Дружелюбный', 'Уход' => 'Простой'
-             
-             
-                 ]],['animal_breed' => 'Бурбуль',
+                 ]],
+
+['animal_breed' => 'Бурбуль',
         'weight_range' => '60–90 кг',
         'height_range' => '59–70 см',
         'lifespan' => '10–12 лет',
@@ -1994,7 +2070,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вес' => 'Гигантский', 'Охрана' => 'Бескомпромиссная', 'Здоровье' => 'Крепкое'
              
              
-                 ]],['animal_breed' => 'Ховаварт',
+                 ]],
+['animal_breed' => 'Ховаварт',
         'weight_range' => '25–40 кг',
         'height_range' => '58–70 см',
         'lifespan' => '12–14 лет',
@@ -2005,7 +2082,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Универсальность' => 'Высокая', 'Нюх' => 'Отличный', 'Психика' => 'Стабильная'
              
              
-                 ]],['animal_breed' => 'Веймаранер',
+                 ]],
+['animal_breed' => 'Веймаранер',
         'weight_range' => '25–40 кг',
         'height_range' => '57–70 см',
         'lifespan' => '11–14 лет',
@@ -2016,7 +2094,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Серебристый', 'Энергия' => 'Высокая', 'Привязанность' => 'Сильная'
              
              
-                 ]],['animal_breed' => 'Баварская горная гончая',
+                 ]],
+['animal_breed' => 'Баварская горная гончая',
         'weight_range' => '17–25 кг',
         'height_range' => '44–52 см',
         'lifespan' => '12–14 лет',
@@ -2027,7 +2106,25 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Нюх' => 'Профессиональный', 'Размер' => 'Средний', 'Характер' => 'Сдержанный'
              
              
-                 ]],['animal_breed' => 'Персидская',
+                 ]],
+
+                 [
+    'animal_breed' => 'Бультерьер',
+    'weight_range' => '23–32 кг',
+    'height_range' => '45–55 см',
+    'lifespan' => '11–14 лет',
+    'type' => 'Собака',
+    'photo' => 'animal/dog/breed/bull_terrier.webp',
+    'short_description' => 'Атлетичный «гладиатор» с уникальной внешностью и веселым нравом.',
+    'full_description' => "Порода, обладающая самой узнаваемой формой головы в мире (яйцевидный профиль). Бультерьеры — это невероятно сильные, энергичные и преданные собаки. Вопреки стереотипам, при правильном воспитании они проявляют себя как ласковые компаньоны, которые обожают компанию людей и игры.",
+    'features' => [
+        'Внешность' => 'Экстерьерная',
+        'Интеллект' => 'Высокий',
+        'Активность' => 'Максимальная'
+    ]
+],
+
+['animal_breed' => 'Персидская',
     'weight_range' => '3–5.5 кг',
     'height_range' => '23–25 см',
     'lifespan' => '12–17 лет',
@@ -2043,7 +2140,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Требует ухода за шерстью'
              
              
-                 ]],['animal_breed' => 'Мейн-кун',
+                 ]],
+['animal_breed' => 'Мейн-кун',
     'weight_range' => '4–8 кг',
     'height_range' => '25–35 см',
     'lifespan' => '12–15 лет',
@@ -2059,7 +2157,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень крупная'
              
              
-                 ]],['animal_breed' => 'Рэгдолл',
+                 ]],
+['animal_breed' => 'Рэгдолл',
     'weight_range' => '3–6 кг',
     'height_range' => '23–30 см',
     'lifespan' => '12–16 лет',
@@ -2075,7 +2174,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень спокойная'
              
              
-                 ]],['animal_breed' => 'Британская короткошерстная',
+                 ]],
+['animal_breed' => 'Британская короткошерстная',
     'weight_range' => '4–8 кг',
     'height_range' => '25–30 см',
     'lifespan' => '12–15 лет',
@@ -2091,7 +2191,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Независимая'
              
              
-                 ]],['animal_breed' => 'Американская короткошёрстная',
+                 ]],
+['animal_breed' => 'Американская короткошёрстная',
     'weight_range' => '4–7 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -2107,7 +2208,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Крепкое здоровье'
              
              
-                 ]],['animal_breed' => 'Сиамская',
+                 ]],
+['animal_breed' => 'Сиамская',
     'weight_range' => '3–5 кг',
     'height_range' => '23–25 см',
     'lifespan' => '12–15 лет',
@@ -2123,7 +2225,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень разговорчивая'
              
              
-                 ]],['animal_breed' => 'Экзотическая короткошерстная',
+                 ]],
+['animal_breed' => 'Экзотическая короткошерстная',
     'weight_range' => '3–6 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -2139,7 +2242,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Похожа на персидскую'
              
              
-                 ]],['animal_breed' => 'Бенгальская',
+                 ]],
+['animal_breed' => 'Бенгальская',
     'weight_range' => '4–7 кг',
     'height_range' => '25–32 см',
     'lifespan' => '12–16 лет',
@@ -2155,7 +2259,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень активная'
              
              
-                 ]],['animal_breed' => 'Сфинкс',
+                 ]],
+['animal_breed' => 'Сфинкс',
         'weight_range' => '3–6 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -2171,7 +2276,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Требует частого купания'
              
              
-                 ]],['animal_breed' => 'Абиссинская',
+                 ]],
+['animal_breed' => 'Абиссинская',
         'weight_range' => '4–7 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2187,7 +2293,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Постоянно в движении'
              
              
-                 ]],['animal_breed' => 'Бирманская',
+                 ]],
+['animal_breed' => 'Бирманская',
         'weight_range' => '4–7 кг',
         'height_range' => '23–25 см',
         'lifespan' => '13–15 лет',
@@ -2203,7 +2310,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Шелковистая шерсть'
              
              
-                 ]],['animal_breed' => 'Шотландская вислоухая',
+                 ]],
+['animal_breed' => 'Шотландская вислоухая',
         'weight_range' => '3–6 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2219,7 +2327,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Уникальная форма ушей'
              
              
-                 ]],['animal_breed' => 'Ориентальная',
+                 ]],
+['animal_breed' => 'Ориентальная',
         'weight_range' => '2.5–4.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -2235,7 +2344,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Требует много внимания'
              
              
-                 ]],['animal_breed' => 'Русская голубая',
+                 ]],
+['animal_breed' => 'Русская голубая',
         'weight_range' => '3–5.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '15–20 лет',
@@ -2251,7 +2361,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Изумрудные глаза'
              
              
-                 ]],['animal_breed' => 'Турецкая ангора',
+                 ]],
+['animal_breed' => 'Турецкая ангора',
         'weight_range' => '2.5–5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -2267,7 +2378,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Часто бывает гетерохромия'
              
              
-                 ]],['animal_breed' => 'Турецкий ван',
+                 ]],
+['animal_breed' => 'Турецкий ван',
         'weight_range' => '4–9 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2283,7 +2395,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Любит воду'
              
              
-                 ]],['animal_breed' => 'Норвежская лесная',
+                 ]],
+['animal_breed' => 'Норвежская лесная',
         'weight_range' => '5–9 кг',
         'height_range' => '25–35 см',
         'lifespan' => '14–16 лет',
@@ -2299,7 +2412,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Водостойкий мех'
              
              
-                 ]],['animal_breed' => 'Саванна',
+                 ]],
+['animal_breed' => 'Саванна',
         'weight_range' => '6–12 кг',
         'height_range' => '35–45 см',
         'lifespan' => '15–20 лет',
@@ -2315,7 +2429,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Может прыгать на 2.5 метра'
              
              
-                 ]],['animal_breed' => 'Бомбейская',
+                 ]],
+['animal_breed' => 'Бомбейская',
         'weight_range' => '3–6 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–16 лет',
@@ -2331,7 +2446,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Только черный окрас'
              
              
-                 ]],['animal_breed' => 'Египетская мау',
+                 ]],
+['animal_breed' => 'Египетская мау',
         'weight_range' => '3–5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -2347,7 +2463,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Пятна на коже и шерсти'
              
              
-                 ]],['animal_breed' => 'Корниш-рекс',
+                 ]],
+['animal_breed' => 'Корниш-рекс',
         'weight_range' => '3–5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -2363,7 +2480,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Шерсть без остевого волоса'
              
              
-                 ]],['animal_breed' => 'Девон-рекс',
+                 ]],
+['animal_breed' => 'Девон-рекс',
         'weight_range' => '2.5–4.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '10–15 лет',
@@ -2379,7 +2497,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Очень социальны'
              
              
-                 ]],['animal_breed' => 'Шартрез',
+                 ]],
+['animal_breed' => 'Шартрез',
     'weight_range' => '3–5 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -2395,7 +2514,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Молчаливая'
              
              
-                 ]],['animal_breed' => 'Сибирская',
+                 ]],
+['animal_breed' => 'Сибирская',
     'weight_range' => '4–8 кг',
     'height_range' => '25–35 см',
     'lifespan' => '12–17 лет',
@@ -2411,7 +2531,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Гипоаллергенная (условно)'
              
              
-                 ]],['animal_breed' => 'Балинезийская',
+                 ]],
+['animal_breed' => 'Балинезийская',
     'weight_range' => '3–5 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–16 лет',
@@ -2427,7 +2548,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит общение'
              
              
-                 ]],['animal_breed' => 'Тойгер',
+                 ]],
+['animal_breed' => 'Тойгер',
     'weight_range' => '3–7 кг',
     'height_range' => '25–30 см',
     'lifespan' => '12–15 лет',
@@ -2443,7 +2565,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Экзотическая внешность'
              
              
-                 ]],['animal_breed' => 'Оцикет',
+                 ]],
+['animal_breed' => 'Оцикет',
     'weight_range' => '3–6 кг',
     'height_range' => '25–32 см',
     'lifespan' => '12–15 лет',
@@ -2459,7 +2582,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит играть'
              
              
-                 ]],['animal_breed' => 'Манчкин',
+                 ]],
+['animal_breed' => 'Манчкин',
     'weight_range' => '2–4 кг',
     'height_range' => '18–23 см',
     'lifespan' => '12–16 лет',
@@ -2475,7 +2599,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Короткие лапы'
              
              
-                 ]],['animal_breed' => 'Сомали',
+                 ]],
+['animal_breed' => 'Сомали',
     'weight_range' => '2.5–5 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–16 лет',
@@ -2491,7 +2616,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит высоту'
              
              
-                 ]],['animal_breed' => 'Нибелунг',
+                 ]],
+['animal_breed' => 'Нибелунг',
     'weight_range' => '3–6 кг',
     'height_range' => '23–28 см',
     'lifespan' => '12–15 лет',
@@ -2507,7 +2633,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Предан одному хозяину'
              
              
-                 ]],['animal_breed' => 'Метис',
+                 ]],
+['animal_breed' => 'Метис',
     'weight_range' => '3–7 кг',
     'height_range' => '25–35 см',
     'lifespan' => '10–16 лет',
@@ -2523,7 +2650,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Индивидуальные качества'
              
              
-                 ]],['animal_breed' => 'Бурманская',
+                 ]],
+['animal_breed' => 'Бурманская',
         'weight_range' => '3.5–6 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–16 лет',
@@ -2534,7 +2662,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Шелковистая', 'Контактность' => 'Очень высокая', 'Взгляд' => 'Гипнотический'
              
              
-                 ]],['animal_breed' => 'Европейская короткошерстная',
+                 ]],
+['animal_breed' => 'Европейская короткошерстная',
         'weight_range' => '4–7 кг',
         'height_range' => '25–32 см',
         'lifespan' => '15–20 лет',
@@ -2545,7 +2674,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Здоровье' => 'Железное', 'Уход' => 'Минимальный', 'Характер' => 'Универсальный'
              
              
-                 ]],['animal_breed' => 'Шотландская прямоухая (Скоттиш-страйт)',
+                 ]],
+['animal_breed' => 'Шотландская прямоухая (Скоттиш-страйт)',
         'weight_range' => '3–6 кг',
         'height_range' => '25–30 см',
         'lifespan' => '13–15 лет',
@@ -2556,7 +2686,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Плотная/Плюшевая', 'Форма морды' => 'Круглая', 'Нрав' => 'Спокойный'
              
              
-                 ]],['animal_breed' => 'Селкирк-рекс',
+                 ]],
+['animal_breed' => 'Селкирк-рекс',
         'weight_range' => '3–7 кг',
         'height_range' => '25–33 см',
         'lifespan' => '12–15 лет',
@@ -2567,7 +2698,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Кудрявая', 'Телосложение' => 'Мощное', 'Ощупь' => 'Мягкие'
              
              
-                 ]],['animal_breed' => 'Японский бобтейл',
+                 ]],
+['animal_breed' => 'Японский бобтейл',
         'weight_range' => '2.5–5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2578,7 +2710,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Хвост' => 'Короткий/Помпон', 'Прыгучесть' => 'Высокая', 'Голос' => 'Певчий'
              
              
-                 ]],['animal_breed' => 'Курильский бобтейл',
+                 ]],
+['animal_breed' => 'Курильский бобтейл',
         'weight_range' => '4–8 кг',
         'height_range' => '28–35 см',
         'lifespan' => '15–17 лет',
@@ -2589,7 +2722,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Хвост' => 'Закарючка', 'Вода' => 'Не боятся', 'Сила' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Ликой (Кошка-оборотень)',
+                 ]],
+['animal_breed' => 'Ликой (Кошка-оборотень)',
         'weight_range' => '3–5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2600,7 +2734,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Внешность' => 'Экзотическая', 'Шерсть' => 'Редкая/Седая', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Сингапура',
+                 ]],
+['animal_breed' => 'Сингапура',
         'weight_range' => '2–3.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '12–15 лет',
@@ -2611,7 +2746,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Размер' => 'Миниатюрный', 'Глаза' => 'Огромные', 'Шерсть' => 'Тикированная'
              
              
-                 ]],['animal_breed' => 'Бурмилла',
+                 ]],
+['animal_breed' => 'Бурмилла',
         'weight_range' => '3.5–6.5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '13–15 лет',
@@ -2622,7 +2758,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Серебристый затушеванный', 'Взгляд' => 'Накрашенный', 'Нрав' => 'Миролюбивый'
              
              
-                 ]],['animal_breed' => 'Корат',
+                 ]],
+['animal_breed' => 'Корат',
         'weight_range' => '2.5–5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '15–18 лет',
@@ -2633,7 +2770,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Голова' => 'Сердцевидная', 'Окрас' => 'Серебристо-голубой', 'Чувства' => 'Острые'
              
              
-                 ]],['animal_breed' => 'Гавана браун',
+                 ]],
+['animal_breed' => 'Гавана браун',
         'weight_range' => '3–5.5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2644,7 +2782,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Окрас' => 'Насыщенный шоколадный', 'Усы' => 'Коричневые', 'Интеллект' => 'Высокий'
              
              
-                 ]],['animal_breed' => 'Тайская',
+                 ]],
+['animal_breed' => 'Тайская',
         'weight_range' => '3–6 кг',
         'height_range' => '25–32 см',
         'lifespan' => '15–20 лет',
@@ -2655,7 +2794,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Глаза' => 'Сапфировые', 'Голос' => 'Громкий', 'Верность' => 'Собачья'
              
              
-                 ]],['animal_breed' => 'Донской сфинкс',
+                 ]],
+['animal_breed' => 'Донской сфинкс',
         'weight_range' => '3–6 кг',
         'height_range' => '25–32 см',
         'lifespan' => '12–15 лет',
@@ -2666,7 +2806,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Кожа' => 'Горячая/Складчатая', 'Линька' => 'Отсутствует', 'Характер' => 'Очень нежный'
              
              
-                 ]],['animal_breed' => 'Петерболд (Невская бесшерстная)',
+                 ]],
+['animal_breed' => 'Петерболд (Невская бесшерстная)',
         'weight_range' => '3–5 кг',
         'height_range' => '23–30 см',
         'lifespan' => '12–15 лет',
@@ -2677,7 +2818,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Бесшерстная/Велюр', 'Тело' => 'Утонченное', 'Характер' => 'Дружелюбный'
              
              
-                 ]],['animal_breed' => 'Украинский левкой',
+                 ]],
+['animal_breed' => 'Украинский левкой',
         'weight_range' => '3–6 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2688,7 +2830,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Уши' => 'Загнуты вперед', 'Кожа' => 'Голая', 'Нрав' => 'Преданный'
              
              
-                 ]],['animal_breed' => 'Герман-рекс',
+                 ]],
+['animal_breed' => 'Герман-рекс',
         'weight_range' => '3–6 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–16 лет',
@@ -2699,7 +2842,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Шерсть' => 'Кудрявая', 'Уход' => 'Простой', 'Темперамент' => 'Спокойный'
              
              
-                 ]],['animal_breed' => 'Лаперм',
+                 ]],
+['animal_breed' => 'Лаперм',
         'weight_range' => '3–5.5 кг',
         'height_range' => '25–32 см',
         'lifespan' => '12–15 лет',
@@ -2710,7 +2854,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Завиток' => 'Спиралевидный', 'Линька' => 'Минимальная', 'Контакт' => 'Любит обниматься'
              
              
-                 ]],['animal_breed' => 'Чаузи',
+                 ]],
+['animal_breed' => 'Чаузи',
         'weight_range' => '6–12 кг',
         'height_range' => '35–45 см',
         'lifespan' => '12–15 лет',
@@ -2721,7 +2866,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Размер' => 'Крупный', 'Активность' => 'Экстремальная', 'Вид' => 'Дикий'
              
              
-                 ]],['animal_breed' => 'Пиксибоб',
+                 ]],
+['animal_breed' => 'Пиксибоб',
         'weight_range' => '4–9 кг',
         'height_range' => '30–38 см',
         'lifespan' => '13–15 лет',
@@ -2732,7 +2878,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Лапы' => 'Часто многопалые', 'Хвост' => 'Короткий', 'Верность' => 'Собачья'
              
              
-                 ]],['animal_breed' => 'Серенгети',
+                 ]],
+['animal_breed' => 'Серенгети',
         'weight_range' => '5–10 кг',
         'height_range' => '30–40 см',
         'lifespan' => '12–15 лет',
@@ -2743,7 +2890,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Лапы' => 'Очень длинные', 'Окрас' => 'Пятнистый', 'Энергия' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Каракал (домашний)',
+                 ]],
+['animal_breed' => 'Каракал (домашний)',
         'weight_range' => '11–20 кг',
         'height_range' => '40–50 см',
         'lifespan' => '15–19 лет',
@@ -2754,7 +2902,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Уши' => 'Длинные кисточки', 'Рацион' => 'Сырое мясо', 'Статус' => 'Экзот'
              
              
-                 ]],['animal_breed' => 'Сервал (домашний)',
+                 ]],
+['animal_breed' => 'Сервал (домашний)',
         'weight_range' => '8–18 кг',
         'height_range' => '50–65 см',
         'lifespan' => '15–20 лет',
@@ -2765,7 +2914,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Рост' => 'Высокий', 'Окрас' => 'Леопардовый', 'Слух' => 'Исключительный'
              
              
-                 ]],['animal_breed' => 'Невская маскарадная',
+                 ]],
+['animal_breed' => 'Невская маскарадная',
         'weight_range' => '5–9 кг',
         'height_range' => '30–35 см',
         'lifespan' => '15–20 лет',
@@ -2776,7 +2926,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Глаза' => 'Голубые', 'Шерсть' => 'Водоотталкивающая', 'Здоровье' => 'Крепкое'
              
              
-                 ]],['animal_breed' => 'Рагамаффин',
+                 ]],
+['animal_breed' => 'Рагамаффин',
         'weight_range' => '5–9 кг',
         'height_range' => '25–35 см',
         'lifespan' => '12–16 лет',
@@ -2787,18 +2938,9 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Темперамент' => 'Флегматичный', 'Шерсть' => 'Шелковистая', 'Семья' => 'Для детей'
              
              
-                 ]],['animal_breed' => 'Сомали',
-        'weight_range' => '3–5.5 кг',
-        'height_range' => '25–30 см',
-        'lifespan' => '12–15 лет',
-        'type' => 'Кошка',
-        'photo' => 'animal/cat/breed/somali.webp',
-        'short_description' => 'Длинношерстная абиссинская кошка с лисьим хвостом.',
-        'full_description' => "Яркая, активная и невероятно красивая кошка с тикированным окрасом. Сомали очень любопытны и любят участвовать во всех домашних делах, используя свои ловкие лапки.",
-         'features' =>['Хвост' => 'Очень пушистый', 'Окрас' => 'Тикированный', 'Ум' => 'Высокий'
-             
-             
-                 ]],['animal_breed' => 'Гималайская',
+                 ]],
+
+['animal_breed' => 'Гималайская',
         'weight_range' => '4–6.5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2809,7 +2951,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Внешность' => 'Кукольная', 'Шерсть' => 'Длинная/Густая', 'Активность' => 'Низкая'
              
              
-                 ]],['animal_breed' => 'Американский керл',
+                 ]],
+['animal_breed' => 'Американский керл',
         'weight_range' => '3–5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2820,7 +2963,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Уши' => 'Завиток назад', 'Характер' => 'Жизнерадостный', 'Здоровье' => 'Хорошее'
              
              
-                 ]],['animal_breed' => 'Кимрик',
+                 ]],
+['animal_breed' => 'Кимрик',
         'weight_range' => '4–6 кг',
         'height_range' => '25–32 см',
         'lifespan' => '12–15 лет',
@@ -2831,7 +2975,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Хвост' => 'Отсутствует/Короткий', 'Походка' => 'Прыгающая', 'Шерсть' => 'Двойная'
              
              
-                 ]],['animal_breed' => 'Мэнкс (Бесхвостая кошка)',
+                 ]],
+['animal_breed' => 'Мэнкс (Бесхвостая кошка)',
         'weight_range' => '3.5–5.5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2842,7 +2987,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Особенность' => 'Бесхвостость', 'Лапы' => 'Длинные задние', 'Нрав' => 'Спокойный'
              
              
-                 ]],['animal_breed' => 'Сноу-шу',
+                 ]],
+['animal_breed' => 'Сноу-шу',
         'weight_range' => '3–5.5 кг',
         'height_range' => '25–30 см',
         'lifespan' => '12–15 лет',
@@ -2853,7 +2999,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Лапы' => 'Белые носочки', 'Глаза' => 'Синие', 'Характер' => 'Общительный'
              
              
-                 ]],['animal_breed' => 'Волнистый попугайчик',
+                 ]],
+['animal_breed' => 'Волнистый попугайчик',
     'weight_range' => '30–50 г',
     'height_range' => '16–18 см',
     'lifespan' => '5–10 лет',
@@ -2869,7 +3016,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Может говорить'
              
              
-                 ]],['animal_breed' => 'Корелла',
+                 ]],
+['animal_breed' => 'Корелла',
     'weight_range' => '80–120 г',
     'height_range' => '30–33 см',
     'lifespan' => '10–15 лет',
@@ -2885,7 +3033,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит внимание'
              
              
-                 ]],['animal_breed' => 'Какаду',
+                 ]],
+['animal_breed' => 'Какаду',
         'weight_range' => '300–900 г',
         'height_range' => '30–70 см',
         'lifespan' => '40–70 лет',
@@ -2901,7 +3050,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Наличие хохолка'
              
              
-                 ]],['animal_breed' => 'Гала',
+                 ]],
+['animal_breed' => 'Гала',
         'weight_range' => '270–350 г',
         'height_range' => '35 см',
         'lifespan' => '30–50 лет',
@@ -2917,7 +3067,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Яркое розовое брюшко'
              
              
-                 ]],['animal_breed' => 'Жако',
+                 ]],
+['animal_breed' => 'Жако',
         'weight_range' => '400–600 г',
         'height_range' => '30–35 см',
         'lifespan' => '50–60 лет',
@@ -2933,7 +3084,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Лучший имитатор речи'
              
              
-                 ]],['animal_breed' => 'Ара',
+                 ]],
+['animal_breed' => 'Ара',
         'weight_range' => '900–1300 г',
         'height_range' => '80–95 см',
         'lifespan' => '50–80 лет',
@@ -2949,7 +3101,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Мощный клюв'
              
              
-                 ]],['animal_breed' => 'Зелёный ара',
+                 ]],
+['animal_breed' => 'Зелёный ара',
         'weight_range' => '250–350 г',
         'height_range' => '45–50 см',
         'lifespan' => '30–50 лет',
@@ -2965,7 +3118,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Преобладающий зеленый цвет'
              
              
-                 ]],['animal_breed' => 'Голубой ара',
+                 ]],
+['animal_breed' => 'Голубой ара',
         'weight_range' => '300–400 г',
         'height_range' => '55 см',
         'lifespan' => '20–40 лет',
@@ -2981,7 +3135,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Находится под охраной'
              
              
-                 ]],['animal_breed' => 'Краснохвостый ара',
+                 ]],
+['animal_breed' => 'Краснохвостый ара',
         'weight_range' => '300–450 г',
         'height_range' => '45–50 см',
         'lifespan' => '30–40 лет',
@@ -2997,7 +3152,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Яркий красный хвост'
              
              
-                 ]],['animal_breed' => 'Эклектус',
+                 ]],
+['animal_breed' => 'Эклектус',
         'weight_range' => '350–600 г',
         'height_range' => '35–40 см',
         'lifespan' => '30–40 лет',
@@ -3013,7 +3169,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Разный окрас у самцов и самок'
              
              
-                 ]],['animal_breed' => 'Ожереловый попугай',
+                 ]],
+['animal_breed' => 'Ожереловый попугай',
         'weight_range' => '120–150 г',
         'height_range' => '40 см',
         'lifespan' => '20–30 лет',
@@ -3029,7 +3186,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Длинный ступенчатый хвост'
              
              
-                 ]],['animal_breed' => 'Кольчатый попугай',
+                 ]],
+['animal_breed' => 'Кольчатый попугай',
         'weight_range' => '100–130 г',
         'height_range' => '35–40 см',
         'lifespan' => '15–25 лет',
@@ -3045,7 +3203,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Тонкое телосложение'
              
              
-                 ]],['animal_breed' => 'Неразлучник',
+                 ]],
+['animal_breed' => 'Неразлучник',
         'weight_range' => '40–60 г',
         'height_range' => '10–17 см',
         'lifespan' => '10–15 лет',
@@ -3061,7 +3220,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Сильная привязанность к паре'
              
              
-                 ]],['animal_breed' => 'Неразлучник Фишера',
+                 ]],
+['animal_breed' => 'Неразлучник Фишера',
         'weight_range' => '45–55 г',
         'height_range' => '14–15 см',
         'lifespan' => '12–15 лет',
@@ -3077,7 +3237,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Белое кольцо вокруг глаз'
              
              
-                 ]],['animal_breed' => 'Розелла',
+                 ]],
+['animal_breed' => 'Розелла',
         'weight_range' => '90–120 г',
         'height_range' => '25–35 см',
         'lifespan' => '15–20 лет',
@@ -3093,7 +3254,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Красивое пение'
              
              
-                 ]],['animal_breed' => 'Красноспинный попугай',
+                 ]],
+['animal_breed' => 'Красноспинный попугай',
         'weight_range' => '50–70 г',
         'height_range' => '25–28 см',
         'lifespan' => '10–15 лет',
@@ -3109,7 +3271,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Мелодичный голос'
              
              
-                 ]],['animal_breed' => 'Лори',
+                 ]],
+['animal_breed' => 'Лори',
         'weight_range' => '100–150 г',
         'height_range' => '25–30 см',
         'lifespan' => '15–25 лет',
@@ -3125,7 +3288,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Питается нектаром'
              
              
-                 ]],['animal_breed' => 'Лорикет',
+                 ]],
+['animal_breed' => 'Лорикет',
     'weight_range' => '100–200 г',
     'height_range' => '25–30 см',
     'lifespan' => '10–20 лет',
@@ -3141,7 +3305,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Питается нектаром'
              
              
-                 ]],['animal_breed' => 'Кеа',
+                 ]],
+['animal_breed' => 'Кеа',
     'weight_range' => '800–1000 г',
     'height_range' => '45–50 см',
     'lifespan' => '30–50 лет',
@@ -3157,7 +3322,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень любопытный'
              
              
-                 ]],['animal_breed' => 'Малый ара',
+                 ]],
+['animal_breed' => 'Малый ара',
     'weight_range' => '300–500 г',
     'height_range' => '30–35 см',
     'lifespan' => '25–40 лет',
@@ -3173,7 +3339,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Громкий'
              
              
-                 ]],['animal_breed' => 'Попугай-монах',
+                 ]],
+['animal_breed' => 'Попугай-монах',
     'weight_range' => '400–600 г',
     'height_range' => '30–35 см',
     'lifespan' => '20–30 лет',
@@ -3189,7 +3356,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Строит гнёзда'
              
              
-                 ]],['animal_breed' => 'Буроголовый попугай',
+                 ]],
+['animal_breed' => 'Буроголовый попугай',
     'weight_range' => '90–120 г',
     'height_range' => '23–26 см',
     'lifespan' => '15–20 лет',
@@ -3205,7 +3373,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Спокойный характер'
              
              
-                 ]],['animal_breed' => 'Мейеров попугай',
+                 ]],
+['animal_breed' => 'Мейеров попугай',
     'weight_range' => '100–140 г',
     'height_range' => '20–23 см',
     'lifespan' => '20–30 лет',
@@ -3221,7 +3390,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Тихий'
              
              
-                 ]],['animal_breed' => 'Андский высокогорный попугай',
+                 ]],
+['animal_breed' => 'Андский высокогорный попугай',
     'weight_range' => '200–300 г',
     'height_range' => '30–35 см',
     'lifespan' => '15–25 лет',
@@ -3237,7 +3407,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт в горах'
              
              
-                 ]],['animal_breed' => 'Дятловый попугайчик',
+                 ]],
+['animal_breed' => 'Дятловый попугайчик',
     'weight_range' => '30–40 г',
     'height_range' => '14–16 см',
     'lifespan' => '10–15 лет',
@@ -3253,7 +3424,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень маленький'
              
              
-                 ]],['animal_breed' => 'Средиземноморская черепаха',
+                 ]],
+['animal_breed' => 'Средиземноморская черепаха',
     'weight_range' => '1.5–2.5 кг',
     'height_range' => '20–30 см',
     'lifespan' => '50–100 лет',
@@ -3269,23 +3441,9 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Долгожитель'
              
              
-                 ]],['animal_breed' => 'Степная черепаха',
-    'weight_range' => '2–4 кг',
-    'height_range' => '20–35 см',
-    'lifespan' => '50–100 лет',
-    'type' => 'Рептилия',
-    'photo' => 'animal/reptile/breed/Steppe_tortoise.webp',
-    'short_description' => 'Выносливая сухопутная черепаха.',
-    'full_description' => "Степная черепаха — популярный вид для домашнего содержания. \n\nХорошо переносит сухой климат.",
-     'features' =>[
-        'Тип' => 'Рептилия',
-        'Линька' => 'Нет',
-        'Активность' => 'Низкая',
-        'Обучаемость' => 'Низкая',
-        'Особенности' => 'Неприхотлива'
-             
-             
-                 ]],['animal_breed' => 'Красноухая черепаха',
+                 ]],
+
+['animal_breed' => 'Красноухая черепаха',
         'weight_range' => '1.5–3 кг',
         'height_range' => '18–30 см (длина)',
         'lifespan' => '20–40 лет',
@@ -3301,7 +3459,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Быстро растет'
              
              
-                 ]],['animal_breed' => 'Американская болотная черепаха',
+                 ]],
+['animal_breed' => 'Американская болотная черепаха',
         'weight_range' => '1–2 кг',
         'height_range' => '15–25 см',
         'lifespan' => '40–60 лет',
@@ -3317,7 +3476,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Характерный желтый подбородок'
              
              
-                 ]],['animal_breed' => 'Галапагосская гигантская черепаха',
+                 ]],
+['animal_breed' => 'Галапагосская гигантская черепаха',
         'weight_range' => '200–400 кг',
         'height_range' => '120–150 см',
         'lifespan' => '100–170 лет',
@@ -3333,7 +3493,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Рекордсмен долголетия'
              
              
-                 ]],['animal_breed' => 'Альдабранская гигантская черепаха',
+                 ]],
+['animal_breed' => 'Альдабранская гигантская черепаха',
         'weight_range' => '150–250 кг',
         'height_range' => '100–120 см',
         'lifespan' => '80–150 лет',
@@ -3349,7 +3510,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Общительный характер (для рептилий)'
              
              
-                 ]],['animal_breed' => 'Египетская черепаха',
+                 ]],
+['animal_breed' => 'Египетская черепаха',
         'weight_range' => '0.2–0.5 кг',
         'height_range' => '10–13 см',
         'lifespan' => '20–30 лет',
@@ -3365,7 +3527,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Миниатюрный размер'
              
              
-                 ]],['animal_breed' => 'Окаймлённая черепаха',
+                 ]],
+['animal_breed' => 'Окаймлённая черепаха',
         'weight_range' => '2–4 кг',
         'height_range' => '25–35 см',
         'lifespan' => '30–50 лет',
@@ -3381,7 +3544,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Зубчатый край панциря'
              
              
-                 ]],['animal_breed' => 'Красноногая черепаха',
+                 ]],
+['animal_breed' => 'Красноногая черепаха',
         'weight_range' => '8–15 кг',
         'height_range' => '40–50 см',
         'lifespan' => '40–50 лет',
@@ -3397,7 +3561,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Любит высокую влажность'
              
              
-                 ]],['animal_breed' => 'Жёлтоногая черепаха',
+                 ]],
+['animal_breed' => 'Жёлтоногая черепаха',
         'weight_range' => '10–20 кг',
         'height_range' => '40–60 см',
         'lifespan' => '50–60 лет',
@@ -3413,7 +3578,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Мощное телосложение'
              
              
-                 ]],['animal_breed' => 'Розовая каймановая черепаха',
+                 ]],
+['animal_breed' => 'Розовая каймановая черепаха',
         'weight_range' => '15–35 кг',
         'height_range' => '40–50 см',
         'lifespan' => '30–50 лет',
@@ -3429,7 +3595,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Опасный укус'
              
              
-                 ]],['animal_breed' => 'Кожистая черепаха',
+                 ]],
+['animal_breed' => 'Кожистая черепаха',
         'weight_range' => '300–600 кг',
         'height_range' => '180–220 см',
         'lifespan' => '30–50 лет',
@@ -3445,7 +3612,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Мягкий панцирь'
              
              
-                 ]],['animal_breed' => 'Гребнистая черепаха',
+                 ]],
+['animal_breed' => 'Гребнистая черепаха',
         'weight_range' => '100–150 кг',
         'height_range' => '100–120 см',
         'lifespan' => '50–70 лет',
@@ -3461,7 +3629,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Ограниченный ареал'
              
              
-                 ]],['animal_breed' => 'Зелёная морская черепаха',
+                 ]],
+['animal_breed' => 'Зелёная морская черепаха',
         'weight_range' => '150–200 кг',
         'height_range' => '80–150 см',
         'lifespan' => '70–80 лет',
@@ -3477,7 +3646,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Миграции на тысячи км'
              
              
-                 ]],['animal_breed' => 'Каретта',
+                 ]],
+['animal_breed' => 'Каретта',
         'weight_range' => '45–80 кг',
         'height_range' => '60–90 см',
         'lifespan' => '30–50 лет',
@@ -3493,7 +3663,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Крючковатый клюв'
              
              
-                 ]],['animal_breed' => 'Логгерхед',
+                 ]],
+['animal_breed' => 'Логгерхед',
         'weight_range' => '90–160 кг',
         'height_range' => '90–110 см',
         'lifespan' => '40–60 лет',
@@ -3509,7 +3680,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Крупная голова'
              
              
-                 ]],['animal_breed' => 'Малазийская плосконосая черепаха',
+                 ]],
+['animal_breed' => 'Малазийская плосконосая черепаха',
         'weight_range' => '0.8–1.5 кг',
         'height_range' => '15–20 см',
         'lifespan' => '15–25 лет',
@@ -3525,7 +3697,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Плоская форма'
              
              
-                 ]],['animal_breed' => 'Дальневосточная черепаха',
+                 ]],
+['animal_breed' => 'Дальневосточная черепаха',
         'weight_range' => '2–4 кг',
         'height_range' => '20–35 см',
         'lifespan' => '20–30 лет',
@@ -3541,7 +3714,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Кожаный панцирь'
              
              
-                 ]],['animal_breed' => 'Евфратский трионикс',
+                 ]],
+['animal_breed' => 'Евфратский трионикс',
         'weight_range' => '5–10 кг',
         'height_range' => '40–60 см',
         'lifespan' => '25–40 лет',
@@ -3557,7 +3731,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Высокая чувствительность к воде'
              
              
-                 ]],['animal_breed' => 'Индийская лопастная черепаха',
+                 ]],
+['animal_breed' => 'Индийская лопастная черепаха',
         'weight_range' => '1.5–3 кг',
         'height_range' => '25–35 см',
         'lifespan' => '20–30 лет',
@@ -3573,7 +3748,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Кожные лопасти'
              
              
-                 ]],['animal_breed' => 'Колючий трионикс',
+                 ]],
+['animal_breed' => 'Колючий трионикс',
         'weight_range' => '3–6 кг',
         'height_range' => '30–45 см',
         'lifespan' => '25–35 лет',
@@ -3589,7 +3765,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Нос-трубочка'
              
              
-                 ]],['animal_breed' => 'Узкоголовая черепаха',
+                 ]],
+['animal_breed' => 'Узкоголовая черепаха',
     'weight_range' => '3–6 кг',
     'height_range' => '20–30 см',
     'lifespan' => '20–40 лет',
@@ -3605,7 +3782,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Редкий вид'
              
              
-                 ]],['animal_breed' => 'Полосатая черепаха',
+                 ]],
+['animal_breed' => 'Полосатая черепаха',
     'weight_range' => '2–5 кг',
     'height_range' => '20–30 см',
     'lifespan' => '20–30 лет',
@@ -3621,7 +3799,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Яркий окрас'
              
              
-                 ]],['animal_breed' => 'Килеватая мускусная черепаха',
+                 ]],
+['animal_breed' => 'Килеватая мускусная черепаха',
     'weight_range' => '0.5–1 кг',
     'height_range' => '10–15 см',
     'lifespan' => '30–50 лет',
@@ -3637,7 +3816,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт в воде'
              
              
-                 ]],['animal_breed' => 'Белый Великан',
+                 ]],
+['animal_breed' => 'Белый Великан',
     'weight_range' => '5–8 кг',
     'height_range' => '50–60 см',
     'lifespan' => '5–8 лет',
@@ -3653,7 +3833,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень крупный'
              
              
-                 ]],['animal_breed' => 'Серый Великан',
+                 ]],
+['animal_breed' => 'Серый Великан',
     'weight_range' => '5–7 кг',
     'height_range' => '45–55 см',
     'lifespan' => '5–8 лет',
@@ -3669,7 +3850,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Выносливый'
              
              
-                 ]],['animal_breed' => 'Советская шиншилла',
+                 ]],
+['animal_breed' => 'Советская шиншилла',
     'weight_range' => '3–5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '6–9 лет',
@@ -3685,7 +3867,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Ценный мех'
              
              
-                 ]],['animal_breed' => 'Новозеландский белый',
+                 ]],
+['animal_breed' => 'Новозеландский белый',
     'weight_range' => '4–5 кг',
     'height_range' => '40–50 см',
     'lifespan' => '5–8 лет',
@@ -3701,7 +3884,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Быстро растёт'
              
              
-                 ]],['animal_breed' => 'Новозеландский красный',
+                 ]],
+['animal_breed' => 'Новозеландский красный',
     'weight_range' => '4–5 кг',
     'height_range' => '40–50 см',
     'lifespan' => '5–8 лет',
@@ -3717,7 +3901,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Яркий окрас'
              
              
-                 ]],['animal_breed' => 'Калифорнийский',
+                 ]],
+['animal_breed' => 'Калифорнийский',
     'weight_range' => '3–5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '5–8 лет',
@@ -3733,7 +3918,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Контрастный окрас'
              
              
-                 ]],['animal_breed' => 'Бабочка',
+                 ]],
+['animal_breed' => 'Бабочка',
     'weight_range' => '3–4 кг',
     'height_range' => '30–40 см',
     'lifespan' => '5–8 лет',
@@ -3749,7 +3935,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Пятнистый окрас'
              
              
-                 ]],['animal_breed' => 'Венский голубой',
+                 ]],
+['animal_breed' => 'Венский голубой',
         'weight_range' => '4.5–5.5 кг',
         'height_range' => '50–57 см',
         'lifespan' => '8–12 лет',
@@ -3765,7 +3952,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Чистый стальной окрас'
              
              
-                 ]],['animal_breed' => 'Серебристый',
+                 ]],
+['animal_breed' => 'Серебристый',
         'weight_range' => '4.5–5 кг',
         'height_range' => '50–55 см',
         'lifespan' => '7–10 лет',
@@ -3781,7 +3969,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Крепкая конституция'
              
              
-                 ]],['animal_breed' => 'Чёрно-бурый кролик',
+                 ]],
+['animal_breed' => 'Чёрно-бурый кролик',
         'weight_range' => '5–7 кг',
         'height_range' => '60–65 см',
         'lifespan' => '8–10 лет',
@@ -3797,7 +3986,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Высокая плодовитость'
              
              
-                 ]],['animal_breed' => 'Большое светлое серебро',
+                 ]],
+['animal_breed' => 'Большое светлое серебро',
         'weight_range' => '4.5–5.5 кг',
         'height_range' => '52–56 см',
         'lifespan' => '7–9 лет',
@@ -3813,7 +4003,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Быстрый набор веса'
              
              
-                 ]],['animal_breed' => 'Ангорский',
+                 ]],
+['animal_breed' => 'Ангорский',
         'weight_range' => '3–5 кг',
         'height_range' => '40–50 см',
         'lifespan' => '7–12 лет',
@@ -3829,7 +4020,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Нуждается в ежедневном расчесывании'
              
              
-                 ]],['animal_breed' => 'Белый пуховый',
+                 ]],
+['animal_breed' => 'Белый пуховый',
         'weight_range' => '4–4.5 кг',
         'height_range' => '50–54 см',
         'lifespan' => '8–10 лет',
@@ -3845,7 +4037,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Не образует колтунов (при уходе)'
              
              
-                 ]],['animal_breed' => 'Рекс',
+                 ]],
+['animal_breed' => 'Рекс',
         'weight_range' => '3–4.5 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–10 лет',
@@ -3861,7 +4054,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Чувствительные лапы'
              
              
-                 ]],['animal_breed' => 'Рекс карликовый',
+                 ]],
+['animal_breed' => 'Рекс карликовый',
         'weight_range' => '1.2–1.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '8–12 лет',
@@ -3877,7 +4071,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Короткие усы'
              
              
-                 ]],['animal_breed' => 'Польский кролик',
+                 ]],
+['animal_breed' => 'Польский кролик',
         'weight_range' => '0.8–1.2 кг',
         'height_range' => '15–20 см',
         'lifespan' => '7–10 лет',
@@ -3893,7 +4088,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Очень компактный размер'
              
              
-                 ]],['animal_breed' => 'Русский горностаевый',
+                 ]],
+['animal_breed' => 'Русский горностаевый',
         'weight_range' => '2–2.5 кг',
         'height_range' => '30–35 см',
         'lifespan' => '8–12 лет',
@@ -3909,7 +4105,8 @@ class AnimalDetailsSeeder extends Seeder
             'Особенности' => 'Контрастный окрас'
              
              
-                 ]],['animal_breed' => 'Гавана',
+                 ]],
+['animal_breed' => 'Гавана',
         'weight_range' => '2.5–4.5 кг',
         'height_range' => '35–45 см',
         'lifespan' => '7–10 лет',
@@ -3920,7 +4117,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Мех' => 'Насыщенный', 'Активность' => 'Низкая'
              
              
-                 ]],['animal_breed' => 'Гермелин',
+                 ]],
+['animal_breed' => 'Гермелин',
         'weight_range' => '1.1–1.3 кг',
         'height_range' => '15–20 см',
         'lifespan' => '8–12 лет',
@@ -3931,7 +4129,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Карликовый', 'Мех' => 'Плотный', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Баран',
+                 ]],
+['animal_breed' => 'Баран',
         'weight_range' => '5.5–8 кг',
         'height_range' => '60–70 см',
         'lifespan' => '7–10 лет',
@@ -3942,7 +4141,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Гигант', 'Уши' => 'Вислоухие', 'Активность' => 'Низкая'
              
              
-                 ]],['animal_breed' => 'Баран карликовый',
+                 ]],
+['animal_breed' => 'Баран карликовый',
         'weight_range' => '1.5–2 кг',
         'height_range' => '25–30 см',
         'lifespan' => '8–12 лет',
@@ -3953,7 +4153,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Карликовый', 'Уши' => 'Вислоухие', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Баран львиноголовый',
+                 ]],
+['animal_breed' => 'Баран львиноголовый',
         'weight_range' => '1.3–1.7 кг',
         'height_range' => '20–25 см',
         'lifespan' => '8–11 лет',
@@ -3964,7 +4165,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Декоративный', 'Мех' => 'Смешанный', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Нидерландский карликовый',
+                 ]],
+['animal_breed' => 'Нидерландский карликовый',
         'weight_range' => '0.8–1.1 кг',
         'height_range' => '15–18 см',
         'lifespan' => '9–12 лет',
@@ -3975,7 +4177,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Миниатюрный', 'Активность' => 'Высокая', 'Обучаемость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Песцовый кролик',
+                 ]],
+['animal_breed' => 'Песцовый кролик',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–9 лет',
@@ -3986,7 +4189,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Мех' => 'Очень густой', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Котиковый кролик',
+                 ]],
+['animal_breed' => 'Котиковый кролик',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '8–10 лет',
@@ -3997,7 +4201,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Шкурковый', 'Мех' => 'Блестящий', 'Активность' => 'Низкая'
              
              
-                 ]],['animal_breed' => 'Сатиновый',
+                 ]],
+['animal_breed' => 'Сатиновый',
         'weight_range' => '3.5–5 кг',
         'height_range' => '45–55 см',
         'lifespan' => '7–10 лет',
@@ -4008,7 +4213,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Мех' => 'Атласный', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Советский мардер',
+                 ]],
+['animal_breed' => 'Советский мардер',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '50–54 см',
         'lifespan' => '8–10 лет',
@@ -4022,7 +4228,8 @@ class AnimalDetailsSeeder extends Seeder
     // --- Группа 161-170 ---
              
              
-                 ]],['animal_breed' => 'Трианта',
+                 ]],
+['animal_breed' => 'Трианта',
         'weight_range' => '2–2.5 кг',
         'height_range' => '30–35 см',
         'lifespan' => '8–11 лет',
@@ -4033,7 +4240,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Декоративный', 'Окрас' => 'Огненный', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Хотот',
+                 ]],
+['animal_breed' => 'Хотот',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '45–50 см',
         'lifespan' => '7–10 лет',
@@ -4044,7 +4252,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Окрас' => 'Белый с окантовкой', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Карликовый хотот',
+                 ]],
+['animal_breed' => 'Карликовый хотот',
         'weight_range' => '1–1.3 кг',
         'height_range' => '15–20 см',
         'lifespan' => '8–12 лет',
@@ -4055,7 +4264,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Особенности' => 'Черные кольца глаз'
              
              
-                 ]],['animal_breed' => 'Белый хотот',
+                 ]],
+['animal_breed' => 'Белый хотот',
         'weight_range' => '3.5–4 кг',
         'height_range' => '40–48 см',
         'lifespan' => '8–10 лет',
@@ -4066,7 +4276,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Мех' => 'Плотный', 'Активность' => 'Низкая'
              
              
-                 ]],['animal_breed' => 'Чешский пёстрый',
+                 ]],
+['animal_breed' => 'Чешский пёстрый',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–10 лет',
@@ -4077,7 +4288,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Окрас' => 'Пятнистый', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Чешский красный',
+                 ]],
+['animal_breed' => 'Чешский красный',
         'weight_range' => '4–5 кг',
         'height_range' => '45–55 см',
         'lifespan' => '7–9 лет',
@@ -4088,7 +4300,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Окрас' => 'Рыжий', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Японский',
+                 ]],
+['animal_breed' => 'Японский',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '45–50 см',
         'lifespan' => '8–11 лет',
@@ -4099,7 +4312,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Окрас' => 'Двухцветный', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Американский польский',
+                 ]],
+['animal_breed' => 'Американский польский',
         'weight_range' => '1.2–1.8 кг',
         'height_range' => '25–30 см',
         'lifespan' => '8–12 лет',
@@ -4110,7 +4324,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Обучаемость' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Британский польский',
+                 ]],
+['animal_breed' => 'Британский польский',
         'weight_range' => '1–1.5 кг',
         'height_range' => '20–25 см',
         'lifespan' => '8–12 лет',
@@ -4121,7 +4336,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Карликовый', 'Активность' => 'Средняя', 'Особенности' => 'Узкое тело'
              
              
-                 ]],['animal_breed' => 'Макленбургский пятнистый',
+                 ]],
+['animal_breed' => 'Макленбургский пятнистый',
         'weight_range' => '5–7 кг',
         'height_range' => '55–65 см',
         'lifespan' => '7–10 лет',
@@ -4135,7 +4351,8 @@ class AnimalDetailsSeeder extends Seeder
     // --- Группа 171-179 ---
              
              
-                 ]],['animal_breed' => 'Земплинский пастеловый',
+                 ]],
+['animal_breed' => 'Земплинский пастеловый',
         'weight_range' => '3–4 кг',
         'height_range' => '40–50 см',
         'lifespan' => '7–9 лет',
@@ -4146,7 +4363,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Окрас' => 'Пастельный', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Дейлинаар',
+                 ]],
+['animal_breed' => 'Дейлинаар',
         'weight_range' => '2.5–3.5 кг',
         'height_range' => '35–40 см',
         'lifespan' => '8–11 лет',
@@ -4157,7 +4375,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Мех' => 'Тикированный', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Паломино',
+                 ]],
+['animal_breed' => 'Паломино',
         'weight_range' => '4–5 кг',
         'height_range' => '50–55 см',
         'lifespan' => '7–10 лет',
@@ -4168,7 +4387,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средне-крупный', 'Окрас' => 'Золотистый', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Тюрингенский',
+                 ]],
+['animal_breed' => 'Тюрингенский',
         'weight_range' => '3.5–4.5 кг',
         'height_range' => '45–52 см',
         'lifespan' => '7–10 лет',
@@ -4179,7 +4399,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Окрас' => 'Маска на морде', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Голландский',
+                 ]],
+['animal_breed' => 'Голландский',
         'weight_range' => '2–2.5 кг',
         'height_range' => '30–35 см',
         'lifespan' => '8–12 лет',
@@ -4190,7 +4411,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Декоративный', 'Окрас' => 'Двухцветный пояс', 'Активность' => 'Очень высокая'
              
              
-                 ]],['animal_breed' => 'Аляска',
+                 ]],
+['animal_breed' => 'Аляска',
         'weight_range' => '3–4 кг',
         'height_range' => '40–48 см',
         'lifespan' => '7–10 лет',
@@ -4201,7 +4423,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Мех' => 'Глянцевый', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Белка',
+                 ]],
+['animal_breed' => 'Белка',
         'weight_range' => '2–3 кг',
         'height_range' => '30–40 см',
         'lifespan' => '8–11 лет',
@@ -4212,7 +4435,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средне-мелкий', 'Окрас' => 'Зонарный', 'Активность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Шведская белка',
+                 ]],
+['animal_breed' => 'Шведская белка',
         'weight_range' => '3–4 кг',
         'height_range' => '40–45 см',
         'lifespan' => '7–10 лет',
@@ -4223,7 +4447,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средний', 'Мех' => 'Плотный', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Марбургская белка',
+                 ]],
+['animal_breed' => 'Марбургская белка',
         'weight_range' => '2.5–3.5 кг',
         'height_range' => '35–42 см',
         'lifespan' => '8–11 лет',
@@ -4234,7 +4459,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Средне-мелкий', 'Окрас' => 'Сиреневый', 'Активность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Люкс',
+                 ]],
+['animal_breed' => 'Люкс',
     'weight_range' => '2–3 кг',
     'height_range' => '25–30 см',
     'lifespan' => '5–8 лет',
@@ -4250,7 +4476,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Мягкий мех'
              
              
-                 ]],['animal_breed' => 'Карликовый лисий',
+                 ]],
+['animal_breed' => 'Карликовый лисий',
     'weight_range' => '2–4 кг',
     'height_range' => '30–35 см',
     'lifespan' => '6–9 лет',
@@ -4266,7 +4493,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Длинная шерсть'
              
              
-                 ]],['animal_breed' => 'Сепаратор',
+                 ]],
+['animal_breed' => 'Сепаратор',
     'weight_range' => '3–5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '5–8 лет',
@@ -4282,7 +4510,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Редкая порода'
              
              
-                 ]],['animal_breed' => 'Сашенгольд',
+                 ]],
+['animal_breed' => 'Сашенгольд',
     'weight_range' => '4–6 кг',
     'height_range' => '40–50 см',
     'lifespan' => '5–8 лет',
@@ -4298,7 +4527,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Выносливый'
              
              
-                 ]],['animal_breed' => 'Рен',
+                 ]],
+['animal_breed' => 'Рен',
     'weight_range' => '2–3 кг',
     'height_range' => '25–30 см',
     'lifespan' => '6–10 лет',
@@ -4314,7 +4544,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Бархатистый мех'
              
              
-                 ]],['animal_breed' => 'Арабская',
+                 ]],
+['animal_breed' => 'Арабская',
     'weight_range' => '400–600 кг',
     'height_range' => '150–160 см',
     'lifespan' => '25–30 лет',
@@ -4330,7 +4561,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Выносливая'
              
              
-                 ]],['animal_breed' => 'Ахалтекинская',
+                 ]],
+['animal_breed' => 'Ахалтекинская',
     'weight_range' => '400–500 кг',
     'height_range' => '145–155 см',
     'lifespan' => '20–30 лет',
@@ -4346,7 +4578,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Редкая порода'
              
              
-                 ]],['animal_breed' => 'Орловский рысак',
+                 ]],
+['animal_breed' => 'Орловский рысак',
     'weight_range' => '450–550 кг',
     'height_range' => '155–165 см',
     'lifespan' => '20–25 лет',
@@ -4362,7 +4595,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Быстрый бег'
              
              
-                 ]],['animal_breed' => 'Фризская',
+                 ]],
+['animal_breed' => 'Фризская',
     'weight_range' => '600–800 кг',
     'height_range' => '160–170 см',
     'lifespan' => '20–25 лет',
@@ -4378,7 +4612,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Длинная грива'
              
              
-                 ]],['animal_breed' => 'Першерон',
+                 ]],
+['animal_breed' => 'Першерон',
     'weight_range' => '800–1000 кг',
     'height_range' => '160–175 см',
     'lifespan' => '20–25 лет',
@@ -4394,7 +4629,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень сильная'
              
              
-                 ]],['animal_breed' => 'Шетлендский пони',
+                 ]],
+['animal_breed' => 'Шетлендский пони',
     'weight_range' => '200–300 кг',
     'height_range' => '90–110 см',
     'lifespan' => '25–30 лет',
@@ -4410,7 +4646,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень выносливый'
              
              
-                 ]],['animal_breed' => 'Казахская',
+                 ]],
+['animal_breed' => 'Казахская',
     'weight_range' => '400–500 кг',
     'height_range' => '140–150 см',
     'lifespan' => '20–25 лет',
@@ -4426,7 +4663,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Неприхотливая'
              
              
-                 ]],['animal_breed' => 'Алтайская',
+                 ]],
+['animal_breed' => 'Алтайская',
     'weight_range' => '400–550 кг',
     'height_range' => '140–155 см',
     'lifespan' => '20–25 лет',
@@ -4442,7 +4680,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Вынослива в горах'
              
              
-                 ]],['animal_breed' => 'Якутская',
+                 ]],
+['animal_breed' => 'Якутская',
     'weight_range' => '350–450 кг',
     'height_range' => '135–145 см',
     'lifespan' => '20–25 лет',
@@ -4458,7 +4697,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Переносит сильный холод'
              
              
-                 ]],['animal_breed' => 'Латвийская',
+                 ]],
+['animal_breed' => 'Латвийская',
     'weight_range' => '450–550 кг',
     'height_range' => '160–170 см',
     'lifespan' => '20–25 лет',
@@ -4474,7 +4714,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Спокойный характер'
              
              
-                 ]],['animal_breed' => 'Аппалуза',
+                 ]],
+['animal_breed' => 'Аппалуза',
     'weight_range' => '380–450 кг',
     'height_range' => '140–155 см',
     'lifespan' => '20–30 лет',
@@ -4490,7 +4731,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Пятнистый окрас'
              
              
-                 ]],['animal_breed' => 'Пинто',
+                 ]],
+['animal_breed' => 'Пинто',
     'weight_range' => '400–550 кг',
     'height_range' => '145–160 см',
     'lifespan' => '20–25 лет',
@@ -4506,7 +4748,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Контрастный окрас'
              
              
-                 ]],['animal_breed' => 'Квотерхорс',
+                 ]],
+['animal_breed' => 'Квотерхорс',
     'weight_range' => '450–600 кг',
     'height_range' => '155–165 см',
     'lifespan' => '20–25 лет',
@@ -4522,7 +4765,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Быстрый старт'
              
              
-                 ]],['animal_breed' => 'Тракененская',
+                 ]],
+['animal_breed' => 'Тракененская',
     'weight_range' => '450–550 кг',
     'height_range' => '160–170 см',
     'lifespan' => '20–25 лет',
@@ -4538,7 +4782,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Подходит для спорта'
              
              
-                 ]],['animal_breed' => 'Андалузская',
+                 ]],
+['animal_breed' => 'Андалузская',
     'weight_range' => '400–500 кг',
     'height_range' => '155–165 см',
     'lifespan' => '20–30 лет',
@@ -4554,7 +4799,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Красивые движения'
              
              
-                 ]],['animal_breed' => 'Кабардинская',
+                 ]],
+['animal_breed' => 'Кабардинская',
     'weight_range' => '400–500 кг',
     'height_range' => '150–160 см',
     'lifespan' => '20–25 лет',
@@ -4570,7 +4816,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Горная порода'
              
              
-                 ]],['animal_breed' => 'Донская',
+                 ]],
+['animal_breed' => 'Донская',
         'weight_range' => '500–600 кг',
         'height_range' => '160–166 см',
         'lifespan' => '25–30 лет',
@@ -4581,7 +4828,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Донская', 'Тип' => 'Верхово-упряжная', 'Выносливость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Будённовская',
+                 ]],
+['animal_breed' => 'Будённовская',
         'weight_range' => '500–550 кг',
         'height_range' => '162–167 см',
         'lifespan' => '25–30 лет',
@@ -4592,7 +4840,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Будённовская', 'Спорт' => 'Конкур/Троеборье', 'Темперамент' => 'Энергичный'
              
              
-                 ]],['animal_breed' => 'Чистокровная верховая',
+                 ]],
+['animal_breed' => 'Чистокровная верховая',
         'weight_range' => '450–550 кг',
         'height_range' => '160–175 см',
         'lifespan' => '23–28 лет',
@@ -4603,7 +4852,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Чистокровная верховая', 'Специализация' => 'Гладкие скачки', 'Скорость' => 'Экстремальная'
              
              
-                 ]],['animal_breed' => 'Мерин',
+                 ]],
+['animal_breed' => 'Мерин',
         'weight_range' => '400–600 кг',
         'height_range' => '155–170 см',
         'lifespan' => '25–35 лет',
@@ -4614,7 +4864,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Статус' => 'Мерин', 'Характер' => 'Уравновешенный', 'Применение' => 'Обучение/Хобби'
              
              
-                 ]],['animal_breed' => 'Ганноверская',
+                 ]],
+['animal_breed' => 'Ганноверская',
         'weight_range' => '550–650 кг',
         'height_range' => '160–175 см',
         'lifespan' => '25–30 лет',
@@ -4625,7 +4876,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Ганноверская', 'Тип' => 'Полукровная', 'Стиль' => 'Элегантный'
              
              
-                 ]],['animal_breed' => 'Гольштинская',
+                 ]],
+['animal_breed' => 'Гольштинская',
         'weight_range' => '550–650 кг',
         'height_range' => '165–175 см',
         'lifespan' => '25–30 лет',
@@ -4636,7 +4888,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Гольштинская', 'Специализация' => 'Конкур', 'Сила' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Клиппер',
+                 ]],
+['animal_breed' => 'Клиппер',
         'weight_range' => '350–450 кг',
         'height_range' => '145–155 см',
         'lifespan' => '25–30 лет',
@@ -4647,7 +4900,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Клиппер', 'Компактность' => 'Средняя', 'Ход' => 'Легкий'
              
              
-                 ]],['animal_breed' => 'Исландская лошадь',
+                 ]],
+['animal_breed' => 'Исландская лошадь',
         'weight_range' => '330–400 кг',
         'height_range' => '132–142 см',
         'lifespan' => '30–40 лет',
@@ -4658,7 +4912,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Исландская', 'Аллюры' => '4 и 5 аллюров', 'Морозостойкость' => 'Экстремальная'
              
              
-                 ]],['animal_breed' => 'Фелл-пони',
+                 ]],
+['animal_breed' => 'Фелл-пони',
         'weight_range' => '350–450 кг',
         'height_range' => '132–142 см',
         'lifespan' => '25–30 лет',
@@ -4669,7 +4924,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Фелл-пони', 'Окрас' => 'Обычно вороной', 'Универсальность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Эрджелейская',
+                 ]],
+['animal_breed' => 'Эрджелейская',
         'weight_range' => '450–550 кг',
         'height_range' => '155–165 см',
         'lifespan' => '25–30 лет',
@@ -4680,7 +4936,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Эрджелейская', 'Адаптация' => 'Высокая', 'Тип' => 'Верхово-вьючная'
              
              
-                 ]],['animal_breed' => 'Тувинская',
+                 ]],
+['animal_breed' => 'Тувинская',
         'weight_range' => '400–450 кг',
         'height_range' => '140–145 см',
         'lifespan' => '25–30 лет',
@@ -4691,7 +4948,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Тувинская', 'Тип' => 'Аборигенная', 'Выживаемость' => 'Очень высокая'
              
              
-                 ]],['animal_breed' => 'Башкирская',
+                 ]],
+['animal_breed' => 'Башкирская',
         'weight_range' => '450–480 кг',
         'height_range' => '142–145 см',
         'lifespan' => '25–30 лет',
@@ -4702,7 +4960,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Башкирская', 'Особенность' => 'Кудрявая шерсть', 'Польза' => 'Молочная/Рабочая'
              
              
-                 ]],['animal_breed' => 'Монгольская',
+                 ]],
+['animal_breed' => 'Монгольская',
         'weight_range' => '300–400 кг',
         'height_range' => '130–140 см',
         'lifespan' => '25–35 лет',
@@ -4713,7 +4972,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Монгольская', 'Тип' => 'Степная', 'Неприхотливость' => 'Максимальная'
              
              
-                 ]],['animal_breed' => 'Саумская',
+                 ]],
+['animal_breed' => 'Саумская',
         'weight_range' => '400–500 кг',
         'height_range' => '145–155 см',
         'lifespan' => '25–30 лет',
@@ -4724,7 +4984,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Саумская', 'Тип' => 'Вьючная', 'Копыта' => 'Очень крепкие'
              
              
-                 ]],['animal_breed' => 'Вьетнамская вислобрюхая свинья',
+                 ]],
+['animal_breed' => 'Вьетнамская вислобрюхая свинья',
         'weight_range' => '50–100 кг',
         'height_range' => '40–60 см',
         'lifespan' => '12–15 лет',
@@ -4735,7 +4996,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Вьетнамская вислобрюхая', 'Интеллект' => 'Высокий', 'Питание' => 'Растительное'
              
              
-                 ]],['animal_breed' => 'Геттингенский минипиг',
+                 ]],
+['animal_breed' => 'Геттингенский минипиг',
         'weight_range' => '35–45 кг',
         'height_range' => '35–45 см',
         'lifespan' => '15–20 лет',
@@ -4746,7 +5008,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Геттингенский минипиг', 'Размер' => 'Мелкий', 'Обучаемость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Визенау',
+                 ]],
+['animal_breed' => 'Визенау',
         'weight_range' => '20–30 кг',
         'height_range' => '30–35 см',
         'lifespan' => '12–18 лет',
@@ -4757,7 +5020,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Визенау', 'Тип' => 'Декоративный', 'Конституция' => 'Крепкая'
              
              
-                 ]],['animal_breed' => 'Бергштрессер книрт',
+                 ]],
+['animal_breed' => 'Бергштрессер книрт',
         'weight_range' => '10–15 кг',
         'height_range' => '25–30 см',
         'lifespan' => '15–20 лет',
@@ -4768,7 +5032,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Бергштрессер книрт', 'Размер' => 'Микро', 'Характер' => 'Ласковый'
              
              
-                 ]],['animal_breed' => 'Минимайялино',
+                 ]],
+['animal_breed' => 'Минимайялино',
         'weight_range' => '9–12 кг',
         'height_range' => '20–25 см',
         'lifespan' => '15–20 лет',
@@ -4779,7 +5044,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Минимаялино', 'Статус' => 'Рекордсмен', 'Уход' => 'Сложный'
              
              
-                 ]],['animal_breed' => 'Choctaw hog',
+                 ]],
+['animal_breed' => 'Choctaw hog',
         'weight_range' => '50–80 кг',
         'height_range' => '45–55 см',
         'lifespan' => '12–15 лет',
@@ -4790,7 +5056,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Choctaw hog', 'Происхождение' => 'США', 'Особенность' => 'Кожные выросты'
              
              
-                 ]],['animal_breed' => 'Kunekune',
+                 ]],
+['animal_breed' => 'Kunekune',
         'weight_range' => '60–100 кг',
         'height_range' => '50–60 см',
         'lifespan' => '15–20 лет',
@@ -4801,7 +5068,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Порода' => 'Кун-кун', 'Темперамент' => 'Очень мирный', 'Особенность' => 'Кисточки на шее'
              
              
-                 ]],['animal_breed' => 'Паук-скакун',
+                 ]],
+['animal_breed' => 'Паук-скакун',
         'weight_range' => '0.05–0.2 г',
         'height_range' => '0.5–1.5 см',
         'lifespan' => '1–3 года',
@@ -4812,7 +5080,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Активный охотник', 'Зрение' => '8 глаз', 'Интеллект' => 'Высокий (для паука)'
              
              
-                 ]],['animal_breed' => 'Крестовик',
+                 ]],
+['animal_breed' => 'Крестовик',
         'weight_range' => '0.2–0.8 г',
         'height_range' => '1–2.5 см',
         'lifespan' => '1–2 года',
@@ -4823,7 +5092,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Кругопряд', 'Сеть' => 'Радиальная', 'Узор' => 'Белый крест'
              
              
-                 ]],['animal_breed' => 'Черная вдова',
+                 ]],
+['animal_breed' => 'Черная вдова',
         'weight_range' => '0.5–1 г',
         'height_range' => '1–3.5 см',
         'lifespan' => '1–3 года',
@@ -4834,7 +5104,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Тенетник', 'Яд' => 'Опасен', 'Метка' => 'Красный символ'
              
              
-                 ]],['animal_breed' => 'Каракурт',
+                 ]],
+['animal_breed' => 'Каракурт',
         'weight_range' => '0.5–1.2 г',
         'height_range' => '1–2 см',
         'lifespan' => '1–2 года',
@@ -4845,7 +5116,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Ядовитый', 'Регион' => 'Степи/Пустыни', 'Активность' => 'Ночная'
              
              
-                 ]],['animal_breed' => 'Паук-птицеед',
+                 ]],
+['animal_breed' => 'Паук-птицеед',
         'weight_range' => '50–150 г',
         'height_range' => '15–25 см (с лапами)',
         'lifespan' => '5–20 лет',
@@ -4856,7 +5128,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Терафозид', 'Размер' => 'Гигантский', 'Защита' => 'Стрекательные волоски'
              
              
-                 ]],['animal_breed' => 'Волковый паук',
+                 ]],
+['animal_breed' => 'Волковый паук',
         'weight_range' => '0.5–1.5 г',
         'height_range' => '1–3 см',
         'lifespan' => '1–3 года',
@@ -4867,7 +5140,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Бродячий', 'Охота' => 'Засада/Преследование', 'Забота' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Паук-лучник',
+                 ]],
+['animal_breed' => 'Паук-лучник',
         'weight_range' => '0.1–0.3 г',
         'height_range' => '0.5–1.2 см',
         'lifespan' => '1 год',
@@ -4878,7 +5152,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Растительный', 'Окрас' => 'Маскировочный', 'Активность' => 'Дневная'
              
              
-                 ]],['animal_breed' => 'Паук-листоверт',
+                 ]],
+['animal_breed' => 'Паук-листоверт',
         'weight_range' => '0.05–0.15 г',
         'height_range' => '0.4–1 см',
         'lifespan' => '1 год',
@@ -4889,7 +5164,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Скрытный', 'Дом' => 'Свернутый лист', 'Сеть' => 'Ловчая рядом с домом'
              
              
-                 ]],['animal_breed' => 'Паук-сенокосец',
+                 ]],
+['animal_breed' => 'Паук-сенокосец',
         'weight_range' => '0.01–0.1 г',
         'height_range' => '0.3–1 см (тело)',
         'lifespan' => '1 год',
@@ -4900,7 +5176,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Длинноногий', 'Защита' => 'Вибрация', 'Среда' => 'Затененные места'
              
              
-                 ]],['animal_breed' => 'Паук-тетрагната',
+                 ]],
+['animal_breed' => 'Паук-тетрагната',
         'weight_range' => '0.05–0.2 г',
         'height_range' => '0.6–1.5 см',
         'lifespan' => '1 год',
@@ -4911,7 +5188,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Вытянутый', 'Среда' => 'Берега водоемов', 'Маскировка' => 'Отличная'
              
              
-                 ]],['animal_breed' => 'Паук-тенетник',
+                 ]],
+['animal_breed' => 'Паук-тенетник',
         'weight_range' => '0.1–0.4 г',
         'height_range' => '0.5–1 см',
         'lifespan' => '1–2 года',
@@ -4922,7 +5200,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Тенетный', 'Сеть' => 'Хаотичная', 'Тело' => 'Округлое'
              
              
-                 ]],['animal_breed' => 'Паук-амауробиус',
+                 ]],
+['animal_breed' => 'Паук-амауробиус',
         'weight_range' => '0.2–0.6 г',
         'height_range' => '0.8–1.5 см',
         'lifespan' => '2 года',
@@ -4933,7 +5212,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Кружевник', 'Активность' => 'Ночная', 'Среда' => 'Кора/Камни'
              
              
-                 ]],['animal_breed' => 'Паук-домовик',
+                 ]],
+['animal_breed' => 'Паук-домовик',
         'weight_range' => '0.1–0.4 г',
         'height_range' => '0.6–1.1 см',
         'lifespan' => '1–2 года',
@@ -4944,7 +5224,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Воронковый', 'Скорость' => 'Очень высокая', 'Опасность' => 'Нет'
              
              
-                 ]],['animal_breed' => 'Паук-листолаз',
+                 ]],
+['animal_breed' => 'Паук-листолаз',
         'weight_range' => '0.1–0.3 г',
         'height_range' => '0.5–1.2 см',
         'lifespan' => '1 год',
@@ -4955,7 +5236,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Активный', 'Среда' => 'Кустарники', 'Охота' => 'Поиск'
              
              
-                 ]],['animal_breed' => 'Паук-рыболов',
+                 ]],
+['animal_breed' => 'Паук-рыболов',
         'weight_range' => '1–2.5 г',
         'height_range' => '1.5–2.5 см',
         'lifespan' => '2 года',
@@ -4966,7 +5248,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Полуводный', 'Рацион' => 'Мелкая рыба/Насекомые', 'Навык' => 'Хождение по воде'
              
              
-                 ]],['animal_breed' => 'Паук-незабудка',
+                 ]],
+['animal_breed' => 'Паук-незабудка',
         'weight_range' => '0.05–0.1 г',
         'height_range' => '0.4–0.8 см',
         'lifespan' => '1 год',
@@ -4977,7 +5260,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Цветочный', 'Окрас' => 'Яркий', 'Размер' => 'Крошечный'
              
              
-                 ]],['animal_breed' => 'Паук-трубковик',
+                 ]],
+['animal_breed' => 'Паук-трубковик',
         'weight_range' => '0.1–0.5 г',
         'height_range' => '0.7–1.4 см',
         'lifespan' => '1–2 года',
@@ -4988,7 +5272,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Трубковый', 'Дом' => 'Шелковый туннель', 'Охота' => 'Вибрационная'
              
              
-                 ]],['animal_breed' => 'Паук-пещерник',
+                 ]],
+['animal_breed' => 'Паук-пещерник',
         'weight_range' => '0.2–0.7 г',
         'height_range' => '1–1.8 см',
         'lifespan' => '2–4 года',
@@ -4999,7 +5284,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Троглофил', 'Среда' => 'Гроты/Пещеры', 'Свет' => 'Боится'
              
              
-                 ]],['animal_breed' => 'Паук-пещерник',
+                 ]],
+['animal_breed' => 'Паук-пещерник',
     'weight_range' => '5–15 г',
     'height_range' => '5–8 см',
     'lifespan' => '3–8 лет',
@@ -5015,7 +5301,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт в темноте'
              
              
-                 ]],['animal_breed' => 'Паук-златоглаз',
+                 ]],
+['animal_breed' => 'Паук-златоглаз',
     'weight_range' => '10–25 г',
     'height_range' => '6–10 см',
     'lifespan' => '5–10 лет',
@@ -5031,7 +5318,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Яркие глаза'
              
              
-                 ]],['animal_breed' => 'Паук-воронок',
+                 ]],
+['animal_breed' => 'Паук-воронок',
     'weight_range' => '2–5 г',
     'height_range' => '3–6 см',
     'lifespan' => '1–3 года',
@@ -5047,7 +5335,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Охотится без сети'
              
              
-                 ]],['animal_breed' => 'Паук-паутинщик',
+                 ]],
+['animal_breed' => 'Паук-паутинщик',
     'weight_range' => '1–3 г',
     'height_range' => '2–4 см',
     'lifespan' => '1–2 года',
@@ -5063,7 +5352,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Плетёт сети'
              
              
-                 ]],['animal_breed' => 'Паук-мечник',
+                 ]],
+['animal_breed' => 'Паук-мечник',
     'weight_range' => '50–150 г',
     'height_range' => '10–20 см',
     'lifespan' => '10–20 лет',
@@ -5079,7 +5369,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Крупный размер'
              
              
-                 ]],['animal_breed' => 'Паук-сенокосец',
+                 ]],
+['animal_breed' => 'Паук-сенокосец',
     'weight_range' => '2–6 г',
     'height_range' => '3–5 см',
     'lifespan' => '2–4 года',
@@ -5095,7 +5386,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Длинные ноги'
              
              
-                 ]],['animal_breed' => 'Паук-бродяга',
+                 ]],
+['animal_breed' => 'Паук-бродяга',
     'weight_range' => '3–8 г',
     'height_range' => '4–7 см',
     'lifespan' => '2–5 лет',
@@ -5111,7 +5403,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Скрытный'
              
              
-                 ]],['animal_breed' => 'Паук-серебрянка',
+                 ]],
+['animal_breed' => 'Паук-серебрянка',
     'weight_range' => '1–4 г',
     'height_range' => '2–5 см',
     'lifespan' => '1–3 года',
@@ -5127,7 +5420,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Серебристый цвет'
              
              
-                 ]],['animal_breed' => 'Паук-линифиид',
+                 ]],
+['animal_breed' => 'Паук-линифиид',
     'weight_range' => '5–12 г',
     'height_range' => '5–9 см',
     'lifespan' => '3–6 лет',
@@ -5143,7 +5437,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Плотная паутина'
              
              
-                 ]],['animal_breed' => 'Паук-мисмена',
+                 ]],
+['animal_breed' => 'Паук-мисмена',
     'weight_range' => '3–7 г',
     'height_range' => '4–8 см',
     'lifespan' => '2–5 лет',
@@ -5159,7 +5454,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Редкий вид'
              
              
-                 ]],['animal_breed' => 'Паук-ханиида',
+                 ]],
+['animal_breed' => 'Паук-ханиида',
     'weight_range' => '4–10 г',
     'height_range' => '5–9 см',
     'lifespan' => '3–7 лет',
@@ -5175,7 +5471,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Быстрая реакция'
              
              
-                 ]],['animal_breed' => 'Паук-диктин',
+                 ]],
+['animal_breed' => 'Паук-диктин',
         'weight_range' => '0.05–0.15 г',
         'height_range' => '0.3–0.6 см',
         'lifespan' => '1 год',
@@ -5189,7 +5486,8 @@ class AnimalDetailsSeeder extends Seeder
     // --- СУСЛИКИ (252-262) ---
              
              
-                 ]],['animal_breed' => 'Европейский суслик',
+                 ]],
+['animal_breed' => 'Европейский суслик',
         'weight_range' => '200–450 г',
         'height_range' => '18–24 см',
         'lifespan' => '4–6 лет',
@@ -5200,7 +5498,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Европейский', 'Образ жизни' => 'Дневной', 'Спячка' => 'Длительная'
              
              
-                 ]],['animal_breed' => 'Жёлтый суслик',
+                 ]],
+['animal_breed' => 'Жёлтый суслик',
         'weight_range' => '300–900 г',
         'height_range' => '23–38 см',
         'lifespan' => '5–7 лет',
@@ -5211,7 +5510,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Жёлтый', 'Размер' => 'Крупный', 'Среда' => 'Песчаные почвы'
              
              
-                 ]],['animal_breed' => 'Крапчатый суслик',
+                 ]],
+['animal_breed' => 'Крапчатый суслик',
         'weight_range' => '180–300 г',
         'height_range' => '17–22 см',
         'lifespan' => '4–5 лет',
@@ -5222,7 +5522,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Крапчатый', 'Узор' => 'Пятнистый', 'Статус' => 'Редкий вид'
              
              
-                 ]],['animal_breed' => 'Горный суслик',
+                 ]],
+['animal_breed' => 'Горный суслик',
         'weight_range' => '250–500 г',
         'height_range' => '20–28 см',
         'lifespan' => '5–6 лет',
@@ -5233,7 +5534,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Горный', 'Регион' => 'Кавказ', 'Выносливость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Даурский суслик',
+                 ]],
+['animal_breed' => 'Даурский суслик',
         'weight_range' => '150–250 г',
         'height_range' => '15–20 см',
         'lifespan' => '3–5 лет',
@@ -5244,7 +5546,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Даурский', 'Регион' => 'Сибирь/Монголия', 'Активность' => 'Дневная'
              
              
-                 ]],['animal_breed' => 'Краснощёкий суслик',
+                 ]],
+['animal_breed' => 'Краснощёкий суслик',
         'weight_range' => '200–400 г',
         'height_range' => '20–25 см',
         'lifespan' => '4–5 лет',
@@ -5255,7 +5558,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Краснощёкий', 'Особенность' => 'Яркие щеки', 'Среда' => 'Степи'
              
              
-                 ]],['animal_breed' => 'Большой суслик',
+                 ]],
+['animal_breed' => 'Большой суслик',
         'weight_range' => '400–800 г',
         'height_range' => '25–35 см',
         'lifespan' => '5–6 лет',
@@ -5266,7 +5570,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Большой', 'Телосложение' => 'Плотное', 'Среда' => 'Разнотравные степи'
              
              
-                 ]],['animal_breed' => 'Малый суслик',
+                 ]],
+['animal_breed' => 'Малый суслик',
         'weight_range' => '100–250 г',
         'height_range' => '17–22 см',
         'lifespan' => '3–5 лет',
@@ -5277,7 +5582,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Малый', 'Размер' => 'Компактный', 'Спячка' => 'Может впадать летом'
              
              
-                 ]],['animal_breed' => 'Реликтовый суслик',
+                 ]],
+['animal_breed' => 'Реликтовый суслик',
         'weight_range' => '250–400 г',
         'height_range' => '20–25 см',
         'lifespan' => '4–6 лет',
@@ -5288,7 +5594,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Реликтовый', 'Статус' => 'Эндемик', 'Среда' => 'Высокогорье'
              
              
-                 ]],['animal_breed' => 'Алашанский суслик',
+                 ]],
+['animal_breed' => 'Алашанский суслик',
         'weight_range' => '150–220 г',
         'height_range' => '18–21 см',
         'lifespan' => '4 года',
@@ -5299,7 +5606,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Вид' => 'Алашанский', 'Регион' => 'Пустыня Гоби', 'Размер' => 'Мелкий'
              
              
-                 ]],['animal_breed' => 'Малоазиатский суслик',
+                 ]],
+['animal_breed' => 'Малоазиатский суслик',
         'weight_range' => '180–300 г',
         'height_range' => '19–23 см',
         'lifespan' => '4–5 лет',
@@ -5313,7 +5621,8 @@ class AnimalDetailsSeeder extends Seeder
     // --- ХОМЯКИ (263-270) ---
              
              
-                 ]],['animal_breed' => 'Сирийский',
+                 ]],
+['animal_breed' => 'Сирийский',
         'weight_range' => '100–150 г',
         'height_range' => '13–18 см',
         'lifespan' => '2–3 года',
@@ -5324,7 +5633,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Крупный', 'Характер' => 'Одиночный', 'Окрас' => 'Множество вариаций'
              
              
-                 ]],['animal_breed' => 'Хомячок Кэмпбелла',
+                 ]],
+['animal_breed' => 'Хомячок Кэмпбелла',
         'weight_range' => '30–50 г',
         'height_range' => '8–10 см',
         'lifespan' => '1.5–2.5 года',
@@ -5335,7 +5645,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Карликовый', 'Активность' => 'Высокая', 'Особенность' => 'Полоса на спине'
              
              
-                 ]],['animal_breed' => 'Джунгарский хомячок',
+                 ]],
+['animal_breed' => 'Джунгарский хомячок',
         'weight_range' => '35–65 г',
         'height_range' => '7–10 см',
         'lifespan' => '2 года',
@@ -5346,7 +5657,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Карликовый', 'Окрас' => 'Серый с полосой', 'Популярность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Хомячок Роборовского',
+                 ]],
+['animal_breed' => 'Хомячок Роборовского',
         'weight_range' => '20–30 г',
         'height_range' => '4–5 см',
         'lifespan' => '3–3.5 года',
@@ -5357,7 +5669,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Микро', 'Скорость' => 'Очень высокая', 'Вид' => 'Социальный (иногда)'
              
              
-                 ]],['animal_breed' => 'Кэмпбелла',
+                 ]],
+['animal_breed' => 'Кэмпбелла',
         'weight_range' => '30–50 г',
         'height_range' => '8–10 см',
         'lifespan' => '2 года',
@@ -5368,7 +5681,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Группа' => 'Мелкие грызуны', 'Питание' => 'Зерноядные'
              
              
-                 ]],['animal_breed' => 'Китайский хомячок',
+                 ]],
+['animal_breed' => 'Китайский хомячок',
         'weight_range' => '40–50 г',
         'height_range' => '9–12 см',
         'lifespan' => '2–3 года',
@@ -5379,7 +5693,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Тип' => 'Крысовидный', 'Хвост' => 'Удлиненный', 'Ловкость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Сирийский хомяк',
+                 ]],
+['animal_breed' => 'Сирийский хомяк',
         'weight_range' => '100–150 г',
         'height_range' => '13–18 см',
         'lifespan' => '2–3 года',
@@ -5390,7 +5705,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Группа' => 'Средние грызуны', 'Статус' => 'Домашний'
              
              
-                 ]],['animal_breed' => 'Джунгарский хомячок',
+                 ]],
+['animal_breed' => 'Джунгарский хомячок',
         'weight_range' => '35–65 г',
         'height_range' => '7–10 см',
         'lifespan' => '2 года',
@@ -5401,7 +5717,8 @@ class AnimalDetailsSeeder extends Seeder
          'features' =>['Группа' => 'Мелкие грызуны', 'Среда' => 'Степи'
              
              
-                 ]],['animal_breed' => 'Роборовский хомячок',
+                 ]],
+['animal_breed' => 'Роборовский хомячок',
     'weight_range' => '20–30 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–3 года',
@@ -5417,7 +5734,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень быстрый'
              
              
-                 ]],['animal_breed' => 'Китайский хомячок',
+                 ]],
+['animal_breed' => 'Китайский хомячок',
     'weight_range' => '30–50 г',
     'height_range' => '6–10 см',
     'lifespan' => '2–3 года',
@@ -5433,7 +5751,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Длинное тело'
              
              
-                 ]],['animal_breed' => 'Дегу',
+                 ]],
+['animal_breed' => 'Дегу',
     'weight_range' => '200–300 г',
     'height_range' => '20–25 см',
     'lifespan' => '5–8 лет',
@@ -5449,7 +5768,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт группами'
              
              
-                 ]],['animal_breed' => 'Шиншилла',
+                 ]],
+['animal_breed' => 'Шиншилла',
     'weight_range' => '400–700 г',
     'height_range' => '25–35 см',
     'lifespan' => '10–15 лет',
@@ -5465,7 +5785,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень мягкий мех'
              
              
-                 ]],['animal_breed' => 'Морская свинка',
+                 ]],
+['animal_breed' => 'Морская свинка',
     'weight_range' => '700–1200 г',
     'height_range' => '20–25 см',
     'lifespan' => '5–8 лет',
@@ -5481,7 +5802,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит общение'
              
              
-                 ]],['animal_breed' => 'Декоративная крыса',
+                 ]],
+['animal_breed' => 'Декоративная крыса',
     'weight_range' => '250–500 г',
     'height_range' => '20–25 см',
     'lifespan' => '2–3 года',
@@ -5497,7 +5819,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Высокий интеллект'
              
              
-                 ]],['animal_breed' => 'Декоративная мышь',
+                 ]],
+['animal_breed' => 'Декоративная мышь',
     'weight_range' => '20–40 г',
     'height_range' => '7–10 см',
     'lifespan' => '1–2 года',
@@ -5513,7 +5836,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Очень подвижная'
              
              
-                 ]],['animal_breed' => 'Песчанка',
+                 ]],
+['animal_breed' => 'Песчанка',
     'weight_range' => '50–100 г',
     'height_range' => '10–15 см',
     'lifespan' => '2–4 года',
@@ -5529,7 +5853,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Любит копать'
              
              
-                 ]],['animal_breed' => 'Тушканчик',
+                 ]],
+['animal_breed' => 'Тушканчик',
     'weight_range' => '80–150 г',
     'height_range' => '15–20 см',
     'lifespan' => '2–4 года',
@@ -5545,7 +5870,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Прыгает как кенгуру'
              
              
-                 ]],['animal_breed' => 'Бурундук',
+                 ]],
+['animal_breed' => 'Бурундук',
     'weight_range' => '50–150 г',
     'height_range' => '15–18 см',
     'lifespan' => '3–6 лет',
@@ -5565,7 +5891,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- ГРЫЗУНЫ  ---
              
              
-                 ]],['animal_breed' => 'Соня',
+                 ]],
+['animal_breed' => 'Соня',
     'weight_range' => '150–200 г',
     'height_range' => '10–15 см',
     'lifespan' => '3–5 лет',
@@ -5576,7 +5903,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Соня', 'Активность' => 'Ночная', 'Особенность' => 'Пушистый хвост'
              
              
-                 ]],['animal_breed' => 'Гамбийская крыса (кролик-крыса)',
+                 ]],
+['animal_breed' => 'Гамбийская крыса (кролик-крыса)',
     'weight_range' => '1–1.5 кг',
     'height_range' => '25–45 см',
     'lifespan' => '5–7 лет',
@@ -5587,7 +5915,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Гамбийская крыса', 'Размер' => 'Очень крупный', 'Интеллект' => 'Высокий'
              
              
-                 ]],['animal_breed' => 'Африканский дегу',
+                 ]],
+['animal_breed' => 'Африканский дегу',
     'weight_range' => '170–300 г',
     'height_range' => '12–19 см',
     'lifespan' => '6–8 лет',
@@ -5598,7 +5927,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Африканский дегу', 'Социальность' => 'Групповая', 'Питание' => 'Строгая диета'
              
              
-                 ]],['animal_breed' => 'Когтистая песчанка',
+                 ]],
+['animal_breed' => 'Когтистая песчанка',
     'weight_range' => '50–120 г',
     'height_range' => '10–14 см',
     'lifespan' => '3–4 года',
@@ -5609,7 +5939,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Песчанка', 'Энергия' => 'Очень высокая', 'Запах' => 'Минимальный'
              
              
-                 ]],['animal_breed' => 'Кролик-русак (декоративный)',
+                 ]],
+['animal_breed' => 'Кролик-русак (декоративный)',
     'weight_range' => '2–4 кг',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -5620,7 +5951,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Кролик-русак', 'Тип' => 'Спортивный', 'Прыжки' => 'До 2 метров'
              
              
-                 ]],['animal_breed' => 'Сурок (мини-сурок)',
+                 ]],
+['animal_breed' => 'Сурок (мини-сурок)',
     'weight_range' => '1–1.5 кг',
     'height_range' => '20–30 см',
     'lifespan' => '10–12 лет',
@@ -5631,7 +5963,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Сурок', 'Характер' => 'Спокойный', 'Сон' => 'Длительный'
              
              
-                 ]],['animal_breed' => 'Капибара (карликовая форма)',
+                 ]],
+['animal_breed' => 'Капибара (карликовая форма)',
     'weight_range' => '8–12 кг',
     'height_range' => '35–45 см',
     'lifespan' => '10–12 лет',
@@ -5645,7 +5978,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- РЫБКИ (288-300) ---
              
              
-                 ]],['animal_breed' => 'Гуппи',
+                 ]],
+['animal_breed' => 'Гуппи',
     'weight_range' => '5–10 г',
     'height_range' => '3–5 см',
     'lifespan' => '2–3 года',
@@ -5656,7 +5990,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Размножение' => 'Живородящие', 'Миролюбие' => 'Высокое'
              
              
-                 ]],['animal_breed' => 'Меченосец',
+                 ]],
+['animal_breed' => 'Меченосец',
     'weight_range' => '10–15 г',
     'height_range' => '8–12 см',
     'lifespan' => '3–5 лет',
@@ -5667,7 +6002,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Особенность' => 'Нижний луч хвоста', 'Поведение' => 'Прыгучие'
              
              
-                 ]],['animal_breed' => 'Петушок (бойцовая рыбка)',
+                 ]],
+['animal_breed' => 'Петушок (бойцовая рыбка)',
     'weight_range' => '10–20 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–4 года',
@@ -5678,7 +6014,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Средне', 'Агрессия' => 'Высокая к самцам', 'Дыхание' => 'Атмосферный воздух'
              
              
-                 ]],['animal_breed' => 'Скалярия',
+                 ]],
+['animal_breed' => 'Скалярия',
     'weight_range' => '30–60 г',
     'height_range' => '15–20 см',
     'lifespan' => '10–15 лет',
@@ -5689,7 +6026,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Средне', 'Форма' => 'Ромбовидная', 'Соседство' => 'С крупными видами'
              
              
-                 ]],['animal_breed' => 'Данио-рерио',
+                 ]],
+['animal_breed' => 'Данио-рерио',
     'weight_range' => '2–5 г',
     'height_range' => '4–6 см',
     'lifespan' => '3–5 лет',
@@ -5700,7 +6038,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Стиль' => 'Стайный', 'Скорость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Тернеция',
+                 ]],
+['animal_breed' => 'Тернеция',
     'weight_range' => '5–12 г',
     'height_range' => '4–5 см',
     'lifespan' => '3–5 лет',
@@ -5711,7 +6050,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Форма' => 'Высокое тело', 'Окрас' => 'Яркий/Неоновый'
              
              
-                 ]],['animal_breed' => 'Барбус',
+                 ]],
+['animal_breed' => 'Барбус',
     'weight_range' => '15–40 г',
     'height_range' => '6–10 см',
     'lifespan' => '5–7 лет',
@@ -5722,7 +6062,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Средне', 'Активность' => 'Экстремальная', 'Тип' => 'Стайный'
              
              
-                 ]],['animal_breed' => 'Сомик (коридорас)',
+                 ]],
+['animal_breed' => 'Сомик (коридорас)',
     'weight_range' => '10–25 г',
     'height_range' => '4–7 см',
     'lifespan' => '5–8 лет',
@@ -5733,7 +6074,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Слой' => 'Донный', 'Миролюбие' => 'Высокое'
              
              
-                 ]],['animal_breed' => 'Анциструс',
+                 ]],
+['animal_breed' => 'Анциструс',
     'weight_range' => '20–50 г',
     'height_range' => '10–13 см',
     'lifespan' => '6–10 лет',
@@ -5744,7 +6086,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Функция' => 'Чистильщик', 'Питание' => 'Растительное'
              
              
-                 ]],['animal_breed' => 'Неон',
+                 ]],
+['animal_breed' => 'Неон',
     'weight_range' => '1–3 г',
     'height_range' => '2–4 см',
     'lifespan' => '2–4 года',
@@ -5755,7 +6098,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Средне', 'Эффект' => 'Светящийся', 'Миролюбие' => 'Высокое'
              
              
-                 ]],['animal_breed' => 'Расбора',
+                 ]],
+['animal_breed' => 'Расбора',
     'weight_range' => '2–4 г',
     'height_range' => '3–5 см',
     'lifespan' => '3–5 лет',
@@ -5766,7 +6110,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Средне', 'Особенность' => 'Темный клин на теле', 'Тип' => 'Стайный'
              
              
-                 ]],['animal_breed' => 'Лабео',
+                 ]],
+['animal_breed' => 'Лабео',
     'weight_range' => '40–100 г',
     'height_range' => '10–15 см',
     'lifespan' => '8–12 лет',
@@ -5777,7 +6122,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Тяжело', 'Характер' => 'Одиночный', 'Внешность' => 'Акулообразная'
              
              
-                 ]],['animal_breed' => 'Золотая рыбка',
+                 ]],
+['animal_breed' => 'Золотая рыбка',
     'weight_range' => '100–300 г',
     'height_range' => '15–25 см',
     'lifespan' => '15–25 лет',
@@ -5788,7 +6134,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Средне', 'Долголетие' => 'Высокое', 'Особенность' => 'Холодноводная'
              
              
-                 ]],['animal_breed' => 'Вуалехвост',
+                 ]],
+['animal_breed' => 'Вуалехвост',
     'weight_range' => '50–200 г',
     'height_range' => '15–25 см',
     'lifespan' => '5–10 лет',
@@ -5804,7 +6151,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Длинные плавники'
              
              
-                 ]],['animal_breed' => 'Рыбка-бабочка',
+                 ]],
+['animal_breed' => 'Рыбка-бабочка',
     'weight_range' => '20–50 г',
     'height_range' => '10–20 см',
     'lifespan' => '5–8 лет',
@@ -5820,7 +6168,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Яркий окрас'
              
              
-                 ]],['animal_breed' => 'Рыбка-моллинезия',
+                 ]],
+['animal_breed' => 'Рыбка-моллинезия',
     'weight_range' => '30–80 г',
     'height_range' => '6–10 см',
     'lifespan' => '3–5 лет',
@@ -5836,7 +6185,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живородящая'
              
              
-                 ]],['animal_breed' => 'Пецилия',
+                 ]],
+['animal_breed' => 'Пецилия',
     'weight_range' => '100–300 г',
     'height_range' => '20–30 см',
     'lifespan' => '10–15 лет',
@@ -5852,7 +6202,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Подходит новичкам'
              
              
-                 ]],['animal_breed' => 'Апистограмма',
+                 ]],
+['animal_breed' => 'Апистограмма',
     'weight_range' => '50–150 г',
     'height_range' => '12–15 см',
     'lifespan' => '5–10 лет',
@@ -5868,7 +6219,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Чистит аквариум'
              
              
-                 ]],['animal_breed' => 'Рыбка-пила',
+                 ]],
+['animal_breed' => 'Рыбка-пила',
     'weight_range' => '1–3 кг',
     'height_range' => '50–120 см',
     'lifespan' => '10–20 лет',
@@ -5884,7 +6236,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Длинный рострум'
              
              
-                 ]],['animal_breed' => 'Рыбка-клоун',
+                 ]],
+['animal_breed' => 'Рыбка-клоун',
     'weight_range' => '200–500 г',
     'height_range' => '10–18 см',
     'lifespan' => '6–10 лет',
@@ -5900,7 +6253,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт с актиниями'
              
              
-                 ]],['animal_breed' => 'Тетра',
+                 ]],
+['animal_breed' => 'Тетра',
     'weight_range' => '5–20 г',
     'height_range' => '3–6 см',
     'lifespan' => '3–5 лет',
@@ -5916,7 +6270,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт стаями'
              
              
-                 ]],['animal_breed' => 'Красноперка',
+                 ]],
+['animal_breed' => 'Красноперка',
     'weight_range' => '200–800 г',
     'height_range' => '20–35 см',
     'lifespan' => '8–15 лет',
@@ -5932,7 +6287,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Красные плавники'
              
              
-                 ]],['animal_breed' => 'Голец',
+                 ]],
+['animal_breed' => 'Голец',
     'weight_range' => '100–500 г',
     'height_range' => '15–30 см',
     'lifespan' => '5–10 лет',
@@ -5951,7 +6307,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- РЫБКИ (311-317) ---
              
              
-                 ]],['animal_breed' => 'Орнатус',
+                 ]],
+['animal_breed' => 'Орнатус',
     'weight_range' => '2–4 г',
     'height_range' => '3–4.5 см',
     'lifespan' => '3–5 лет',
@@ -5962,7 +6319,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Стиль' => 'Стайный', 'Соседство' => 'Мирные виды'
              
              
-                 ]],['animal_breed' => 'Коридорас панда',
+                 ]],
+['animal_breed' => 'Коридорас панда',
     'weight_range' => '5–15 г',
     'height_range' => '3–5 см',
     'lifespan' => '5–8 лет',
@@ -5973,7 +6331,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Легко', 'Слой' => 'Донный', 'Миролюбие' => 'Максимальное'
              
              
-                 ]],['animal_breed' => 'Электрический угорь',
+                 ]],
+['animal_breed' => 'Электрический угорь',
     'weight_range' => '15–20 кг',
     'height_range' => '100–250 см',
     'lifespan' => '10–15 лет',
@@ -5984,7 +6343,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Очень тяжело', 'Особенность' => 'Электрический разряд', 'Опасность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Рыбка-фугу',
+                 ]],
+['animal_breed' => 'Рыбка-фугу',
     'weight_range' => '0.5–1.5 кг',
     'height_range' => '20–50 см',
     'lifespan' => '5–10 лет',
@@ -5995,7 +6355,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сложность' => 'Тяжело', 'Защита' => 'Иглы и раздувание', 'Интеллект' => 'Высокий'
              
              
-                 ]],['animal_breed' => 'Морской конёк',
+                 ]],
+['animal_breed' => 'Морской конёк',
     'weight_range' => '50–200 г',
     'height_range' => '2–35 см',
     'lifespan' => '2–5 лет',
@@ -6006,7 +6367,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Среда' => 'Морская вода', 'Питание' => 'Живой корм', 'Особенность' => 'Хватательный хвост'
              
              
-                 ]],['animal_breed' => 'Рыбка-парусник',
+                 ]],
+['animal_breed' => 'Рыбка-парусник',
     'weight_range' => '50–100 кг',
     'height_range' => '150–300 см',
     'lifespan' => '10–15 лет',
@@ -6017,7 +6379,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Океаническая', 'Скорость' => 'До 100 км/ч', 'Статус' => 'Объект рыбалки'
              
              
-                 ]],['animal_breed' => 'Рыбка-ангел',
+                 ]],
+['animal_breed' => 'Рыбка-ангел',
     'weight_range' => '100–300 г',
     'height_range' => '15–30 см',
     'lifespan' => '10–15 лет',
@@ -6032,7 +6395,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- ЯЩЕРИЦЫ (318-330) ---
              
              
-                 ]],['animal_breed' => 'Бородатая агама',
+                 ]],
+['animal_breed' => 'Бородатая агама',
     'weight_range' => '300–500 г',
     'height_range' => '40–60 см',
     'lifespan' => '10–15 лет',
@@ -6043,7 +6407,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Пустынная', 'Питание' => 'Всеядная', 'Контактность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Хамелеон-вуали',
+                 ]],
+['animal_breed' => 'Хамелеон-вуали',
     'weight_range' => '100–200 г',
     'height_range' => '25–45 см',
     'lifespan' => '5–8 лет',
@@ -6054,7 +6419,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Древесный', 'Особенность' => 'Смена цвета', 'Сложность' => 'Средняя'
              
              
-                 ]],['animal_breed' => 'Гребнепалый геккон',
+                 ]],
+['animal_breed' => 'Гребнепалый геккон',
     'weight_range' => '40–80 г',
     'height_range' => '15–20 см',
     'lifespan' => '10–15 лет',
@@ -6065,7 +6431,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Ночной', 'Питание' => 'Фруктово-белковое', 'Особенность' => 'Реснички над глазами'
              
              
-                 ]],['animal_breed' => 'Леопардовый геккон',
+                 ]],
+['animal_breed' => 'Леопардовый геккон',
     'weight_range' => '50–100 г',
     'height_range' => '20–28 см',
     'lifespan' => '15–20 лет',
@@ -6076,7 +6443,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Наземный', 'Уход' => 'Простой', 'Особенность' => 'Пятнистый окрас'
              
              
-                 ]],['animal_breed' => 'Зеленый красногорлый анолис',
+                 ]],
+['animal_breed' => 'Зеленый красногорлый анолис',
     'weight_range' => '5–10 г',
     'height_range' => '12–20 см',
     'lifespan' => '4–6 лет',
@@ -6087,7 +6455,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Древесный', 'Активность' => 'Дневная', 'Особенность' => 'Горловой флаг'
              
              
-                 ]],['animal_breed' => 'Игуана зеленая',
+                 ]],
+['animal_breed' => 'Игуана зеленая',
     'weight_range' => '4–8 кг',
     'height_range' => '120–200 см',
     'lifespan' => '15–20 лет',
@@ -6098,7 +6467,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Крупный', 'Питание' => 'Растительноядная', 'Сложность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Тегу черно-белый',
+                 ]],
+['animal_breed' => 'Тегу черно-белый',
     'weight_range' => '3–5 кг',
     'height_range' => '100–140 см',
     'lifespan' => '15–20 лет',
@@ -6109,7 +6479,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Интеллектуальный', 'Размер' => 'Крупный', 'Контактность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Шипохвост (дабб)',
+                 ]],
+['animal_breed' => 'Шипохвост (дабб)',
     'weight_range' => '200–600 г',
     'height_range' => '25–40 см',
     'lifespan' => '10–15 лет',
@@ -6120,7 +6491,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Пустынный', 'Температура' => 'Нужен сильный прогрев', 'Особенность' => 'Шипастый хвост'
              
              
-                 ]],['animal_breed' => 'Сцинк синеязыкий',
+                 ]],
+['animal_breed' => 'Сцинк синеязыкий',
     'weight_range' => '400–600 г',
     'height_range' => '45–60 см',
     'lifespan' => '15–20 лет',
@@ -6131,7 +6503,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Наземный', 'Особенность' => 'Синий язык', 'Характер' => 'Флегматичный'
              
              
-                 ]],['animal_breed' => 'Красногубый тегу',
+                 ]],
+['animal_breed' => 'Красногубый тегу',
     'weight_range' => '2–4 кг',
     'height_range' => '80–110 см',
     'lifespan' => '12–15 лет',
@@ -6142,7 +6515,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Крупный', 'Окрас' => 'Красно-коричневый', 'Рацион' => 'Всеядный'
              
              
-                 ]],['animal_breed' => 'Желтопузик',
+                 ]],
+['animal_breed' => 'Желтопузик',
     'weight_range' => '300–500 г',
     'height_range' => '100–120 см',
     'lifespan' => '15–20 лет',
@@ -6153,7 +6527,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Безногая ящерица', 'Защита' => 'Крепкая чешуя', 'Польза' => 'Истребляет вредителей'
              
              
-                 ]],['animal_breed' => 'Крестная ящерица',
+                 ]],
+['animal_breed' => 'Крестная ящерица',
     'weight_range' => '15–30 г',
     'height_range' => '20–25 см',
     'lifespan' => '5–10 лет',
@@ -6164,7 +6539,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Местная фауна', 'Активность' => 'Дневная', 'Навык' => 'Отбрасывание хвоста'
              
              
-                 ]],['animal_breed' => 'Среднеазиатская круглоголовка',
+                 ]],
+['animal_breed' => 'Среднеазиатская круглоголовка',
     'weight_range' => '10–20 г',
     'height_range' => '10–14 см',
     'lifespan' => '3–6 лет',
@@ -6178,7 +6554,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- ЯЩЕРИЦЫ (331-332) ---
              
              
-                 ]],['animal_breed' => 'Молох (египетский колючий дракон)',
+                 ]],
+['animal_breed' => 'Молох (египетский колючий дракон)',
     'weight_range' => '30–90 г',
     'height_range' => '15–20 см',
     'lifespan' => '10–20 лет',
@@ -6189,7 +6566,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Молох', 'Питание' => 'Специализированный муравьед', 'Защита' => 'Шипы'
              
              
-                 ]],['animal_breed' => 'Ушастый дракон',
+                 ]],
+['animal_breed' => 'Ушастый дракон',
     'weight_range' => '20–50 г',
     'height_range' => '15–25 см',
     'lifespan' => '5–8 лет',
@@ -6204,7 +6582,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- ЗМЕИ (333-350) ---
              
              
-                 ]],['animal_breed' => 'Королевская уж',
+                 ]],
+['animal_breed' => 'Королевская уж',
     'weight_range' => '100–300 г',
     'height_range' => '50–100 см',
     'lifespan' => '10–15 лет',
@@ -6215,7 +6594,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Нет', 'Рацион' => 'Мелкие позвоночные', 'Сложность' => 'Для новичков'
              
              
-                 ]],['animal_breed' => 'Питон розовый (шарпей)',
+                 ]],
+['animal_breed' => 'Питон розовый (шарпей)',
     'weight_range' => '1.5–3 кг',
     'height_range' => '100–180 см',
     'lifespan' => '15–25 лет',
@@ -6226,7 +6606,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Ковровый питон (морфа)', 'Окрас' => 'Розово-бежевый', 'Тип' => 'Полудревесный'
              
              
-                 ]],['animal_breed' => 'Питон сетчатый',
+                 ]],
+['animal_breed' => 'Питон сетчатый',
     'weight_range' => '40–100 кг',
     'height_range' => '300–700 см',
     'lifespan' => '20–30 лет',
@@ -6237,7 +6618,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Размер' => 'Экстремальный', 'Узор' => 'Геометрический сетчатый', 'Сила' => 'Очень высокая'
              
              
-                 ]],['animal_breed' => 'Питон альбинос',
+                 ]],
+['animal_breed' => 'Питон альбинос',
     'weight_range' => '2–5 кг',
     'height_range' => '150–300 см',
     'lifespan' => '20–25 лет',
@@ -6248,7 +6630,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Морфа' => 'Альбинос', 'Характер' => 'Медлительный', 'Тип' => 'Засадный хищник'
              
              
-                 ]],['animal_breed' => 'Удав королевский',
+                 ]],
+['animal_breed' => 'Удав королевский',
     'weight_range' => '1–2 кг',
     'height_range' => '120–150 см',
     'lifespan' => '20–30 лет',
@@ -6259,7 +6642,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Размер' => 'Компактный', 'Защита' => 'Сворачивание в шар', 'Уход' => 'Простой'
              
              
-                 ]],['animal_breed' => 'Удав альбинос',
+                 ]],
+['animal_breed' => 'Удав альбинос',
     'weight_range' => '1–2.5 кг',
     'height_range' => '130–160 см',
     'lifespan' => '20–25 лет',
@@ -6270,7 +6654,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Ложноногие', 'Окрас' => 'Желто-оранжевый', 'Размножение' => 'Живородящие'
              
              
-                 ]],['animal_breed' => 'Гремучая змея',
+                 ]],
+['animal_breed' => 'Гремучая змея',
     'weight_range' => '1.5–5 кг',
     'height_range' => '100–200 см',
     'lifespan' => '10–20 лет',
@@ -6281,7 +6666,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Да', 'Орган чувств' => 'Термолокаторы', 'Звук' => 'Погремушка'
              
              
-                 ]],['animal_breed' => 'Гадюка обыкновенная',
+                 ]],
+['animal_breed' => 'Гадюка обыкновенная',
     'weight_range' => '100–200 г',
     'height_range' => '50–70 см',
     'lifespan' => '10–15 лет',
@@ -6292,7 +6678,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Да', 'Узор' => 'Зигзаг', 'Среда' => 'Леса и болота'
              
              
-                 ]],['animal_breed' => 'Кобра обыкновенная',
+                 ]],
+['animal_breed' => 'Кобра обыкновенная',
     'weight_range' => '1–2 кг',
     'height_range' => '120–180 см',
     'lifespan' => '15–20 лет',
@@ -6303,7 +6690,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Да', 'Особенность' => 'Капюшон', 'Поведение' => 'Предупреждающая стойка'
              
              
-                 ]],['animal_breed' => 'Кобра королевская',
+                 ]],
+['animal_breed' => 'Кобра королевская',
     'weight_range' => '6–12 кг',
     'height_range' => '300–550 см',
     'lifespan' => '20 лет',
@@ -6314,7 +6702,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Размер' => 'Очень крупный', 'Питание' => 'Змееядная', 'Интеллект' => 'Высокий'
              
              
-                 ]],['animal_breed' => 'Тайпан',
+                 ]],
+['animal_breed' => 'Тайпан',
     'weight_range' => '2–4 кг',
     'height_range' => '150–250 см',
     'lifespan' => '10–15 лет',
@@ -6325,7 +6714,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Экстремальная', 'Скорость' => 'Очень высокая', 'Регион' => 'Австралия'
              
              
-                 ]],['animal_breed' => 'Морская змея',
+                 ]],
+['animal_breed' => 'Морская змея',
     'weight_range' => '0.5–1.5 кг',
     'height_range' => '100–150 см',
     'lifespan' => '5–10 лет',
@@ -6336,7 +6726,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Среда' => 'Морская вода', 'Хвост' => 'Плоский веслообразный', 'Дыхание' => 'Легочное'
              
              
-                 ]],['animal_breed' => 'Гремучая змея степная',
+                 ]],
+['animal_breed' => 'Гремучая змея степная',
     'weight_range' => '0.5–1 кг',
     'height_range' => '60–100 см',
     'lifespan' => '10–15 лет',
@@ -6347,7 +6738,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Ямкоголовые', 'Среда' => 'Степи/Равнины', 'Активность' => 'Сумеречная'
              
              
-                 ]],['animal_breed' => 'Гадюка степная',
+                 ]],
+['animal_breed' => 'Гадюка степная',
     'weight_range' => '50–150 г',
     'height_range' => '30–55 см',
     'lifespan' => '10–12 лет',
@@ -6358,7 +6750,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Да', 'Регион' => 'Южные степи', 'Размер' => 'Мелкий'
              
              
-                 ]],['animal_breed' => 'Полоз жёлтобрюхий',
+                 ]],
+['animal_breed' => 'Полоз жёлтобрюхий',
     'weight_range' => '0.5–1 кг',
     'height_range' => '120–200 см',
     'lifespan' => '10–15 лет',
@@ -6369,7 +6762,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Нет', 'Характер' => 'Агрессивный', 'Скорость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Полоз обыкновенный',
+                 ]],
+['animal_breed' => 'Полоз обыкновенный',
     'weight_range' => '200–500 г',
     'height_range' => '100–150 см',
     'lifespan' => '12–18 лет',
@@ -6380,7 +6774,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Нет', 'Тип' => 'Лазающая змея', 'Особенность' => 'Длинный хвост'
              
              
-                 ]],['animal_breed' => 'Полоз лестровидный',
+                 ]],
+['animal_breed' => 'Полоз лестровидный',
     'weight_range' => '100–300 г',
     'height_range' => '80–120 см',
     'lifespan' => '10–15 лет',
@@ -6391,7 +6786,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Узор' => 'Лестничный', 'Регион' => 'Средиземноморье', 'Тип' => 'Наземный'
              
              
-                 ]],['animal_breed' => 'Медянка',
+                 ]],
+['animal_breed' => 'Медянка',
     'weight_range' => '50–100 г',
     'height_range' => '40–65 см',
     'lifespan' => '12–15 лет',
@@ -6402,7 +6798,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Ядовитость' => 'Нет', 'Чешуя' => 'Гладкая', 'Окрас' => 'Медно-серый'
              
              
-                 ]],['animal_breed' => 'Обыкновенный уж',
+                 ]],
+['animal_breed' => 'Обыкновенный уж',
     'weight_range' => '100–300 г',
     'height_range' => '60–120 см',
     'lifespan' => '10–20 лет',
@@ -6418,7 +6815,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Неядовитая'
              
              
-                 ]],['animal_breed' => 'Червеобразная слепозмейка',
+                 ]],
+['animal_breed' => 'Червеобразная слепозмейка',
     'weight_range' => '20–50 г',
     'height_range' => '20–40 см',
     'lifespan' => '5–10 лет',
@@ -6434,7 +6832,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт под землёй'
              
              
-                 ]],['animal_breed' => 'Лучистая змея',
+                 ]],
+['animal_breed' => 'Лучистая змея',
     'weight_range' => '200–500 г',
     'height_range' => '80–150 см',
     'lifespan' => '10–15 лет',
@@ -6450,7 +6849,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Блестящая чешуя'
              
              
-                 ]],['animal_breed' => 'Змея-пескострел',
+                 ]],
+['animal_breed' => 'Змея-пескострел',
     'weight_range' => '150–400 г',
     'height_range' => '70–120 см',
     'lifespan' => '8–12 лет',
@@ -6466,7 +6866,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт в песке'
              
              
-                 ]],['animal_breed' => 'Змея-плющ',
+                 ]],
+['animal_breed' => 'Змея-плющ',
     'weight_range' => '300–800 г',
     'height_range' => '100–180 см',
     'lifespan' => '10–20 лет',
@@ -6486,7 +6887,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- ЗМЕИ (356-357) ---
              
              
-                 ]],['animal_breed' => 'Молохова змея',
+                 ]],
+['animal_breed' => 'Молохова змея',
     'weight_range' => '50–100 г',
     'height_range' => '30–50 см',
     'lifespan' => '10–12 лет',
@@ -6497,7 +6899,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Молохова змея', 'Маскировка' => 'Высокая', 'Тип' => 'Наземный'
              
              
-                 ]],['animal_breed' => 'Эритроламус',
+                 ]],
+['animal_breed' => 'Эритроламус',
     'weight_range' => '200–400 г',
     'height_range' => '60–90 см',
     'lifespan' => '12–15 лет',
@@ -6512,7 +6915,8 @@ class AnimalDetailsSeeder extends Seeder
 // --- НАСЕКОМЫЕ (358-380) ---
              
              
-                 ]],['animal_breed' => 'Муравей',
+                 ]],
+['animal_breed' => 'Муравей',
     'weight_range' => '1–5 мг',
     'height_range' => '0.2–1 см',
     'lifespan' => '1–3 года',
@@ -6523,7 +6927,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Общественное', 'Сила' => 'Экстремальная', 'Роль' => 'Строитель'
              
              
-                 ]],['animal_breed' => 'Пчела',
+                 ]],
+['animal_breed' => 'Пчела',
     'weight_range' => '100–120 мг',
     'height_range' => '1.2–1.5 см',
     'lifespan' => '1–5 месяцев',
@@ -6534,7 +6939,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Продукт' => 'Мёд', 'Особенность' => 'Жало с зазубринами', 'Статус' => 'Опылитель'
              
              
-                 ]],['animal_breed' => 'Жук-носорог',
+                 ]],
+['animal_breed' => 'Жук-носорог',
     'weight_range' => '10–20 г',
     'height_range' => '2.5–4.5 см',
     'lifespan' => '3–5 лет (с личинкой)',
@@ -6545,7 +6951,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Жук-носорог', 'Сила' => 'Высокая', 'Особенность' => 'Хитиновый рог'
              
              
-                 ]],['animal_breed' => 'Жук-олень',
+                 ]],
+['animal_breed' => 'Жук-олень',
     'weight_range' => '15–25 г',
     'height_range' => '5–9 см',
     'lifespan' => '4–7 лет (с личинкой)',
@@ -6556,7 +6963,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Жук-олень', 'Статус' => 'Охраняемый', 'Особенность' => 'Челюсти-рога'
              
              
-                 ]],['animal_breed' => 'Жук-плавунец',
+                 ]],
+['animal_breed' => 'Жук-плавунец',
     'weight_range' => '2–4 г',
     'height_range' => '3–4 см',
     'lifespan' => '1–2 года',
@@ -6567,7 +6975,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Среда' => 'Водная', 'Тип' => 'Хищник', 'Дыхание' => 'Атмосферное'
              
              
-                 ]],['animal_breed' => 'Паук-скакун',
+                 ]],
+['animal_breed' => 'Паук-скакун',
     'weight_range' => '10–50 мг',
     'height_range' => '0.5–2 см',
     'lifespan' => '1–2 года',
@@ -6578,7 +6987,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Активный охотник', 'Зрение' => 'Бинокулярное', 'Прыжок' => 'До 50 длин тела'
              
              
-                 ]],['animal_breed' => 'Богомол',
+                 ]],
+['animal_breed' => 'Богомол',
     'weight_range' => '0.5–2 г',
     'height_range' => '4–10 см',
     'lifespan' => '6–12 месяцев',
@@ -6589,7 +6999,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Засадный хищник', 'Особенность' => 'Поворот головы', 'Маскировка' => 'Мимикрия'
              
              
-                 ]],['animal_breed' => 'Стрекоза',
+                 ]],
+['animal_breed' => 'Стрекоза',
     'weight_range' => '1–3 г',
     'height_range' => '5–10 см',
     'lifespan' => '1–2 года',
@@ -6605,7 +7016,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Быстрый полёт'
              
              
-                 ]],['animal_breed' => 'Листоблошка',
+                 ]],
+['animal_breed' => 'Листоблошка',
     'weight_range' => '0.5–2 г',
     'height_range' => '2–5 см',
     'lifespan' => '2–4 недели',
@@ -6621,7 +7033,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Питается листьями'
              
              
-                 ]],['animal_breed' => 'Палочник',
+                 ]],
+['animal_breed' => 'Палочник',
     'weight_range' => '2–10 г',
     'height_range' => '10–30 см',
     'lifespan' => '6–12 месяцев',
@@ -6637,7 +7050,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Отличная маскировка'
              
              
-                 ]],['animal_breed' => 'Восточный енот-полоскун',
+                 ]],
+['animal_breed' => 'Восточный енот-полоскун',
     'weight_range' => '5–9 кг',
     'height_range' => '45–60 см',
     'lifespan' => '12–15 лет',
@@ -6648,7 +7062,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Полоскун', 'Регион' => 'Восток США', 'Навык' => 'Полоскание еды'
              
              
-                 ]],['animal_breed' => 'Ключ-Вака енот-полоскун',
+                 ]],
+['animal_breed' => 'Ключ-Вака енот-полоскун',
     'weight_range' => '4–7 кг',
     'height_range' => '40–50 см',
     'lifespan' => '10–13 лет',
@@ -6659,7 +7074,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Подвид' => 'Островной', 'Статус' => 'Редкий', 'Окрас' => 'Светло-серый'
              
              
-                 ]],['animal_breed' => 'Флоридский енот-полоскун',
+                 ]],
+['animal_breed' => 'Флоридский енот-полоскун',
     'weight_range' => '4–8 кг',
     'height_range' => '45–55 см',
     'lifespan' => '12–15 лет',
@@ -6670,7 +7086,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Регион' => 'Флорида', 'Шерсть' => 'Короткая', 'Активность' => 'Ночная'
              
              
-                 ]],['animal_breed' => 'Техасский енот-полоскун',
+                 ]],
+['animal_breed' => 'Техасский енот-полоскун',
     'weight_range' => '5–9 кг',
     'height_range' => '50–65 см',
     'lifespan' => '12–14 лет',
@@ -6681,7 +7098,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Размер' => 'Крупный', 'Регион' => 'Техас', 'Климат' => 'Засушливый'
              
              
-                 ]],['animal_breed' => 'Миссисипский енот-полоскун',
+                 ]],
+['animal_breed' => 'Миссисипский енот-полоскун',
     'weight_range' => '5–8.5 кг',
     'height_range' => '45–60 см',
     'lifespan' => '11–15 лет',
@@ -6692,7 +7110,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Среда' => 'Прибрежная', 'Рацион' => 'Всеядный', 'Окрас' => 'Буро-серый'
              
              
-                 ]],['animal_breed' => 'Тресмариарсский енот-полоскун',
+                 ]],
+['animal_breed' => 'Тресмариарсский енот-полоскун',
     'weight_range' => '3–6 кг',
     'height_range' => '35–50 см',
     'lifespan' => '10–12 лет',
@@ -6703,7 +7122,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Эндемик' => 'Острова Мария', 'Вес' => 'Небольшой', 'Череп' => 'Вытянутый'
              
              
-                 ]],['animal_breed' => 'Торч-Кей енот-полоскун',
+                 ]],
+['animal_breed' => 'Торч-Кей енот-полоскун',
     'weight_range' => '4–7.5 кг',
     'height_range' => '40–55 см',
     'lifespan' => '10–14 лет',
@@ -6714,7 +7134,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Среда' => 'Мангры', 'Окрас' => 'Бледный', 'Размер' => 'Средний'
              
              
-                 ]],['animal_breed' => 'Гвателупский енот-полоскун',
+                 ]],
+['animal_breed' => 'Гвателупский енот-полоскун',
     'weight_range' => '4–7 кг',
     'height_range' => '40–50 см',
     'lifespan' => '10–13 лет',
@@ -6725,7 +7146,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Острова' => 'Гваделупа', 'Статус' => 'Охраняемый', 'Тип' => 'Полоскун'
              
              
-                 ]],['animal_breed' => 'Северогерманский тёмный енот',
+                 ]],
+['animal_breed' => 'Северогерманский тёмный енот',
     'weight_range' => '6–10 кг',
     'height_range' => '50–70 см',
     'lifespan' => '12–16 лет',
@@ -6736,7 +7158,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Мех' => 'Очень густой', 'Цвет' => 'Темно-бурый', 'Регион' => 'Германия'
              
              
-                 ]],['animal_breed' => 'Японский енот',
+                 ]],
+['animal_breed' => 'Японский енот',
     'weight_range' => '4–8 кг',
     'height_range' => '45–60 см',
     'lifespan' => '12–15 лет',
@@ -6747,7 +7170,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Регион' => 'Япония', 'Статус' => 'Инвазивный', 'Интеллект' => 'Высокий'
              
              
-                 ]],['animal_breed' => 'Американская норка (Mustela vison)',
+                 ]],
+['animal_breed' => 'Американская норка (Mustela vison)',
     'weight_range' => '0.8–1.6 кг',
     'height_range' => '35–45 см',
     'lifespan' => '8–10 лет',
@@ -6758,7 +7182,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Mustela vison', 'Образ жизни' => 'Полуводный', 'Мех' => 'Водоотталкивающий'
              
              
-                 ]],['animal_breed' => 'Европейская норка (Mustela lutreola)',
+                 ]],
+['animal_breed' => 'Европейская норка (Mustela lutreola)',
     'weight_range' => '0.5–1.2 кг',
     'height_range' => '30–40 см',
     'lifespan' => '7–10 лет',
@@ -6769,7 +7194,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Mustela lutreola', 'Статус' => 'Критический', 'Метка' => 'Белая губа'
              
              
-                 ]],['animal_breed' => 'Чёрная норка',
+                 ]],
+['animal_breed' => 'Чёрная норка',
     'weight_range' => '0.9–1.8 кг',
     'height_range' => '35–48 см',
     'lifespan' => '8–11 лет',
@@ -6780,7 +7206,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Окрас' => 'Черный уголь', 'Тип' => 'Селекционная', 'Мех' => 'Шелковистый'
              
              
-                 ]],['animal_breed' => 'Сапфировая норка',
+                 ]],
+['animal_breed' => 'Сапфировая норка',
     'weight_range' => '0.7–1.4 кг',
     'height_range' => '30–40 см',
     'lifespan' => '8–10 лет',
@@ -6791,7 +7218,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Морфа' => 'Сапфир', 'Цвет' => 'Серо-голубой', 'Качество' => 'Высокий блеск'
              
              
-                 ]],['animal_breed' => 'Пастельная норка',
+                 ]],
+['animal_breed' => 'Пастельная норка',
     'weight_range' => '700–1200 г',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -6807,7 +7235,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Ценный мех'
              
              
-                 ]],['animal_breed' => 'Палиндромная норка',
+                 ]],
+['animal_breed' => 'Палиндромная норка',
     'weight_range' => '800–1300 г',
     'height_range' => '35–50 см',
     'lifespan' => '8–12 лет',
@@ -6823,7 +7252,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Редкий окрас'
              
              
-                 ]],['animal_breed' => 'Серебристая норка',
+                 ]],
+['animal_breed' => 'Серебристая норка',
     'weight_range' => '700–1200 г',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -6839,7 +7269,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Густой мех'
              
              
-                 ]],['animal_breed' => 'Карамельная норка',
+                 ]],
+['animal_breed' => 'Карамельная норка',
     'weight_range' => '700–1100 г',
     'height_range' => '30–45 см',
     'lifespan' => '8–12 лет',
@@ -6855,7 +7286,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Тёплый оттенок меха'
              
              
-                 ]],['animal_breed' => 'Арктическая норка',
+                 ]],
+['animal_breed' => 'Арктическая норка',
     'weight_range' => '800–1400 г',
     'height_range' => '35–50 см',
     'lifespan' => '8–12 лет',
@@ -6871,7 +7303,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Переносит холод'
              
              
-                 ]],['animal_breed' => 'Махагоновая норка',
+                 ]],
+['animal_breed' => 'Махагоновая норка',
     'weight_range' => '0.8–1.5 кг',
     'height_range' => '35–45 см',
     'lifespan' => '8–12 лет',
@@ -6882,7 +7315,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Окрас' => 'Махагон', 'Текстура' => 'Плотная', 'Блеск' => 'Шелковистый'
              
              
-                 ]],['animal_breed' => 'Обыкновенная лисица (рыжая)',
+                 ]],
+['animal_breed' => 'Обыкновенная лисица (рыжая)',
     'weight_range' => '6–10 кг',
     'height_range' => '35–50 см (в холке)',
     'lifespan' => '10–12 лет',
@@ -6893,7 +7327,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Рыжая', 'Хвост' => 'Пушистый', 'Ареал' => 'Повсеместный'
              
              
-                 ]],['animal_breed' => 'Серебристо-чёрная лисица',
+                 ]],
+['animal_breed' => 'Серебристо-чёрная лисица',
     'weight_range' => '5–9 кг',
     'height_range' => '35–48 см',
     'lifespan' => '10–13 лет',
@@ -6904,7 +7339,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Морфа' => 'Серебристая', 'Мех' => 'Длинный', 'Популярность' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Лисица-сиводушка',
+                 ]],
+['animal_breed' => 'Лисица-сиводушка',
     'weight_range' => '5–8 кг',
     'height_range' => '35–45 см',
     'lifespan' => '10–12 лет',
@@ -6915,7 +7351,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Окрас' => 'Сиводушка', 'Рисунок' => 'Темный крест', 'Тип' => 'Природная морфа'
              
              
-                 ]],['animal_breed' => 'Лисица-красавец',
+                 ]],
+['animal_breed' => 'Лисица-красавец',
     'weight_range' => '5–8.5 кг',
     'height_range' => '35–47 см',
     'lifespan' => '10–12 лет',
@@ -6926,7 +7363,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Селекционная', 'Экстерьер' => 'Выставочный', 'Окрас' => 'Насыщенный'
              
              
-                 ]],['animal_breed' => 'Лисица-фенек',
+                 ]],
+['animal_breed' => 'Лисица-фенек',
     'weight_range' => '0.8–1.5 кг',
     'height_range' => '18–22 см',
     'lifespan' => '12–15 лет',
@@ -6937,7 +7375,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Уши' => 'Большие', 'Размер' => 'Мини', 'Среда' => 'Пустыня'
              
              
-                 ]],['animal_breed' => 'Арктическая лисица (песец)',
+                 ]],
+['animal_breed' => 'Арктическая лисица (песец)',
     'weight_range' => '3–8 кг',
     'height_range' => '25–30 см',
     'lifespan' => '8–10 лет',
@@ -6948,7 +7387,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Песец', 'Мех' => 'Зимний/летний', 'Морозостойкость' => 'Экстремальная'
              
              
-                 ]],['animal_breed' => 'Лисица-блестянка',
+                 ]],
+['animal_breed' => 'Лисица-блестянка',
     'weight_range' => '5–9 кг',
     'height_range' => '35–48 см',
     'lifespan' => '10–12 лет',
@@ -6959,7 +7399,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Особенность' => 'Сильный блеск', 'Текстура' => 'Гладкая', 'Тип' => 'Редкая'
              
              
-                 ]],['animal_breed' => 'Лисица-крестовка',
+                 ]],
+['animal_breed' => 'Лисица-крестовка',
     'weight_range' => '5–8 кг',
     'height_range' => '35–46 см',
     'lifespan' => '10–12 лет',
@@ -6970,7 +7411,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Рисунок' => 'Крест', 'Происхождение' => 'Гибрид морф', 'Окрас' => 'Темно-рыжий'
              
              
-                 ]],['animal_breed' => 'Лисица-альбинос',
+                 ]],
+['animal_breed' => 'Лисица-альбинос',
     'weight_range' => '4–7 кг',
     'height_range' => '30–42 см',
     'lifespan' => '9–12 лет',
@@ -6981,7 +7423,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Генетика' => 'Альбинизм', 'Цвет' => 'Белый', 'Глаза' => 'Розовые/Красные'
              
              
-                 ]],['animal_breed' => 'Лисица-меланист',
+                 ]],
+['animal_breed' => 'Лисица-меланист',
     'weight_range' => '5–9 кг',
     'height_range' => '35–48 см',
     'lifespan' => '10–13 лет',
@@ -6992,7 +7435,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Генетика' => 'Меланизм', 'Цвет' => 'Угольно-черный', 'Редкость' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Капуцин (Cebus apella)',
+                 ]],
+['animal_breed' => 'Капуцин (Cebus apella)',
     'weight_range' => '1.5–4.5 кг',
     'height_range' => '30–55 см',
     'lifespan' => '30–45 лет',
@@ -7003,7 +7447,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Cebus apella', 'Интеллект' => 'Высокий', 'Хвост' => 'Цепкий'
              
              
-                 ]],['animal_breed' => 'Макака (Macaca spp.)',
+                 ]],
+['animal_breed' => 'Макака (Macaca spp.)',
     'weight_range' => '4–15 кг',
     'height_range' => '40–70 см',
     'lifespan' => '25–30 лет',
@@ -7014,7 +7459,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Род' => 'Macaca', 'Социальность' => 'Групповая', 'Адаптация' => 'Высокая'
              
              
-                 ]],['animal_breed' => 'Мартышка (Cercopithecus spp.)',
+                 ]],
+['animal_breed' => 'Мартышка (Cercopithecus spp.)',
     'weight_range' => '2–7 кг',
     'height_range' => '35–65 см',
     'lifespan' => '20–25 лет',
@@ -7025,7 +7471,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Род' => 'Cercopithecus', 'Хвост' => 'Очень длинный', 'Среда' => 'Лес'
              
              
-                 ]],['animal_breed' => 'Лори (Lorisidae)',
+                 ]],
+['animal_breed' => 'Лори (Lorisidae)',
     'weight_range' => '0.3–1.5 кг',
     'height_range' => '20–40 см',
     'lifespan' => '15–20 лет',
@@ -7036,7 +7483,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Семейство' => 'Lorisidae', 'Активность' => 'Ночная', 'Глаза' => 'Крупные'
              
              
-                 ]],['animal_breed' => 'Шимпанзе',
+                 ]],
+['animal_breed' => 'Шимпанзе',
     'weight_range' => '40–60 кг',
     'height_range' => '100–150 см',
     'lifespan' => '35–45 лет',
@@ -7047,7 +7495,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Интеллект' => 'Выдающийся', 'Сообщество' => 'Групповое', 'ДНК' => '98% сходства'
              
              
-                 ]],['animal_breed' => 'Орангутан',
+                 ]],
+['animal_breed' => 'Орангутан',
     'weight_range' => '50–100 кг',
     'height_range' => '110–150 см',
     'lifespan' => '30–40 лет',
@@ -7058,7 +7507,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Локация' => 'Борнео/Суматра', 'Образ жизни' => 'Одиночный', 'Руки' => 'Очень длинные'
              
              
-                 ]],['animal_breed' => 'Горилла',
+                 ]],
+['animal_breed' => 'Горилла',
     'weight_range' => '135–200 кг',
     'height_range' => '160–180 см',
     'lifespan' => '35–50 лет',
@@ -7069,7 +7519,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Сила' => 'Экстремальная', 'Рацион' => 'Растительный', 'Среда' => 'Тропический лес'
              
              
-                 ]],['animal_breed' => 'Павиан',
+                 ]],
+['animal_breed' => 'Павиан',
     'weight_range' => '15–35 кг',
     'height_range' => '50–75 см',
     'lifespan' => '20–30 лет',
@@ -7080,7 +7531,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Наземный', 'Зубы' => 'Крупные клыки', 'Характер' => 'Агрессивный'
              
              
-                 ]],['animal_breed' => 'Тамарин',
+                 ]],
+['animal_breed' => 'Тамарин',
     'weight_range' => '0.2–0.9 кг',
     'height_range' => '18–30 см',
     'lifespan' => '10–15 лет',
@@ -7091,7 +7543,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Размер' => 'Крошечный', 'Особенность' => 'Усы/Грива', 'Активность' => 'Дневная'
              
              
-                 ]],['animal_breed' => 'Сакк',
+                 ]],
+['animal_breed' => 'Сакк',
     'weight_range' => '1.5–3 кг',
     'height_range' => '30–45 см',
     'lifespan' => '15–20 лет',
@@ -7102,7 +7555,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Бледный саки', 'Хвост' => 'Нецепкий, пушистый', 'Среда' => 'Лесной полог'
              
              
-                 ]],['animal_breed' => 'Мандрил',
+                 ]],
+['animal_breed' => 'Мандрил',
     'weight_range' => '11–35 кг',
     'height_range' => '55–95 см',
     'lifespan' => '20–30 лет',
@@ -7113,7 +7567,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Окрас' => 'Яркая морда', 'Семья' => 'Мартышковые', 'Зубы' => 'Длинные клыки'
              
              
-                 ]],['animal_breed' => 'Ушастый лори',
+                 ]],
+['animal_breed' => 'Ушастый лори',
     'weight_range' => '0.5–1.2 кг',
     'height_range' => '25–35 см',
     'lifespan' => '12–15 лет',
@@ -7124,7 +7579,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Слух' => 'Острый', 'Глаза' => 'Ночное зрение', 'Движения' => 'Медленные'
              
              
-                 ]],['animal_breed' => 'Бонобо',
+                 ]],
+['animal_breed' => 'Бонобо',
     'weight_range' => '30–45 кг',
     'height_range' => '70–90 см',
     'lifespan' => '35–40 лет',
@@ -7135,7 +7591,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Интеллект' => 'Высокий', 'Социум' => 'Миролюбивый', 'Сходство' => 'Ближайший родич'
              
              
-                 ]],['animal_breed' => 'Саванная мартышка',
+                 ]],
+['animal_breed' => 'Саванная мартышка',
     'weight_range' => '3–6 кг',
     'height_range' => '40–55 см',
     'lifespan' => '18–25 лет',
@@ -7146,7 +7603,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Регион' => 'Африка', 'Окрас' => 'Зеленовато-серый', 'Поведение' => 'Бдительное'
              
              
-                 ]],['animal_breed' => 'Колобус',
+                 ]],
+['animal_breed' => 'Колобус',
     'weight_range' => '5–14 кг',
     'height_range' => '45–70 см',
     'lifespan' => '20–25 лет',
@@ -7157,7 +7615,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Цвет' => 'Черно-белый', 'Шерсть' => 'Длинная', 'Питание' => 'Листва'
              
              
-                 ]],['animal_breed' => 'Комодский варан',
+                 ]],
+['animal_breed' => 'Комодский варан',
     'weight_range' => '70–130 кг',
     'height_range' => '200–300 см',
     'lifespan' => '30–50 лет',
@@ -7168,7 +7627,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Статус' => 'Опасный хищник', 'Длина' => 'До 3 метров', 'Оружие' => 'Яд и зубы'
              
              
-                 ]],['animal_breed' => 'Полосатый варан',
+                 ]],
+['animal_breed' => 'Полосатый варан',
     'weight_range' => '15–20 кг',
     'height_range' => '150–250 см',
     'lifespan' => '15–20 лет',
@@ -7179,7 +7639,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Навык' => 'Плавание', 'Узор' => 'Желтые пятна', 'Среда' => 'Прибрежная'
              
              
-                 ]],['animal_breed' => 'Зелёный варан (смарагдовый)',
+                 ]],
+['animal_breed' => 'Зелёный варан (смарагдовый)',
     'weight_range' => '0.3–0.6 кг',
     'height_range' => '70–100 см',
     'lifespan' => '10–15 лет',
@@ -7190,7 +7651,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Цвет' => 'Изумрудный', 'Тип' => 'Древесный', 'Хвост' => 'Цепкий'
              
              
-                 ]],['animal_breed' => 'Жёлтый варан',
+                 ]],
+['animal_breed' => 'Жёлтый варан',
     'weight_range' => '0.5–1 кг',
     'height_range' => '60–90 см',
     'lifespan' => '10–15 лет',
@@ -7201,7 +7663,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Окрас' => 'Желто-бурый', 'Регион' => 'Индия/Пакистан', 'Активность' => 'Дневная'
              
              
-                 ]],['animal_breed' => 'Гигантский варан',
+                 ]],
+['animal_breed' => 'Гигантский варан',
     'weight_range' => '15–25 кг',
     'height_range' => '180–240 см',
     'lifespan' => '20–25 лет',
@@ -7212,7 +7675,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Локация' => 'Австралия', 'Скорость' => 'Высокая', 'Рисунок' => 'Пятнистый'
              
              
-                 ]],['animal_breed' => 'Белогорлый варан',
+                 ]],
+['animal_breed' => 'Белогорлый варан',
     'weight_range' => '5–12 кг',
     'height_range' => '120–200 см',
     'lifespan' => '15–20 лет',
@@ -7223,7 +7687,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Особенность' => 'Интеллект', 'Тело' => 'Крепкое', 'Регион' => 'Южная Африка'
              
              
-                 ]],['animal_breed' => 'Пёстрый варан',
+                 ]],
+['animal_breed' => 'Пёстрый варан',
     'weight_range' => '10–20 кг',
     'height_range' => '150–210 см',
     'lifespan' => '15–20 лет',
@@ -7234,7 +7699,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Рисунок' => 'Сетчатый', 'Умение' => 'Лазание', 'Питание' => 'Всеядный'
              
              
-                 ]],['animal_breed' => 'Варан Шлегеля',
+                 ]],
+['animal_breed' => 'Варан Шлегеля',
     'weight_range' => '0.2–0.5 кг',
     'height_range' => '60–85 см',
     'lifespan' => '10–13 лет',
@@ -7245,7 +7711,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Редкость' => 'Высокая', 'Размер' => 'Средний', 'Среда' => 'Тропики'
              
              
-                 ]],['animal_breed' => 'Капский варан',
+                 ]],
+['animal_breed' => 'Капский варан',
     'weight_range' => '3–6 кг',
     'height_range' => '80–120 см',
     'lifespan' => '12–18 лет',
@@ -7256,7 +7723,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Характер' => 'Спокойный', 'Тело' => 'Коренастое', 'Питание' => 'Инсектоядный'
              
              
-                 ]],['animal_breed' => 'Нильский варан',
+                 ]],
+['animal_breed' => 'Нильский варан',
     'weight_range' => '6–15 кг',
     'height_range' => '140–220 см',
     'lifespan' => '15–20 лет',
@@ -7267,7 +7735,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Хвост' => 'Сжат с боков', 'Нрав' => 'Боевой', 'Стихия' => 'Вода/Суша'
              
              
-                 ]],['animal_breed' => 'Серый варан',
+                 ]],
+['animal_breed' => 'Серый варан',
     'weight_range' => '1–3 кг',
     'height_range' => '100–150 см',
     'lifespan' => '12–15 лет',
@@ -7278,7 +7747,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Среда' => 'Пустыня', 'Окрас' => 'Маскировочный', 'Активность' => 'Дневная'
              
              
-                 ]],['animal_breed' => 'Кольцехвостый варан',
+                 ]],
+['animal_breed' => 'Кольцехвостый варан',
     'weight_range' => '0.1–0.3 кг',
     'height_range' => '30–50 см',
     'lifespan' => '10–12 лет',
@@ -7289,7 +7759,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Размер' => 'Карликовый', 'Хвост' => 'Колючий', 'Локация' => 'Скалы'
              
              
-                 ]],['animal_breed' => 'Черноголовый варан',
+                 ]],
+['animal_breed' => 'Черноголовый варан',
     'weight_range' => '0.1–0.2 кг',
     'height_range' => '25–40 см',
     'lifespan' => '8–12 лет',
@@ -7300,7 +7771,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Голова' => 'Черная', 'Тип' => 'Древесный', 'Размер' => 'Мелкий'
              
              
-                 ]],['animal_breed' => 'Варан Гульда',
+                 ]],
+['animal_breed' => 'Варан Гульда',
     'weight_range' => '3–6 кг',
     'height_range' => '120–160 см',
     'lifespan' => '12–15 лет',
@@ -7311,7 +7783,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Стойка' => 'Тренога', 'Почва' => 'Песчаная', 'Локация' => 'Австралия'
              
              
-                 ]],['animal_breed' => 'Варан Мертенса',
+                 ]],
+['animal_breed' => 'Варан Мертенса',
     'weight_range' => '2–5 кг',
     'height_range' => '100–130 см',
     'lifespan' => '12–15 лет',
@@ -7322,7 +7795,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Стихия' => 'Вода', 'Ноздри' => 'Клапанные', 'Питание' => 'Рыба/Раки'
              
              
-                 ]],['animal_breed' => 'Тиморский варан',
+                 ]],
+['animal_breed' => 'Тиморский варан',
     'weight_range' => '0.1–0.3 кг',
     'height_range' => '40–60 см',
     'lifespan' => '10–12 лет',
@@ -7333,7 +7807,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Тип' => 'Древесный', 'Узор' => 'Глазчатые пятна', 'Размер' => 'Компактный'
              
              
-                 ]],['animal_breed' => 'Береговой варан',
+                 ]],
+['animal_breed' => 'Береговой варан',
     'weight_range' => '0.5–1.5 кг',
     'height_range' => '80–110 см',
     'lifespan' => '12–15 лет',
@@ -7344,7 +7819,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Среда' => 'Манглы', 'Навык' => 'Универсальный охотник', 'Хвост' => 'Сильный'
              
              
-                 ]],['animal_breed' => 'Короткохвостый варан',
+                 ]],
+['animal_breed' => 'Короткохвостый варан',
     'weight_range' => '0.05–0.1 кг',
     'height_range' => '20–25 см',
     'lifespan' => '8–10 лет',
@@ -7355,7 +7831,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Рекорд' => 'Минимальный размер', 'Локация' => 'Австралия', 'Тип' => 'Копающий'
              
              
-                 ]],['animal_breed' => 'Пустынный варан',
+                 ]],
+['animal_breed' => 'Пустынный варан',
     'weight_range' => '1–2 кг',
     'height_range' => '80–120 см',
     'lifespan' => '12–15 лет',
@@ -7366,7 +7843,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Климат' => 'Аридный', 'Окрас' => 'Песочный', 'Активность' => 'Дневная'
              
              
-                 ]],['animal_breed' => 'Варан Дюмериля',
+                 ]],
+['animal_breed' => 'Варан Дюмериля',
     'weight_range' => '0.8–1.5 кг',
     'height_range' => '100–130 см',
     'lifespan' => '12–15 лет',
@@ -7377,7 +7855,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Рацион' => 'Специализируется на крабах', 'Среда' => 'Тропические леса', 'Особенность' => 'Древесно-водный'
              
              
-                 ]],['animal_breed' => 'Серый волк (Canis lupus)',
+                 ]],
+['animal_breed' => 'Серый волк (Canis lupus)',
     'weight_range' => '30–65 кг',
     'height_range' => '80–90 см (в холке)',
     'lifespan' => '10–15 лет',
@@ -7388,7 +7867,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Социум' => 'Стайный образ жизни', 'Интеллект' => 'Высокий', 'Вид' => 'Canis lupus'
              
              
-                 ]],['animal_breed' => 'Арктический волк',
+                 ]],
+['animal_breed' => 'Арктический волк',
     'weight_range' => '45–70 кг',
     'height_range' => '65–80 см (в холке)',
     'lifespan' => '7–10 лет',
@@ -7399,7 +7879,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Окрас' => 'Белоснежный', 'Среда' => 'Тундра/Арктика', 'Стойкость' => 'Морозоустойчив'
              
              
-                 ]],['animal_breed' => 'Альпийский волк',
+                 ]],
+['animal_breed' => 'Альпийский волк',
     'weight_range' => '25–40 кг',
     'height_range' => '60–75 см (в холке)',
     'lifespan' => '10–13 лет',
@@ -7410,7 +7891,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Локация' => 'Горы Европы', 'Выносливость' => 'Высокая', 'Окрас' => 'Серо-рыжеватый'
              
              
-                 ]],['animal_breed' => 'Итальянский волк',
+                 ]],
+['animal_breed' => 'Итальянский волк',
     'weight_range' => '25–35 кг',
     'height_range' => '50–70 см (в холке)',
     'lifespan' => '10–14 лет',
@@ -7421,7 +7903,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Регион' => 'Апеннины', 'Статус' => 'Охраняемый', 'Тип' => 'Среднеразмерный'
              
              
-                 ]],['animal_breed' => 'Мексиканский волк',
+                 ]],
+['animal_breed' => 'Мексиканский волк',
     'weight_range' => '25–45 кг',
     'height_range' => '60–80 см (в холке)',
     'lifespan' => '10–15 лет',
@@ -7432,7 +7915,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Редкость' => 'Крайне высокая', 'Размер' => 'Мелкий подвид', 'Окрас' => 'Пестрый/Рыжеватый'
              
              
-                 ]],['animal_breed' => 'Красный волк (Canis rufus)',
+                 ]],
+['animal_breed' => 'Красный волк (Canis rufus)',
     'weight_range' => '20–40 кг',
     'height_range' => '65–80 см (в холке)',
     'lifespan' => '8–12 лет',
@@ -7443,7 +7927,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Вид' => 'Canis rufus', 'Окрас' => 'Рыжий', 'Статус' => 'На грани исчезновения'
              
              
-                 ]],['animal_breed' => 'Берингово-чукотский волк',
+                 ]],
+['animal_breed' => 'Берингово-чукотский волк',
     'weight_range' => '40–60 кг',
     'height_range' => '75–85 см (в холке)',
     'lifespan' => '10–12 лет',
@@ -7454,7 +7939,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Размер' => 'Крупный', 'Шерсть' => 'Очень плотная', 'Регион' => 'Дальний Восток'
              
              
-                 ]],['animal_breed' => 'Хищный волк (рабочее название, гибрид с собакой)',
+                 ]],
+['animal_breed' => 'Хищный волк (рабочее название, гибрид с собакой)',
     'weight_range' => '30–50 кг',
     'height_range' => '60–75 см (в холке)',
     'lifespan' => '10–15 лет',
@@ -7465,7 +7951,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Генетика' => 'Гибрид', 'Характер' => 'Непредсказуемый', 'Выносливость' => 'Экстремальная'
              
              
-                 ]],['animal_breed' => 'Таймырский волк',
+                 ]],
+['animal_breed' => 'Таймырский волк',
     'weight_range' => '35–55 кг',
     'height_range' => '70–85 см (в холке)',
     'lifespan' => '10–14 лет',
@@ -7476,7 +7963,8 @@ class AnimalDetailsSeeder extends Seeder
      'features' =>['Поведение' => 'Кочевое', 'Среда' => 'Арктическая тундра', 'Добыча' => 'Северный олень'
              
              
-                 ]],['animal_breed' => 'Таймырский волк',
+                 ]],
+['animal_breed' => 'Таймырский волк',
     'weight_range' => '30–50 кг',
     'height_range' => '70–90 см',
     'lifespan' => '10–14 лет',
@@ -7492,7 +7980,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт в холоде'
              
              
-                 ]],['animal_breed' => 'Монарх (Danaus plexippus)',
+                 ]],
+['animal_breed' => 'Монарх (Danaus plexippus)',
     'weight_range' => '0.3–0.7 г',
     'height_range' => '8–10 см',
     'lifespan' => '2–6 недель',
@@ -7508,7 +7997,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Дальние миграции'
              
              
-                 ]],['animal_breed' => 'Капустница (Pieris brassicae)',
+                 ]],
+['animal_breed' => 'Капустница (Pieris brassicae)',
     'weight_range' => '0.2–0.5 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–3 недели',
@@ -7524,7 +8014,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Вредитель'
              
              
-                 ]],['animal_breed' => 'Адмирал (Vanessa atalanta)',
+                 ]],
+['animal_breed' => 'Адмирал (Vanessa atalanta)',
     'weight_range' => '0.3–0.6 г',
     'height_range' => '6–8 см',
     'lifespan' => '2–4 недели',
@@ -7540,7 +8031,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Контрастный окрас'
              
              
-                 ]],['animal_breed' => 'Красный махаон (Papilio machaon)',
+                 ]],
+['animal_breed' => 'Красный махаон (Papilio machaon)',
     'weight_range' => '0.4–0.8 г',
     'height_range' => '8–9 см',
     'lifespan' => '2–3 недели',
@@ -7556,7 +8048,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Крупный размер'
              
              
-                 ]],['animal_breed' => 'Бражник винный (Deilephila porcellus)',
+                 ]],
+['animal_breed' => 'Бражник винный (Deilephila porcellus)',
     'weight_range' => '1–2 г',
     'height_range' => '6–7 см',
     'lifespan' => '2–4 недели',
@@ -7572,7 +8065,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Ночной образ жизни'
              
              
-                 ]],['animal_breed' => 'Бражник тутового шелкопряда (Acherontia atropos)',
+                 ]],
+['animal_breed' => 'Бражник тутового шелкопряда (Acherontia atropos)',
     'weight_range' => '2–5 г',
     'height_range' => '10–13 см',
     'lifespan' => '2–3 недели',
@@ -7588,7 +8082,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Рисунок черепа'
              
              
-                 ]],['animal_breed' => 'Павлиноглазка (Aglia tau)',
+                 ]],
+['animal_breed' => 'Павлиноглазка (Aglia tau)',
     'weight_range' => '1–3 г',
     'height_range' => '6–9 см',
     'lifespan' => '2–3 недели',
@@ -7604,7 +8099,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Глазки на крыльях'
              
              
-                 ]],['animal_breed' => 'Ночной павлиний глаз (Saturnia pyri)',
+                 ]],
+['animal_breed' => 'Ночной павлиний глаз (Saturnia pyri)',
     'weight_range' => '2–6 г',
     'height_range' => '12–15 см',
     'lifespan' => '1–2 недели',
@@ -7620,7 +8116,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Крупные размеры'
              
              
-                 ]],['animal_breed' => 'Аполлон (Parnassius apollo)',
+                 ]],
+['animal_breed' => 'Аполлон (Parnassius apollo)',
     'weight_range' => '0.3–0.7 г',
     'height_range' => '7–9 см',
     'lifespan' => '2–4 недели',
@@ -7636,7 +8133,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Редкий вид'
              
              
-                 ]],['animal_breed' => 'Данаида хризипп (Danaus chrysippus)',
+                 ]],
+['animal_breed' => 'Данаида хризипп (Danaus chrysippus)',
     'weight_range' => '0.3–0.6 г',
     'height_range' => '8–10 см',
     'lifespan' => '2–5 недель',
@@ -7652,7 +8150,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Яркий цвет'
              
              
-                 ]],['animal_breed' => 'Белянка (Artogeia napi)',
+                 ]],
+['animal_breed' => 'Белянка (Artogeia napi)',
     'weight_range' => '0.2–0.4 г',
     'height_range' => '5–6 см',
     'lifespan' => '2–3 недели',
@@ -7668,7 +8167,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Светлый окрас'
              
              
-                 ]],['animal_breed' => 'Лимонница (Gonepteryx rhamni)',
+                 ]],
+['animal_breed' => 'Лимонница (Gonepteryx rhamni)',
     'weight_range' => '0.2–0.4 г',
     'height_range' => '4–5 см',
     'lifespan' => '2–3 недели',
@@ -7684,7 +8184,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Ранний вылет'
              
              
-                 ]],['animal_breed' => 'Синяя (Polyommatus icarus)',
+                 ]],
+['animal_breed' => 'Синяя (Polyommatus icarus)',
     'weight_range' => '0.1–0.3 г',
     'height_range' => '3–4 см',
     'lifespan' => '2–3 недели',
@@ -7700,7 +8201,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Голубой цвет'
              
              
-                 ]],['animal_breed' => 'Голубянка',
+                 ]],
+['animal_breed' => 'Голубянка',
     'weight_range' => '0.1–0.3 г',
     'height_range' => '2–4 см',
     'lifespan' => '2–3 недели',
@@ -7716,7 +8218,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Яркий цвет'
              
              
-                 ]],['animal_breed' => 'Медведица',
+                 ]],
+['animal_breed' => 'Медведица',
     'weight_range' => '1–3 г',
     'height_range' => '4–6 см',
     'lifespan' => '2–4 недели',
@@ -7732,7 +8235,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Пёстрый окрас'
              
              
-                 ]],['animal_breed' => 'Крапивница',
+                 ]],
+['animal_breed' => 'Крапивница',
     'weight_range' => '0.2–0.5 г',
     'height_range' => '4–6 см',
     'lifespan' => '2–4 недели',
@@ -7748,7 +8252,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Яркий окрас'
              
              
-                 ]],['animal_breed' => 'Траурница',
+                 ]],
+['animal_breed' => 'Траурница',
     'weight_range' => '0.3–0.6 г',
     'height_range' => '5–7 см',
     'lifespan' => '2–3 недели',
@@ -7764,7 +8269,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Контрастная окраска'
              
              
-                 ]],['animal_breed' => 'Лесной хвостоносец',
+                 ]],
+['animal_breed' => 'Лесной хвостоносец',
     'weight_range' => '0.2–0.4 г',
     'height_range' => '6–8 см',
     'lifespan' => '2–3 недели',
@@ -7780,7 +8286,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Хвостики на крыльях'
              
              
-                 ]],['animal_breed' => 'Пяденица',
+                 ]],
+['animal_breed' => 'Пяденица',
     'weight_range' => '0.1–0.3 г',
     'height_range' => '2–4 см',
     'lifespan' => '1–2 недели',
@@ -7796,7 +8303,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Ночная активность'
              
              
-                 ]],['animal_breed' => 'Совка',
+                 ]],
+['animal_breed' => 'Совка',
     'weight_range' => '0.2–0.5 г',
     'height_range' => '3–5 см',
     'lifespan' => '2–3 недели',
@@ -7812,7 +8320,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Активна ночью'
              
              
-                 ]],['animal_breed' => 'Messor structor (степной муравей-жнец)',
+                 ]],
+['animal_breed' => 'Messor structor (степной муравей-жнец)',
     'weight_range' => '5–10 мг',
     'height_range' => '4–6 мм',
     'lifespan' => '1–3 года',
@@ -7828,7 +8337,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Собирает семена'
              
              
-                 ]],['animal_breed' => 'Lasius niger (чёрный садовый муравей)',
+                 ]],
+['animal_breed' => 'Lasius niger (чёрный садовый муравей)',
     'weight_range' => '2–5 мг',
     'height_range' => '3–5 мм',
     'lifespan' => '1–2 года',
@@ -7844,7 +8354,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт рядом с людьми'
              
              
-                 ]],['animal_breed' => 'Formica rufa (рыжий лесной муравей)',
+                 ]],
+['animal_breed' => 'Formica rufa (рыжий лесной муравей)',
     'weight_range' => '5–10 мг',
     'height_range' => '6–9 мм',
     'lifespan' => '2–3 года',
@@ -7860,7 +8371,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Крупные муравейники'
              
              
-                 ]],['animal_breed' => 'Myrmica rubra (рыжая муравьиная огнёвка)',
+                 ]],
+['animal_breed' => 'Myrmica rubra (рыжая муравьиная огнёвка)',
     'weight_range' => '3–6 мг',
     'height_range' => '4–6 мм',
     'lifespan' => '1–2 года',
@@ -7876,7 +8388,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Болезненный укус'
              
              
-                 ]],['animal_breed' => 'Camponotus pennsylvanicus (чёрный лесной муравей)',
+                 ]],
+['animal_breed' => 'Camponotus pennsylvanicus (чёрный лесной муравей)',
     'weight_range' => '10–20 мг',
     'height_range' => '6–13 мм',
     'lifespan' => '2–5 лет',
@@ -7892,7 +8405,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Живёт в древесине'
              
              
-                 ]],['animal_breed' => 'Camponotus herculeanus (гигантский муравей)',
+                 ]],
+['animal_breed' => 'Camponotus herculeanus (гигантский муравей)',
     'weight_range' => '15–25 мг',
     'height_range' => '10–15 мм',
     'lifespan' => '3–6 лет',
@@ -7908,7 +8422,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Крупный размер'
              
              
-                 ]],['animal_breed' => 'Pheidole megacephala (головач)',
+                 ]],
+['animal_breed' => 'Pheidole megacephala (головач)',
     'weight_range' => '20–40 мг',
     'height_range' => '8–12 мм',
     'lifespan' => '2–4 года',
@@ -7924,7 +8439,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Крупная голова'
              
              
-                 ]],['animal_breed' => 'Tetramorium caespitum (муравей-пастушок)',
+                 ]],
+['animal_breed' => 'Tetramorium caespitum (муравей-пастушок)',
     'weight_range' => '5–15 мг',
     'height_range' => '3–6 мм',
     'lifespan' => '1–3 года',
@@ -7940,7 +8456,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Разводит тлю'
              
              
-                 ]],['animal_breed' => 'Solenopsis invicta (огневка-мирмика)',
+                 ]],
+['animal_breed' => 'Solenopsis invicta (огневка-мирмика)',
     'weight_range' => '3–10 мг',
     'height_range' => '3–6 мм',
     'lifespan' => '1–3 года',
@@ -7956,7 +8473,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Ядовитый укус'
              
              
-                 ]],['animal_breed' => 'Atta cephalotes (листорез-атта)',
+                 ]],
+['animal_breed' => 'Atta cephalotes (листорез-атта)',
     'weight_range' => '10–20 мг',
     'height_range' => '5–15 мм',
     'lifespan' => '3–10 лет',
@@ -7972,7 +8490,8 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Выращивает грибы'
              
              
-                 ]],['animal_breed' => 'Кангал (анатолийская овчарка)',
+                 ]],
+['animal_breed' => 'Кангал (анатолийская овчарка)',
     'weight_range' => '40–65 кг',
     'height_range' => '71–81 см',
     'lifespan' => '12–15 лет',
@@ -7988,7 +8507,228 @@ class AnimalDetailsSeeder extends Seeder
         'Особенности' => 'Сильнейший укус'
              
         ]
-                 ]
+],
+[
+    'animal_breed' => 'Канарейка',
+    'weight_range' => '15–30 г',
+    'height_range' => '12–15 см',
+    'lifespan' => '10–15 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/canary.webp',
+    'short_description' => 'Миниатюрная певчая птица с ярким оперением.',
+    'full_description' => "Канарейки — одни из самых популярных домашних птиц. Они славятся своим мелодичным пением, неприхотливостью в содержании и разнообразием окрасов: от ярко-желтого до красного и лимонного.",
+    'features' => ['Пение' => 'Превосходное', 'Контактность' => 'Низкая', 'Сложность' => 'Легко']
+],
+[
+    'animal_breed' => 'Зебровая амадина',
+    'weight_range' => '10–15 г',
+    'height_range' => '10–11 см',
+    'lifespan' => '5–8 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/zebra_finch.webp',
+    'short_description' => 'Шустрая стайная птичка с забавным «тикающим» голосом.',
+    'full_description' => "Зебровые амадины — очень активные и общительные птицы. За ними крайне интересно наблюдать, так как они постоянно находятся в движении. Рекомендуется содержать парами или группами.",
+    'features' => ['Активность' => 'Очень высокая', 'Содержание' => 'Групповое', 'Шум' => 'Средний']
+],
+[
+    'animal_breed' => 'Сипуха',
+    'weight_range' => '200–700 г',
+    'height_range' => '33–39 см',
+    'lifespan' => '15–20 лет (в неволе)',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/barn_owl.webp',
+    'short_description' => 'Ночной хищник с характерным сердцевидным лицевым диском.',
+    'full_description' => "Сипуха — это грациозная сова с бесшумным полетом. В домашних условиях требует просторного вольера и специфической диеты (грызуны). Очень привязывается к хозяину при правильном воспитании.",
+    'features' => ['Питание' => 'Хищник', 'Активность' => 'Ночная', 'Сложность' => 'Высокая']
+],
+[
+    'animal_breed' => 'Домовый сыч',
+    'weight_range' => '150–200 г',
+    'height_range' => '20–25 см',
+    'lifespan' => '12–15 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/little_owl.webp',
+    'short_description' => 'Маленькая сова с серьезным взглядом и суровым характером.',
+    'full_description' => "Домовые сычи — одни из самых компактных сов для домашнего содержания. Они обладают яркой индивидуальностью, могут быть весьма упрямыми, но очень забавны в своем поведении.",
+    'features' => ['Размер' => 'Компактный', 'Характер' => 'Независимый', 'Интеллект' => 'Высокий']
+],
+[
+    'animal_breed' => 'Бриллиантовая горлица',
+    'weight_range' => '35–50 г',
+    'height_range' => '19–21 см',
+    'lifespan' => '10–12 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/diamond_dove.webp',
+    'short_description' => 'Миниатюрный и очень тихий голубь.',
+    'full_description' => "Это один из самых маленьких видов голубей в мире. Они отличаются кротким нравом и тихим, приятным воркованием. Идеально подходят для тех, кто ищет спокойного питомца.",
+    'features' => ['Голос' => 'Тихий', 'Нрав' => 'Мирный', 'Уход' => 'Простой']
+],
+[
+    'animal_breed' => 'Амадина Гульда',
+    'weight_range' => '15–20 г',
+    'height_range' => '11–12 см',
+    'lifespan' => '6–8 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/gouldian_finch.webp',
+    'short_description' => 'Самая яркоокрашенная ткачиковая птица в мире.',
+    'full_description' => "Амадины Гульда поражают своей экзотической расцветкой, которая кажется нарисованной. Это теплолюбивые птицы, требующие стабильного микроклимата и качественного зернового корма.",
+    'features' => ['Внешность' => 'Экзотическая', 'Теплолюбивость' => 'Высокая', 'Сложность' => 'Средняя']
+],
+[
+    'animal_breed' => 'Ворон',
+    'weight_range' => '800–1500 г',
+    'height_range' => '60–70 см',
+    'lifespan' => '40–70 лет (в неволе)',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/common_raven.webp',
+    'short_description' => 'Интеллектуальный гигант среди птиц.',
+    'full_description' => "Ворон — птица с невероятным интеллектом, способная решать логические задачи и имитировать речь. Требует огромного пространства (вольер) и постоянного интеллектуального взаимодействия.",
+    'features' => ['Интеллект' => 'Экстремальный', 'Привязанность' => 'Сильная', 'Требования' => 'Вольер']
+],
+[
+    'animal_breed' => 'Японская амадина',
+    'weight_range' => '12–18 г',
+    'height_range' => '11–12 см',
+    'lifespan' => '7–9 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/society_finch.webp',
+    'short_description' => 'Миролюбивая птица, выведенная специально для дома.',
+    'full_description' => "Этот вид не существует в дикой природе. Японские амадины — идеальные няньки, они часто выкармливают чужих птенцов. Очень тихие, дружелюбные и легкие в разведении.",
+    'features' => ['Дружелюбие' => 'Высокое', 'Разведение' => 'Легкое', 'Конфликтность' => 'Нулевая']
+],
+[
+    'animal_breed' => 'Филин',
+    'weight_range' => '2–4 кг',
+    'height_range' => '60–75 см',
+    'lifespan' => '20–30 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/eagle_owl.webp',
+    'short_description' => 'Мощный хищник с яркими «ушками» из перьев.',
+    'full_description' => "Филин — одна из самых крупных сов. Это величественная птица с огромной силой лап. Содержание дома крайне сложное, требует профессиональных навыков и очень большой территории.",
+    'features' => ['Сила' => 'Огромная', 'Рацион' => 'Мясо', 'Особенности' => 'Громкий голос']
+],
+[
+    'animal_breed' => 'Рисовка',
+    'weight_range' => '20–25 г',
+    'height_range' => '13–14 см',
+    'lifespan' => '8–10 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/java_sparrow.webp',
+    'short_description' => 'Элегантная птица с массивным розовым клювом.',
+    'full_description' => "Рисовки отличаются аккуратным «шелковым» оперением и спокойным нравом. Они крупнее амадин и обладают приятным, негромким пением, напоминающим звон колокольчика.",
+    'features' => ['Оперение' => 'Гладкое', 'Стойкость' => 'Высокая', 'Характер' => 'Спокойный']
+],
+[
+    'animal_breed' => 'Китайский расписной перепел',
+    'weight_range' => '45–60 г',
+    'height_range' => '11–13 см',
+    'lifespan' => '3–6 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/king_quail.webp',
+    'short_description' => 'Крошечная наземная птица с ярким окрасом.',
+    'full_description' => "Самый маленький представитель куриных. Они живут на дне клетки или вольера, собирая остатки корма. Самцы очень красиво окрашены в сине-коричневые тона.",
+    'features' => ['Образ жизни' => 'Наземный', 'Сложность' => 'Низкая', 'Размер' => 'Микро']
+],
+[
+    'animal_breed' => 'Щегол',
+    'weight_range' => '15–20 г',
+    'height_range' => '12 см',
+    'lifespan' => '10–12 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/goldfinch.webp',
+    'short_description' => 'Яркая певчая птица с «красной маской».',
+    'full_description' => "Щеглы ценятся за невероятно красивое, сложное пение и пестрый наряд. Это активные и смышленые птицы, которые быстро привыкают к жизни в клетке при правильном подходе.",
+    'features' => ['Пение' => 'Звонкое', 'Окрас' => 'Пестрый', 'Темперамент' => 'Бойкий']
+],
+[
+    'animal_breed' => 'Майна',
+    'weight_range' => '180–250 г',
+    'height_range' => '25–30 см',
+    'lifespan' => '15–20 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/myna.webp',
+    'short_description' => 'Лучший имитатор человеческой речи среди всех птиц.',
+    'full_description' => "Майны способны копировать голоса и звуки даже точнее, чем многие попугаи. Это очень умные и социальные птицы, требующие мягкого корма и большого пространства для полетов.",
+    'features' => ['Речь' => 'Великолепная', 'Питание' => 'Мягкое', 'Активность' => 'Высокая']
+],
+[
+    'animal_breed' => 'Чиж',
+    'weight_range' => '10–15 г',
+    'height_range' => '11–12 см',
+    'lifespan' => '10–12 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/siskin.webp',
+    'short_description' => 'Дружелюбная и доверчивая лесная птичка.',
+    'full_description' => "Чижи — самые контактные из вьюрковых. Они очень быстро становятся ручными, узнают хозяина и радуют нежным, тихим пением в течение всего года.",
+    'features' => ['Приручаемость' => 'Легкая', 'Голос' => 'Приятный', 'Размер' => 'Маленький']
+],
+[
+    'animal_breed' => 'Сплюшка',
+    'weight_range' => '60–130 г',
+    'height_range' => '15–20 см',
+    'lifespan' => '10–12 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/scops_owl.webp',
+    'short_description' => 'Миниатюрная сова с «ушками» и печальным голосом.',
+    'full_description' => "Сплюшка получила название за свой характерный свист «сплю-ю». Это идеальная сова для квартиры из-за небольшого размера. В рационе преобладают крупные насекомые.",
+    'features' => ['Рацион' => 'Насекомые', 'Размер' => 'Мини', 'Голос' => 'Мелодичный']
+],
+[
+    'animal_breed' => 'Мандаринка',
+    'weight_range' => '400–700 г',
+    'height_range' => '41–49 см',
+    'lifespan' => '10–15 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/mandarin_duck.webp',
+    'short_description' => 'Самая красивая декоративная утка в мире.',
+    'full_description' => "Мандаринки содержатся в частных прудах или просторных вольерах с водоемом. Самцы имеют фантастически яркий брачный наряд. Эти утки умеют сидеть на ветвях деревьев.",
+    'features' => ['Декоративность' => 'Максимальная', 'Среда' => 'Водоем', 'Нрав' => 'Осторожный']
+],
+[
+    'animal_breed' => 'Снегирь',
+    'weight_range' => '25–35 г',
+    'height_range' => '15–18 см',
+    'lifespan' => '10–12 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/bullfinch.webp',
+    'short_description' => 'Спокойная птица с яркой алой грудкой.',
+    'full_description' => "Снегири — медлительные и рассудительные птицы. Они обладают тихим, скрипучим голосом, но способны выучивать несложные мелодии. Требуют прохлады и особого рациона.",
+    'features' => ['Темперамент' => 'Флегматик', 'Пение' => 'Тихое', 'Окрас' => 'Яркий']
+],
+[
+    'animal_breed' => 'Галка',
+    'weight_range' => '180–260 г',
+    'height_range' => '30–35 см',
+    'lifespan' => '15–20 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/jackdaw.webp',
+    'short_description' => 'Общительная и любопытная птица с голубыми глазами.',
+    'full_description' => "Галки — самые маленькие из врановых. Они очень привязчивы, обожают игры с блестящими предметами и легко обучаются простым трюкам. Нуждаются в постоянном общении.",
+    'features' => ['Любопытство' => 'Высокое', 'Обучаемость' => 'Хорошая', 'Социальность' => 'Нужна пара']
+],
+[
+    'animal_breed' => 'Золотой фазан',
+    'weight_range' => '600–900 г',
+    'height_range' => '90–110 см (с хвостом)',
+    'lifespan' => '12–15 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/golden_pheasant.webp',
+    'short_description' => 'Роскошная вольерная птица с длинным хвостом.',
+    'full_description' => "Золотой фазан — украшение любого загородного участка. Птица очень пуглива, но невероятно красива. Требует закрытого вольера, так как отлично летает.",
+    'features' => ['Красота' => 'Потрясающая', 'Приручаемость' => 'Низкая', 'Тип' => 'Вольерный']
+],
+[
+    'animal_breed' => 'Смеющаяся горлица',
+    'weight_range' => '150–200 г',
+    'height_range' => '25–28 см',
+    'lifespan' => '15–20 лет',
+    'type' => 'Птица',
+    'photo' => 'animal/bird/breed/ringneck_dove.webp',
+    'short_description' => 'Домашняя птица с голосом, похожим на смех.',
+    'full_description' => "Эти горлицы полностью одомашнены. Они абсолютно не боятся людей, очень покладисты и издают звуки, напоминающие человеческий хохот. Часто используются фокусниками.",
+    'features' => ['Кроткость' => 'Абсолютная', 'Голос' => 'Необычный', 'Выносливость' => 'Высокая']
+],
+
                                 ];
 foreach ($data as $index => $item) {
     // 1. Ищем ID животного в таблице animals по текстовому названию из сидера

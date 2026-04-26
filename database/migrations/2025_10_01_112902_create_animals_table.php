@@ -14,7 +14,9 @@ public function up(): void
     Schema::create('animals', function (Blueprint $table) {
         $table->id();
         $table->string('species'); // вид животного (например: кошка, собака)
+        $table->string('species_slug'); // вид животного (например: кошка, собака)
         $table->string('breed');   // порода
+        $table->string('breed_slug');   // порода
         $table->timestamps();
     });
 }

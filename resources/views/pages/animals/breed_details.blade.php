@@ -8,7 +8,7 @@
             {{-- Используем данные из объекта $animal, чтобы всё было динамично --}}
             <li class="breadcrumb-item"><a href="{{ route('animals.index') }}" class="text-decoration-none">Категории</a></li>
             <li class="breadcrumb-item">
-                <a href="{{ route('animals.breeds', ['species' => $animal->species]) }}" class="text-decoration-none">
+                <a href="{{ route('animals.breeds', ['species_slug' => $animal->species_slug]) }}" class="text-decoration-none">
                     {{ $animal->species }}
                 </a>
             </li>

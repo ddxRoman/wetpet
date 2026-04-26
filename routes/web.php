@@ -115,10 +115,12 @@ Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
 Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
 Route::put('/pets/{pet}', [PetController::class, 'update'])->name('pets.update');
 Route::delete('/pets/{pet}', [PetController::class, 'destroy'])->name('pets.destroy');
-// Страница конкретного вида животных 
-Route::get('/animals/{species}', [PetController::class, 'showBreeds'])->name('animals.breeds');
+
+// Страница списка пород
+Route::get('/animals/{species_slug}', [PetController::class, 'showBreeds'])->name('animals.breeds');
+
 // Страница конкретной породы 
-Route::get('/animals/{species}/{breed}', [App\Http\Controllers\PetController::class, 'showBreedPage'])->name('animals.breed.details');
+Route::get('/animals/{species_slug}/{breed_slug}', [PetController::class, 'showBreedPage'])->name('animals.breed.details');
 
 
 Route::get('/breeds', [PetController::class, 'getBreeds']);

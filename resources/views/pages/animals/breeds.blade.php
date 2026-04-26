@@ -38,8 +38,11 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
                     @foreach($items as $breed)
                         <div class="col">
-                            <a href="{{ route('animals.breed.details', ['species' => $species, 'breed' => $breed->breed]) }}" class="text-decoration-none text-dark">
-                                <div class="card h-100 border-0 shadow-sm breed-card">
+<a href="{{ route('animals.breed.details', [
+    'species_slug' => $species_slug,  
+    'breed_slug' => $breed->breed_slug
+]) }}" class="text-decoration-none text-dark">
+    <div class="card h-100 border-0 shadow-sm breed-card">
                                     <div class="card-body p-3 d-flex align-items-center">
                                         <div class="breed-dot me-3"></div>
                                         <span class="fw-medium">{{ $breed->breed }}</span>

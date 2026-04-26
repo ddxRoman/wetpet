@@ -183,10 +183,10 @@ public function update(Request $request, Pet $pet)
 
 public function showAnimalTypes()
 {
-    $animalTypes = \App\Models\Animal::select('species')
+$animalTypes = \App\Models\Animal::select('species', 'species_slug') // ДОБАВИТЬ species_slug СЮДА
         ->distinct()
         ->whereNotNull('species')
-        ->get() // Сначала получаем данные
+        ->get()
         ->map(function ($item) {
             // 1. Карта имен (множественное число)
             $pluralMap = [
@@ -246,69 +246,76 @@ public function showAnimalTypes()
                 'Ящерица'  => 'lizards.webp',
             ];
 
-            $fileName = $iconMap[$item->species] ?? 'default.svg';
+$fileName = $iconMap[$item->species] ?? 'default.svg';
             $item->icon_url = asset('images/animals/' . $fileName);
             $item->display_name = $pluralMap[$item->species] ?? $item->species;
             
             return $item;
         })
         // 3. Кастомная сортировка
-        ->sortBy(function ($item) {
-            // Присваиваем веса: чем меньше число, тем выше в списке
+->sortBy(function ($item) {
             if ($item->species === 'Собака') return 1;
             if ($item->species === 'Кошка' || $item->species === 'Кот') return 2;
-            
-            // Для всех остальных возвращаем 3 + само название для алфавитного порядка
             return 3 . $item->display_name;
         });
 
     return view('pages.animals.index', compact('animalTypes'));
 }
 
-public function showBreeds($species)
+
+public function showBreeds($species_slug)
 {
-    // Получаем уникальные породы для данного вида
-    $breeds = Animal::where('species', $species)
+    $breeds = Animal::where('species_slug', $species_slug)
         ->whereNotNull('breed')
-        ->where('breed', '<>', '')
-        ->select('breed', 'species') // берем species, чтобы знать заголовок
+        ->whereNotNull('breed_slug') // Добавь эту проверку
+        ->where('breed_slug', '<>', '') // И эту
+        ->select('breed', 'breed_slug', 'species', 'species_slug') 
         ->distinct()
         ->orderBy('breed')
         ->get();
 
-    // Если пород нет (вдруг ошибочный URL), можно вернуть 404 или редирект
     if ($breeds->isEmpty()) {
-        abort(404, 'Породы для данного вида не найдены');
+        abort(404);
     }
 
-    return view('pages.animals.breeds', compact('breeds', 'species'));
+    $species = $breeds->first()->species;
+
+    return view('pages.animals.breeds', compact('breeds', 'species', 'species_slug'));
 }
 
-public function showBreedPage($species, $breed)
+public function showBreedPage($species_slug, $breed_slug)
 {
     $animal = Animal::with(['details', 'reviews.user'])
-        ->where('species', $species)
-        ->where('breed', $breed)
+        ->where('species_slug', $species_slug)
+        ->where('breed_slug', $breed_slug)
         ->firstOrFail();
 
-    // Справочник для формы отзыва
+    // Наполняем опции для формы отзыва
     $options = [
         'temperaments' => [
-            'Холерик' => 'Активный, быстро реагирует, легко возбудим',
-            'Сангвиник' => 'Живой, уравновешенный, легко приспосабливается',
-            'Флегматик' => 'Спокойный, невозмутимый, медлительный',
-            'Меланхолик' => 'Чувствительный, тревожный, тихий'
+            'Спокойный' => 'Почти не доставляет хлопот',
+            'Активный' => 'Требует много внимания и прогулок',
+            'Агрессивный' => 'Сложен в социализации',
+            'Дружелюбный' => 'Любит всех вокруг',
+            'Трусливый' => 'Боится громких звуков и чужих',
         ],
         'scales' => [
-            1 => 'Низкий',
-            2 => 'Ниже среднего',
-            3 => 'Средний',
-            4 => 'Высокий',
-            5 => 'Исключительный'
+            1 => 'Очень низкая',
+            2 => 'Низкая',
+            3 => 'Средняя',
+            4 => 'Высокая',
+            5 => 'Исключительная',
         ]
     ];
 
-    return view('pages.animals.breed_details', compact('animal', 'options', 'species', 'breed'));
+    return view('pages.animals.breed_details', [
+        'animal' => $animal,
+        'options' => $options,
+        'species' => $animal->species,
+        'breed' => $animal->breed,
+        'species_slug' => $species_slug,
+        'breed_slug' => $breed_slug
+    ]);
 }
 
     // === Удаление питомца ===
