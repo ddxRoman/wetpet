@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             PetSeeder::class,
             ServiceSeeder::class,
             ClinicSeeder::class,
+            AnimalDetailsSeeder::class,
+            AnimalSeeder::class,
             // ClinicServiceSeeder::class,
             DoctorSeeder::class,
             // DoctorServiceSeeder::class,

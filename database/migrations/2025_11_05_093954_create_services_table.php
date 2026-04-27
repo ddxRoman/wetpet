@@ -12,6 +12,8 @@ return new class extends Migration {
             $table->string('name');
             $table->string('specialization')->nullable();
             $table->string('specialization_doctor')->nullable();
+            $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
             $table->timestamps();
         });
     }

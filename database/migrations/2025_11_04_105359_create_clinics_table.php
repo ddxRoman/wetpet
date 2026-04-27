@@ -31,10 +31,13 @@ return new class extends Migration {
             $table->string('telegram')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('website')->nullable();
+            
 
             // График
             $table->string('schedule')->nullable(); // "с 8:00 до 22:00"
             $table->string('workdays')->nullable(); // "Пн–Вс"
+            $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
 
             $table->timestamps();
         });

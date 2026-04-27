@@ -61,6 +61,16 @@ class AnimalDetailResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
+                    Forms\Components\Section::make('SEO Настройки')
+    ->schema([
+        Forms\Components\TextInput::make('seo_title')
+            ->label('Заголовок страницы (Title)')
+            ->placeholder('Если пусто, возьмем название породы'),
+        Forms\Components\Textarea::make('seo_description')
+            ->label('Описание (Description)')
+            ->rows(3),
+    ])->collapsed(),
+
                 Forms\Components\Section::make('Дополнительные параметры')
                     ->schema([
                         // Важно: убедись, что в модели AnimalDetail стоит $casts['features'] = 'array'

@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->string('On_site_assistance')->nullable(); // Выезд на дом
             $table->string('photo')->nullable(); // Фото (путь к файлу)
             $table->text('description')->nullable(); // Описание, специализация и т.п.
+            $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
             $table->timestamps(); // created_at и updated_at
         });
     }

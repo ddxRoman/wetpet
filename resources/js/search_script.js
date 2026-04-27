@@ -89,6 +89,22 @@ resultsContainer.innerHTML += `
     </a>`;
                     });
                 }
+                // 5. Отрисовка ЖИВОТНЫХ (Породы)
+                if (data.animals && data.animals.length > 0) {
+                    data.animals.forEach(animal => {
+                        hasResults = true;
+                        resultsContainer.innerHTML += `
+                            <a href="/animals/${animal.species_slug}/${animal.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                                <img src="${animal.image}" class="search-img-thumb" alt="animal">
+                                <div class="ms-2">
+                                    <div class="result-title ">
+                                        <small>🐾</small> ${animal.name} ${animal.category}
+                                    </div>
+                                    <div class="result-sub-small text-muted">${animal.type}</div>
+                                </div>
+                            </a>`;
+                    });
+                }
 
                 if (hasResults) {
                     resultsContainer.classList.remove('d-none');

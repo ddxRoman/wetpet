@@ -21,6 +21,8 @@ public function up(): void
         $table->integer('age')->nullable();
         $table->string('color')->nullable();
         $table->string('photo')->nullable();
+                    $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
         $table->timestamps();
 });
     }

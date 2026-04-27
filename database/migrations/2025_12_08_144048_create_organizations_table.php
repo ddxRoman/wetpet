@@ -39,7 +39,9 @@ public function up(): void
             // График
             $table->string('schedule')->nullable(); // "с 8:00 до 22:00"
             $table->string('workdays')->nullable(); // "Пн–Вс"
-
+            $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
+            
             $table->timestamps();
     });
 }

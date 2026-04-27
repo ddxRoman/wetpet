@@ -32,6 +32,9 @@ public function up(): void
         // Гибкие параметры (JSON)
         $table->json('features')->nullable(); 
 
+                    $table->string('seo_title')->nullable();
+            $table->text('seo_description')->nullable();
+
         $table->timestamps();
     });
 }

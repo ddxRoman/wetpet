@@ -17,6 +17,8 @@ public function up(): void
         $table->string('species_slug'); // вид животного (например: кошка, собака)
         $table->string('breed');   // порода
         $table->string('breed_slug');   // порода
+        $table->string('seo_title')->nullable();
+        $table->text('seo_description')->nullable();
         $table->timestamps();
     });
 }
