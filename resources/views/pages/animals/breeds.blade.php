@@ -42,7 +42,7 @@
     'species_slug' => $species_slug,  
     'breed_slug' => $breed->breed_slug
 ]) }}" class="text-decoration-none text-dark">
-    <div class="card h-100 border-0 shadow-sm breed-card">
+    <div class="card h-100 border-0 shadow-card breed-card">
                                     <div class="card-body p-3 d-flex align-items-center">
                                         <div class="breed-dot me-3"></div>
                                         <span class="fw-medium">{{ $breed->breed }}</span>
@@ -66,7 +66,7 @@
     .breed-card:hover {
         background-color: #ffffff;
         transform: translateY(-3px);
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.08)!important;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.2)!important;
         border-color: #0d6efd !important;
     }
     .breed-card:hover .fw-medium {
@@ -82,6 +82,11 @@
     .breed-card:hover .breed-dot {
         opacity: 1;
         transform: scale(1.2);
+    }
+    .shadow-card{
+        box-shadow: 0 .5rem 1rem rgba(0, 81, 255, 0.1)!important;
+        border-radius: 10px !important;
+        background-color: #ffb70007 !important;
     }
 </style>
 

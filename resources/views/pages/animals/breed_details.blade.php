@@ -79,8 +79,7 @@
         <div class="col-lg-8">
             <h3 class="fw-bold mb-4">Особенности и характер породы</h3>
             <div class="article-text text-secondary lh-lg" style="font-size: 1.1rem;">
-                {{-- Используем nl2br если описание без HTML тегов из сидера --}}
-                {!! nl2br(e($animal->details->full_description)) !!}
+                {!! $animal->details->full_description !!}
             </div>
         </div>
         <div class="col-lg-4">

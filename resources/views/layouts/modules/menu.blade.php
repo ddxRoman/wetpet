@@ -3,12 +3,12 @@
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <a class="text-decoration-none" href="{{ route('animals.index') }}">
-                <div class="div_btn_category category_disabled">
+                <div class="div_btn_category category">
                     <div class="text_menu_btn_category">Животные</div>
                     <div class="div_btn_category_icon">
                         <img class="category_icon" title="Перейти к галереии животных" src="{{ Storage::url('icon/button/menu/pet_menu.webp') }}" alt="Животные">
                     </div>
-                    <div class="will_be_soon">Скоро</div>
+
                 </div>
             </a>
         </div>

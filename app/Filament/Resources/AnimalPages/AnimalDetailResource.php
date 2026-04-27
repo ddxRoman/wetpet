@@ -8,41 +8,34 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// Импортируем классы страниц из этого же пространства имен
 use App\Filament\Resources\AnimalPages\ListAnimalDetails;
 use App\Filament\Resources\AnimalPages\CreateAnimalDetail;
 use App\Filament\Resources\AnimalPages\EditAnimalDetail;
 
 class AnimalDetailResource extends Resource
 {
-protected static ?string $model = AnimalDetail::class;
-
+    protected static ?string $model = AnimalDetail::class;
     protected static ?string $slug = 'animal-details';
-
-    // 1. Название самой группы (родительский пункт меню)
     protected static ?string $navigationGroup = 'Животные';
-
-    // 2. Название конкретного пункта в меню
     protected static ?string $navigationLabel = 'Породы';
-
-    // 3. Заголовок внутри самой страницы (над таблицей/формой)
     protected static ?string $pluralModelLabel = 'Породы';
-    
-    // 4. Заголовок для одной записи (н-р: "Создать Породу")
     protected static ?string $modelLabel = 'Породу';
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make('Связь с породой')
                     ->schema([
-                        Forms\Components\Select::make('animal_id')
+                        // ИСПРАВЛЕНО: имя поля должно быть animal_breed, как в БД
+                        Forms\Components\Select::make('animal_breed')
                             ->relationship('animal', 'breed')
                             ->required()
                             ->searchable()
                             ->label('Порода'),
+                            
+                        // ИСПРАВЛЕНО: убран storeFileNamesIn, так как он тут не нужен
                         Forms\Components\FileUpload::make('photo')
                             ->image()
                             ->directory('animals-details')
@@ -54,7 +47,9 @@ protected static ?string $model = AnimalDetail::class;
                         Forms\Components\TextInput::make('weight_range')->label('Вес'),
                         Forms\Components\TextInput::make('height_range')->label('Рост'),
                         Forms\Components\TextInput::make('lifespan')->label('Срок жизни'),
-                    ])->columns(3),
+                        // Добавлено поле type, так как оно есть в БД (varchar 255)
+                        Forms\Components\TextInput::make('type')->label('Тип (категория)'),
+                    ])->columns(2),
 
                 Forms\Components\Section::make('Описание')
                     ->schema([
@@ -68,6 +63,7 @@ protected static ?string $model = AnimalDetail::class;
 
                 Forms\Components\Section::make('Дополнительные параметры')
                     ->schema([
+                        // Важно: убедись, что в модели AnimalDetail стоит $casts['features'] = 'array'
                         Forms\Components\KeyValue::make('features')
                             ->label('Особенности (JSON)')
                             ->keyLabel('Параметр')
@@ -77,25 +73,61 @@ protected static ?string $model = AnimalDetail::class;
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('animal.breed')->label('Порода')->searchable(),
-                Tables\Columns\ImageColumn::make('photo')->label('Фото'),
-                Tables\Columns\TextColumn::make('weight_range')->label('Вес'),
-                Tables\Columns\TextColumn::make('lifespan')->label('Жизнь'),
-            ])
-            ->filters([])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('animal.breed')
+                ->label('Порода')
+                ->searchable()
+                ->sortable(),
+
+            Tables\Columns\ImageColumn::make('photo')
+                ->label('Фото'),
+
+            Tables\Columns\TextColumn::make('weight_range')
+                ->label('Вес'),
+
+            Tables\Columns\TextColumn::make('lifespan')
+                ->label('Жизнь'),
+                
+            Tables\Columns\TextColumn::make('type')
+                ->label('Тип')
+                ->badge()
+                ->color('gray'),
+        ])
+        ->filters([
+            // ИСПОЛЬЗУЕМ ОБЫЧНЫЙ SelectFilter БЕЗ relationship()
+            // Это исключит конфликты со связями и бесконечную загрузку
+            Tables\Filters\SelectFilter::make('species')
+                ->label('Вид животного')
+                ->options(function () {
+                    return \App\Models\Animal::query()
+                        ->distinct()
+                        ->whereNotNull('species')
+                        ->pluck('species', 'species')
+                        ->toArray();
+                })
+                ->query(function ($query, array $data) {
+                    if (!empty($data['value'])) {
+                        // Фильтруем основную таблицу через связь
+                        $query->whereHas('animal', function ($q) use ($data) {
+                            $q->where('species', $data['value']);
+                        });
+                    }
+                })
+                ->searchable()
+                ->preload(),
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make(),
+        ])
+        ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]),
+        ]);
+}
 
     public static function getPages(): array
     {
