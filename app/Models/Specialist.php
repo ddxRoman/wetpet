@@ -21,6 +21,8 @@ protected $fillable = [
     'date_of_birth',
     'exotic_animals',
     'On_site_assistance',
+    'seo_title', 
+    'seo_description',
 ];
 
     public function owners()

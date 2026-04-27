@@ -30,6 +30,8 @@ class Clinic extends Model
         'website',
         'schedule',
         'workdays',
+        'seo_title', 
+    'seo_description'
     ];
 
     /* ===============================

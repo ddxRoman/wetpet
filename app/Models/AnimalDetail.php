@@ -14,7 +14,9 @@ class AnimalDetail extends Model
         'photo', 
         'short_description', 
         'full_description', 
-        'features'
+        'features',
+        'seo_title', 
+    'seo_description'
     ];
 
     protected $casts = [

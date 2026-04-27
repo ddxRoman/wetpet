@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url('favicon.ico') }}" type="image/vnd.microsoft.icon">
-
+<meta name="robots" content="all"/>
     {{-- Автоматическое SEO --}}
     <title>{{ $seoMeta['title'] }}</title>
     <meta name="description" content="{{ $seoMeta['description'] }}">
@@ -16,6 +16,14 @@
     <link rel="canonical" href="{{ request()->url() }}">
 
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+</head>
+
+<head>
+
+
+
+
+
 </head>
 
 <body class="body_page">

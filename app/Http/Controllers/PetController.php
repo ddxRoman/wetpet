@@ -285,12 +285,25 @@ public function showBreeds($species_slug)
 
 public function showBreedPage($species_slug, $breed_slug)
 {
+    // Загружаем животное вместе с его деталями (таблица animal_details)
     $animal = Animal::with(['details', 'reviews.user'])
         ->where('species_slug', $species_slug)
         ->where('breed_slug', $breed_slug)
         ->firstOrFail();
 
-    // Наполняем опции для формы отзыва
+    // ПРИОРИТЕТ: 1. Берем SEO из таблицы animal_details (то, что ты правишь в админке)
+    // 2. Если там пусто, берем из animals (старые данные)
+    // 3. Если и там пусто, ставим дефолт
+    $seoMeta = [
+        'title' => $animal->details->seo_title 
+                   ?? $animal->seo_title 
+                   ?? "Порода " . $animal->breed . " — всё о животном на Зверозор",
+                   
+        'description' => $animal->details->seo_description 
+                         ?? $animal->seo_description 
+                         ?? "Описание породы " . $animal->breed . ", характер, фото и отзывы владельцев.",
+    ];
+
     $options = [
         'temperaments' => [
             'Спокойный' => 'Почти не доставляет хлопот',
@@ -299,23 +312,35 @@ public function showBreedPage($species_slug, $breed_slug)
             'Дружелюбный' => 'Любит всех вокруг',
             'Трусливый' => 'Боится громких звуков и чужих',
         ],
-        'scales' => [
-            1 => 'Очень низкая',
-            2 => 'Низкая',
-            3 => 'Средняя',
-            4 => 'Высокая',
-            5 => 'Исключительная',
-        ]
+        'scales' => [1 => 'Очень низкая', 2 => 'Низкая', 3 => 'Средняя', 4 => 'Высокая', 5 => 'Исключительная']
     ];
 
     return view('pages.animals.breed_details', [
         'animal' => $animal,
-        'options' => $options,
+        'seoMeta' => $seoMeta, // Теперь здесь данные из таблицы animal_details
         'species' => $animal->species,
         'breed' => $animal->breed,
         'species_slug' => $species_slug,
-        'breed_slug' => $breed_slug
+        'breed_slug' => $breed_slug,
+        'options' => $options
     ]);
+}
+
+// Добавьте этот метод в PetController (или создайте AnimalAdminController)
+public function updateAnimalSeo(Request $request, $id)
+{
+    $animal = Animal::findOrFail($id);
+
+    // Валидация
+    $data = $request->validate([
+        'seo_title'       => 'nullable|string|max:255',
+        'seo_description' => 'nullable|string|max:1000',
+    ]);
+
+    // Сохранение
+    $animal->update($data);
+
+    return redirect()->back()->with('success', 'SEO-данные успешно сохранены!');
 }
 
     // === Удаление питомца ===

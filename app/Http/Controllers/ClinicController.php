@@ -285,6 +285,8 @@ public function liveSearch(Request $request)
             'whatsapp' => 'nullable|string|max:255',
             'schedule' => 'nullable|string|max:100',
             'workdays' => 'nullable|string|max:100',
+            'seo_title' => 'nullable|string|max:255',
+        'seo_description' => 'nullable|string',    
         ]);
 
         $clinic->update($data);

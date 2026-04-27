@@ -22,7 +22,8 @@ class Doctor extends Model
     protected $fillable = [
         'name', 'slug','specialization', 'date_of_birth', 'city_id',
         'clinic_id', 'experience', 'exotic_animals',
-        'On_site_assistance', 'photo', 'description'
+        'On_site_assistance', 'photo', 'description','seo_title', 
+    'seo_description'
     ];
 
     protected static function booted()

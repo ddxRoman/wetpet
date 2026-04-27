@@ -28,7 +28,9 @@ class Organization extends Model
         'website',
         'schedule',
         'workdays',
-        'type'
+        'type',
+        'seo_title', 
+    'seo_description'
     ];
 
     public function owners()

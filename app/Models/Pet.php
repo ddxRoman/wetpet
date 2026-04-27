@@ -15,6 +15,8 @@ class Pet extends Model
         'gender',
         'age',
         'photo',
+        'seo_title', 
+    'seo_description'
     ];
 
     public function user()
