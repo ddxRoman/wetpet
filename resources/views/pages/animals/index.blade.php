@@ -32,6 +32,7 @@
     .icon_animals{
         height: 120px !important;
         width: 120px !important;
+        border-radius: 50%;
     }
     .animal-type-card {
         transition: all 0.3s ease;

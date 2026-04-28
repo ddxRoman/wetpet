@@ -1,4 +1,5 @@
 @extends('layouts.catalog')
+
 @section('content')
 
 <div class="container mt-5 mb-5">
@@ -262,3 +263,56 @@
 </style>
 
 @endsection
+
+@section('content')
+    {{-- Ваш основной контент страницы --}}
+@endsection
+
+@push('scripts')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Article",
+  "headline": "{{ $breed->name ?? 'Бельгийский гриффон' }}",
+  "description": "{{ $seoMeta['description'] }}",
+  "image": "{{ asset($breed->image_path ?? 'storage/default.png') }}",
+  "author": {
+    "@type": "Organization",
+    "name": "Зверозор"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Зверозор",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ asset('storage/logo/logo3.png') }}"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request()->url() }}"
+  }
+}
+</script>
+
+{{-- Рекомендую также добавить BreadcrumbList для красивых сниппетов --}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@position": 1,
+    "name": "Главная",
+    "item": "{{ url('/') }}"
+  },{
+    "@position": 2,
+    "name": "Собаки",
+    "item": "{{ url('/animals/dog') }}"
+  },{
+    "@position": 3,
+    "name": "{{ $breed->name ?? 'Гриффон' }}",
+    "item": "{{ request()->url() }}"
+  }]
+}
+</script>
+@endpush

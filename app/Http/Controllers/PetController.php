@@ -267,8 +267,8 @@ public function showBreeds($species_slug)
 {
     $breeds = Animal::where('species_slug', $species_slug)
         ->whereNotNull('breed')
-        ->whereNotNull('breed_slug') // Добавь эту проверку
-        ->where('breed_slug', '<>', '') // И эту
+        ->whereNotNull('breed_slug')
+        ->where('breed_slug', '<>', '')
         ->select('breed', 'breed_slug', 'species', 'species_slug') 
         ->distinct()
         ->orderBy('breed')
@@ -280,7 +280,15 @@ public function showBreeds($species_slug)
 
     $species = $breeds->first()->species;
 
-    return view('pages.animals.breeds', compact('breeds', 'species', 'species_slug'));
+    // Для страницы списка пород (например, /animals/dog) 
+    // тоже можно добавить базовое SEO
+    $seoMeta = [
+        'title' => "Породы животных: $species — список с фото и описанием",
+        'description' => "Полный список пород категории $species на Зверозор. Описание, характеристики и отзывы.",
+        'image' => asset('storage/logo/logo3.png') // Ссылка на общий логотип для списков
+    ];
+
+    return view('pages.animals.breeds', compact('breeds', 'species', 'species_slug', 'seoMeta'));
 }
 
 public function showBreedPage($species_slug, $breed_slug)
@@ -291,7 +299,7 @@ public function showBreedPage($species_slug, $breed_slug)
         ->firstOrFail();
 
     $breedName = $animal->breed;
-    $typeName = $animal->species; // Получаем вид (например, Собака)
+    $typeName = $animal->species;
 
     // 1. Берем сырой текст из базы
     $rawTitle = $animal->details->seo_title 
@@ -302,10 +310,15 @@ public function showBreedPage($species_slug, $breed_slug)
         ?? $animal->seo_description 
         ?? "Описание породы {name}, характер, фото и отзывы владельцев {type} на Зверозор.";
 
-    // 2. Заменяем и {name}, и {type}
+    // Определение изображения для соцсетей (Open Graph)
+    // Пытаемся взять главное фото животного, если его нет — логотип
+    $ogImage = $animal->details->image_path ?? $animal->image_path ?? 'storage/logo/logo3.png';
+
+    // 2. Формируем SEO-метаданные
     $seoMeta = [
         'title' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawTitle),
         'description' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawDescription),
+        'image' => asset($ogImage), // Прямая ссылка на фото для мессенджеров
     ];
 
     $options = [
