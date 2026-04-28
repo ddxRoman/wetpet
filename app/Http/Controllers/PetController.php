@@ -285,23 +285,27 @@ public function showBreeds($species_slug)
 
 public function showBreedPage($species_slug, $breed_slug)
 {
-    // Загружаем животное вместе с его деталями (таблица animal_details)
     $animal = Animal::with(['details', 'reviews.user'])
         ->where('species_slug', $species_slug)
         ->where('breed_slug', $breed_slug)
         ->firstOrFail();
 
-    // ПРИОРИТЕТ: 1. Берем SEO из таблицы animal_details (то, что ты правишь в админке)
-    // 2. Если там пусто, берем из animals (старые данные)
-    // 3. Если и там пусто, ставим дефолт
+    $breedName = $animal->breed;
+    $typeName = $animal->species; // Получаем вид (например, Собака)
+
+    // 1. Берем сырой текст из базы
+    $rawTitle = $animal->details->seo_title 
+        ?? $animal->seo_title 
+        ?? "{name} ({type}) — всё о животном на Зверозор";
+
+    $rawDescription = $animal->details->seo_description 
+        ?? $animal->seo_description 
+        ?? "Описание породы {name}, характер, фото и отзывы владельцев {type} на Зверозор.";
+
+    // 2. Заменяем и {name}, и {type}
     $seoMeta = [
-        'title' => $animal->details->seo_title 
-                   ?? $animal->seo_title 
-                   ?? "Порода " . $animal->breed . " — всё о животном на Зверозор",
-                   
-        'description' => $animal->details->seo_description 
-                         ?? $animal->seo_description 
-                         ?? "Описание породы " . $animal->breed . ", характер, фото и отзывы владельцев.",
+        'title' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawTitle),
+        'description' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawDescription),
     ];
 
     $options = [
@@ -317,7 +321,7 @@ public function showBreedPage($species_slug, $breed_slug)
 
     return view('pages.animals.breed_details', [
         'animal' => $animal,
-        'seoMeta' => $seoMeta, // Теперь здесь данные из таблицы animal_details
+        'seoMeta' => $seoMeta,
         'species' => $animal->species,
         'breed' => $animal->breed,
         'species_slug' => $species_slug,
@@ -326,7 +330,6 @@ public function showBreedPage($species_slug, $breed_slug)
     ]);
 }
 
-// Добавьте этот метод в PetController (или создайте AnimalAdminController)
 public function updateAnimalSeo(Request $request, $id)
 {
     $animal = Animal::findOrFail($id);

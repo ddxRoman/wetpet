@@ -157,6 +157,9 @@ Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpe
 // возвращает города для региона (используется в модалке)
 Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);
 
+use App\Http\Controllers\AnimalReviewController;
+
+Route::post('/animals/{animal_id}/review', [AnimalReviewController::class, 'store'])->name('animals.review.store');
 
 Route::post('/add-organization', [OrganizationController::class, 'submit'])
     ->name('add-organization');

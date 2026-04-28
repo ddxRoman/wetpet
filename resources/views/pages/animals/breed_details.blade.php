@@ -120,10 +120,10 @@
                                 <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3" style="width: 45px; height: 45px;">
                                     {{ mb_substr($review->user->name ?? 'A', 0, 1) }}
                                 </div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">{{ $review->pet_name }}</h6>
-                                    <small class="text-muted">{{ $review->user->name ?? 'Аноним' }}</small>
-                                </div>
+<div>
+    <h6 class="mb-0 fw-bold">Опыт владения</h6>
+    <small class="text-muted">{{ $review->user->name ?? 'Аноним' }}</small>
+</div>
                             </div>
                             <div class="small text-secondary">
                                 <p class="mb-1"><strong>Характер:</strong> {{ $review->temperament }}</p>
@@ -161,53 +161,87 @@
 </div>
 
 {{-- Исправленное модальное окно --}}
+{{-- Исправленное модальное окно --}}
 <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
             <div class="modal-header border-0 p-4 pb-0">
-                <h5 class="fw-bold" id="addReviewModalLabel">Поделитесь опытом владения</h5>
+                <h5 class="fw-bold" id="addReviewModalLabel">Поделитесь опытом о породе {{ $animal->breed }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="#" method="POST">
+                <form action="{{ route('animals.review.store', $animal->id) }}" method="POST">
                     @csrf
+                    {{-- Скрытое поле для ID животного --}}
+                    <input type="hidden" name="animal_id" value="{{ $animal->id }}">
+
                     <div class="row g-3">
-                        <div class="col-md-3">
-                            <label class="form-label small fw-bold">Вес (кг)</label>
-                            <input type="number" name="pet_weight" class="form-control rounded-3" placeholder="0">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label small fw-bold">Возраст (лет)</label>
-                            <input type="number" name="pet_age" class="form-control rounded-3" placeholder="0">
-                        </div>
+
+                        {{-- Характер --}}
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Характер</label>
+                            <label class="form-label small fw-bold">Общий характер</label>
                             <select name="temperament" class="form-select rounded-3">
                                 @foreach($options['temperaments'] as $key => $desc)
                                     <option value="{{ $key }}">{{ $key }} ({{ $desc }})</option>
                                 @endforeach
                             </select>
                         </div>
+
+                        {{-- Вес и Возраст --}}
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Вес (кг)</label>
+                            <input type="number" step="0.1" name="pet_weight" class="form-control rounded-3" placeholder="0.0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold">Возраст (лет)</label>
+                            <input type="number" name="pet_age" class="form-control rounded-3" placeholder="0">
+                        </div>
+
+                        {{-- Оценки (Интеллект, Обучаемость, Дружелюбие) --}}
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Интеллект (1-5)</label>
+                            <select name="intelligence" class="form-select rounded-3">
+                                @foreach($options['scales'] as $val => $label)
+                                    <option value="{{ $val }}" @if($val == 5) selected @endif>{{ $val }} — {{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="col-md-6">
                             <label class="form-label small fw-bold">Обучаемость (1-5)</label>
                             <select name="trainability" class="form-select rounded-3">
                                 @foreach($options['scales'] as $val => $label)
-                                    <option value="{{ $val }}">{{ $val }} — {{ $label }}</option>
+                                    <option value="{{ $val }}" @if($val == 4) selected @endif>{{ $val }} — {{ $label }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-12">
-                            <label class="form-label small fw-bold text-danger">Предрасположенность к заболеваниям</label>
-                            <input type="text" name="health_issues" class="form-control rounded-3" placeholder="Например: аллергия, дисплазия (через запятую)">
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Дружелюбие (1-5)</label>
+                            <select name="sociability" class="form-select rounded-3">
+                                @foreach($options['scales'] as $val => $label)
+                                    <option value="{{ $val }}" @if($val == 5) selected @endif>{{ $val }} — {{ $label }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
+                        {{-- Здоровье --}}
                         <div class="col-12">
-                            <label class="form-label small fw-bold">Ваш комментарий</label>
-                            <textarea name="comment" class="form-control rounded-3" rows="4" placeholder="Расскажите об особенностях ухода и поведения..."></textarea>
+                            <label class="form-label small fw-bold text-danger">Особенности здоровья / Проблемы</label>
+                            <input type="text" name="health_issues" class="form-control rounded-3" placeholder="Например: аллергия, чувствительное пищеварение (через запятую)">
+                            <div class="form-text mt-1">Укажите через запятую, с какими проблемами вы столкнулись.</div>
+                        </div>
+
+                        {{-- Комментарий --}}
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Ваш подробный отзыв</label>
+                            <textarea name="comment" class="form-control rounded-3" rows="4" placeholder="Расскажите об особенностях содержания, привычках и вашем опыте..." required></textarea>
                         </div>
                     </div>
+
                     <div class="text-end mt-4">
-                        <button type="button" class="btn btn-light px-4 me-2" data-bs-dismiss="modal">Отмена</button>
-                        <button type="submit" class="btn btn-primary px-5 shadow" style="border-radius: 12px;">Опубликовать</button>
+                        <button type="button" class="btn btn-light px-4 me-2" data-bs-dismiss="modal" style="border-radius: 12px;">Отмена</button>
+                        <button type="submit" class="btn btn-primary px-5 shadow" style="border-radius: 12px;">Опубликовать отзыв</button>
                     </div>
                 </form>
             </div>
