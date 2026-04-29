@@ -312,14 +312,19 @@ public function showBreedPage($species_slug, $breed_slug)
 
     // Определение изображения для соцсетей (Open Graph)
     // Пытаемся взять главное фото животного, если его нет — логотип
-    $ogImage = $animal->details->image_path ?? $animal->image_path ?? 'storage/logo/logo3.png';
+    // 1. Сначала определяем "сырой" путь из базы
+$rawPath = $animal->details->photo ?? $animal->photo;
 
-    // 2. Формируем SEO-метаданные
-    $seoMeta = [
-        'title' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawTitle),
-        'description' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawDescription),
-        'image' => asset($ogImage), // Прямая ссылка на фото для мессенджеров
-    ];
+// 2. Формируем путь для Open Graph
+// Если путь в базе есть, добавляем префикс storage/. Если нет — берем логотип.
+$ogImage = $rawPath ? 'storage/' . $rawPath : 'storage/logo/logo3.png';
+
+// 3. Формируем SEO-метаданные с полным URL
+$seoMeta = [
+    'title' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawTitle),
+    'description' => str_replace(['{name}', '{type}'], [$breedName, $typeName], $rawDescription),
+    'image' => asset($ogImage), 
+];
 
     $options = [
         'temperaments' => [
