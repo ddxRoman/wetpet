@@ -98,9 +98,9 @@ resultsContainer.innerHTML += `
                                 <img src="${animal.image}" class="search-img-thumb" alt="animal">
                                 <div class="ms-2">
                                     <div class="result-title ">
-                                        <small>🐾</small> ${animal.name} ${animal.category}
+                                        <small>🐾</small> ${animal.name} 
                                     </div>
-                                    <div class="result-sub-small text-muted">${animal.type}</div>
+                                    <div class="result-sub-small text-muted">${animal.type} ${animal.category}</div>
                                 </div>
                             </a>`;
                     });

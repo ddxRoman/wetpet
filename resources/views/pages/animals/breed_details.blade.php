@@ -250,18 +250,6 @@
     </div>
 </div>
 
-<style>
-    .breadcrumb-item a { color: #6c757d; font-size: 0.85rem; }
-    .article-text { color: #4a4a4a; text-align: justify; }
-    .badge { font-weight: 500; letter-spacing: 0.3px; }
-    .card { transition: all 0.3s ease; }
-    /* Исправление наложения фона модалки */
-    .modal-backdrop { display: none !important; }
-    .modal { background: rgba(0, 0, 0, 0.5); }
-    .sticky-top{z-index: 10 !important;}
-    .article-text img { max-width: 100%; height: auto; border-radius: 10px; }
-</style>
-
 @endsection
 
 @section('content')

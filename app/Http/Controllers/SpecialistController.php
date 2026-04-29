@@ -39,7 +39,8 @@ public function index(Request $request)
     $specializations = FieldOfActivity::query()
         ->where('type', 'specialist') 
         ->where('activity', '!=', 'doctor') // Исключаем врачебные специальности
-        ->orderBy('name') 
+        ->orderBy('name')
+        ->distinct()
         ->pluck('name'); 
 
     // 3. ЗАПРОС: Фильтруем список специалистов

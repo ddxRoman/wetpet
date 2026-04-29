@@ -190,6 +190,9 @@ Route::middleware(['auth'])->group(function () {
     // Маршрут для сохранения
     Route::put('/organizations-profile/{id}', [OrganizationController::class, 'update'])->name('organizations-profile.update');
 });
+Route::get('/organizations', [OrganizationController::class, 'catalog'])->name('organizations.index');
+
+Route::get('/organizations/{slug}', [OrganizationController::class, 'show'])->name('organizations.show');
 
 Route::get('/get-organizations/{city_id}', function ($city_id) {
     $organizations = \App\Models\Organization::where('city_id', $city_id)

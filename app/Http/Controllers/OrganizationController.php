@@ -48,6 +48,61 @@ class OrganizationController extends Controller
         ));
     }
 
+    public function catalog(Request $request)
+{
+    $user = auth()->user();
+    $cityId = null;
+    $selectedCity = null;
+
+    // 1. Определение города (логика аналогична специалистам)
+    if ($request->filled('city_id')) {
+        $cityId = (int) $request->get('city_id');
+        if (!$user) { session(['city_id' => $cityId]); }
+    } elseif ($user && $user->city_id) {
+        $cityId = $user->city_id;
+    } else {
+        $cityId = session('city_id');
+    }
+
+    if ($cityId) { 
+        $cityModel = City::find($cityId);
+        $selectedCity = $cityModel?->name; 
+    }
+
+    $selectedType = $request->get('type');
+
+    // 2. ТЕГИ: Получаем уникальные типы организаций (кроме клиник)
+    $organizationTypes = FieldOfActivity::query()
+        ->where('type', 'organization')
+        ->whereNotIn('activity', ['vetclinic', 'doctor'])
+        ->orderBy('name')
+        ->distinct()
+        ->get(['name', 'activity']); 
+
+    // 3. ЗАПРОС
+    $items = Organization::query()
+        ->when($selectedCity, function ($q) use ($selectedCity) {
+            $q->where('city', $selectedCity);
+        })
+        ->when($selectedType, function ($q) use ($selectedType) {
+            $q->where('type', $selectedType);
+        })
+        ->orderBy('name')
+        ->paginate(16)
+        ->withQueryString();
+
+    return view('pages.organizations.index', [
+        'organizations' => $items,
+        'selectedCity' => $selectedCity,
+        'organizationTypes' => $organizationTypes,
+        'selectedType' => $selectedType,
+        'currentCityId' => $cityId
+    ]);
+}
+
+
+
+
     public function submit(Request $request)
     {
         $isOwner = $request->boolean('its_me');
@@ -109,6 +164,8 @@ class OrganizationController extends Controller
 
         return response()->json(['success' => true, 'saved_to' => $type]);
     }
+
+
 
     public function update(Request $request, $id)
     {

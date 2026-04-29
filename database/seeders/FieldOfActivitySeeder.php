@@ -52,6 +52,7 @@ class FieldOfActivitySeeder extends Seeder
             'Фелинолог'          => 'felinology',
             'Заводчик'           => 'breeding',
             'Зооняня'            => 'hotel',
+            'Зоотакси'           => 'taxi',
         ];
 
         foreach ($specialists as $name => $activity) {

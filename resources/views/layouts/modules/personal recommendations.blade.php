@@ -28,7 +28,7 @@
                       <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->slug) }}">
                           <img
                               class="carousel__slide_img_prewiew"
-                              src="{{ $image ? asset('storage/'.$image) : asset('storage/clinics/logo/default.webp') }}"
+                              src="{{ $image ? asset('storage/'.$image) : asset('storage/clinics/logo/default-clinic.webp') }}"
                               alt="{{ $item->name }}"
                           >
                       </a>
@@ -67,7 +67,7 @@
               <label for="slide-clinic-{{ $index }}">
                   <img
                     class="carousel__slide_img"
-                    src="{{ $image ? asset('storage/'.$image) : asset('storage/clinics/logo/default.webp') }}"
+                    src="{{ $image ? asset('storage/'.$image) : asset('storage/clinics/logo/default-clinic.webp') }}"
                     alt="{{ $item->name }}"
                   >
               </label>

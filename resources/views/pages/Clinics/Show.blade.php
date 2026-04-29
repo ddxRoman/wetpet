@@ -21,7 +21,7 @@
 
     $logo = !empty($clinic->logo)
         ? asset('storage/' . $clinic->logo)
-        : asset('storage/clinics/logo/default.webp');
+        : asset('storage/clinics/logo/default-clinic.webp');
 
     $tab = request('tab', 'contacts');
 

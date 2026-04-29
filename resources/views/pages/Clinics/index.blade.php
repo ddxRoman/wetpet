@@ -59,7 +59,7 @@
                     @php
                     $logo = !empty($clinic->logo)
                     ? asset('storage/' . $clinic->logo)
-                    : asset('storage/clinics/logo/default.webp');
+                    : asset('storage/clinics/logo/default-clinic.webp');
                     @endphp
 
                     <img src="{{ $logo }}" class="card-img-top object-fit-contain p-3" alt="{{ $clinic->name }}">

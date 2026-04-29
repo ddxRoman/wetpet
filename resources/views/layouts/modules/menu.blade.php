@@ -36,16 +36,16 @@
 
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <a class="text-decoration-none" href="{{ route('specialists.index') }}">
-            <div class="div_btn_category">
-                <div class="text_menu_btn_category ">Специалисты</div>
-                <div class="div_btn_category_icon">
-                    <img class="category_icon" title="Перейти к каталогу Грумеров" src="{{ Storage::url('icon/button/menu/specialist_menu.webp') }}" alt="Грумеры">
+                <div class="div_btn_category">
+                    <div class="text_menu_btn_category ">Специалисты</div>
+                    <div class="div_btn_category_icon">
+                        <img class="category_icon" title="Перейти к каталогу Грумеров" src="{{ Storage::url('icon/button/menu/specialist_menu.webp') }}" alt="Грумеры">
+                    </div>
+                    
                 </div>
-                
-            </div>
             </a>
         </div>
-
+        
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <div class="div_btn_category category_disabled">
                 <div class="text_menu_btn_category ">Зоомагазины</div>
@@ -55,15 +55,17 @@
                 <div class="will_be_soon">Скоро</div>
             </div>
         </div>
-
+        
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div class="div_btn_category category_disabled">
+            <a class="text-decoration-none" href="{{ route('organizations.index') }}">
+            <div class="div_btn_category">
                 <div class="text_menu_btn_category ">Все остальное</div>
                 <div class="div_btn_category_icon">
                     <img class="category_icon" title="ОТкрыть список прочего" src="{{ Storage::url('icon/button/menu/other_menu.webp') }}" alt="Все остальное">
                 </div>
-                <div class="will_be_soon">Скоро</div>
+                <!-- <div class="will_be_soon">Скоро</div> -->
             </div>
+            </a>
         </div>
 
     </div>
