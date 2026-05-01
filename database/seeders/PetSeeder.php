@@ -21,7 +21,7 @@ class PetSeeder extends Seeder
         $pets = [
             [
                 'user_id' => 1,
-                'animal_id' => 42, // Собака
+                'animal_id' => 45, // Собака
                 'name' => 'Бёрд',
                 'birth_date' => '2024-03-15',
                 'color' => 'Подпалый',
@@ -30,7 +30,7 @@ class PetSeeder extends Seeder
             ],
             [
                 'user_id' => 1,
-                'animal_id' => 83, // Кошка
+                'animal_id' => 188, // Кошка
                 'name' => 'Рыся',
                 'birth_date' => '2016-11-02',
                 'color' => 'Коричневый',
@@ -39,7 +39,7 @@ class PetSeeder extends Seeder
             ],
             [
                 'user_id' => 1,
-                'animal_id' => 29, // Собака
+                'animal_id' => 33, // Собака
                 'name' => 'Пряник',
                 'birth_date' => '2013-04-12',
                 'color' => 'Палевый',

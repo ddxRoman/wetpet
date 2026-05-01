@@ -8,7 +8,7 @@
 .doctor-info-table td:first-child {
     font-weight: 600;
     color: #333;
-    width: 120px;
+    width: 125px;
     vertical-align: top;
 }
 
@@ -50,7 +50,7 @@
         {{-- 1. Вывод Адреса (если заполнены street или house) --}}
         @if(!empty($doctor->street) || !empty($doctor->house))
         <tr>
-            <td>Адрес:</td>
+            <td>Частная практика:</td>
             <td>
                 {{ $doctor->street }}{{ !empty($doctor->house) ? ', д.' . $doctor->house : '' }}
             </td>

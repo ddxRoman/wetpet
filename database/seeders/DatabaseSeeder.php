@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             // ClinicServiceSeeder::class,
             DoctorSeeder::class,
             // DoctorServiceSeeder::class,
-            // PriceSeeder::class,
+            PriceSeeder::class,
             ReviewSeeder::class,
             // ReviewPhotoSeeder::class,
 // AwardsTableSeeder::class,

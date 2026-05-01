@@ -171,6 +171,10 @@ header {
 .city-list {
     display: none;
 }
+.exotic_icon_card{
+    width: 24px;
+    height: 24px;
+}
 
 #city-modal {
     display: none;

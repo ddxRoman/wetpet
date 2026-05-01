@@ -8,7 +8,7 @@
 .doctor-info-table td:first-child {
     font-weight: 600;
     color: #333;
-    width: 120px;
+    width: 125px;
     vertical-align: top;
 }
 

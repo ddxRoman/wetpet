@@ -77,10 +77,10 @@
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'info' ? 'active' : '' }}" href="?tab=info">Информация</a>
+            <a class="nav-link {{ $tab === 'contacts' ? 'active' : '' }}" href="?tab=contacts">Контакты</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'contacts' ? 'active' : '' }}" href="?tab=contacts">Контакты</a>
+            <a class="nav-link {{ $tab === 'services' ? 'active' : '' }}" href="?tab=services">Услуги</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ $tab === 'reviews' ? 'active' : '' }}" href="?tab=reviews">Отзывы</a>
@@ -89,25 +89,18 @@
 
     <div class="row">
         <div class="col-lg-8">
-            {{-- Контент табов (убедитесь, что создали эти файлы в папке organizations/tabs) --}}
-            @if($tab === 'info')
-                <div class="card shadow-sm border-0 p-4 mb-4">
-                    <h3>О компании</h3>
-                    <div class="description-text">
-                        {!! nl2br(e($organization->description)) !!}
-                    </div>
-                </div>
+          
+            {{-- Контент вкладок вынесен в отдельные файлы для соблюдения структуры --}}
+            @if($tab === 'contacts')
+                @include('pages.organizations.tabs.contacts', ['organization' => $organization])
             @endif
 
-            @if($tab === 'contacts')
-                <div class="card shadow-sm border-0 p-4 mb-4">
-                    <h3>Контактная информация</h3>
-                    <ul class="list-unstyled mt-3">
-                        @if($organization->phone1) <li class="mb-2"><strong>Телефон:</strong> {{ $organization->phone1 }}</li> @endif
-                        @if($organization->email) <li class="mb-2"><strong>Email:</strong> <a href="mailto:{{ $organization->email }}">{{ $organization->email }}</a></li> @endif
-                        @if($organization->website) <li class="mb-2"><strong>Сайт:</strong> <a href="{{ $organization->website }}" target="_blank">{{ $organization->website }}</a></li> @endif
-                    </ul>
-                </div>
+            @if($tab === 'services')
+                @include('pages.organizations.tabs.services', ['organization' => $organization])
+            @endif
+
+            @if($tab === 'reviews')
+                @include('pages.organizations.tabs.reviews', ['organization_id' => $organization->id])
             @endif
         </div>
 

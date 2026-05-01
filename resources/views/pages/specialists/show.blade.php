@@ -43,7 +43,9 @@
                 <h1 class="fw-bold m-0" style="font-size: 1.75rem;">{{ $doctor->name }}</h1>
                 
                 @if($doctor->exotic_animals === 'Да')
-                    <span class="badge bg-warning text-dark" title="Работает с экзотическими животными">🦎</span>
+                    <!-- <span class="badge bg-warning text-dark" title="Работает с экзотическими животными">🦎</span> -->
+                                         <img src="{{ asset('storage/icon/stars/exotic.png') }}" class="exotic_icon_card" alt="Экзотическое животное" title="Этот специалист работает с экзотическими животными, такими как ящерецы, грызуны, черепахи и тд">
+            
                 @endif
 
 {{-- Рейтинг --}}
