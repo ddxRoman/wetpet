@@ -41,22 +41,24 @@
         </div>
     @else
 
-        {{-- БЛОК ТЕГОВ (ФИЛЬТР ПО ТИПУ) --}}
-        <div class="specialization-filter-wrapper mb-4">
-            <div class="d-inline-flex gap-2 specialization-filter pb-2">
-                <a href="{{ route('organizations.index', ['city_id' => $currentCityId]) }}" 
-                   class="btn btn-sm rounded-pill px-3 {{ empty($selectedType) ? 'btn-primary' : 'btn-outline-secondary' }}">
-                    Все организации
-                </a>
+{{-- БЛОК ТЕГОВ (ФИЛЬТР ПО ТИПУ ЧЕРЕЗ ID) --}}
+<div class="specialization-filter-wrapper mb-4">
+    <div class="d-inline-flex gap-2 specialization-filter pb-2">
+        {{-- Ссылка "Все" --}}
+        <a href="{{ route('organizations.index', ['city_id' => $currentCityId]) }}" 
+           class="btn btn-sm rounded-pill px-3 {{ empty($selectedTypeId) ? 'btn-primary' : 'btn-outline-secondary' }}">
+            Все организации
+        </a>
 
-                @foreach($organizationTypes as $type)
-                    <a href="{{ route('organizations.index', ['type' => $type->activity, 'city_id' => $currentCityId]) }}" 
-                       class="btn btn-sm rounded-pill px-3 {{ $selectedType == $type->activity ? 'btn-primary' : 'btn-outline-secondary' }}">
-                        {{ $type->name }}
-                    </a>
-                @endforeach
-            </div>
-        </div>
+        @foreach($organizationTypes as $type)
+            {{-- Ссылка на конкретный ID --}}
+            <a href="{{ route('organizations.index', ['type_id' => $type->id, 'city_id' => $currentCityId]) }}" 
+               class="btn btn-sm rounded-pill px-3 {{ $selectedTypeId == $type->id ? 'btn-primary' : 'btn-outline-secondary' }}">
+                {{ $type->name }}
+            </a>
+        @endforeach
+    </div>
+</div>
 
         @if($organizations->isEmpty())
             <div class="alert alert-warning text-center">

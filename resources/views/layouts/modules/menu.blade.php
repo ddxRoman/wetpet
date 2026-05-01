@@ -6,9 +6,8 @@
                 <div class="div_btn_category category">
                     <div class="text_menu_btn_category">Животные</div>
                     <div class="div_btn_category_icon">
-                        <img class="category_icon" title="Перейти к галереии животных" src="{{ Storage::url('icon/button/menu/pet_menu.webp') }}" alt="Животные">
+                        <img class="category_icon" title="Галерея животных" src="{{ Storage::url('icon/button/menu/pet_menu.webp') }}" alt="Животные">
                     </div>
-
                 </div>
             </a>
         </div>
@@ -18,7 +17,7 @@
                 <div class="div_btn_category">
                     <div class="text_menu_btn_category">Клиники</div>
                     <div class="div_btn_category_icon">
-                        <img class="category_icon" title="Перейти к каталогу клиник" src="{{ Storage::url('icon/button/menu/clinic_menu.webp') }}" alt="Клиники">
+                        <img class="category_icon" title="Каталогу клиник" src="{{ Storage::url('icon/button/menu/clinic_menu.webp') }}" alt="Клиники">
                     </div>
                 </div>
             </a>
@@ -28,7 +27,7 @@
                 <div class="div_btn_category">
                     <div class="text_menu_btn_category">Ветеринары</div>
                     <div class="div_btn_category_icon">
-                        <img class="category_icon" title="Перейти к катологу ветеринаров" src="{{ Storage::url('icon/button/menu/doctor_menu.webp') }}" alt="Ветеринары">
+                        <img class="category_icon" title="Катологу ветеринаров" src="{{ Storage::url('icon/button/menu/doctor_menu.webp') }}" alt="Ветеринары">
                     </div>
                 </div>
             </a>
@@ -39,7 +38,7 @@
                 <div class="div_btn_category">
                     <div class="text_menu_btn_category ">Специалисты</div>
                     <div class="div_btn_category_icon">
-                        <img class="category_icon" title="Перейти к каталогу Грумеров" src="{{ Storage::url('icon/button/menu/specialist_menu.webp') }}" alt="Грумеры">
+                        <img class="category_icon" title="Каталог специалистов" src="{{ Storage::url('icon/button/menu/specialist_menu.webp') }}" alt="Иконка специалисты">
                     </div>
                     
                 </div>
@@ -47,23 +46,25 @@
         </div>
         
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div class="div_btn_category category_disabled">
-                <div class="text_menu_btn_category ">Зоомагазины</div>
+               <a class="text-decoration-none" href="{{ route('organizations.index') }}">
+            <div class="div_btn_category ">
+                <div class="text_menu_btn_category">Организации</div>
                 <div class="div_btn_category_icon">
-                    <img class="category_icon" title="Перейти к каталогу Зоомагазинов" src="{{ Storage::url('icon/button/menu/zoomarket_menu.webp') }}" alt="Зоомагазины">
+                    <img class="category_icon" title="Каталог зоомагазинов, ветеринарных аптек, зоогостиниц, кинологических центров" src="{{ Storage::url('icon/button/menu/organizations_menu.webp') }}" alt="Иконка раздела организации ">
                 </div>
-                <div class="will_be_soon">Скоро</div>
+                <!-- <div class="will_be_soon">Скоро</div> -->
             </div>
+                        </a>
         </div>
         
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <a class="text-decoration-none" href="{{ route('organizations.index') }}">
+         
             <div class="div_btn_category">
-                <div class="text_menu_btn_category ">Все остальное</div>
+                <div class="text_menu_btn_category">Доска <br> Объявлений</div>
                 <div class="div_btn_category_icon">
-                    <img class="category_icon" title="ОТкрыть список прочего" src="{{ Storage::url('icon/button/menu/other_menu.webp') }}" alt="Все остальное">
+                    <img class="category_icon" title="Доска объявлений для обмена, продажи атрибутов для животных" src="{{ Storage::url('icon/button/menu/ads_menu.webp') }}" alt="Иконка объявлений">
                 </div>
-                <!-- <div class="will_be_soon">Скоро</div> -->
+                <div class="will_be_soon">Скоро</div>
             </div>
             </a>
         </div>

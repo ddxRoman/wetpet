@@ -166,7 +166,7 @@ public function liveSearch(Request $request)
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'address' => "{$item->city}, {$item->street} {$item->house}",
-                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default-clinic.webp.webp')
+                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default-clinic.webp')
             ];
         });
 
@@ -203,7 +203,7 @@ public function liveSearch(Request $request)
                 'slug' => $item->slug,
                 'category_name' => $item->fieldOfActivity->name ?? '', 
                 'address' => "{$item->city}, {$item->street} {$item->house}",
-                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/organizations/default-clinic.webp.webp')
+                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/organizations/default-org.webp')
             ];
         });
 

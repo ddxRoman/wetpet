@@ -3,39 +3,163 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Organization;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OrganizationSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        $clinics = [
-            'ВетКлассик', 'ЗооДоктор', 'Белый Клык', 'Хвостатый Друг', 'Айболит 24',
-            'Ветеринарный Центр №1', 'Лапа Помощи', 'Ковчег', 'БиоРитм', 'ЗооСпектр',
-            'Друг Человека', 'ВетЗабота', 'Пушистый Мир', 'Верные Друзья', 'ЗооСтатус',
-            'МедВет', 'ЗооЛюкс', 'Энимал Центр', 'ВетСервис', 'Доктор Хвостов'
+        $organizations = [
+            [
+                'name' => 'Питомник грызунов',
+                'field_of_activity_id' => 38,
+                'country' => 'Россия',
+                'region' => 'Краснодарский край',
+                'city' => 'Краснодар',
+                'street' => 'ул. имени Жлобы',
+                'house' => '60, корп. 1',
+                'address_comment' => '',
+                'logo' => Null,
+                'description' => 'Посещение с животными:разрешено со всеми животными
+Акции:спецпредложения, акции, скидки
+Виды животных:крысы, экзотические животные, морские свинки
+Способ оплаты:наличными, оплата картой',
+                'phone1' => '+7 (928) 246-35-09',
+                'phone2' => null,
+                'email' => null,
+                'telegram' => null,
+                'whatsapp' => null,
+                'website' => null,
+                'schedule' => 'с 09:00 до 17:00',
+                'workdays' => 'Пн–Вс',
+                'seo_title' => 'Питомник грызунов — большой выбор животных',
+                'seo_description' => 'Можете выбрать себе любимца по вашим предпочтениям',
+            ],
+            [
+        'name' => 'Краснодог',
+        'field_of_activity_id' => 40,
+
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'ул. Куйбышева',
+        'house' => '2',
+        'address_comment' => ' ',
+        'logo' => 'organizations\logos\krasnodog.webp',
+        'description' => 'Первый в Краснодаре приют для пострадавших животных. Мы помогаем травмированным бездомным собакам и кошкам, проводим лечение, стерилизацию и ищем им новых хозяев.',
+        'phone1' => '+7-988-505-25-05',
+        'phone2' => '+7-861-212-38-78',
+        'email' => 'krasnodog.vet@mail.ru',
+        'telegram' => 'krasnodog_official',
+        'whatsapp' => null,
+        'website' => 'https://krasnodog.ru/',
+        'schedule' => 'с 09:00 до 18:00',
+        'workdays' => 'Пн–Вс',
+        'seo_title' => 'Приют для животных Краснодог — помощь бездомным собакам и кошкам в Краснодаре',
+        'seo_description' => 'Официальный сайт приюта Краснодог. Помощь пострадавшим животным, поиск дома для питомцев, пожертвования и волонтерство.',
+            ],
+        [
+        'name' => 'Gavvashop',
+        'field_of_activity_id' => 38,
+
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'ул. Фабричная',
+        'house' => '10',
+        'address_comment' => '',
+        'logo' => null,
+        'description' => 'Питомник мальтипу',
+        'phone1' => null,
+        'phone2' => null,
+        'email' => null,
+        'telegram' => null,
+        'whatsapp' => null,
+        'website' => 'https://ушки-на-подушке.рф/',
+        'schedule' => 'с 10:00 до 18:00',
+        'workdays' => 'Пн–Вс',
+        'seo_title' => 'Питомник Мальтипу в Краснодаре на Зверозор',
+        'seo_description' => 'Питомник щенков собак мальтипу в Краснодаре, адрес и контакты',
+    ],
+        [
+        'name' => 'Ушки на подушке',
+        'field_of_activity_id' => 39,
+
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'ул. Восточно-Кругликовская',
+        'house' => '77',
+        'address_comment' => '',
+        'logo' => null,
+        'description' => 'Питомник мальтипу',
+        'phone1' => '+7 995 607-86-96',
+        'phone2' => null,
+        'email' => null,
+        'telegram' => null,
+        'whatsapp' => null,
+        'website' => '',
+        'schedule' => 'с 10:00 до 20:00',
+        'workdays' => 'Пн–Вс',
+        'seo_title' => 'Кошачья гостиница «Ушки на подушке» в Краснодаре на Зверозор',
+        'seo_description' => 'Кошачья гостиница, зоогостиница «Ушки на подушке» в Краснодаре, адрес и контакты',
+    ],
+        [
+        'name' => 'Эдельвейс Кубани',
+        'field_of_activity_id' => 38,
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'ст. Днепровская, ул. Советская, ',
+        'house' => '1 А, индекс',
+        'address_comment' => 'Тимашевский район',
+        'logo' => null,
+        'description' => 'Питомник немецких овчарок',
+        'phone1' => '+7 (861) 303-31-13',
+        'phone2' => '+7 (918) 449-91-33',
+        'email' => 'edelveiskubani@mail.ru',
+        'telegram' => null,
+        'whatsapp' => null,
+        'website' => '',
+        'schedule' => null,
+        'workdays' => 'Пн–Вс',
+        'seo_title' => null,
+        'seo_description' => null,
+    ],
+        [
+        'name' => 'Краснодарзооветснаб (КЗВС)',
+        'field_of_activity_id' => 33,
+        'country' => 'Россия',
+        'region' => 'Краснодарский край',
+        'city' => 'Краснодар',
+        'street' => 'ул. Героев-Разведчиков',
+        'house' => '22',
+        'address_comment' => '',
+        'logo' => 'organizations\logos\kzvs.webp',
+        'description' => 'Питомник мальтипу',
+        'phone1' => '+7 (861) 992-45-64',
+        'phone2' => '',
+        'email' => null,
+        'telegram' => 'https://t.me/kzvspets',
+        'whatsapp' => 'https://max.ru/join/mNOCmmm0VCS2muO26DkeKckWA8noHRUe8L6455nsYf8',
+        'website' => 'https://kzvs.ru/',
+        'schedule' => '09:00-20:00',
+        'workdays' => 'Пн–Вс',
+        'seo_title' => null,
+        'seo_description' => null,
+    ],
         ];
 
-        foreach ($clinics as $name) {
-            Organization::create([
-                'name' => $name,
-                'slug' => Str::slug($name) . '-' . rand(100, 999),
-                'country' => 'Россия',
-                'region' => 'Краснодарский край', // Можешь заменить на свой
-                'city' => 'Краснодар',
-                'street' => Null,
-                'house' => Null,
-                'address_comment' => 'Вход со двора',
-                'description' => 'Профессиональная ветеринарная помощь для ваших питомцев. Современное оборудование и опытные врачи.',
-                'phone1' => Null,
-                'email' => Str::slug($name) . '@example.com',
-                'schedule' => 'с 09:00 до 21:00',
-                'workdays' => 'Пн–Вс',
-                'website' => 'https://' . Str::slug($name) . '.ru',
-            ]);
+        foreach ($organizations as $org) {
+            DB::table('organizations')->insert(array_merge($org, [
+                'slug' => Str::slug($org['name']),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]));
         }
-
-        $this->command->info('Создано 20 организаций.');
     }
 }

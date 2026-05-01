@@ -19,7 +19,18 @@ import './slider/personal_recommendations';
 import './pages/pagination';
 
 
-
+// Слушаем событие ошибки на стадии захвата (capture), 
+// так как событие 'error' не всплывает.
+document.addEventListener('error', function (event) {
+    if (event.target.tagName.toLowerCase() === 'img') {
+        const fallbackSrc = '/storage/logo/default-placeholder.webp'; // Путь к твоей заглушке
+        
+        // Предотвращаем бесконечный цикл, если заглушка тоже битая
+        if (event.target.src !== window.location.origin + fallbackSrc) {
+            event.target.src = fallbackSrc;
+        }
+    }
+}, true);
 
 
 // console.log('app.js loaded');

@@ -79,6 +79,12 @@ public function fieldOfActivity(): BelongsTo
         });
     }
 
+    public function activityType()
+{
+    // Организация принадлежит к одному типу деятельности
+    return $this->belongsTo(FieldOfActivity::class, 'field_of_activity_id');
+}
+
     public function getRouteKeyName()
     {
         return 'slug';
@@ -88,6 +94,11 @@ public function prices()
 {
     // Важно: второй параметр 'priceable' должен совпадать с тем, что в миграции
     return $this->morphMany(\App\Models\Price::class, 'priceable');
+}
+public function reviews()
+{
+    // 'reviewable' — это название префикса для полей reviewable_type и reviewable_id
+    return $this->morphMany(Review::class, 'reviewable');
 }
 
 }

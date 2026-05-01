@@ -23,6 +23,20 @@ class UserTableSeeder extends Seeder
                 'password' => Hash::make('12345678'),
                 'city_id' => 31,
                 'is_admin' => true,
+                'created_at' => '2013-04-12 06:51:47',
+            ],
+            [
+                'name' => 'Анастасия',
+                'nickname' => Null,
+                'email' => 'worklaca@mail.ru',
+                'birth_date' => '03.10.1988',
+                'avatar' => Null,
+                'phone' => Null,
+                'password' => 'lacamomila158',
+                'city_id' => 31,
+                'is_admin' => false,
+                'created_at' => '2026-03-10 06:51:47',
+
             ],
         ];
 

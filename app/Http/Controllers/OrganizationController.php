@@ -48,13 +48,13 @@ class OrganizationController extends Controller
         ));
     }
 
-    public function catalog(Request $request)
+public function catalog(Request $request)
 {
     $user = auth()->user();
     $cityId = null;
     $selectedCity = null;
 
-    // 1. Определение города (логика аналогична специалистам)
+    // 1. Определение города
     if ($request->filled('city_id')) {
         $cityId = (int) $request->get('city_id');
         if (!$user) { session(['city_id' => $cityId]); }
@@ -69,23 +69,25 @@ class OrganizationController extends Controller
         $selectedCity = $cityModel?->name; 
     }
 
-    $selectedType = $request->get('type');
+    // ТЕПЕРЬ ПОЛУЧАЕМ ID ТИПА
+    $selectedTypeId = $request->get('type_id'); 
 
-    // 2. ТЕГИ: Получаем уникальные типы организаций (кроме клиник)
+    // 2. ТЕГИ: Получаем доступные типы (категории) для организаций
+    // Используем id и name для фильтрации
     $organizationTypes = FieldOfActivity::query()
         ->where('type', 'organization')
         ->whereNotIn('activity', ['vetclinic', 'doctor'])
         ->orderBy('name')
-        ->distinct()
-        ->get(['name', 'activity']); 
+        ->get(['id', 'name']); 
 
     // 3. ЗАПРОС
     $items = Organization::query()
         ->when($selectedCity, function ($q) use ($selectedCity) {
             $q->where('city', $selectedCity);
         })
-        ->when($selectedType, function ($q) use ($selectedType) {
-            $q->where('type', $selectedType);
+        // Фильтруем по внешнему ключу
+        ->when($selectedTypeId, function ($q) use ($selectedTypeId) {
+            $q->where('field_of_activity_id', $selectedTypeId);
         })
         ->orderBy('name')
         ->paginate(16)
@@ -95,7 +97,7 @@ class OrganizationController extends Controller
         'organizations' => $items,
         'selectedCity' => $selectedCity,
         'organizationTypes' => $organizationTypes,
-        'selectedType' => $selectedType,
+        'selectedTypeId' => $selectedTypeId, // Передаем ID
         'currentCityId' => $cityId
     ]);
 }
@@ -133,6 +135,7 @@ class OrganizationController extends Controller
 
         $data = [
             'name'        => $validated['name'],
+            'field_of_activity_id' => $validated['field_of_activity_id'],
             'country'     => $country,
             'region'      => $city->region,
             'city'        => $city->name,
@@ -165,6 +168,16 @@ class OrganizationController extends Controller
         return response()->json(['success' => true, 'saved_to' => $type]);
     }
 
+public function show($slug)
+{
+    $organization = Organization::with(['activityType'])
+        ->withCount('reviews') // Теперь будет искать по reviewable_id
+        ->withAvg('reviews', 'rating')
+        ->where('slug', $slug)
+        ->firstOrFail();
+
+    return view('pages.organizations.show', compact('organization'));
+}
 
 
     public function update(Request $request, $id)
@@ -177,6 +190,7 @@ class OrganizationController extends Controller
 
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
+            'field_of_activity_id' => 'required|string', 
             'city'        => 'required|string', 
             'street'      => 'required|string',
             'house'       => 'required|string',

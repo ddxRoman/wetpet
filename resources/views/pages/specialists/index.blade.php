@@ -96,7 +96,7 @@
                                 </div>
 
                                 @php
-                                    $photo = !empty($specialist->photo) ? asset('storage/' . $specialist->photo) : asset('storage/doctors/default-doctor.webp');
+                                    $photo = !empty($specialist->photo) ? asset('storage/' . $specialist->photo) : asset('storage/specialists/default-specialist.webp');
                                 @endphp
 
                                 <img src="{{ $photo }}" class="card-img-top object-fit-contain p-3" alt="{{ $specialist->name }}">
