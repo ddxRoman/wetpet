@@ -58,13 +58,13 @@
         </div>
         
         <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-         
+         <a class="nav-link {{ request()->routeIs('ads.*') ? 'active' : '' }}" href="{{ route('ads.index') }}">
             <div class="div_btn_category">
                 <div class="text_menu_btn_category">Доска <br> Объявлений</div>
                 <div class="div_btn_category_icon">
                     <img class="category_icon" title="Доска объявлений для обмена, продажи атрибутов для животных" src="{{ Storage::url('icon/button/menu/ads_menu.webp') }}" alt="Иконка объявлений">
                 </div>
-                <div class="will_be_soon">Скоро</div>
+               
             </div>
             </a>
         </div>

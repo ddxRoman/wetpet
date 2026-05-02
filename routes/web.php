@@ -22,6 +22,7 @@ use App\Http\Controllers\{
     testController,
     SpecialistCreateController,
     SpecialistController,
+    AdController,
 };
 
 /*
@@ -235,3 +236,22 @@ Route::delete('/doctor/{doctor}', [DoctorController::class, 'destroy'])->name('d
 Route::get('/specialists', [SpecialistController::class, 'index'])->name('specialists.index');
 // Просмотр карточки конкретного специалиста
 Route::get('/specialists/{slug}', [App\Http\Controllers\SpecialistController::class, 'show'])->name('specialists.show');
+
+
+
+// Сначала публичный список
+Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
+
+// ЗАЩИЩЕННЫЕ МАРШРУТЫ
+Route::middleware(['auth'])->group(function () {
+    // ВАЖНО: 'create' ДОЛЖЕН БЫТЬ ВЫШЕ ЧЕМ '{ad}'
+    Route::get('/ads/create', [AdController::class, 'create'])->name('ads.create');
+    Route::post('/ads', [AdController::class, 'store'])->name('ads.store');
+    
+    Route::get('/ads/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit');
+    Route::put('/ads/{ad}', [AdController::class, 'update'])->name('ads.update');
+    Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
+});
+
+// Публичный просмотр — в самом конце
+Route::get('/ads/{ad}', [AdController::class, 'show'])->name('ads.show');

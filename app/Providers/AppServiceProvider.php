@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use App\Models\City;
 use Illuminate\Support\Facades\View;
 use App\Models\ReviewReceipt;
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         // Оставляем бренднейм и обсервер
         view()->share('brandname', config('app.name', 'Зверозор'));
         \App\Models\ReviewReceipt::observe(\App\Observers\ReviewReceiptObserver::class);
-
+Paginator::useBootstrapFive();
         \Illuminate\Support\Facades\View::composer('*', function ($view) {
             // --- ЛОГИКА ОПРЕДЕЛЕНИЯ ГОРОДА ---
             try {

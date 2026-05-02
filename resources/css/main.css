@@ -175,6 +175,19 @@ header {
     width: 24px;
     height: 24px;
 }
+.phone-zoom{
+    text-decoration: none;
+    color: #006eff;
+    display: inline-block; /* Обязательно для работы transform */
+        transition: transform 0.3s ease; /* Плавность анимации */
+        cursor: pointer;
+}
+.phone-zoom:hover{
+    text-decoration: none;
+    color: #1469d8;
+    transform: scale(1.05); /* Увеличение на 10% */
+        color: #0d6efd; /* Опционально: меняем цвет на брендовый синий Bootstrap */
+}
 
 #city-modal {
     display: none;
@@ -2260,3 +2273,39 @@ a {
 .header-specialist .py-5{
     padding-top: 0 !important;
 }
+ .btn-back-ultra {
+        background: linear-gradient(45deg, #6c757d, #495057); /* Градиент для глубины */
+        border: none;
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-back-ultra:hover {
+        background: linear-gradient(45deg, #212529, #343a40);
+        color: #fff;
+        transform: scale(1.05) translateX(-5px); /* Увеличивается и смещается влево */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+    }
+
+    .btn-back-ultra i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-back-ultra:hover i {
+        transform: scale(1.2); /* Иконка стрелочки становится больше при наведении */
+    }
+
+    /* На мобильных устройствах делаем кнопку шире для удобства нажатия пальцем */
+    @media (max-width: 768px) {
+        .btn-back-ultra {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+        .ad-card { transition: transform 0.2s; }
+    .ad-card:hover { transform: translateY(-5px); }

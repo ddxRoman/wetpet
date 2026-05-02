@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             // DoctorServiceSeeder::class,
             PriceSeeder::class,
             ReviewSeeder::class,
+            AdSeeder::class,
             // ReviewPhotoSeeder::class,
 // AwardsTableSeeder::class,
 // ReviewReceiptSeeder::class,
