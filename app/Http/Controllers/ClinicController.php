@@ -262,6 +262,22 @@ public function liveSearch(Request $request)
     ]);
 }
 
+public function fullSearch(Request $request)
+{
+    $query = $request->get('q');
+    if (!$query) return redirect()->back();
+
+    // Собираем все данные (аналогично вашему liveSearch, но без жестких лимитов)
+    $results = [
+        'clinics' => \App\Models\Clinic::where('name', 'LIKE', "%{$query}%")->get(),
+        'doctors' => \App\Models\Doctor::where('name', 'LIKE', "%{$query}%")->orWhere('specialization', 'LIKE', "%{$query}%")->get(),
+        'organizations' => \App\Models\Organization::where('name', 'LIKE', "%{$query}%")->get(),
+        'animals' => \App\Models\Animal::where('breed', 'LIKE', "%{$query}%")->orWhere('species', 'LIKE', "%{$query}%")->get(),
+    ];
+
+    return view('pages.search.index', compact('results', 'query'));
+}
+
     /**
      * Обновление клиники
      */

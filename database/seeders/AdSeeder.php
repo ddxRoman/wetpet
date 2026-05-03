@@ -41,7 +41,7 @@ class AdSeeder extends Seeder
 
         $data = [];
 
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 2000; $i++) {
             $priceType = fake()->randomElement(['fixed', 'free', 'exchange']);
             
             // Генерируем заголовок: либо из списка, либо случайный набор слов через fake
@@ -54,7 +54,17 @@ class AdSeeder extends Seeder
                 'ads/sample2.jpg',
                 'ads/sample3.jpg',
                 'ads/sample4.jpg',
-                'ads/sample5.jpg'
+                'ads/sample5.jpg',
+                'ads/sample6.jpg',
+                'ads/sample7.jpg',
+                'ads/sample8.jpg',
+                'ads/sample9.jpg',
+                'ads/sample10.jpg',
+                'ads/sample11.jpg',
+                'ads/sample12.jpg',
+                'ads/sample15.jpg',
+                'ads/sample14.jpg',
+                'ads/sample15.jpg'
             ];
 
             $data[] = [
@@ -76,7 +86,7 @@ class AdSeeder extends Seeder
             ];
 
             // Чтобы не перегружать память при вставке 200 записей, вставляем пачками по 50
-            if (count($data) === 50) {
+            if (count($data) === 500) {
                 DB::table('ads')->insert($data);
                 $data = [];
             }

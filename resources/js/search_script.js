@@ -106,6 +106,36 @@ resultsContainer.innerHTML += `
                     });
                 }
 
+                // Внутри вашего существующего скрипта:
+const searchBtn = document.querySelector('.search_btn');
+
+function performFullSearch() {
+    const query = searchInput.value.trim();
+    if (query.length >= 2) {
+        // Проверяем, сколько результатов сейчас в выпадающем списке
+        const results = resultsContainer.querySelectorAll('.search-result-item');
+        
+        if (results.length === 1) {
+            // Если результат всего один — имитируем клик по нему (переход в карточку)
+            results[0].click();
+        } else {
+            // Если результатов много или 0 — идем на страницу поиска
+            window.location.href = `/search?q=${encodeURIComponent(query)}`;
+        }
+    }
+}
+
+// По клику на лупу
+searchBtn.addEventListener('click', performFullSearch);
+
+// По нажатию Enter в инпуте
+searchInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        performFullSearch();
+    }
+});
+
                 if (hasResults) {
                     resultsContainer.classList.remove('d-none');
                 } else {

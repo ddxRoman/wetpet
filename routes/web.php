@@ -79,7 +79,8 @@ Route::post('/account/update-city', [ProfileController::class, 'updateCity'])->n
 
 Route::get('/api/clinics/by-city/{cityId}', [ClinicController::class, 'clinicsByCity']);
 
-
+Route::get('/search', [ClinicController::class, 'fullSearch'])->name('search.results');
+Route::get('/api/clinics-search', [ClinicController::class, 'liveSearch']);
 
 // 📧 Сброс пароля
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');

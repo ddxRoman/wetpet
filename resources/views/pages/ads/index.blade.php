@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@include('layouts.header')
 @section('content')
 <div class="container py-4">
     <div class="row">
@@ -34,8 +34,16 @@
                             <input type="text" name="city" class="form-control" placeholder="Напр: Краснодар" value="{{ request('city') }}">
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Применить</button>
-                        <a href="{{ route('ads.index') }}" class="btn btn-link w-100 btn-sm text-decoration-none mt-2">Сбросить</a>
+<div class="mb-3">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="is_free" id="isFree" value="1" {{ request('is_free') ? 'checked' : '' }}>
+        <label class="form-check-label small fw-bold" for="isFree">
+            Бесплатно
+        </label>
+    </div>
+</div>
+
+<button type="submit" class="btn btn-primary w-100">Применить</button>  <a href="{{ route('ads.index') }}" class="btn btn-link w-100 btn-sm text-decoration-none mt-2">Сбросить</a>
                     </form>
                 </div>
             </div>

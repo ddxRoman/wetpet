@@ -33,6 +33,11 @@ class AdController extends Controller
             $query->where('animal_id', $request->animal_id);
         }
 
+        // НОВОЕ: Фильтр "Бесплатно"
+    $query->when($request->is_free, function ($q) {
+        return $q->where('price_type', 'free');
+    });
+
 // Поиск по названию (Улучшенный)
 if ($request->filled('search')) {
     $searchTerm = $request->search;
@@ -47,7 +52,7 @@ if ($request->filled('search')) {
 }
 
         // Пагинация и сортировка (сначала новые)
-        $ads = $query->latest()->paginate(102);
+        $ads = $query->latest()->paginate(51);
 
         // Получаем уникальные виды животных по полю species для фильтра
         // Используем groupBy, чтобы схлопнуть дубликаты названий
