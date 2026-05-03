@@ -172,6 +172,7 @@ return [
         App\Providers\ViewServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\HeaderServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),

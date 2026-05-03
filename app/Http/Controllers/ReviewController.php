@@ -32,7 +32,6 @@ public function store(Request $request)
     $review->user_id = Auth::id();
     $review->reviewable_id = $validated['reviewable_id'];
     
-    // Очищаем бэкслеши на случай двойного экранирования из формы
     $rawType = str_replace('\\\\', '\\', $validated['reviewable_type']);
     $review->reviewable_type = $rawType;
     
@@ -44,7 +43,6 @@ public function store(Request $request)
     $review->review_date = now();
     $review->save();
 
-    // Загрузка чека
     if ($request->hasFile('receipt')) {
         $path = $request->file('receipt')->store('reviews/receipts', 'public');
         ReviewReceipt::create([
@@ -54,7 +52,6 @@ public function store(Request $request)
         ]);
     }
 
-    // Загрузка фотографий
     if ($request->hasFile('photos')) {
         foreach ($request->file('photos') as $photo) {
             $path = $photo->store('reviews/photos', 'public');
@@ -65,24 +62,35 @@ public function store(Request $request)
         }
     }
 
-    // === КОРРЕКТНЫЙ РЕДИРЕКТ ===
-    // Используем динамическое определение роута на основе типа модели
-    // Сравниваем строку типа, чтобы избежать проблем с именованием
-    $isSpecialist = str_contains(strtolower($rawType), 'specialist') || str_contains(strtolower($rawType), 'doctor');
+// === ФИКС РЕДИРЕКТА (Врачи, Специалисты, Организации) ===
+    $slug = $validated['redirect_slug'];
+
+    // 1. Для Организаций (используем прямой путь, так как роут настроен на /organizations/)
+    if (str_contains($rawType, 'Organization')) {
+        return redirect()
+            ->to("/organizations/{$slug}?tab=reviews")
+            ->with('success', 'Спасибо! Ваш отзыв о клинике добавлен.');
+    } 
     
-    $routeName = 'clinics.show'; // По умолчанию
-    
-    if (str_contains($rawType, 'Specialist')) {
-        $routeName = 'specialists.show';
-    } elseif (str_contains($rawType, 'Doctor')) {
-        $routeName = 'doctors.show';
+    // 2. Для Врачей
+    // Здесь параметр в роуте называется 'specialist'
+    if (str_contains($rawType, 'Doctor')) {
+        return redirect()
+            ->route('doctors.show', ['specialist' => $slug, 'tab' => 'reviews'])
+            ->with('success', 'Спасибо! Ваш отзыв о враче добавлен.');
     }
 
-    return redirect()
-        ->route($routeName, [$validated['redirect_slug'], 'tab' => 'reviews'])
-        ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
-}
+    // 3. Для Специалистов
+    // Ваша текущая ошибка говорит, что здесь параметр называется 'slug'
+    if (str_contains($rawType, 'Specialist')) {
+        return redirect()
+            ->route('specialists.show', ['slug' => $slug, 'tab' => 'reviews'])
+            ->with('success', 'Спасибо! Ваш отзыв успешно добавлен.');
+    }
 
+    // Запасной вариант
+    return back()->with('success', 'Отзыв сохранен!');
+}
 
 
     /**

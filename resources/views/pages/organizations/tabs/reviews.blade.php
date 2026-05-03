@@ -4,20 +4,24 @@
 
     $user = $user ?? auth()->user();
 
-    // 1. Определяем целевую модель (универсальность)
-    $targetModel = $doctor ?? $specialist; 
+    // 1. Определяем целевую модель (теперь включая организацию)
+    // Добавляем $organization в цепочку приоритетов
+    $targetModel = $doctor ?? $specialist ?? $organization; 
 
-    // 2. Получаем точный класс (Doctor или Specialist)
+    // Если модель не передана, не рендерим блок (защита от ошибок)
+    if (!$targetModel) return;
+
+    // 2. Получаем точный класс для связи reviewable_type
     $currentType = get_class($targetModel); 
 
-    // 3. Загружаем отзывы именно для ЭТОЙ модели
+    // 3. Загружаем отзывы именно для этой сущности
     $reviews = Review::where('reviewable_id', $targetModel->id)
         ->where('reviewable_type', $currentType)
         ->with(['user', 'photos', 'pet.animal'])
         ->latest('review_date')
         ->get();
 
-    // 4. Получаем питомцев
+    // 4. Получаем питомцев авторизованного пользователя
     $pets = Pet::where('user_id', auth()->id())
         ->with('animal')
         ->get();

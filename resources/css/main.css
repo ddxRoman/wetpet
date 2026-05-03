@@ -2309,3 +2309,14 @@ a {
     }
         .ad-card { transition: transform 0.2s; }
     .ad-card:hover { transform: translateY(-5px); }
+
+    /* Уменьшаем хедер на 50% для страницы объявлений */
+.header-ads-mode {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    min-height: auto !important;
+}
+/* Если нужно уменьшить логотип именно тут */
+.header-ads-mode .header_logo {
+    max-height: 80px; 
+}

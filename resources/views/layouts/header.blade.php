@@ -27,22 +27,41 @@
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     @stack('scripts')
 
-    <style>
-        .header-search { height: 50px; border-radius: 25px 0 0 25px !important; }
-        .btn-search-main { width: 60px; border-radius: 0 25px 25px 0 !important; background-color: #007bff; border: none; }
-        .search-results-dropdown { position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; background: white; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .search_btn{min-width: 80px;   background-color: #ffffff00;   border: none;  }
-        .input-group{max-width: 1000px; }
-        .input-group input{min-height: 50px; background-color: #fff5ee; border-radius: 15px !important;}
-    </style>
+<style>
+    .header-search { height: 50px; border-radius: 25px 0 0 25px !important; }
+    .btn-search-main { width: 60px; border-radius: 0 25px 25px 0 !important; background-color: #007bff; border: none; }
+    .search-results-dropdown { position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000; background: white; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .search_btn{min-width: 80px; background-color: #ffffff00; border: none; }
+    .input-group{max-width: 1000px; }
+    .input-group input{min-height: 50px; background-color: #fff5ee; border-radius: 15px !important;}
+    
+    /* Исправленный стиль для страницы объявлений */
+    .header-ads-mode {
+        padding-top: 0.75rem !important; /* Увеличили отступы (было 0.25) */
+        padding-bottom: 0.75rem !important;
+        min-height: auto !important;
+    }
+
+    .header-ads-mode .header_logo {
+        max-height: 60px; /* Увеличили высоту логотипа (было 35) */
+        width: auto;      /* Добавили, чтобы пропорции не искажались */
+        object-fit: contain; /* Логотип будет вписываться без искажений */
+    }
+
+    /* Выравнивание элементов внутри сетки для компактного режима */
+    .header-ads-mode .header-grid {
+        align-items: center; 
+    }
+</style>
 </head>
 
 <body class="body_page">
 
+{{-- Подключаем модалки, данные $cities придут из HeaderServiceProvider --}}
 @include('account.modals.modal-add-specialist', ['cities' => $cities])
 @include('account.modals.modal-add-organization', ['cities' => $cities])
 
-<header class="site-header {{ (request()->is('clinics*') || request()->is('doctors*')) ? 'compact-header' : '' }}">
+<header class="site-header {{ $h->isCompact ? 'compact-header' : '' }} {{ $h->isAdsPage ? 'header-ads-mode' : '' }}">
     <div class="container-flex py-2">
         <div class="header-grid">
             {{-- Бургер (мобилка) --}}
@@ -67,14 +86,17 @@
             </div>
 
             <div class="right-block d-none d-md-flex align-items-center gap-3">
-                <div class="d-flex gap-2">
-                    <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
-                        <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" alt="Добавить организацию">
-                    </button>
-                    <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
-                        <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить специалиста">
-                    </button>
-                </div>
+                {{-- Кнопки добавления (скрываются на /ads) --}}
+                @if(!$h->hideAddButtons)
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
+                            <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" alt="Добавить организацию">
+                        </button>
+                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                            <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить специалиста">
+                        </button>
+                    </div>
+                @endif
 
                 @guest
                     <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}" class="login_link">
@@ -103,18 +125,12 @@
         </div>
 
         {{-- БЛОК ПОИСКА --}}
-        @php
-            $showSearch = !request()->is('account*', 'legal*') || Route::currentRouteName() === 'clinics.show';
-            $showHero = request()->is('/');
-        @endphp
-
-        @if($showSearch)
+        @if($h->showSearch)
             <div class="container mt-3">
-                @if($showHero)
+                @if($h->showHero)
                     <div class="text-center">
-                        <h1>Сайт про домашних животных</h1>
-                        <p class="description_index_page">На сайте вы сможете найти ветеринарные клиники, ветгостиницы, лекарства, ветеринаров и грумеров,
-<br>а также прочесть отзывы о породах от владельцев.</p>
+                        <h1>{{ $h->title }}</h1>
+                        <p class="description_index_page">{!! $h->description !!}</p>
                     </div>
                 @endif
 
@@ -144,8 +160,12 @@
             @guest
                 <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}" class="btn btn-outline-primary w-100">Войти</a>
             @endguest
-            <button class="btn_burger-menu" data-bs-toggle="modal" data-bs-target="#addOrganizationModal" data-bs-dismiss="offcanvas">Добавить организацию</button>
-            <button class="btn_burger-menu" data-bs-toggle="modal" data-bs-target="#addDoctorModal" data-bs-dismiss="offcanvas">Добавить специалиста</button>
+            
+            {{-- Мобильные кнопки добавления (тоже скрываем если нужно) --}}
+            @if(!$h->hideAddButtons)
+                <button class="btn_burger-menu" data-bs-toggle="modal" data-bs-target="#addOrganizationModal" data-bs-dismiss="offcanvas">Добавить организацию</button>
+                <button class="btn_burger-menu" data-bs-toggle="modal" data-bs-target="#addDoctorModal" data-bs-dismiss="offcanvas">Добавить специалиста</button>
+            @endif
         </div>
     </div>
 </header>

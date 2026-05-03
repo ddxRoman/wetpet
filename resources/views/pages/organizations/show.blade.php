@@ -11,6 +11,7 @@
         $organization->street,
         $organization->house,
     ]);
+        $tab = request('tab', 'contacts');
 
     $mapQuery = urlencode(implode(', ', $addressParts));
     $tab = request('tab', 'info');

@@ -152,7 +152,7 @@ class OrganizationSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-        [
+ [
         'name' => 'БроДог',
         'field_of_activity_id' => 35,
         'country' => 'Россия',
@@ -175,13 +175,13 @@ class OrganizationSeeder extends Seeder
         'seo_description' => null,
     ],
         [
-        'name' => 'БлэкДог',
+        'name' => 'БлэкДог мкр. Фестивальный',
         'field_of_activity_id' => 35,
         'country' => 'Россия',
         'region' => 'Краснодарский край',
         'city' => 'Краснодар',
-        'street' => 'ул. Героев-Разведчиков',
-        'house' => '6',
+        'street' => 'ул. Казбекская',
+        'house' => '15',
         'address_comment' => '',
         'logo' => 'organizations\logos\blackdog.webp',
         'description' => 'Зоосалон, зоопарикмахерская',
@@ -196,14 +196,14 @@ class OrganizationSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-        [
-        'name' => 'БлэкДог',
+      [
+        'name' => 'БлэкДог мкр. Панорама',
         'field_of_activity_id' => 35,
         'country' => 'Россия',
         'region' => 'Краснодарский край',
         'city' => 'Краснодар',
-        'street' => 'ул. Героев-Разведчиков',
-        'house' => '6',
+        'street' => 'ул. Восточно-Кругликовская',
+        'house' => '24',
         'address_comment' => '',
         'logo' => 'organizations\logos\blackdog.webp',
         'description' => 'Зоосалон, зоопарикмахерская',
@@ -219,7 +219,7 @@ class OrganizationSeeder extends Seeder
         'seo_description' => null,
     ],
         [
-        'name' => 'WillyBand',
+        'name' => 'WillyBand Московская',
         'field_of_activity_id' => 35,
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -241,7 +241,7 @@ class OrganizationSeeder extends Seeder
         'seo_description' => null,
     ],
         [
-        'name' => 'WillyBand',
+        'name' => 'WillyBand Дзержинского',
         'field_of_activity_id' => 35,
         'country' => 'Россия',
         'region' => 'Краснодарский край',
