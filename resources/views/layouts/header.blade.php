@@ -27,6 +27,18 @@
     @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     @stack('scripts')
 
+@if(!isset($h))
+    @php
+        $h = (object)[
+            'showSearch' => true, 
+            'showHero' => false, 
+            'isCompact' => false, 
+            'isAdsPage' => false, 
+            'hideAddButtons' => false
+        ];
+    @endphp
+@endif
+
 <style>
     .header-search { height: 50px; border-radius: 25px 0 0 25px !important; }
     .btn-search-main { width: 60px; border-radius: 0 25px 25px 0 !important; background-color: #007bff; border: none; }

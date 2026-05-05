@@ -66,8 +66,8 @@ class FieldOfActivitySeeder extends Seeder
         // 🏢 Организации
         $organizations = [
             'Ветеринарная клиника'  => 'doctor',
-            'Зооцентр'              => 'doctor',
-            'Ветаптека'             => 'doctor',
+            'Зооцентр'              => 'zoocenter',
+            'Ветаптека'             => 'vetapteka',
             'Зоомагазин'            => 'zooshop',
             'Груминг салон'         => 'grooming',
             'Кинологический центр'  => 'cynology',

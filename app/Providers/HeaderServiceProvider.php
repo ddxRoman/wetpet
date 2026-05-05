@@ -12,40 +12,46 @@ class HeaderServiceProvider extends ServiceProvider
 
 public function boot()
 {
-    View::composer('layouts.header', function ($view) {
-        $route = Route::currentRouteName();
-        $viewData = $view->getData();
-        $path = request()->path(); // Получаем текущий путь
-
+    // Используем '*', чтобы переменная была доступна везде, 
+    // где вызывается header.blade.php
+    View::composer('*', function ($view) {
+        
+        // Если переменная 'h' уже передана (например, из контроллера), 
+        // или если это не основной макет, ничего не делаем, 
+        // но дефолтное значение все равно подготовим.
         $config = [
             'showSearch'     => true,
             'showHero'       => false,
             'isCompact'      => false,
-            'isAdsPage'      => false, // Новый флаг для страницы объявлений
-            'hideAddButtons' => false, // Флаг для скрытия кнопок добавления
+            'isAdsPage'      => false,
+            'hideAddButtons' => false,
             'title'          => 'Сайт про домашних животных',
             'description'    => 'На сайте вы сможете найти ветеринарные клиники...'
         ];
 
-        // Логика для страницы /ads
-        if ($path === 'ads') {
+        $route = Route::currentRouteName();
+        
+        // Логика условий
+        if (request()->is('ads*')) {
             $config['showSearch'] = false;
             $config['hideAddButtons'] = true;
             $config['isAdsPage'] = true;
-            $config['isCompact'] = true; // Уменьшенный вид
+            $config['isCompact'] = true;
         }
 
-        // Ваша существующая логика
         if (request()->is('account*', 'legal*')) $config['showSearch'] = false;
+        if (request()->is('clinics*', 'doctors*', 'account*')) $config['isCompact'] = true;
         if ($route === 'clinics.show') $config['showSearch'] = true;
         if (request()->is('/')) $config['showHero'] = true;
-        if (request()->is('clinics*', 'doctors*', 'account*')) $config['isCompact'] = true;
 
-        // Страховка для городов
-        if (!isset($viewData['cities'])) {
-            $view->with('cities', \App\Models\City::all()); 
+        // Передаем города, только если их нет
+        if (!isset($view->getData()['cities'])) {
+            $view->with('cities', \Illuminate\Support\Facades\Cache::remember('all_cities', 3600, function() {
+                return \App\Models\City::all();
+            }));
         }
 
+        // ПРИНУДИТЕЛЬНО передаем объект h
         $view->with('h', (object)$config);
     });
 }

@@ -3,13 +3,23 @@
 @section('content')
 <div class="container text-center d-flex align-items-center justify-content-center" style="min-height: 70vh;">
     <div class="error-content">
-        {{-- Можно использовать изображение котика или собачки из твоих ассетов --}}
+        {{-- Можно использовать изображение ко тика или собачки из твоих ассетов --}}
         <div class="error-image mb-4">
-            <img src="{{ asset('storage/icon/404-pet.png') }}" alt="404" style="max-width: 250px;">
-        </div>
+<video 
+    src="{{ asset('storage/video/err_cat.mp4') }}" 
+    autoplay 
+    muted 
+    loop 
+    playsinline 
+    class="img-fluid" 
+    style="max-width: 100%; border-radius: 15px;"
+    poster="{{ asset('storage/images/err_cat_placeholder.jpg') }}">
+</video>     
+
+</div>
         
         <h1 class="display-1 fw-bold" style="color: #ff8c00;">404</h1>
-        <h2 class="mb-4">Упс! Страница убежала...</h2>
+        <h2 class="mb-4">Упс! Страница была съедена...</h2>
         <p class="lead mb-5 text-muted">
             Похоже, эта страница спряталась так же хорошо, как кот перед походом к ветеринару. <br>
             Попробуйте вернуться на главную или воспользоваться поиском.
@@ -36,8 +46,8 @@
         font-family: 'Arial Black', sans-serif;
         text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
     }
-    .body_page {
-        background-color: #fff5ee; /* В тон твоему инпуту поиска */
+    body {
+        background-color: #f1f1f1; /* В тон твоему инпуту поиска */
     }
 </style>
 @endsection

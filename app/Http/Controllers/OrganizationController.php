@@ -51,122 +51,120 @@ class OrganizationController extends Controller
 public function catalog(Request $request)
 {
     $user = auth()->user();
-    $cityId = null;
-    $selectedCity = null;
+    $cityId = $request->get('city_id');
+    $selectedCityName = null;
 
-    // 1. Определение города
-    if ($request->filled('city_id')) {
-        $cityId = (int) $request->get('city_id');
-        if (!$user) { session(['city_id' => $cityId]); }
-    } elseif ($user && $user->city_id) {
-        $cityId = $user->city_id;
-    } else {
-        $cityId = session('city_id');
+    // 1. Приоритет выбора города: Request -> Session -> User Profile
+    if (!$cityId) {
+        $cityId = session('city_id') ?: ($user ? $user->city_id : null);
     }
 
-    if ($cityId) { 
+    if ($cityId) {
         $cityModel = City::find($cityId);
-        $selectedCity = $cityModel?->name; 
+        if ($cityModel) {
+            $selectedCityName = $cityModel->name;
+            // Сохраняем в сессию, чтобы при переходе по страницам город не терялся
+            session(['city_id' => $cityId]);
+        }
     }
 
-    // ТЕПЕРЬ ПОЛУЧАЕМ ID ТИПА
-    $selectedTypeId = $request->get('type_id'); 
+    $selectedTypeId = $request->get('type_id');
 
-    // 2. ТЕГИ: Получаем доступные типы (категории) для организаций
-    // Используем id и name для фильтрации
-    $organizationTypes = FieldOfActivity::query()
-        ->where('type', 'organization')
+    // 2. Получаем типы организаций для тегов
+    $organizationTypes = FieldOfActivity::where('type', 'organization')
         ->whereNotIn('activity', ['vetclinic', 'doctor'])
         ->orderBy('name')
-        ->get(['id', 'name']); 
+        ->get(['id', 'name']);
 
-    // 3. ЗАПРОС
+    // 3. Запрос организаций
     $items = Organization::query()
-        ->when($selectedCity, function ($q) use ($selectedCity) {
-            $q->where('city', $selectedCity);
+        // Фильтр по городу ОБЯЗАТЕЛЕН (если город не выбран, можно либо ничего не выводить, либо всё)
+        ->when($selectedCityName, function ($q) use ($selectedCityName) {
+            $q->where('city', $selectedCityName);
         })
-        // Фильтруем по внешнему ключу
         ->when($selectedTypeId, function ($q) use ($selectedTypeId) {
             $q->where('field_of_activity_id', $selectedTypeId);
         })
+        ->withCount('reviews') // Для бейджа рейтинга
+        ->withAvg('reviews', 'rating') // Для звезд
         ->orderBy('name')
-        ->paginate(16)
-        ->withQueryString();
+        ->paginate(16);
+
+    // Если это AJAX запрос (нажата кнопка "Показать еще")
+    if ($request->ajax()) {
+        return view('pages.organizations._list_items', ['organizations' => $items])->render();
+    }
 
     return view('pages.organizations.index', [
         'organizations' => $items,
-        'selectedCity' => $selectedCity,
+        'selectedCity' => $selectedCityName,
         'organizationTypes' => $organizationTypes,
-        'selectedTypeId' => $selectedTypeId, // Передаем ID
+        'selectedTypeId' => $selectedTypeId,
         'currentCityId' => $cityId
     ]);
 }
 
+public function submit(Request $request)
+{
+    $isOwner = $request->boolean('its_me');
+    $user = auth()->user();
 
+    $validated = $request->validate([
+        'name'                 => 'required|string|max:255',
+        'city_id'              => 'required|exists:cities,id',
+        'street'               => 'required|string|max:255',
+        'house'                => 'required|string|max:255',
+        'description'          => 'nullable|string',
+        'logo'                 => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
+        'field_of_activity_id' => 'required|exists:field_of_activities,id',
+        'schedule'             => 'nullable|string|max:255',
+        'workdays'             => 'nullable|string|max:255',
+        'phone1'               => 'nullable|string|max:255',
+        'phone2'               => 'nullable|string|max:255',
+        'email'                => 'nullable|email|max:255',
+    ]);
 
+    $activity = FieldOfActivity::find($validated['field_of_activity_id']);
+    $city = City::find($validated['city_id']);
 
-    public function submit(Request $request)
-    {
-        $isOwner = $request->boolean('its_me');
-        $user = auth()->user();
+    $path = $request->hasFile('logo') 
+        ? $request->file('logo')->store('organizations/logos', 'public') 
+        : null;
 
-        $validated = $request->validate([
-            'name'                 => 'required|string|max:255',
-            'city_id'              => 'required|exists:cities,id',
-            'street'               => 'required|string|max:255',
-            'house'                => 'required|string|max:255',
-            'description'          => 'nullable|string',
-            'logo'                 => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
-            'field_of_activity_id' => 'required|exists:field_of_activities,id',
-            'schedule'             => 'nullable|string|max:255',
-            'workdays'             => 'nullable|string|max:255',
-            'phone1'               => 'nullable|string|max:255',
-            'phone2'               => 'nullable|string|max:255',
-            'email'                => 'nullable|email|max:255',
-        ]);
+    $data = [
+        'name'                 => $validated['name'],
+        'field_of_activity_id' => $validated['field_of_activity_id'],
+        'country'              => 'Россия',
+        'region'               => $city->region,
+        'city'                 => $city->name,
+        'street'               => $validated['street'],
+        'house'                => $validated['house'],
+        'description'          => $validated['description'],
+        'logo'                 => $path,
+        'schedule'             => $validated['schedule'],
+        'workdays'             => $validated['workdays'],
+        'phone1'               => $validated['phone1'],
+        'phone2'               => $validated['phone2'],
+        'email'                => $validated['email'],
+    ];
 
-        $activity = FieldOfActivity::find($validated['field_of_activity_id']);
-        $city = City::find($validated['city_id']);
-        $country = 'Россия';
-
-        $path = $request->hasFile('logo') 
-            ? $request->file('logo')->store('organizations/logos', 'public') 
-            : null;
-
-        $data = [
-            'name'        => $validated['name'],
-            'field_of_activity_id' => $validated['field_of_activity_id'],
-            'country'     => $country,
-            'region'      => $city->region,
-            'city'        => $city->name,
-            'street'      => $validated['street'],
-            'house'       => $validated['house'],
-            'description' => $validated['description'],
-            'logo'        => $path,
-            'schedule'    => $validated['schedule'],
-            'workdays'    => $validated['workdays'],
-            'phone1'      => $validated['phone1'],
-            'phone2'      => $validated['phone2'],
-            'email'       => $validated['email'],
-        ];
-
-        if ($activity->activity === "vetclinic") {
-            $model = Clinic::create($data);
-            $type = 'clinics';
-        } else {
-            $data['type'] = $activity->activity;
-            $model = Organization::create($data);
-            $type = 'organizations';
-        }
-
-        if ($isOwner && $user) {
-            $model->owners()->attach($user->id, ['is_confirmed' => false]);
-        }
-
-        $this->sendTelegramNotification($model, ($type == 'clinics' ? 'клиника' : 'организация'), $type);
-
-        return response()->json(['success' => true, 'saved_to' => $type]);
+    if ($activity->activity === "vetclinic") {
+        $model = Clinic::create($data);
+        $type = 'clinics';
+    } else {
+        // Убрали строку $data['type'] = $activity->activity; так как колонки нет
+        $model = Organization::create($data);
+        $type = 'organizations';
     }
+
+    if ($isOwner && $user) {
+        $model->owners()->attach($user->id, ['is_confirmed' => false]);
+    }
+
+    $this->sendTelegramNotification($model, ($type == 'clinics' ? 'клиника' : 'организация'), $type);
+
+    return response()->json(['success' => true, 'saved_to' => $type]);
+}
 
 public function show($slug)
 {
@@ -180,43 +178,43 @@ public function show($slug)
 }
 
 
-    public function update(Request $request, $id)
-    {
-        $organization = Organization::findOrFail($id);
-        
-        if (!$organization->owners()->where('user_id', auth()->id())->exists()) {
-            abort(403);
-        }
-
-        $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'field_of_activity_id' => 'required|string', 
-            'city'        => 'required|string', 
-            'street'      => 'required|string',
-            'house'       => 'required|string',
-            'type'        => 'required|string',
-            'description' => 'nullable|string',
-            'phone1'      => 'nullable|string',
-            'phone2'      => 'nullable|string',
-            'email'       => 'nullable|email',
-            'schedule'    => 'nullable|string',
-            'workdays'    => 'nullable|string',
-            'logo'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-        ]);
-
-        if ($request->hasFile('logo')) {
-            if ($organization->logo) {
-                Storage::disk('public')->delete($organization->logo);
-            }
-            $validated['logo'] = $request->file('logo')->store('organizations/logos', 'public');
-        }
-
-        $organization->update($validated);
-
-        // Редирект на личный кабинет с якорем на организации
-        return redirect()->to(url('/account') . '#my-organizations')
-            ->with('success', 'Данные организации обновлены!');
+public function update(Request $request, $id)
+{
+    $organization = Organization::findOrFail($id);
+    
+    if (!$organization->owners()->where('user_id', auth()->id())->exists()) {
+        abort(403);
     }
+
+    $validated = $request->validate([
+        'name'                 => 'required|string|max:255',
+        'field_of_activity_id' => 'required|exists:field_of_activities,id', 
+        'city'                 => 'required|string', 
+        'street'               => 'required|string',
+        'house'                => 'required|string',
+        'type'                 => 'required|string',
+        'description'          => 'nullable|string',
+        'phone1'               => 'nullable|string',
+        'phone2'               => 'nullable|string',
+        'email'                => 'nullable|email',
+        'schedule'             => 'nullable|string',
+        'workdays'             => 'nullable|string',
+        'logo'                 => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+    ]);
+
+    if ($request->hasFile('logo')) {
+        if ($organization->logo) {
+            Storage::disk('public')->delete($organization->logo);
+        }
+        $validated['logo'] = $request->file('logo')->store('organizations/logos', 'public');
+    }
+
+    // Модель сама пересчитает slug в событии updating, так как поля изменились
+    $organization->update($validated);
+
+    return redirect()->to(url('/account') . '#my-organizations')
+        ->with('success', 'Данные организации обновлены!');
+}
 
     public function destroy($id)
     {

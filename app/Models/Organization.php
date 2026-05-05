@@ -9,29 +9,66 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Organization extends Model
 {
-    protected $fillable = [
-        'name',
-        'slug',
-        'country',
-        'region',
-        'city',
-        'street',
-        'house',
-        'address_comment',
-        'logo',
-        'description',
-        'phone1',
-        'phone2',
-        'email',
-        'telegram',
-        'whatsapp',
-        'website',
-        'schedule',
-        'workdays',
-        'type',
-        'seo_title', 
+   protected $fillable = [
+    'name',
+    'slug',
+    'country',
+    'region',
+    'city',
+    'street',
+    'house',
+    'address_comment',
+    'logo',
+    'description',
+    'phone1',
+    'phone2',
+    'email',
+    'telegram',
+    'whatsapp',
+    'website',
+    'schedule',
+    'workdays',
+    'field_of_activity_id', // Убедитесь, что это поле здесь есть
+    'seo_title', 
     'seo_description'
-    ];
+];
+
+protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($organization) {
+        $organization->slug = static::generateUniqueSlug($organization);
+    });
+
+    static::updating(function ($organization) {
+        if ($organization->isDirty(['name', 'city', 'street', 'house'])) {
+            $organization->slug = static::generateUniqueSlug($organization);
+        }
+    });
+}
+
+private static function generateUniqueSlug($organization)
+{
+    // Используем фильтрацию, чтобы не было лишних дефисов при пустых полях
+    $source = collect([
+        $organization->name,
+        $organization->city,
+        $organization->street,
+        $organization->house
+    ])->filter()->implode('-');
+
+    $originalSlug = \Illuminate\Support\Str::slug($source);
+    $slug = $originalSlug;
+    $count = 1;
+
+    while (static::where('slug', $slug)->where('id', '!=', $organization->id)->exists()) {
+        $slug = "{$originalSlug}-{$count}";
+        $count++;
+    }
+
+    return $slug;
+}
 
     public function owners()
     {
@@ -49,35 +86,8 @@ public function fieldOfActivity(): BelongsTo
     return $this->belongsTo(FieldOfActivity::class, 'type'); 
 }
 
-    protected static function boot()
-    {
-        parent::boot();
 
-        static::creating(function ($organization) {
-            // Формируем строку: Название-Город-Улица-Дом
-            $sourceString = sprintf(
-                '%s-%s-%s-%s',
-                $organization->name,
-                $organization->city,
-                $organization->street,
-                $organization->house
-            );
 
-            $slug = Str::slug($sourceString);
-
-            // Проверяем, существует ли уже такой слаг
-            // Если есть, добавляем счетчик (напр. wrg-astrakhan-40-let-1, wrg-astrakhan-40-let-2)
-            $originalSlug = $slug;
-            $count = 1;
-
-            while (static::where('slug', $slug)->exists()) {
-                $slug = "{$originalSlug}-{$count}";
-                $count++;
-            }
-
-            $organization->slug = $slug;
-        });
-    }
 
     public function activityType()
 {

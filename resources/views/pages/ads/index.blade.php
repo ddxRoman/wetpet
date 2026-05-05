@@ -61,7 +61,7 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 @forelse($ads as $ad)
 <div class="col">
-    <div class="card h-100 border-0 shadow-sm ad-card overflow-hidden">
+    <div class="card h-100 border-0 shadow-sm overflow-hidden">
         {{-- Обертка для фото --}}
         <div class="ad-card-img-wrapper">
             <img src="{{ !empty($ad->photos) ? asset('storage/' . $ad->photos[0]) : asset('storage/no-image.jpg') }}" 
