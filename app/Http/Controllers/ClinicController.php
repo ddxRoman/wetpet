@@ -158,8 +158,26 @@ public function liveSearch(Request $request)
     $query = $request->get('q');
     if (mb_strlen($query) < 2) return response()->json([]);
 
+    // Разбиваем запрос на отдельные слова для гибкого поиска
+    $words = explode(' ', $query);
+
+    // Вспомогательная функция для расширенного поиска (Название + Адрес)
+    // Используется в Клиниках и Организациях
+    $applyAdvancedSearch = function($q) use ($words) {
+        foreach ($words as $word) {
+            $q->where(function($sub) use ($word) {
+                $sub->where('name', 'LIKE', "%{$word}%")
+                    ->orWhere('street', 'LIKE', "%{$word}%")
+                    ->orWhere('city', 'LIKE', "%{$word}%")
+                    ->orWhere('house', 'LIKE', "%{$word}%");
+            });
+        }
+    };
+
     // 1. Клиники
-    $clinics = \App\Models\Clinic::where('name', 'LIKE', "%{$query}%")
+    $clinics = \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
+            $applyAdvancedSearch($q);
+        })
         ->limit(5)->get()->map(function($item) {
             return [
                 'type' => 'clinic',
@@ -170,7 +188,7 @@ public function liveSearch(Request $request)
             ];
         });
 
-    // 2. Врачи (Doctor)
+    // 2. Врачи
     $doctors = \App\Models\Doctor::with('clinic')
         ->where(function($q) use ($query) {
             $q->where('name', 'LIKE', "%{$query}%")
@@ -180,7 +198,6 @@ public function liveSearch(Request $request)
             $clinicAddress = $item->clinic 
                 ? " ({$item->clinic->city}, {$item->clinic->street} {$item->clinic->house})" 
                 : "";
-
             return [
                 'type' => 'doctor',
                 'name' => $item->name,
@@ -193,10 +210,10 @@ public function liveSearch(Request $request)
 
     // 3. Организации
     $organizations = \App\Models\Organization::with(['fieldOfActivity'])
-        ->where('name', 'LIKE', "%{$query}%")
-        ->limit(5)
-        ->get()
-        ->map(function($item) {
+        ->where(function($q) use ($applyAdvancedSearch) {
+            $applyAdvancedSearch($q);
+        })
+        ->limit(5)->get()->map(function($item) {
             return [
                 'type' => 'organization',
                 'name' => $item->name,
@@ -207,7 +224,7 @@ public function liveSearch(Request $request)
             ];
         });
 
-    // 4. Специалисты (Specialist)
+    // 4. Специалисты
     $specialists = \App\Models\Specialist::with('organization')
         ->where(function($q) use ($query) {
             $q->where('name', 'LIKE', "%{$query}%")
@@ -220,7 +237,6 @@ public function liveSearch(Request $request)
                 $cityName = $item->city->name ?? 'Город не указан'; 
                 $location = "Частный специалист: {$cityName}, {$item->street} {$item->house}";
             }
-
             return [
                 'type' => 'specialist',
                 'name' => $item->name,
@@ -231,25 +247,22 @@ public function liveSearch(Request $request)
             ];
         });
 
-// 5. Животные (Поиск по породе ИЛИ по виду животного)
+    // 5. Животные
     $animals = \App\Models\Animal::with('details')
-->where(function($q) use ($query) {
-            $q->where(\DB::raw("CONCAT(species, ' ', breed)"), 'LIKE', "%{$query}%")
-              ->orWhere('breed', 'LIKE', "%{$query}%")
-              ->orWhere('species', 'LIKE', "%{$query}%");
+        ->where(function($q) use ($query) {
+            // Поиск по породе или виду
+            $q->where('breed', 'LIKE', "%{$query}%")
+              ->orWhere('species', 'LIKE', "%{$query}%")
+              ->orWhereRaw("CONCAT(species, ' ', breed) LIKE ?", ["%{$query}%"]);
         })
-        ->limit(5)
-        ->get()
-        ->map(function($item) {
-            $photoPath = $item->details->photo ?? null;
-
+        ->limit(5)->get()->map(function($item) {
             return [
                 'type' => 'Животное',
                 'name' => $item->breed,
                 'slug' => $item->breed_slug,
                 'species_slug' => $item->species_slug, 
                 'category' => $item->species,
-                'image' => $photoPath ? \Storage::url($photoPath) : asset('storage/animals/default-animal.webp')
+                'image' => ($item->details->photo ?? null) ? \Storage::url($item->details->photo) : asset('storage/animals/default-animal.webp')
             ];
         });
 

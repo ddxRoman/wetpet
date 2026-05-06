@@ -19,40 +19,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultsContainer.innerHTML = '';
                 let hasResults = false;
 
-                // 1. Отрисовка КЛИНИК
-                if (data.clinics && data.clinics.length > 0) {
-                    data.clinics.forEach(clinic => {
-                        hasResults = true;
-                        resultsContainer.innerHTML += `
-                            <a href="/clinics/${clinic.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
-                                <img src="${clinic.image}" class="search-img-thumb" alt="logo">
-                                <div class="ms-2">
-                                    <div class="result-title text-primary"><small>🏥 Клиника:</small> ${clinic.name}</div>
-                                    <div class="result-sub-small text-muted">${clinic.address}</div>
-                                </div>
-                            </a>`;
-                    });
-                }
+// Очищаем контейнер перед отрисовкой
+resultsContainer.innerHTML = '';
+let hasResults = false;
 
-                // 2. Отрисовка ОРГАНИЗАЦИЙ (Адрес под названием + тип в скобках)
-                if (data.organizations && data.organizations.length > 0) {
-                    data.organizations.forEach(org => {
-                        hasResults = true;
-                        // Формируем строку категории, если она есть
-                        const category = org.category_name ? `<span class="text-muted small">(${org.category_name})</span>` : '';
-                        
-                        resultsContainer.innerHTML += `
-                            <a href="/organizations/${org.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
-                                <img src="${org.image}" class="search-img-thumb" alt="logo">
-                                <div class="ms-2">
-                                    <div class="result-title text-success">
-                                        <small>🏢</small> ${org.name} ${category}
-                                    </div>
-                                    <div class="result-sub-small text-muted">${org.address}</div>
-                                </div>
-                            </a>`;
-                    });
-                }
+// 1. Отрисовка КЛИНИК
+if (data.clinics && data.clinics.length > 0) {
+    data.clinics.forEach(clinic => {
+        hasResults = true;
+        resultsContainer.innerHTML += `
+            <a href="/clinics/${clinic.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                <img src="${clinic.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                <div class="ms-2">
+                    <div class="result-title text-primary"><small>🏥 Клиника:</small> ${clinic.name}</div>
+                    <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${clinic.address}</div>
+                </div>
+            </a>`;
+    });
+}
+
+// 2. Отрисовка ОРГАНИЗАЦИЙ
+if (data.organizations && data.organizations.length > 0) {
+    data.organizations.forEach(org => {
+        hasResults = true;
+        const category = org.category_name ? `<span class="text-muted small">(${org.category_name})</span>` : '';
+        resultsContainer.innerHTML += `
+            <a href="/organizations/${org.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                <img src="${org.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                <div class="ms-2">
+                    <div class="result-title text-success">
+                        <small>🏢</small> ${org.name} ${category}
+                    </div>
+                    <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${org.address}</div>
+                </div>
+            </a>`;
+    });
+}
 
                 // 3. Отрисовка ВРАЧЕЙ
                 if (data.doctors && data.doctors.length > 0) {
