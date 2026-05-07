@@ -49,36 +49,49 @@
         </div>
     </div>
 
-    {{-- ШАПКА --}}
-    <div class="d-flex align-items-start flex-wrap mb-4">
-        <img src="{{ $logo }}" 
-             style="width:90px;height:90px;border-radius:10px;object-fit:cover" 
-             class="me-3 mb-3 mb-md-0">
+{{-- ШАПКА --}}
+    <div class="d-flex align-items-start justify-content-between flex-wrap mb-4">
+        
+        {{-- Левый блок: Лого + Текст --}}
+        <div class="d-flex align-items-start flex-wrap flex-grow-1">
+            <img src="{{ $logo }}" 
+                 style="width:90px;height:90px;border-radius:10px;object-fit:cover" 
+                 class="me-3 mb-3 mb-md-0 border p-1">
 
-        <div class="flex-grow-1">
-            <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
-                <h1 class="fw-bold m-0" style="font-size: 1.75rem;">{{ $clinic->name }}</h1>
+            <div class="flex-grow-1">
+                <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+                    <h1 class="fw-bold m-0" style="font-size: 1.75rem;">{{ $clinic->name }}</h1>
 
-                {{-- ⭐ Блок рейтинга в одну строку с бежевым фоном --}}
-                <div class="rating-badge-container d-flex align-items-center px-2 py-1 rounded shadow-sm" style="background-color: #fff8e1; border: 1px solid #ffe082;">
-                    <div class="d-flex align-items-center me-2">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <img src="{{ asset('storage/icon/button/' . ($i <= ($averageRating ?? 0) ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
-                                 width="18" alt="звезда">
-                        @endfor
+                    {{-- ⭐ Блок рейтинга --}}
+                    <div class="rating-badge-container d-flex align-items-center px-2 py-1 rounded shadow-sm" style="background-color: #fff8e1; border: 1px solid #ffe082;">
+                        <div class="d-flex align-items-center me-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <img src="{{ asset('storage/icon/button/' . ($i <= ($averageRating ?? 0) ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
+                                     width="18" alt="звезда">
+                            @endfor
+                        </div>
+                        @if($reviewCount > 0)
+                            <span class="fw-bold text-dark me-1" style="font-size: 0.9rem;">{{ $averageRating }}</span>
+                            <span class="text-muted small">({{ $reviewCount }} {{ $reviewCount % 10 == 1 && $reviewCount % 100 != 11 ? 'отзыв' : 'отзывов' }})</span>
+                        @else
+                            <span class="text-muted small">Нет отзывов</span>
+                        @endif
                     </div>
-                    @if($reviewCount > 0)
-                        <span class="fw-bold text-dark me-1" style="font-size: 0.9rem;">{{ $averageRating }}</span>
-                        <span class="text-muted small">({{ $reviewCount }} {{ $reviewCount % 10 == 1 && $reviewCount % 100 != 11 ? 'отзыв' : 'отзывов' }})</span>
-                    @else
-                        <span class="text-muted small">Нет отзывов</span>
-                    @endif
+                </div>
+                
+                <div class="text-muted">
+                    <i class="bi bi-geo-alt"></i> {{ $clinicAddress ?? 'Адрес не указан' }}
                 </div>
             </div>
-            
-            <div class="text-muted">
-                {{ $clinicAddress ?? 'Адрес не указан' }}
-            </div>
+        </div>
+
+        {{-- Правый блок: Кнопка "ЭТО Я" --}}
+        <div class="ms-md-3 mt-2 mt-md-0">
+            <button class="btn btn-success fw-bold d-flex align-items-center gap-2" 
+                    style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">
+                <img src="{{ asset('storage/icon/button/is_me.svg') }}" width="20" alt="is_me" onerror="this.style.display='none'"> 
+                Это моя клиника
+            </button>
         </div>
     </div>
 

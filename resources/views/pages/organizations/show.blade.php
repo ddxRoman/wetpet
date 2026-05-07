@@ -11,12 +11,12 @@
         $organization->street,
         $organization->house,
     ]);
-        $tab = request('tab', 'contacts');
+
+    // Исправлено: берем 'tab' из запроса, если его нет — ставим 'contacts' по умолчанию
+    $tab = request('tab', 'contacts');
 
     $mapQuery = urlencode(implode(', ', $addressParts));
-    $tab = request('tab', 'info');
 @endphp
-
 @include('layouts.header')
 
 <main class="flex-grow-1 container mt-5">
@@ -29,8 +29,11 @@
         </a>
     </div>
 
-    {{-- ШАПКА --}}
-    <div class="d-flex align-items-start flex-wrap mb-4">
+   {{-- ШАПКА --}}
+<div class="d-flex align-items-start justify-content-between flex-wrap mb-4">
+    
+    {{-- Левый блок: Лого + Инфо --}}
+    <div class="d-flex align-items-start flex-wrap flex-grow-1">
         <img src="{{ $logo }}"
              style="width:120px;height:120px;border-radius:10px;object-fit:contain; background: #fff"
              class="me-3 border p-2">
@@ -74,6 +77,14 @@
             </div>
         </div>
     </div>
+
+    {{-- Правый блок: Кнопка "ЭТО Я" --}}
+    <div class="ms-md-3 mt-2 mt-md-0">
+        <button class="btn btn-success fw-bold" style="border-radius: 8px; padding: 10px 20px;">
+            Это моя организация
+        </button>
+    </div>
+</div>
 
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">

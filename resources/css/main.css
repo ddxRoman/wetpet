@@ -993,12 +993,6 @@ select:focus {
     transform: rotate(-10deg);
 }
 
-.btn-outline-success {
-    border: none;
-    border-radius: 15px;
-    background-color: yellowgreen;
-}
-
 .add_btn {
     width: 120px;
     border: none;

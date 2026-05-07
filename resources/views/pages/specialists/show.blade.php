@@ -32,52 +32,50 @@
         </a>
     </div>
 
-    {{-- ШАПКА --}}
-    <div class="d-flex align-items-start flex-wrap mb-4">
+{{-- ШАПКА --}}
+<div class="d-flex align-items-start justify-content-between flex-wrap mb-4">
+    
+    {{-- Левый блок: Фото + Инфо --}}
+    <div class="d-flex align-items-start flex-wrap flex-grow-1">
         <img src="{{ $photo }}"
              style="width:90px;height:90px;border-radius:10px;object-fit:cover"
-             class="me-3">
+             class="me-3 border p-1">
 
         <div class="flex-grow-1">
             <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
                 <h1 class="fw-bold m-0" style="font-size: 1.75rem;">{{ $doctor->name }}</h1>
                 
                 @if($doctor->exotic_animals === 'Да')
-                    <!-- <span class="badge bg-warning text-dark" title="Работает с экзотическими животными">🦎</span> -->
-                                         <img src="{{ asset('storage/icon/stars/exotic.png') }}" class="exotic_icon_card" alt="Экзотическое животное" title="Этот специалист работает с экзотическими животными, такими как ящерецы, грызуны, черепахи и тд">
-            
+                    <img src="{{ asset('storage/icon/stars/exotic.png') }}" class="exotic_icon_card" alt="Экзотическое животное" title="Этот специалист работает с экзотическими животными, такими как ящерецы, грызуны, черепахи и тд">
                 @endif
 
-{{-- Рейтинг --}}
-@php
-    $reviewCount = $doctor->reviews_count;
-    // Округляем средний рейтинг до 1 знака после запятой
-    $averageRating = round($doctor->reviews_avg_rating, 1);
-@endphp
+                {{-- Рейтинг --}}
+                @php
+                    $reviewCount = $doctor->reviews_count;
+                    $averageRating = round($doctor->reviews_avg_rating, 1);
+                @endphp
 
-<div class="rating-badge-container d-flex align-items-center px-2 py-1 rounded shadow-sm" 
-     style="background-color: #fff8e1; border: 1px solid #ffe082;">
-    
-    <div class="d-flex align-items-center me-2">
-        @for ($i = 1; $i <= 5; $i++)
-            {{-- Если текущая звезда меньше или равна рейтингу — рисуем активную --}}
-            <img src="{{ asset('storage/icon/button/' . ($i <= round($averageRating) ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
-                 width="18" 
-                 alt="звезда">
-        @endfor
-    </div>
+                <div class="rating-badge-container d-flex align-items-center px-2 py-1 rounded shadow-sm" 
+                     style="background-color: #fff8e1; border: 1px solid #ffe082;">
+                    
+                    <div class="d-flex align-items-center me-2">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <img src="{{ asset('storage/icon/button/' . ($i <= round($averageRating) ? 'award-stars_active.svg' : 'award-stars_disable.svg')) }}"
+                                 width="18" alt="звезда">
+                        @endfor
+                    </div>
 
-    @if($reviewCount > 0)
-        <span class="fw-bold text-dark me-1" style="font-size: 0.9rem;">
-            {{ number_format($averageRating, 1) }}
-        </span>
-        <span class="text-muted small">
-            ({{ $reviewCount }} {{ trans_choice('отзыв|отзыва|отзывов', $reviewCount, [], 'ru') }})
-        </span>
-    @else
-        <span class="text-muted small">Нет отзывов</span>
-    @endif
-</div>
+                    @if($reviewCount > 0)
+                        <span class="fw-bold text-dark me-1" style="font-size: 0.9rem;">
+                            {{ number_format($averageRating, 1) }}
+                        </span>
+                        <span class="text-muted small">
+                            ({{ $reviewCount }} {{ trans_choice('отзыв|отзыва|отзывов', $reviewCount, [], 'ru') }})
+                        </span>
+                    @else
+                        <span class="text-muted small">Нет отзывов</span>
+                    @endif
+                </div>
             </div>
 
             <div class="text-muted">
@@ -86,6 +84,15 @@
         </div>
     </div>
 
+    {{-- Правый блок: Кнопка "Это я" --}}
+    <div class="ms-md-3 mt-3 mt-md-0">
+        <button class="btn btn-success fw-bold d-flex align-items-center gap-2" 
+                style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">
+            <img src="{{ asset('storage/icon/button/is_me.svg') }}" width="20" alt="is_me" onerror="this.style.display='none'">
+            Это я
+        </button>
+    </div>
+</div>
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
