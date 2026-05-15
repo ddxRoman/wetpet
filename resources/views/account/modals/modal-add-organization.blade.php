@@ -173,11 +173,9 @@
                         </div>
 
                         <div class="col-12">
-                            <label>Логотип</label>
-
                             <div class="photo-wrapper">
         <!-- Квадрат для выбора -->
-       <div id="orgPhotoPicker">+</div>
+       <div class="titile_add_photo" id="orgPhotoPicker">Логотип</div>
 
         <!-- Превью -->
     <div id="orgPhotoPreviewWrapper" style="display:none">

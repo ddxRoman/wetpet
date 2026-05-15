@@ -993,6 +993,11 @@ select:focus {
     transform: rotate(-10deg);
 }
 
+.titile_add_photo{
+    color: #000000;
+    opacity: 0.4;
+}
+
 .add_btn {
     width: 120px;
     border: none;
@@ -2313,4 +2318,52 @@ a {
 /* Если нужно уменьшить логотип именно тут */
 .header-ads-mode .header_logo {
     max-height: 80px; 
+}
+
+
+/* Модалки */
+
+
+.photo-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+#orgPhotoPicker {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+#orgPhotoPreviewWrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+#orgPhotoPreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+#orgRemovePhotoBtn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: #dc3545;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
 }

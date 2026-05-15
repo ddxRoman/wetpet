@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Models\Doctor;
 
 class SpecialistController extends Controller
 {
@@ -76,64 +77,76 @@ public function index(Request $request)
      */
 public function store(Request $request)
 {
-    // 1. Валидация (добавили поля контактов)
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'city_id' => 'required|exists:cities,id',
+    // 1. Валидация
+    $validated = $request->validate([
+        'name'                 => 'required|string|max:255',
         'field_of_activity_id' => 'required|exists:field_of_activities,id',
-        'phone' => 'nullable|string',
-        'mail' => 'nullable|email', // в модалке поле называется "mail"
-        'photo' => 'nullable|image|max:2048',
+        'city_id'              => 'nullable|exists:cities,id',
+        'clinic_id'            => 'nullable|exists:clinics,id',
+        'experience'           => 'nullable|string|max:255',
+        'description'          => 'nullable|string',
+        'exotic_animals'       => 'nullable|string', 
+        'On_site_assistance'   => 'nullable|string',
+        'phone'                => 'nullable|string|max:255',
+        'mail'                 => 'nullable|string|email|max:255',
+        'messengers'           => 'nullable|array',
+        'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Валидация фото
     ]);
 
-    $field = FieldOfActivity::findOrFail($request->field_of_activity_id);
+    // 🔹 Получаем специализацию
+    $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
 
-    // 2. Логика чекбоксов и организации
-    $exotic = $request->has('exotic_animals') ? 'Да' : 'Нет';
-    $onSite = $request->has('On_site_assistance') ? 'Да' : 'Нет';
-    $orgId = $request->filled('clinic_id') ? $request->clinic_id : null;
-
-    // 3. Обработка фото (если загружено)
+    // 🔹 Обработка фото (СОХРАНЕНИЕ НА ДИСК)
     $photoPath = null;
     if ($request->hasFile('photo')) {
-        $photoPath = $request->file('photo')->store('specialists', 'public');
+        $photoPath = $request->file('photo')->store('doctors', 'public');
     }
 
-    // 4. Создание специалиста
-    $specialist = Specialist::create([
-        'name' => $request->name,
-        'specialization' => $field->name,
-        'city_id' => $request->city_id,
-        'organization_id' => $orgId,
-        'street' => $orgId ? null : $request->street,
-        'house' => $orgId ? null : $request->house,
-        'date_of_birth' => $request->date_of_birth,
-        'experience' => $request->experience,
-        'exotic_animals' => $exotic,
-        'On_site_assistance' => $onSite,
-        'description' => $request->description,
-        'photo' => $photoPath, // Не забудьте сохранить путь к фото
-        'slug' => Str::slug($request->name) . '-' . rand(100, 999),
+    // 🔹 Создаём врача
+    $doctor = Doctor::create([
+        'name'                 => $validated['name'],
+        'specialization'       => $field->name,
+        'field_of_activity_id' => $field->id,
+        'city_id'              => $validated['city_id'] ?? null,
+        'clinic_id'            => $validated['clinic_id'] ?? null,
+        'experience'           => $validated['experience'] ?? null,
+        'description'          => $validated['description'] ?? null,
+        'exotic_animals'       => $request->has('exotic_animals') ? 'Да' : 'Нет',
+        'On_site_assistance'   => $request->has('On_site_assistance') ? 'Да' : 'Нет',
+        'photo'                => $photoPath, // ЗАПИСЬ В БАЗУ
+        'slug'                 => Str::slug($validated['name']) . '-' . rand(100, 999),
     ]);
 
-    // 5. СОХРАНЕНИЕ КОНТАКТОВ
-    // Очистка WhatsApp если нужно (как в методе update)
-    $whatsapp = null;
-    if ($request->has('messengers') && in_array('whatsapp', $request->messengers)) {
-        $whatsapp = preg_replace('/[^0-9]/', '', $request->phone);
-    }
+    // СОХРАНЕНИЕ КОНТАКТОВ
+    $telegram = ($request->messengers && in_array('telegram', $request->messengers)) ? $request->phone : null;
+    $whatsapp = ($request->messengers && in_array('whatsapp', $request->messengers)) ? $request->phone : null;
+    $max      = ($request->messengers && in_array('messenger', $request->messengers)) ? $request->phone : null;
 
-    $specialist->contacts()->create([
+    $doctor->contacts()->create([
         'phone'    => $request->phone,
-        'email'    => $request->mail, // в форме input name="mail"
-        'telegram' => ($request->has('messengers') && in_array('telegram', $request->messengers)) ? $request->phone : null,
+        'email'    => $request->mail,
+        'telegram' => $telegram,
         'whatsapp' => $whatsapp,
+        'max'      => $max,
     ]);
 
-    return response()->json([
-        'success' => true,
-        'id' => $specialist->id,
-    ]);
+    // Уведомление в Telegram
+    try {
+        $url = route('doctors.show', $doctor->slug); 
+        Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
+            'chat_id' => config('services.telegram.chat_id'),
+            'parse_mode' => 'HTML',
+            'text' => "🩺 <b>Новый специалист</b>\n\n" . "👤 <b>Имя:</b> {$doctor->name}\n" . "📌 <b>Специализация:</b> {$doctor->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
+        ]);
+    } catch (\Throwable $e) {
+        logger()->warning('Telegram notify failed', ['error' => $e->getMessage()]);
+    }
+
+    if ($request->boolean('its_me') && auth()->check()) {
+        $doctor->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
+    }
+
+    return response()->json(['success' => true, 'id' => $doctor->id, 'type' => 'doctor']);
 }
 
     /**

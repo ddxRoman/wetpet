@@ -44,7 +44,51 @@
                     @endforeach
                 </div>
             @endif
+{{-- Блок Организаций --}}
+            @if($results['organizations']->count() > 0)
+                @php $hasAny = true; @endphp
+                <h3 class="mt-4 text-success">🏢 Зооорганизации</h3>
+                @foreach($results['organizations'] as $org)
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <img src="{{ $org->logo ? Storage::url($org->logo) : asset('storage/organizations/default-org.webp') }}" style="width: 80px; height: 80px; object-fit: cover;" class="rounded" alt="">
+                            <div class="ms-3">
+                                <h5 class="mb-1">
+                                    <a href="/organizations/{{ $org->slug }}">{{ $org->name }}</a>
+                                </h5>
+                                <p class="text-muted mb-1">{{ $org->city }}, {{ $org->street }} {{ $org->house }}</p>
+                                @if($org->fieldOfActivity)
+                                    <span class="badge bg-light text-dark border">{{ $org->fieldOfActivity->name }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
 
+            {{-- Блок Специалистов --}}
+            @if($results['specialists']->count() > 0)
+                @php $hasAny = true; @endphp
+                <h3 class="mt-4 text-warning">⭐ Специалисты</h3>
+                <div class="row">
+                    @foreach($results['specialists'] as $spec)
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 shadow-sm border-0">
+                                <div class="card-body text-center"><a href="/specialists/{{ $spec->slug }}" class="text-decoration-none">
+                                    <img src="{{ $spec->photo ? Storage::url($spec->photo) : asset('storage/doctors/default-doctor.webp') }}" class="rounded-circle mb-2" style="width: 100px; height: 100px; object-fit: cover;">
+                                    </a><h5><a href="/specialists/{{ $spec->slug }}" class="text-decoration-none">{{ $spec->name }}</a></h5>
+                                    <p class="small text-muted mb-1">{{ $spec->specialization }}</p>
+                                    @if($spec->organization)
+                                        <p class="small text-primary">🏢 {{ $spec->organization->name }}</p>
+                                    @else
+                                        <p class="small text-secondary">📍 Частная практика</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             {{-- Блок Пород --}}
             @if($results['animals']->count() > 0)
                 @php $hasAny = true; @endphp

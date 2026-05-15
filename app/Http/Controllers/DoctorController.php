@@ -17,7 +17,7 @@ class DoctorController extends Controller
      */
 public function store(Request $request)
 {
-    // 1. Валидация (добавил недостающие поля из вашей формы)
+    // 1. Валидация
     $validated = $request->validate([
         'name'                 => 'required|string|max:255',
         'field_of_activity_id' => 'required|exists:field_of_activities,id',
@@ -25,15 +25,22 @@ public function store(Request $request)
         'clinic_id'            => 'nullable|exists:clinics,id',
         'experience'           => 'nullable|string|max:255',
         'description'          => 'nullable|string',
-        'exotic_animals'       => 'nullable|string', // Добавлено
-        'On_site_assistance'   => 'nullable|string', // Добавлено
-        'phone'                => 'nullable|string|max:255', // Для таблицы контактов
-        'mail'                 => 'nullable|string|email|max:255', // Для таблицы контактов
-        'messengers'           => 'nullable|array', // Для таблицы контактов
+        'exotic_animals'       => 'nullable|string', 
+        'On_site_assistance'   => 'nullable|string',
+        'phone'                => 'nullable|string|max:255',
+        'mail'                 => 'nullable|string|email|max:255',
+        'messengers'           => 'nullable|array',
+        'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Валидация фото
     ]);
 
     // 🔹 Получаем специализацию
     $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
+
+    // 🔹 Обработка фото (СОХРАНЕНИЕ НА ДИСК)
+    $photoPath = null;
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->store('doctors', 'public');
+    }
 
     // 🔹 Создаём врача
     $doctor = Doctor::create([
@@ -44,62 +51,42 @@ public function store(Request $request)
         'clinic_id'            => $validated['clinic_id'] ?? null,
         'experience'           => $validated['experience'] ?? null,
         'description'          => $validated['description'] ?? null,
-        'exotic_animals'       => $request->exotic_animals ?? 'Нет',
-        'On_site_assistance'   => $request->On_site_assistance ?? 'Нет',
+        'exotic_animals'       => $request->has('exotic_animals') ? 'Да' : 'Нет',
+        'On_site_assistance'   => $request->has('On_site_assistance') ? 'Да' : 'Нет',
+        'photo'                => $photoPath, // ЗАПИСЬ В БАЗУ
         'slug'                 => Str::slug($validated['name']) . '-' . rand(100, 999),
     ]);
 
-    /* ============================================================
-       🔥 СОХРАНЕНИЕ КОНТАКТОВ (doctor_contacts)
-    ============================================================ */
+    // СОХРАНЕНИЕ КОНТАКТОВ
     $telegram = ($request->messengers && in_array('telegram', $request->messengers)) ? $request->phone : null;
     $whatsapp = ($request->messengers && in_array('whatsapp', $request->messengers)) ? $request->phone : null;
     $max      = ($request->messengers && in_array('messenger', $request->messengers)) ? $request->phone : null;
 
     $doctor->contacts()->create([
         'phone'    => $request->phone,
-        'email'    => $request->mail, // в форме поле называется mail
+        'email'    => $request->mail,
         'telegram' => $telegram,
         'whatsapp' => $whatsapp,
         'max'      => $max,
     ]);
 
-    // 🔹 Уведомление в Telegram (оставляем вашу логику)
-$url = route('doctors.show', $doctor->slug); 
-
-    // 🔹 Уведомление в Telegram
+    // Уведомление в Telegram
     try {
+        $url = route('doctors.show', $doctor->slug); 
         Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
             'chat_id' => config('services.telegram.chat_id'),
             'parse_mode' => 'HTML',
-            'text' =>
-                "🩺 <b>Новый специалист</b>\n\n" .
-                "👤 <b>Имя:</b> {$doctor->name}\n" .
-                "📌 <b>Специализация:</b> {$doctor->specialization}\n" .
-                ($doctor->city?->name ? "🏙 <b>Город:</b> {$doctor->city->name}\n" : '') .
-                ($doctor->clinic?->name ? "🏥 <b>Клиника:</b> {$doctor->clinic->name}\n" : '') .
-                "\n🔗 <a href=\"{$url}\">Открыть профиль на сайте</a>",
+            'text' => "🩺 <b>Новый специалист</b>\n\n" . "👤 <b>Имя:</b> {$doctor->name}\n" . "📌 <b>Специализация:</b> {$doctor->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
         ]);
     } catch (\Throwable $e) {
         logger()->warning('Telegram notify failed', ['error' => $e->getMessage()]);
     }
 
-    // Для добавления владельца (ваша логика "Это я")
-    $isOwner = $request->boolean('its_me');
-    $user = auth()->user();
-
-    if ($isOwner && $user) {
-        $doctor->owners()->syncWithoutDetaching([
-            $user->id => ['is_confirmed' => false],
-        ]);
+    if ($request->boolean('its_me') && auth()->check()) {
+        $doctor->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
     }
 
-    // 🔹 ВАЖНО: JSON → модалка закрывается
-    return response()->json([
-        'success' => true,
-        'id' => $doctor->id,
-        'type' => 'doctor',
-    ]);
+    return response()->json(['success' => true, 'id' => $doctor->id, 'type' => 'doctor']);
 }
 
 /**

@@ -280,12 +280,63 @@ public function fullSearch(Request $request)
     $query = $request->get('q');
     if (!$query) return redirect()->back();
 
-    // Собираем все данные (аналогично вашему liveSearch, но без жестких лимитов)
+    $words = explode(' ', $query);
+
+    // Универсальная функция поиска по адресу/названию
+    $applyAdvancedSearch = function($q) use ($words) {
+        foreach ($words as $word) {
+            $q->where(function($sub) use ($word) {
+                $sub->where('name', 'LIKE', "%{$word}%")
+                    ->orWhere('street', 'LIKE', "%{$word}%")
+                    ->orWhere('city', 'LIKE', "%{$word}%")
+                    ->orWhere('house', 'LIKE', "%{$word}%");
+            });
+        }
+    };
+
     $results = [
-        'clinics' => \App\Models\Clinic::where('name', 'LIKE', "%{$query}%")->get(),
-        'doctors' => \App\Models\Doctor::where('name', 'LIKE', "%{$query}%")->orWhere('specialization', 'LIKE', "%{$query}%")->get(),
-        'organizations' => \App\Models\Organization::where('name', 'LIKE', "%{$query}%")->get(),
-        'animals' => \App\Models\Animal::where('breed', 'LIKE', "%{$query}%")->orWhere('species', 'LIKE', "%{$query}%")->get(),
+        'clinics' => \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
+            $applyAdvancedSearch($q);
+        })->get(),
+
+        'organizations' => \App\Models\Organization::with('fieldOfActivity')
+            ->where(function($q) use ($applyAdvancedSearch) {
+                $applyAdvancedSearch($q);
+            })->get(),
+
+        'doctors' => \App\Models\Doctor::with('clinic')
+            ->where(function($q) use ($query, $words) {
+                // Ищем по имени врача целиком
+                $q->where('name', 'LIKE', "%{$query}%")
+                  ->orWhere('specialization', 'LIKE', "%{$query}%")
+                  // ИЛИ по адресу клиники (разбивая на слова)
+                  ->orWhereHas('clinic', function($sub) use ($words) {
+                      foreach ($words as $word) {
+                          $sub->where(function($inner) use ($word) {
+                              $inner->where('city', 'LIKE', "%{$word}%")
+                                    ->orWhere('street', 'LIKE', "%{$word}%");
+                          });
+                      }
+                  });
+            })->get(),
+
+        'specialists' => \App\Models\Specialist::with(['organization', 'city'])
+            ->where(function($q) use ($query, $words) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                  ->orWhere('specialization', 'LIKE', "%{$query}%")
+                  ->orWhereHas('organization', function($sub) use ($words) {
+                      foreach ($words as $word) {
+                          $sub->where(function($inner) use ($word) {
+                              $inner->where('city', 'LIKE', "%{$word}%")
+                                    ->orWhere('street', 'LIKE', "%{$word}%");
+                          });
+                      }
+                  });
+            })->get(),
+
+        'animals' => \App\Models\Animal::where('breed', 'LIKE', "%{$query}%")
+            ->orWhere('species', 'LIKE', "%{$query}%")
+            ->get(),
     ];
 
     return view('pages.search.index', compact('results', 'query'));

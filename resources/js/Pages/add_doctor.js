@@ -3,13 +3,12 @@ import 'choices.js/public/assets/styles/choices.min.css';
 
 let isSubmitting = false;
 
-/* =====================================================================
-   ГЛАВНАЯ ФУНКЦИЯ
-===================================================================== */
 function initAddDoctorScripts(modal) {
     console.log('Add Doctor modal initialized!');
 
-    /* ===== БЛОК 1 — стаж от возраста ===== */
+    const form = modal.querySelector('#addDoctorForm');
+
+    /* ===== БЛОК 1 — Стаж от возраста ===== */
     const dobInput = modal.querySelector('#date_of_birth');
     const expInput = modal.querySelector('#experience');
 
@@ -17,274 +16,191 @@ function initAddDoctorScripts(modal) {
         dobInput.addEventListener('change', () => {
             const dob = new Date(dobInput.value);
             if (isNaN(dob)) return;
-
             const now = new Date();
-            const age =
-                now.getFullYear() -
-                dob.getFullYear() -
-                ((now.getMonth() < dob.getMonth() ||
-                    (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate()))
-                    ? 1
-                    : 0);
-
+            const age = now.getFullYear() - dob.getFullYear() -
+                ((now.getMonth() < dob.getMonth() || 
+                (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate())) ? 1 : 0);
             const maxExperience = Math.max(age - 18, 0);
             expInput.max = maxExperience;
-            if (+expInput.value > maxExperience) {
-                expInput.value = maxExperience;
-            }
+            if (+expInput.value > maxExperience) expInput.value = maxExperience;
         });
     }
 
-    /* ===== БЛОК 2 — Region → City → Clinic (Choices) ===== */
+    /* ===== БЛОК 2 — Регион → Город → Клиника ===== */
     const regionSelect = modal.querySelector('#regionSelect');
     const citySelect   = modal.querySelector('#citySelect');
     const clinicSelect = modal.querySelector('#clinicSelect');
-
     let regionChoices, cityChoices, clinicChoices;
 
     if (regionSelect && citySelect && clinicSelect) {
-
-        regionChoices = new Choices(regionSelect, {
-            searchPlaceholderValue: 'Поиск региона...',
-            shouldSort: false,
-        });
-
-        cityChoices = new Choices(citySelect, {
-            searchPlaceholderValue: 'Поиск города...',
-            shouldSort: false,
-        });
-
-        clinicChoices = new Choices(clinicSelect, {
-            searchPlaceholderValue: 'Поиск клиники...',
-            shouldSort: false,
-        });
+        regionChoices = new Choices(regionSelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
+        cityChoices = new Choices(citySelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
+        clinicChoices = new Choices(clinicSelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
 
         regionSelect.addEventListener('change', () => {
             const region = regionSelect.value;
-
             cityChoices.clearChoices();
             clinicChoices.clearChoices();
-
-            cityChoices.setChoices(
-                [{ value: '', label: 'Выберите город', selected: true }],
-                'value',
-                'label',
-                true
-            );
-
-            clinicChoices.setChoices(
-                [{ value: '', label: 'Сначала выберите город', selected: true }],
-                'value',
-                'label',
-                true
-            );
-
+            cityChoices.setChoices([{ value: '', label: 'Выберите город', selected: true }], 'value', 'label', true);
             if (!region) return;
-
             fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
                 .then(r => r.json())
                 .then(list => {
-                    cityChoices.setChoices(
-                        list.map(c => ({
-                            value: c.id,
-                            label: c.name
-                        })),
-                        'value',
-                        'label',
-                        true
-                    );
+                    cityChoices.setChoices(list.map(c => ({ value: c.id, label: c.name })), 'value', 'label', true);
                 });
         });
 
         citySelect.addEventListener('change', () => {
             const cityId = citySelect.value;
-
             clinicChoices.clearChoices();
-            clinicChoices.setChoices(
-                [{ value: '', label: 'Выберите клинику', selected: true }],
-                'value',
-                'label',
-                true
-            );
-
+            clinicChoices.setChoices([{ value: '', label: 'Выберите клинику', selected: true }], 'value', 'label', true);
             if (!cityId) return;
-
             fetch(`/api/clinics/by-city/${cityId}`)
                 .then(r => r.json())
                 .then(list => {
-                    clinicChoices.setChoices(
-                        list.map(c => ({
-                            value: c.id,
-                            label: c.name
-                        })),
-                        'value',
-                        'label',
-                        true
-                    );
+                    clinicChoices.setChoices(list.map(c => ({ value: c.id, label: c.name })), 'value', 'label', true);
                 });
         });
     }
 
-    /* ===== БЛОК 3 — сферы ===== */
+    /* ===== БЛОК 3 — Сферы деятельности (с логикой смены Action) ===== */
     const fieldSelect = modal.querySelector('#fieldOfActivitySelect');
-
     if (fieldSelect) {
         fetch('/api/fields/specialists')
             .then(r => r.json())
             .then(list => {
                 fieldSelect.innerHTML = '<option value="">Выберите сферу</option>';
-
                 const doctors = list.filter(i => i.activity === 'doctor');
                 const others  = list.filter(i => i.activity !== 'doctor');
 
                 if (doctors.length) {
-                    fieldSelect.innerHTML += '<optgroup label="Врачи">';
+                    let group = document.createElement('optgroup');
+                    group.label = "Врачи";
                     doctors.forEach(i => {
-                        fieldSelect.innerHTML += `<option value="${i.id}">${i.name}</option>`;
+                        // Добавляем data-activity для определения типа
+                        group.innerHTML += `<option value="${i.id}" data-activity="doctor">${i.name}</option>`;
                     });
-                    fieldSelect.innerHTML += '</optgroup>';
+                    fieldSelect.appendChild(group);
                 }
-
                 if (others.length) {
-                    fieldSelect.innerHTML += '<optgroup label="Другие специалисты">';
+                    let group = document.createElement('optgroup');
+                    group.label = "Другие специалисты";
                     others.forEach(i => {
-                        fieldSelect.innerHTML += `<option value="${i.id}">${i.name}</option>`;
+                        group.innerHTML += `<option value="${i.id}" data-activity="specialist">${i.name}</option>`;
                     });
-                    fieldSelect.innerHTML += '</optgroup>';
+                    fieldSelect.appendChild(group);
                 }
-            })
-            .catch(() => {
-                fieldSelect.innerHTML = `<option value="">Ошибка загрузки</option>`;
             });
+
+        // Слушатель смены специальности для подмены URL формы
+// Слушатель смены специальности для подмены URL формы
+fieldSelect.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const activity = selectedOption.getAttribute('data-activity');
+
+    if (activity === 'doctor') {
+        // Меняем на точный путь из web.php для сохранения доктора
+        form.action = '/doctors/store'; 
+    } else {
+        // Меняем на точный путь из web.php для сохранения специалиста
+        form.action = '/specialist'; 
+    }
+    console.log('Action changed to:', form.action);
+});
     }
 
     /* ===== БЛОК 4 — ФОТО ===== */
-    const picker = modal.querySelector('#photoPicker');
+    const picker = modal.querySelector('#doctorPhotoPicker');
     const fileInput = modal.querySelector('#doctorPhotoInput');
     const preview = modal.querySelector('#doctorPhotoPreview');
     const previewWrapper = modal.querySelector('#photoPreviewWrapper');
     const removeBtn = modal.querySelector('#removePhotoBtn');
 
-    if (picker && fileInput && preview && removeBtn) {
+    if (picker && fileInput) {
         picker.onclick = () => fileInput.click();
-
         fileInput.onchange = () => {
             const file = fileInput.files[0];
             if (!file) return;
-
             preview.src = URL.createObjectURL(file);
             previewWrapper.style.display = 'block';
             picker.style.display = 'none';
         };
-
-        removeBtn.onclick = () => {
-            fileInput.value = '';
-            preview.src = '';
-            previewWrapper.style.display = 'none';
-            picker.style.display = 'flex';
-        };
+        if (removeBtn) {
+            removeBtn.onclick = () => {
+                fileInput.value = '';
+                preview.src = '';
+                previewWrapper.style.display = 'none';
+                picker.style.display = 'flex';
+            };
+        }
     }
+
+    /* ===== БЛОК 5 — Частный специалист ===== */
     const isPrivateCheckbox = modal.querySelector('#is_private');
-    const addressSection = modal.querySelector('#address-section-add'); // Исправлено на правильный ID
-    
+    const addressSection = modal.querySelector('#address-section-add');
     if (isPrivateCheckbox && addressSection) {
         isPrivateCheckbox.addEventListener('change', function() {
             if (this.checked) {
                 addressSection.style.display = 'block';
-                
-                // Если используется Choices для клиник, сбрасываем его через API библиотеки
                 if (clinicChoices) {
                     clinicChoices.setChoiceByValue('');
-                    // Опционально: можно заблокировать выбор, пока стоит чекбокс
                     clinicChoices.disable();
                 }
             } else {
                 addressSection.style.display = 'none';
-                
-                if (clinicChoices) {
-                    clinicChoices.enable();
-                }
+                if (clinicChoices) clinicChoices.enable();
             }
         });
     }
 }
 
-/* =====================================================================
-   SUBMIT (ЕДИНЫЙ, БЕЗ КОНФЛИКТОВ)
-===================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-
-    const modal = document.getElementById('addDoctorModal');
-    const form  = document.getElementById('addDoctorForm');
+    const modalElement = document.getElementById('addDoctorModal');
+    const form = document.getElementById('addDoctorForm');
     const errorsBox = document.getElementById('doctorErrors');
 
-    if (modal) initAddDoctorScripts(modal);
-    if (!form) return;
+    if (modalElement) initAddDoctorScripts(modalElement);
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (isSubmitting) return;
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (isSubmitting) return;
 
-        isSubmitting = true;
-        errorsBox.classList.add('d-none');
+            isSubmitting = true;
+            if (errorsBox) errorsBox.classList.add('d-none');
 
-        try {
-            const res = await fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                    'Accept': 'application/json'
-                },
-                body: new FormData(form)
-            });
+            try {
+                const formData = new FormData(form);
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                });
 
-            const data = await res.json();
+                const data = await res.json();
 
-            if (data.success) {
-                const modalInstance = bootstrap.Modal.getOrCreateInstance(modal);
-                modalInstance.hide();
-
-                form.reset();
-                alert('Специалист успешно добавлен');
-            } else if (data.errors) {
-                errorsBox.innerHTML = Object.values(data.errors)
-                    .map(e => `<div>${e[0]}</div>`)
-                    .join('');
-                errorsBox.classList.remove('d-none');
-            } else {
-                throw new Error();
-            }
-// В блоке submit замени catch на этот:
-} catch (err) {
-    console.error('Детальная ошибка:', err); // Это поможет увидеть структуру ошибки
-    errorsBox.innerText = 'Ошибка сервера. Проверьте вкладку Network в консоли.';
-    errorsBox.classList.remove('d-none');
-} finally {
-            isSubmitting = false;
-        }
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const isPrivateCheckbox = document.getElementById('is_private');
-    const addressSection = document.getElementById('address-section');
-    const organizationSelect = document.querySelector('select[name="organization_id"]');
-
-    if (isPrivateCheckbox) {
-        isPrivateCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                // Показываем адрес, скрываем/сбрасываем организацию
-                addressSection.style.display = 'block';
-                if (organizationSelect) {
-                    organizationSelect.value = ''; // Сбрасываем выбор
-                    organizationSelect.closest('.mb-3').style.opacity = '0.5'; // Визуально приглушаем
+                if (data.success) {
+                    alert('Успешно сохранено!');
+                    window.location.reload();
+                } else if (data.errors) {
+                    if (errorsBox) {
+                        errorsBox.innerHTML = Object.values(data.errors)
+                            .map(e => `<div>${e[0]}</div>`).join('');
+                        errorsBox.classList.remove('d-none');
+                        modalElement.querySelector('.modal-body').scrollTop = 0;
+                    }
                 }
-            } else {
-                // Прячем адрес
-                addressSection.style.display = 'none';
-                if (organizationSelect) {
-                    organizationSelect.closest('.mb-3').style.opacity = '1';
+            } catch (err) {
+                console.error('Ошибка:', err);
+                if (errorsBox) {
+                    errorsBox.innerText = 'Ошибка при сохранении.';
+                    errorsBox.classList.remove('d-none');
                 }
+            } finally {
+                isSubmitting = false;
             }
         });
     }
