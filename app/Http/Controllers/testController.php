@@ -6,8 +6,10 @@ use App\Services\TelegramService;
 
 class TestController extends Controller
 {
+    
     public function test()
     {
+
         TelegramService::send(
             "🎉 <b>Тестовое сообщение</b>\n\n" .
             "👤 Имя: Тестовый пользователь\n" .
@@ -18,4 +20,6 @@ class TestController extends Controller
 
         return 'OK';
     }
+
+    
 }

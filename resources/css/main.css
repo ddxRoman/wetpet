@@ -2341,6 +2341,16 @@ a {
     cursor: pointer;
 }
 
+ pre.politics{
+    white-space: pre-wrap;       /* Главное: сохраняет переносы и пробелы, но переносит длинные строки */
+    word-wrap: break-word;       /* Для старых браузеров */
+    word-break: break-all;       /* Принудительно ломает даже очень длинные ссылки или слова без пробелов */
+    overflow-x: hidden;          /* На всякий случай гасим горизонтальный скролл полностью */
+    font-size: medium;
+    font-weight: 400;
+    font-family: 'Comfortaa', Times, serif;
+}
+
 #orgPhotoPreviewWrapper {
     position: relative;
     width: 150px;

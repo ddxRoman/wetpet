@@ -1,6 +1,6 @@
 @vite(['resources/css/main.css','resources/css/slider.css','resources/sass/app.scss', 'resources/js/app.js'])
 @include('layouts.modules.menu')
 @include('layouts.modules.personal recommendations')
-<!-- @include('layouts.modules.news') -->
+<!-- @include('pages.legal.news') -->
 @include('layouts.modules.popular_in_city')
 <!-- @include('layouts.modules.top_rank_doctor', ['doctors' => $doctors ?? collect()]) -->

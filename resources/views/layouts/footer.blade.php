@@ -6,6 +6,8 @@
                 <h2>{{ $brandname }}</h2>
                                 <img src="{{ Storage::url('logo/logo_black-white.png') }}" title="Логотип зверозор" alt="Логотип">
                 <p class="mt-3 text-muted">Ваш гид в мире заботы о питомцах.</p>
+                <p>{{ config('company.fio') }}</p>
+                <p><b>ИНН:</b> {{ config('company.inn') }}</p>
             </div>
             <div class="col-md-3">
                             
@@ -16,18 +18,24 @@
     <li><a title="Грумеры" href="#">Грумеры</a></li>
     <li><a title="Зоомагазины" href="#">Зоомагазины</a></li>
     <li><a title="Прочие категории" href="#">Прочие категории</a></li>
+    <li><a href="{{ route('legal/faq') }}">FAQ</a></li>
+        <li><a href="{{ route('legal/news') }}">Новости</a></li>
     <li><a title="Прочие категории" href="{{ route('legal/about') }}">О нас</a></li>
 </ul>
             </div>
 <div class="col-md-3">
-    <a href="{{ route('legal/faq') }}"><p>FAQ</p></a>
-    <a href="{{ route('legal/privacy') }}"><p>Политика конфиденциальности</p></a>
-    <a href="{{ route('legal/terms') }}"><p>Пользовательское соглашение</p></a>
+    
+    <a target="_blank" href="{{ route('legal/privacy') }}"><p>Политика конфиденциальности</p></a>
+    <a target="_blank" href="{{ route('legal/terms') }}"><p>Пользовательское соглашение</p></a>
+    <a target="_blank" href="{{ route('legal/personal-data-agreement') }}"><p>Согласие на обработку персональных данных</p></a>
+    <a target="_blank" href="{{ route('legal/partner-offer') }}"><p>Договор Оферты</p></a>
+    <a target="_blank" href="{{ route('legal/cookies') }}"><p>Политика Cookie</p></a>
+    <a target="_blank" href="{{ route('legal/content-rules') }}"><p>Политика модерации</p></a>
     <a href="{{ route('legal/glossary') }}"><p>Словарь</p></a>
-    <a href="{{ route('legal/news') }}"><p>Новости</p></a>
 </div>
             <div class="col-md-3">
                 <a href="mailto:admin@zverozor.ru"><p>Связаться с нами</p></a>
+                <a target="_blank" href="{{ route('legal/contacts') }}"><p>Контакты</p></a>
                 <!-- <h5>Мы в соцсетях</h5>
                 <div class="d-flex gap-2">
                     <a href="#"><img src="/icon/tg.svg" width="24"></a>

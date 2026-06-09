@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             AnimalSeeder::class,
             SpecialistSeeder::class,
             OrganizationSeeder::class,
+            NewsSeeder::class,
             // ClinicServiceSeeder::class,
             DoctorSeeder::class,
             // DoctorServiceSeeder::class,

@@ -88,7 +88,7 @@ class SpecialistSeeder extends Seeder
                 'experience' => Null,
                 'exotic_animals' => 'Нет',
                 'On_site_assistance' => 'нет',
-                'photo' => Null,
+                'photo' => '/specialists/sibenkova-anastasiya-vadimovna.jpg',
                 'description' =>
                 ' '
             ],

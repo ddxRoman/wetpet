@@ -23,6 +23,7 @@ use App\Http\Controllers\{
     SpecialistCreateController,
     SpecialistController,
     AdController,
+    NewsController,
 };
 
 /*
@@ -49,14 +50,39 @@ Route::get('legal/terms', function () {
 Route::get('legal/glossary', function () {
     return view('pages.legal.glossary');
 })->name('legal/glossary');
+Route::get('legal/cookies', function () {
+    return view('pages.legal.cookies');
+})->name('legal/cookies');
+Route::get('legal/partner-offer', function () {
+    return view('pages.legal.partner-offer');
+    })->name('legal/partner-offer');
+    Route::get('legal/personal-data-agreement', function () {
+        return view('pages.legal.personal-data-agreement');
+        })->name('legal/personal-data-agreement');
+        Route::get('legal/partner-offer', function () {
+            return view('pages.legal.partner-offer');
+        })->name('legal/partner-offer');
 
 Route::get('legal/privacy', function () {
     return view('pages.legal.privacy');
 })->name('legal/privacy');
-Route::get('legal/news', function () {
-    return view('pages.legal.news');
-})->name('legal/news');
+Route::get('legal/contacts', function () {
+    return view('pages.legal.contacts');
+})->name('legal/contacts');
+Route::get('legal/content-rules', function () {
+    return view('pages.legal.content-rules');
+})->name('legal/content-rules');
+Route::get('legal/privacy-politics', function () {
+    return view('pages.legal.privacy-politics.blade');
+})->name('legal/obrabotka-personalnyh-dannyh');
+// Страница списка новостей (связываем имя legal/news с методом index контроллера)
+Route::get('legal/news', [NewsController::class, 'index'])->name('legal/news');
 
+// Детальная страница конкретной новости
+Route::get('legal/news/{slug}', [NewsController::class, 'show'])->name('news.show');
+
+// (Опционально) Если нужен короткий адрес /news, можно сделать редирект или продублировать:
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 // 🔐 Аутентификация
 Auth::routes();
 require __DIR__ . '/auth.php';
