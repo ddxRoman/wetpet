@@ -11,31 +11,32 @@
             </div>
             <div class="col-md-3">
                             
-                <ul class="footer_menu">
-    <li><a title="Животные" href="#">Животные</a></li>
-    <li><a title="Ветеринары" href="#">Ветеринары</a></li>
-    <li><a title="Ветеринарные клиники" href="#">Ветеринарные клиники</a></li>
-    <li><a title="Грумеры" href="#">Грумеры</a></li>
-    <li><a title="Зоомагазины" href="#">Зоомагазины</a></li>
-    <li><a title="Прочие категории" href="#">Прочие категории</a></li>
-    <li><a href="{{ route('legal/faq') }}">FAQ</a></li>
-        <li><a href="{{ route('legal/news') }}">Новости</a></li>
-    <li><a title="Прочие категории" href="{{ route('legal/about') }}">О нас</a></li>
-</ul>
-            </div>
-<div class="col-md-3">
-    
-    <a target="_blank" href="{{ route('legal/privacy') }}"><p>Политика конфиденциальности</p></a>
-    <a target="_blank" href="{{ route('legal/terms') }}"><p>Пользовательское соглашение</p></a>
-    <a target="_blank" href="{{ route('legal/personal-data-agreement') }}"><p>Согласие на обработку персональных данных</p></a>
-    <a target="_blank" href="{{ route('legal/partner-offer') }}"><p>Договор Оферты</p></a>
-    <a target="_blank" href="{{ route('legal/cookies') }}"><p>Политика Cookie</p></a>
-    <a target="_blank" href="{{ route('legal/content-rules') }}"><p>Политика модерации</p></a>
-    <a href="{{ route('legal/glossary') }}"><p>Словарь</p></a>
-</div>
-            <div class="col-md-3">
-                <a href="mailto:admin@zverozor.ru"><p>Связаться с нами</p></a>
-                <a target="_blank" href="{{ route('legal/contacts') }}"><p>Контакты</p></a>
+<ul class="footer_menu">
+                <li><a title="Животные" href="{{ route('animals.index') }}">Животные</a></li>
+                <li><a title="Ветеринары" href="{{ route('doctors.index') }}">Ветеринары</a></li>
+                <li><a title="Ветеринарные клиники" href="{{ route('clinics.index') }}">Ветеринарные клиники</a></li>
+                <li><a title="Специалисты" href="{{ route('specialists.index') }}">Специалисты</a></li>
+                <li><a title="Организации" href="{{ route('organizations.index') }}">Организации</a></li>
+                <li><a title="Доста обьявлений" href="{{ route('ads.index') }}">Доста обьявлений</a></li>
+                <li><a title="Часто задаваемые вопросы" href="{{ route('legal/faq') }}">FAQ</a></li>
+                <li><a title="Новости мира животных" href="{{ route('legal/news') }}">Новости</a></li>
+                <li><a title="О проекте Зверозор" href="{{ route('legal/about') }}">О нас</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-3">
+            <a target="_blank" href="{{ route('legal/privacy') }}"><p>Политика конфиденциальности</p></a>
+            <a target="_blank" href="{{ route('legal/terms') }}"><p>Пользовательское соглашение</p></a>
+            <a target="_blank" href="{{ route('legal/personal-data-agreement') }}"><p>Согласие на обработку персональных данных</p></a>
+            <a target="_blank" href="{{ route('legal/partner-offer') }}"><p>Договор Оферты</p></a>
+            <a target="_blank" href="{{ route('legal/cookies') }}"><p>Политика Cookie</p></a>
+            <a target="_blank" href="{{ route('legal/content-rules') }}"><p>Политика модерации</p></a>
+            <a href="{{ route('legal/glossary') }}"><p>Словарь</p></a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="mailto:admin@zverozor.ru"><p>Связаться с нами</p></a>
+            <a target="_blank" href="{{ route('legal/contacts') }}"><p>Контакты</p></a>
                 <!-- <h5>Мы в соцсетях</h5>
                 <div class="d-flex gap-2">
                     <a href="#"><img src="/icon/tg.svg" width="24"></a>

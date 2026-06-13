@@ -3,7 +3,6 @@
 
 @section('content')
 @include('layouts.header')
-
 <div class="container py-5">
     {{-- Главный баннер / Заголовок --}}
     <div class="row justify-content-center text-center mb-5">
