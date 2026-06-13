@@ -103,7 +103,6 @@ public function store(Request $request)
         return response()->json([
             'success' => false,
             'message' => 'Ошибка при добавлении питомца',
-            'error' => $e->getMessage(),
         ], 500);
     }
 }

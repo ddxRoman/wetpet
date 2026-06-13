@@ -279,6 +279,7 @@ return view('account', compact(
         $photo = ReviewPhoto::findOrFail($id);
         Storage::delete('public/' . $photo->photo_path);
         $photo->delete();
+        if ($photo->review->user_id !== auth()->id()) abort(403);
         return response()->json(['success' => true]);
     }
 
@@ -288,6 +289,7 @@ return view('account', compact(
         $receipt = ReviewReceipt::findOrFail($id);
         Storage::delete('public/' . $receipt->path);
         $receipt->delete();
+        if ($photo->review->user_id !== auth()->id()) abort(403);
         return response()->json(['success' => true]);
     }
 }

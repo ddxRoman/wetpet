@@ -7,10 +7,11 @@
 {{-- Подключаем Vite корректно внутри секции --}}
 @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 
+@if(Route::is('legal/news') || Route::is('news.index'))
 <div class="header_in_account">
     @include('layouts.header')
 </div>
-
+@endif
 <div class="container py-4">
     <h2 class="legal_h2 mb-2">Новости</h2>
     <p class="text-muted mb-4 lead" style="font-size: 1rem;">Самые свежие материалы, полезные советы по уходу за питомцами и важные события проекта Зверозор.</p>
@@ -75,9 +76,10 @@
             <a href="/" class="btn btn-sm btn-primary rounded-pill px-4 mt-2">На главную</a>
         </div>
     @endif
-</div>
+</div>@if(Route::is('legal/news') || Route::is('news.index'))
+    @include('layouts.footer')
+@endif
 
-@include('layouts.footer')
 
 <style>
     .transition-hover {
