@@ -57,15 +57,20 @@
                             </div>
                         </div>
 
+
                     </div>
                 </div>
             @endforeach
-        </div>
+        @if(!Route::is('legal/news'))
+        <button class="btn-all-news">
+            <a href="{{ route('news.index') }}" >
 
-        <div class="d-flex justify-content-center mt-5">
-            {{ $news->links('pagination::bootstrap-5') }}
+                Перейти ко всем Новостям
+            </a>
+        </button>
+        @endif
         </div>
-
+</div>
     @else
         <div class="text-center py-5 my-4 bg-white rounded-3 shadow-sm border">
             <div class="mb-3 text-muted">
@@ -76,12 +81,38 @@
             <a href="/" class="btn btn-sm btn-primary rounded-pill px-4 mt-2">На главную</a>
         </div>
     @endif
+
+    @if(Route::is('legal/news') || Route::is('news.index'))
+        <div class="d-flex justify-content-center mt-5">
+            {{ $news->links('pagination::bootstrap-5') }}
+        </div>
+@endif
+
 </div>@if(Route::is('legal/news') || Route::is('news.index'))
     @include('layouts.footer')
 @endif
 
 
 <style>
+    .btn-all-news{
+
+        background-color:rgb(199, 219, 231);
+border: none;
+        width: 10px;
+        text-align: center;
+        justify-content: center;
+        padding: 1%;
+    }
+        .btn-all-news a{
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 600;
+    }
+        .btn-all-news a:hover{
+        text-decoration: none;
+        color: #000000;
+        font-weight: 600;
+    }
     .transition-hover {
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }

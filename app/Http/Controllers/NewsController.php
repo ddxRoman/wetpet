@@ -68,29 +68,30 @@ public function index()
     }
 
     // Детальная страница новости
-// В NewsController.php
+
 public function show($slug)
 {
-    $article = News::where('slug', $slug)->where('is_published', true)->firstOrFail();
+    // Меняем $article на $news
+    $news = News::where('slug', $slug)->where('is_published', true)->firstOrFail();
     
-    $article->increment('views');
+    $news->increment('views');
 
-    $description = $article->excerpt;
+    $description = $news->excerpt;
     if (empty($description)) {
-        $cleanedContent = strip_tags($article->content);
+        $cleanedContent = strip_tags($news->content);
         $description = mb_substr($cleanedContent, 0, 160) . '...';
     }
 
-    $shareImage = $article->image ? asset('storage/' . $article->image) : asset('images/default-animal.webp');
+    $shareImage = $news->image ? asset('storage/' . $news->image) : asset('images/default-animal.webp');
 
     $seoMeta = [
-        'title' => $article->title . ' — Зверозор',
+        'title' => $news->title . ' — Зверозор',
         'description' => $description,
         'image' => $shareImage
     ];
 
-    // Указываем правильный шаблон для ОДНОЙ новости (например, в той же папке legal)
-    return view('pages.legal.news-show', compact('article', 'seoMeta'));
+    // Передаем как 'news' вместо 'article'
+    return view('pages.legal.news-show', compact('news', 'seoMeta'));
 }
 
     // Обновление новости

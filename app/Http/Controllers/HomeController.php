@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\News;
 
 class HomeController extends Controller
 {
@@ -23,11 +24,12 @@ public function __construct()
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+
 public function index()
 {
     // Получаем название города из сессии (или подставляем значение по умолчанию)
     $currentCityName = session('city_name', 'Выберите город');
-
 
     $topRated = Review::query()
         ->select(
@@ -58,7 +60,14 @@ public function index()
         return $model;
     })->filter();
 
-    return view('welcome', compact('topItems'));
+    // Загружаем 3 последние опубликованные новости для блока на главной
+    $news = News::where('is_published', true)
+        ->orderBy('created_at', 'desc')
+        ->take(3)
+        ->get();
+
+    // Добавляем 'news' и 'currentCityName' (если она нужна в шаблоне) в compact
+    return view('welcome', compact('topItems', 'news', 'currentCityName'));
 }
 
 

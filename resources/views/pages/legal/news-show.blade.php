@@ -44,7 +44,7 @@
                         @endif
 
                         <div class="news-content text-secondary lh-lg fs-5">
-                            {!! nl2br(e($news->content)) !!} 
+                            {!! $news->content !!}
                             {{-- Если в базе хранится готовый HTML, используй: {!! $news->content !!} --}}
                         </div>
 

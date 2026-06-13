@@ -13,10 +13,11 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
+        // 1. Твои заготовленные качественные новости
         $newsItems = [
             [
                 'title' => 'Открытие нового ветеринарного центра «Зверозор» в Краснодаре',
-                'region_id' => 31, // Например, ID Краснодарского края/города из вашей таблицы регионов
+                'region_id' => 31, 
                 'image' => 'news/covers/clinic_open.webp',
                 'images' => [
                     'news/galleries/open_1.webp',
@@ -29,8 +30,8 @@ class NewsSeeder extends Seeder
                 'views' => 142,
             ],
             [
-                'title' => 'Как правильно подготовить собаку к вакцинации: советы ветеринара',
-                'region_id' => null, // null означает, что статья федеральная и видна всем регионам
+                'title' => 'Как правильно подготовить собаку к вакцинации: советы ветерира',
+                'region_id' => null, 
                 'image' => 'news/covers/vaccination_dog.webp',
                 'images' => [
                     'news/galleries/vaccine_guide_1.webp',
@@ -42,9 +43,9 @@ class NewsSeeder extends Seeder
             ],
             [
                 'title' => 'Правильный уход за экзотическими животными в домашних условиях',
-                'region_id' => null, // Видно всем
+                'region_id' => null, 
                 'image' => 'news/covers/exotic_pets.webp',
-                'images' => [], // Галерея может быть пустой
+                'images' => [], 
                 'excerpt' => 'Содержание рептилий, шиншилл и редких птиц требует соблюдения строгих правил температурного режима и рациона.',
                 'content' => '<p>Каждый владелец игуаны или хамелеона сталкивается с необходимостью создания правильного микроклимата. Обычной коробкой или стандартным аквариумом здесь не обойтись.</p><p>Вам понадобятся УФ-лампы определенного спектра, термоковрики и специализированные подкормки с кальцием. Помните, что самолечение экзотов часто приводит к необратимым последствиям — при первых симптомах вялости обращайтесь к ратологам и герпетологам.</p>',
                 'is_published' => true,
@@ -52,22 +53,52 @@ class NewsSeeder extends Seeder
             ],
         ];
 
+        // Создаем или обновляем фиксированные новости
         foreach ($newsItems as $item) {
-            // Генерируем уникальный slug из заголовка
             $slug = Str::slug($item['title']);
 
-            // Обновляем существующую новость или создаем новую, если такого slug еще нет
             News::updateOrCreate(
-                ['slug' => $slug], // Ключ для проверки уникальности
+                ['slug' => $slug],
                 [
                     'region_id'    => $item['region_id'],
                     'title'        => $item['title'],
                     'image'        => $item['image'],
-                    'images'       => $item['images'], // Laravel автоматически преобразует массив в JSON строку
+                    'images'       => $item['images'], 
                     'excerpt'      => $item['excerpt'],
                     'content'      => $item['content'],
                     'is_published' => $item['is_published'],
                     'views'        => $item['views'],
+                ]
+            );
+        }
+
+        // 2. Генерация 10 случайных новостей (с русской локализацией для Faker)
+        $faker = \Faker\Factory::create('ru_RU');
+
+        for ($i = 1; $i <= 30; $i++) {
+            // Генерируем случайный, но читаемый заголовок
+            $title = rtrim($faker->realText(50), '.'); 
+            $slug = Str::slug($title);
+
+            // Обернем случайный текст в параграфы для контента
+            $content = '<p>' . $faker->realText(300) . '</p><p>' . $faker->realText(200) . '</p>';
+
+            News::updateOrCreate(
+                ['slug' => $slug],
+                [
+                    // Случайно ставим либо Краснодар (31), либо общероссийскую (null)
+                    'region_id'    => $faker->randomElement([31, null]), 
+                    'title'        => $title,
+                    // Используем заглушки картинок, чтобы верстка не плыла
+                    'image'        => 'news/covers/placeholder_' . $faker->numberBetween(1, 3) . '.webp',
+                    'images'       => [
+                        'news/galleries/gallery_placeholder_1.webp',
+                        'news/galleries/gallery_placeholder_2.webp'
+                    ], 
+                    'excerpt'      => $faker->realText(150),
+                    'content'      => $content,
+                    'is_published' => true,
+                    'views'        => $faker->numberBetween(10, 500),
                 ]
             );
         }
