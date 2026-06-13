@@ -6241,7 +6241,7 @@ class AnimalDetailsSeeder extends Seeder
                 'height_range' => '4–5 см',
                 'lifespan' => '3–3.5 года',
                 'type' => 'Хомяк',
-                'photo' => 'animal/hamster/breed/Roborovski.webp',
+                'photo' => 'animal/hamster/breed/Roborovski_hamster.webp',
                 'short_description' => 'Самый маленький и быстрый среди домашних хомяков.',
                 'full_description' => "Хомячок Роборовского отличается крошечным размером и отсутствием полосы на спине. Очень энергичен и пуглив.",
                 'features' => array (
@@ -6251,7 +6251,7 @@ class AnimalDetailsSeeder extends Seeder
 ),
             ],
             [
-                'animal_breed' => 'Кэмпбелла',
+                'animal_breed' => 'Хомячок Кэмпбелла',
                 'weight_range' => '30–50 г',
                 'height_range' => '8–10 см',
                 'lifespan' => '2 года',
@@ -6295,25 +6295,6 @@ class AnimalDetailsSeeder extends Seeder
                 'features' => array (
   'Группа' => 'Средние грызуны',
   'Статус' => 'Домашний',
-),
-            ],
-            [
-                'animal_breed' => 'Роборовский хомячок',
-                'weight_range' => '20–30 г',
-                'height_range' => '5–7 см',
-                'lifespan' => '2–3 года',
-                'type' => 'Домашняя',
-                'photo' => 'animal/rodent/breed/Roborovski_hamster.webp',
-                'short_description' => 'Очень маленький и быстрый хомяк.',
-                'full_description' => "Хомячок Роборовского — самый маленький вид домашних хомяков. 
-
-Очень активный и плохо приручается.",
-                'features' => array (
-  'Тип' => 'Домашняя',
-  'Линька' => 'Низкая',
-  'Активность' => 'Очень высокая',
-  'Обучаемость' => 'Низкая',
-  'Особенности' => 'Очень быстрый',
 ),
             ],
             [

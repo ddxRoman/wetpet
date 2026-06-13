@@ -28,11 +28,23 @@ public function store(Request $request)
         'redirect_slug'   => 'required|string',
     ]);
 
+    // Белый список допустимых типов — клиент не может передать произвольный класс
+    $allowedTypes = [
+        'App\\Models\\Clinic',
+        'App\\Models\\Doctor',
+        'App\\Models\\Specialist',
+        'App\\Models\\Organization',
+    ];
+
+    $rawType = str_replace('\\\\', '\\', $validated['reviewable_type']);
+
+    if (!in_array($rawType, $allowedTypes, true)) {
+        abort(422, 'Недопустимый тип объекта для отзыва.');
+    }
+
     $review = new Review();
     $review->user_id = Auth::id();
     $review->reviewable_id = $validated['reviewable_id'];
-    
-    $rawType = str_replace('\\\\', '\\', $validated['reviewable_type']);
     $review->reviewable_type = $rawType;
     
     $review->rating = $validated['rating'];

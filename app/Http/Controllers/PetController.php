@@ -100,9 +100,16 @@ public function store(Request $request)
         ]);
 
     } catch (\Throwable $e) {
+        // Логируем детали ошибки на сервере, но НЕ отправляем их клиенту
+        \Log::error('PetController::store failed', [
+            'user_id' => auth()->id(),
+            'error'   => $e->getMessage(),
+            'trace'   => $e->getTraceAsString(),
+        ]);
+
         return response()->json([
             'success' => false,
-            'message' => 'Ошибка при добавлении питомца',
+            'message' => 'Ошибка при добавлении питомца. Попробуйте позже.',
         ], 500);
     }
 }
