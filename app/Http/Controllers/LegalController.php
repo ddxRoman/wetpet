@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Faq;
+use App\Models\GlossaryTerm;  // ← добавить этот use
 
 class LegalController extends Controller
 {
-    // Твой оригинальный метод — не тронут
+    // ─── Твой оригинальный метод — не тронут ───
     public function show($slug)
     {
         $page = DB::table('legal_pages')->where('slug', $slug)->first();
@@ -15,8 +16,7 @@ class LegalController extends Controller
         return view('pages.legal.template', compact('page'));
     }
 
-    // ───── Новый метод для FAQ ─────
-
+    // ─── FAQ (уже добавляли) ───
     private const FAQ_CATEGORIES = [
         'general'  => 'Общие вопросы',
         'account'  => 'Аккаунт',
@@ -37,7 +37,6 @@ class LegalController extends Controller
 
         $faqs = $query->get();
 
-        // Только категории у которых есть активные вопросы
         $categories = Faq::active()
             ->whereNotNull('category')
             ->distinct()
@@ -50,6 +49,24 @@ class LegalController extends Controller
             'categories'      => $categories,
             'categoryLabels'  => self::FAQ_CATEGORIES,
             'currentCategory' => $currentCategory,
+        ]);
+    }
+
+    // ─── Глоссарий (новый метод) ───
+    public function glossary()
+    {
+        $terms = GlossaryTerm::active()->ordered()->get();
+
+        // Группируем по букве: ['А' => [...], 'Б' => [...], ...]
+        $grouped = $terms->groupBy('letter');
+
+        // Список букв для алфавитной навигации
+        $letters = $grouped->keys();
+
+        return view('pages.legal.glossary', [
+            'terms'   => $terms,
+            'grouped' => $grouped,
+            'letters' => $letters,
         ]);
     }
 }

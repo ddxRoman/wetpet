@@ -57,6 +57,7 @@ Route::get('legal/partner-offer', function () {
 Route::get('legal/glossary', function () {
     return view('pages.legal.glossary');
 })->name('legal/glossary');
+Route::get('legal/glossary', [LegalController::class, 'glossary'])->name('legal/glossary');
 Route::get('legal/contacts', function () {
     return view('pages.legal.contacts');
 })->name('legal/contacts');
