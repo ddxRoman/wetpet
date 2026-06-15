@@ -57,12 +57,14 @@
                             
                             <div class="share-buttons">
                                 <span class="small text-muted me-2 d-none d-sm-inline">Поделиться:</span>
-                                <a href="https://t.me/share/url?url={{ request()->url() }}&text={{ urlencode($news->title) }}" target="_blank" class="btn btn-sm btn-light text-primary rounded-circle" title="Telegram">
-                                    <i class="bi bi-telegram"></i>
+                                <a href="https://t.me/share/url?url={{ request()->url() }}&text={{ urlencode($news->title) }}" target="_blank" class="share_link" title="Telegram">
+                                    <img src="{{ Storage::url('icon/social/telegram-logo.svg') }}" class="share_icon" alt="Telegram logo">
+                                </a>
+                                <a href="https://vk.com/share.php?url={{ urlencode(request()->url()) }}&title={{ urlencode($news->title) }}" target="_blank" class="share_link" title="Вконтакте">
+                                    <img src="{{ Storage::url('icon/social/vk-logo.svg') }}" class="share_icon" alt="VK logo">
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </article>
             </div>

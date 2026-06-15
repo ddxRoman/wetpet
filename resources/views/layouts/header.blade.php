@@ -24,7 +24,7 @@
 
     <link rel="canonical" href="{{ request()->url() }}">
 
-    @vite(['resources/css/main.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/main.css', 'resources/css/mobile.css',  'resources/sass/app.scss', 'resources/js/app.js'])
     @stack('scripts')
 
 @if(!isset($h))

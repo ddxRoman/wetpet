@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('term');               // Термин
             $table->text('definition');            // Определение
-            $table->text('category');               // Определение
+            $table->string('category')->nullable(); // Категория
             $table->string('letter', 1);           // Первая буква — для группировки по алфавиту
             $table->boolean('is_active')->default(true);
             $table->timestamps();

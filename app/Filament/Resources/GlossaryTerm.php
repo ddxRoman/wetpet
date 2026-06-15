@@ -10,6 +10,7 @@ class GlossaryTerm extends Model
         'term',
         'definition',
         'letter',
+        'category',
         'is_active',
     ];
 
@@ -17,7 +18,19 @@ class GlossaryTerm extends Model
         'is_active' => 'boolean',
     ];
 
-    // Автоматически заполняем поле letter из первой буквы термина
+    // Вместо const — статический метод, работает везде без проблем
+    public static function categories(): array
+    {
+        return [
+            'general'    => 'Общие термины',
+            'anatomy'    => 'Анатомия',
+            'diseases'   => 'Болезни и симптомы',
+            'procedures' => 'Процедуры и лечение',
+            'legal'      => 'Юридические термины',
+            'platform'   => 'Термины платформы',
+        ];
+    }
+
     protected static function booted(): void
     {
         static::saving(function (GlossaryTerm $model) {
@@ -33,5 +46,10 @@ class GlossaryTerm extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('letter')->orderBy('term');
+    }
+
+    public function getCategoryLabelAttribute(): string
+    {
+        return self::categories()[$this->category] ?? '—';
     }
 }

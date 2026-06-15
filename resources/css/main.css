@@ -2377,3 +2377,10 @@ a {
     font-size: 18px;
     cursor: pointer;
 }
+.share_icon{
+    width: 24px;
+}
+.share_link{
+    text-decoration: none;
+    color: #000;
+}

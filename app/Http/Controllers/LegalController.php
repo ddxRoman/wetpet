@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Faq;
-use App\Models\GlossaryTerm;  // ← добавить этот use
+use App\Models\GlossaryTerm;
 
 class LegalController extends Controller
 {
@@ -16,7 +16,7 @@ class LegalController extends Controller
         return view('pages.legal.template', compact('page'));
     }
 
-    // ─── FAQ (уже добавляли) ───
+    // ─── FAQ ───
     private const FAQ_CATEGORIES = [
         'general'  => 'Общие вопросы',
         'account'  => 'Аккаунт',
@@ -52,21 +52,37 @@ class LegalController extends Controller
         ]);
     }
 
-    // ─── Глоссарий (новый метод) ───
+    // ─── Глоссарий ───
     public function glossary()
     {
-        $terms = GlossaryTerm::active()->ordered()->get();
+        $currentCategory = request('category');
 
-        // Группируем по букве: ['А' => [...], 'Б' => [...], ...]
+        $query = GlossaryTerm::active()->ordered();
+
+        // Фильтр по категории — свободная строка из БД
+        if ($currentCategory) {
+            $query->where('category', $currentCategory);
+        }
+
+        $terms = $query->get();
+
         $grouped = $terms->groupBy('letter');
-
-        // Список букв для алфавитной навигации
         $letters = $grouped->keys();
 
+        // Берём уникальные категории прямо из БД — без фиксированного массива
+        $categories = GlossaryTerm::active()
+            ->whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
+
         return view('pages.legal.glossary', [
-            'terms'   => $terms,
-            'grouped' => $grouped,
-            'letters' => $letters,
+            'terms'           => $terms,
+            'grouped'         => $grouped,
+            'letters'         => $letters,
+            'categories'      => $categories,
+            'currentCategory' => $currentCategory,
         ]);
     }
 }
