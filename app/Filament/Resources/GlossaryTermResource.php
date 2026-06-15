@@ -86,10 +86,6 @@ class GlossaryTermResource extends Resource
                         default      => 'gray',
                     }),
 
-                TextColumn::make('definition')
-                    ->label('Определение')
-                    ->limit(80)
-                    ->tooltip(fn ($record) => $record->definition),
 
                 IconColumn::make('is_active')
                     ->label('Опубликован')

@@ -96,11 +96,11 @@
                             @endisset
                         </div>
                     </div>
-                    <div class="card border-0 bg-primary text-white p-4 shadow-sm text-center">
+                    <!-- <div class="card border-0 bg-primary text-white p-4 shadow-sm text-center">
                         <h4 class="fw-bold mb-2">Зверозор</h4>
                         <p class="small mb-3">Сервис поиска ветеринарных услуг, анкет врачей и подбора правильного ухода.</p>
                         <a href="/" class="btn btn-light text-primary btn-sm rounded-pill fw-semibold px-4">На главную</a>
-                    </div>
+                    </div> -->
                 </aside>
             </div>
         </div>

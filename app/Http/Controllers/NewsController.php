@@ -69,30 +69,41 @@ public function index()
 
     // Детальная страница новости
 
-public function show($slug)
-{
-    // Меняем $article на $news
-    $news = News::where('slug', $slug)->where('is_published', true)->firstOrFail();
-    
-    $news->increment('views');
+// Детальная страница новости
+    public function show($slug)
+    {
+        // Находим текущую новость
+        $news = News::where('slug', $slug)->where('is_published', true)->firstOrFail();
+        
+        // Увеличиваем счетчик просмотров
+        $news->increment('views');
 
-    $description = $news->excerpt;
-    if (empty($description)) {
-        $cleanedContent = strip_tags($news->content);
-        $description = mb_substr($cleanedContent, 0, 160) . '...';
+        // Выбираем последние новости для блока "Читайте также"
+        // Исключаем текущую новость по id, берем только опубликованные, сортируем от новых к старым и ограничиваем, например, 4 штуками
+        $recentNews = News::where('is_published', true)
+            ->where('id', '!=', $news->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(4)
+            ->get();
+
+        // Формируем SEO-описание
+        $description = $news->excerpt;
+        if (empty($description)) {
+            $cleanedContent = strip_tags($news->content);
+            $description = mb_substr($cleanedContent, 0, 160) . '...';
+        }
+
+        $shareImage = $news->image ? asset('storage/' . $news->image) : asset('images/default-animal.webp');
+
+        $seoMeta = [
+            'title' => $news->title . ' — Зверозор',
+            'description' => $description,
+            'image' => $shareImage
+        ];
+
+        // Передаем и саму новость ($news), и список последних ($recentNews) в Blade
+        return view('pages.legal.news-show', compact('news', 'recentNews', 'seoMeta'));
     }
-
-    $shareImage = $news->image ? asset('storage/' . $news->image) : asset('images/default-animal.webp');
-
-    $seoMeta = [
-        'title' => $news->title . ' — Зверозор',
-        'description' => $description,
-        'image' => $shareImage
-    ];
-
-    // Передаем как 'news' вместо 'article'
-    return view('pages.legal.news-show', compact('news', 'seoMeta'));
-}
 
     // Обновление новости
     public function update(Request $request, $id)
