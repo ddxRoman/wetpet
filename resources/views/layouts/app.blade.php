@@ -5,86 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @if(Route::currentRouteName() === 'account.account')
-    <title>Личный кабинет {{$user->nickname}}</title>
+    {{-- ===================== SEO-БЛОК ===================== --}}
+
+    {{-- Title: приоритет $seoMeta > @section('title') > дефолт --}}
+    @if(!empty($seoMeta['title']))
+        <title>{{ $seoMeta['title'] }}</title>
+    @elseif(Route::currentRouteName() === 'account.account')
+        <title>Личный кабинет {{ $user->nickname ?? '' }}</title>
     @elseif(Route::currentRouteName() === 'auth.login')
-    <title>Авторизация</title>
-    <meta name="description" content="Зарегистрироваться на сайте зверозор оставить отзыв о ветеринаре и клинике, прочесть отзывы реальных людей, найти клинику в вашем городе">
-    
+        <title>Авторизация — Зверозор</title>
+    @else
+        <title>@yield('title', 'Зверозор — ветеринарный агрегатор')</title>
     @endif
 
+    {{-- Description --}}
+    @if(!empty($seoMeta['description']))
+        <meta name="description" content="{{ $seoMeta['description'] }}">
+    @else
+        <meta name="description" content="@yield('description', 'Зверозор — найдите лучшую ветеринарную клинику, врача или специалиста рядом с вами. Читайте отзывы реальных людей.')">
+    @endif
 
+    {{-- Canonical --}}
+    <link rel="canonical" href="{{ $seoMeta['canonical'] ?? url()->current() }}">
+
+    {{-- Robots --}}
+    <meta name="robots" content="{{ $seoMeta['robots'] ?? 'index, follow' }}">
+
+    {{-- ── Open Graph (Facebook, VK, Telegram) ── --}}
+    <meta property="og:type"        content="{{ $seoMeta['og_type'] ?? 'website' }}">
+    <meta property="og:site_name"   content="Зверозор">
+    <meta property="og:locale"      content="ru_RU">
+    <meta property="og:url"         content="{{ $seoMeta['canonical'] ?? url()->current() }}">
+    <meta property="og:title"       content="{{ $seoMeta['og_title'] ?? ($seoMeta['title'] ?? config('app.name')) }}">
+    <meta property="og:description" content="{{ $seoMeta['og_description'] ?? ($seoMeta['description'] ?? '') }}">
+    @if(!empty($seoMeta['image']))
+        <meta property="og:image"        content="{{ $seoMeta['image'] }}">
+        <meta property="og:image:width"  content="1200">
+        <meta property="og:image:height" content="630">
+    @endif
+    @if(!empty($seoMeta['og_article_published_at']))
+        <meta property="article:published_time" content="{{ $seoMeta['og_article_published_at'] }}">
+    @endif
+    @if(!empty($seoMeta['og_article_modified_at']))
+        <meta property="article:modified_time"  content="{{ $seoMeta['og_article_modified_at'] }}">
+    @endif
+
+    {{-- ── Twitter Card ── --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{{ $seoMeta['og_title'] ?? ($seoMeta['title'] ?? config('app.name')) }}">
+    <meta name="twitter:description" content="{{ $seoMeta['og_description'] ?? ($seoMeta['description'] ?? '') }}">
+    @if(!empty($seoMeta['image']))
+        <meta name="twitter:image" content="{{ $seoMeta['image'] }}">
+    @endif
+
+    {{-- ── JSON-LD Schema.org (для Google) ── --}}
+    @if(!empty($seoMeta['schema']))
+        <script type="application/ld+json">{!! $seoMeta['schema'] !!}</script>
+    @endif
+
+    {{-- Дополнительные мета-теги из дочерних шаблонов --}}
+    @yield('seo')
+
+    {{-- ====================================================== --}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <!-- Scripts -->
-@vite([
-    'resources/css/main.css',
-    'resources/sass/app.scss',
-    'resources/js/app.js'
-])
 
+    <!-- Scripts & Styles -->
+    @vite([
+        'resources/css/main.css',
+        'resources/css/mobile.css',
+        'resources/sass/app.scss',
+        'resources/js/app.js'
+    ])
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" title="Ввести логин" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" title="Зарегистрироваться" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" title="Войти как" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" title="Выйти из аккаунта" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Выйти') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>
-
-
-
 </body>
 </html>

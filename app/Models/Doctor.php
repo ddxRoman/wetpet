@@ -43,17 +43,14 @@ class Doctor extends Model
     {
         $city = optional($doctor->city)->name;
         $clinic = optional($doctor->clinic)->name;
-
         $base = implode(' ', array_filter([
             $doctor->name,
             $city,
             $clinic,
         ]));
-
         $slug = Str::slug($base);
         $original = $slug;
         $i = 1;
-
         while (
             self::where('slug', $slug)
                 ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))

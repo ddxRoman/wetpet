@@ -1,6 +1,7 @@
 @extends('layouts.app') {{-- Твой главный шаблон сайта --}}
+@include('layouts.header')
 
-@section('title', $news->title . ' — Новости Зверозор')
+@section('title', $news->title. ' — Новости Зверозор')
 
 @section('content')
 <main class="py-5 bg-light">
@@ -107,4 +108,5 @@
 
     </div>
 </main>
+@include('layouts.footer')
 @endsection

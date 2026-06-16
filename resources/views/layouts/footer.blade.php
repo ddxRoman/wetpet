@@ -1,4 +1,4 @@
-@vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
+@vite(['resources/css/main.css', 'resources/css/mobile.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 <footer class="footer py-5">
     <div class="container">
         <div class="row">
@@ -17,7 +17,7 @@
                 <li><a title="Ветеринарные клиники" href="{{ route('clinics.index') }}">Ветеринарные клиники</a></li>
                 <li><a title="Специалисты" href="{{ route('specialists.index') }}">Специалисты</a></li>
                 <li><a title="Организации" href="{{ route('organizations.index') }}">Организации</a></li>
-                <li><a title="Доста обьявлений" href="{{ route('ads.index') }}">Доста обьявлений</a></li>
+                <li><a title="Доска обьявлений" href="{{ route('ads.index') }}">Доска обьявлений</a></li>
                 <li><a title="Часто задаваемые вопросы" href="{{ route('legal/faq') }}">FAQ</a></li>
                 <li><a title="Новости мира животных" href="{{ route('legal/news') }}">Новости</a></li>
                 <li><a title="О проекте Зверозор" href="{{ route('legal/about') }}">О нас</a></li>

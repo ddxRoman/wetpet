@@ -6,8 +6,13 @@
     "isEntry": true
   },
   "resources/css/main.css": {
-    "file": "assets/main-WXzxfbpQ.css",
+    "file": "assets/main-DPKOs4PJ.css",
     "src": "resources/css/main.css",
+    "isEntry": true
+  },
+  "resources/css/mobile.css": {
+    "file": "assets/mobile-DBvD4pPm.css",
+    "src": "resources/css/mobile.css",
     "isEntry": true
   },
   "resources/css/slider.css": {

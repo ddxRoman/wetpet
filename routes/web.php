@@ -25,6 +25,7 @@ use App\Http\Controllers\{
     AdController,
     NewsController,
     LegalController,
+    OwnerCabinetController,
 };
 
 /*
@@ -285,3 +286,29 @@ Route::middleware(['auth'])->group(function () {
 
 // Публичный просмотр — в самом конце
 Route::get('/ads/{ad}', [AdController::class, 'show'])->name('ads.show');
+Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
+
+    // Главная (редирект на нужный кабинет)
+    Route::get('/', [OwnerCabinetController::class, 'index'])->name('index');
+
+    // Кабинеты по типам
+    Route::get('/clinic/{id}',       [OwnerCabinetController::class, 'clinic'])->name('clinic');
+    Route::post('/clinic/{id}',      [OwnerCabinetController::class, 'updateClinic'])->name('clinic.update');
+
+    Route::get('/organization/{id}', [OwnerCabinetController::class, 'organization'])->name('organization');
+    Route::post('/organization/{id}',[OwnerCabinetController::class, 'updateOrganization'])->name('organization.update');
+
+    Route::get('/doctor/{id}',       [OwnerCabinetController::class, 'doctor'])->name('doctor');
+    Route::post('/doctor/{id}',      [OwnerCabinetController::class, 'updateDoctor'])->name('doctor.update');
+
+    Route::get('/specialist/{id}',   [OwnerCabinetController::class, 'specialist'])->name('specialist');
+    Route::post('/specialist/{id}',  [OwnerCabinetController::class, 'updateSpecialist'])->name('specialist.update');
+
+    // Фотографии
+    Route::post('/photos/upload',    [OwnerCabinetController::class, 'uploadPhoto'])->name('photos.upload');
+    Route::delete('/photos/{id}',    [OwnerCabinetController::class, 'deletePhoto'])->name('photos.delete');
+
+    // Цены
+    Route::post('/prices/save',      [OwnerCabinetController::class, 'savePrice'])->name('prices.save');
+    Route::delete('/prices/{id}',    [OwnerCabinetController::class, 'deletePrice'])->name('prices.delete');
+});

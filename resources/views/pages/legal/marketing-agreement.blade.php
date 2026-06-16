@@ -1,4 +1,4 @@
-@vite(['resources/css/main.css','resources/sass/app.scss', 'resources/js/app.js'])
+@vite(['resources/css/main.css', 'resources/css/mobile.css', 'resources/sass/app.scss', 'resources/js/app.js'])
 <title>Политика конфиденциальности</title>
 @extends('layouts.app')
 

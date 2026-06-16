@@ -14,9 +14,6 @@ public function index()
 {
     $news = News::where('is_published', true)->orderBy('created_at', 'desc')->paginate(9);
     
-    // ВСТАВЬ СЮДА ЭТУ СТРОКУ ДЛЯ ТЕСТА:
-    // dd($news->toArray());
-
     $seoMeta = [
         'title' => 'Новости и статьи — Зверозор',
         'description' => 'Актуальные новости из мира ветеринарии и полезные статьи о питомцах.',
@@ -96,7 +93,7 @@ public function index()
         $shareImage = $news->image ? asset('storage/' . $news->image) : asset('images/default-animal.webp');
 
         $seoMeta = [
-            'title' => $news->title . ' — Зверозор',
+            'title' => $news->seo_title . ' — Зверозор',
             'description' => $description,
             'image' => $shareImage
         ];

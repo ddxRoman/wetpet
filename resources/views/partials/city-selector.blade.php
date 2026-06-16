@@ -7,13 +7,7 @@
     $citiesSetUrl   = route('cities.set');
 @endphp
 
-@vite([
-    'resources/css/main.css',
-    'resources/sass/app.scss',
-    'resources/js/app.js'
-])
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div id="city-selector"
      data-has-city="{{ session()->has('city_id') || auth()->check() ? '1' : '0' }}"

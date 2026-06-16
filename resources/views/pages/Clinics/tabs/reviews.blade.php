@@ -108,9 +108,10 @@
                     — {{ $pet->animal->breed }}
                 @endif
             </option>
-        @empty
+            @empty
             <option disabled>Добавьте питомца в профиле</option>
-        @endforelse
+            @endforelse
+            <option class="other_pets_option" value="">Другой питомец</option>
     </select>
 </div>
 

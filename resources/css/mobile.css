@@ -1,7 +1,6 @@
 /* =====================================================
    MOBILE.CSS — Адаптация Зверозор
    Подключить в layouts/header.blade.php после main.css:
-   @vite(['resources/css/main.css', 'resources/css/mobile.css', ...])
    ===================================================== */
 
 
