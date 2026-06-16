@@ -379,7 +379,7 @@ ol, ul {
 }
 
 .category_icon {
-    height: 125px;
+    height: auto;
     object-fit: contain;
 }
 
@@ -1615,7 +1615,7 @@ a {
 
     .category_icon {
         width: 50px;
-        height: 40%;
+        height: auto;
     }
 
     .rating-badge {
