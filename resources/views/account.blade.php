@@ -24,7 +24,7 @@
 <div class="sidebar">
     <button class="tab-btn active" data-tab="profile">Профиль</button>
     <button class="tab-btn" data-tab="pets">Питомцы</button>
-
+<!-- 
     @if($hasClinic)
         <button class="tab-btn" data-tab="my-clinics">Мои клиники</button>
     @endif
@@ -38,7 +38,7 @@
     @endif
     @if($hasDoctorProfile)
         <button class="tab-btn" data-tab="doctor-profile">Профиль врача</button>
-    @endif
+    @endif -->
 
     <button class="tab-btn" data-tab="reviews">Отзывы</button>
 </div>
