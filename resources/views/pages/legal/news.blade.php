@@ -92,48 +92,4 @@
     @include('layouts.footer')
 @endif
 
-
-<style>
-    .btn-all-news{
-
-        background-color:rgb(199, 219, 231);
-border: none;
-        width: 100%;
-        text-align: center;
-        justify-content: center;
-        padding: 1%;
-    }
-        .btn-all-news a{
-        text-decoration: none;
-        color: #ffffff;
-        font-weight: 600;
-    }
-        .btn-all-news a:hover{
-        text-decoration: none;
-        color: #000000;
-        font-weight: 600;
-    }
-    .transition-hover {
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-    .transition-hover:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.08)!important;
-    }
-    .transition-scale {
-        transition: transform 0.3s ease-in-out;
-    }
-    .transition-hover:hover .transition-scale {
-        transform: scale(1.04);
-    }
-    .hover-link {
-        transition: color 0.15s ease-in-out;
-    }
-    .hover-link:hover {
-        color: #0d6efd !important;
-    }
-    .object-fit-cover {
-        object-fit: cover;
-    }
-</style>
 @endsection
