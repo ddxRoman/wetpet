@@ -335,13 +335,13 @@
 @if(isset($userCabinets) && count($userCabinets) > 0)
     @foreach($userCabinets as $cabinet)
         <hr style="margin:6px 0;opacity:.15;">
-        <a href="{{ $cabinet['url'] }}" class="mobile-nav-link style-owner" data-bs-dismiss="offcanvas">
+        <a href="{{ $cabinet['url'] }}" class="mobile-nav-link style-owner" >
             <span class="nav-icon">{{ $cabinet['icon'] }}</span> {{ $cabinet['label'] }}
         </a>
     @endforeach
 @elseif(!empty($hasPendingRequest))
     <hr style="margin:6px 0;opacity:.15;">
-    <a href="{{ route('owner.index') }}" class="mobile-nav-link style-pending" data-bs-dismiss="offcanvas">
+    <a href="{{ route('owner.index') }}" class="mobile-nav-link style-pending" >
         <span class="nav-icon">⏳</span> Кабинет (на проверке)
     </a>
 @endif

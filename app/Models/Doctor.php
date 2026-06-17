@@ -7,23 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
-
-
 class Doctor extends Model
 {
     use HasFactory;
-        use Notifiable;
+    use Notifiable;
 
     // имя таблицы (по умолчанию Laravel сам подставит "doctors", можно не указывать)
     protected $table = 'doctors';
 
     // какие поля можно массово заполнять (для create(), update())
-
     protected $fillable = [
-        'name', 'slug','specialization', 'date_of_birth', 'city_id',
+        'name', 'slug', 'specialization', 'date_of_birth', 'city_id',
         'clinic_id', 'experience', 'exotic_animals',
-        'On_site_assistance', 'photo', 'description','seo_title', 
-    'seo_description'
+        'On_site_assistance', 'photo', 'description', 'seo_title',
+        'seo_description'
     ];
 
     protected static function booted()
@@ -41,16 +38,19 @@ class Doctor extends Model
 
     protected static function makeSlug($doctor, $ignoreId = null)
     {
-        $city = optional($doctor->city)->name;
+        $city   = optional($doctor->city)->name;
         $clinic = optional($doctor->clinic)->name;
+
         $base = implode(' ', array_filter([
             $doctor->name,
             $city,
             $clinic,
         ]));
-        $slug = Str::slug($base);
+
+        $slug     = Str::slug($base);
         $original = $slug;
         $i = 1;
+
         while (
             self::where('slug', $slug)
                 ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
@@ -62,64 +62,69 @@ class Doctor extends Model
         return $slug;
     }
 
-    // связи
-public function services()
-{
-    return $this->belongsToMany(Service::class, 'doctor_service', 'doctor_id', 'service_id');
-}
+    // ── связи ────────────────────────────────────────────────
 
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'doctor_service', 'doctor_id', 'service_id');
+    }
 
-public function contacts()
-{
-    // Убедись, что связь hasOne, а не hasMany
-    return $this->hasOne(DoctorContact::class, 'doctor_id');
-}
+    public function contacts()
+    {
+        // Убедись, что связь hasOne, а не hasMany
+        return $this->hasOne(DoctorContact::class, 'doctor_id');
+    }
 
+    /**
+     * Цены на услуги врача.
+     * Было отсутствует — добавлено по аналогии с Organization::prices()
+     * и Specialist::prices(), что и вызывало ошибку
+     * "Call to undefined relationship [prices]" в кабинете врача.
+     */
+    public function prices()
+    {
+        return $this->morphMany(Price::class, 'priceable');
+    }
 
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
-public function owners()
-{
-    return $this->belongsToMany(
-        User::class,
-        'doctor_owners',
-        'doctor_id',
-        'user_id'
-    )
-    ->withPivot('is_confirmed')
-    ->withTimestamps();
-}
+    public function owners()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'doctor_owners',
+            'doctor_id',
+            'user_id'
+        )
+        ->withPivot('is_confirmed')
+        ->withTimestamps();
+    }
 
+    public function reviews()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
 
-public function reviews()
-{
-    return $this->morphMany(Review::class, 'reviewable');
-}
-public function city()
-{
-    return $this->belongsTo(City::class);
-}
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 
-public function clinic()
-{
-    return $this->belongsTo(\App\Models\Clinic::class);
-}
-public function reviewable()
-{
-    return $this->morphTo();
-}
-public function awards()
-{
-    return $this->hasMany(Award::class);
-}
+    public function clinic()
+    {
+        return $this->belongsTo(\App\Models\Clinic::class);
+    }
 
+    public function reviewable()
+    {
+        return $this->morphTo();
+    }
 
-
-
-
-
-
+    public function awards()
+    {
+        return $this->hasMany(Award::class);
+    }
 }

@@ -1576,6 +1576,11 @@ padding: 1%;
     padding: 1%;
 }
 
+.messenger-icons{
+    width: 128px;
+    height: 128px;
+}
+
 .messenger-icons input:checked + img {
     opacity: 1;
     transform: scale(1.2);

@@ -62,12 +62,12 @@
                 </div>
             @endforeach
         @if(!Route::is('legal/news'))
+        <a href="{{ route('news.index') }}" >
         <button class="btn-all-news">
-            <a href="{{ route('news.index') }}" >
 
                 Перейти ко всем Новостям
-            </a>
-        </button>
+            </button>
+        </a>
         @endif
         </div>
 </div>
@@ -98,7 +98,7 @@
 
         background-color:rgb(199, 219, 231);
 border: none;
-        width: 10px;
+        width: 100%;
         text-align: center;
         justify-content: center;
         padding: 1%;

@@ -1,3 +1,6 @@
+
+
+
 {{-- ===== СЛАЙДЕР ВРАЧЕЙ ===== --}}
 <div class="simple-slider" id="doctorSlider">
     <img id="slidePhoto" src="" alt="Доктор" class="slider-photo">
@@ -19,7 +22,6 @@
     ];
 
     // ⬇ ПОТОМ ПРОСТО ЗАМЕНИШЬ НА:
-    // window.sliderData = @json($doctors);
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {

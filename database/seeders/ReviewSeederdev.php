@@ -8,7 +8,7 @@ use App\Models\Review;
 use App\Models\Clinic;
 use App\Models\Doctor;
 
-class ReviewSeeder extends Seeder
+class ReviewSeederdev extends Seeder
 {
     /**
      * Запуск сидера
