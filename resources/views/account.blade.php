@@ -173,15 +173,16 @@
     </div>
 @endif
 
-@if(isset($hasOrganization) && $hasOrganization && isset($organization))
+@if(isset($hasOrganization) && $hasOrganization)
     <div class="tab-content" id="my-organizations" style="display:none;">
         @include('account.tabs.organizations-profile', [
-            'organization' => $organization,
+            'organizationOwners' => $organizationOwners,
             'allCities' => $allCities,
-            'groupedFields' => $groupedFields
+            'groupedOrgFields' => $groupedOrgFields,
         ])
     </div>
 @endif
+
 
 @if($hasSpecialistProfile)
     <div class="tab-content" id="specialist-profile" style="display:none;">

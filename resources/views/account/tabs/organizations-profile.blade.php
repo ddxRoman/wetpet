@@ -29,6 +29,87 @@
     </div>
 </div>
 
+
+@if(isset($organizationOwners) && $organizationOwners->isNotEmpty())
+
+    {{-- Если организация одна — просто показываем её без табов --}}
+    @if($organizationOwners->count() === 1)
+
+        @php $ownerRow = $organizationOwners->first(); @endphp
+
+        @if($ownerRow->is_confirmed && $ownerRow->organization)
+            @include('account.tabs.organizations._edit-form', [
+                'organization'    => $ownerRow->organization,
+                'allCities'       => $allCities,
+                'groupedOrgFields'=> $groupedOrgFields,
+            ])
+        @else
+            @include('account.tabs.organizations._pending-documents', [
+                'organizationOwner' => $ownerRow,
+            ])
+        @endif
+
+    @else
+        {{-- Несколько организаций — показываем переключатель сверху --}}
+        <div class="d-flex flex-wrap gap-2 mb-4 px-3">
+            @foreach($organizationOwners as $i => $ownerRow)
+                <button type="button"
+                        class="btn btn-sm org-switch-btn {{ $i === 0 ? 'btn-primary' : 'btn-outline-secondary' }} rounded-pill"
+                        data-org-index="{{ $i }}">
+                    {{ $ownerRow->organization->name ?? 'Организация #' . $ownerRow->id }}
+                    @if(!$ownerRow->is_confirmed)
+                        <span class="badge bg-warning text-dark ms-1" style="font-size:10px;">на проверке</span>
+                    @endif
+                </button>
+            @endforeach
+        </div>
+
+        @foreach($organizationOwners as $i => $ownerRow)
+            <div class="org-panel" data-org-index="{{ $i }}" style="{{ $i === 0 ? '' : 'display:none;' }}">
+                @if($ownerRow->is_confirmed && $ownerRow->organization)
+                    @include('account.tabs.organizations._edit-form', [
+                        'organization'    => $ownerRow->organization,
+                        'allCities'       => $allCities,
+                        'groupedOrgFields'=> $groupedOrgFields,
+                    ])
+                @else
+                    @include('account.tabs.organizations._pending-documents', [
+                        'organizationOwner' => $ownerRow,
+                    ])
+                @endif
+            </div>
+        @endforeach
+
+        <script>
+        (function () {
+            document.querySelectorAll('.org-switch-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const index = this.dataset.orgIndex;
+
+                    document.querySelectorAll('.org-switch-btn').forEach(b => {
+                        b.classList.remove('btn-primary');
+                        b.classList.add('btn-outline-secondary');
+                    });
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-primary');
+
+                    document.querySelectorAll('.org-panel').forEach(function (panel) {
+                        panel.style.display = panel.dataset.orgIndex === index ? '' : 'none';
+                    });
+                });
+            });
+        })();
+        </script>
+    @endif
+
+@else
+    <div class="alert alert-info m-3 text-center">
+        <h5>У вас пока нет созданной организации</h5>
+        <p>Вы можете зарегистрировать свой объект в разделе «Добавить объект».</p>
+    </div>
+@endif
+
+
         <div id="organizationErrors" class="alert alert-danger d-none"></div>
 
         <div class="modal-body">

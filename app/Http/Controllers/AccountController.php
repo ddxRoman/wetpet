@@ -24,75 +24,92 @@ use App\Models\FieldOfActivity;
 class AccountController extends Controller
 {
     // === Страница аккаунта ===
-    public function index()
-    {
-        $user = Auth::user();
-        $pets = Pet::where('user_id', $user->id)->get();
+public function index()
+{
+    // 1. Защита от неавторизованного пользователя (если роут вдруг не под middleware 'auth')
+    $user = Auth::user();
+    if (!$user) {
+        return redirect()->route('login');
+    }
 
-        // --- Клиники ---
-        $clinicOwner = ClinicOwner::where('user_id', $user->id)->first();
-        $hasClinic = (bool) $clinicOwner;
-        $clinic = $hasClinic ? Clinic::find($clinicOwner->clinic_id) : null;
+    $pets = Pet::where('user_id', $user->id)->get();
 
-        // --- Организации ---
-        $organizationOwner = OrganizationOwner::where('user_id', $user->id)->first();
-        $hasOrganization = (bool) $organizationOwner;
-        $organization = $hasOrganization ? Organization::find($organizationOwner->organization_id) : null;
+    // --- Клиники ---
+    $clinicOwners = \App\Models\ClinicOwner::with(['clinic.documents'])
+        ->where('user_id', $user->id)
+        ->get();
+    $hasClinic = $clinicOwners->isNotEmpty();
 
-// --- Врачи (делаем ТАК ЖЕ, как в специалистах) ---
-$doctorOwner = \App\Models\DoctorOwner::where('user_id', $user->id)->first(); // Используем модель!
-$hasDoctorProfile = (bool) $doctorOwner;
-$doctor = null;
+    // --- Организации ---
+    $organizationOwners = \App\Models\OrganizationOwner::with(['organization.documents'])
+        ->where('user_id', $user->id)
+        ->get();
+    $hasOrganization = $organizationOwners->isNotEmpty();
 
-if ($doctorOwner) {
-    // Тянем врача через его модель
-    $doctor = \App\Models\Doctor::with('contacts')->find($doctorOwner->doctor_id);
-}
-$doctorFields = \App\Models\FieldOfActivity::where('type', 'specialist')
-    ->where('activity', 'doctor')
-    ->get()
-    ->groupBy('category'); // Группируем по категориям (Терапия, Хирургия и т.д.)
+    // --- Врачи ---
+    $doctorOwner = \App\Models\DoctorOwner::with(['doctor', 'documents'])
+        ->where('user_id', $user->id)
+        ->first();
+    $hasDoctorProfile = (bool) $doctorOwner;
+    $doctor = null;
 
-        // --- Специалисты ---
-        $specialistOwner = SpecialistOwner::where('user_id', $user->id)->first();
-        $hasSpecialistProfile = (bool) $specialistOwner;
-        $specialist = null;
-        $organizations = collect();
-       
-        // Специализации для вкладки СПЕЦИАЛИСТА
-        $allSpecialistFields = FieldOfActivity::where('type', 'specialist')->where('activity','!=','doctor')-> orderBy('name')->get();
-        $groupedFields = $allSpecialistFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
+    if ($doctorOwner && $doctorOwner->doctor_id) {
+        // Оптимизация: загружаем сразу с контактами, чтобы не плодить левые запросы
+        $doctor = \App\Models\Doctor::with('contacts')->find($doctorOwner->doctor_id);
+    }
 
-        // Сферы деятельности для вкладки ОРГАНИЗАЦИИ (исключая ветклиники)
-        $allOrgFields = FieldOfActivity::where('type', 'organization')
-            ->where('activity', '!=', 'vetclinic')
-            ->orderBy('name')
-            ->get();
-        $groupedOrgFields = $allOrgFields->groupBy('category');
+    // Безопасное получение сфер для докторов
+    $doctorFields = \App\Models\FieldOfActivity::where('type', 'specialist')
+        ->where('activity', 'doctor')
+        ->get();
+    $doctorFields = $doctorFields->isNotEmpty() ? $doctorFields->groupBy('category') : collect();
 
-        // Загружаем ВСЕ города для селектов
-        $allCities = City::select('id', 'name', 'region')->orderBy('name')->get();
+    // --- Специалисты ---
+    $specialistOwner = \App\Models\SpecialistOwner::with(['specialist', 'documents'])
+        ->where('user_id', $user->id)
+        ->first();
+    $hasSpecialistProfile = (bool) $specialistOwner;
+    $specialist = null;
+    $organizations = collect();
 
-        if ($specialistOwner) {
-            $specialist = Specialist::with('contacts')->find($specialistOwner->specialist_id);
-            if ($specialist) {
-                $currentCity = City::find($specialist->city_id);
-                if ($currentCity) {
-                    $organizations = Organization::where('city', $currentCity->name)
-                        ->orderBy('name')
-                        ->get();
-                }
+    if ($specialistOwner && $specialistOwner->specialist_id) {
+        $specialist = \App\Models\Specialist::with('contacts')->find($specialistOwner->specialist_id);
+        if ($specialist && $specialist->city_id) {
+            $currentCity = \App\Models\City::find($specialist->city_id);
+            if ($currentCity) {
+                $organizations = \App\Models\Organization::where('city', $currentCity->name)
+                    ->orderBy('name')
+                    ->get();
             }
         }
-
-return view('account', compact(
-    'user', 'pets', 'hasClinic', 'clinic', 'hasOrganization', 'organization', 
-    'hasSpecialistProfile', 'specialist', 
-    'hasDoctorProfile', 'doctor', 
-    'groupedFields', 'groupedOrgFields', 
-    'allCities', 'doctorFields', 'organizations'
-));
     }
+
+    // --- Общие справочники для выпадающих списков модалок ---
+    $allSpecialistFields = \App\Models\FieldOfActivity::where('type', 'specialist')
+        ->where('activity', '!=', 'doctor')
+        ->orderBy('name')
+        ->get();
+    $groupedFields = $allSpecialistFields->groupBy(fn($item) => ($item->activity === 'doctor') ? 'Врачи' : 'Другие специалисты');
+
+    $allOrgFields = \App\Models\FieldOfActivity::where('type', 'organization')
+        ->where('activity', '!=', 'vetclinic')
+        ->orderBy('name')
+        ->get();
+    $groupedOrgFields = $allOrgFields->groupBy('category');
+
+    $allCities = \App\Models\City::select('id', 'name', 'region')->orderBy('name')->get();
+
+    return view('account', compact(
+        'user', 'pets',
+        'hasClinic', 'clinicOwners',
+        'hasOrganization', 'organizationOwners',
+        'hasSpecialistProfile', 'specialist',
+        'hasDoctorProfile', 'doctor', 'doctorOwner',
+        'groupedFields', 'groupedOrgFields',
+        'allCities', 'doctorFields', 'organizations'
+    ));
+}
+
 
     // === Обновление профиля (ЕДИНЫЙ МЕТОД) ===
     public function updateProfile(Request $request)

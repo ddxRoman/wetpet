@@ -12,10 +12,8 @@ class Doctor extends Model
     use HasFactory;
     use Notifiable;
 
-    // имя таблицы (по умолчанию Laravel сам подставит "doctors", можно не указывать)
     protected $table = 'doctors';
 
-    // какие поля можно массово заполнять (для create(), update())
     protected $fillable = [
         'name', 'slug', 'specialization', 'date_of_birth', 'city_id',
         'clinic_id', 'experience', 'exotic_animals',
@@ -38,13 +36,25 @@ class Doctor extends Model
 
     protected static function makeSlug($doctor, $ignoreId = null)
     {
-        $city   = optional($doctor->city)->name;
-        $clinic = optional($doctor->clinic)->name;
+        // БЕЗОПАСНОЕ ПОЛУЧЕНИЕ НАЗВАНИЙ (без падения из-за ленивой загрузки)
+        $cityName = '';
+        if ($doctor->city_id) {
+            $cityName = $doctor->relationLoaded('city') 
+                ? $doctor->city?->name 
+                : \App\Models\City::find($doctor->city_id)?->name;
+        }
+
+        $clinicName = '';
+        if ($doctor->clinic_id) {
+            $clinicName = $doctor->relationLoaded('clinic') 
+                ? $doctor->clinic?->name 
+                : \App\Models\Clinic::find($doctor->clinic_id)?->name;
+        }
 
         $base = implode(' ', array_filter([
             $doctor->name,
-            $city,
-            $clinic,
+            $cityName,
+            $clinicName,
         ]));
 
         $slug     = Str::slug($base);
@@ -71,16 +81,9 @@ class Doctor extends Model
 
     public function contacts()
     {
-        // Убедись, что связь hasOne, а не hasMany
         return $this->hasOne(DoctorContact::class, 'doctor_id');
     }
 
-    /**
-     * Цены на услуги врача.
-     * Было отсутствует — добавлено по аналогии с Organization::prices()
-     * и Specialist::prices(), что и вызывало ошибку
-     * "Call to undefined relationship [prices]" в кабинете врача.
-     */
     public function prices()
     {
         return $this->morphMany(Price::class, 'priceable');
@@ -118,10 +121,8 @@ class Doctor extends Model
         return $this->belongsTo(\App\Models\Clinic::class);
     }
 
-    public function reviewable()
-    {
-        return $this->morphTo();
-    }
+    // УДАЛЕНО: public function reviewable() { return $this->morphTo(); }
+    // Он тут не нужен, так как Doctor — это и есть целевой объект для Review (reviewable_type)
 
     public function awards()
     {

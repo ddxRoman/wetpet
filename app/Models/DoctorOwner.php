@@ -12,6 +12,11 @@ class DoctorOwner extends Model
         'user_id',
         'doctor_id',
         'is_confirmed',
+        'admin_comment',
+    ];
+
+    protected $casts = [
+        'is_confirmed' => 'boolean',
     ];
 
     public function user()
@@ -22,5 +27,10 @@ class DoctorOwner extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    public function documents()
+    {
+        return $this->morphMany(OwnershipDocument::class, 'ownerable');
     }
 }

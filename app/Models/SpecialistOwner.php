@@ -12,6 +12,11 @@ class SpecialistOwner extends Model
         'user_id',
         'specialist_id',
         'is_confirmed',
+        'admin_comment',
+    ];
+
+    protected $casts = [
+        'is_confirmed' => 'boolean',
     ];
 
     public function user()
@@ -22,5 +27,10 @@ class SpecialistOwner extends Model
     public function specialist()
     {
         return $this->belongsTo(Specialist::class);
+    }
+
+    public function documents()
+    {
+        return $this->morphMany(OwnershipDocument::class, 'ownerable');
     }
 }

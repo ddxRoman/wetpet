@@ -31,26 +31,79 @@ class OwnerCabinetController extends Controller
     /**
      * Главная страница кабинета — редирект на нужный тип
      */
-    public function index()
-    {
-        $user = Auth::user();
+public function index()
+{
+    $user = Auth::user();
 
-        if ($owner = ClinicOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-            return redirect()->route('owner.clinic', $owner->clinic_id);
-        }
-        if ($owner = OrganizationOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-            return redirect()->route('owner.organization', $owner->organization_id);
-        }
-        if ($owner = DoctorOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-            return redirect()->route('owner.doctor', $owner->doctor_id);
-        }
-        if ($owner = SpecialistOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-            return redirect()->route('owner.specialist', $owner->specialist_id);
-        }
-
-        // Нет подтверждённых прав — показываем страницу ожидания
-        return view('pages.owner.no-access');
+    // Сначала проверяем подтверждённые — редирект сразу в кабинет
+    if ($owner = ClinicOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+        return redirect()->route('owner.clinic', $owner->clinic_id);
     }
+    if ($owner = OrganizationOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+        return redirect()->route('owner.organization', $owner->organization_id);
+    }
+    if ($owner = DoctorOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+        return redirect()->route('owner.doctor', $owner->doctor_id);
+    }
+    if ($owner = SpecialistOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+        return redirect()->route('owner.specialist', $owner->specialist_id);
+    }
+
+    // Нет подтверждённых — собираем ВСЕ pending-заявки с документами
+    $pendingOwners = collect();
+
+    $clinicOwners = ClinicOwner::with(['clinic', 'documents'])
+        ->where('user_id', $user->id)
+        ->where('is_confirmed', false)
+        ->get()
+        ->map(fn($o) => [
+            'owner_row'   => $o,
+            'entity_type' => 'clinic',
+            'entity_name' => $o->clinic?->name ?? 'Клиника',
+            'icon'        => '🏥',
+        ]);
+
+    $orgOwners = OrganizationOwner::with(['organization', 'documents'])
+        ->where('user_id', $user->id)
+        ->where('is_confirmed', false)
+        ->get()
+        ->map(fn($o) => [
+            'owner_row'   => $o,
+            'entity_type' => 'organization',
+            'entity_name' => $o->organization?->name ?? 'Организация',
+            'icon'        => '🏢',
+        ]);
+
+    $doctorOwners = DoctorOwner::with(['doctor', 'documents'])
+        ->where('user_id', $user->id)
+        ->where('is_confirmed', false)
+        ->get()
+        ->map(fn($o) => [
+            'owner_row'   => $o,
+            'entity_type' => 'doctor',
+            'entity_name' => $o->doctor?->name ?? 'Врач',
+            'icon'        => '👨‍⚕️',
+        ]);
+
+    $specOwners = SpecialistOwner::with(['specialist', 'documents'])
+        ->where('user_id', $user->id)
+        ->where('is_confirmed', false)
+        ->get()
+        ->map(fn($o) => [
+            'owner_row'   => $o,
+            'entity_type' => 'specialist',
+            'entity_name' => $o->specialist?->name ?? 'Специалист',
+            'icon'        => '🩺',
+        ]);
+
+    $pendingOwners = $clinicOwners
+        ->concat($orgOwners)
+        ->concat($doctorOwners)
+        ->concat($specOwners);
+
+    return view('pages.owner.no-access', compact('pendingOwners'));
+}
+
 
     // ══════════════════════════════════════════════════════════
     //  КЛИНИКА
@@ -114,6 +167,74 @@ class OwnerCabinetController extends Controller
 
         return view('pages.owner.organization', compact('organization', 'photos', 'services'));
     }
+
+    public function uploadVerificationDocument(Request $request)
+{
+    $request->validate([
+        'document'    => 'required|file|mimes:pdf,jpg,jpeg,png,webp|max:8192',
+        'entity_type' => 'required|in:clinic,organization,doctor,specialist',
+        'owner_row_id'=> 'required|integer',
+        'comment'     => 'nullable|string|max:255',
+    ]);
+
+    $ownerModel = match ($request->entity_type) {
+        'clinic'       => \App\Models\ClinicOwner::class,
+        'organization' => \App\Models\OrganizationOwner::class,
+        'doctor'       => \App\Models\DoctorOwner::class,
+        'specialist'   => \App\Models\SpecialistOwner::class,
+    };
+
+    // Проверяем что owner-запись принадлежит текущему пользователю
+    $ownerRow = $ownerModel::where('id', $request->owner_row_id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
+
+    $file = $request->file('document');
+    $path = $file->store('verification-documents/' . $request->entity_type, 'public');
+
+    $document = $ownerRow->documents()->create([
+        'path'          => $path,
+        'original_name' => $file->getClientOriginalName(),
+        'comment'       => $request->comment,
+    ]);
+
+    if ($request->wantsJson()) {
+        return response()->json([
+            'success'  => true,
+            'document' => [
+                'id'   => $document->id,
+                'url'  => \Illuminate\Support\Facades\Storage::url($path),
+                'name' => $document->original_name,
+            ],
+        ]);
+    }
+
+    return back()->with('success', 'Документ загружен. Ожидайте проверки администратором.');
+}
+
+/**
+ * Удаление загруженного документа (пока заявка не подтверждена).
+ */
+public function deleteVerificationDocument(int $documentId)
+{
+    $document = \App\Models\OwnershipDocument::findOrFail($documentId);
+
+    // Проверяем владение через полиморфную связь ownerable -> user_id
+    $ownerRow = $document->ownerable;
+    if (!$ownerRow || $ownerRow->user_id !== Auth::id()) {
+        abort(403, 'Нет прав для удаления этого документа');
+    }
+
+    $document->deleteFile();
+    $document->delete();
+
+    if (request()->wantsJson()) {
+        return response()->json(['success' => true]);
+    }
+
+    return back()->with('success', 'Документ удалён');
+}
+
 
     public function updateOrganization(Request $request, int $id)
     {

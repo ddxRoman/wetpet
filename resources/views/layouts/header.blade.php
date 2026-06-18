@@ -81,13 +81,21 @@
                 ];
             }
 
-            // 3. Проверяем, есть ли неподтвержденные заявки, ТОЛЬКО если ни один кабинет еще не подтвержден
-            $hasPendingRequest = empty($userCabinets) && (
-                ($clinicOwner && !$clinicOwner->is_confirmed)  ||
-                ($orgOwner    && !$orgOwner->is_confirmed)     ||
-                ($doctorOwner && !$doctorOwner->is_confirmed)  ||
-                ($specOwner   && !$specOwner->is_confirmed)
-            );
+            // 3. Собираем все pending-заявки (может быть несколько типов одновременно)
+            $pendingCabinets = [];
+            if ($clinicOwner && !$clinicOwner->is_confirmed) {
+                $pendingCabinets[] = ['url' => route('owner.index'), 'label' => 'Клиника (на проверке)', 'icon' => '🏥'];
+            }
+            if ($orgOwner && !$orgOwner->is_confirmed) {
+                $pendingCabinets[] = ['url' => route('owner.index'), 'label' => 'Организация (на проверке)', 'icon' => '🏢'];
+            }
+            if ($doctorOwner && !$doctorOwner->is_confirmed) {
+                $pendingCabinets[] = ['url' => route('owner.index'), 'label' => 'Профиль врача (на проверке)', 'icon' => '👨‍⚕️'];
+            }
+            if ($specOwner && !$specOwner->is_confirmed) {
+                $pendingCabinets[] = ['url' => route('owner.index'), 'label' => 'Профиль специалиста (на проверке)', 'icon' => '🩺'];
+            }
+            $hasPendingRequest = !empty($pendingCabinets);
         @endphp
     @endauth
 
@@ -167,11 +175,14 @@
                                 <div class="dropdown-divider"></div>
                             
                             {{-- Если подтвержденных нет, но заявка на модерации --}}
-                            @elseif($hasPendingRequest)
+                            @endif
+                            @if(!empty($pendingCabinets))
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-muted" href="{{ route('owner.index') }}">
-                                    ⏳ Кабинет (на проверке)
-                                </a>
+                                @foreach($pendingCabinets as $pending)
+                                    <a class="dropdown-item text-muted" href="{{ $pending['url'] }}">
+                                        ⏳ {{ $pending['icon'] }} {{ $pending['label'] }}
+                                    </a>
+                                @endforeach
                                 <div class="dropdown-divider"></div>
                             @endif
 
