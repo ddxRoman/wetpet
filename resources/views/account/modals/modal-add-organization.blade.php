@@ -10,8 +10,6 @@
     </div>
 @endif
 
-
-
 <div class="modal fade" id="addOrganizationModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -216,3 +214,72 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('addOrganizationForm');
+    
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Останавливаем стандартную отправку
+
+            const formData = new FormData(form);
+            const isItsMeChecked = form.querySelector('input[name="its_me"]').checked;
+
+            // Очищаем прошлые ошибки
+            const errorBlock = document.getElementById('doctorErrors');
+            if (errorBlock) {
+                errorBlock.classList.add('d-none');
+                errorBlock.innerHTML = '';
+            }
+
+            // Отправляем форму через AJAX (fetch)
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(async response => {
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // ЕСЛИ ВСЁ ПРОШЛО УСПЕШНО:
+                    if (isItsMeChecked) {
+                        // Если галочка активна — редиректим в кабинет владельца
+                        window.location.href = "{{ route('owner.index') }}";
+                    } else {
+                        // Если галочка не активна — просто перезагружаем страницу или редиректим куда нужно
+                        window.location.reload(); 
+                    }
+                } else {
+                    // ЕСЛИ ЕСТЬ ОШИБКИ ВАЛИДАЦИИ:
+                    if (errorBlock) {
+                        errorBlock.classList.remove('d-none');
+                        if (data.errors) {
+                            let errorsHtml = '<ul>';
+                            Object.values(data.errors).forEach(errArr => {
+                                errArr.forEach(err => {
+                                    errorsHtml += `<li>${err}</li>`;
+                                });
+                            });
+                            errorsHtml += '</ul>';
+                            errorBlock.innerHTML = errorsHtml;
+                        } else {
+                            errorBlock.innerText = data.message || 'Произошла ошибка при сохранении.';
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (errorBlock) {
+                    errorBlock.classList.remove('d-none');
+                    errorBlock.innerText = 'Системная ошибка при отправке формы.';
+                }
+            });
+        });
+    }
+});
+</script>

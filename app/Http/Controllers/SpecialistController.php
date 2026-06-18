@@ -146,7 +146,11 @@ public function store(Request $request)
         $doctor->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
     }
 
-    return response()->json(['success' => true, 'id' => $doctor->id, 'type' => 'doctor']);
+return response()->json([
+        'success' => true, 
+        'id'      => $doctor->id, 
+        'type'    => 'doctor'
+    ]);
 }
 
     /**

@@ -163,7 +163,12 @@ public function submit(Request $request)
 
     $this->sendTelegramNotification($model, ($type == 'clinics' ? 'клиника' : 'организация'), $type);
 
-    return response()->json(['success' => true, 'saved_to' => $type]);
+if ($request->ajax()) {
+    return response()->json([
+        'success' => true,
+        'message' => 'Организация успешно добавлена!'
+    ]);
+}
 }
 
 public function show($slug)

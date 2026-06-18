@@ -8,7 +8,6 @@
       enctype="multipart/form-data">
       @csrf
 
-
                 <div class="modal-header">
                     <h5 class="modal-title">Добавление специалиста</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -31,7 +30,6 @@
                             <input type="text" name="name" class="form-control">
                         </div>
 
-
                         <div class="col-md-6">
                             <label>Дата рождения</label>
                             <input
@@ -51,8 +49,6 @@
                                 min="0">
                         </div>
 
-
-
                         @if(auth()->check() && auth()->user()->canAddSelfSpecialist())
                         <div class="col-12 form-check-label">
                             <label>
@@ -64,8 +60,6 @@
                             </label>
                         </div>
                         @endif
-
-
 
                         <div class="col-md-6">
                             <label>Регион</label>
@@ -83,8 +77,6 @@
                                 <option value="">Сначала выберите регион</option>
                             </select>
                         </div>
-
-
 
                         <div class="col-md-6">
                             <label>Оргнанизация </label>
@@ -114,8 +106,6 @@
                                 </div>
                             </div>
                         </div>
-
-
 
                         <div class="col-6">
                             <label>Телефон</label>
@@ -196,3 +186,77 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('addDoctorForm');
+    const errorBlock = document.getElementById('doctorErrors');
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Выключаем перезагрузку страницы
+
+            // Скрываем прошлые ошибки
+            errorBlock.classList.add('d-none');
+            errorBlock.innerHTML = '';
+
+            // Собираем данные (FormData автоматически правильно упакует и файлы, и массивы messengers[])
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    // Токен CSRF берется автоматически из скрытого поля @csrf внутри формы
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Проверяем, была ли активна галочка "Добавляю себя"
+                    const itsMeCheckbox = form.querySelector('input[name="its_me"]');
+                    
+                    if (itsMeCheckbox && itsMeCheckbox.checked) {
+                        // Если "its_me" нажат — отправляем на страницу управления кабинетами
+                        window.location.href = "/owner"; // Или маршрут с помощью Blade: "{{ route('owner.index') }}"
+                    } else {
+                        // Если добавляли просто так — обновляем страницу или закрываем модалку
+                        window.location.reload();
+                    }
+                } else {
+                    // На случай, если бэк вернет success: false без кода ошибки
+                    showDoctorError('Что-то пошло не так. Попробуйте позже.');
+                }
+            })
+            .catch(error => {
+                // Обработка ошибок валидации Laravel (код 422)
+                if (error.status === 422) {
+                    error.json().then(errors => {
+                        let errorHtml = '<ul class="mb-0">';
+                        Object.values(errors.errors).forEach(errArray => {
+                            errArray.forEach(message => {
+                                errorHtml += `<li>${message}</li>`;
+                            });
+                        });
+                        errorHtml += '</ul>';
+                        showDoctorError(errorHtml);
+                    });
+                } else {
+                    showDoctorError('Произошла системная ошибка при отправке данных.');
+                }
+            });
+        });
+    }
+
+    function showDoctorError(htmlContent) {
+        if (errorBlock) {
+            errorBlock.innerHTML = htmlContent;
+            errorBlock.classList.remove('d-none');
+            // Скроллим модалку вверх, чтобы пользователь увидел ошибку
+            errorBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+});
+</script>
