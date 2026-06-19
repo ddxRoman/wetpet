@@ -311,10 +311,8 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
     // Цены
     Route::post('/prices/save',      [OwnerCabinetController::class, 'savePrice'])->name('prices.save');
     Route::delete('/prices/{id}',    [OwnerCabinetController::class, 'deletePrice'])->name('prices.delete');
+
+    // Документы верификации (загрузка/удаление подтверждающих документов)
+    Route::post('/documents/upload', [OwnerCabinetController::class, 'uploadVerificationDocument'])->name('documents.upload');
+    Route::delete('/documents/{id}', [OwnerCabinetController::class, 'deleteVerificationDocument'])->name('documents.delete');
 });
-
-Route::post('/documents/upload', [OwnerCabinetController::class, 'uploadVerificationDocument'])->name('documents.upload');
-Route::delete('/documents/{id}', [OwnerCabinetController::class, 'deleteVerificationDocument'])->name('documents.delete');
-
-Route::post('/owner/documents/upload', [OwnerCabinetController::class, 'uploadVerificationDocument'])->name('owner.documents.upload');
-Route::get('/owner/verification', [OwnerCabinetController::class, 'verificationStatus'])->name('owner.verification');

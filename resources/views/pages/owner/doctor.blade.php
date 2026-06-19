@@ -22,6 +22,13 @@
         </div>
     @endif
 
+    {{-- Переключатель между объектами пользователя (если их больше одного) --}}
+    @include('pages.owner._entity_selector', [
+        'allUserEntities' => $allUserEntities ?? collect(),
+        'entityId'        => $entityId,
+        'type'            => $type,
+    ])
+
     <div class="row g-4">
 
         {{-- Левая навигация --}}

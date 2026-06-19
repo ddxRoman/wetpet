@@ -149,8 +149,9 @@ class OwnerCabinetController extends Controller
         $photos   = EntityPhoto::where('photoable_type', Clinic::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
         $services = Service::orderBy('name')->get();
+        $allUserEntities = $this->getAllUserEntities();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'services'));
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'services', 'allUserEntities'));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -190,10 +191,31 @@ class OwnerCabinetController extends Controller
 
 public function organization(int $id)
     {
-        // 1. Проверяем права (доступно только если организация подтверждена)
+        // 1. Проверяем что объект вообще привязан к пользователю
+        //    (без требования is_confirmed — иначе непроверенные организации
+        //    были бы недоступны и таб переключения никогда бы не открывался)
         $this->authorizeOwner('organization', $id);
 
-        // 2. Выбираем данные организации, фото и список услуг
+        $ownerRow = OrganizationOwner::where('user_id', Auth::id())
+            ->where('organization_id', $id)
+            ->with(['organization', 'documents'])
+            ->firstOrFail();
+
+        // 2. Получаем ВСЕ организации пользователя для вкладок-переключателей
+        $allUserEntities = $this->getAllUserEntities();
+
+        // 3. Если ЭТА КОНКРЕТНАЯ организация ещё не подтверждена —
+        //    показываем форму загрузки документов, а не редактирование
+        if (!$ownerRow->is_confirmed) {
+            return view('pages.owner.organization', [
+                'organization'     => $ownerRow->organization,
+                'organizationOwner'=> $ownerRow,
+                'allUserEntities'  => $allUserEntities,
+                'isConfirmed'      => false,
+            ]);
+        }
+
+        // 4. Подтверждена — обычный кабинет редактирования
         $organization = Organization::with(['prices.service', 'activityType'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Organization::class)
             ->where('photoable_id', $id)
@@ -201,11 +223,14 @@ public function organization(int $id)
             ->get();
         $services = Service::orderBy('name')->get();
 
-        // 3. Получаем ВСЕ сущности пользователя (для переключателя в табах)
-        $allUserEntities = $this->getAllUserEntities();
-
-        // 4. Передаем всё в шаблон
-        return view('pages.owner.organization', compact('organization', 'photos', 'services', 'allUserEntities'));
+        return view('pages.owner.organization', [
+            'organization'      => $organization,
+            'organizationOwner' => $ownerRow,
+            'photos'            => $photos,
+            'services'          => $services,
+            'allUserEntities'   => $allUserEntities,
+            'isConfirmed'       => true,
+        ]);
     }
 
     public function uploadVerificationDocument(Request $request)
@@ -319,8 +344,9 @@ public function deleteVerificationDocument(int $documentId)
         $photos   = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
         $services = Service::where('specialization_doctor', '!=', null)->orderBy('name')->get();
+        $allUserEntities = $this->getAllUserEntities();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'services'));
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'services', 'allUserEntities'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -360,8 +386,9 @@ public function deleteVerificationDocument(int $documentId)
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
         $services   = Service::orderBy('name')->get();
+        $allUserEntities = $this->getAllUserEntities();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'services'));
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'services', 'allUserEntities'));
     }
 
     public function updateSpecialist(Request $request, int $id)

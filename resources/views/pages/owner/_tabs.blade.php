@@ -2,9 +2,6 @@
     @include('pages.owner._tabs', ['entity' => $clinic, 'type' => 'clinic', 'entityId' => $clinic->id])
 --}}
 
-@include('pages.owner._entity_selector', ['entityId' => $entityId, 'type' => $type])
-
-
 @php $activeTab = request('tab', 'info'); @endphp
 
 {{-- ════════════════ ВКЛАДКА: ОСНОВНАЯ ИНФОРМАЦИЯ ════════════════ --}}
