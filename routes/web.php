@@ -316,6 +316,5 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
 Route::post('/documents/upload', [OwnerCabinetController::class, 'uploadVerificationDocument'])->name('documents.upload');
 Route::delete('/documents/{id}', [OwnerCabinetController::class, 'deleteVerificationDocument'])->name('documents.delete');
 
-
-
 Route::post('/owner/documents/upload', [OwnerCabinetController::class, 'uploadVerificationDocument'])->name('owner.documents.upload');
+Route::get('/owner/verification', [OwnerCabinetController::class, 'verificationStatus'])->name('owner.verification');

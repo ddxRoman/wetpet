@@ -46,7 +46,7 @@
 
                 <nav class="p-2">
                     @php $activeTab = request('tab', 'info'); @endphp
-                    @foreach(['info' => ['icon'=>'📋','label'=>'Основная информация'], 'photos' => ['icon'=>'📷','label'=>'Фотографии'], 'services' => ['icon'=>'💊','label'=>'Услуги и цены'], 'seo' => ['icon'=>'🔍','label'=>'SEO']] as $key => $tab)
+                    @foreach(['info' => ['icon'=>'📋','label'=>'Основная информация'], 'photos' => ['icon'=>'📷','label'=>'Фотографии'], 'services' => ['icon'=>'💊','label'=>'Услуги и цены']] as $key => $tab)
                         <a href="?tab={{ $key }}"
                            class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 mb-1 text-decoration-none {{ $activeTab === $key ? 'bg-primary text-white fw-medium' : 'text-secondary' }}"
                            style="font-size:14px;">

@@ -1,8 +1,9 @@
 {{--
-    Общие вкладки для всех типов кабинетов.
-    Подключать в clinic.blade.php, organization.blade.php и т.д.:
     @include('pages.owner._tabs', ['entity' => $clinic, 'type' => 'clinic', 'entityId' => $clinic->id])
 --}}
+
+@include('pages.owner._entity_selector', ['entityId' => $entityId, 'type' => $type])
+
 
 @php $activeTab = request('tab', 'info'); @endphp
 
@@ -224,9 +225,7 @@ function deletePhoto(btn) {
             <div class="col-md-3">
                 <label class="form-label fw-medium small">Валюта</label>
                 <select id="price-currency" class="form-select">
-                    <option value="руб.">руб.</option>
                     <option value="₽">₽</option>
-                    <option value="USD">USD</option>
                 </select>
             </div>
         </div>
@@ -304,50 +303,3 @@ document.getElementById('price-save-btn')?.addEventListener('click', function ()
 </script>
 @endif
 
-{{-- ════════════════ ВКЛАДКА: SEO ════════════════ --}}
-@if($activeTab === 'seo')
-<div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
-    <h5 class="fw-bold mb-4">🔍 SEO настройки</h5>
-
-    <form method="POST" action="{{ route('owner.' . $type . '.update', $entityId) }}">
-        @csrf
-
-        <div class="mb-4">
-            <label class="form-label fw-medium">SEO Title</label>
-            <input type="text" name="seo_title" class="form-control"
-                   value="{{ old('seo_title', $entity->seo_title) }}"
-                   maxlength="70"
-                   placeholder="Автоматически: {{ $entity->name }}">
-            <div class="form-text">Рекомендуется 50–70 символов</div>
-        </div>
-
-        <div class="mb-4">
-            <label class="form-label fw-medium">SEO Description</label>
-            <textarea name="seo_description" class="form-control" rows="3"
-                      maxlength="320"
-                      placeholder="Краткое описание для поисковых систем...">{{ old('seo_description', $entity->seo_description) }}</textarea>
-            <div class="form-text">Рекомендуется 120–160 символов</div>
-        </div>
-
-        {{-- Превью в Google --}}
-        <div class="border rounded-3 p-3 mb-4 bg-light">
-            <div class="text-muted small mb-2 fw-medium">Превью в Google</div>
-            <div style="font-size:18px;color:#1a0dab;text-decoration:underline;">
-                {{ $entity->seo_title ?: $entity->name . ' — Зверозор' }}
-            </div>
-            <div style="font-size:13px;color:#006621;">
-                {{ url($type . 's/' . $entity->slug) }}
-            </div>
-            <div style="font-size:13px;color:#545454;margin-top:2px;">
-                {{ $entity->seo_description ?: \Illuminate\Support\Str::limit(strip_tags($entity->description ?? ''), 160) }}
-            </div>
-        </div>
-
-        <div class="text-end">
-            <button type="submit" class="btn btn-primary px-5 rounded-pill">
-                💾 Сохранить SEO
-            </button>
-        </div>
-    </form>
-</div>
-@endif

@@ -31,78 +31,110 @@ class OwnerCabinetController extends Controller
     /**
      * Главная страница кабинета — редирект на нужный тип
      */
-public function index()
-{
-    $user = Auth::user();
+/**
+     * Главная страница кабинета — редирект на нужный тип или вывод документов
+     */
+/**
+     * Главная страница кабинета — редирект на нужный тип или вывод документов для проверки
+     */
+   // ══════════════════════════════════════════════════════════
+    //  ОПРЕДЕЛЯЕМ КАБИНЕТ ПОЛЬЗОВАТЕЛЯ
+    // ══════════════════════════════════════════════════════════
 
-    // Сначала проверяем подтверждённые — редирект сразу в кабинет
-    if ($owner = ClinicOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-        return redirect()->route('owner.clinic', $owner->clinic_id);
+    /**
+     * Главная страница кабинета
+     */
+    public function index()
+    {
+        $user = Auth::user();
+
+        // 1. Получаем вообще все привязанные сущности (и подтвержденные, и нет)
+        $allUserEntities = $this->getAllUserEntities();
+
+        if ($allUserEntities->isEmpty()) {
+            return redirect()->route('account')->with('info', 'У вас пока нет зарегистрированных организаций или кабинетов.');
+        }
+
+        // 2. Сначала ищем ХОТЯ БЫ ОДНУ подтвержденную сущность, чтобы пустить пользователя в работу
+        if ($owner = ClinicOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+            return redirect()->route('owner.clinic', $owner->clinic_id);
+        }
+        if ($owner = OrganizationOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+            return redirect()->route('owner.organization', $owner->organization_id);
+        }
+        if ($owner = DoctorOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+            return redirect()->route('owner.doctor', $owner->doctor_id);
+        }
+        if ($owner = SpecialistOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
+            return redirect()->route('owner.specialist', $owner->specialist_id);
+        }
+
+        // 3. Если подтвержденных вообще НЕТ, тогда собираем только неисполненные для страницы no-access
+        $pendingOwners = $this->getPendingOwners();
+        return view('pages.owner.no-access', compact('pendingOwners', 'allUserEntities'));
     }
-    if ($owner = OrganizationOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-        return redirect()->route('owner.organization', $owner->organization_id);
+
+
+
+    // ══════════════════════════════════════════════════════════
+    //  ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ (Добавь их в контроллер)
+    // ══════════════════════════════════════════════════════════
+
+    /**
+     * Получить абсолютно все сущности пользователя
+     */
+    private function getAllUserEntities()
+    {
+        $user = Auth::user();
+        $entities = collect();
+
+        foreach (ClinicOwner::where('user_id', $user->id)->get() as $row) {
+            $entities->push([
+                'id' => $row->clinic_id, 'type' => 'clinic', 'name' => $row->clinic?->name ?? 'Клиника', 'is_confirmed' => $row->is_confirmed, 'icon' => '🏥'
+            ]);
+        }
+        foreach (OrganizationOwner::where('user_id', $user->id)->get() as $row) {
+            $entities->push([
+                'id' => $row->organization_id, 'type' => 'organization', 'name' => $row->organization?->name ?? 'Организация', 'is_confirmed' => $row->is_confirmed, 'icon' => '🏢'
+            ]);
+        }
+        foreach (DoctorOwner::where('user_id', $user->id)->get() as $row) {
+            $entities->push([
+                'id' => $row->doctor_id, 'type' => 'doctor', 'name' => $row->doctor?->name ?? 'Врач', 'is_confirmed' => $row->is_confirmed, 'icon' => '👨‍⚕️'
+            ]);
+        }
+        foreach (SpecialistOwner::where('user_id', $user->id)->get() as $row) {
+            $entities->push([
+                'id' => $row->specialist_id, 'type' => 'specialist', 'name' => $row->specialist?->name ?? 'Специалист', 'is_confirmed' => $row->is_confirmed, 'icon' => '🩺'
+            ]);
+        }
+
+        return $entities;
     }
-    if ($owner = DoctorOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-        return redirect()->route('owner.doctor', $owner->doctor_id);
+
+    /**
+     * Получить только сущности на модерации
+     */
+    private function getPendingOwners()
+    {
+        $user = Auth::user();
+        $pending = collect();
+
+        foreach (ClinicOwner::where('user_id', $user->id)->where('is_confirmed', false)->get() as $row) {
+            $pending->push(['owner_row' => $row, 'entity_type' => 'clinic', 'entity_name' => $row->clinic?->name ?? 'Клиника', 'icon' => '🏥']);
+        }
+        foreach (OrganizationOwner::where('user_id', $user->id)->where('is_confirmed', false)->get() as $row) {
+            $pending->push(['owner_row' => $row, 'entity_type' => 'organization', 'entity_name' => $row->organization?->name ?? 'Организация', 'icon' => '🏢']);
+        }
+        foreach (DoctorOwner::where('user_id', $user->id)->where('is_confirmed', false)->get() as $row) {
+            $pending->push(['owner_row' => $row, 'entity_type' => 'doctor', 'entity_name' => $row->doctor?->name ?? 'Врач', 'icon' => '👨‍⚕️']);
+        }
+        foreach (SpecialistOwner::where('user_id', $user->id)->where('is_confirmed', false)->get() as $row) {
+            $pending->push(['owner_row' => $row, 'entity_type' => 'specialist', 'entity_name' => $row->specialist?->name ?? 'Специалист', 'icon' => '🩺']);
+        }
+
+        return $pending;
     }
-    if ($owner = SpecialistOwner::where('user_id', $user->id)->where('is_confirmed', true)->first()) {
-        return redirect()->route('owner.specialist', $owner->specialist_id);
-    }
-
-    // Нет подтверждённых — собираем ВСЕ pending-заявки с документами
-    $pendingOwners = collect();
-
-    $clinicOwners = ClinicOwner::with(['clinic', 'documents'])
-        ->where('user_id', $user->id)
-        ->where('is_confirmed', false)
-        ->get()
-        ->map(fn($o) => [
-            'owner_row'   => $o,
-            'entity_type' => 'clinic',
-            'entity_name' => $o->clinic?->name ?? 'Клиника',
-            'icon'        => '🏥',
-        ]);
-
-    $orgOwners = OrganizationOwner::with(['organization', 'documents'])
-        ->where('user_id', $user->id)
-        ->where('is_confirmed', false)
-        ->get()
-        ->map(fn($o) => [
-            'owner_row'   => $o,
-            'entity_type' => 'organization',
-            'entity_name' => $o->organization?->name ?? 'Организация',
-            'icon'        => '🏢',
-        ]);
-
-    $doctorOwners = DoctorOwner::with(['doctor', 'documents'])
-        ->where('user_id', $user->id)
-        ->where('is_confirmed', false)
-        ->get()
-        ->map(fn($o) => [
-            'owner_row'   => $o,
-            'entity_type' => 'doctor',
-            'entity_name' => $o->doctor?->name ?? 'Врач',
-            'icon'        => '👨‍⚕️',
-        ]);
-
-    $specOwners = SpecialistOwner::with(['specialist', 'documents'])
-        ->where('user_id', $user->id)
-        ->where('is_confirmed', false)
-        ->get()
-        ->map(fn($o) => [
-            'owner_row'   => $o,
-            'entity_type' => 'specialist',
-            'entity_name' => $o->specialist?->name ?? 'Специалист',
-            'icon'        => '🩺',
-        ]);
-
-    $pendingOwners = $clinicOwners
-        ->concat($orgOwners)
-        ->concat($doctorOwners)
-        ->concat($specOwners);
-
-    return view('pages.owner.no-access', compact('pendingOwners'));
-}
 
 
     // ══════════════════════════════════════════════════════════
@@ -156,16 +188,24 @@ public function index()
     //  ОРГАНИЗАЦИЯ
     // ══════════════════════════════════════════════════════════
 
-    public function organization(int $id)
+public function organization(int $id)
     {
+        // 1. Проверяем права (доступно только если организация подтверждена)
         $this->authorizeOwner('organization', $id);
 
+        // 2. Выбираем данные организации, фото и список услуг
         $organization = Organization::with(['prices.service', 'activityType'])->findOrFail($id);
-        $photos = EntityPhoto::where('photoable_type', Organization::class)->where('photoable_id', $id)
-                    ->orderBy('sort_order')->get();
+        $photos = EntityPhoto::where('photoable_type', Organization::class)
+            ->where('photoable_id', $id)
+            ->orderBy('sort_order')
+            ->get();
         $services = Service::orderBy('name')->get();
 
-        return view('pages.owner.organization', compact('organization', 'photos', 'services'));
+        // 3. Получаем ВСЕ сущности пользователя (для переключателя в табах)
+        $allUserEntities = $this->getAllUserEntities();
+
+        // 4. Передаем всё в шаблон
+        return view('pages.owner.organization', compact('organization', 'photos', 'services', 'allUserEntities'));
     }
 
     public function uploadVerificationDocument(Request $request)
@@ -466,24 +506,29 @@ public function deleteVerificationDocument(int $documentId)
         return response()->json(['success' => true]);
     }
 
+
+
     // ══════════════════════════════════════════════════════════
     //  ПРОВЕРКА ПРАВ
     // ══════════════════════════════════════════════════════════
 
-    private function authorizeOwner(string $type, int $entityId): void
+
+
+private function authorizeOwner(string $type, int $entityId): void
     {
         $userId = Auth::id();
 
-        $confirmed = match($type) {
-            'clinic'       => ClinicOwner::where('user_id', $userId)->where('clinic_id', $entityId)->where('is_confirmed', true)->exists(),
-            'organization' => OrganizationOwner::where('user_id', $userId)->where('organization_id', $entityId)->where('is_confirmed', true)->exists(),
-            'doctor'       => DoctorOwner::where('user_id', $userId)->where('doctor_id', $entityId)->where('is_confirmed', true)->exists(),
-            'specialist'   => SpecialistOwner::where('user_id', $userId)->where('specialist_id', $entityId)->where('is_confirmed', true)->exists(),
+        // Проверяем, привязан ли в принципе этот объект к пользователю (без жесткого условия на true)
+        $exists = match($type) {
+            'clinic'       => ClinicOwner::where('user_id', $userId)->where('clinic_id', $entityId)->exists(),
+            'organization' => OrganizationOwner::where('user_id', $userId)->where('organization_id', $entityId)->exists(),
+            'doctor'       => DoctorOwner::where('user_id', $userId)->where('doctor_id', $entityId)->exists(),
+            'specialist'   => SpecialistOwner::where('user_id', $userId)->where('specialist_id', $entityId)->exists(),
             default        => false,
         };
 
-        if (!$confirmed) {
-            abort(403, 'Доступ запрещён — право не подтверждено');
+        if (!$exists) {
+            abort(403, 'У вас нет прав для управления этим объектом.');
         }
     }
 }

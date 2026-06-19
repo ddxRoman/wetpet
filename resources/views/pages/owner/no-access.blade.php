@@ -5,17 +5,26 @@
 @section('content')
 @include('layouts.header')
 
+
+
+
+
 <div class="container my-5" style="max-width: 680px;">
 
-    {{-- Заголовок --}}
+   {{-- Заголовок --}}
     <div class="text-center mb-5">
-        <div style="font-size:56px;" class="mb-3">⏳</div>
+        <div style="font-size:56px;" class=\"mb-3\">⏳</div>
         <h2 class="fw-bold text-dark mb-2">Заявка на рассмотрении</h2>
         <p class="text-muted">
             Администратор проверит данные и подтвердит доступ в течение 1–2 рабочих дней.
             Чтобы ускорить проверку — загрузите подтверждающие документы.
         </p>
     </div>
+
+    {{-- ВСТАВЛЯЕМ СЮДА ПАНЕЛЬ ПЕРЕКЛЮЧЕНИЯ --}}
+    @include('pages.owner._entity_selector')
+
+    @if(isset($pendingOwners) && $pendingOwners->isNotEmpty())
 
     @if(isset($pendingOwners) && $pendingOwners->isNotEmpty())
 
