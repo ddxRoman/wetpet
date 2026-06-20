@@ -149,9 +149,8 @@ class OwnerCabinetController extends Controller
         $photos   = EntityPhoto::where('photoable_type', Clinic::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
         $services = Service::orderBy('name')->get();
-        $allUserEntities = $this->getAllUserEntities();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'services', 'allUserEntities'));
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'services'));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -161,15 +160,22 @@ class OwnerCabinetController extends Controller
 
         $data = $request->validate([
             'name'            => 'required|string|max:255',
+            'slug'            => 'required|string|max:255|alpha_dash|unique:clinics,slug,' . $id,
             'description'     => 'nullable|string',
+            'country'         => 'required|string|max:255',
+            'region'          => 'nullable|string|max:255',
+            'city'            => 'required|string|max:255',
+            'street'          => 'required|string|max:255',
+            'house'           => 'nullable|string|max:50',
+            'address_comment' => 'nullable|string|max:500',
             'phone1'          => 'nullable|string|max:30',
             'phone2'          => 'nullable|string|max:30',
             'email'           => 'nullable|email|max:255',
             'website'         => 'nullable|url|max:255',
             'telegram'        => 'nullable|string|max:100',
             'whatsapp'        => 'nullable|string|max:30',
-            'schedule'        => 'nullable|string',
-            'address_comment' => 'nullable|string|max:500',
+            'schedule'        => 'nullable|string|max:255',
+            'workdays'        => 'nullable|string|max:255',
             'seo_title'       => 'nullable|string|max:255',
             'seo_description' => 'nullable|string|max:320',
         ]);
@@ -191,31 +197,10 @@ class OwnerCabinetController extends Controller
 
 public function organization(int $id)
     {
-        // 1. Проверяем что объект вообще привязан к пользователю
-        //    (без требования is_confirmed — иначе непроверенные организации
-        //    были бы недоступны и таб переключения никогда бы не открывался)
+        // 1. Проверяем права (доступно только если организация подтверждена)
         $this->authorizeOwner('organization', $id);
 
-        $ownerRow = OrganizationOwner::where('user_id', Auth::id())
-            ->where('organization_id', $id)
-            ->with(['organization', 'documents'])
-            ->firstOrFail();
-
-        // 2. Получаем ВСЕ организации пользователя для вкладок-переключателей
-        $allUserEntities = $this->getAllUserEntities();
-
-        // 3. Если ЭТА КОНКРЕТНАЯ организация ещё не подтверждена —
-        //    показываем форму загрузки документов, а не редактирование
-        if (!$ownerRow->is_confirmed) {
-            return view('pages.owner.organization', [
-                'organization'     => $ownerRow->organization,
-                'organizationOwner'=> $ownerRow,
-                'allUserEntities'  => $allUserEntities,
-                'isConfirmed'      => false,
-            ]);
-        }
-
-        // 4. Подтверждена — обычный кабинет редактирования
+        // 2. Выбираем данные организации, фото и список услуг
         $organization = Organization::with(['prices.service', 'activityType'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Organization::class)
             ->where('photoable_id', $id)
@@ -223,14 +208,11 @@ public function organization(int $id)
             ->get();
         $services = Service::orderBy('name')->get();
 
-        return view('pages.owner.organization', [
-            'organization'      => $organization,
-            'organizationOwner' => $ownerRow,
-            'photos'            => $photos,
-            'services'          => $services,
-            'allUserEntities'   => $allUserEntities,
-            'isConfirmed'       => true,
-        ]);
+        // 3. Получаем ВСЕ сущности пользователя (для переключателя в табах)
+        $allUserEntities = $this->getAllUserEntities();
+
+        // 4. Передаем всё в шаблон
+        return view('pages.owner.organization', compact('organization', 'photos', 'services', 'allUserEntities'));
     }
 
     public function uploadVerificationDocument(Request $request)
@@ -307,18 +289,26 @@ public function deleteVerificationDocument(int $documentId)
         $organization = Organization::findOrFail($id);
 
         $data = $request->validate([
-            'name'            => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'phone1'          => 'nullable|string|max:30',
-            'phone2'          => 'nullable|string|max:30',
-            'email'           => 'nullable|email|max:255',
-            'website'         => 'nullable|url|max:255',
-            'telegram'        => 'nullable|string|max:100',
-            'whatsapp'        => 'nullable|string|max:30',
-            'schedule'        => 'nullable|string',
-            'address_comment' => 'nullable|string|max:500',
-            'seo_title'       => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string|max:320',
+            'name'                 => 'required|string|max:255',
+            'slug'                 => 'required|string|max:255|alpha_dash|unique:organizations,slug,' . $id,
+            'field_of_activity_id' => 'nullable|exists:field_of_activities,id',
+            'description'          => 'nullable|string',
+            'country'              => 'required|string|max:255',
+            'region'               => 'nullable|string|max:255',
+            'city'                 => 'required|string|max:255',
+            'street'               => 'required|string|max:255',
+            'house'                => 'nullable|string|max:50',
+            'address_comment'      => 'nullable|string|max:500',
+            'phone1'               => 'nullable|string|max:30',
+            'phone2'               => 'nullable|string|max:30',
+            'email'                => 'nullable|email|max:255',
+            'website'              => 'nullable|url|max:255',
+            'telegram'             => 'nullable|string|max:100',
+            'whatsapp'             => 'nullable|string|max:30',
+            'schedule'             => 'nullable|string|max:255',
+            'workdays'             => 'nullable|string|max:255',
+            'seo_title'            => 'nullable|string|max:255',
+            'seo_description'      => 'nullable|string|max:320',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -344,9 +334,8 @@ public function deleteVerificationDocument(int $documentId)
         $photos   = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
         $services = Service::where('specialization_doctor', '!=', null)->orderBy('name')->get();
-        $allUserEntities = $this->getAllUserEntities();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'services', 'allUserEntities'));
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'services'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -355,12 +344,18 @@ public function deleteVerificationDocument(int $documentId)
         $doctor = Doctor::findOrFail($id);
 
         $data = $request->validate([
-            'description'     => 'nullable|string',
-            'experience'      => 'nullable|integer|min:0|max:70',
-            'exotic_animals'  => 'nullable|boolean',
-            'On_site_assistance' => 'nullable|boolean',
-            'seo_title'       => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string|max:320',
+            'name'                => 'required|string|max:255',
+            'slug'                => 'required|string|max:255|alpha_dash|unique:doctors,slug,' . $id,
+            'specialization'      => 'required|string|max:255',
+            'date_of_birth'       => 'nullable|date',
+            'city_id'             => 'required|exists:cities,id',
+            'clinic_id'           => 'nullable|exists:clinics,id',
+            'experience'          => 'nullable|integer|min:0|max:70',
+            'exotic_animals'      => 'nullable|boolean',
+            'On_site_assistance'  => 'nullable|boolean',
+            'description'         => 'nullable|string',
+            'seo_title'           => 'nullable|string|max:255',
+            'seo_description'     => 'nullable|string|max:320',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -386,9 +381,8 @@ public function deleteVerificationDocument(int $documentId)
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
         $services   = Service::orderBy('name')->get();
-        $allUserEntities = $this->getAllUserEntities();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'services', 'allUserEntities'));
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'services'));
     }
 
     public function updateSpecialist(Request $request, int $id)
@@ -397,12 +391,17 @@ public function deleteVerificationDocument(int $documentId)
         $specialist = Specialist::findOrFail($id);
 
         $data = $request->validate([
-            'description'        => 'nullable|string',
-            'experience'         => 'nullable|integer|min:0|max:70',
-            'exotic_animals'     => 'nullable|boolean',
-            'On_site_assistance' => 'nullable|boolean',
-            'seo_title'          => 'nullable|string|max:255',
-            'seo_description'    => 'nullable|string|max:320',
+            'name'                => 'required|string|max:255',
+            'specialization'      => 'required|string|max:255',
+            'date_of_birth'       => 'nullable|date',
+            'city_id'             => 'required|exists:cities,id',
+            'organization_id'     => 'nullable|exists:organizations,id',
+            'experience'          => 'nullable|integer|min:0|max:70',
+            'exotic_animals'      => 'nullable|boolean',
+            'On_site_assistance'  => 'nullable|boolean',
+            'description'         => 'nullable|string',
+            'seo_title'           => 'nullable|string|max:255',
+            'seo_description'     => 'nullable|string|max:320',
         ]);
 
         if ($request->hasFile('photo')) {

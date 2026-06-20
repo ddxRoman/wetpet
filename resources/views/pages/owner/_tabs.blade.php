@@ -2,92 +2,18 @@
     @include('pages.owner._tabs', ['entity' => $clinic, 'type' => 'clinic', 'entityId' => $clinic->id])
 --}}
 
+@include('pages.owner._entity_selector', ['entityId' => $entityId, 'type' => $type])
+
+
 @php $activeTab = request('tab', 'info'); @endphp
 
 {{-- ════════════════ ВКЛАДКА: ОСНОВНАЯ ИНФОРМАЦИЯ ════════════════ --}}
 @if($activeTab === 'info')
-<div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
-    <h5 class="fw-bold mb-4">📋 Основная информация</h5>
-
-    <form method="POST" action="{{ route('owner.' . $type . '.update', $entityId) }}" enctype="multipart/form-data">
-        @csrf
-
-        <div class="row g-3">
-            <div class="col-12">
-                <label class="form-label fw-medium">Название</label>
-                <input type="text" name="name" class="form-control" value="{{ old('name', $entity->name) }}" required>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Телефон 1</label>
-                <input type="text" name="phone1" class="form-control" value="{{ old('phone1', $entity->phone1) }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Телефон 2</label>
-                <input type="text" name="phone2" class="form-control" value="{{ old('phone2', $entity->phone2) }}">
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Email</label>
-                <input type="email" name="email" class="form-control" value="{{ old('email', $entity->email) }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Сайт</label>
-                <input type="url" name="website" class="form-control" value="{{ old('website', $entity->website) }}">
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Telegram</label>
-                <input type="text" name="telegram" class="form-control" value="{{ old('telegram', $entity->telegram) }}" placeholder="@username">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-medium">WhatsApp</label>
-                <input type="text" name="whatsapp" class="form-control" value="{{ old('whatsapp', $entity->whatsapp) }}">
-            </div>
-
-            <div class="col-12">
-                <label class="form-label fw-medium">Режим работы</label>
-                <input type="text" name="schedule" class="form-control" value="{{ old('schedule', $entity->schedule) }}" placeholder="Пн–Пт 9:00–19:00">
-            </div>
-
-            <div class="col-12">
-                <label class="form-label fw-medium">Описание</label>
-                <textarea name="description" class="form-control" rows="5">{{ old('description', $entity->description) }}</textarea>
-            </div>
-
-            <div class="col-12">
-                <label class="form-label fw-medium">Комментарий к адресу</label>
-                <input type="text" name="address_comment" class="form-control"
-                       value="{{ old('address_comment', $entity->address_comment) }}"
-                       placeholder="Вход со двора, 2 этаж...">
-            </div>
-
-            {{-- Логотип/фото --}}
-            <div class="col-12">
-                <label class="form-label fw-medium">
-                    {{ in_array($type, ['doctor', 'specialist']) ? 'Фото профиля' : 'Логотип' }}
-                </label>
-                @php $photoField = in_array($type, ['doctor', 'specialist']) ? 'photo' : 'logo'; @endphp
-                @if(!empty($entity->$photoField))
-                    <div class="mb-2">
-                        <img src="{{ Storage::url($entity->$photoField) }}"
-                             style="height:80px;border-radius:8px;object-fit:cover;">
-                    </div>
-                @endif
-                <input type="file" name="{{ $photoField }}" class="form-control" accept="image/*">
-                <div class="form-text">JPG, PNG, WebP. Максимум 2 МБ.</div>
-            </div>
-        </div>
-
-        <hr class="my-4 opacity-25">
-
-        <div class="text-end">
-            <button type="submit" class="btn btn-primary px-5 rounded-pill">
-                💾 Сохранить изменения
-            </button>
-        </div>
-    </form>
-</div>
+    @if(in_array($type, ['organization', 'clinic']))
+        @include('pages.owner._form-organization', ['entity' => $entity, 'type' => $type, 'entityId' => $entityId])
+    @else
+        @include('pages.owner._form-specialist', ['entity' => $entity, 'type' => $type, 'entityId' => $entityId])
+    @endif
 @endif
 
 {{-- ════════════════ ВКЛАДКА: ФОТОГРАФИИ ════════════════ --}}
