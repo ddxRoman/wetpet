@@ -1,179 +1,77 @@
-{{--
-    Полная форма редактирования для Organization / Clinic.
-    Ожидает: $entity, $type ('organization'|'clinic'), $entityId
+@extends('layouts.app')
 
-    Покрывает ВСЕ поля из миграций organizations/clinics:
-    name, slug, country, region, city, street, house, address_comment,
-    logo, description, phone1, phone2, email, telegram, whatsapp, website,
-    schedule, workdays, seo_title, seo_description
-    + field_of_activity_id (только у Organization)
---}}
+<title>Кабинет — {{ $organization->name ?? '' }} — Зверозор</title>
 
-<div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
-    <h5 class="fw-bold mb-4">📋 Основная информация</h5>
+@section('content')
+@include('layouts.header')
 
-    <form method="POST" action="{{ route('owner.' . $type . '.update', $entityId) }}" enctype="multipart/form-data">
-        @csrf
+@php
+    $entity   = $organization;
+    $entityId = $organization->id;
+    $type     = 'organization';
+    $title    = 'Кабинет — ' . ($entity->name ?? '');
+@endphp
 
-        {{-- ── Название и сфера деятельности ── --}}
-        <div class="row g-3">
-            <div class="col-md-{{ $type === 'organization' ? '8' : '12' }}">
-                <label class="form-label fw-medium">Название {{ $type === 'organization' ? 'организации' : 'клиники' }}</label>
-                <input type="text" name="name" class="form-control" value="{{ old('name', $entity->name) }}" required>
-            </div>
+<div class="container my-4" style="max-width: 1100px;">
 
-            @if($type === 'organization')
-                <div class="col-md-4">
-                    <label class="form-label fw-medium">Сфера деятельности</label>
-                    <select name="field_of_activity_id" class="form-select">
-                        <option value="">— не выбрано —</option>
-                        @foreach(\App\Models\FieldOfActivity::where('type', 'organization')->orderBy('name')->get() as $field)
-                            <option value="{{ $field->id }}" {{ (old('field_of_activity_id', $entity->field_of_activity_id) == $field->id) ? 'selected' : '' }}>
-                                {{ $field->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            @endif
-
-            {{-- ── Slug ── --}}
-            <div class="col-12">
-                <label class="form-label fw-medium">Адрес страницы (slug)</label>
-                <div class="input-group">
-                    <span class="input-group-text">/{{ $type }}s/</span>
-                    <input type="text" name="slug" class="form-control" value="{{ old('slug', $entity->slug) }}" required>
-                </div>
-                <div class="form-text">Латиница, цифры и дефисы. Используется в публичной ссылке.</div>
-            </div>
+    {{-- Флэш-сообщения --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
+            ✅ {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+    @endif
 
-        <hr class="my-4 opacity-25">
+    <div class="row g-4">
 
-        {{-- ── Адрес ── --}}
-        <h6 class="fw-semibold mb-3">Адрес</h6>
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label fw-medium">Страна</label>
-                <input type="text" name="country" class="form-control" value="{{ old('country', $entity->country) }}" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-medium">Регион</label>
-                <input type="text" name="region" class="form-control" value="{{ old('region', $entity->region) }}">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-medium">Город</label>
-                <input type="text" name="city" class="form-control" value="{{ old('city', $entity->city) }}" required>
-            </div>
+        {{-- Левая навигация --}}
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm rounded-3 sticky-top p-0" style="top:16px;">
 
-            <div class="col-md-8">
-                <label class="form-label fw-medium">Улица</label>
-                <input type="text" name="street" class="form-control" value="{{ old('street', $entity->street) }}" required>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-medium">Дом</label>
-                <input type="text" name="house" class="form-control" value="{{ old('house', $entity->house) }}">
-            </div>
-
-            <div class="col-12">
-                <label class="form-label fw-medium">Комментарий к адресу</label>
-                <input type="text" name="address_comment" class="form-control"
-                       value="{{ old('address_comment', $entity->address_comment) }}"
-                       placeholder="Вход со двора, 2 этаж...">
-            </div>
-        </div>
-
-        <hr class="my-4 opacity-25">
-
-        {{-- ── Контакты ── --}}
-        <h6 class="fw-semibold mb-3">Контакты</h6>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Телефон 1</label>
-                <input type="text" name="phone1" class="form-control" value="{{ old('phone1', $entity->phone1) }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Телефон 2</label>
-                <input type="text" name="phone2" class="form-control" value="{{ old('phone2', $entity->phone2) }}">
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Email</label>
-                <input type="email" name="email" class="form-control" value="{{ old('email', $entity->email) }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Сайт</label>
-                <input type="url" name="website" class="form-control" value="{{ old('website', $entity->website) }}">
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Telegram</label>
-                <input type="text" name="telegram" class="form-control" value="{{ old('telegram', $entity->telegram) }}" placeholder="@username">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-medium">WhatsApp</label>
-                <input type="text" name="whatsapp" class="form-control" value="{{ old('whatsapp', $entity->whatsapp) }}">
-            </div>
-        </div>
-
-        <hr class="my-4 opacity-25">
-
-        {{-- ── График работы ── --}}
-        <h6 class="fw-semibold mb-3">График работы</h6>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Часы работы</label>
-                <input type="text" name="schedule" class="form-control" value="{{ old('schedule', $entity->schedule) }}" placeholder="09:00–20:00">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-medium">Рабочие дни</label>
-                <input type="text" name="workdays" class="form-control" value="{{ old('workdays', $entity->workdays) }}" placeholder="Пн–Вс">
-            </div>
-        </div>
-
-        <hr class="my-4 opacity-25">
-
-        {{-- ── Логотип и описание ── --}}
-        <div class="row g-3">
-            <div class="col-12">
-                <label class="form-label fw-medium">Логотип</label>
-                <div class="d-flex align-items-center gap-3">
-                    @if(!empty($entity->logo))
-                        <img src="{{ Storage::url($entity->logo) }}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;">
+                <div class="text-center p-4 border-bottom">
+                    @php $photoField = in_array('organization', ['doctor','specialist']) ? 'photo' : 'logo'; @endphp
+                    @if(!empty($entity->{$photoField}))
+                        <img src="{{ Storage::url($entity->{$photoField}) }}"
+                             class="{{ in_array('organization', ['doctor','specialist']) ? 'rounded-circle' : 'rounded-3' }} mb-2"
+                             style="width:80px;height:80px;object-fit:cover;">
+                    @else
+                        <div class="rounded-3 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center mb-2 mx-auto"
+                             style="width:80px;height:80px;font-size:32px;">
+                            {{ ['clinic'=>'🏥','organization'=>'🏢','doctor'=>'👨‍⚕️','specialist'=>'🩺']['organization'] }}
+                        </div>
                     @endif
-                    <input type="file" name="logo" class="form-control" accept="image/*">
+                    <div class="fw-bold text-dark" style="font-size:14px;">{{ $entity->name ?? '' }}</div>
+                    <span class="badge bg-success bg-opacity-10 text-success mt-1" style="font-size:11px;">✓ Подтверждён</span>
                 </div>
-                <div class="form-text">JPG, PNG, WebP. Максимум 2 МБ.</div>
-            </div>
 
-            <div class="col-12">
-                <label class="form-label fw-medium">Описание</label>
-                <textarea name="description" class="form-control" rows="5">{{ old('description', $entity->description) }}</textarea>
-            </div>
-        </div>
-
-        <hr class="my-4 opacity-25">
-
-        {{-- ── SEO ── --}}
-        <h6 class="fw-semibold mb-3">SEO</h6>
-        <div class="row g-3">
-            <div class="col-12">
-                <label class="form-label fw-medium">SEO заголовок (title)</label>
-                <input type="text" name="seo_title" class="form-control" maxlength="255"
-                       value="{{ old('seo_title', $entity->seo_title) }}"
-                       placeholder="Если не заполнено, используется название">
-            </div>
-            <div class="col-12">
-                <label class="form-label fw-medium">SEO описание (description)</label>
-                <textarea name="seo_description" class="form-control" rows="3" maxlength="320">{{ old('seo_description', $entity->seo_description) }}</textarea>
+                <nav class="p-2">
+                    @php $activeTab = request('tab', 'info'); @endphp
+                    @foreach(['info' => ['icon'=>'📋','label'=>'Основная информация'], 'photos' => ['icon'=>'📷','label'=>'Фотографии'], 'services' => ['icon'=>'💊','label'=>'Услуги и цены']] as $key => $tab)
+                        <a href="?tab={{ $key }}"
+                           class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 mb-1 text-decoration-none {{ $activeTab === $key ? 'bg-primary text-white fw-medium' : 'text-secondary' }}"
+                           style="font-size:14px;">
+                            <span>{{ $tab['icon'] }}</span> <span>{{ $tab['label'] }}</span>
+                        </a>
+                    @endforeach
+                    <hr class="my-2 opacity-25">
+                    @if(!empty($entity->slug))
+                        <a href="{{ url('organizations/' . $entity->slug) }}" target="_blank"
+                           class="d-flex align-items-center gap-2 px-3 py-2 text-decoration-none text-muted"
+                           style="font-size:13px;">
+                            🌐 Публичная страница
+                        </a>
+                    @endif
+                </nav>
             </div>
         </div>
 
-        <hr class="my-4 opacity-25">
-
-        <div class="text-end">
-            <button type="submit" class="btn btn-primary px-5 rounded-pill">
-                💾 Сохранить изменения
-            </button>
+        {{-- Контент --}}
+        <div class="col-lg-9">
+            @include('pages.owner._tabs', compact('entity', 'entityId', 'type', 'photos', 'services'))
         </div>
-    </form>
+
+    </div>
 </div>
+
+@include('layouts.footer')
+@endsection

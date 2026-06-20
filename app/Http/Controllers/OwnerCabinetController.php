@@ -333,7 +333,7 @@ public function deleteVerificationDocument(int $documentId)
         $doctor   = Doctor::with(['services', 'prices.service', 'contacts'])->findOrFail($id);
         $photos   = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
-        $services = Service::where('specialization_doctor', '!=', null)->orderBy('name')->get();
+        $services = Service::whereNotNull('specialization_doctor')->orderBy('name')->get();
 
         return view('pages.owner.doctor', compact('doctor', 'photos', 'services'));
     }
