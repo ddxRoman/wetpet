@@ -8,7 +8,6 @@
 @endphp
 
 
-
 <div id="city-selector"
      data-has-city="{{ session()->has('city_id') || auth()->check() ? '1' : '0' }}"
      data-cities-index-url="{{ $citiesIndexUrl }}"
@@ -26,20 +25,25 @@
 
     <div id="city-modal" style="display:none;">
         <div class="modal-content">
-            <div style="display:flex;gap:.5rem;margin-bottom:.5rem;">
-                <input id="city-search"
-                       placeholder="Поиск города..."
-                       style="flex:1;padding:.5rem;border:1px solid #ddd;border-radius:.4rem;">
-                <button id="close-city-modal"
-                        style="padding:.5rem .7rem;">
-                    Закрыть
-                </button>
-            </div>
+<div style="display:flex; gap:.5rem; margin-bottom:.5rem;">
+    <input id="city-search"
+           placeholder="Поиск города..."
+           style="flex:1; padding:.5rem; border:1px solid #ddd; border-radius:.4rem; outline:none;">
+    <button id="close-city-modal"
+            style="padding:.5rem 1rem; background-color:#f1f3f5; border:1px solid #ced4da; border-radius:.4rem; color:#495057; font-weight:500; cursor:pointer; transition:all 0.2s ease;"
+            onmouseover="this.style.backgroundColor='#e9ecef'; this.style.color='#212529';"
+            onmouseout="this.style.backgroundColor='#f1f3f5'; this.style.color='#495057';">
+        Закрыть
+    </button>
+</div>
 
+        
             <div id="city-list"></div>
         </div>
     </div>
 </div>
+
+
 
 <script>
 (function () {
