@@ -12,8 +12,14 @@
     if (!$currentModel) {
         $pricesCollection = collect();
     } else {
-        // Получаем цены для текущей модели (клиника, врач или специалист)
-        $pricesCollection = $currentModel->prices()->with('service')->get();
+        // Используем eager-loaded relation если он уже загружен (без доп. запроса к БД).
+        // Убираем записи без связанной услуги и дубли по service_id.
+        $pricesCollection = ($currentModel->relationLoaded('prices')
+            ? $currentModel->prices
+            : $currentModel->prices()->with('service')->get())
+            ->filter(fn($p) => $p->service !== null)
+            ->unique('service_id')
+            ->values();
     }
 
     // Группировка (оставляем ваш код без изменений, но используем новую переменную)

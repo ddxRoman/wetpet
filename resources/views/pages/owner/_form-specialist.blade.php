@@ -23,9 +23,20 @@
             </div>
             <div class="col-md-5">
                 <label class="form-label fw-medium">Специализация</label>
-                <input type="text" name="specialization" class="form-control"
-                       value="{{ old('specialization', $entity->specialization) }}"
-                       placeholder="Например: Кардиолог" required>
+                <select name="specialization" class="form-select" required>
+                    <option value="">— выберите специализацию —</option>
+                    @php
+                        $specializationOptions = \App\Models\Service::whereNotNull('specialization_doctor')
+                            ->distinct()
+                            ->orderBy('specialization_doctor')
+                            ->pluck('specialization_doctor');
+                    @endphp
+                    @foreach($specializationOptions as $option)
+                        <option value="{{ $option }}" {{ old('specialization', $entity->specialization) === $option ? 'selected' : '' }}>
+                            {{ $option }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             @if($type === 'doctor')

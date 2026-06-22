@@ -278,7 +278,7 @@ public function update(Request $request, Specialist $specialist)
 public function show($slug)
 {
     // Ищем специалиста по slug с подгрузкой связей и АГРЕГАТНЫМИ данными
-    $specialist = Specialist::with(['contacts', 'city', 'organization'])
+    $specialist = Specialist::with(['contacts', 'city', 'organization', 'prices.service'])
         ->withCount('reviews') // Это создаст переменную $doctor->reviews_count
         ->withAvg('reviews', 'rating') // Это создаст переменную $doctor->reviews_avg_rating
         ->where('slug', $slug)

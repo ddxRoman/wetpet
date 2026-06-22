@@ -1,13 +1,3 @@
-{{--
-    Полная форма редактирования для Organization / Clinic.
-    Ожидает: $entity, $type ('organization'|'clinic'), $entityId
-
-    Покрывает ВСЕ поля из миграций organizations/clinics:
-    name, slug, country, region, city, street, house, address_comment,
-    logo, description, phone1, phone2, email, telegram, whatsapp, website,
-    schedule, workdays, seo_title, seo_description
-    + field_of_activity_id (только у Organization)
---}}
 
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
     <h5 class="fw-bold mb-4">📋 Основная информация</h5>
@@ -24,7 +14,7 @@
 
             @if($type === 'organization')
                 <div class="col-md-4">
-                    <label class="form-label fw-medium">Сфера деятельности</label>
+                    <label class="form-label fw-medium">Сфера деятельности</label>dasdsadweqweqw
                     <select name="field_of_activity_id" class="form-select">
                         <option value="">— не выбрано —</option>
                         @foreach(\App\Models\FieldOfActivity::where('type', 'organization')->orderBy('name')->get() as $field)

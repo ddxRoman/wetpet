@@ -1,43 +1,48 @@
 <style>
     .fade:not(.show) {
-        opacity: 1 !important;
-    }
+    opacity: 1 !important;
+}
 </style>
 
 <div class="tab-pane fade" id="services" role="tabpanel">
     @php
-        // 1. Безопасно определяем клинику (от доктора или напрямую)
-        $currentClinic = $clinic ?? ($doctor->clinic ?? null);
-        
-        $grouped = collect();
-        $letters = collect();
+    // Автоматически определяем, какая переменная у нас есть: $clinic или $doctor
+    $currentModel = $clinic ?? $doctor ?? $specialist ?? null;
 
-        // 2. Выполняем логику только если клиника существует
-        if ($currentClinic) {
-            $pricesCollection = $currentClinic->prices()->with('service')->get();
+    if (!$currentModel) {
+        $pricesCollection = collect();
+    } else {
+        // Используем eager-loaded relation если он уже загружен (без доп. запроса к БД).
+        // Убираем записи без связанной услуги и дубли по service_id.
+        $pricesCollection = ($currentModel->relationLoaded('prices')
+            ? $currentModel->prices
+            : $currentModel->prices()->with('service')->get())
+            ->filter(fn($p) => $p->service !== null)
+            ->unique('service_id')
+            ->values();
+    }
 
-            // Группировка
-            $grouped = $pricesCollection->groupBy(function($priceItem) {
-                return $priceItem->service->specialization ?? 'Общие услуги';
-            })->sortKeys();
+    // Группировка (оставляем ваш код без изменений, но используем новую переменную)
+    $grouped = $pricesCollection->groupBy(function($priceItem) {
+        return $priceItem->service->specialization ?? 'Общие услуги';
+    })->sortKeys();
+    
 
-            // Сортировка внутри групп
-            foreach ($grouped as $key => $group) {
-                $grouped[$key] = $group->sortBy(fn($item) => $item->service->name ?? '');
-            }
 
-            // Буквы для навигации
-            $letters = collect($grouped->keys())
-                ->map(fn($key) => mb_strtoupper(mb_substr($key, 0, 1)))
-                ->unique()
-                ->sort()
-                ->values();
+        // Сортировка внутри групп
+        foreach ($grouped as $key => $group) {
+            $grouped[$key] = $group->sortBy(fn($item) => $item->service->name ?? '');
         }
+
+        // Буквы для навигации
+        $letters = collect($grouped->keys())
+            ->map(fn($key) => mb_strtoupper(mb_substr($key, 0, 1)))
+            ->unique()
+            ->sort()
+            ->values();
     @endphp
 
-    {{-- Проверяем наличие сгруппированных данных --}}
     @if($grouped->isNotEmpty())
-        {{-- Алфавитный указатель --}}
         <div class="mb-4 d-flex flex-wrap gap-2 justify-content-start">
             @foreach($letters as $letter)
                 <a href="#letter-{{ $letter }}" class="paw-link text-decoration-none">
@@ -49,7 +54,6 @@
             @endforeach
         </div>
 
-        {{-- Списки услуг по специализациям --}}
         @foreach($grouped as $specialization => $items)
             @php $anchor = mb_strtoupper(mb_substr($specialization, 0, 1)); @endphp
             <div id="letter-{{ $anchor }}" class="mb-5 specialization-block">
@@ -70,7 +74,7 @@
                                 <tr>
                                     <td>{{ $item->service->name }}</td>
                                     <td>
-                                        {{ $item->price ? number_format($item->price, 0, ',', ' ') . ' ' . ($item->currency ?? '₽') : '—' }}
+                                        {{ $item->price ? number_format($item->price, 0, ',', ' ') . ' ' . $item->currency : '—' }}
                                     </td>
                                 </tr>
                             @endif
@@ -80,13 +84,6 @@
             </div>
         @endforeach
     @else
-        {{-- Заглушка, если услуг нет или клиника не найдена --}}
-        <div class="text-center py-5">
-            <div class="mb-3">
-                <i class="bi bi-card-list text-secondary" style="font-size: 2.5rem;"></i>
-            </div>
-            <h5 class="text-secondary">Услуги не указаны</h5>
-            <p class="text-muted">Для данного специалиста прайс-лист временно пуст или не заполнен.</p>
-        </div>
+        <p class="text-muted text-center py-4">Прайс-лист временно пуст.</p>
     @endif
 </div>

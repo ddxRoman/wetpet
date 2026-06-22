@@ -9,15 +9,20 @@ use App\Models\Service;
 class ServiceSeeder extends Seeder
 {
     /**
-     * Запуск сидера
+     * Запуск сидера.
+     *
+     * ВАЖНО: раньше здесь был DB::table('services')->truncate(), который
+     * пересоздавал все строки с новыми id. Это ломало внешние ключи в
+     * таблице prices (service_id указывал на старые, уже не существующие
+     * записи) — именно поэтому добавленные пользователями цены/услуги
+     * "пропадали" после каждого повторного запуска сидера.
+     *
+     * Теперь сидер не удаляет старые записи, а использует updateOrCreate
+     * по уникальной паре (name, specialization_doctor) — id сохраняются,
+     * существующие цены в prices не ломаются.
      */
     public function run(): void
     {
-        // Очищаем таблицу
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('services')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
         $services = [
             // Терапевт
 ['name' => 'Первичный приём','specialization' => 'Терапия', 'specialization_doctor' => 'Терапевт'],
@@ -795,13 +800,21 @@ class ServiceSeeder extends Seeder
 ['name' => 'Консультация владельцев','specialization' => 'Зоогостиница','specialization_doctor' => 'Зоогостиница'],
 
  ];
+
+// updateOrCreate сохраняет существующие id (а значит и привязанные prices)
+// и просто обновляет/добавляет недостающие записи, не трогая FK-ссылки.
 foreach ($services as $service) {
-    DB::table('services')->insert([
-        ...$service,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    DB::table('services')->updateOrInsert(
+        [
+            'name'                  => $service['name'],
+            'specialization_doctor' => $service['specialization_doctor'] ?? null,
+        ],
+        [
+            ...$service,
+            'updated_at' => now(),
+        ]
+    );
 }
-        $this->command->info('✅ Услуги успешно добавлены.');
+        $this->command->info('✅ Услуги успешно добавлены/обновлены (без потери существующих цен).');
     }
 }

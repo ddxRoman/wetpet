@@ -11,6 +11,7 @@ use App\Models\DoctorOwner;
 use App\Models\Specialist;
 use App\Models\SpecialistOwner;
 use App\Models\Service;
+use App\Models\FieldOfActivity;
 use App\Models\Price;
 use App\Models\EntityPhoto;
 use Illuminate\Http\Request;
@@ -145,12 +146,21 @@ class OwnerCabinetController extends Controller
     {
         $this->authorizeOwner('clinic', $id);
 
-        $clinic   = Clinic::with(['services', 'prices.service', 'doctors', 'awards'])->findOrFail($id);
-        $photos   = EntityPhoto::where('photoable_type', Clinic::class)->where('photoable_id', $id)
+        $clinic = Clinic::with(['services', 'prices.service', 'doctors', 'awards'])->findOrFail($id);
+        $photos = EntityPhoto::where('photoable_type', Clinic::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
-        $services = Service::orderBy('name')->get();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'services'));
+        // Клиника — это весь спектр ветеринарных услуг (все специализации врачей)
+        $doctorActivityNames = FieldOfActivity::where('type', 'specialist')
+            ->where('activity', 'doctor')
+            ->pluck('name');
+
+        $relevantServices = Service::whereIn('specialization_doctor', $doctorActivityNames)
+            ->orderBy('name')->get()->unique('name')->values();
+
+        $allServices = Service::orderBy('name')->get()->unique('name')->values();
+
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -206,13 +216,22 @@ public function organization(int $id)
             ->where('photoable_id', $id)
             ->orderBy('sort_order')
             ->get();
-        $services = Service::orderBy('name')->get();
+
+        // Услуги, relevant конкретно для сферы деятельности этой организации
+        // (FieldOfActivity.name совпадает с Service.specialization_doctor по значению)
+        $activityName = $organization->activityType->name ?? null;
+
+        $relevantServices = $activityName
+            ? Service::where('specialization_doctor', $activityName)->orderBy('name')->get()->unique('name')->values()
+            : collect();
+
+        $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
         // 3. Получаем ВСЕ сущности пользователя (для переключателя в табах)
         $allUserEntities = $this->getAllUserEntities();
 
         // 4. Передаем всё в шаблон
-        return view('pages.owner.organization', compact('organization', 'photos', 'services', 'allUserEntities'));
+        return view('pages.owner.organization', compact('organization', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     public function uploadVerificationDocument(Request $request)
@@ -330,12 +349,19 @@ public function deleteVerificationDocument(int $documentId)
     {
         $this->authorizeOwner('doctor', $id);
 
-        $doctor   = Doctor::with(['services', 'prices.service', 'contacts'])->findOrFail($id);
-        $photos   = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
+        $doctor = Doctor::with(['services', 'prices.service', 'contacts'])->findOrFail($id);
+        $photos = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
-        $services = Service::whereNotNull('specialization_doctor')->orderBy('name')->get();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'services'));
+        // Услуги, relevant конкретно для специализации этого врача
+        // (Doctor.specialization совпадает с Service.specialization_doctor по значению)
+        $relevantServices = Service::where('specialization_doctor', $doctor->specialization)
+            ->orderBy('name')->get()->unique('name')->values();
+
+        $allServices = Service::whereNotNull('specialization_doctor')
+            ->orderBy('name')->get()->unique('name')->values();
+
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -380,9 +406,15 @@ public function deleteVerificationDocument(int $documentId)
         $specialist = Specialist::with(['prices.service', 'contacts'])->findOrFail($id);
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
-        $services   = Service::orderBy('name')->get();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'services'));
+        // Услуги, relevant конкретно для специализации этого специалиста
+        // (Specialist.specialization совпадает с Service.specialization_doctor по значению)
+        $relevantServices = Service::where('specialization_doctor', $specialist->specialization)
+            ->orderBy('name')->get()->unique('name')->values();
+
+        $allServices = Service::orderBy('name')->get()->unique('name')->values();
+
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateSpecialist(Request $request, int $id)

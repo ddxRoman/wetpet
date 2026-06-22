@@ -131,16 +131,33 @@ function deletePhoto(btn) {
     {{-- Форма добавления --}}
     <div class="border rounded-3 p-4 mb-4 bg-light">
         <h6 class="fw-semibold mb-3">Добавить / обновить цену</h6>
+
+        @if(isset($relevantServices) && $relevantServices->isEmpty())
+            <div class="alert alert-warning rounded-3 mb-3" style="font-size:13px;">
+                Для вашей специализации в каталоге пока нет готовых услуг — воспользуйтесь
+                поиском, чтобы найти и добавить услугу из общего списка.
+            </div>
+        @endif
+
         <div class="row g-3 align-items-end">
+
+            {{-- Select с живым поиском по услугам --}}
             <div class="col-md-6">
                 <label class="form-label fw-medium small">Услуга</label>
-                <select id="price-service" class="form-select">
-                    <option value="">— Выберите услугу —</option>
-                    @foreach($services as $service)
-                        <option value="{{ $service->id }}">{{ $service->name }}</option>
-                    @endforeach
-                </select>
+                <div class="service-search-wrap position-relative">
+                    <input type="text"
+                           id="service-search-input"
+                           class="form-control"
+                           placeholder="Выберите из списка или начните вводить для поиска..."
+                           autocomplete="off">
+                    <input type="hidden" id="price-service" value="">
+                    <div id="service-search-results" class="service-search-dropdown d-none"></div>
+                </div>
+                <div class="form-text" style="font-size:11px;">
+                    По умолчанию показаны услуги вашей специализации. Чтобы найти любую другую — начните печатать.
+                </div>
             </div>
+
             <div class="col-md-3">
                 <label class="form-label fw-medium small">Цена</label>
                 <input type="number" id="price-amount" class="form-control" placeholder="1500" min="0">
@@ -188,41 +205,185 @@ function deletePhoto(btn) {
     </table>
 </div>
 
+<style>
+    .service-search-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        max-height: 280px;
+        overflow-y: auto;
+        box-shadow: 0 8px 24px rgba(0,0,0,.12);
+        margin-top: 4px;
+    }
+    .service-search-group-label {
+        padding: 6px 14px 4px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: #9ca3af;
+        background: #fafafa;
+        position: sticky;
+        top: 0;
+    }
+    .service-search-item {
+        padding: 9px 14px;
+        cursor: pointer;
+        font-size: 14px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+    .service-search-item:last-child { border-bottom: none; }
+    .service-search-item:hover { background: #f0f5ff; }
+    .service-search-item .svc-category {
+        font-size: 11px;
+        color: #9ca3af;
+        margin-left: 6px;
+    }
+    .service-search-empty {
+        padding: 10px 14px;
+        color: #9ca3af;
+        font-size: 13px;
+    }
+</style>
+
 <script>
-document.getElementById('price-save-btn')?.addEventListener('click', function () {
-    const serviceId = document.getElementById('price-service').value;
-    const price     = document.getElementById('price-amount').value;
-    const currency  = document.getElementById('price-currency').value;
-    const status    = document.getElementById('price-save-status');
+(function () {
+    // Услуги, релевантные специализации текущего специалиста/организации —
+    // показываются по умолчанию, до того как пользователь начал что-то искать
+    @php
+        $relevantForJs = ($relevantServices ?? collect())->map(function ($s) {
+            return ['id' => $s->id, 'name' => $s->name];
+        })->values();
+    @endphp
+    const relevantServices = {!! json_encode($relevantForJs, JSON_UNESCAPED_UNICODE) !!};
 
-    if (!serviceId || !price) { status.textContent = 'Выберите услугу и укажите цену'; return; }
+    // Полный список услуг — подключается только когда пользователь печатает в поиске,
+    // чтобы можно было добавить любую услугу, не только свою специализацию
+    @php
+        $allForJs = ($allServices ?? collect())->map(function ($s) {
+            return [
+                'id'       => $s->id,
+                'name'     => $s->name,
+                'category' => $s->specialization_doctor ?: ($s->specialization ?: ''),
+            ];
+        })->values();
+    @endphp
+    const allServices = {!! json_encode($allForJs, JSON_UNESCAPED_UNICODE) !!};
 
-    status.textContent = 'Сохранение…';
+    const input        = document.getElementById('service-search-input');
+    const hiddenInput   = document.getElementById('price-service');
+    const dropdown      = document.getElementById('service-search-results');
 
-    fetch('/owner/prices/save', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-            entity_type: '{{ $type }}',
-            entity_id:   {{ $entityId }},
-            service_id:  serviceId,
-            price:       price,
-            currency:    currency,
-        })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.success) {
-            status.textContent = '✓ Сохранено';
-            window.location.reload();
+    function renderRelevant() {
+        if (!relevantServices.length) {
+            dropdown.innerHTML = '<div class="service-search-empty">Нет готовых услуг для вашей специализации — начните вводить текст, чтобы найти услугу в общем списке</div>';
+            dropdown.classList.remove('d-none');
+            return;
         }
-    })
-    .catch(() => { status.textContent = 'Ошибка'; });
-});
+        dropdown.innerHTML =
+            '<div class="service-search-group-label">Услуги вашей специализации</div>' +
+            relevantServices.map(svc => `
+                <div class="service-search-item" data-id="${svc.id}" data-name="${svc.name.replace(/"/g, '&quot;')}">
+                    ${svc.name}
+                </div>
+            `).join('');
+        dropdown.classList.remove('d-none');
+    }
+
+    function renderSearch(list) {
+        if (!list.length) {
+            dropdown.innerHTML = '<div class="service-search-empty">Ничего не найдено</div>';
+            dropdown.classList.remove('d-none');
+            return;
+        }
+        dropdown.innerHTML =
+            '<div class="service-search-group-label">Результаты поиска (все услуги)</div>' +
+            list.slice(0, 50).map(svc => `
+                <div class="service-search-item" data-id="${svc.id}" data-name="${svc.name.replace(/"/g, '&quot;')}">
+                    ${svc.name}
+                    ${svc.category ? `<span class="svc-category">${svc.category}</span>` : ''}
+                </div>
+            `).join('');
+        dropdown.classList.remove('d-none');
+    }
+
+    input.addEventListener('focus', function () {
+        // По умолчанию показываем услуги своей специализации
+        if (!this.value.trim()) {
+            renderRelevant();
+        }
+    });
+
+    input.addEventListener('input', function () {
+        const q = this.value.trim().toLowerCase();
+        hiddenInput.value = ''; // сброс выбора при ручном вводе
+
+        if (!q) {
+            renderRelevant();
+            return;
+        }
+        // Поиск идёт по ПОЛНОМУ списку услуг — можно найти и добавить любую
+        const filtered = allServices.filter(s => s.name.toLowerCase().includes(q));
+        renderSearch(filtered);
+    });
+
+    dropdown.addEventListener('click', function (e) {
+        const item = e.target.closest('.service-search-item');
+        if (!item) return;
+        hiddenInput.value = item.dataset.id;
+        input.value = item.dataset.name;
+        dropdown.classList.add('d-none');
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.service-search-wrap')) {
+            dropdown.classList.add('d-none');
+        }
+    });
+
+    // ── Сохранение цены ──
+    document.getElementById('price-save-btn')?.addEventListener('click', function () {
+        const serviceId = hiddenInput.value;
+        const price     = document.getElementById('price-amount').value;
+        const currency  = document.getElementById('price-currency').value;
+        const status    = document.getElementById('price-save-status');
+
+        if (!serviceId || !price) { status.textContent = 'Выберите услугу из списка и укажите цену'; return; }
+
+        status.textContent = 'Сохранение…';
+
+        fetch('/owner/prices/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                entity_type: '{{ $type }}',
+                entity_id:   {{ $entityId }},
+                service_id:  serviceId,
+                price:       price,
+                currency:    currency,
+            })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                status.textContent = '✓ Сохранено';
+                window.location.reload();
+            } else {
+                status.textContent = data.message || 'Ошибка сохранения';
+            }
+        })
+        .catch(() => { status.textContent = 'Ошибка'; });
+    });
+})();
 </script>
 @endif
 
