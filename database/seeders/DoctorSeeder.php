@@ -823,6 +823,42 @@ class DoctorSeeder extends Seeder
                 'photo' => NULL,
                 'description' => 'Специалист по анестезиологии и интенсивной терапии, обеспечивает безопасность операций'
             ],
+            [
+                'name' => 'Чистопашина Виктория Сергеевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Практикующий ветеринарный врач-стоматолог',
+                'clinic_id' => NULL,
+                'experience' => '11',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => 'doctors/biosfera/vetdent_chistopashyna.jpg',
+                'description' => 'Специалист по анестезиологии и интенсивной терапии, обеспечивает безопасность операций'
+            ],
+            [
+                'name' => 'Ковальчук Ирина Сергеевна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Практикующий ветеринарный фельдшер/Грумер',
+                'clinic_id' => NULL,
+                'experience' => '22  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => 'doctors/biosfera/vetdent_kovalchyk.jpg',
+                'description' => 'Специалист по анестезиологии и интенсивной терапии, обеспечивает безопасность операций'
+            ],
+            [
+                'name' => 'Стадник Олеся Олеговна',
+                'date_of_birth' => NULL,
+                'city_id' => 31,
+                'specialization' => 'Практикующий ветеринарны врач -офтальмолог/терапевт/хирург.',
+                'clinic_id' => NULL,
+                'experience' => '22  ',
+                'exotic_animals' => false,
+                'On_site_assistance' => false,
+                'photo' => 'doctors/biosfera/vetdent_stadnik.jpg',
+                'description' => 'Специалист по анестезиологии и интенсивной терапии, обеспечивает безопасность операций'
+            ],
         ];
 
         foreach ($doctors as $doctor) {
