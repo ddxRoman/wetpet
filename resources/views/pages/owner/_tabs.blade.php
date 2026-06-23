@@ -383,6 +383,46 @@ function deletePhoto(btn) {
         })
         .catch(() => { status.textContent = 'Ошибка'; });
     });
+
+    // ── Удаление цены (делегирование — работает и для строк, добавленных позже) ──
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-delete-price');
+        if (!btn) return;
+
+        if (!confirm('Удалить эту цену?')) return;
+
+        const priceId = btn.dataset.id;
+        const row = document.getElementById('price-row-' + priceId);
+
+        btn.disabled = true;
+
+        fetch('/owner/prices/' + priceId, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                row?.remove();
+
+                // Если строк не осталось — показываем плейсхолдер "Цены не добавлены"
+                const tbody = document.querySelector('#prices-table tbody');
+                if (tbody && !tbody.querySelector('tr')) {
+                    tbody.innerHTML = '<tr id="no-prices-row"><td colspan="3" class="text-center text-muted py-3">Цены не добавлены</td></tr>';
+                }
+            } else {
+                btn.disabled = false;
+                alert(data.message || 'Не удалось удалить цену');
+            }
+        })
+        .catch(() => {
+            btn.disabled = false;
+            alert('Ошибка при удалении');
+        });
+    });
 })();
 </script>
 @endif
