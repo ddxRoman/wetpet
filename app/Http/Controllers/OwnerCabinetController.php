@@ -160,7 +160,7 @@ class OwnerCabinetController extends Controller
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices'));
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices', 'service',));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -183,7 +183,8 @@ class OwnerCabinetController extends Controller
             'email'           => 'nullable|email|max:255',
             'website'         => 'nullable|url|max:255',
             'telegram'        => 'nullable|string|max:100',
-            'whatsapp'        => 'nullable|string|max:30',
+            'whatsapp'        => 'nullable|string|max:100',
+            'max'             => 'nullable|string|max:100',
             'schedule'        => 'nullable|string|max:255',
             'workdays'        => 'nullable|string|max:255',
             'seo_title'       => 'nullable|string|max:255',
@@ -234,6 +235,125 @@ public function organization(int $id)
         return view('pages.owner.organization', compact('organization', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
+    /**
+     * Заявка прав на объект ("Это моя организация" / "Это я").
+     * Вызывается с публичной карточки организации/клиники/врача/специалиста.
+     *
+     * 1. Если у пользователя уже есть owner-запись на этот объект — просто
+     *    прикрепляет новый документ к ней (повторная заявка после отказа).
+     * 2. Если записи нет — создаёт её с is_confirmed = false и сразу
+     *    прикрепляет загруженный документ.
+     */
+    public function claimOwnership(Request $request)
+    {
+        $request->validate([
+            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
+            'entity_id'   => 'required|integer',
+            'document'    => 'required|file|mimes:pdf,jpg,jpeg,png,webp|max:8192',
+            'comment'     => 'nullable|string|max:255',
+        ]);
+
+        $userId = Auth::id();
+        $type   = $request->entity_type;
+        $id     = (int) $request->entity_id;
+
+        // Для специалистов и врачей — один человек не может быть двумя разными людьми.
+        // Блокируем если пользователь уже подтверждён как специалист или доктор.
+        if (in_array($type, ['specialist', 'doctor'])) {
+            $alreadySpecialist = SpecialistOwner::where('user_id', $userId)->where('is_confirmed', true)->exists();
+            $alreadyDoctor     = DoctorOwner::where('user_id', $userId)->where('is_confirmed', true)->exists();
+
+            if ($alreadySpecialist || $alreadyDoctor) {
+                if ($request->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Вы уже подтверждены как специалист. Один пользователь не может быть двумя разными специалистами.',
+                    ], 403);
+                }
+                return back()->withErrors(['document' => 'Вы уже подтверждены как специалист.']);
+            }
+
+            // Также блокируем повторную подачу заявки (даже если ещё не подтверждена),
+            // если заявка уже существует на ДРУГОГО специалиста/доктора
+            $hasOtherSpecialistClaim = SpecialistOwner::where('user_id', $userId)
+                ->where('specialist_id', '!=', $type === 'specialist' ? $id : 0)
+                ->exists();
+            $hasOtherDoctorClaim = DoctorOwner::where('user_id', $userId)
+                ->where('doctor_id', '!=', $type === 'doctor' ? $id : 0)
+                ->exists();
+
+            if ($hasOtherSpecialistClaim || $hasOtherDoctorClaim) {
+                if ($request->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Вы уже подали заявку на подтверждение другого специалиста. Дождитесь проверки или обратитесь в поддержку.',
+                    ], 403);
+                }
+                return back()->withErrors(['document' => 'Заявка на другого специалиста уже существует.']);
+            }
+        }
+
+        // Проверяем что объект реально существует
+        $entityModel = match ($type) {
+            'clinic'       => Clinic::class,
+            'organization' => Organization::class,
+            'doctor'       => Doctor::class,
+            'specialist'   => Specialist::class,
+        };
+        if (!$entityModel::where('id', $id)->exists()) {
+            abort(404, 'Объект не найден');
+        }
+
+        $ownerModel = match ($type) {
+            'clinic'       => ClinicOwner::class,
+            'organization' => OrganizationOwner::class,
+            'doctor'       => DoctorOwner::class,
+            'specialist'   => SpecialistOwner::class,
+        };
+        $fkColumn = match ($type) {
+            'clinic'       => 'clinic_id',
+            'organization' => 'organization_id',
+            'doctor'       => 'doctor_id',
+            'specialist'   => 'specialist_id',
+        };
+
+        // Шаг 1: находим или создаём заявку на владение
+        $ownerRow = $ownerModel::firstOrCreate(
+            [$fkColumn => $id, 'user_id' => $userId],
+            ['is_confirmed' => false]
+        );
+
+        // Если заявку уже отклонили ранее — позволяем подать повторно,
+        // обнулив старый комментарий администратора
+        if (!$ownerRow->is_confirmed && $ownerRow->admin_comment) {
+            $ownerRow->update(['admin_comment' => null]);
+        }
+
+        // Шаг 2: прикрепляем документ к заявке
+        $file = $request->file('document');
+        $path = $file->store('verification-documents/' . $type, 'public');
+
+        $document = $ownerRow->documents()->create([
+            'path'          => $path,
+            'original_name' => $file->getClientOriginalName(),
+            'comment'       => $request->comment,
+        ]);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Заявка отправлена на проверку администратору.',
+                'document' => [
+                    'id'   => $document->id,
+                    'url'  => \Illuminate\Support\Facades\Storage::url($path),
+                    'name' => $document->original_name,
+                ],
+            ]);
+        }
+
+        return back()->with('success', 'Заявка отправлена. Мы свяжемся с вами после проверки документов.');
+    }
+
     public function uploadVerificationDocument(Request $request)
 {
     $request->validate([
@@ -276,6 +396,50 @@ public function organization(int $id)
     }
 
     return back()->with('success', 'Документ загружен. Ожидайте проверки администратором.');
+}
+
+/**
+ * Отмена заявки на владение (только если ещё не подтверждена).
+ */
+public function cancelClaim(string $type, int $id): \Illuminate\Http\JsonResponse
+{
+    $userId = Auth::id();
+
+    $ownerModel = match ($type) {
+        'clinic'       => ClinicOwner::class,
+        'organization' => OrganizationOwner::class,
+        'doctor'       => DoctorOwner::class,
+        'specialist'   => SpecialistOwner::class,
+        default        => abort(404),
+    };
+    $fkColumn = match ($type) {
+        'clinic'       => 'clinic_id',
+        'organization' => 'organization_id',
+        'doctor'       => 'doctor_id',
+        'specialist'   => 'specialist_id',
+    };
+
+    $ownerRow = $ownerModel::where('user_id', $userId)
+        ->where($fkColumn, $id)
+        ->firstOrFail();
+
+    // Нельзя отменить уже подтверждённую заявку
+    if ($ownerRow->is_confirmed) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Нельзя отменить уже подтверждённую заявку.',
+        ], 403);
+    }
+
+    // Удаляем все документы заявки с диска
+    foreach ($ownerRow->documents as $doc) {
+        $doc->deleteFile();
+        $doc->delete();
+    }
+
+    $ownerRow->delete();
+
+    return response()->json(['success' => true]);
 }
 
 /**
@@ -323,7 +487,8 @@ public function deleteVerificationDocument(int $documentId)
             'email'                => 'nullable|email|max:255',
             'website'              => 'nullable|url|max:255',
             'telegram'             => 'nullable|string|max:100',
-            'whatsapp'             => 'nullable|string|max:30',
+            'whatsapp'             => 'nullable|string|max:100',
+            'max'                  => 'nullable|string|max:100',
             'schedule'             => 'nullable|string|max:255',
             'workdays'             => 'nullable|string|max:255',
             'seo_title'            => 'nullable|string|max:255',
@@ -361,7 +526,7 @@ public function deleteVerificationDocument(int $documentId)
         $allServices = Service::whereNotNull('specialization_doctor')
             ->orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices'));
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'service', 'relevantServices', 'allServices'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -382,6 +547,12 @@ public function deleteVerificationDocument(int $documentId)
             'description'         => 'nullable|string',
             'seo_title'           => 'nullable|string|max:255',
             'seo_description'     => 'nullable|string|max:320',
+            // Контакты (мессенджеры) — сохраняются отдельно в doctor_contacts
+            'contact_phone'       => 'nullable|string|max:30',
+            'contact_email'       => 'nullable|email|max:255',
+            'contact_telegram'    => 'nullable|string|max:100',
+            'contact_vk'          => 'nullable|string|max:100',
+            'contact_max'         => 'nullable|string|max:100',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -390,7 +561,19 @@ public function deleteVerificationDocument(int $documentId)
             $data['photo'] = $request->file('photo')->store('doctors/photos', 'public');
         }
 
+        // Контактные поля не относятся напрямую к таблице doctors — выносим их
+        $contactData = [
+            'phone'    => $data['contact_phone']    ?? null,
+            'email'    => $data['contact_email']    ?? null,
+            'telegram' => $data['contact_telegram'] ?? null,
+            // На фронте это поле называется "VK", но физически хранится в колонке whatsapp
+            'whatsapp' => $data['contact_vk']       ?? null,
+            'max'      => $data['contact_max']      ?? null,
+        ];
+        unset($data['contact_phone'], $data['contact_email'], $data['contact_telegram'], $data['contact_vk'], $data['contact_max']);
+
         $doctor->update($data);
+        $doctor->contacts()->updateOrCreate(['doctor_id' => $doctor->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');
     }
@@ -414,7 +597,7 @@ public function deleteVerificationDocument(int $documentId)
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices'));
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'service', 'relevantServices', 'allServices'));
     }
 
     public function updateSpecialist(Request $request, int $id)
@@ -434,6 +617,12 @@ public function deleteVerificationDocument(int $documentId)
             'description'         => 'nullable|string',
             'seo_title'           => 'nullable|string|max:255',
             'seo_description'     => 'nullable|string|max:320',
+            // Контакты (мессенджеры) — сохраняются отдельно в specialist_contacts
+            'contact_phone'       => 'nullable|string|max:30',
+            'contact_email'       => 'nullable|email|max:255',
+            'contact_telegram'    => 'nullable|string|max:100',
+            'contact_vk'          => 'nullable|string|max:100',
+            'contact_max'         => 'nullable|string|max:100',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -442,7 +631,20 @@ public function deleteVerificationDocument(int $documentId)
             $data['photo'] = $request->file('photo')->store('specialists/photos', 'public');
         }
 
+        // specialist_contacts: telegram/whatsapp/max — старые boolean-колонки не трогаем,
+        // используем новые текстовые *_text поля, добавленные отдельной миграцией
+        $contactData = [
+            'phone'         => $data['contact_phone']    ?? null,
+            'email'         => $data['contact_email']    ?? null,
+            'telegram_text' => $data['contact_telegram'] ?? null,
+            // На фронте это поле называется "VK", физически — whatsapp_text
+            'whatsapp_text' => $data['contact_vk']       ?? null,
+            'max_text'      => $data['contact_max']      ?? null,
+        ];
+        unset($data['contact_phone'], $data['contact_email'], $data['contact_telegram'], $data['contact_vk'], $data['contact_max']);
+
         $specialist->update($data);
+        $specialist->contacts()->updateOrCreate(['specialist_id' => $specialist->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');
     }

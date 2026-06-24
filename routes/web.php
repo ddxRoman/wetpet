@@ -315,5 +315,6 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
     // Документы верификации (загрузка/удаление подтверждающих документов)
     Route::post('/documents/upload', [OwnerCabinetController::class, 'uploadVerificationDocument'])->name('documents.upload');
     Route::delete('/documents/{id}', [OwnerCabinetController::class, 'deleteVerificationDocument'])->name('documents.delete');
+    Route::post('/claim', [OwnerCabinetController::class, 'claimOwnership'])->name('claim');
+    Route::delete('/claim/{type}/{id}', [OwnerCabinetController::class, 'cancelClaim'])->name('claim.cancel');
 });
-

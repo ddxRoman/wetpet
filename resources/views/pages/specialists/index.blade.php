@@ -133,11 +133,58 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // Tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
+
+    // Кнопка "Показать ещё"
+    const grid = document.getElementById('clinics-grid');
+
+    document.addEventListener('click', async function (e) {
+        const btn = e.target.closest('#load-more');
+        if (!btn) return;
+
+        const url = btn.dataset.url;
+        if (!url) return;
+
+        btn.disabled = true;
+        btn.textContent = 'Загрузка...';
+
+        try {
+            const response = await fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const html = await response.text();
+
+            // Парсим HTML и достаём новые карточки
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newCards = doc.querySelectorAll('#clinics-grid .specialist-item');
+
+            newCards.forEach(card => {
+                grid.appendChild(card);
+                // Инициализируем тултипы уже в живом DOM
+                card.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+            });
+
+            // Обновляем URL следующей страницы
+            const nextBtn = doc.getElementById('load-more');
+            if (nextBtn && nextBtn.dataset.url) {
+                btn.dataset.url = nextBtn.dataset.url;
+                btn.disabled = false;
+                btn.textContent = 'Показать еще';
+            } else {
+                // Страниц больше нет — убираем кнопку
+                btn.closest('.text-center')?.remove();
+            }
+        } catch (err) {
+            btn.disabled = false;
+            btn.textContent = 'Показать еще';
+            console.error('Ошибка загрузки:', err);
+        }
+    });
 });
 </script>
 
 
 @endsection
-

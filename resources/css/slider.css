@@ -79,7 +79,7 @@
 
   .carousel__slide_img_prewiew{
     margin-top: 50%;
-  width: 50%;
+  width: 75%;
   height: 500px;
   aspect-ratio: 2 / 1;
   object-fit: cover;

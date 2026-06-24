@@ -26,8 +26,6 @@
 
     @if(isset($pendingOwners) && $pendingOwners->isNotEmpty())
 
-    @if(isset($pendingOwners) && $pendingOwners->isNotEmpty())
-
         @foreach($pendingOwners as $item)
             @php
                 $ownerRow   = $item['owner_row'];
@@ -41,12 +39,22 @@
                 <div class="card-body p-4">
 
                     {{-- Шапка карточки --}}
-                    <div class="d-flex align-items-center gap-3 mb-4">
-                        <span style="font-size:32px;">{{ $icon }}</span>
-                        <div>
-                            <h5 class="fw-bold mb-0">{{ $entityName }}</h5>
-                            <span class="badge bg-warning text-dark" style="font-size:11px;">На проверке</span>
+                    <div class="d-flex align-items-center justify-content-between gap-3 mb-4 flex-wrap">
+                        <div class="d-flex align-items-center gap-3">
+                            <span style="font-size:32px;">{{ $icon }}</span>
+                            <div>
+                                <h5 class="fw-bold mb-0">{{ $entityName }}</h5>
+                                <span class="badge bg-warning text-dark" style="font-size:11px;">На проверке</span>
+                            </div>
                         </div>
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger rounded-pill btn-cancel-claim"
+                                data-type="{{ $entityType }}"
+                                data-id="{{ $ownerRow->{$entityType . '_id'} }}"
+                                data-name="{{ $entityName }}"
+                                style="font-size:13px;">
+                            ✕ Отменить заявку
+                        </button>
                     </div>
 
                     {{-- Комментарий администратора (если отклонили) --}}
@@ -236,7 +244,45 @@
             }
         });
     });
+
+    // ── Отмена заявки ─────────────────────────────────────────
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-cancel-claim');
+        if (!btn) return;
+
+        if (!confirm(`Отменить заявку на «${btn.dataset.name}»? Все загруженные документы будут удалены.`)) return;
+
+        btn.disabled = true;
+        btn.textContent = 'Отмена…';
+
+        fetch(`/owner/claim/${btn.dataset.type}/${btn.dataset.id}`, {
+            method: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                // Убираем карточку заявки из DOM
+                btn.closest('.card')?.remove();
+
+                // Если карточек больше нет — перезагружаем страницу
+                // чтобы показать пустое состояние или редирект
+                const remaining = document.querySelectorAll('.btn-cancel-claim');
+                if (remaining.length === 0) {
+                    window.location.reload();
+                }
+            } else {
+                btn.disabled = false;
+                btn.textContent = '✕ Отменить заявку';
+                alert(data.message || 'Не удалось отменить заявку.');
+            }
+        })
+        .catch(() => {
+            btn.disabled = false;
+            btn.textContent = '✕ Отменить заявку';
+            alert('Ошибка соединения. Попробуйте ещё раз.');
+        });
+    });
 })();
 </script>
 @endsection
-@endif

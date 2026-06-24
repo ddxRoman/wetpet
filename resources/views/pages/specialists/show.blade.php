@@ -84,12 +84,57 @@
         </div>
     </div>
 
+    {{-- Правый блок: Кнопка "Это я" --}}
     <div class="ms-md-3 mt-3 mt-md-0">
-        <button class="btn btn-success fw-bold d-flex align-items-center gap-2" 
-                style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">
-            <img src="{{ asset('storage/icon/button/is_me.svg') }}" width="20" alt="is_me" onerror="this.style.display='none'">
-            Это я
-        </button>
+        @auth
+            @php
+                $alreadyOwner = \App\Models\SpecialistOwner::where('user_id', auth()->id())
+                    ->where('specialist_id', $doctor->id)
+                    ->first();
+
+                // Подтверждён ли пользователь уже как ЛЮБОЙ специалист или доктор
+                $isAnySpecialistConfirmed =
+                    \App\Models\SpecialistOwner::where('user_id', auth()->id())->where('is_confirmed', true)->exists() ||
+                    \App\Models\DoctorOwner::where('user_id', auth()->id())->where('is_confirmed', true)->exists();
+
+                // Есть ли уже заявка на ДРУГОГО специалиста/доктора
+                $hasOtherClaim =
+                    \App\Models\SpecialistOwner::where('user_id', auth()->id())->where('specialist_id', '!=', $doctor->id)->exists() ||
+                    \App\Models\DoctorOwner::where('user_id', auth()->id())->exists();
+            @endphp
+
+            @if($alreadyOwner && $alreadyOwner->is_confirmed)
+                {{-- Эта карточка подтверждена --}}
+                <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
+                      style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
+                    ✓ Подтверждено
+                </span>
+            @elseif($alreadyOwner && !$alreadyOwner->is_confirmed)
+                {{-- Заявка на эту карточку уже подана --}}
+                <button class="btn btn-warning fw-bold d-flex align-items-center gap-2"
+                        style="border-radius: 10px; padding: 8px 16px;"
+                        data-bs-toggle="modal" data-bs-target="#claimOwnershipModal">
+                    ⏳ На проверке (дополнить)
+                </button>
+            @elseif(!$isAnySpecialistConfirmed && !$hasOtherClaim)
+                {{-- Пользователь ещё не связан ни с каким специалистом — показываем кнопку --}}
+                <button class="btn btn-success fw-bold d-flex align-items-center gap-2"
+                        style="border-radius: 10px; padding: 8px 16px; border-style: dashed;"
+                        data-bs-toggle="modal" data-bs-target="#claimOwnershipModal">
+                    <img src="{{ asset('storage/icon/button/is_me.svg') }}" width="20" alt="is_me" onerror="this.style.display='none'">
+                    Это я
+                </button>
+            @endif
+            {{-- Если isAnySpecialistConfirmed или hasOtherClaim — кнопка не показывается вовсе --}}
+
+            @include('partials.modal-claim-ownership', ['entityType' => 'specialist', 'entityId' => $doctor->id])
+        @else
+            <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
+               class="btn btn-success fw-bold d-flex align-items-center gap-2"
+               style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">
+                Это я
+            </a>
+        @endauth
     </div>
 </div>
     {{-- ТАБЫ --}}

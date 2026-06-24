@@ -5,27 +5,7 @@
     Ожидает: $allUserEntities (коллекция), $entityId, $type (текущий открытый объект)
 --}}
 @if(isset($allUserEntities) && $allUserEntities->count() > 1)
-<div class="owner-tabs-wrap mb-4">
-    <div class="owner-tabs-scroll">
-        @foreach($allUserEntities as $item)
-            @php
-                $isCurrent = isset($entityId, $type) && $type === $item['type'] && (string) $entityId === (string) $item['id'];
-                $url = route('owner.' . $item['type'], $item['id']);
-            @endphp
 
-            <a href="{{ $url }}" class="owner-tab {{ $isCurrent ? 'owner-tab--active' : '' }} {{ !$item['is_confirmed'] ? 'owner-tab--pending' : '' }}">
-                <span class="owner-tab__icon">{{ $item['icon'] }}</span>
-                <span class="owner-tab__name">{{ $item['name'] }}</span>
-
-                @if($item['is_confirmed'])
-                    <span class="owner-tab__badge owner-tab__badge--ok" title="Подтверждено">✓</span>
-                @else
-                    <span class="owner-tab__badge owner-tab__badge--wait">⏳ На проверке</span>
-                @endif
-            </a>
-        @endforeach
-    </div>
-</div>
 
 <style>
     .owner-tabs-wrap {

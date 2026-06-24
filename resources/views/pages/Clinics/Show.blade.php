@@ -85,12 +85,43 @@
             </div>
         </div>
 
+        {{-- Правый блок: Кнопка "ЭТО Я" --}}
         <div class="ms-md-3 mt-2 mt-md-0">
-            <button class="btn btn-success fw-bold d-flex align-items-center gap-2" 
-                    style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">
-                <img src="{{ asset('storage/icon/button/is_me.svg') }}" width="20" alt="is_me" onerror="this.style.display='none'"> 
-                Это моя клиника
-            </button>
+            @auth
+                @php
+                    $alreadyOwner = \App\Models\ClinicOwner::where('user_id', auth()->id())
+                        ->where('clinic_id', $clinic->id)
+                        ->first();
+                @endphp
+
+                @if($alreadyOwner && $alreadyOwner->is_confirmed)
+                    <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
+                          style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
+                        ✓ Вы подтверждённый владелец
+                    </span>
+                @elseif($alreadyOwner && !$alreadyOwner->is_confirmed)
+                    <button class="btn btn-warning fw-bold d-flex align-items-center gap-2"
+                            style="border-radius: 10px; padding: 8px 16px;"
+                            data-bs-toggle="modal" data-bs-target="#claimOwnershipModal">
+                        ⏳ Заявка на проверке (дополнить)
+                    </button>
+                @else
+                    <button class="btn btn-success fw-bold d-flex align-items-center gap-2"
+                            style="border-radius: 10px; padding: 8px 16px; border-style: dashed;"
+                            data-bs-toggle="modal" data-bs-target="#claimOwnershipModal">
+                        <img src="{{ asset('storage/icon/button/is_me.svg') }}" width="20" alt="is_me" onerror="this.style.display='none'">
+                        Это моя клиника
+                    </button>
+                @endif
+
+                @include('partials.modal-claim-ownership', ['entityType' => 'clinic', 'entityId' => $clinic->id])
+            @else
+                <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
+                   class="btn btn-success fw-bold d-flex align-items-center gap-2"
+                   style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">
+                    Это моя клиника
+                </a>
+            @endauth
         </div>
     </div>
 

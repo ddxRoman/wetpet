@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             SpecialistSeeder::class,
             OrganizationSeeder::class,
             NewsSeeder::class,
-            KZVSSeeder::class,
+            KzvsSeeder::class,
             // ClinicServiceSeeder::class,
             DoctorSeeder::class,
             // DoctorServiceSeeder::class,

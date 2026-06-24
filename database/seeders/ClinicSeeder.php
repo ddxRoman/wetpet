@@ -6720,28 +6720,6 @@ class ClinicSeeder extends Seeder
         'seo_description' => null,
     ],
     [
-        'name' => 'Дог мой друг',
-        
-        'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => 'Краснодар',
-        'street' => 'Совхозная улица',
-        'house' => '1 к7',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' В работе с животными штату Дог мой друг приходят на помощь знание особенностей их психологии и строения…',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
         'name' => 'Зоолавка',
         
         'country' => 'Россия',
