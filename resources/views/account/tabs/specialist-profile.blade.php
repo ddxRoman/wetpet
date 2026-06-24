@@ -172,7 +172,7 @@
 {{-- WhatsApp --}}
 <div class="input-group">
     <span class="input-group-text bg-light border-end-0">
-        <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="22">
+        <img src="{{ Storage::url('icon/contacts/vk-logo.svg') }}" width="22">
     </span>
     {{-- Используем type="tel", чтобы на мобилках открывалась цифровая клавиатура --}}
     <input type="tel" name="whatsapp" class="form-control border-start-0" 

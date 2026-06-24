@@ -46,7 +46,7 @@
                         💬 WhatsApp:
                         <a href="https://wa.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank" title="Написать в вотсапп">
                             {{ $contact->whatsapp }}
-                            <img width="24" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" alt="Вотсапп">
+                            <img width="24" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" alt="Вотсапп">
                         </a>
                     </div>
                 @endif

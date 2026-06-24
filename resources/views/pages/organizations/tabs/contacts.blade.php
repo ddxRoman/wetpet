@@ -51,7 +51,7 @@
                         💬 WhatsApp: 
                         <a href="{{$organization->whatsapp }}" target="_blank" class="text-decoration-none">
                             
-                            <img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" title="Связаться через WhatsApp" alt="WhatsApp">
+                            <img width="24px" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" title="Связаться через WhatsApp" alt="WhatsApp">
                         </a>
                     </div>
                 @endif

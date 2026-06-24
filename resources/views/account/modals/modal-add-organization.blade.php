@@ -88,14 +88,14 @@
         <!-- Telegram -->
         <label class="messenger-icon">
             <input type="checkbox" name="messengers[]" value="telegram" class="d-none">
-            <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" title="По этому номеру можно связатся в Телеграмм" alt="Telegram">
+            <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" title="По этому номеру можно связатся в Телеграмм" alt="Telegram">
         </label>
 
-        <!-- WhatsApp -->
-        <label class="messenger-icon">
-            <input type="checkbox" name="messengers[]" value="whatsapp" class="d-none">
-            <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" title="По этому номеру можно связатся в Вотсапп" alt="WhatsApp">
-        </label>
+        <!-- VK -->
+        <!-- <label class="messenger-icon">
+            <input type="checkbox" name="messengers[]" value="VK" class="d-none">
+            <img class="vk-logo-modal-img" src="{{ Storage::url('icon/contacts/vk-logo.svg') }}" title="Ссылка на страницу в ВК" alt="VK">
+        </label> -->
 
         <!-- Messenger Max (VK Messenger) -->
         <label class="messenger-icon">

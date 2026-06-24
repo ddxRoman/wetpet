@@ -2382,3 +2382,7 @@ pre.politics {
     .object-fit-cover {
         object-fit: cover;
     }
+    .vk-logo-modal-img{
+        /* width: 100%; */
+
+    }

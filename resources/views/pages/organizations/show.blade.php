@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    {{-- Правый блок: Кнопка "ЭТО Я" --}}
+
     <div class="ms-md-3 mt-2 mt-md-0">
         <button class="btn btn-success fw-bold" style="border-radius: 8px; padding: 10px 20px;">
             Это моя организация

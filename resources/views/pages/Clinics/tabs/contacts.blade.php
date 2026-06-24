@@ -21,7 +21,7 @@
                                         <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}" target="_blank">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" title="Связатся через телеграмм" alt="Телеграмм"></a></div>
                                         @endif
                                         @if($clinic->whatsapp)
-                                        <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/whatsapp.svg') }}" title="Связаться через Вотсапп" alt="Вотсапп"></a></div>
+                                        <div>💬 WhatsApp: <a href="https://wa.me/{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" title="Связаться через Вотсапп" alt="Вотсапп"></a></div>
                                         @endif
                                         @if($clinic->website)
                                         <div>💬 <a href="{{ $clinic->website }}" target="_blank" title="Перейти на сайт клиники">Перейти на сайт</a></div>

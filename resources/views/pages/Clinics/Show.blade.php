@@ -85,7 +85,6 @@
             </div>
         </div>
 
-        {{-- Правый блок: Кнопка "ЭТО Я" --}}
         <div class="ms-md-3 mt-2 mt-md-0">
             <button class="btn btn-success fw-bold d-flex align-items-center gap-2" 
                     style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">

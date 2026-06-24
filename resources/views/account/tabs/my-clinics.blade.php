@@ -120,13 +120,13 @@
                                    value="{{ old('telegram', $doctor->contacts->telegram ?? '') }}">
                         </div>
 
-                        {{-- WhatsApp --}}
+                        {{-- VK --}}
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0">
-                                <img src="{{ Storage::url('icon/contacts/whatsapp.svg') }}" width="22">
+                                <img src="{{ Storage::url('icon/contacts/vk-logo.svg') }}" width="22">
                             </span>
                             <input type="text" name="whatsapp" class="form-control border-start-0" 
-                                   placeholder="Номер телефона WhatsApp"
+                                   placeholder="VK"
                                    value="{{ old('whatsapp', $doctor->contacts->whatsapp ?? '') }}">
                         </div>
 
