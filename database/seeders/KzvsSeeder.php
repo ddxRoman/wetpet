@@ -4518,7 +4518,7 @@ class KzvsSeeder extends Seeder
         'street' => 'Восточно-Кругликовская улица',
         'house' => '46/А',
         'address_comment' => '',
-        'logo' => 'organizations\logos\zoosalon_pride.jpg',
+        'logo' => '',
         'description' => ' )
 🔸ГОСТИНИЦА ДЛЯ ПИТОМЦЕВ🔸
 Услуги для домашних животных де Зоогостиница от 400 рублей
@@ -28551,16 +28551,36 @@ class KzvsSeeder extends Seeder
         'address_comment' => 'перерыв 14:30-15:00',
         'logo' => null,
         'description' => 'Сеть зоомагазинов Барсик предлагает широкий ассортимент кормов, аксессуаров и товаров для ухода за вашими домашними питомцами.',
-        'phone1' => '8 (861) 221-17-68',
-        'phone2' => '',
+        'phone1' => '+7 (8362) 23-32-23',
+        'phone2' => '+7 (8362) 43-79-69',
         'email' => null,
         'telegram' => null,
         'whatsapp' => null,
         'website' => null,
-        'schedule' => '9:00-21:00',
+        'schedule' => 'Пн-Пт: 09:00–18:00 Сб-Вс: 09:00–17:00',
         'workdays' => 'Пн-Вс',
         'seo_title' => null,
         'seo_description' => null,
+    ],
+        [
+        'name' => 'Мурзик',
+        'field_of_activity_id' => 33,
+        'country' => 'Россия',
+        'region' => 'Республика Марий Эл',
+        'city' => 'Йошкар-Ола',
+        'street' => 'Первомайская ул',
+        'house' => '115Ж',
+        'address_comment' => '',
+        'logo' => 'organizations\logos\murzik_yoshkar_ola.jpg',
+        'description' => '',
+        'phone1' => '+7 (861) 223-33-33',
+        'phone2' => null,
+        'email' => 'murzikvet@mail.ru',
+        'telegram' => null,
+        'whatsapp' => null,
+        'website' => null,
+        'schedule' => '10:00–18:00',
+        'workdays' => 'Пн–Сб'
     ],
 
 

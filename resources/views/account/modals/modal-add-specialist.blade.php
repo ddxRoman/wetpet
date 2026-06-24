@@ -1,262 +1,301 @@
 <div class="modal fade" id="addDoctorModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
 
-<form id="addDoctorForm"
-      method="POST"
-      action="{{ route('specialist.store') }}"
-      enctype="multipart/form-data">
-      @csrf
-
-                <div class="modal-header">
-                    <h5 class="modal-title">Добавление специалиста</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            {{-- Заголовок --}}
+            <div class="modal-header px-4 py-3 border-0 flex-shrink-0"
+                 style="background:linear-gradient(135deg,#1ccfc9 0%,#0fa8c0 100%);">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center"
+                         style="width:42px;height:42px;background:rgba(255,255,255,0.2);font-size:20px;">🩺</div>
+                    <div>
+                        <h5 class="modal-title fw-bold text-white mb-0" style="font-size:17px;">Добавление специалиста</h5>
+                        <div class="text-white" style="font-size:12px;opacity:.8;">Заполните информацию о специалисте</div>
+                    </div>
                 </div>
+                <button type="button" class="btn-close btn-close-white opacity-75" data-bs-dismiss="modal"></button>
+            </div>
 
-                <div class="modal-body">
-                    <div id="doctorErrors" class="alert alert-danger d-none"></div>
+            {{-- Тело (скроллится) --}}
+            <div class="modal-body px-4 py-4">
+
+                <div id="doctorErrors" class="alert alert-danger rounded-3 d-none" style="font-size:14px;"></div>
+
+                <form id="addDoctorForm"
+                      method="POST"
+                      action="{{ route('specialist.store') }}"
+                      enctype="multipart/form-data">
+                    @csrf
+
+                    @if(auth()->check() && auth()->user()->canAddSelfSpecialist())
+                    <div class="p-3 rounded-3 mb-4 d-flex align-items-start gap-3"
+                         style="background:#eef3ff;border:1px solid #b2dff0;">
+                        <div class="pt-1">
+                            <input type="checkbox" name="its_me" class="form-check-input" id="itsMe"
+                                   style="width:18px;height:18px;cursor:pointer;accent-color:#1ccfc9;">
+                        </div>
+                        <label for="itsMe" style="cursor:pointer;">
+                            <div class="fw-semibold" style="font-size:14px;color:#0a6e7a;">Добавляю себя</div>
+                            <div class="text-muted" style="font-size:12px;margin-top:2px;">
+                                Мы попросим подтвердить, что это вы.
+                            </div>
+                        </label>
+                    </div>
+                    @endif
+
                     <div class="row g-3">
 
-                        <div class="col-md-6">
-                            <label>Сфера деятельности</label>
-                            <select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Сфера деятельности</label>
+                            <select name="field_of_activity_id" id="fieldOfActivitySelect" class="form-select wpm-input">
                                 <option value="">Загрузка...</option>
                             </select>
                         </div>
 
-
                         <div class="col-12">
-                            <label>Имя врача</label>
-                            <input type="text" name="name" class="form-control">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Имя специалиста</label>
+                            <input type="text" name="name" class="form-control wpm-input"
+                                   placeholder="Например: Иванов Иван Иванович">
                         </div>
 
                         <div class="col-md-6">
-                            <label>Дата рождения</label>
-                            <input
-                                type="date"
-                                id="date_of_birth"
-                                name="date_of_birth"
-                                class="form-control"
-                                max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Дата рождения</label>
+                            <input type="date" id="date_of_birth" name="date_of_birth" class="form-control wpm-input"
+                                   max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}">
                         </div>
                         <div class="col-md-6">
-                            <label>Стаж (лет)</label>
-                            <input
-                                type="number"
-                                id="experience"
-                                name="experience"
-                                class="form-control"
-                                min="0">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Стаж (лет)</label>
+                            <input type="number" id="experience" name="experience"
+                                   class="form-control wpm-input" min="0" placeholder="0">
                         </div>
-
-                        @if(auth()->check() && auth()->user()->canAddSelfSpecialist())
-                        <div class="col-12 form-check-label">
-                            <label>
-                                <input type="checkbox" name="its_me" class="form-check-input">
-                                <strong>Добавляю себя</strong>
-                                <div class="label_its_me">
-                                    Мы попросим подтвердить, что это вы.
-                                </div>
-                            </label>
-                        </div>
-                        @endif
 
                         <div class="col-md-6">
-                            <label>Регион</label>
-                            <select name="region" id="regionSelect" class="form-select">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Регион</label>
+                            <select name="region" id="regionSelect" class="form-select wpm-input">
                                 <option value="">Выберите регион</option>
                                 @foreach($cities->unique('region') as $city)
-                                <option value="{{ $city->region }}">{{ $city->region }}</option>
+                                    <option value="{{ $city->region }}">{{ $city->region }}</option>
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="col-md-6">
-                            <label>Город</label>
-                            <select name="city_id" id="citySelect" class="form-select">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Город</label>
+                            <select name="city_id" id="citySelect" class="form-select wpm-input">
                                 <option value="">Сначала выберите регион</option>
                             </select>
                         </div>
 
-                        <div class="col-md-6">
-                            <label>Оргнанизация </label>
-                            <select name="clinic_id" id="clinicSelect" class="form-select">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Организация</label>
+                            <select name="clinic_id" id="clinicSelect" class="form-select wpm-input">
                                 <option value="">Сначала выберите город</option>
                             </select>
                         </div>
 
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" id="is_private">
-                            <label class="form-check-label" for="is_private">Я частный специалист (работаю без привязки к клинике/центру)</label>
-                        </div>
-
-                        <div id="address-section-add" style="display: none;">
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <label for="street" class="form-label">Улица</label>
-                                    <input type="text" name="street" id="street"
-                                        class="form-control"
-                                        placeholder="Напр. ул. Мира">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="house" class="form-label">Дом</label>
-                                    <input type="text" name="house" id="house"
-                                        class="form-control"
-                                        placeholder="Напр. 10/1">
+                        <div class="col-12">
+                            <div class="p-3 rounded-3" style="background:#f0f8ff;border:1px solid #b2dff0;">
+                                <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+                                    <input class="form-check-input flex-shrink-0" type="checkbox"
+                                           id="is_private" style="width:42px;height:22px;cursor:pointer;accent-color:#1ccfc9;">
+                                    <label class="form-check-label m-0" for="is_private"
+                                           style="font-size:13px;color:#374151;cursor:pointer;">
+                                        Я частный специалист (работаю без привязки к клинике/центру)
+                                    </label>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-6">
-                            <label>Телефон</label>
-                            <input type="phone" name="phone" class="form-control">
-                            <label for="#messendger">Выберите соц сети к которым привязан этот контакт</label>
-                            <div id="messendger" class="d-flex gap-3 mt-2 messenger-icons">
-
-                                <!-- Telegram -->
-                                <label class="messenger-icon">
-                                    <input type="checkbox" name="messengers[]" value="telegram" class="d-none">
-                                    <img src="{{ Storage::url('icon/contacts/telegram.svg') }}" title="По этому номеру можно связатся в Телеграмм" alt="Telegram">
-                                </label>
-
-                                <!-- VK -->
-                                <!-- <label class="messenger-icon">
-                                    <input type="checkbox" name="messengers[]" value="VK" class="d-none">
-                                    <img class="vk-logo-modal-img" src="{{ Storage::url('icon/contacts/vk-logo.svg') }}" title="Ссылка на страницу в ВК" alt="VK">
-                                </label> -->
-
-                                <!-- Messenger Max (VK Messenger) -->
-                                <label class="messenger-icon">
-                                    <input type="checkbox" name="messengers[]" value="messenger" class="d-none">
-                                    <img src="{{ Storage::url('icon/contacts/max_messendger.svg') }}" title="По этому номеру можно связатся в Max" alt="Messenger">
-                                </label>
-
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <label>Почта</label>
-                            <input type="text" name="mail" class="form-control">
-                        </div>
-
-
-                        <div class="col-md-6 d-flex align-items-center">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="exotic_animals" id="exotic_animals" value="Да">
-                                <label class="form-check-label" for="exotic_animals">Работаю с экзотическими животными</label>
+                        <div id="address-section-add" style="display:none;" class="col-12">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Улица</label>
+                                    <input type="text" name="street" id="street" class="form-control wpm-input" placeholder="ул. Мира">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Дом</label>
+                                    <input type="text" name="house" id="house" class="form-control wpm-input" placeholder="10/1">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6 d-flex align-items-center">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="On_site_assistance" id="On_site_assistance" value="Да">
-                                <label class="form-check-label" for="On_site_assistance">Выезд на дом</label>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Телефон</label>
+                            <input type="tel" name="phone" class="form-control wpm-input" placeholder="+7 (___) ___-__-__">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Email</label>
+                            <input type="email" name="mail" class="form-control wpm-input" placeholder="example@mail.ru">
+                        </div>
+
+                        <div class="col-12">
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-3 h-100" style="background:#f0f8ff;border:1px solid #b2dff0;">
+                                        <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+                                            <input class="form-check-input flex-shrink-0" type="checkbox"
+                                                   name="exotic_animals" id="exotic_animals" value="Да"
+                                                   style="width:42px;height:22px;cursor:pointer;accent-color:#1ccfc9;">
+                                            <label class="form-check-label m-0" for="exotic_animals"
+                                                   style="font-size:13px;color:#374151;cursor:pointer;">
+                                                🦎 Работаю с экзотическими животными
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-3 h-100" style="background:#f0f8ff;border:1px solid #b2dff0;">
+                                        <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+                                            <input class="form-check-input flex-shrink-0" type="checkbox"
+                                                   name="On_site_assistance" id="On_site_assistance" value="Да"
+                                                   style="width:42px;height:22px;cursor:pointer;accent-color:#1ccfc9;">
+                                            <label class="form-check-label m-0" for="On_site_assistance"
+                                                   style="font-size:13px;color:#374151;cursor:pointer;">
+                                                🚗 Выезд на дом
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-12">
-                            <label>Фото специалиста</label>
-                            <div class="photo-wrapper">
-                                <input type="file" name="photo" id="doctorPhotoInput" class="d-none" accept="image/*">
-
-                                <div id="doctorPhotoPicker" style="cursor:pointer; width:100px; height:100px; border:2px dashed #ccc; display:flex; align-items:center; justify-content:center; font-size:2rem;">+</div>
-
-                                <div id="photoPreviewWrapper" style="display:none;">
-                                    <img id="doctorPhotoPreview" title="Предпросмотр" style="width:100px; height:100px; object-fit:cover;">
-                                    <button type="button" id="removePhotoBtn" class="btn btn-danger btn-sm">&times;</button>
-                                </div>
+                            <label class="form-label fw-semibold d-block" style="font-size:13px;color:#374151;">Фото специалиста</label>
+                            <input type="file" name="photo" id="doctorPhotoInput" class="d-none" accept="image/*">
+                            <div id="doctorPhotoPicker"
+                                 style="cursor:pointer;width:90px;height:90px;border:2px dashed #b2dff0;
+                                        border-radius:12px;display:flex;flex-direction:column;align-items:center;
+                                        justify-content:center;background:#eef3ff;transition:all .2s;"
+                                 onmouseenter="this.style.borderColor='#1ccfc9';this.style.background='#d9f5fb'"
+                                 onmouseleave="this.style.borderColor='#b2dff0';this.style.background='#eef3ff'">
+                                <span style="font-size:26px;line-height:1;color:#1ccfc9;">＋</span>
+                                <span style="font-size:10px;color:#6b7280;margin-top:4px;">Загрузить</span>
+                            </div>
+                            <div id="photoPreviewWrapper" style="display:none;position:relative;width:90px;">
+                                <img id="doctorPhotoPreview"
+                                     style="width:90px;height:90px;object-fit:cover;border-radius:12px;display:block;">
+                                <button type="button" id="removePhotoBtn"
+                                        style="position:absolute;top:-8px;right:-8px;width:22px;height:22px;
+                                               border-radius:50%;border:none;background:#dc3545;color:#fff;
+                                               font-size:14px;cursor:pointer;line-height:1;">&times;</button>
                             </div>
                         </div>
 
-
                         <div class="col-12">
-                            <label>Расскажите о специалисте</label>
-                            <textarea name="description" rows="4" class="form-control" placeholder="Опишите род деятельности, направления"></textarea>
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">О специалисте</label>
+                            <textarea name="description" rows="4" class="form-control wpm-input"
+                                      placeholder="Опишите специализацию, направления и опыт работы"></textarea>
                         </div>
 
                     </div>
-                </div>
+                </form>
+            </div>
 
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-
-                </div>
-
-            </form>
+            {{-- Футер --}}
+            <div class="modal-footer px-4 py-3 border-0 flex-shrink-0" style="background:#f0f8ff;">
+                <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal"
+                        style="font-size:14px;border:1px solid #dee2e6;">Отмена</button>
+                <button type="button" id="doctorSubmitBtn" class="btn rounded-pill px-5 fw-semibold text-white"
+                        style="font-size:14px;background:#1ccfc9;border:none;transition:background .2s;"
+                        onmouseenter="this.style.background='#0fa8c0'"
+                        onmouseleave="this.style.background='#1ccfc9'">
+                    Сохранить
+                </button>
+            </div>
 
         </div>
     </div>
 </div>
 
+<style>
+.wpm-input {
+    border-radius: 10px !important;
+    border: 1.5px solid #dde3f0 !important;
+    padding: 9px 14px !important;
+    font-size: 14px !important;
+    color: #1f2937 !important;
+    transition: border-color .2s, box-shadow .2s !important;
+}
+.wpm-input:focus {
+    border-color: #1ccfc9 !important;
+    box-shadow: 0 0 0 3px rgba(28,207,201,.15) !important;
+    outline: none !important;
+}
+.wpm-input::placeholder { color: #9ca3af !important; }
+</style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('addDoctorForm');
+document.addEventListener('DOMContentLoaded', function () {
+    // Фото
+    const picker  = document.getElementById('doctorPhotoPicker');
+    const input   = document.getElementById('doctorPhotoInput');
+    const preview = document.getElementById('doctorPhotoPreview');
+    const wrapper = document.getElementById('photoPreviewWrapper');
+    const rmBtn   = document.getElementById('removePhotoBtn');
+
+    picker?.addEventListener('click', () => input.click());
+    input?.addEventListener('change', function () {
+        if (this.files[0]) {
+            preview.src = URL.createObjectURL(this.files[0]);
+            picker.style.display  = 'none';
+            wrapper.style.display = 'block';
+        }
+    });
+    rmBtn?.addEventListener('click', function () {
+        input.value   = '';
+        preview.src   = '';
+        wrapper.style.display = 'none';
+        picker.style.display  = 'flex';
+    });
+
+    // Кнопка Сохранить вне формы
+    document.getElementById('doctorSubmitBtn')?.addEventListener('click', function () {
+        document.getElementById('addDoctorForm')?.requestSubmit();
+    });
+
+    // Форма
+    const form       = document.getElementById('addDoctorForm');
     const errorBlock = document.getElementById('doctorErrors');
 
     if (form) {
         form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Выключаем перезагрузку страницы
-
-            // Скрываем прошлые ошибки
+            e.preventDefault();
             errorBlock.classList.add('d-none');
             errorBlock.innerHTML = '';
 
-            // Собираем данные (FormData автоматически правильно упакует и файлы, и массивы messengers[])
-            const formData = new FormData(form);
+            const formData      = new FormData(form);
+            const itsMeCheckbox = form.querySelector('input[name="its_me"]');
 
             fetch(form.action, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    // Токен CSRF берется автоматически из скрытого поля @csrf внутри формы
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Проверяем, была ли активна галочка "Добавляю себя"
-                    const itsMeCheckbox = form.querySelector('input[name="its_me"]');
-                    
+            .then(async response => {
+                if (response.ok) {
                     if (itsMeCheckbox && itsMeCheckbox.checked) {
-                        // Если "its_me" нажат — отправляем на страницу управления кабинетами
-                        window.location.href = "/owner"; // Или маршрут с помощью Blade: "{{ route('owner.index') }}"
+                        window.location.href = "/owner";
                     } else {
-                        // Если добавляли просто так — обновляем страницу или закрываем модалку
                         window.location.reload();
                     }
                 } else {
-                    // На случай, если бэк вернет success: false без кода ошибки
-                    showDoctorError('Что-то пошло не так. Попробуйте позже.');
+                    const data = await response.json();
+                    if (data.errors) {
+                        let html = '<ul class="mb-0">';
+                        Object.values(data.errors).forEach(arr => arr.forEach(m => { html += `<li>${m}</li>`; }));
+                        html += '</ul>';
+                        errorBlock.innerHTML = html;
+                    } else {
+                        errorBlock.innerText = data.message || 'Ошибка валидации.';
+                    }
+                    errorBlock.classList.remove('d-none');
+                    errorBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
             })
-            .catch(error => {
-                // Обработка ошибок валидации Laravel (код 422)
-                if (error.status === 422) {
-                    error.json().then(errors => {
-                        let errorHtml = '<ul class="mb-0">';
-                        Object.values(errors.errors).forEach(errArray => {
-                            errArray.forEach(message => {
-                                errorHtml += `<li>${message}</li>`;
-                            });
-                        });
-                        errorHtml += '</ul>';
-                        showDoctorError(errorHtml);
-                    });
-                } else {
-                    showDoctorError('Произошла системная ошибка при отправке данных.');
-                }
+            .catch(() => {
+                errorBlock.classList.remove('d-none');
+                errorBlock.innerText = 'Системная ошибка при отправке данных.';
             });
         });
-    }
-
-    function showDoctorError(htmlContent) {
-        if (errorBlock) {
-            errorBlock.innerHTML = htmlContent;
-            errorBlock.classList.remove('d-none');
-            // Скроллим модалку вверх, чтобы пользователь увидел ошибку
-            errorBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
     }
 });
 </script>

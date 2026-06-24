@@ -936,25 +936,6 @@ class ClinicSeeder extends Seeder
                       // Тут стоп, остановил, пауза закончил
 
     [
-        'name' => 'Мурзик',
-        'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => 'Краснодар',
-        'street' => 'Садовая',
-        'house' => '178',
-        'address_comment' => 'Фокус на лечении кошек и мелких грызунов',
-        'logo' => null,
-        'description' => 'Ветеринарная клиника для кошек и грызунов: терапия, стоматология, УЗИ.',
-        'phone1' => '+7 (861) 223-33-33',
-        'phone2' => null,
-        'email' => 'murzikvet@mail.ru',
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '10:00–18:00',
-        'workdays' => 'Пн–Сб'
-    ],
-    [
         'name' => 'Пёс и Кот',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
