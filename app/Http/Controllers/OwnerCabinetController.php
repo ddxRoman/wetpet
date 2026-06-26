@@ -247,10 +247,11 @@ public function organization(int $id)
     public function claimOwnership(Request $request)
     {
         $request->validate([
-            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
-            'entity_id'   => 'required|integer',
-            'document'    => 'required|file|mimes:pdf,jpg,jpeg,png,webp|max:8192',
-            'comment'     => 'nullable|string|max:255',
+            'entity_type'  => 'required|in:clinic,organization,doctor,specialist',
+            'entity_id'    => 'required|integer',
+            'documents'    => 'required|array|min:1',
+            'documents.*'  => 'file|mimes:pdf,jpg,jpeg,png,webp|max:122880',
+            'comment'      => 'nullable|string|max:255',
         ]);
 
         $userId = Auth::id();
@@ -273,13 +274,14 @@ public function organization(int $id)
                 return back()->withErrors(['document' => 'Вы уже подтверждены как специалист.']);
             }
 
-            // Также блокируем повторную подачу заявки (даже если ещё не подтверждена),
-            // если заявка уже существует на ДРУГОГО специалиста/доктора
+            // Блокируем если есть активная (не отклонённая) заявка на ДРУГОГО специалиста/доктора
             $hasOtherSpecialistClaim = SpecialistOwner::where('user_id', $userId)
                 ->where('specialist_id', '!=', $type === 'specialist' ? $id : 0)
+                ->where('is_rejected', false)
                 ->exists();
             $hasOtherDoctorClaim = DoctorOwner::where('user_id', $userId)
                 ->where('doctor_id', '!=', $type === 'doctor' ? $id : 0)
+                ->where('is_rejected', false)
                 ->exists();
 
             if ($hasOtherSpecialistClaim || $hasOtherDoctorClaim) {
@@ -290,6 +292,30 @@ public function organization(int $id)
                     ], 403);
                 }
                 return back()->withErrors(['document' => 'Заявка на другого специалиста уже существует.']);
+            }
+
+            // Если есть отклонённая заявка на ЭТОГО специалиста — проверяем 7 дней
+            $ownerModel = $type === 'specialist' ? SpecialistOwner::class : DoctorOwner::class;
+            $fkColumn   = $type === 'specialist' ? 'specialist_id' : 'doctor_id';
+            $existingRejected = $ownerModel::where('user_id', $userId)
+                ->where($fkColumn, $id)
+                ->where('is_rejected', true)
+                ->first();
+
+            if ($existingRejected) {
+                if (!$existingRejected->canReapply()) {
+                    $daysLeft = 7 - (int) now()->diffInDays($existingRejected->rejected_at);
+                    if ($request->wantsJson()) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Вы сможете подать повторную заявку через {$daysLeft} дн.",
+                        ], 403);
+                    }
+                    return back()->withErrors(['document' => "Повторная заявка доступна через {$daysLeft} дн."]);
+                }
+                // 7 дней прошло — удаляем старую запись, даём подать заново
+                $existingRejected->documents()->each(fn($d) => $d->delete());
+                $existingRejected->delete();
             }
         }
 
@@ -329,25 +355,27 @@ public function organization(int $id)
             $ownerRow->update(['admin_comment' => null]);
         }
 
-        // Шаг 2: прикрепляем документ к заявке
-        $file = $request->file('document');
-        $path = $file->store('verification-documents/' . $type, 'public');
-
-        $document = $ownerRow->documents()->create([
-            'path'          => $path,
-            'original_name' => $file->getClientOriginalName(),
-            'comment'       => $request->comment,
-        ]);
+        // Шаг 2: прикрепляем документы к заявке
+        $savedDocuments = [];
+        foreach ($request->file('documents') as $file) {
+            $path = $file->store('verification-documents/' . $type, 'public');
+            $document = $ownerRow->documents()->create([
+                'path'          => $path,
+                'original_name' => $file->getClientOriginalName(),
+                'comment'       => $request->comment,
+            ]);
+            $savedDocuments[] = [
+                'id'   => $document->id,
+                'url'  => \Illuminate\Support\Facades\Storage::url($path),
+                'name' => $document->original_name,
+            ];
+        }
 
         if ($request->wantsJson()) {
             return response()->json([
-                'success'  => true,
-                'message'  => 'Заявка отправлена на проверку администратору.',
-                'document' => [
-                    'id'   => $document->id,
-                    'url'  => \Illuminate\Support\Facades\Storage::url($path),
-                    'name' => $document->original_name,
-                ],
+                'success'   => true,
+                'message'   => 'Заявка отправлена на проверку администратору.',
+                'documents' => $savedDocuments,
             ]);
         }
 
@@ -357,10 +385,11 @@ public function organization(int $id)
     public function uploadVerificationDocument(Request $request)
 {
     $request->validate([
-        'document'    => 'required|file|mimes:pdf,jpg,jpeg,png,webp|max:8192',
-        'entity_type' => 'required|in:clinic,organization,doctor,specialist',
-        'owner_row_id'=> 'required|integer',
-        'comment'     => 'nullable|string|max:255',
+        'documents'    => 'required|array|min:1',
+        'documents.*'  => 'file|mimes:pdf,jpg,jpeg,png,webp|max:122880',
+        'entity_type'  => 'required|in:clinic,organization,doctor,specialist',
+        'owner_row_id' => 'required|integer',
+        'comment'      => 'nullable|string|max:255',
     ]);
 
     $ownerModel = match ($request->entity_type) {
@@ -375,23 +404,25 @@ public function organization(int $id)
         ->where('user_id', Auth::id())
         ->firstOrFail();
 
-    $file = $request->file('document');
-    $path = $file->store('verification-documents/' . $request->entity_type, 'public');
-
-    $document = $ownerRow->documents()->create([
-        'path'          => $path,
-        'original_name' => $file->getClientOriginalName(),
-        'comment'       => $request->comment,
-    ]);
+    $savedDocuments = [];
+    foreach ($request->file('documents') as $file) {
+        $path = $file->store('verification-documents/' . $request->entity_type, 'public');
+        $document = $ownerRow->documents()->create([
+            'path'          => $path,
+            'original_name' => $file->getClientOriginalName(),
+            'comment'       => $request->comment,
+        ]);
+        $savedDocuments[] = [
+            'id'   => $document->id,
+            'url'  => \Illuminate\Support\Facades\Storage::url($path),
+            'name' => $document->original_name,
+        ];
+    }
 
     if ($request->wantsJson()) {
         return response()->json([
-            'success'  => true,
-            'document' => [
-                'id'   => $document->id,
-                'url'  => \Illuminate\Support\Facades\Storage::url($path),
-                'name' => $document->original_name,
-            ],
+            'success'   => true,
+            'documents' => $savedDocuments,
         ]);
     }
 

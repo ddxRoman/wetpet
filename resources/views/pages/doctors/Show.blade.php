@@ -98,10 +98,19 @@
                         \App\Models\DoctorOwner::where('user_id', auth()->id())->where('is_confirmed', true)->exists() ||
                         \App\Models\SpecialistOwner::where('user_id', auth()->id())->where('is_confirmed', true)->exists();
 
-                    // Есть ли уже заявка на ДРУГОГО доктора/специалиста
+                    // Есть ли активная (не отклонённая) заявка на ДРУГОГО доктора/специалиста
                     $hasOtherClaim =
-                        \App\Models\DoctorOwner::where('user_id', auth()->id())->where('doctor_id', '!=', $doctor->id)->exists() ||
-                        \App\Models\SpecialistOwner::where('user_id', auth()->id())->exists();
+                        \App\Models\DoctorOwner::where('user_id', auth()->id())
+                            ->where('doctor_id', '!=', $doctor->id)
+                            ->where('is_rejected', false)
+                            ->exists() ||
+                        \App\Models\SpecialistOwner::where('user_id', auth()->id())
+                            ->where('is_rejected', false)
+                            ->exists();
+
+                    // Если своя заявка отклонена — проверяем можно ли подать повторно
+                    $myRejected = $alreadyOwner && $alreadyOwner->is_rejected;
+                    $canReapply = $myRejected && $alreadyOwner->canReapply();
                 @endphp
 
                 @if($alreadyOwner && $alreadyOwner->is_confirmed)
@@ -110,15 +119,22 @@
                           style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
                         ✓ Подтверждено
                     </span>
-                @elseif($alreadyOwner && !$alreadyOwner->is_confirmed)
-                    {{-- Заявка на эту карточку уже подана --}}
+                @elseif($myRejected && !$canReapply)
+                    {{-- Отказано, ещё нельзя подать повторно --}}
+                    @php $daysLeft = 7 - (int) \Carbon\Carbon::now()->diffInDays($alreadyOwner->rejected_at) @endphp
+                    <span class="btn btn-danger fw-bold disabled d-flex align-items-center gap-2"
+                          style="border-radius: 10px; padding: 8px 16px; opacity: .85; font-size:13px;">
+                        ❌ Отказано (повтор через {{ $daysLeft }} дн.)
+                    </span>
+                @elseif($alreadyOwner && !$alreadyOwner->is_confirmed && !$myRejected)
+                    {{-- Заявка на рассмотрении --}}
                     <button class="btn btn-warning fw-bold d-flex align-items-center gap-2"
                             style="border-radius: 10px; padding: 8px 16px;"
                             data-bs-toggle="modal" data-bs-target="#claimOwnershipModal">
                         ⏳ На проверке (дополнить)
                     </button>
-                @elseif(!$isAnySpecialistConfirmed && !$hasOtherClaim)
-                    {{-- Пользователь ещё не связан ни с каким специалистом — показываем кнопку --}}
+                @elseif((!$alreadyOwner || $canReapply) && !$isAnySpecialistConfirmed && !$hasOtherClaim)
+                    {{-- Нет заявки или отклонена и прошло 7 дней --}}
                     <button class="btn btn-success fw-bold d-flex align-items-center gap-2"
                             style="border-radius: 10px; padding: 8px 16px; border-style: dashed;"
                             data-bs-toggle="modal" data-bs-target="#claimOwnershipModal">

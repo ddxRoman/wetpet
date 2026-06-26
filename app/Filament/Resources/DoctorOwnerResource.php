@@ -8,6 +8,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Filament\Resources\DoctorOwnerResource\Pages;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Placeholder;
@@ -122,11 +123,19 @@ class DoctorOwnerResource extends Resource
                                 ->label('Загруженные документы')
                                 ->content(new \Illuminate\Support\HtmlString($docsHtml)),
 
-                            Toggle::make('is_confirmed')
+                            Checkbox::make('is_rejected')
+                    ->label('Отказано'),
+
+                Toggle::make('is_confirmed')
                                 ->label('Подтверждено')
                                 ->default((bool) $record->is_confirmed)
                                 ->onColor('success')
                                 ->offColor('danger'),
+
+                            Checkbox::make('is_rejected')
+                                ->label('Отказано')
+                                ->default((bool) $record->is_rejected)
+                                ->helperText('Пользователь сможет подать повторную заявку через 7 дней'),
 
                             Textarea::make('admin_comment')
                                 ->label('Комментарий администратора')
@@ -136,18 +145,30 @@ class DoctorOwnerResource extends Resource
                         ];
                     })
                     ->action(function (array $data, $record) {
+                        $isRejected  = (bool) ($data['is_rejected'] ?? false);
+                        $isConfirmed = (bool) ($data['is_confirmed'] ?? false);
+
+                        // Если подтверждён — снимаем отказ
+                        if ($isConfirmed) {
+                            $isRejected = false;
+                        }
+
                         $record->update([
-                            'is_confirmed'  => $data['is_confirmed'],
+                            'is_confirmed'  => $isConfirmed,
+                            'is_rejected'   => $isRejected,
+                            'rejected_at'   => $isRejected && !$record->is_rejected
+                                ? now()
+                                : ($isRejected ? $record->rejected_at : null),
                             'admin_comment' => $data['admin_comment'] ?? null,
                         ]);
 
                         Notification::make()
-                            ->title($data['is_confirmed'] ? '✅ Право подтверждено' : '⚠️ Статус обновлён')
+                            ->title($isConfirmed ? '✅ Право подтверждено' : ($isRejected ? '❌ Заявка отклонена' : '⚠️ Статус обновлён'))
                             ->success()
                             ->send();
                     }),
 
-                EditAction::make()->label('Изменить'),
+
                 DeleteAction::make()->label('Удалить'),
             ])
             ->bulkActions([

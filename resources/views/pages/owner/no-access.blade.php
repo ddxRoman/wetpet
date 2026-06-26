@@ -39,27 +39,74 @@
                 <div class="card-body p-4">
 
                     {{-- Шапка карточки --}}
+                    @php
+                        $isRejected  = (bool) ($ownerRow->is_rejected ?? false);
+                        $rejectedAt  = $ownerRow->rejected_at ?? null;
+                        $canReapply  = $isRejected && $ownerRow->canReapply();
+                        $daysLeft    = 0;
+                        if ($isRejected && $rejectedAt && !$canReapply) {
+                            $daysLeft = 7 - (int) \Carbon\Carbon::now()->diffInDays($rejectedAt);
+                        }
+                        $entityId = $ownerRow->{$entityType . '_id'};
+                    @endphp
+
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-4 flex-wrap">
                         <div class="d-flex align-items-center gap-3">
                             <span style="font-size:32px;">{{ $icon }}</span>
                             <div>
                                 <h5 class="fw-bold mb-0">{{ $entityName }}</h5>
-                                <span class="badge bg-warning text-dark" style="font-size:11px;">На проверке</span>
+                                @if($isRejected)
+                                    <span class="badge bg-danger" style="font-size:11px;">❌ Отказано</span>
+                                @else
+                                    <span class="badge bg-warning text-dark" style="font-size:11px;">⏳ На проверке</span>
+                                @endif
                             </div>
                         </div>
-                        <button type="button"
-                                class="btn btn-sm btn-outline-danger rounded-pill btn-cancel-claim"
-                                data-type="{{ $entityType }}"
-                                data-id="{{ $ownerRow->{$entityType . '_id'} }}"
-                                data-name="{{ $entityName }}"
-                                style="font-size:13px;">
-                            ✕ Отменить заявку
-                        </button>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            @if($isRejected && $canReapply)
+                                {{-- Можно подать повторно --}}
+                                <a href="{{ url("/{$entityType}s/{$ownerRow->{$entityType}?->slug}") }}"
+                                   class="btn btn-sm btn-success rounded-pill"
+                                   style="font-size:13px;">
+                                    🔄 Подать повторно
+                                </a>
+                            @endif
+                            @if(!$isRejected || $canReapply)
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger rounded-pill btn-cancel-claim"
+                                        data-type="{{ $entityType }}"
+                                        data-id="{{ $entityId }}"
+                                        data-name="{{ $entityName }}"
+                                        style="font-size:13px;">
+                                    ✕ Отменить заявку
+                                </button>
+                            @endif
+                        </div>
                     </div>
 
-                    {{-- Комментарий администратора (если отклонили) --}}
-                    @if($ownerRow->admin_comment)
-                        <div class="alert alert-danger rounded-3 mb-4">
+                    {{-- Статус отказа с таймером --}}
+                    @if($isRejected)
+                        <div class="alert rounded-3 mb-4 {{ $canReapply ? 'alert-warning' : 'alert-danger' }}">
+                            <div class="fw-bold mb-1">❌ Ваша заявка отклонена</div>
+                            @if($ownerRow->admin_comment)
+                                <div class="mb-2">
+                                    <strong>Причина:</strong> {{ $ownerRow->admin_comment }}
+                                </div>
+                            @endif
+                            @if($canReapply)
+                                <div class="text-success fw-semibold">
+                                    ✅ Прошло 7 дней — вы можете подать повторную заявку.
+                                </div>
+                            @else
+                                <div>
+                                    Повторная заявка будет доступна через
+                                    <strong>{{ $daysLeft }} {{ $daysLeft === 1 ? 'день' : ($daysLeft < 5 ? 'дня' : 'дней') }}</strong>.
+                                </div>
+                            @endif
+                        </div>
+                    @elseif($ownerRow->admin_comment)
+                        <div class="alert alert-info rounded-3 mb-4">
                             <strong>💬 Комментарий администратора:</strong>
                             <div class="mt-1">{{ $ownerRow->admin_comment }}</div>
                         </div>

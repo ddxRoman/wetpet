@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class SpecialistOwner extends Model
 {
@@ -12,12 +13,31 @@ class SpecialistOwner extends Model
         'user_id',
         'specialist_id',
         'is_confirmed',
+        'is_rejected',
+        'rejected_at',
         'admin_comment',
     ];
 
     protected $casts = [
         'is_confirmed' => 'boolean',
+        'is_rejected'  => 'boolean',
+        'rejected_at'  => 'datetime',
     ];
+
+    /**
+     * Может ли пользователь подать повторную заявку.
+     * Для специалистов/врачей — только через 7 дней после отказа.
+     */
+    public function canReapply(): bool
+    {
+        if (!$this->is_rejected) {
+            return false;
+        }
+        if (!$this->rejected_at) {
+            return true;
+        }
+        return Carbon::now()->diffInDays($this->rejected_at) >= 7;
+    }
 
     public function user()
     {
@@ -33,4 +53,6 @@ class SpecialistOwner extends Model
     {
         return $this->morphMany(OwnershipDocument::class, 'ownerable');
     }
+
+    public function deleteFile(): void {}
 }

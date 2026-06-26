@@ -500,18 +500,6 @@ class DoctorSeeder extends Seeder
                 'description' => 'Онколог, специализируется на диагностике и химиотерапевтическом лечении онкологических заболеваний животных'
             ],
             [
-                'name' => 'Алексеева Елена Михайловна',
-                'date_of_birth' => NULL,
-                'city_id' => 31,
-                'specialization' => 'Ветеринарный врач, терапевт, инфекционист',
-                'clinic_id' => NULL,
-                'experience' => '15  ',
-                'exotic_animals' => false,
-                'On_site_assistance' => true,
-                'photo' => NULL,
-                'description' => 'Специализируется на диагностике и лечении инфекционных заболеваний, проводит выездные приёмы'
-            ],
-            [
                 'name' => 'Морозов Иван Сергеевич',
                 'date_of_birth' => NULL,
                 'city_id' => 31,
