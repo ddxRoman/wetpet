@@ -309,4 +309,8 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
     Route::post('/documents/upload', [OwnerCabinetController::class, 'uploadVerificationDocument'])->name('documents.upload');
     Route::delete('/documents/{id}', [OwnerCabinetController::class, 'deleteVerificationDocument'])->name('documents.delete');
     Route::post('/claim', [OwnerCabinetController::class, 'claimOwnership'])->name('claim');
+
+    // Акции
+    Route::post('/promotions/save', [OwnerCabinetController::class, 'savePromotion'])->name('promotions.save');
+    Route::delete('/promotions/{id}', [OwnerCabinetController::class, 'deletePromotion'])->name('promotions.delete');
 });

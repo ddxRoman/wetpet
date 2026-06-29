@@ -27,6 +27,13 @@ class AppServiceProvider extends ServiceProvider
         // Оставляем бренднейм и обсервер
         view()->share('brandname', config('app.name', 'Зверозор'));
         \App\Models\ReviewReceipt::observe(\App\Observers\ReviewReceiptObserver::class);
+
+        // Авто-проставление created_by/is_verified + уведомление админов
+        \App\Models\Doctor::observe(\App\Observers\EntityCreationObserver::class);
+        \App\Models\Organization::observe(\App\Observers\EntityCreationObserver::class);
+        \App\Models\Clinic::observe(\App\Observers\EntityCreationObserver::class);
+        \App\Models\Specialist::observe(\App\Observers\EntityCreationObserver::class);
+
 Paginator::useBootstrapFive();
         \Illuminate\Support\Facades\View::composer('*', function ($view) {
             // --- ЛОГИКА ОПРЕДЕЛЕНИЯ ГОРОДА ---

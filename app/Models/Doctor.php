@@ -15,10 +15,16 @@ class Doctor extends Model
     protected $table = 'doctors';
 
     protected $fillable = [
+        'is_verified',
+        'created_by',
         'name', 'slug', 'specialization', 'date_of_birth', 'city_id',
         'clinic_id', 'experience', 'exotic_animals',
         'On_site_assistance', 'photo', 'description', 'seo_title',
         'seo_description'
+    ];
+
+    protected $casts = [
+        'is_verified' => 'boolean',
     ];
 
     protected static function booted()
@@ -127,5 +133,15 @@ class Doctor extends Model
     public function awards()
     {
         return $this->hasMany(Award::class);
+    }
+
+    public function promotions()
+    {
+        return $this->morphMany(\App\Models\Promotion::class, 'promotable');
+    }
+
+        public function creator()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 class Specialist extends Model
 {
 protected $fillable = [
+        'is_verified',
+        'created_by',
     'name', 
     'specialization', 
     'city_id', 
@@ -24,6 +26,10 @@ protected $fillable = [
     'seo_title', 
     'seo_description',
 ];
+
+    protected $casts = [
+        'is_verified' => 'boolean',
+    ];
 
     public function owners()
 {
@@ -87,4 +93,14 @@ public function getRouteKeyName()
     return 'slug';
 }
 
+
+    public function promotions()
+    {
+        return $this->morphMany(\App\Models\Promotion::class, 'promotable');
+    }
+
+        public function creator()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
 }

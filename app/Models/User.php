@@ -110,4 +110,14 @@ public function ownedOrganizations()
     {
         return (bool) $this->is_admin;
     }
+
+    /**
+     * Есть ли активный рекламный пакет
+     */
+    public function hasPromoPackage(): bool
+    {
+        if (!$this->has_promo_package) return false;
+        if (!$this->promo_package_expires_at) return true;
+        return $this->promo_package_expires_at >= now()->toDateString();
+    }
 }

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Organization extends Model
 {
    protected $fillable = [
+        'is_verified',
+        'created_by',
     'name',
     'slug',
     'country',
@@ -25,6 +27,7 @@ class Organization extends Model
     'email',
     'telegram',
     'whatsapp',
+    'max',
     'website',
     'schedule',
     'workdays',
@@ -32,6 +35,10 @@ class Organization extends Model
     'seo_title', 
     'seo_description'
 ];
+
+    protected $casts = [
+        'is_verified' => 'boolean',
+    ];
 
 protected static function boot()
 {
@@ -111,4 +118,14 @@ public function reviews()
     return $this->morphMany(Review::class, 'reviewable');
 }
 
+
+    public function promotions()
+    {
+        return $this->morphMany(\App\Models\Promotion::class, 'promotable');
+    }
+
+        public function creator()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
 }

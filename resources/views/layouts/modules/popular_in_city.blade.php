@@ -1,345 +1,141 @@
-<!-- Теперь мне нужно добавить функционал Акций. У Клиник, Организаций, Специалистов и Докторов могут быть акции. Эти акции Пользователь сам прописывает у себя в админке. 
-эти акции (не более 3-х)  выводятся у него в карточке, а так же отображаются на главной странице, в блоке акций (Выгодные предложения в г.) Это платная функция и доступна будет
-только тем пользователям которые купили рекламный пакет-->
+@php
+use App\Models\Promotion;
+use App\Models\Clinic;
+use App\Models\Organization;
+use App\Models\Doctor;
+use App\Models\Specialist;
 
+$cityId = $currentCityId ?? null;
 
+$promos = Promotion::with('promotable')
+    ->active()
+    ->whereHasMorph('promotable', [Clinic::class, Organization::class, Doctor::class, Specialist::class], function ($q) use ($cityId) {
+        if ($cityId) {
+            $q->where('city_id', $cityId);
+        }
+    })
+    ->latest()
+    ->take(6)
+    ->get();
 
+$columns  = $promos->chunk(2);
+$hasPromos = $promos->isNotEmpty();
 
+$colTitles = ['Скидки на услуги', 'Спецпредложения', 'Акции партнёров'];
+$routeMap  = [
+    'Clinic'       => 'clinics.show',
+    'Organization' => 'organizations.show',
+    'Doctor'       => 'doctors.show',
+    'Specialist'   => 'specialists.show',
+];
+@endphp
+
+@if($hasPromos)
 <style>
-/* === ОБЩИЕ КОММЕРЧЕСКИЕ СТИЛИ ДЛЯ ОБОИХ БЛОКОВ === */
-.badge-discount {
-    background-color: #dc3545;
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 3px 7px;
-    border-radius: 6px;
-}
-.commercial-old-price {
-    text-decoration: line-through;
-    color: #999;
-    font-size: 0.85rem;
-    margin-right: 5px;
-}
-.commercial-new-price {
-    color: #28a745;
-    font-weight: 700;
-}
-.btn-commercial {
-    font-size: 0.85rem;
-    padding: 5px 12px;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
+.badge-discount{background-color:#dc3545;color:white;font-size:.75rem;font-weight:700;padding:3px 7px;border-radius:6px;}
+.commercial-old-price{text-decoration:line-through;color:#999;font-size:.85rem;margin-right:5px;}
+.commercial-new-price{color:#28a745;font-weight:700;}
+.btn-commercial{font-size:.85rem;padding:5px 12px;border-radius:8px;font-weight:500;transition:all .2s ease;white-space:nowrap;}
+.commercial-card-desktop{background:#fff;border-radius:12px;padding:15px;transition:transform .2s ease,box-shadow .2s ease;height:100%;}
+.commercial-card-desktop:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,.08);}
 
-/* === ДЕСКТОП — как было === */
-@media (min-width: 993px) {
-  .mobile-popular-wrapper {
-    display: none !important;
-  }
-  .commercial-card-desktop {
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .commercial-card-desktop:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-  }
-}
+@media(min-width:993px){.mobile-popular-wrapper{display:none!important;}}
 
-/* === МОБИЛЬНАЯ ВЕРСИЯ — адаптация под акции === */
-@media (max-width: 992px) {
-  .desktop-popular-wrapper {
-    display: none !important;
-  }
-
-  .mobile-popular-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
-  }
-
-  .mobile-popular-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 10px;
-    color: #222;
-  }
-
-  .mobile-popular-scroll {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 15px;
-    padding: 10px 5px;
-  }
-
-  .mobile-popular-card {
-    flex: 0 0 85%;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    padding: 15px;
-    scroll-snap-align: center;
-    border: 1px solid #f0f0f0;
-  }
-
-  .mobile-popular-card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 15px;
-    color: #333;
-    border-bottom: 2px solid #f8f9fa;
-    padding-bottom: 8px;
-  }
-
-  .mobile-popular-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .mobile-popular-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #eef0f2;
-  }
-
-  .mobile-popular-link {
-    text-decoration: none;
-    color: #212529;
-    font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1.3;
-  }
-  
-  .mobile-clinic-name {
-    font-size: 0.8rem;
-    color: #6c757d;
-  }
-
-  .mobile-commercial-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5px;
-    border-top: 1px dashed #e0e0e0;
-    padding-top: 8px;
-  }
+@media(max-width:992px){
+    .desktop-popular-wrapper{display:none!important;}
+    .mobile-popular-wrapper{padding:0 15px 20px;}
+    .mobile-popular-title{font-size:1.2rem;font-weight:700;color:#222;margin-bottom:12px;}
+    .mobile-popular-scroll{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:12px;padding:4px 2px 12px;scrollbar-width:none;-ms-overflow-style:none;}
+    .mobile-popular-scroll::-webkit-scrollbar{display:none;}
+    .mobile-popular-card{flex:0 0 82vw;max-width:300px;background:#fff;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.08);border:1px solid #f0f0f0;overflow:hidden;scroll-snap-align:start;}
+    .mobile-popular-card-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8f9fa;border-bottom:1px solid #eee;font-weight:600;font-size:.88rem;color:#333;}
+    .mobile-popular-item{padding:10px 14px;border-bottom:1px solid #f3f4f6;}
+    .mobile-popular-item:last-child{border-bottom:none;}
+    .mobile-popular-link{display:block;text-decoration:none;color:#212529;font-size:.88rem;font-weight:600;line-height:1.3;margin-bottom:3px;}
+    .mobile-clinic-name{font-size:.78rem;color:#6c757d;display:block;margin-bottom:6px;}
+    .mobile-commercial-footer{display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px dashed #e0e0e0;}
 }
 </style>
 
+{{-- ДЕСКТОП --}}
 <div class="container desktop-popular-wrapper my-4">
-  <div class="row">
-    <h2 class="header_h2 mb-4">Выгодные предложения в г. {{ $currentCityName }}</h2>
-
-    <div class="col-4">
-      <div class="most_popular_in_city border commercial-card-desktop">
-        <figcaption class="title_list_popular d-flex justify-content-between align-items-center">
-          <span>Скидки на услуги</span>
-          <span class="badge-discount">% Акции</span>
-        </figcaption>
-        <ul class="list_doctor">
-          <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2 border-bottom">
-            <a class="link_in_category_specialist font-weight-bold" href="" title="Стерилизация кошки">Комплексная вакцинация</a>
-            <small class="text-muted">Ветклиника «Айболит»</small>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="commercial-old-price">2 500 ₽</span>
-                <span class="commercial-new-price">1 800 ₽</span>
-              </div>
-              <a href="" class="btn btn-sm btn-outline-primary btn-commercial">Забрать</a>
+    <div class="row">
+        <h2 class="header_h2 mb-4">Выгодные предложения в г. {{ $currentCityName }}</h2>
+        <div class="row g-3">
+            @foreach($columns as $colIndex => $colPromos)
+            <div class="col-4">
+                <div class="most_popular_in_city border commercial-card-desktop">
+                    <figcaption class="title_list_popular d-flex justify-content-between align-items-center mb-2">
+                        <span>{{ $colTitles[$colIndex] ?? 'Акции' }}</span>
+                        <span class="badge-discount">% Акции</span>
+                    </figcaption>
+                    <ul class="list_doctor mb-0">
+                        @foreach($colPromos as $promo)
+                        @php
+                            $entity = $promo->promotable;
+                            $typeStr = class_basename($promo->promotable_type);
+                            $url = isset($routeMap[$typeStr]) ? route($routeMap[$typeStr], $entity->slug ?? '#') : '#';
+                        @endphp
+                        <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2 {{ !$loop->last ? 'border-bottom' : '' }}">
+                            <a class="link_in_category_specialist font-weight-bold" href="{{ $url }}" title="{{ $promo->title }}">
+                                {{ $promo->title }}
+                            </a>
+                            <small class="text-muted">{{ $entity->name ?? '' }}</small>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div>
+                                    @if($promo->old_price)
+                                        <span class="commercial-old-price">{{ number_format($promo->old_price, 0, '.', ' ') }} ₽</span>
+                                    @endif
+                                    @if($promo->new_price)
+                                        <span class="commercial-new-price">{{ number_format($promo->new_price, 0, '.', ' ') }} ₽</span>
+                                    @endif
+                                </div>
+                                <a href="{{ $url }}" class="btn btn-sm btn-outline-primary btn-commercial">Подробнее</a>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
-          </li>
-          <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2">
-            <a class="link_in_category_specialist font-weight-bold" href="" title="УЗИ брюшной полости">УЗИ брюшной полости</a>
-            <small class="text-muted">Центр «Счастливая морда»</small>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="commercial-old-price">1 800 ₽</span>
-                <span class="commercial-new-price">1 350 ₽</span>
-              </div>
-              <a href="" class="btn btn-sm btn-outline-primary btn-commercial">Забрать</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+            @endforeach
+        </div>
     </div>
-
-    <div class="col-4">
-      <div class="most_popular_in_city border commercial-card-desktop">
-        <figcaption class="title_list_popular d-flex justify-content-between align-items-center">
-          <span>Диагностика и Чек-апы</span>
-          <span class="badge text-white bg-success" style="font-size:0.75rem;">Топ цена</span>
-        </figcaption>
-        <ul class="list_doctor">
-          <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2 border-bottom">
-            <a class="link_in_category_specialist font-weight-bold" href="" title="Чек-ап пожилых собак">Чек-ап «Здоровый котенок»</a>
-            <small class="text-muted">Ветцентр «ЗооДоктор»</small>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="commercial-old-price">4 000 ₽</span>
-                <span class="commercial-new-price">2 900 ₽</span>
-              </div>
-              <a href="" class="btn btn-sm btn-outline-primary btn-commercial">Подробнее</a>
-            </div>
-          </li>
-          <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2">
-            <a class="link_in_category_specialist font-weight-bold" href="" title="Чистка зубов ультразвуком">УЗ-чистка зубов</a>
-            <small class="text-muted">Клиника «Вега»</small>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="commercial-old-price">3 500 ₽</span>
-                <span class="commercial-new-price">2 490 ₽</span>
-              </div>
-              <a href="" class="btn btn-sm btn-outline-primary btn-commercial">Подробнее</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="col-4">
-      <div class="most_popular_in_city border commercial-card-desktop">
-        <figcaption class="title_list_popular d-flex justify-content-between align-items-center">
-          <span>Груминг и Уход</span>
-          <span class="badge-discount">-30%</span>
-        </figcaption>
-        <ul class="list_doctor">
-          <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2 border-bottom">
-            <a class="link_in_category_specialist font-weight-bold" href="" title="Стрижка йорка комплекс">Комплекс для Йорка</a>
-            <small class="text-muted">Салон «Красивый Хвост»</small>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="commercial-old-price">2 200 ₽</span>
-                <span class="commercial-new-price">1 650 ₽</span>
-              </div>
-              <a href="" class="btn btn-sm btn-outline-primary btn-commercial">Запись</a>
-            </div>
-          </li>
-          <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2">
-            <a class="link_in_category_specialist font-weight-bold" href="" title="Экспресс-линька">Экспресс-линька кошек</a>
-            <small class="text-muted">Студия «Грум-Тайм»</small>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div>
-                <span class="commercial-old-price">2 000 ₽</span>
-                <span class="commercial-new-price">1 500 ₽</span>
-              </div>
-              <a href="" class="btn btn-sm btn-outline-primary btn-commercial">Запись</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 </div>
 
+{{-- МОБИЛЕ --}}
 <div class="mobile-popular-wrapper">
-  <h2 class="mobile-popular-title">Акции и скидки в г. {{ $currentCityName }}</h2>
-  <div class="mobile-popular-scroll">
-    <div class="mobile-popular-card">
-      <figcaption class="mobile-popular-card-title d-flex justify-content-between align-items-center">
-        <span>Ветклиники</span>
-        <span class="badge-discount">-25%</span>
-      </figcaption>
-      <ul class="mobile-popular-list">
-        <li class="mobile-popular-item">
-          <a class="mobile-popular-link" href="">Комплексная вакцинация</a>
-          <span class="mobile-clinic-name">Ветклиника «Айболит»</span>
-          <div class="mobile-commercial-footer">
-            <div>
-              <span class="commercial-old-price">2 500 ₽</span>
-              <span class="commercial-new-price">1 800 ₽</span>
+    <h2 class="mobile-popular-title">Акции в г. {{ $currentCityName }}</h2>
+    <div class="mobile-popular-scroll">
+        @foreach($columns as $colIndex => $colPromos)
+        <div class="mobile-popular-card">
+            <div class="mobile-popular-card-header">
+                <span>{{ $colTitles[$colIndex] ?? 'Акции' }}</span>
+                <span class="badge-discount">%</span>
             </div>
-            <a href="" class="btn btn-sm btn-primary btn-commercial">Успеть</a>
-          </div>
-        </li>
-        <li class="mobile-popular-item">
-          <a class="mobile-popular-link" href="">УЗИ брюшной полости</a>
-          <span class="mobile-clinic-name">Центр «Счастливая морда»</span>
-          <div class="mobile-commercial-footer">
-            <div>
-              <span class="commercial-old-price">1 800 ₽</span>
-              <span class="commercial-new-price">1 350 ₽</span>
+            @foreach($colPromos as $promo)
+            @php
+                $entity = $promo->promotable;
+                $typeStr = class_basename($promo->promotable_type);
+                $url = isset($routeMap[$typeStr]) ? route($routeMap[$typeStr], $entity->slug ?? '#') : '#';
+            @endphp
+            <div class="mobile-popular-item">
+                <a class="mobile-popular-link" href="{{ $url }}">{{ $promo->title }}</a>
+                <span class="mobile-clinic-name">{{ $entity->name ?? '' }}</span>
+                <div class="mobile-commercial-footer">
+                    <div>
+                        @if($promo->old_price)
+                            <span class="commercial-old-price">{{ number_format($promo->old_price, 0, '.', ' ') }} ₽</span>
+                        @endif
+                        @if($promo->new_price)
+                            <span class="commercial-new-price">{{ number_format($promo->new_price, 0, '.', ' ') }} ₽</span>
+                        @endif
+                    </div>
+                    <a href="{{ $url }}" class="btn btn-sm btn-primary btn-commercial">Смотреть</a>
+                </div>
             </div>
-            <a href="" class="btn btn-sm btn-primary btn-commercial">Успеть</a>
-          </div>
-        </li>
-      </ul>
+            @endforeach
+        </div>
+        @endforeach
     </div>
-
-    <div class="mobile-popular-card">
-      <figcaption class="mobile-popular-card-title d-flex justify-content-between align-items-center">
-        <span>Диагностика</span>
-        <span class="badge bg-success text-white" style="font-size:0.75rem;">Выгода</span>
-      </figcaption>
-      <ul class="mobile-popular-list">
-        <li class="mobile-popular-item">
-          <a class="mobile-popular-link" href="">Чек-ап «Здоровый котенок»</a>
-          <span class="mobile-clinic-name">Ветцентр «ЗооДоктор»</span>
-          <div class="mobile-commercial-footer">
-            <div>
-              <span class="commercial-old-price">4 000 ₽</span>
-              <span class="commercial-new-price">2 900 ₽</span>
-            </div>
-            <a href="" class="btn btn-sm btn-primary btn-commercial">Смотреть</a>
-          </div>
-        </li>
-        <li class="mobile-popular-item">
-          <a class="mobile-popular-link" href="">УЗ-чистка зубов</a>
-          <span class="mobile-clinic-name">Клиника «Вега»</span>
-          <div class="mobile-commercial-footer">
-            <div>
-              <span class="commercial-old-price">3 500 ₽</span>
-              <span class="commercial-new-price">2 490 ₽</span>
-            </div>
-            <a href="" class="btn btn-sm btn-primary btn-commercial">Смотреть</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <div class="mobile-popular-card">
-      <figcaption class="mobile-popular-card-title d-flex justify-content-between align-items-center">
-        <span>Груминг</span>
-        <span class="badge-discount">Скидка</span>
-      </figcaption>
-      <ul class="mobile-popular-list">
-        <li class="mobile-popular-item">
-          <a class="mobile-popular-link" href="">Комплекс для Йорка</a>
-          <span class="mobile-clinic-name">Салон «Красивый Хвост»</span>
-          <div class="mobile-commercial-footer">
-            <div>
-              <span class="commercial-old-price">2 200 ₽ `</span>
-              <span class="commercial-new-price">1 650 ₽</span>
-            </div>
-            <a href="" class="btn btn-sm btn-primary btn-commercial">Запись</a>
-          </div>
-        </li>
-        <li class="mobile-popular-item">
-          <a class="mobile-popular-link" href="">Экспресс-линька кошек</a>
-          <span class="mobile-clinic-name">Студия «Грум-Тайм»</span>
-          <div class="mobile-commercial-footer">
-            <div>
-              <span class="commercial-old-price">2 000 ₽</span>
-              <span class="commercial-new-price">1 500 ₽</span>
-            </div>
-            <a href="" class="btn btn-sm btn-primary btn-commercial">Запись</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
 </div>
+@endif

@@ -18,9 +18,36 @@ class DoctorResource extends Resource
     protected static ?string $navigationGroup = 'Контент сайта';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = static::getModel()::where('is_verified', false)->count();
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
+
 public static function form(Form $form): Form
 {
     return $form->schema([
+
+Forms\Components\Section::make('Модерация')
+    ->schema([
+        Forms\Components\Toggle::make('is_verified')
+            ->label('Проверено администратором')
+            ->helperText('Запись видна на сайте только после проверки')
+            ->onColor('success')
+            ->offColor('warning'),
+
+        Forms\Components\Placeholder::make('creator_info')
+            ->label('Кто добавил')
+            ->content(fn ($record) => $record?->creator?->name
+                ? $record->creator->name . ' (' . $record->creator->email . ')'
+                : 'Добавлено администратором / системой'),
+    ])
+    ->columns(2),
 
 Forms\Components\TextInput::make('name')
     ->label('Имя')
@@ -237,6 +264,15 @@ Forms\Components\FileUpload::make('photo')
     {
         return $table
             ->columns([
+                Tables\Columns\IconColumn::make('is_verified')
+                    ->label('Проверено')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-badge')
+                    ->falseIcon('heroicon-o-clock')
+                    ->trueColor('success')
+                    ->falseColor('warning')
+                    ->sortable(),
+
                 Tables\Columns\ImageColumn::make('photo')
                     ->label('Фото')
                     ->circular(),
@@ -258,7 +294,26 @@ Tables\Columns\TextColumn::make('specialization_label')
 
                 Tables\Columns\TextColumn::make('experience')
                     ->label('Опыт (лет)'),
+
+                Tables\Columns\TextColumn::make('creator.name')
+                    ->label('Кто добавил')
+                    ->placeholder('Администратор/система')
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Дата добавления')
+                    ->dateTime('d.m.Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->filters([
+                Tables\Filters\TernaryFilter::make('is_verified')
+                    ->label('Статус проверки')
+                    ->trueLabel('Только проверенные')
+                    ->falseLabel('Только непроверенные')
+                    ->native(false),
+            ])
+            ->defaultSort('is_verified', 'asc')
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

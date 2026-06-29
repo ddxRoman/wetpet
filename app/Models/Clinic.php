@@ -12,6 +12,8 @@ class Clinic extends Model
     use HasFactory;
 
     protected $fillable = [
+        'is_verified',
+        'created_by',
         'name',
         'slug',
         'country',
@@ -27,6 +29,7 @@ class Clinic extends Model
         'email',
         'telegram',
         'whatsapp',
+        'max',
         'website',
         'schedule',
         'workdays',
@@ -59,7 +62,9 @@ class Clinic extends Model
         return $slug;
     }
 
-    protected $casts = [];
+    protected $casts = [
+        'is_verified' => 'boolean',
+    ];
 
     /**
      * Полный адрес клиники
@@ -117,4 +122,14 @@ public function awards()
         return $this->hasMany(Doctor::class);
     }
 
+
+    public function promotions()
+    {
+        return $this->morphMany(\App\Models\Promotion::class, 'promotable');
+    }
+
+        public function creator()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
 }

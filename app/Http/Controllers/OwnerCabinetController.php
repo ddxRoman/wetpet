@@ -756,7 +756,81 @@ public function deleteVerificationDocument(int $documentId)
     //  ЦЕНЫ / УСЛУГИ (общий для всех)
     // ══════════════════════════════════════════════════════════
 
-    public function savePrice(Request $request)
+    public func
+    // ══════════════════════════════════════════════════════════
+    //  АКЦИИ (PROMOTIONS)
+    // ══════════════════════════════════════════════════════════
+
+    public function savePromotion(Request $request)
+    {
+        $request->validate([
+            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
+            'entity_id'   => 'required|integer',
+            'title'       => 'required|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'old_price'   => 'nullable|numeric|min:0',
+            'new_price'   => 'nullable|numeric|min:0',
+            'badge'       => 'nullable|string|max:20',
+            'expires_at'  => 'nullable|date|after_or_equal:today',
+        ]);
+
+        $this->authorizeOwner($request->entity_type, $request->entity_id);
+
+        if (!Auth::user()->hasPromoPackage()) {
+            return response()->json(['success' => false, 'message' => 'Рекламный пакет не активен.'], 403);
+        }
+
+        $morphMap = [
+            'clinic'       => \App\Models\Clinic::class,
+            'organization' => \App\Models\Organization::class,
+            'doctor'       => \App\Models\Doctor::class,
+            'specialist'   => \App\Models\Specialist::class,
+        ];
+
+        $count = \App\Models\Promotion::where('promotable_type', $morphMap[$request->entity_type])
+            ->where('promotable_id', $request->entity_id)
+            ->count();
+
+        if ($count >= 3) {
+            return response()->json(['success' => false, 'message' => 'Максимум 3 акции на одну карточку.'], 422);
+        }
+
+        \App\Models\Promotion::create([
+            'promotable_type' => $morphMap[$request->entity_type],
+            'promotable_id'   => $request->entity_id,
+            'title'           => $request->title,
+            'description'     => $request->description,
+            'old_price'       => $request->old_price,
+            'new_price'       => $request->new_price,
+            'badge'           => $request->badge,
+            'expires_at'      => $request->expires_at,
+            'is_active'       => true,
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deletePromotion(int $promotionId)
+    {
+        $promo = \App\Models\Promotion::findOrFail($promotionId);
+
+        $morphToType = [
+            \App\Models\Clinic::class       => 'clinic',
+            \App\Models\Organization::class => 'organization',
+            \App\Models\Doctor::class       => 'doctor',
+            \App\Models\Specialist::class   => 'specialist',
+        ];
+
+        $type = $morphToType[$promo->promotable_type] ?? null;
+        if ($type) {
+            $this->authorizeOwner($type, $promo->promotable_id);
+        }
+
+        $promo->delete();
+        return response()->json(['success' => true]);
+    }
+
+    tion savePrice(Request $request)
     {
         $request->validate([
             'entity_type' => 'required|in:clinic,organization,doctor,specialist',
