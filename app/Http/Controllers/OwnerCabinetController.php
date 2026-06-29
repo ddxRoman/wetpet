@@ -160,7 +160,7 @@ class OwnerCabinetController extends Controller
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices', 'service',));
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -557,7 +557,7 @@ public function deleteVerificationDocument(int $documentId)
         $allServices = Service::whereNotNull('specialization_doctor')
             ->orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'service', 'relevantServices', 'allServices'));
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -628,7 +628,7 @@ public function deleteVerificationDocument(int $documentId)
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'service', 'relevantServices', 'allServices'));
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateSpecialist(Request $request, int $id)
@@ -756,7 +756,6 @@ public function deleteVerificationDocument(int $documentId)
     //  ЦЕНЫ / УСЛУГИ (общий для всех)
     // ══════════════════════════════════════════════════════════
 
-    public func
     // ══════════════════════════════════════════════════════════
     //  АКЦИИ (PROMOTIONS)
     // ══════════════════════════════════════════════════════════
@@ -830,7 +829,7 @@ public function deleteVerificationDocument(int $documentId)
         return response()->json(['success' => true]);
     }
 
-    tion savePrice(Request $request)
+    public function savePrice(Request $request)
     {
         $request->validate([
             'entity_type' => 'required|in:clinic,organization,doctor,specialist',

@@ -153,6 +153,9 @@
         @endauth
     </div>
 </div>
+    {{-- АКЦИИ --}}
+    @include('partials._promotions-widget', ['entity' => $doctor])
+
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
         <li class="nav-item">

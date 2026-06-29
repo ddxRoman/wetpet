@@ -100,6 +100,7 @@
                                         <i class="bi bi-clock"></i> {{ $org->workdays }}: {{ $org->schedule }}
                                     </p>
                                 @endif
+                                @include('partials._promotions-badge', ['entity' => $org])
                             </div>
                         </div>
                     </a>

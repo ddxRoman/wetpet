@@ -124,11 +124,11 @@ function deletePhoto(btn) {
 @endif
 
 {{-- ════════════════ ВКЛАДКА: УСЛУГИ И ЦЕНЫ ════════════════ --}}
-@if(\$activeTab === 'promotions')
-@include('pages.owner._tab-promotions', compact('entity', 'entityId', 'type'))
+@if($activeTab === 'promotions')
+@include('pages.owner._tab-promotions', ['entity' => $entity, 'entityId' => $entityId, 'type' => $type])
 @endif
 
-@if(\$activeTab === 'services')
+@if($activeTab === 'services')
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
     <h5 class="fw-bold mb-4">💊 Услуги и цены</h5>
 
@@ -430,4 +430,3 @@ function deletePhoto(btn) {
 })();
 </script>
 @endif
-

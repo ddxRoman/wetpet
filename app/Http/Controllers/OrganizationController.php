@@ -87,6 +87,7 @@ public function catalog(Request $request)
         })
         ->withCount('reviews') // Для бейджа рейтинга
         ->withAvg('reviews', 'rating') // Для звезд
+        ->with(['promotions' => fn($q) => $q->active()])
         ->orderBy('name')
         ->paginate(16);
 

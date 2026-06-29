@@ -111,6 +111,7 @@
                                             <strong>Город:</strong> {{ $specialist->city->name }}
                                         </p>
                                     @endif
+                                    @include('partials._promotions-badge', ['entity' => $specialist])
                                 </div>
                             </div>
                         </a>

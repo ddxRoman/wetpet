@@ -45,7 +45,8 @@ public function index(Request $request)
         ->pluck('name'); 
 
     // 3. ЗАПРОС: Фильтруем список специалистов
-    $items = Specialist::withAvg('reviews', 'rating')
+    $items = Specialist::with(['promotions' => fn($q) => $q->active()])
+        ->withAvg('reviews', 'rating')
         ->when($cityId, function ($q) use ($cityId) {
             $q->where('city_id', $cityId);
         })

@@ -14,7 +14,7 @@ $promos = Promotion::with('promotable')
             $q->where('city_id', $cityId);
         }
     })
-    ->latest()
+    ->inRandomOrder()
     ->take(6)
     ->get();
 

@@ -25,6 +25,8 @@ class User extends Authenticatable implements FilamentUser
         'birth_date',
         'status',
         'is_admin',
+        'has_promo_package',
+        'promo_package_expires_at',
     ];
 
     protected $hidden = [
@@ -35,6 +37,8 @@ class User extends Authenticatable implements FilamentUser
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
+        'has_promo_package' => 'boolean',
+        'promo_package_expires_at' => 'date',
     ];
 
     /* ================= 1 к 1 ================= */
