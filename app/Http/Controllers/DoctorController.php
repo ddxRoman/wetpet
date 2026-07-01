@@ -134,7 +134,8 @@ public function index(Request $request)
         ->pluck('name'); 
 
     // 4. Запрос списка врачей
-    $doctors = Doctor::withAvg('reviews', 'rating')
+    $doctors = Doctor::with(['promotions' => fn($q) => $q->active()])
+        ->withAvg('reviews', 'rating')
         ->when($cityId, function ($query) use ($cityId) {
             $query->where('city_id', $cityId);
         })

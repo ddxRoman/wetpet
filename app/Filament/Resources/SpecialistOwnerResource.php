@@ -123,10 +123,7 @@ class SpecialistOwnerResource extends Resource
                                 ->label('Загруженные документы')
                                 ->content(new \Illuminate\Support\HtmlString($docsHtml)),
 
-                            Checkbox::make('is_rejected')
-                    ->label('Отказано'),
-
-                Toggle::make('is_confirmed')
+                            Toggle::make('is_confirmed')
                                 ->label('Подтверждено')
                                 ->default((bool) $record->is_confirmed)
                                 ->onColor('success')
@@ -137,8 +134,37 @@ class SpecialistOwnerResource extends Resource
                                 ->default((bool) $record->is_rejected)
                                 ->helperText('Пользователь сможет подать повторную заявку через 7 дней'),
 
+                            Placeholder::make('chat_history')
+                                ->label('💬 Переписка с пользователем')
+                                ->content(function () use ($record) {
+                                    $messages = $record->messages()->with('user')->get();
+                                    if ($messages->isEmpty()) {
+                                        return new \Illuminate\Support\HtmlString('<span style="color:#999;">Сообщений пока нет</span>');
+                                    }
+                                    $html = '<div style="max-height:220px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:8px;padding:10px;background:#f9fafb;">';
+                                    foreach ($messages as $m) {
+                                        $isAdmin = $m->is_admin;
+                                        $align   = $isAdmin ? 'left' : 'right';
+                                        $bg      = $isAdmin ? '#fff' : '#dbeafe';
+                                        $author  = $isAdmin ? '👤 Администратор' : ('🧑 ' . e($m->user->name ?? 'Пользователь'));
+                                        $html .= '<div style="text-align:' . $align . ';margin-bottom:8px;">'
+                                            . '<div style="display:inline-block;max-width:80%;text-align:left;background:' . $bg . ';border:1px solid #e5e7eb;border-radius:8px;padding:6px 10px;">'
+                                            . '<div style="font-size:11px;font-weight:600;color:#6b7280;">' . $author . '</div>'
+                                            . '<div style="font-size:13px;">' . nl2br(e($m->message)) . '</div>'
+                                            . '<div style="font-size:10px;color:#9ca3af;text-align:right;">' . $m->created_at->format('d.m.Y H:i') . '</div>'
+                                            . '</div></div>';
+                                    }
+                                    $html .= '</div>';
+                                    return new \Illuminate\Support\HtmlString($html);
+                                }),
+
+                            Textarea::make('admin_reply')
+                                ->label('Ответить пользователю')
+                                ->placeholder('Введите сообщение для пользователя...')
+                                ->rows(2),
+
                             Textarea::make('admin_comment')
-                                ->label('Комментарий администратора')
+                                ->label('Комментарий администратора (виден в статусе заявки)')
                                 ->default($record->admin_comment)
                                 ->placeholder('Причина отклонения или примечание...')
                                 ->rows(3),
@@ -161,6 +187,18 @@ class SpecialistOwnerResource extends Resource
                                 : ($isRejected ? $record->rejected_at : null),
                             'admin_comment' => $data['admin_comment'] ?? null,
                         ]);
+
+                        // Если админ написал ответ — сохраняем его как сообщение в чате
+                        if (!empty($data['admin_reply'])) {
+                            \App\Models\OwnerClaimMessage::create([
+                                'claimable_type' => get_class($record),
+                                'claimable_id'   => $record->id,
+                                'user_id'        => auth()->id(),
+                                'is_admin'       => true,
+                                'message'        => $data['admin_reply'],
+                                'is_read'        => false,
+                            ]);
+                        }
 
                         Notification::make()
                             ->title($isConfirmed ? '✅ Право подтверждено' : ($isRejected ? '❌ Заявка отклонена' : '⚠️ Статус обновлён'))

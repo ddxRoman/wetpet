@@ -160,7 +160,7 @@ class OwnerCabinetController extends Controller
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices'));
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices', 'service',));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -426,14 +426,14 @@ public function organization(int $id)
         ]);
     }
 
-    return back()->with('success', 'Документ загружен. Ожидайте проверки администратором.');
-}
+        return back()->with('success', 'Документ загружен. Ожидайте проверки администратором.');
+    }
 
-/**
- * Отмена заявки на владение (только если ещё не подтверждена).
- */
-public function cancelClaim(string $type, int $id): \Illuminate\Http\JsonResponse
-{
+    /**
+     * Отмена заявки на владение (только если ещё не подтверждена).
+     */
+    public function cancelClaim(string $type, int $id): \Illuminate\Http\JsonResponse
+    {
     $userId = Auth::id();
 
     $ownerModel = match ($type) {
@@ -471,13 +471,13 @@ public function cancelClaim(string $type, int $id): \Illuminate\Http\JsonRespons
     $ownerRow->delete();
 
     return response()->json(['success' => true]);
-}
+    }
 
-/**
- * Удаление загруженного документа (пока заявка не подтверждена).
- */
-public function deleteVerificationDocument(int $documentId)
-{
+    /**
+     * Удаление загруженного документа (пока заявка не подтверждена).
+     */
+    public function deleteVerificationDocument(int $documentId)
+    {
     $document = \App\Models\OwnershipDocument::findOrFail($documentId);
 
     // Проверяем владение через полиморфную связь ownerable -> user_id
@@ -494,7 +494,7 @@ public function deleteVerificationDocument(int $documentId)
     }
 
     return back()->with('success', 'Документ удалён');
-}
+    }
 
 
     public function updateOrganization(Request $request, int $id)
@@ -557,7 +557,7 @@ public function deleteVerificationDocument(int $documentId)
         $allServices = Service::whereNotNull('specialization_doctor')
             ->orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices'));
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'service', 'relevantServices', 'allServices'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -628,7 +628,7 @@ public function deleteVerificationDocument(int $documentId)
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices'));
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'service', 'relevantServices', 'allServices'));
     }
 
     public function updateSpecialist(Request $request, int $id)
@@ -756,6 +756,7 @@ public function deleteVerificationDocument(int $documentId)
     //  ЦЕНЫ / УСЛУГИ (общий для всех)
     // ══════════════════════════════════════════════════════════
 
+    public func
     // ══════════════════════════════════════════════════════════
     //  АКЦИИ (PROMOTIONS)
     // ══════════════════════════════════════════════════════════
@@ -829,53 +830,83 @@ public function deleteVerificationDocument(int $documentId)
         return response()->json(['success' => true]);
     }
 
-    public function savePrice(Request $request)
+    // ══════════════════════════════════════════════════════════
+    //  ЧАТ С АДМИНИСТРАТОРОМ ПО ЗАЯВКЕ
+    // ══════════════════════════════════════════════════════════
+
+    public function sendClaimMessage(Request $request)
     {
         $request->validate([
-            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
-            'entity_id'   => 'required|integer',
-            'service_id'  => 'required|exists:services,id',
-            'price'       => 'required|numeric|min:0',
-            'currency'    => 'nullable|string|max:10',
+            'entity_type'  => 'required|in:clinic,organization,doctor,specialist',
+            'owner_row_id' => 'required|integer',
+            'message'      => 'required|string|max:2000',
         ]);
 
-        $this->authorizeOwner($request->entity_type, $request->entity_id);
+        $ownerModel = match ($request->entity_type) {
+            'clinic'       => \App\Models\ClinicOwner::class,
+            'organization' => \App\Models\OrganizationOwner::class,
+            'doctor'       => \App\Models\DoctorOwner::class,
+            'specialist'   => \App\Models\SpecialistOwner::class,
+        };
 
-        $morphMap = [
-            'clinic'       => Clinic::class,
-            'organization' => Organization::class,
-            'doctor'       => Doctor::class,
-            'specialist'   => Specialist::class,
-        ];
+        $ownerRow = $ownerModel::where('id', $request->owner_row_id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
-        Price::updateOrCreate(
-            [
-                'priceable_type' => $morphMap[$request->entity_type],
-                'priceable_id'   => $request->entity_id,
-                'service_id'     => $request->service_id,
+        $msg = \App\Models\OwnerClaimMessage::create([
+            'claimable_type' => $ownerModel,
+            'claimable_id'   => $ownerRow->id,
+            'user_id'        => Auth::id(),
+            'is_admin'       => false,
+            'message'        => $request->message,
+            'is_read'        => false,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => [
+                'id'         => $msg->id,
+                'text'       => $msg->message,
+                'is_admin'   => false,
+                'author'     => Auth::user()->name,
+                'created_at' => $msg->created_at->format('d.m.Y H:i'),
             ],
-            [
-                'price'    => $request->price,
-                'currency' => $request->currency ?? 'руб.',
-            ]
-        );
-
-        return response()->json(['success' => true]);
+        ]);
     }
 
-    public function deletePrice(int $priceId)
+    public function getClaimMessages(Request $request)
     {
-        $price = Price::findOrFail($priceId);
-        $price->delete();
-        return response()->json(['success' => true]);
+        $request->validate([
+            'entity_type'  => 'required|in:clinic,organization,doctor,specialist',
+            'owner_row_id' => 'required|integer',
+        ]);
+
+        $ownerModel = match ($request->entity_type) {
+            'clinic'       => \App\Models\ClinicOwner::class,
+            'organization' => \App\Models\OrganizationOwner::class,
+            'doctor'       => \App\Models\DoctorOwner::class,
+            'specialist'   => \App\Models\SpecialistOwner::class,
+        };
+
+        $ownerRow = $ownerModel::where('id', $request->owner_row_id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $messages = $ownerRow->messages()->with('user')->get();
+
+        $ownerRow->messages()->where('is_admin', true)->where('is_read', false)->update(['is_read' => true]);
+
+        return response()->json([
+            'success'  => true,
+            'messages' => $messages->map(fn($m) => [
+                'id'         => $m->id,
+                'text'       => $m->message,
+                'is_admin'   => $m->is_admin,
+                'author'     => $m->is_admin ? 'Администратор' : ($m->user->name ?? 'Вы'),
+                'created_at' => $m->created_at->format('d.m.Y H:i'),
+            ]),
+        ]);
     }
-
-
-
-    // ══════════════════════════════════════════════════════════
-    //  ПРОВЕРКА ПРАВ
-    // ══════════════════════════════════════════════════════════
-
 
 
 private function authorizeOwner(string $type, int $entityId): void

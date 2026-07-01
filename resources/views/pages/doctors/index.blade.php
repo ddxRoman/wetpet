@@ -114,6 +114,7 @@
                                             <strong>Стаж:</strong> {{ $doctor->experience }}
                                         </p>
                                     @endif
+                                    @include('partials._promotions-badge', ['entity' => $doctor])
                                 </div>
                             </div>
                         </a>

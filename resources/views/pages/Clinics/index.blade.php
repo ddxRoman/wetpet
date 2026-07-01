@@ -74,6 +74,7 @@
                             График: {{ $clinic->schedule }}
                         </p>
                         @endif
+                        @include('partials._promotions-badge', ['entity' => $clinic])
                     </div>
                 </div>
             </a>

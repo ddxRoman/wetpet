@@ -25,7 +25,8 @@ public function index(Request $request)
     }
 
     // Включаем пагинацию
-    $clinics = Clinic::withAvg('reviews', 'rating')
+    $clinics = Clinic::with(['promotions' => fn($q) => $q->active()])
+        ->withAvg('reviews', 'rating')
         ->when($selectedCity, function ($query, $city) {
             $query->whereRaw(
                 'LOWER(TRIM(city)) = LOWER(TRIM(?))',

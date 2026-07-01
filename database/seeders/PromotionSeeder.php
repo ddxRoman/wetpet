@@ -20,10 +20,21 @@ class PromotionSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // Выдаём рекламный пакет первому пользователю (для теста)
-        User::first()?->update([
+        $promoUser = User::first();
+        $promoUser?->update([
             'has_promo_package'        => true,
             'promo_package_expires_at' => now()->addYear()->toDateString(),
         ]);
+
+        // ⚠️ ВНИМАНИЕ: ниже мы массово проставляем created_by всем сущностям —
+        // это годится только для ДЕМО-окружения. На проде НЕ запускайте этот блок,
+        // там created_by уже должен быть выставлен реальными владельцами.
+        if ($promoUser) {
+            Clinic::query()->update(['created_by' => $promoUser->id]);
+            Organization::query()->update(['created_by' => $promoUser->id]);
+            Doctor::query()->update(['created_by' => $promoUser->id]);
+            Specialist::query()->update(['created_by' => $promoUser->id]);
+        }
 
         // ── Акции клиник ─────────────────────────────────────────────────
         $clinicPromos = [

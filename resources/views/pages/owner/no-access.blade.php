@@ -160,9 +160,10 @@
                             <div class="row g-2 align-items-end">
                                 <div class="col-md-7">
                                     <input type="file"
-                                           name="document"
+                                           name="documents[]"
                                            class="form-control"
                                            accept=".pdf,.jpg,.jpeg,.png,.webp"
+                                           multiple
                                            required>
                                 </div>
                                 <div class="col-md-5">
@@ -178,6 +179,37 @@
                                 </button>
                                 <span class="upload-status text-muted small"></span>
                             </div>
+                        </form>
+                    </div>
+
+                    {{-- ═══════════ ЧАТ С АДМИНИСТРАТОРОМ ═══════════ --}}
+                    <div class="mt-4 pt-4 border-top">
+                        <h6 class="fw-semibold mb-3 d-flex align-items-center gap-2">
+                            💬 Сообщения от администратора
+                        </h6>
+
+                        <div class="claim-chat-box border rounded-3 p-3 mb-3"
+                             id="chat-box-{{ $ownerRow->id }}"
+                             data-owner-row-id="{{ $ownerRow->id }}"
+                             data-entity-type="{{ $entityType }}"
+                             style="max-height:280px;overflow-y:auto;background:#f8f9fa;">
+                            <div class="text-muted text-center py-3 small chat-loading">Загрузка сообщений…</div>
+                        </div>
+
+                        <form class="claim-chat-form d-flex gap-2"
+                              data-owner-row-id="{{ $ownerRow->id }}"
+                              data-entity-type="{{ $entityType }}"
+                              data-chat-box="chat-box-{{ $ownerRow->id }}">
+                            @csrf
+                            <input type="text"
+                                   name="message"
+                                   class="form-control"
+                                   placeholder="Напишите сообщение администратору..."
+                                   maxlength="2000"
+                                   required>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 flex-shrink-0">
+                                Отправить
+                            </button>
                         </form>
                     </div>
 
@@ -248,23 +280,26 @@
 
             status.textContent = '✓ Загружено';
 
-            // Добавляем строку документа в список без перезагрузки
-            if (docsList) {
-                const row = document.createElement('div');
-                row.className = 'd-flex align-items-center justify-content-between border rounded-3 px-3 py-2 bg-light';
-                row.id = 'doc-row-' + data.document.id;
-                row.innerHTML = `
-                    <a href="${data.document.url}" target="_blank"
-                       class="text-decoration-none text-dark d-flex align-items-center gap-2">
-                        <span>📄</span><span>${data.document.name}</span>
-                    </a>
-                    <button type="button"
-                            class="btn btn-sm btn-outline-danger rounded-pill btn-delete-doc"
-                            data-id="${data.document.id}"
-                            style="padding:2px 10px;font-size:12px;">
-                        Удалить
-                    </button>`;
-                docsList.appendChild(row);
+            // Добавляем строки документов в список без перезагрузки
+            // (контроллер возвращает МАССИВ documents, т.к. поддерживается мультизагрузка)
+            if (docsList && Array.isArray(data.documents)) {
+                data.documents.forEach(doc => {
+                    const row = document.createElement('div');
+                    row.className = 'd-flex align-items-center justify-content-between border rounded-3 px-3 py-2 bg-light';
+                    row.id = 'doc-row-' + doc.id;
+                    row.innerHTML = `
+                        <a href="${doc.url}" target="_blank"
+                           class="text-decoration-none text-dark d-flex align-items-center gap-2">
+                            <span>📄</span><span>${doc.name}</span>
+                        </a>
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger rounded-pill btn-delete-doc"
+                                data-id="${doc.id}"
+                                style="padding:2px 10px;font-size:12px;">
+                            Удалить
+                        </button>`;
+                    docsList.appendChild(row);
+                });
             }
 
             // Сбрасываем форму
@@ -329,6 +364,87 @@
             btn.textContent = '✕ Отменить заявку';
             alert('Ошибка соединения. Попробуйте ещё раз.');
         });
+    });
+
+    // ── ЧАТ С АДМИНИСТРАТОРОМ ───────────────────────────────────
+    function renderChatMessages(box, messages) {
+        if (!messages.length) {
+            box.innerHTML = '<div class="text-muted text-center py-3 small">Сообщений пока нет. Напишите администратору, если у вас есть вопросы.</div>';
+            return;
+        }
+        box.innerHTML = messages.map(m => `
+            <div class="d-flex ${m.is_admin ? 'justify-content-start' : 'justify-content-end'} mb-2">
+                <div class="rounded-3 px-3 py-2" style="max-width:80%;background:${m.is_admin ? '#fff' : '#d1f0ff'};border:1px solid ${m.is_admin ? '#e0e0e0' : '#b3e0ff'};">
+                    <div class="fw-semibold small" style="font-size:11px;color:${m.is_admin ? '#dc3545' : '#0d6efd'};">
+                        ${m.is_admin ? '👤 Администратор' : '🧑 Вы'}
+                    </div>
+                    <div style="font-size:13px;white-space:pre-wrap;">${m.text.replace(/</g, '&lt;')}</div>
+                    <div class="text-muted text-end" style="font-size:10px;">${m.created_at}</div>
+                </div>
+            </div>
+        `).join('');
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function loadChatMessages(box) {
+        const ownerRowId = box.dataset.ownerRowId;
+        const entityType = box.dataset.entityType;
+
+        fetch(`{{ route('owner.claim.messages.get') }}?owner_row_id=${ownerRowId}&entity_type=${entityType}`, {
+            headers: { 'Accept': 'application/json' },
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) renderChatMessages(box, data.messages);
+        })
+        .catch(() => {});
+    }
+
+    // Загружаем сообщения для всех чатов при загрузке страницы
+    document.querySelectorAll('.claim-chat-box').forEach(box => {
+        loadChatMessages(box);
+        // Обновляем каждые 10 секунд (простой поллинг вместо вебсокетов)
+        setInterval(() => loadChatMessages(box), 10000);
+    });
+
+    // Отправка сообщения
+    document.addEventListener('submit', function (e) {
+        const form = e.target;
+        if (!form.classList.contains('claim-chat-form')) return;
+        e.preventDefault();
+
+        const input      = form.querySelector('input[name="message"]');
+        const message     = input.value.trim();
+        if (!message) return;
+
+        const ownerRowId = form.dataset.ownerRowId;
+        const entityType = form.dataset.entityType;
+        const box        = document.getElementById(form.dataset.chatBox);
+        const btn        = form.querySelector('button[type="submit"]');
+
+        btn.disabled = true;
+
+        fetch('{{ route("owner.claim.messages.send") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrf,
+                'Accept':       'application/json',
+            },
+            body: JSON.stringify({
+                owner_row_id: ownerRowId,
+                entity_type:  entityType,
+                message:      message,
+            }),
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                input.value = '';
+                loadChatMessages(box);
+            }
+        })
+        .finally(() => { btn.disabled = false; });
     });
 })();
 </script>

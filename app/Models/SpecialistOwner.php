@@ -54,5 +54,10 @@ class SpecialistOwner extends Model
         return $this->morphMany(OwnershipDocument::class, 'ownerable');
     }
 
+    public function messages()
+    {
+        return $this->morphMany(OwnerClaimMessage::class, 'claimable')->orderBy('created_at');
+    }
+
     public function deleteFile(): void {}
 }
