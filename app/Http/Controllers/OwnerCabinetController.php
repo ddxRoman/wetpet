@@ -160,7 +160,7 @@ class OwnerCabinetController extends Controller
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices', 'service',));
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -383,7 +383,7 @@ public function organization(int $id)
     }
 
     public function uploadVerificationDocument(Request $request)
-{
+    {
     $request->validate([
         'documents'    => 'required|array|min:1',
         'documents.*'  => 'file|mimes:pdf,jpg,jpeg,png,webp|max:122880',
@@ -426,12 +426,12 @@ public function organization(int $id)
         ]);
     }
 
-        return back()->with('success', 'Документ загружен. Ожидайте проверки администратором.');
+    return back()->with('success', 'Документ загружен. Ожидайте проверки администратором.');
     }
 
     /**
      * Отмена заявки на владение (только если ещё не подтверждена).
-     */
+ */
     public function cancelClaim(string $type, int $id): \Illuminate\Http\JsonResponse
     {
     $userId = Auth::id();
@@ -475,7 +475,7 @@ public function organization(int $id)
 
     /**
      * Удаление загруженного документа (пока заявка не подтверждена).
-     */
+ */
     public function deleteVerificationDocument(int $documentId)
     {
     $document = \App\Models\OwnershipDocument::findOrFail($documentId);
@@ -557,7 +557,7 @@ public function organization(int $id)
         $allServices = Service::whereNotNull('specialization_doctor')
             ->orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'service', 'relevantServices', 'allServices'));
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -628,7 +628,7 @@ public function organization(int $id)
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'service', 'relevantServices', 'allServices'));
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices'));
     }
 
     public function updateSpecialist(Request $request, int $id)
@@ -756,158 +756,96 @@ public function organization(int $id)
     //  ЦЕНЫ / УСЛУГИ (общий для всех)
     // ══════════════════════════════════════════════════════════
 
-    public func
     // ══════════════════════════════════════════════════════════
+    //  ЦЕНЫ / УСЛУГИ
+    // ══════════════════════════════════════════════════════════
+
+    public function savePrice(Request $request)
+    {
+        $request->validate([
+            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
+            'entity_id'   => 'required|integer',
+            'service_id'  => 'required|exists:services,id',
+            'price'       => 'required|numeric|min:0',
+            'currency'    => 'nullable|string|max:10',
+        ]);
+
+        $this->authorizeOwner($request->entity_type, $request->entity_id);
+
+        $morphMap = [
+            'clinic'       => Clinic::class,
+            'organization' => Organization::class,
+            'doctor'       => Doctor::class,
+            'specialist'   => Specialist::class,
+        ];
+
+        Price::updateOrCreate(
+            [
+                'priceable_type' => $morphMap[$request->entity_type],
+                'priceable_id'   => $request->entity_id,
+                'service_id'     => $request->service_id,
+            ],
+            [
+                'price'    => $request->price,
+                'currency' => $request->currency ?? 'руб.',
+            ]
+        );
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deletePrice(int $priceId)
+    {
+        $price = Price::findOrFail($priceId);
+        $price->delete();
+        return response()->json(['success' => true]);
+    }
+
+        // ══════════════════════════════════════════════════════════
     //  АКЦИИ (PROMOTIONS)
     // ══════════════════════════════════════════════════════════
 
     public function savePromotion(Request $request)
     {
-        $request->validate([
-            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
-            'entity_id'   => 'required|integer',
-            'title'       => 'required|string|max:100',
-            'description' => 'nullable|string|max:500',
-            'old_price'   => 'nullable|numeric|min:0',
-            'new_price'   => 'nullable|numeric|min:0',
-            'badge'       => 'nullable|string|max:20',
-            'expires_at'  => 'nullable|date|after_or_equal:today',
-        ]);
-
+        $request->validate(['entity_type'=>'required|in:clinic,organization,doctor,specialist','entity_id'=>'required|integer','title'=>'required|string|max:100','description'=>'nullable|string|max:500','old_price'=>'nullable|numeric|min:0','new_price'=>'nullable|numeric|min:0','badge'=>'nullable|string|max:20','expires_at'=>'nullable|date|after_or_equal:today']);
         $this->authorizeOwner($request->entity_type, $request->entity_id);
-
-        if (!Auth::user()->hasPromoPackage()) {
-            return response()->json(['success' => false, 'message' => 'Рекламный пакет не активен.'], 403);
-        }
-
-        $morphMap = [
-            'clinic'       => \App\Models\Clinic::class,
-            'organization' => \App\Models\Organization::class,
-            'doctor'       => \App\Models\Doctor::class,
-            'specialist'   => \App\Models\Specialist::class,
-        ];
-
-        $count = \App\Models\Promotion::where('promotable_type', $morphMap[$request->entity_type])
-            ->where('promotable_id', $request->entity_id)
-            ->count();
-
-        if ($count >= 3) {
-            return response()->json(['success' => false, 'message' => 'Максимум 3 акции на одну карточку.'], 422);
-        }
-
-        \App\Models\Promotion::create([
-            'promotable_type' => $morphMap[$request->entity_type],
-            'promotable_id'   => $request->entity_id,
-            'title'           => $request->title,
-            'description'     => $request->description,
-            'old_price'       => $request->old_price,
-            'new_price'       => $request->new_price,
-            'badge'           => $request->badge,
-            'expires_at'      => $request->expires_at,
-            'is_active'       => true,
-        ]);
-
-        return response()->json(['success' => true]);
+        if (!Auth::user()->hasPromoPackage()) return response()->json(['success'=>false,'message'=>'Рекламный пакет не активен.'],403);
+        $morphMap=['clinic'=>\App\Models\Clinic::class,'organization'=>\App\Models\Organization::class,'doctor'=>\App\Models\Doctor::class,'specialist'=>\App\Models\Specialist::class];
+        if (\App\Models\Promotion::where('promotable_type',$morphMap[$request->entity_type])->where('promotable_id',$request->entity_id)->count()>=3) return response()->json(['success'=>false,'message'=>'Максимум 3 акции.'],422);
+        \App\Models\Promotion::create(['promotable_type'=>$morphMap[$request->entity_type],'promotable_id'=>$request->entity_id,'title'=>$request->title,'description'=>$request->description,'old_price'=>$request->old_price,'new_price'=>$request->new_price,'badge'=>$request->badge,'expires_at'=>$request->expires_at,'is_active'=>true]);
+        return response()->json(['success'=>true]);
     }
 
     public function deletePromotion(int $promotionId)
     {
         $promo = \App\Models\Promotion::findOrFail($promotionId);
-
-        $morphToType = [
-            \App\Models\Clinic::class       => 'clinic',
-            \App\Models\Organization::class => 'organization',
-            \App\Models\Doctor::class       => 'doctor',
-            \App\Models\Specialist::class   => 'specialist',
-        ];
-
-        $type = $morphToType[$promo->promotable_type] ?? null;
-        if ($type) {
-            $this->authorizeOwner($type, $promo->promotable_id);
-        }
-
+        $map=[\App\Models\Clinic::class=>'clinic',\App\Models\Organization::class=>'organization',\App\Models\Doctor::class=>'doctor',\App\Models\Specialist::class=>'specialist'];
+        $type=$map[$promo->promotable_type]??null;
+        if($type)$this->authorizeOwner($type,$promo->promotable_id);
         $promo->delete();
-        return response()->json(['success' => true]);
+        return response()->json(['success'=>true]);
     }
 
-    // ══════════════════════════════════════════════════════════
-    //  ЧАТ С АДМИНИСТРАТОРОМ ПО ЗАЯВКЕ
-    // ══════════════════════════════════════════════════════════
+    // ══ ЧАТ ══
 
     public function sendClaimMessage(Request $request)
     {
-        $request->validate([
-            'entity_type'  => 'required|in:clinic,organization,doctor,specialist',
-            'owner_row_id' => 'required|integer',
-            'message'      => 'required|string|max:2000',
-        ]);
-
-        $ownerModel = match ($request->entity_type) {
-            'clinic'       => \App\Models\ClinicOwner::class,
-            'organization' => \App\Models\OrganizationOwner::class,
-            'doctor'       => \App\Models\DoctorOwner::class,
-            'specialist'   => \App\Models\SpecialistOwner::class,
-        };
-
-        $ownerRow = $ownerModel::where('id', $request->owner_row_id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
-        $msg = \App\Models\OwnerClaimMessage::create([
-            'claimable_type' => $ownerModel,
-            'claimable_id'   => $ownerRow->id,
-            'user_id'        => Auth::id(),
-            'is_admin'       => false,
-            'message'        => $request->message,
-            'is_read'        => false,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => [
-                'id'         => $msg->id,
-                'text'       => $msg->message,
-                'is_admin'   => false,
-                'author'     => Auth::user()->name,
-                'created_at' => $msg->created_at->format('d.m.Y H:i'),
-            ],
-        ]);
+        $request->validate(['entity_type'=>'required|in:clinic,organization,doctor,specialist','owner_row_id'=>'required|integer','message'=>'required|string|max:2000']);
+        $ownerModel=match($request->entity_type){'clinic'=>\App\Models\ClinicOwner::class,'organization'=>\App\Models\OrganizationOwner::class,'doctor'=>\App\Models\DoctorOwner::class,'specialist'=>\App\Models\SpecialistOwner::class};
+        $ownerRow=$ownerModel::where('id',$request->owner_row_id)->where('user_id',Auth::id())->firstOrFail();
+        $msg=\App\Models\OwnerClaimMessage::create(['claimable_type'=>$ownerModel,'claimable_id'=>$ownerRow->id,'user_id'=>Auth::id(),'is_admin'=>false,'message'=>$request->message,'is_read'=>false]);
+        return response()->json(['success'=>true,'message'=>['id'=>$msg->id,'text'=>$msg->message,'is_admin'=>false,'author'=>Auth::user()->name,'created_at'=>$msg->created_at->format('d.m.Y H:i')]]);
     }
 
     public function getClaimMessages(Request $request)
     {
-        $request->validate([
-            'entity_type'  => 'required|in:clinic,organization,doctor,specialist',
-            'owner_row_id' => 'required|integer',
-        ]);
-
-        $ownerModel = match ($request->entity_type) {
-            'clinic'       => \App\Models\ClinicOwner::class,
-            'organization' => \App\Models\OrganizationOwner::class,
-            'doctor'       => \App\Models\DoctorOwner::class,
-            'specialist'   => \App\Models\SpecialistOwner::class,
-        };
-
-        $ownerRow = $ownerModel::where('id', $request->owner_row_id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
-        $messages = $ownerRow->messages()->with('user')->get();
-
-        $ownerRow->messages()->where('is_admin', true)->where('is_read', false)->update(['is_read' => true]);
-
-        return response()->json([
-            'success'  => true,
-            'messages' => $messages->map(fn($m) => [
-                'id'         => $m->id,
-                'text'       => $m->message,
-                'is_admin'   => $m->is_admin,
-                'author'     => $m->is_admin ? 'Администратор' : ($m->user->name ?? 'Вы'),
-                'created_at' => $m->created_at->format('d.m.Y H:i'),
-            ]),
-        ]);
+        $request->validate(['entity_type'=>'required|in:clinic,organization,doctor,specialist','owner_row_id'=>'required|integer']);
+        $ownerModel=match($request->entity_type){'clinic'=>\App\Models\ClinicOwner::class,'organization'=>\App\Models\OrganizationOwner::class,'doctor'=>\App\Models\DoctorOwner::class,'specialist'=>\App\Models\SpecialistOwner::class};
+        $ownerRow=$ownerModel::where('id',$request->owner_row_id)->where('user_id',Auth::id())->firstOrFail();
+        $messages=$ownerRow->messages()->with('user')->get();
+        $ownerRow->messages()->where('is_admin',true)->where('is_read',false)->update(['is_read'=>true]);
+        return response()->json(['success'=>true,'messages'=>$messages->map(fn($m)=>['id'=>$m->id,'text'=>$m->message,'is_admin'=>$m->is_admin,'author'=>$m->is_admin?'Администратор':($m->user->name??'Вы'),'created_at'=>$m->created_at->format('d.m.Y H:i')])]);
     }
-
 
 private function authorizeOwner(string $type, int $entityId): void
     {

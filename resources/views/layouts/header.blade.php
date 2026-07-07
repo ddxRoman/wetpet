@@ -28,6 +28,49 @@
 @vite(['resources/css/main.css', 'resources/css/mobile.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     @stack('scripts')
 
+<style>
+/* ── Компактный хедер (все страницы кроме главной) ── */
+.site-header.compact-header {
+    min-height: unset !important;
+    padding: 0 !important;
+}
+
+.compact-row-top {
+    background: #f8faff;
+    border-bottom: 1px solid #e8edf7;
+    font-size: 13px;
+    min-height: 38px;
+}
+
+.compact-row-bottom {
+    background: #fff;
+    min-height: 56px;
+    border-bottom: 1px solid #e8edf7;
+}
+
+.header_logo_compact {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    display: block;
+}
+
+.compact-row-bottom .header-search {
+    margin: 0 !important;
+    height: 40px !important;
+}
+
+/* Аватар меньше в компактном режиме */
+.compact-row-top .avatars_pics {
+    width: 28px !important;
+    height: 28px !important;
+}
+
+.compact-row-top .profile_link {
+    font-size: 13px;
+}
+</style>
+
     @if(!isset($h))
         @php
             $h = (object)[
@@ -109,9 +152,115 @@
 @include('account.modals.modal-add-specialist',   ['cities' => $cities])
 @include('account.modals.modal-add-organization', ['cities' => $cities])
 
-<header class="site-header {{ $h->isCompact ? 'compact-header' : '' }} {{ $h->isAdsPage ? 'header-ads-mode' : '' }}">
-    <div class="container-flex py-2">
-        <div class="header-grid">
+@php $isHomePage = $h->showHero ?? false; @endphp
+
+<header class="site-header {{ $isHomePage ? '' : 'compact-header' }} {{ $h->isAdsPage ? 'header-ads-mode' : '' }}">
+    <div class="container-flex">
+
+        @if($isHomePage)
+        {{-- ══════════════ ГЛАВНАЯ: логотип по центру + герой + поиск ══════════════ --}}
+        <div class="py-2">
+            <div class="header-grid">
+
+                <div class="d-flex d-md-none align-items-center burger-block">
+                    <button class="btn p-1 border border-dark burger-btn" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                        <svg class="burger-icon" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <line x1="3"  y1="6"  x2="21" y2="6"  stroke="black" stroke-width="2"/>
+                            <line x1="3"  y1="12" x2="21" y2="12" stroke="black" stroke-width="2"/>
+                            <line x1="3"  y1="18" x2="21" y2="18" stroke="black" stroke-width="2"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="city-block">
+                    @include('partials.city-selector')
+                </div>
+
+                <div class="logo-block">
+                    <a href="/" class="header-logo-link">
+                        <img class="header_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
+                    </a>
+                </div>
+
+                <div class="right-block d-none d-md-flex align-items-center gap-3">
+                    @if(!$h->hideAddButtons)
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
+                                <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" alt="Добавить организацию">
+                            </button>
+                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                                <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить специалиста">
+                            </button>
+                        </div>
+                    @endif
+                    @guest
+                        <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}" class="login_link">
+                            <button type="button" class="btn_login">Войти</button>
+                        </a>
+                    @endguest
+                    @auth
+                        @php $avatarLink = 'storage/avatars/default/' . (auth()->id() % 20) . '.png'; @endphp
+                        <div class="dropdown">
+                            <a class="profile_link dropdown-toggle d-flex align-items-center gap-2"
+                               href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="avatars_pics" src="{{ asset($avatarLink) }}" alt="Аватар">
+                                {{ Auth::user()->name }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 py-2">
+                                <a class="dropdown-item" href="{{ route('account') }}">👤 Профиль</a>
+                                @if(!empty($userCabinets))
+                                    <div class="dropdown-divider"></div>
+                                    @foreach($userCabinets as $cabinet)
+                                        <a class="dropdown-item fw-semibold text-success" href="{{ $cabinet['url'] }}">
+                                            {{ $cabinet['icon'] }} {{ $cabinet['label'] }}
+                                        </a>
+                                    @endforeach
+                                    <div class="dropdown-divider"></div>
+                                @endif
+                                @if(!empty($pendingCabinets))
+                                    <div class="dropdown-divider"></div>
+                                    @foreach($pendingCabinets as $pending)
+                                        <a class="dropdown-item text-muted" href="{{ $pending['url'] }}">
+                                            ⏳ {{ $pending['icon'] }} {{ $pending['label'] }}
+                                        </a>
+                                    @endforeach
+                                    <div class="dropdown-divider"></div>
+                                @endif
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="redirect" value="{{ request()->getRequestUri() }}">
+                                    <button type="submit" class="dropdown-item text-danger">🚪 Выйти</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endauth
+                </div>
+            </div>
+
+            <div class="container mt-3">
+                <div class="text-center">
+                    <h1>{{ $h->title }}</h1>
+                    <p class="description_index_page">{!! $h->description !!}</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="input-group position-relative">
+                        <input type="search" id="clinic-live-search" class="form-control header-search"
+                               placeholder="Введите название клиники..." autocomplete="off">
+                        <button class="search_btn" type="button">
+                            <img src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск" style="width:48px;height:48px;">
+                        </button>
+                        <div id="search-results" class="search-results-dropdown d-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @else
+        {{-- ══════════════ ОСТАЛЬНЫЕ СТРАНИЦЫ: 2 строки, компактный хедер ══════════════ --}}
+
+        {{-- Строка 1: город + кнопки + профиль --}}
+        <div class="compact-row-top d-none d-md-flex align-items-center justify-content-between px-3 py-1 border-bottom">
 
             <div class="d-flex d-md-none align-items-center burger-block">
                 <button class="btn p-1 border border-dark burger-btn" type="button"
@@ -124,47 +273,38 @@
                 </button>
             </div>
 
-            <div class="city-block">
+            {{-- Город --}}
+            <div>
                 @include('partials.city-selector')
             </div>
 
-            <div class="logo-block">
-                <a href="/" class="header-logo-link">
-                    <img class="header_logo" src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}">
-                </a>
-            </div>
-
-            <div class="right-block d-none d-md-flex align-items-center gap-3">
-
+            {{-- Кнопки + профиль --}}
+            <div class="d-flex align-items-center gap-3">
                 @if(!$h->hideAddButtons)
                     <div class="d-flex gap-2">
-                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
-                            <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" alt="Добавить организацию">
+                        <button class="btn btn-sm p-0" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
+                            <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" alt="Добавить организацию" style="height:32px;">
                         </button>
-                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
-                            <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить специалиста">
+                        <button class="btn btn-sm p-0" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                            <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить специалиста" style="height:32px;">
                         </button>
                     </div>
                 @endif
-
                 @guest
                     <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}" class="login_link">
                         <button type="button" class="btn_login">Войти</button>
                     </a>
                 @endguest
-
                 @auth
                     @php $avatarLink = 'storage/avatars/default/' . (auth()->id() % 20) . '.png'; @endphp
                     <div class="dropdown">
                         <a class="profile_link dropdown-toggle d-flex align-items-center gap-2"
                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="avatars_pics" src="{{ asset($avatarLink) }}" alt="Аватар">
+                            <img class="avatars_pics" src="{{ asset($avatarLink) }}" alt="Аватар" style="width:30px;height:30px;">
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 py-2">
                             <a class="dropdown-item" href="{{ route('account') }}">👤 Профиль</a>
-
-                            {{-- Если есть хотя бы один подтвержденный кабинет --}}
                             @if(!empty($userCabinets))
                                 <div class="dropdown-divider"></div>
                                 @foreach($userCabinets as $cabinet)
@@ -173,8 +313,6 @@
                                     </a>
                                 @endforeach
                                 <div class="dropdown-divider"></div>
-                            
-                            {{-- Если подтвержденных нет, но заявка на модерации --}}
                             @endif
                             @if(!empty($pendingCabinets))
                                 <div class="dropdown-divider"></div>
@@ -185,7 +323,6 @@
                                 @endforeach
                                 <div class="dropdown-divider"></div>
                             @endif
-
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="redirect" value="{{ request()->getRequestUri() }}">
@@ -197,26 +334,42 @@
             </div>
         </div>
 
-
-        @if($h->showSearch)
-            <div class="container mt-3">
-                @if($h->showHero)
-                    <div class="text-center">
-                        <h1>{{ $h->title }}</h1>
-                        <p class="description_index_page">{!! $h->description !!}</p>
-                    </div>
-                @endif
-                <div class="d-flex justify-content-center">
-                    <div class="input-group position-relative">
-                        <input type="search" id="clinic-live-search" class="form-control header-search"
-                               placeholder="Введите название клиники..." autocomplete="off">
-                        <button class="search_btn" type="button">
-                            <img src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск" style="width:48px;height:48px;">
-                        </button>
-                        <div id="search-results" class="search-results-dropdown d-none"></div>
-                    </div>
+        {{-- Строка 2: логотип слева + поиск --}}
+        <div class="compact-row-bottom d-none d-md-flex align-items-center gap-3 px-3 py-2">
+            <a href="/" class="flex-shrink-0">
+                <img src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}" class="header_logo_compact">
+            </a>
+            @if($h->showSearch)
+            <div class="flex-grow-1 position-relative">
+                <div class="input-group">
+                    <input type="search" id="clinic-live-search" class="form-control header-search"
+                           placeholder="Введите название клиники..." autocomplete="off"
+                           style="margin:0;height:40px;">
+                    <button class="search_btn" type="button">
+                        <img src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск" style="width:40px;height:40px;">
+                    </button>
+                    <div id="search-results" class="search-results-dropdown d-none"></div>
                 </div>
             </div>
+            @endif
+        </div>
+
+        {{-- Мобильный бургер для компактного режима --}}
+        <div class="d-flex d-md-none align-items-center justify-content-between px-3 py-2">
+            <button class="btn p-1 border border-dark burger-btn" type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                <svg class="burger-icon" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <line x1="3"  y1="6"  x2="21" y2="6"  stroke="black" stroke-width="2"/>
+                    <line x1="3"  y1="12" x2="21" y2="12" stroke="black" stroke-width="2"/>
+                    <line x1="3"  y1="18" x2="21" y2="18" stroke="black" stroke-width="2"/>
+                </svg>
+            </button>
+            <a href="/">
+                <img src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}" class="header_logo_compact">
+            </a>
+            <div style="width:36px;"></div>
+        </div>
+
         @endif
     </div>
 

@@ -97,7 +97,7 @@
                 @if($alreadyOwner && $alreadyOwner->is_confirmed)
                     <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
                           style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
-                        ✓ Вы подтверждённый владелец
+                        ✓ Это ваша организация
                     </span>
                 @elseif($alreadyOwner && !$alreadyOwner->is_confirmed)
                     <button class="btn btn-warning fw-bold d-flex align-items-center gap-2"

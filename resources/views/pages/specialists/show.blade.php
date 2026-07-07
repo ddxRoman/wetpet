@@ -116,7 +116,7 @@
                 {{-- Эта карточка подтверждена --}}
                 <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
                       style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
-                    ✓ Подтверждено
+                    ✓ Это ВЫ
                 </span>
             @elseif($myRejected && !$canReapply)
                 {{-- Отказано, ещё нельзя подать повторно --}}

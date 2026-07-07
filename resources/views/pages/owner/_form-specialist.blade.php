@@ -39,7 +39,7 @@
                 </select>
             </div>
 
-            @if($type === 'doctor')
+            <!-- @if($type === 'doctor')
                 <div class="col-12">
                     <label class="form-label fw-medium">Адрес страницы (slug)</label>
                     <div class="input-group">
@@ -47,7 +47,7 @@
                         <input type="text" name="slug" class="form-control" value="{{ old('slug', $entity->slug) }}" required>
                     </div>
                 </div>
-            @endif
+            @endif -->
         </div>
 
         <hr class="my-4 opacity-25">
@@ -156,10 +156,10 @@
             </div>
         </div>
 
-        <hr class="my-4 opacity-25">
+        <!-- <hr class="my-4 opacity-25"> -->
 
         {{-- ── SEO ── --}}
-        <h6 class="fw-semibold mb-3">SEO</h6>
+        <!-- <h6 class="fw-semibold mb-3">SEO</h6>
         <div class="row g-3">
             <div class="col-12">
                 <label class="form-label fw-medium">SEO заголовок (title)</label>
@@ -171,7 +171,7 @@
                 <label class="form-label fw-medium">SEO описание (description)</label>
                 <textarea name="seo_description" class="form-control" rows="3" maxlength="320">{{ old('seo_description', $entity->seo_description) }}</textarea>
             </div>
-        </div>
+        </div> -->
 
         <hr class="my-4 opacity-25">
 
