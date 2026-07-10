@@ -46,11 +46,13 @@
     background: #fff;
     min-height: 56px;
     border-bottom: 1px solid #e8edf7;
+    justify-content: center !important;
+    gap: 16px !important;
 }
 
 .header_logo_compact {
-    width: 48px;
-    height: 48px;
+    width: 55px;
+    height: 55px;
     object-fit: contain;
     display: block;
 }
@@ -58,6 +60,10 @@
 .compact-row-bottom .header-search {
     margin: 0 !important;
     height: 40px !important;
+}
+
+.compact-row-bottom .flex-grow-1 {
+    max-width: 55%;
 }
 
 /* Аватар меньше в компактном режиме */
