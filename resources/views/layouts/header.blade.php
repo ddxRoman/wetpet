@@ -289,10 +289,10 @@
                 @if(!$h->hideAddButtons)
                     <div class="d-flex gap-2">
                         <button class="btn btn-sm p-0" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
-                            <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" alt="Добавить организацию" style="height:32px;">
+                            <img class="add_btn" src="{{ Storage::url('icon/button/add_clinic_btn.png') }}" alt="Добавить организацию" style="height:43px;">
                         </button>
                         <button class="btn btn-sm p-0" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
-                            <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить специалиста" style="height:32px;">
+                            <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить специалиста" style="height:43px;">
                         </button>
                     </div>
                 @endif

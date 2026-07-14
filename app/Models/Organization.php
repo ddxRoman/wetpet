@@ -57,7 +57,6 @@ protected static function boot()
 
 private static function generateUniqueSlug($organization)
 {
-    // Используем фильтрацию, чтобы не было лишних дефисов при пустых полях
     $source = collect([
         $organization->name,
         $organization->city,
@@ -65,11 +64,28 @@ private static function generateUniqueSlug($organization)
         $organization->house
     ])->filter()->implode('-');
 
-    $originalSlug = \Illuminate\Support\Str::slug($source);
+    // Транслитерация кириллицы
+    $map = [
+        'а'=>'a','б'=>'b','в'=>'v','г'=>'g','д'=>'d','е'=>'e','ё'=>'yo',
+        'ж'=>'zh','з'=>'z','и'=>'i','й'=>'j','к'=>'k','л'=>'l','м'=>'m',
+        'н'=>'n','о'=>'o','п'=>'p','р'=>'r','с'=>'s','т'=>'t','у'=>'u',
+        'ф'=>'f','х'=>'h','ц'=>'ts','ч'=>'ch','ш'=>'sh','щ'=>'sch',
+        'ъ'=>'','ы'=>'y','ь'=>'','э'=>'e','ю'=>'yu','я'=>'ya',
+    ];
+    $translit = mb_strtolower($source);
+    $translit = strtr($translit, $map);
+
+    $originalSlug = \Illuminate\Support\Str::slug($translit);
+
+    // Если slug пустой — берём transliterated первое слово или id
+    if (empty($originalSlug)) {
+        $originalSlug = 'org-' . ($organization->id ?? time());
+    }
+
     $slug = $originalSlug;
     $count = 1;
 
-    while (static::where('slug', $slug)->where('id', '!=', $organization->id)->exists()) {
+    while (static::where('slug', $slug)->where('id', '!=', $organization->id ?? 0)->exists()) {
         $slug = "{$originalSlug}-{$count}";
         $count++;
     }

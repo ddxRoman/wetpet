@@ -48,8 +48,8 @@ class OrganizationController extends Controller
         ));
     }
 
-public function catalog(Request $request)
-{
+    public function catalog(Request $request)
+    {
     $user = auth()->user();
     $cityId = $request->get('city_id');
     $selectedCityName = null;
@@ -103,10 +103,10 @@ public function catalog(Request $request)
         'selectedTypeId' => $selectedTypeId,
         'currentCityId' => $cityId
     ]);
-}
+    }
 
-public function submit(Request $request)
-{
+    public function submit(Request $request)
+    {
     $isOwner = $request->boolean('its_me');
     $user = auth()->user();
 
@@ -169,11 +169,11 @@ if ($request->ajax()) {
         'success' => true,
         'message' => 'Организация успешно добавлена!'
     ]);
-}
-}
+    }
+    }
 
-public function show($slug)
-{
+    public function show($slug)
+    {
     $organization = Organization::with(['activityType'])
         ->withCount('reviews') // Теперь будет искать по reviewable_id
         ->withAvg('reviews', 'rating')
@@ -181,11 +181,11 @@ public function show($slug)
         ->firstOrFail();
 
     return view('pages.organizations.show', compact('organization'));
-}
+    }
 
 
-public function update(Request $request, $id)
-{
+    public function update(Request $request, $id)
+    {
     $organization = Organization::findOrFail($id);
     
     if (!$organization->owners()->where('user_id', auth()->id())->exists()) {
@@ -220,7 +220,7 @@ public function update(Request $request, $id)
 
     return redirect()->to(url('/account') . '#my-organizations')
         ->with('success', 'Данные организации обновлены!');
-}
+    }
 
     public function destroy($id)
     {

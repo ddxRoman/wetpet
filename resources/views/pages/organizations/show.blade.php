@@ -1,22 +1,21 @@
-<!-- Карточка одной отдельной записи -->
-
-
+<!-- Карточка одной отдельной записи (Организация) -->
 
 @extends('layouts.app')
 
 @section('content')
 @php
-    if (!isset($doctor)) {
+    if (!isset($organization)) {
         abort(404);
     }
 
-    $photo = $doctor->photo && file_exists(public_path('storage/'.$doctor->photo))
-        ? asset('storage/'.$doctor->photo)
-        : asset('storage/doctors/default-doctor.webp');
+    $photo = $organization->logo && file_exists(public_path('storage/'.$organization->logo))
+        ? asset('storage/'.$organization->logo)
+        : asset('storage/organizations/default-organization.webp');
 
     $addressParts = array_filter([
-        $doctor->city ?? '',
-        $doctor->clinic ?? '',
+        $organization->city ?? '',
+        $organization->street ?? '',
+        $organization->house ?? '',
     ]);
 
     $mapQuery = urlencode(implode(', ', $addressParts));
@@ -30,8 +29,8 @@
     <div class="mb-4">
 
                         <div class="mb-3">
-                <a href="{{ route('doctors.index') }}" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog"
-           title="Вернутся к каталогу всех врачей города">
+                <a href="{{ route('organizations.index') }}" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 shadow-sm back-to-catalog"
+           title="Вернутся к каталогу всех организаций города">
                     <img src="{{ asset('storage/icon/button/arrow-back.svg') }}" width="22" alt="paw">
                     В каталог
                 </a>
@@ -40,7 +39,7 @@
 
 {{-- ШАПКА --}}
     <div class="d-flex align-items-start justify-content-between flex-wrap mb-4">
-        
+
         {{-- Левый блок: Фото + Инфо --}}
         <div class="d-flex align-items-start flex-wrap flex-grow-1">
             <img src="{{ $photo }}"
@@ -49,20 +48,16 @@
 
             <div class="flex-grow-1">
                 <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
-                    <h1 class="fw-bold m-0" style="font-size: 1.75rem;">{{ $doctor->name }}</h1>
-                    
-                    @if($doctor->exotic_animals)
-                        <img src="{{ asset('storage/icon/stars/exotic.png') }}" class="exotic_icon_card" alt="Экзотическое животное" title="Этот специалист работает с экзотическими животными, такими как ящерецы, грызуны, черепахи и тд">
-                    @endif
+                    <h1 class="fw-bold m-0" style="font-size: 1.75rem;">{{ $organization->name }}</h1>
 
                     {{-- ⭐ Блок рейтинга --}}
                     @php
                         use App\Models\Review;
-                        $doctorReviews = Review::where('reviewable_id', $doctor->id)
-                            ->where('reviewable_type', \App\Models\Doctor::class)
+                        $organizationReviews = Review::where('reviewable_id', $organization->id)
+                            ->where('reviewable_type', \App\Models\Organization::class)
                             ->get();
-                        $reviewCount = $doctorReviews->count();
-                        $averageRating = $reviewCount > 0 ? round($doctorReviews->avg('rating'), 1) : null;
+                        $reviewCount = $organizationReviews->count();
+                        $averageRating = $reviewCount > 0 ? round($organizationReviews->avg('rating'), 1) : null;
                     @endphp
 
                     <div class="rating-badge-container d-flex align-items-center px-2 py-1 rounded shadow-sm" style="background-color: #fff8e1; border: 1px solid #ffe082;">
@@ -82,7 +77,11 @@
                 </div>
 
                 <div class="text-muted">
-                    {{ $doctor->specialization }}
+                    {{ $organization->activityType->name ?? '' }}
+                </div>
+
+                <div class="text-muted small mt-1">
+                    {{ implode(', ', $addressParts) }}
                 </div>
             </div>
         </div>
@@ -91,9 +90,10 @@
         <div class="ms-md-3 mt-3 mt-md-0">
             @auth
                 @php
-                    $alreadyOwner = \App\Models\DoctorOwner::where('user_id', auth()->id())
-                        ->where('doctor_id', $doctor->id)
+                    $ownerPivot = $organization->owners()
+                        ->where('user_id', auth()->id())
                         ->first();
+                    $alreadyOwner = $ownerPivot ? $ownerPivot->pivot : null;
                 @endphp
 
                 @if($alreadyOwner && $alreadyOwner->is_confirmed)
@@ -116,7 +116,7 @@
                     </button>
                 @endif
 
-                @include('partials.modal-claim-ownership', ['entityType' => 'doctor', 'entityId' => $doctor->id])
+                @include('partials.modal-claim-ownership', ['entityType' => 'organization', 'entityId' => $organization->id])
             @else
                 <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
                    class="btn btn-success fw-bold d-flex align-items-center gap-2"
@@ -128,7 +128,7 @@
     </div>
 
     {{-- АКЦИИ --}}
-    @include('partials._promotions-widget', ['entity' => $doctor])
+    @include('partials._promotions-widget', ['entity' => $organization])
 
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
@@ -139,7 +139,7 @@
             <a class="nav-link {{ $tab === 'contacts' ? 'active' : ''  }}" title="Просмотреть контакты" href="?tab=contacts">Контакты</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'services' ? 'active' : ''  }}" title="Посмотреть перечь услуге которые оказывает данный специалист" href="?tab=services">Услуги</a>
+            <a class="nav-link {{ $tab === 'services' ? 'active' : ''  }}" title="Посмотреть перечень услуг, которые оказывает данная организация" href="?tab=services">Услуги</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ $tab === 'reviews' ? 'active' : ''  }}" title="Прочитать отзывы" href="?tab=reviews">Отзывы</a>
@@ -149,19 +149,19 @@
     <div class="row">
         <div class="col-lg-8">
             @if($tab === 'info')
-                @include('pages.doctors.tabs.info', ['doctor' => $doctor])
+                @include('pages.organizations.tabs.info', ['organization' => $organization])
             @endif
 
             @if($tab === 'contacts')
-                @include('pages.doctors.tabs.contacts', ['doctor' => $doctor])
+                @include('pages.organizations.tabs.contacts', ['organization' => $organization])
             @endif
 
             @if($tab === 'services')
-                @include('pages.doctors.tabs.services', ['doctor' => $doctor])
+                @include('pages.organizations.tabs.services', ['organization' => $organization])
             @endif
 
             @if($tab === 'reviews')
-                @include('pages.doctors.tabs.reviews', ['clinic_id' => $doctor->clinic_id])
+                @include('pages.organizations.tabs.reviews', ['organization_id' => $organization->id])
             @endif
         </div>
 

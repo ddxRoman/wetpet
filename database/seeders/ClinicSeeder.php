@@ -5114,28 +5114,6 @@ class ClinicSeeder extends Seeder
         'seo_description' => null,
     ],
     [
-        'name' => 'Питомник британских короткошерстных кошек Reign Of Fire',
-        
-        'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => 'Краснодар',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Заводчики из Питомник британских короткошерстных кошек Reign Of Fire занимаются разведением и продажей…',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
         'name' => 'Ветеринарный центр ЗооВита',
         
         'country' => 'Россия',

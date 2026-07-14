@@ -5,10 +5,6 @@
 @section('content')
 @include('layouts.header')
 
-
-
-
-
 <div class="container my-5" style="max-width: 680px;">
 
    {{-- Заголовок --}}
