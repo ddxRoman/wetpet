@@ -3333,28 +3333,6 @@ class ClinicSeeder extends Seeder
         'seo_description' => null,
     ],
     [
-        'name' => 'Ветеринарная клиника Биосфера',
-        
-        'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => 'Краснодар',
-        'street' => 'улица Горького',
-        'house' => '217',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, не обойтись без заботы о здоровье. Признаки недомогания,…',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
         'name' => 'Ветеринарная клиника Вита',
         
         'country' => 'Россия',
