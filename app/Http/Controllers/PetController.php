@@ -275,10 +275,11 @@ public function showBreeds($species_slug)
         ->whereNotNull('breed')
         ->whereNotNull('breed_slug')
         ->where('breed_slug', '<>', '')
-        ->select('breed', 'breed_slug', 'species', 'species_slug') 
-        ->distinct()
+        ->with('details:id,animal_breed,photo')
         ->orderBy('breed')
-        ->get();
+        ->get()
+        ->unique('breed_slug')
+        ->values();
 
     if ($breeds->isEmpty()) {
         abort(404);

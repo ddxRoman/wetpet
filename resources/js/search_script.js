@@ -4,6 +4,79 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!searchInput) return;
 
+    // Рендер одного элемента результата в зависимости от его типа.
+    // Порядок элементов в разметке = порядку в data.results, который
+    // бэкенд уже отсортировал по релевантности (сначала прямые
+    // вхождения, потом совпадения по доп.полям вроде адреса).
+    function renderResultItem(item) {
+        switch (item.type) {
+            case 'clinic':
+                return `
+                    <a href="/clinics/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                        <img src="${item.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                        <div class="ms-2">
+                            <div class="result-title text-primary"><small>🏥 Клиника:</small> ${item.name}</div>
+                            <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}</div>
+                        </div>
+                    </a>`;
+
+            case 'organization': {
+                const category = item.category_name ? `<span class="text-muted small">(${item.category_name})</span>` : '';
+                return `
+                    <a href="/organizations/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                        <img src="${item.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                        <div class="ms-2">
+                            <div class="result-title text-success">
+                                <small>🏢</small> ${item.name} ${category}
+                            </div>
+                            <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}</div>
+                        </div>
+                    </a>`;
+            }
+
+            case 'doctor':
+                return `
+                    <a href="/doctors/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                        <img src="${item.image}" class="search-img-thumb rounded-circle" alt="photo" style="width:40px; height:40px; object-fit:cover;">
+                        <div class="ms-2">
+                            <div>
+                                <span class="result-title">🩺 ${item.name}</span>
+                                <span class="result-sub-muted small">(${item.specialization})</span>
+                            </div>
+                            <div class="result-sub-small text-muted">${item.clinic_info}</div>
+                        </div>
+                    </a>`;
+
+            case 'specialist':
+                return `
+                    <a href="/specialists/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                        <img src="${item.image}" class="search-img-thumb rounded-circle" alt="photo" style="width:40px; height:40px; object-fit:cover;">
+                        <div class="ms-2">
+                            <div>
+                                <span class="result-title">👤 ${item.name}</span>
+                                <span class="result-sub-muted small">(${item.specialization})</span>
+                            </div>
+                            <div class="result-sub-small text-muted">${item.location_info}</div>
+                        </div>
+                    </a>`;
+
+            case 'animal':
+                return `
+                    <a href="/animals/${item.species_slug}/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                        <img src="${item.image}" class="search-img-thumb" alt="animal" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                        <div class="ms-2">
+                            <div class="result-title ">
+                                <small>🐾</small> ${item.name}
+                            </div>
+                            <div class="result-sub-small text-muted">${item.category ?? ''}</div>
+                        </div>
+                    </a>`;
+
+            default:
+                return '';
+        }
+    }
+
     searchInput.addEventListener('input', function() {
         const query = this.value;
 
@@ -16,94 +89,12 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`/api/clinics-search?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
-                // Очищаем контейнер перед отрисовкой
                 resultsContainer.innerHTML = '';
-                let hasResults = false; // Объявляем ОДИН раз
 
-                // 1. Отрисовка КЛИНИК
-                if (data.clinics && data.clinics.length > 0) {
-                    data.clinics.forEach(clinic => {
-                        hasResults = true;
-                        resultsContainer.innerHTML += `
-                            <a href="/clinics/${clinic.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
-                                <img src="${clinic.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                                <div class="ms-2">
-                                    <div class="result-title text-primary"><small>🏥 Клиника:</small> ${clinic.name}</div>
-                                    <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${clinic.address}</div>
-                                </div>
-                            </a>`;
-                    });
-                }
+                const results = data.results || [];
 
-                // 2. Отрисовка ОРГАНИЗАЦИЙ
-                if (data.organizations && data.organizations.length > 0) {
-                    data.organizations.forEach(org => {
-                        hasResults = true;
-                        const category = org.category_name ? `<span class="text-muted small">(${org.category_name})</span>` : '';
-                        resultsContainer.innerHTML += `
-                            <a href="/organizations/${org.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
-                                <img src="${org.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                                <div class="ms-2">
-                                    <div class="result-title text-success">
-                                        <small>🏢</small> ${org.name} ${category}
-                                    </div>
-                                    <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${org.address}</div>
-                                </div>
-                            </a>`;
-                    });
-                }
-
-                // 3. Отрисовка ВРАЧЕЙ
-                if (data.doctors && data.doctors.length > 0) {
-                    data.doctors.forEach(doctor => {
-                        hasResults = true;
-                        resultsContainer.innerHTML += `
-                            <a href="/doctors/${doctor.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
-                                <img src="${doctor.image}" class="search-img-thumb rounded-circle" alt="photo" style="width:40px; height:40px; object-fit:cover;">
-                                <div class="ms-2">
-                                    <div>
-                                        <span class="result-title">🩺 ${doctor.name}</span>
-                                        <span class="result-sub-muted small">(${doctor.specialization})</span>
-                                    </div>
-                                    <div class="result-sub-small text-muted">${doctor.clinic_info}</div>
-                                </div>
-                            </a>`;
-                    });
-                }
-
-                // 4. Отрисовка СПЕЦИАЛИСТОВ
-                if (data.specialists && data.specialists.length > 0) {
-                    data.specialists.forEach(spec => {
-                        hasResults = true;
-                        resultsContainer.innerHTML += `
-                            <a href="/specialists/${spec.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
-                                <img src="${spec.image}" class="search-img-thumb rounded-circle" alt="photo" style="width:40px; height:40px; object-fit:cover;">
-                                <div class="ms-2">
-                                    <div>
-                                        <span class="result-title">👤 ${spec.name}</span>
-                                        <span class="result-sub-muted small">(${spec.specialization})</span>
-                                    </div>
-                                    <div class="result-sub-small text-muted">${spec.location_info}</div>
-                                </div>
-                            </a>`;
-                    });
-                }
-
-                // 5. Отрисовка ЖИВОТНЫХ (Породы)
-                if (data.animals && data.animals.length > 0) {
-                    data.animals.forEach(animal => {
-                        hasResults = true;
-                        resultsContainer.innerHTML += `
-                            <a href="/animals/${animal.species_slug}/${animal.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
-                                <img src="${animal.image}" class="search-img-thumb" alt="animal" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                                <div class="ms-2">
-                                    <div class="result-title ">
-                                        <small>🐾</small> ${animal.name} 
-                                    </div>
-                                    <div class="result-sub-small text-muted">${animal.type} ${animal.category}</div>
-                                </div>
-                            </a>`;
-                    });
+                if (results.length > 0) {
+                    resultsContainer.innerHTML = results.map(renderResultItem).join('');
                 }
 
                 // Логика кнопки поиска и Enter
@@ -111,9 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 function performFullSearch() {
                     const query = searchInput.value.trim();
                     if (query.length >= 2) {
-                        const results = resultsContainer.querySelectorAll('.search-result-item');
-                        if (results.length === 1) {
-                            results[0].click();
+                        const items = resultsContainer.querySelectorAll('.search-result-item');
+                        if (items.length === 1) {
+                            items[0].click();
                         } else {
                             window.location.href = `/search?q=${encodeURIComponent(query)}`;
                         }
@@ -125,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     searchBtn.onclick = performFullSearch;
                 }
 
-                if (hasResults) {
+                if (results.length > 0) {
                     resultsContainer.classList.remove('d-none');
                 } else {
                     resultsContainer.innerHTML = '<div class="p-3 text-center text-muted">Ничего не найдено</div>';
@@ -143,9 +134,9 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const query = this.value.trim();
             if (query.length >= 2) {
-                const results = resultsContainer.querySelectorAll('.search-result-item');
-                if (results.length === 1) {
-                    results[0].click();
+                const items = resultsContainer.querySelectorAll('.search-result-item');
+                if (items.length === 1) {
+                    items[0].click();
                 } else {
                     window.location.href = `/search?q=${encodeURIComponent(query)}`;
                 }

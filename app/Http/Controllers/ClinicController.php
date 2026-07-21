@@ -157,10 +157,42 @@ if ($request->ajax()) {
 public function liveSearch(Request $request)
 {
     $query = $request->get('q');
-    if (mb_strlen($query) < 2) return response()->json([]);
+    if (mb_strlen($query) < 2) return response()->json(['results' => []]);
+
+    // ── Определение целевого города ──────────────────────────
+    // 1. Если в самом запросе явно указан город ("Мопс Новосибирск") —
+    //    вычленяем его название и убираем из текста поиска, чтобы оно
+    //    не мешало поиску по имени/породе.
+    // 2. Иначе используем текущий город пользователя (сессия, куда его
+    //    кладёт DetectUserCity — ручной выбор, профиль или GeoIP).
+    $queryLower = mb_strtolower($query);
+    $matchedCityName = null;
+    $matchedLength = 0;
+
+    foreach (\App\Models\City::pluck('name') as $cityName) {
+        $cityNameLower = mb_strtolower(trim($cityName));
+        if ($cityNameLower !== '' && mb_stripos($queryLower, $cityNameLower) !== false) {
+            if (mb_strlen($cityNameLower) > $matchedLength) {
+                $matchedCityName = $cityName;
+                $matchedLength = mb_strlen($cityNameLower);
+            }
+        }
+    }
+
+    $searchTerm = $query;
+    if ($matchedCityName) {
+        $stripped = trim(preg_replace('/' . preg_quote($matchedCityName, '/') . '/iu', '', $query));
+        // Если после вычитания города ничего не осталось (запрос был
+        // просто названием города) — ищем по исходному запросу целиком.
+        if (mb_strlen($stripped) >= 2) {
+            $searchTerm = $stripped;
+        }
+    }
+
+    $targetCityName = $matchedCityName ?: session('city_name');
 
     // Разбиваем запрос на отдельные слова для гибкого поиска
-    $words = explode(' ', $query);
+    $words = explode(' ', $searchTerm);
 
     // Вспомогательная функция для расширенного поиска (Название + Адрес)
     // Используется в Клиниках и Организациях
@@ -175,105 +207,170 @@ public function liveSearch(Request $request)
         }
     };
 
+    // Тир по городу: 0 — совпадает с целевым городом (или у сущности
+    // вообще нет привязки к городу, как у пород), 1 — другой город.
+    // Используется как ГЛАВНЫЙ ключ сортировки, чтобы "свой" город
+    // (или явно указанный в запросе) всегда шёл выше результатов
+    // из других городов.
+    $cityTier = function (?string $itemCityName) use ($targetCityName) {
+        if (!$targetCityName || !$itemCityName) {
+            return 0;
+        }
+        return mb_strtolower(trim($itemCityName)) === mb_strtolower(trim($targetCityName)) ? 0 : 1;
+    };
+
+    // Определяет "силу" совпадения, чтобы прямые вхождения (точное
+    // совпадение / совпадение с начала слова) шли раньше, чем те,
+    // где запрос найден только как часть названия или в доп.полях
+    // (адрес, специализация и т.д.)
+    // 0 — точное совпадение, 1 — совпадение с начала, 2 — вхождение
+    // в основное поле, 3 — совпадение только по доп.полям
+    $matchPriority = function (string $primary, array $altFields = []) use ($searchTerm) {
+        $qNorm = mb_strtolower(trim($searchTerm));
+        $pNorm = mb_strtolower(trim($primary));
+
+        if ($qNorm !== '' && $pNorm === $qNorm) {
+            return 0;
+        }
+        if ($qNorm !== '' && mb_strpos($pNorm, $qNorm) === 0) {
+            return 1;
+        }
+        if ($qNorm !== '' && mb_stripos($pNorm, $qNorm) !== false) {
+            return 2;
+        }
+        foreach ($altFields as $alt) {
+            if ($alt && mb_stripos(mb_strtolower($alt), $qNorm) !== false) {
+                return 3;
+            }
+        }
+        return 4;
+    };
+
+    $results = collect();
+
     // 1. Клиники
-    $clinics = \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
+    \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
             $applyAdvancedSearch($q);
         })
-        ->limit(5)->get()->map(function($item) {
-            return [
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
+            $results->push([
                 'type' => 'clinic',
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'address' => "{$item->city}, {$item->street} {$item->house}",
-                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default-clinic.webp')
-            ];
+                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default-clinic.webp'),
+                '_priority' => $matchPriority($item->name, [$item->street, $item->city, $item->house]),
+                '_city_tier' => $cityTier($item->city),
+                '_type_order' => 0,
+            ]);
         });
 
     // 2. Врачи
-    $doctors = \App\Models\Doctor::with('clinic')
-        ->where(function($q) use ($query) {
-            $q->where('name', 'LIKE', "%{$query}%")
-              ->orWhere('specialization', 'LIKE', "%{$query}%");
+    \App\Models\Doctor::with(['clinic', 'city'])
+        ->where(function($q) use ($searchTerm) {
+            $q->where('name', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
         })
-        ->limit(5)->get()->map(function($item) {
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
             $clinicAddress = $item->clinic 
                 ? " ({$item->clinic->city}, {$item->clinic->street} {$item->clinic->house})" 
                 : "";
-            return [
+            $doctorCityName = $item->city->name ?? $item->clinic?->city ?? null;
+            $results->push([
                 'type' => 'doctor',
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'specialization' => $item->specialization,
                 'clinic_info' => ($item->clinic->name ?? 'Частная практика') . $clinicAddress,
-                'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp')
-            ];
+                'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp'),
+                '_priority' => $matchPriority($item->name, [$item->specialization]),
+                '_city_tier' => $cityTier($doctorCityName),
+                '_type_order' => 2,
+            ]);
         });
 
     // 3. Организации
-    $organizations = \App\Models\Organization::with(['fieldOfActivity'])
+    \App\Models\Organization::with(['fieldOfActivity'])
         ->where(function($q) use ($applyAdvancedSearch) {
             $applyAdvancedSearch($q);
         })
-        ->limit(5)->get()->map(function($item) {
-            return [
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
+            $results->push([
                 'type' => 'organization',
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'category_name' => $item->fieldOfActivity->name ?? '', 
                 'address' => "{$item->city}, {$item->street} {$item->house}",
-                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/organizations/default-org.webp')
-            ];
+                'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/organizations/default-org.webp'),
+                '_priority' => $matchPriority($item->name, [$item->street, $item->city, $item->house]),
+                '_city_tier' => $cityTier($item->city),
+                '_type_order' => 1,
+            ]);
         });
 
     // 4. Специалисты
-    $specialists = \App\Models\Specialist::with('organization')
-        ->where(function($q) use ($query) {
-            $q->where('name', 'LIKE', "%{$query}%")
-              ->orWhere('specialization', 'LIKE', "%{$query}%");
+    \App\Models\Specialist::with(['organization', 'city'])
+        ->where(function($q) use ($searchTerm) {
+            $q->where('name', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
         })
-        ->limit(5)->get()->map(function($item) {
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
             if ($item->organization) {
                 $location = "{$item->organization->name} ({$item->organization->city}, {$item->organization->street} {$item->organization->house})";
+                $specialistCityName = $item->organization->city ?? null;
             } else {
                 $cityName = $item->city->name ?? 'Город не указан'; 
                 $location = "Частный специалист: {$cityName}, {$item->street} {$item->house}";
+                $specialistCityName = $item->city->name ?? null;
             }
-            return [
+            $results->push([
                 'type' => 'specialist',
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'specialization' => $item->specialization,
                 'location_info' => $location,
-                'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp')
-            ];
+                'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp'),
+                '_priority' => $matchPriority($item->name, [$item->specialization]),
+                '_city_tier' => $cityTier($specialistCityName),
+                '_type_order' => 3,
+            ]);
         });
 
-    // 5. Животные
-    $animals = \App\Models\Animal::with('details')
-        ->where(function($q) use ($query) {
+    // 5. Животные (породы) — не привязаны к городу, тир всегда нейтральный
+    \App\Models\Animal::with('details')
+        ->where(function($q) use ($searchTerm) {
             // Поиск по породе или виду
-            $q->where('breed', 'LIKE', "%{$query}%")
-              ->orWhere('species', 'LIKE', "%{$query}%")
-              ->orWhereRaw("CONCAT(species, ' ', breed) LIKE ?", ["%{$query}%"]);
+            $q->where('breed', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('species', 'LIKE', "%{$searchTerm}%")
+              ->orWhereRaw("CONCAT(species, ' ', breed) LIKE ?", ["%{$searchTerm}%"]);
         })
-        ->limit(5)->get()->map(function($item) {
-            return [
-                'type' => 'Животное',
+        ->limit(5)->get()->each(function($item) use (&$results, $matchPriority) {
+            $results->push([
+                'type' => 'animal',
                 'name' => $item->breed,
                 'slug' => $item->breed_slug,
                 'species_slug' => $item->species_slug, 
                 'category' => $item->species,
-                'image' => ($item->details->photo ?? null) ? \Storage::url($item->details->photo) : asset('storage/animals/default-animal.webp')
-            ];
+                'image' => ($item->details->photo ?? null) ? \Storage::url($item->details->photo) : asset('storage/animals/default-animal.webp'),
+                '_priority' => $matchPriority($item->breed, [$item->species]),
+                '_city_tier' => 0,
+                '_type_order' => 4,
+            ]);
         });
 
-    return response()->json([
-        'clinics' => $clinics, 
-        'doctors' => $doctors,
-        'organizations' => $organizations,
-        'specialists' => $specialists,
-        'animals' => $animals
-    ]);
+    // Город — главный ключ сортировки (свой/указанный город всегда
+    // выше, другие города — внизу), затем релевантность текста,
+    // затем порядок типов (клиники/организации/врачи/специалисты/животные)
+    $sorted = $results
+        ->sortBy(['_city_tier', '_priority', '_type_order'])
+        ->values()
+        ->take(20)
+        ->map(function ($item) {
+            unset($item['_priority'], $item['_city_tier'], $item['_type_order']);
+            return $item;
+        });
+
+    return response()->json(['results' => $sorted]);
 }
 
 public function fullSearch(Request $request)

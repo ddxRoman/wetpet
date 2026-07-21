@@ -43,9 +43,10 @@
     'breed_slug' => $breed->breed_slug
 ]) }}" class="text-decoration-none text-dark">
     <div class="card h-100 border-0 shadow-card breed-card">
-                                    <div class="card-body p-3 d-flex align-items-center">
-                                        <div class="breed-dot me-3"></div>
+                                    <div class="card-body p-3 d-flex align-items-center justify-content-between">
                                         <span class="fw-medium">{{ $breed->breed }}</span>
+                                        <img src="{{ $breed->details && $breed->details->photo ? asset('storage/' . $breed->details->photo) : asset('storage/default.png') }}"
+                                             class="breed-thumb ms-3" alt="{{ $breed->breed }}" loading="lazy">
                                     </div>
                                 </div>
                             </a>
@@ -72,16 +73,16 @@
     .breed-card:hover .fw-medium {
         color: #0d6efd;
     }
-    .breed-dot {
-        width: 6px;
-        height: 6px;
-        background-color: #0d6efd;
-        border-radius: 50%;
-        opacity: 0.5;
+    .breed-thumb {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+        background-color: #f2f2f2;
     }
-    .breed-card:hover .breed-dot {
-        opacity: 1;
-        transform: scale(1.2);
+    .breed-card:hover .breed-thumb {
+        transform: scale(1.05);
     }
     .shadow-card{
         box-shadow: 0 .5rem 1rem rgba(0, 81, 255, 0.1)!important;
