@@ -87,7 +87,7 @@ class OrganizationController extends Controller
         })
         ->withCount('reviews') // Для бейджа рейтинга
         ->withAvg('reviews', 'rating') // Для звезд
-        ->with(['promotions' => fn($q) => $q->active()])
+        ->with(['promotions' => fn($q) => $q->active(), 'fieldOfActivity'])
         ->orderBy('name')
         ->paginate(16);
 

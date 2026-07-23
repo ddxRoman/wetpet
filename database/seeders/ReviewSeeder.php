@@ -37,7 +37,7 @@ $reviews = [
     [
         'user_id' => 2,
         'reviewable_type' => \App\Models\Clinic::class,
-        'reviewable_id' => 60,
+        'reviewable_id' => 76,
         'review_date' => '2026-03-10',
         'rating' => 5,
         'content' => 'Пока не могу сказать о лечении, мы в процессе. Но очень понравился персонал на ресепшн. Сама клиника достаточно большая и выглядит все чистенько, опрятно.',

@@ -64,7 +64,6 @@ class AnimalSeeder extends Seeder
 ['species' => 'Собака', 'breed' => 'Сенбернар'],  
 ['species' => 'Собака', 'breed' => 'Ньюфаундленд'],  
 ['species' => 'Собака', 'breed' => 'Гриффон'],  
-['species' => 'Собака', 'breed' => 'Брабансон'],  
 ['species' => 'Собака', 'breed' => 'Болонка'],  
 ['species' => 'Собака', 'breed' => 'Тибетский спаниель'],  
 ['species' => 'Собака', 'breed' => 'Фокстерьер'],  

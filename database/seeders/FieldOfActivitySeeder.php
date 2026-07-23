@@ -74,7 +74,9 @@ class FieldOfActivitySeeder extends Seeder
             'Фелинологический клуб' => 'felinology',
             'Питомник'              => 'breeding',
             'Зоогостиница'          => 'hotel',
-            'Приют'                 => 'Shelter',
+            'Приют'                 => 'shelter',
+            'Крематорий'            => 'crematorium',
+            'Служба отлова животных'=> 'Animal-Control-Service',
         ];
 
         foreach ($organizations as $name => $activity) {

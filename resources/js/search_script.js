@@ -3,11 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultsContainer = document.getElementById('search-results');
 
     if (!searchInput) return;
-
-    // Рендер одного элемента результата в зависимости от его типа.
-    // Порядок элементов в разметке = порядку в data.results, который
-    // бэкенд уже отсортировал по релевантности (сначала прямые
-    // вхождения, потом совпадения по доп.полям вроде адреса).
     function renderResultItem(item) {
         switch (item.type) {
             case 'clinic':
@@ -77,18 +72,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    searchInput.addEventListener('input', function() {
-        const query = this.value;
+    // Защита от гонки запросов: отменяем предыдущий незавершённый запрос
+    // и игнорируем ответы, пришедшие не на последний отправленный запрос.
+    // Без этого при быстром наборе текста более ранний (по времени ухода)
+    // запрос может завершиться позже более позднего и затереть корректный
+    // результат сообщением "Ничего не найдено" — именно это происходило
+    // на проде из-за более высокой и нестабильной задержки сети/БД.
+    let currentController = null;
+    let requestSeq = 0;
+    let debounceTimer = null;
 
-        if (query.length < 2) {
-            resultsContainer.innerHTML = '';
-            resultsContainer.classList.add('d-none');
-            return;
+    function performSearch(query) {
+        if (currentController) {
+            currentController.abort();
         }
+        currentController = new AbortController();
+        const thisSeq = ++requestSeq;
 
-        fetch(`/api/clinics-search?q=${encodeURIComponent(query)}`)
+        fetch(`/api/clinics-search?q=${encodeURIComponent(query)}`, {
+            signal: currentController.signal
+        })
             .then(response => response.json())
             .then(data => {
+                // Ответ устарел — пришёл не на последний запрос, игнорируем
+                if (thisSeq !== requestSeq) return;
+
                 resultsContainer.innerHTML = '';
 
                 const results = data.results || [];
@@ -124,8 +132,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                console.error('Search error:', error);
+                if (error.name !== 'AbortError') {
+                    console.error('Search error:', error);
+                }
             });
+    }
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value;
+
+        if (query.length < 2) {
+            if (currentController) currentController.abort();
+            clearTimeout(debounceTimer);
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.add('d-none');
+            return;
+        }
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => performSearch(query), 200);
     });
 
     // Обработка Enter
