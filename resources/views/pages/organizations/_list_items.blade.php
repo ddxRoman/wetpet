@@ -21,17 +21,15 @@
                 <img src="{{ $logo }}" class="card-img-top object-fit-contain p-3" style="height: 200px;" alt="{{ $org->name }}">
 
                 <div class="card-body">
-                    <h5 class="card-title">{{ $org->name }}</h5>
+                    <h5 class="org-card-title">{{ $org->name }}</h5>
                     @if($org->fieldOfActivity)
-                        <p class="card-text mb-1 small text-muted">
-                            {{ $org->fieldOfActivity->name }}321321312
-                        </p>
+                        <span class="org-type-badge">{{ $org->fieldOfActivity->name }}</span>
                     @endif
-                    <p class="card-text mb-1 small">
-                        <i class="bi bi-geo-alt"></i> {{ $org->street }}, {{ $org->house }}
+                    <p class="org-address">
+                        <i class="bi bi-geo-alt-fill"></i> {{ $org->street }}, {{ $org->house }}
                     </p>
                     @if($org->schedule)
-                        <p class="card-text mb-0 small text-muted">
+                        <p class="org-hours">
                             <i class="bi bi-clock"></i> {{ $org->workdays }}: {{ $org->schedule }}
                         </p>
                     @endif

@@ -101,12 +101,9 @@ private static function generateUniqueSlug($organization)
         )->withTimestamps();
     }
 
-// Исправь сам метод:
 public function fieldOfActivity(): BelongsTo
 {
-    // Важно: проверь, как называется колонка в базе. 
-    // Если в таблице организаций колонка называется 'type', то пиши 'type'.
-    return $this->belongsTo(FieldOfActivity::class, 'type'); 
+    return $this->belongsTo(FieldOfActivity::class, 'field_of_activity_id');
 }
 
 
