@@ -1,5 +1,9 @@
 <?php
 
+// SEO
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index']);
+Route::get('/robots.txt', [\App\Http\Controllers\SitemapController::class, 'robots']);
+
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;

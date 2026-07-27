@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             // PriceSeeder::class,
             ReviewSeeder::class,
             NewsSeeder::class,
+            LegalPagesSeeder::class,
             // AdSeeder::class,
             // ReviewPhotoSeeder::class,
 // AwardsTableSeeder::class,

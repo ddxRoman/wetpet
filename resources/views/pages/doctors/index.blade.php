@@ -20,14 +20,14 @@
         <div class="specialization-filter">
             {{-- Ссылка "Все" --}}
             <a href="{{ route('doctors.index', ['city_id' => request('city_id')]) }}" 
-               class="btn btn-sm rounded-pill px-3 {{ empty($selectedSpecialization) ? 'btn-primary' : 'btn-outline-secondary' }}">
+               class="org-filter-pill {{ empty($selectedSpecialization) ? 'org-filter-pill--active' : '' }}">
                 Все
             </a>
 
             @foreach($specializations as $spec)
                 @if(!empty($spec))
                     <a href="{{ route('doctors.index', ['specialization' => $spec, 'city_id' => request('city_id')]) }}" 
-                       class="btn btn-sm rounded-pill px-3 {{ $selectedSpecialization == $spec ? 'btn-primary' : 'btn-outline-secondary' }}">
+                       class="org-filter-pill {{ $selectedSpecialization == $spec ? 'org-filter-pill--active' : '' }}">
                         {{ $spec }}
                     </a>
                 @endif
@@ -91,27 +91,23 @@
                                 <img src="{{ $photo }}" class="card-img-top object-fit-contain p-3" alt="{{ $doctor->name }}">
 
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $doctor->name }}</h5>
+                                    <h5 class="org-card-title">{{ $doctor->name }}</h5>
 
                                     @if($doctor->exotic_animals == 'Да' || $doctor->exotic_animals == 1)
-                                        <span class="badge bg-warning text-dark mb-2" style="font-size: 0.8rem;">
-                                            Экзотические животные
-                                        </span>
+                                        <span class="org-type-badge">Экзотические животные</span>
                                     @endif
 
-                                    <p class="card-text mb-1">
-                                        <strong>Специализация:</strong> {{ $doctor->specialization }}
-                                    </p>
+                                    <span class="org-type-badge">{{ $doctor->specialization }}</span>
 
                                     @if(!empty($doctor->city))
-                                        <p class="card-text mb-1">
-                                            <strong>Город:</strong> {{ $doctor->city->name }}
+                                        <p class="org-address mt-2">
+                                            <i class="bi bi-geo-alt-fill"></i> {{ $doctor->city->name }}
                                         </p>
                                     @endif
 
                                     @if(!empty($doctor->experience))
-                                        <p class="text-muted mb-0">
-                                            <strong>Стаж:</strong> {{ $doctor->experience }}
+                                        <p class="org-hours">
+                                            Стаж: {{ $doctor->experience }}
                                         </p>
                                     @endif
                                     @include('partials._promotions-badge', ['entity' => $doctor])
@@ -155,16 +151,33 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-    .btn-outline-secondary {
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
-        color: #333;
+
+    /* Фильтр по специализации — фирменный стиль сайта */
+    .org-filter-pill {
+        display: inline-block;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        background-color: #f4f9f4;
+        border: 1px solid #dcefdc;
+        color: #3d8b4c;
+        transition: background-color 0.2s, border-color 0.2s, color 0.2s;
     }
-    .btn-outline-secondary:hover {
-        background-color: #e9ecef;
-        color: #000;
-        border-color: #adb5bd;
+    .org-filter-pill:hover {
+        background-color: #e6f7e9;
+        border-color: #b7e3bd;
+        color: #2ecc71;
     }
+    .org-filter-pill--active,
+    .org-filter-pill--active:hover {
+        background-color: #2ebfcc;
+        border-color: #2e9ecc;
+        color: #fff;
+    }
+
     /* Контейнер для управления отступами */
     .specialization-filter-container {
         width: 100%;
@@ -182,39 +195,76 @@
     }
 
     /* Стилизация полосы прокрутки (Scrollbar) */
-    /* 1. Ширина/высота дорожки */
     .specialization-filter::-webkit-scrollbar {
-        height: 6px; /* Высота ползунка */
+        height: 6px;
     }
-
-    /* 2. Фон дорожки */
     .specialization-filter::-webkit-scrollbar-track {
         background: #f1f1f1;
         border-radius: 10px;
     }
-
-    /* 3. Сам ползунок (бегунок) */
     .specialization-filter::-webkit-scrollbar-thumb {
-        background: #ccc; /* Цвет ползунка */
+        background: #ccc;
         border-radius: 10px;
         transition: background 0.3s ease;
     }
-
-    /* 4. Цвет при наведении */
     .specialization-filter::-webkit-scrollbar-thumb:hover {
         background: #adb5bd; 
     }
 
     /* Кнопки-теги (чтобы текст не переносился внутри кнопки) */
-    .specialization-filter .btn {
-        flex: 0 0 auto; /* Не дает кнопкам сжиматься */
+    .specialization-filter .org-filter-pill {
+        flex: 0 0 auto;
         white-space: nowrap;
     }
 
-    /* Для Firefox (у него свои свойства для скролла) */
+    /* Для Firefox */
     .specialization-filter {
         scrollbar-width: thin;
         scrollbar-color: #ccc #f1f1f1;
+    }
+
+    /* Карточка врача: визуальная иерархия текста */
+    .org-card-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #212529;
+        line-height: 1.3;
+        margin-bottom: 0.4rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .org-type-badge {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #d95c1f;
+        background-color: #fdece1;
+        padding: 0.22rem 0.6rem;
+        border-radius: 20px;
+        margin: 0 0.3rem 0.4rem 0;
+    }
+
+    .org-address {
+        font-size: 0.85rem;
+        color: #495057;
+        margin-bottom: 0.35rem;
+        line-height: 1.35;
+    }
+    .org-address i {
+        color: #2ecc71;
+        margin-right: 2px;
+    }
+
+    .org-hours {
+        font-size: 0.78rem;
+        color: #adb5bd;
+        margin-bottom: 0;
+        line-height: 1.3;
     }
 </style>
 

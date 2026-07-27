@@ -69,16 +69,26 @@ Paginator::useBootstrapFive();
                     $seoManager = new \App\Services\SeoManager();
                     
                     // Ищем модель для автоматической генерации мета-тегов
-$model = $data['animal']->details // Пытаемся взять детали из объекта животного
-         ?? $data['animal'] 
-         ?? $data['doctor'] 
-         ?? $data['clinic'] 
-         ?? null;
+                    // Перебираем все возможные переменные — клиника, врач, организация, специалист и т.д.
+                    $model = null;
+                    foreach (['clinic', 'doctor', 'organization', 'specialist', 'breed', 'animal'] as $key) {
+                        if (!empty($data[$key]) && is_object($data[$key])) {
+                            $candidate = $data[$key];
+                            // Для animal берём details если есть
+                            if ($key === 'animal' && isset($candidate->details) && is_object($candidate->details)) {
+                                $candidate = $candidate->details;
+                            }
+                            if (isset($candidate->seo_title) || isset($candidate->seo_description) || isset($candidate->name)) {
+                                $model = $candidate;
+                                break;
+                            }
+                        }
+                    }
 
                     $seoMeta = $seoManager->getMeta($model);
 
                     // Динамическая замена города в шаблонах
-                    $seoMeta['title'] = str_replace('{city}', $currentCityName, $seoMeta['title']);
+                    $seoMeta['title']       = str_replace('{city}', $currentCityName, $seoMeta['title']);
                     $seoMeta['description'] = str_replace('{city}', $currentCityName, $seoMeta['description']);
 
                     $view->with('seoMeta', $seoMeta);
