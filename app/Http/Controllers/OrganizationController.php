@@ -123,6 +123,10 @@ class OrganizationController extends Controller
         'phone1'               => 'nullable|string|max:255',
         'phone2'               => 'nullable|string|max:255',
         'email'                => 'nullable|email|max:255',
+        'personal_data_agreement' => 'required|accepted',
+    ], [
+        'personal_data_agreement.required' => 'Необходимо согласие на обработку персональных данных.',
+        'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
     ]);
 
     $activity = FieldOfActivity::find($validated['field_of_activity_id']);

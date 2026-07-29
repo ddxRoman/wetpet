@@ -24,6 +24,10 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'personal_data_agreement' => ['required', 'accepted'],
+        ], [
+            'personal_data_agreement.required' => 'Необходимо согласие на обработку персональных данных.',
+            'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
         ]);
 
         $user = User::create([

@@ -164,6 +164,19 @@
                                       placeholder="Опишите род деятельности, направления, особенности"></textarea>
                         </div>
 
+                        <div class="col-12">
+                            <div class="form-check d-flex align-items-start gap-2 m-0">
+                                <input class="form-check-input flex-shrink-0 mt-1" type="checkbox"
+                                       name="personal_data_agreement" id="orgPersonalDataAgreement" value="1"
+                                       style="width:16px;height:16px;cursor:pointer;accent-color:#1ccfc9;" required>
+                                <label class="form-check-label m-0" for="orgPersonalDataAgreement"
+                                       style="font-size:13px;color:#374151;cursor:pointer;">
+                                    Я согласен(а) на
+                                    <a href="https://zverozor.ru/legal/personal-data-agreement" target="_blank" rel="noopener">обработку персональных данных</a>
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
             </div>

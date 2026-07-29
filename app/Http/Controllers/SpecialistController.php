@@ -92,6 +92,10 @@ public function store(Request $request)
         'mail'                 => 'nullable|string|email|max:255',
         'messengers'           => 'nullable|array',
         'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Валидация фото
+        'personal_data_agreement' => 'required|accepted',
+    ], [
+        'personal_data_agreement.required' => 'Необходимо согласие на обработку персональных данных.',
+        'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
     ]);
 
     // 🔹 Получаем специализацию

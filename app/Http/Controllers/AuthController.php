@@ -25,6 +25,10 @@ public function register(Request $request)
         'phone' => ['nullable', 'sometimes', new PhoneNumber, 'unique:users,phone'],
 
         'password' => 'required|string|min:8|confirmed',
+        'personal_data_agreement' => 'required|accepted',
+    ], [
+        'personal_data_agreement.required' => 'Необходимо согласие на обработку персональных данных.',
+        'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
     ]);
 
     $user = User::create([

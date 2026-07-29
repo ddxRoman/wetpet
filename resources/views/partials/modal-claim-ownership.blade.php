@@ -1,11 +1,4 @@
-{{--
-    Универсальная модалка "Заявить права на объект".
-    Подключать на любую публичную карточку:
-    @include('partials.modal-claim-ownership', ['entityType' => 'organization', 'entityId' => $organization->id])
 
-    Кнопка-триггер должна иметь:
-    data-bs-toggle="modal" data-bs-target="#claimOwnershipModal"
---}}
 
 @auth
 <div class="modal fade" id="claimOwnershipModal" tabindex="-1" aria-hidden="true">
@@ -49,6 +42,15 @@
                     <div class="mb-3">
                         <label class="form-label fw-medium small">Комментарий (необязательно)</label>
                         <input type="text" name="comment" class="form-control" placeholder="Например: я директор организации">
+                    </div>
+
+                    <div class="mb-3 form-check d-flex align-items-start gap-2">
+                        <input type="checkbox" name="personal_data_agreement" value="1"
+                               class="form-check-input flex-shrink-0 mt-1" id="claimPersonalDataAgreement" required>
+                        <label class="form-check-label small" for="claimPersonalDataAgreement">
+                            Я согласен(а) на
+                            <a href="https://zverozor.ru/legal/personal-data-agreement" target="_blank" rel="noopener">обработку персональных данных</a>
+                        </label>
                     </div>
 
                     <div id="claim-error" class="alert alert-danger d-none" style="font-size:13px;"></div>

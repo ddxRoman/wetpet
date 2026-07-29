@@ -252,6 +252,10 @@ public function organization(int $id)
             'documents'    => 'required|array|min:1',
             'documents.*'  => 'file|mimes:pdf,jpg,jpeg,png,webp|max:122880',
             'comment'      => 'nullable|string|max:255',
+            'personal_data_agreement' => 'required|accepted',
+        ], [
+            'personal_data_agreement.required' => 'Необходимо согласие на обработку персональных данных.',
+            'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
         ]);
 
         $userId = Auth::id();

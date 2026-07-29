@@ -118,6 +118,39 @@
     .page-registr_logo {
         width: 25%;
     }
+
+    .consent-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        text-align: left;
+        margin-bottom: 16px;
+    }
+
+    .consent-row input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin-top: 3px;
+        flex-shrink: 0;
+        accent-color: #2ecc71;
+        cursor: pointer;
+    }
+
+    .consent-label {
+        font-size: 13px;
+        color: #555;
+        line-height: 1.4;
+        cursor: pointer;
+    }
+
+    .consent-label a {
+        color: #3399ff;
+        text-decoration: none;
+    }
+
+    .consent-label a:hover {
+        text-decoration: underline;
+    }
 </style>
 <title>Регистрация</title>
 <div class="register-container">
@@ -158,6 +191,17 @@
 
             <label for="password-confirm">Подтвердите пароль</label>
             <input id="password-confirm" type="password" name="password_confirmation" required>
+
+            <div class="consent-row">
+                <input type="checkbox" id="personal_data_agreement" name="personal_data_agreement" value="1" required>
+                <label for="personal_data_agreement" class="consent-label">
+                    Я согласен(а) на
+                    <a href="https://zverozor.ru/legal/personal-data-agreement" target="_blank" rel="noopener">обработку персональных данных</a>
+                </label>
+            </div>
+            @error('personal_data_agreement')
+                <div class="error-message">{{ $message }}</div>
+            @enderror
 
             <button type="submit" class="register-button">Зарегистрироваться</button>
         </form>
