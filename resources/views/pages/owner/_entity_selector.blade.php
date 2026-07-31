@@ -88,4 +88,26 @@
         .owner-tab__badge--wait { font-size: 10px; }
     }
 </style>
+
+<div class="owner-tabs-wrap mb-4">
+    <div class="owner-tabs-scroll">
+        @foreach($allUserEntities as $entity)
+            @php
+                $isActive = isset($entityId, $type)
+                    && (int) $entityId === (int) $entity['id']
+                    && $type === $entity['type'];
+            @endphp
+            <a href="{{ route('owner.' . $entity['type'], $entity['id']) }}"
+               class="owner-tab {{ $isActive ? 'owner-tab--active' : '' }} {{ !$entity['is_confirmed'] ? 'owner-tab--pending' : '' }}">
+                <span class="owner-tab__icon">{{ $entity['icon'] }}</span>
+                <span>{{ $entity['name'] }}</span>
+                @if($entity['is_confirmed'])
+                    <span class="owner-tab__badge owner-tab__badge--ok">✓ Подтверждено</span>
+                @else
+                    <span class="owner-tab__badge owner-tab__badge--wait">⏳ Проверка</span>
+                @endif
+            </a>
+        @endforeach
+    </div>
+</div>
 @endif

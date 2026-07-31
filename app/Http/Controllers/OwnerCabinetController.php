@@ -137,6 +137,32 @@ class OwnerCabinetController extends Controller
         return $pending;
     }
 
+    /**
+     * Найти owner-запись пользователя для конкретного объекта (по типу и id).
+     * Возвращает [$ownerRow, $icon] или [null, null], если записи нет.
+     */
+    private function getOwnerRowFor(string $type, int $id): array
+    {
+        $user = Auth::user();
+
+        $map = [
+            'clinic'       => [ClinicOwner::class,       'clinic_id',       '🏥'],
+            'organization' => [OrganizationOwner::class, 'organization_id', '🏢'],
+            'doctor'       => [DoctorOwner::class,        'doctor_id',       '👨‍⚕️'],
+            'specialist'   => [SpecialistOwner::class,    'specialist_id',   '🩺'],
+        ];
+
+        if (!isset($map[$type])) {
+            return [null, null];
+        }
+
+        [$modelClass, $foreignKey, $icon] = $map[$type];
+
+        $ownerRow = $modelClass::where('user_id', $user->id)->where($foreignKey, $id)->first();
+
+        return [$ownerRow, $icon];
+    }
+
 
     // ══════════════════════════════════════════════════════════
     //  КЛИНИКА
@@ -145,6 +171,21 @@ class OwnerCabinetController extends Controller
     public function clinic(int $id)
     {
         $this->authorizeOwner('clinic', $id);
+
+        // Если заявка на этот объект ещё не подтверждена — показываем
+        // страницу с загрузкой документов и чатом вместо полного кабинета.
+        [$ownerRow, $icon] = $this->getOwnerRowFor('clinic', $id);
+        if ($ownerRow && !$ownerRow->is_confirmed) {
+            $clinic = Clinic::findOrFail($id);
+            return view('pages.owner.pending', [
+                'ownerRow'        => $ownerRow,
+                'entityName'      => $clinic->name,
+                'icon'            => $icon,
+                'entityId'        => $id,
+                'type'            => 'clinic',
+                'allUserEntities' => $this->getAllUserEntities(),
+            ]);
+        }
 
         $clinic = Clinic::with(['services', 'prices.service', 'doctors', 'awards'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Clinic::class)->where('photoable_id', $id)
@@ -160,7 +201,9 @@ class OwnerCabinetController extends Controller
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices'));
+        $allUserEntities = $this->getAllUserEntities();
+
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -210,6 +253,21 @@ public function organization(int $id)
     {
         // 1. Проверяем права (доступно только если организация подтверждена)
         $this->authorizeOwner('organization', $id);
+
+        // Если заявка на этот объект ещё не подтверждена — показываем
+        // страницу с загрузкой документов и чатом вместо полного кабинета.
+        [$ownerRow, $icon] = $this->getOwnerRowFor('organization', $id);
+        if ($ownerRow && !$ownerRow->is_confirmed) {
+            $organization = Organization::findOrFail($id);
+            return view('pages.owner.pending', [
+                'ownerRow'        => $ownerRow,
+                'entityName'      => $organization->name,
+                'icon'            => $icon,
+                'entityId'        => $id,
+                'type'            => 'organization',
+                'allUserEntities' => $this->getAllUserEntities(),
+            ]);
+        }
 
         // 2. Выбираем данные организации, фото и список услуг
         $organization = Organization::with(['prices.service', 'activityType'])->findOrFail($id);
@@ -549,6 +607,21 @@ public function organization(int $id)
     {
         $this->authorizeOwner('doctor', $id);
 
+        // Если заявка на этот объект ещё не подтверждена — показываем
+        // страницу с загрузкой документов и чатом вместо полного кабинета.
+        [$ownerRow, $icon] = $this->getOwnerRowFor('doctor', $id);
+        if ($ownerRow && !$ownerRow->is_confirmed) {
+            $doctor = Doctor::findOrFail($id);
+            return view('pages.owner.pending', [
+                'ownerRow'        => $ownerRow,
+                'entityName'      => $doctor->name,
+                'icon'            => $icon,
+                'entityId'        => $id,
+                'type'            => 'doctor',
+                'allUserEntities' => $this->getAllUserEntities(),
+            ]);
+        }
+
         $doctor = Doctor::with(['services', 'prices.service', 'contacts'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
@@ -561,7 +634,9 @@ public function organization(int $id)
         $allServices = Service::whereNotNull('specialization_doctor')
             ->orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices'));
+        $allUserEntities = $this->getAllUserEntities();
+
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -621,6 +696,21 @@ public function organization(int $id)
     {
         $this->authorizeOwner('specialist', $id);
 
+        // Если заявка на этот объект ещё не подтверждена — показываем
+        // страницу с загрузкой документов и чатом вместо полного кабинета.
+        [$ownerRow, $icon] = $this->getOwnerRowFor('specialist', $id);
+        if ($ownerRow && !$ownerRow->is_confirmed) {
+            $specialist = Specialist::findOrFail($id);
+            return view('pages.owner.pending', [
+                'ownerRow'        => $ownerRow,
+                'entityName'      => $specialist->name,
+                'icon'            => $icon,
+                'entityId'        => $id,
+                'type'            => 'specialist',
+                'allUserEntities' => $this->getAllUserEntities(),
+            ]);
+        }
+
         $specialist = Specialist::with(['prices.service', 'contacts'])->findOrFail($id);
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
@@ -632,7 +722,9 @@ public function organization(int $id)
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices'));
+        $allUserEntities = $this->getAllUserEntities();
+
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     public function updateSpecialist(Request $request, int $id)
