@@ -32,7 +32,7 @@ class FieldOfActivitySeeder extends Seeder
             'Стоматолог',
             'Ортопед',
             'Экзотолог',
-            'Вет диетолог',
+            'Вет Диетолог',
         ];
 
         foreach ($doctors as $name) {

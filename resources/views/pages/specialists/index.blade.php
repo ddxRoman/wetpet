@@ -121,7 +121,10 @@
         @if($specialists->isEmpty())
             <div class="alert alert-warning text-center">
                 Ветеринарные специалисты в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
-                <button class="btn_add_clinic btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#addSpecialistModal">
+                <button class="btn_add_clinic btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addDoctorModal">
+                    <img class="add_btn" src="{{ Storage::url('icon/button/add_doctor_btn.png') }}" alt="Добавить ветеринара">
                     Добавить специалиста
                 </button>
             </div>

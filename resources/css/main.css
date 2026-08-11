@@ -903,10 +903,10 @@ select:focus {
 }
 
 .btn_add_clinic {
-    border: 1px solid #222;
-    background-color: #002fff21;
+    border: 1px solid #b4b5ff;
+    background-color: #0099ff52;
     margin: 2% 0;
-    padding: 0.2%;
+    padding: 0.5%;
     border-radius: 5px;
 }
 

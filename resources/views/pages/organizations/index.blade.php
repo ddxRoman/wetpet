@@ -122,9 +122,16 @@
     @if($organizations->isEmpty())
         <div class="alert alert-warning text-center">
             Организации в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
-            <button class="btn btn-primary btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#addOrganizationModal">
-                Добавить организацию
-            </button>
+                <button class="btn_add_clinic btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addOrganizationModal"
+                        data-city="{{ session('city_name') }}"
+                        data-region="{{ session('region_name') }}">
+                    <img class="add_btn"
+                         src="{{ Storage::url('icon/button/add_clinic_btn.png') }}"
+                         alt="Добавить организацию">
+                    Добавить Организацию
+                </button>
         </div>
     @else
 
