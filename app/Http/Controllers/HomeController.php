@@ -28,25 +28,71 @@ public function __construct()
 
 public function index()
 {
-    // Получаем название города из сессии (или подставляем значение по умолчанию)
-    $currentCityName = session('city_name', 'Выберите город');
+    // Название города — для заголовка (с запасным вариантом для отображения)
+    $currentCityNameRaw = session('city_name');
+    $currentCityName    = $currentCityNameRaw ?: 'Выберите город';
+    $cityId             = session('city_id');
 
-    $topRated = Review::query()
-        ->select(
-            'reviewable_id',
-            'reviewable_type',
-            DB::raw('AVG(rating) as avg_rating'),
-            DB::raw('COUNT(*) as reviews_count')
-        )
-        ->whereNotNull('rating')
-        ->groupBy('reviewable_id', 'reviewable_type')
-        ->orderByDesc('avg_rating')
-        ->inRandomOrder()
-        ->limit(10)
-        ->get();
+    // У Doctor/Specialist город хранится как city_id, у Clinic/Organization — как строка city
+    $reviewableTypes = [
+        \App\Models\Doctor::class       => ['column' => 'city_id', 'value' => $cityId],
+        \App\Models\Specialist::class   => ['column' => 'city_id', 'value' => $cityId],
+        \App\Models\Clinic::class       => ['column' => 'city',    'value' => $currentCityNameRaw],
+        \App\Models\Organization::class => ['column' => 'city',    'value' => $currentCityNameRaw],
+    ];
+
+    // Собираем рейтинг/кол-во отзывов по каждому типу отдельно, с фильтром по городу
+    $stats = collect();
+
+    foreach ($reviewableTypes as $modelClass => $cityFilter) {
+        $table = (new $modelClass())->getTable();
+
+        $query = Review::query()
+            ->join($table, "{$table}.id", '=', 'reviews.reviewable_id')
+            ->where('reviews.reviewable_type', $modelClass)
+            ->whereNotNull('reviews.rating')
+            ->groupBy('reviews.reviewable_id')
+            ->select(
+                'reviews.reviewable_id',
+                DB::raw('AVG(reviews.rating) as avg_rating'),
+                DB::raw('COUNT(*) as reviews_count')
+            );
+
+        if (!empty($cityFilter['value'])) {
+            $query->where("{$table}.{$cityFilter['column']}", $cityFilter['value']);
+        }
+
+        $rows = $query->get()->each(function ($row) use ($modelClass) {
+            $row->reviewable_type = $modelClass;
+        });
+
+        $stats = $stats->merge($rows);
+    }
+
+    // Минимум 5 отзывов — обязательное условие в любом случае (и для основного отбора, и для fallback)
+    $withEnoughReviews = $stats->filter(function ($row) {
+        return $row->reviews_count >= 5;
+    });
+
+    // Кандидаты с рейтингом 4.7–5
+    $highRated = $withEnoughReviews->filter(function ($row) {
+        return $row->avg_rating >= 4.7 && $row->avg_rating <= 5;
+    });
+
+    if ($highRated->count() >= 5) {
+        // Достаточно записей — берём 5 случайных из них
+        $chosen = $highRated->shuffle()->take(5);
+    } else {
+        // Записей с рейтингом 4.7–5 не хватает — дополняем самыми рейтинговыми
+        // (но по-прежнему только среди записей с минимум 5 отзывами).
+        // Сначала перемешиваем, а затем сортируем по рейтингу — так записи
+        // с одинаковым рейтингом каждый раз идут в случайном порядке,
+        // и подборка меняется при каждой перезагрузке страницы.
+        $chosen = $withEnoughReviews->shuffle()->sortByDesc('avg_rating')->values()->take(5);
+    }
 
     // Подгружаем сами модели (Doctor, Clinic, ...)
-    $topItems = $topRated->map(function ($row) {
+    $topItems = $chosen->map(function ($row) {
         $model = $row->reviewable_type::find($row->reviewable_id);
 
         if (!$model) {
@@ -58,7 +104,7 @@ public function index()
         $model->reviewable_type = class_basename($row->reviewable_type);
 
         return $model;
-    })->filter();
+    })->filter()->values();
 
     // Загружаем 3 последние опубликованные новости для блока на главной
     $news = News::where('is_published', true)

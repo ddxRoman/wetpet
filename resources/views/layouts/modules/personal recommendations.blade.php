@@ -4,7 +4,7 @@
     <h5 class="top_rank_doctor_h5">лучшие по оценкам пользователей</h5>
 
     <div class="carousel js-swipe-carousel">
-      @foreach($topItems->take(6) as $index => $item)
+      @foreach($topItems as $index => $item)
         <input
           type="radio"
           name="slides"
@@ -14,7 +14,7 @@
       @endforeach
 
       <ul class="carousel__slides">
-        @foreach($topItems->take(6) as $item)
+        @foreach($topItems as $item)
           @php
               $image = match ($item->reviewable_type) {
                   'Doctor' => $item->photo,
@@ -55,7 +55,7 @@
       </ul>
 
       <ul class="carousel__thumbnails">
-        @foreach($topItems->take(6) as $index => $item)
+        @foreach($topItems as $index => $item)
           @php
               $image = match ($item->reviewable_type) {
                   'Doctor' => $item->photo,

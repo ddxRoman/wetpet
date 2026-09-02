@@ -39,9 +39,8 @@ use App\Http\Controllers\{
 */
 
 // 🏠 Главная
-Route::get('/', [DoctorController::class, 'welcome'])->name('welcome');
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/home', [DoctorController::class, 'welcome'])->name('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
+Route::get('/home', [DoctorController::class, 'welcome']);
 Route::get('/test', [testController::class, 'test'])->name('test');
 
 // 1. Новости остаются на своём контроллере, как мы настраивали раньше
