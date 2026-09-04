@@ -7,6 +7,7 @@ use App\Filament\Resources\AwardResource\RelationManagers;
 use App\Models\Award;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -23,22 +24,48 @@ public static function form(Form $form): Form
 {
     return $form
         ->schema([
-            
-Forms\Components\Select::make('doctor_id')
-    ->label('Доктор')
-    ->relationship('doctor', 'name')
-    ->disabled()
-    ->dehydrated(false)
-    ->nullable()
-    ->required(false),
+
+            // Кому принадлежит награда
+            Forms\Components\Radio::make('owner_type')
+                ->label('Кому принадлежит награда')
+                ->options([
+                    'doctor' => 'Доктор',
+                    'clinic' => 'Клиника',
+                ])
+                ->inline()
+                ->required()
+                ->live()
+                ->dehydrated(false)
+                ->afterStateHydrated(function (Forms\Components\Radio $component, $record) {
+                    if ($record) {
+                        $component->state(
+                            $record->doctor_id ? 'doctor' : ($record->clinic_id ? 'clinic' : null)
+                        );
+                    }
+                })
+                // при смене типа сбрасываем выбранную сущность, чтобы не остался "хвост"
+                ->afterStateUpdated(function (Forms\Set $set) {
+                    $set('doctor_id', null);
+                    $set('clinic_id', null);
+                }),
+
+            Forms\Components\Select::make('doctor_id')
+                ->label('Доктор')
+                ->relationship('doctor', 'name')
+                ->searchable()
+                ->preload()
+                ->visible(fn (Get $get) => $get('owner_type') === 'doctor')
+                ->required(fn (Get $get) => $get('owner_type') === 'doctor')
+                ->dehydrated(fn (Get $get) => $get('owner_type') === 'doctor'),
 
             Forms\Components\Select::make('clinic_id')
                 ->label('Клиника')
                 ->relationship('clinic', 'name')
-                ->disabled()
-->nullable()
-->required(false)
-->dehydrated(false),
+                ->searchable()
+                ->preload()
+                ->visible(fn (Get $get) => $get('owner_type') === 'clinic')
+                ->required(fn (Get $get) => $get('owner_type') === 'clinic')
+                ->dehydrated(fn (Get $get) => $get('owner_type') === 'clinic'),
 
             // Фото награды
             Forms\Components\FileUpload::make('image')
