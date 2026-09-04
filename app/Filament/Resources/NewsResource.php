@@ -128,7 +128,7 @@ class NewsResource extends Resource
                                             ->placeholder('Автоматически: из анонса или начало текста')
                                             ->helperText('Рекомендуется 120–160 символов')
                                             ->live()
-                                            ->suffix(fn ($state) => strlen($state ?? '') . ' / 160')
+                                            ->hint(fn ($state) => strlen($state ?? '') . ' / 160')
                                             ->columnSpanFull(),
                                     ]),
 
@@ -187,7 +187,9 @@ class NewsResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(60)
-                    ->tooltip(fn ($record) => $record->title),
+                    ->tooltip(fn ($record) => $record->title)
+                    ->url(fn ($record) => route('news.show', $record->slug))
+                    ->openUrlInNewTab(),
 
                 TextColumn::make('views')
                     ->label('Просмотры')
