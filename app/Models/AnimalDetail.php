@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class AnimalDetail extends Model
 {
     protected $fillable = [
-        'animal_id', 
+        'animal_breed',
         'weight_range', 
         'height_range', 
         'lifespan', 
+        'type',
         'photo', 
         'short_description', 
         'full_description', 

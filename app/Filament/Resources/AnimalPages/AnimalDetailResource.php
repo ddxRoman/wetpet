@@ -28,18 +28,39 @@ class AnimalDetailResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Связь с породой')
+                Forms\Components\Section::make('Вид и порода')
                     ->schema([
-                        Forms\Components\Select::make('animal_breed')
-                            ->relationship('animal', 'breed')
+                        Forms\Components\Select::make('species')
+                            ->label('Тип животного')
+                            ->options(fn () => \App\Models\Animal::query()
+                                ->whereNotNull('species')
+                                ->distinct()
+                                ->orderBy('species')
+                                ->pluck('species', 'species')
+                                ->toArray())
                             ->required()
                             ->searchable()
-                            ->label('Порода'),
+                            ->native(false),
+
+                        Forms\Components\TextInput::make('breed_name')
+                            ->label('Название породы')
+                            ->required()
+                            ->maxLength(255)
+                            ->helperText('Введите новое название породы — такой породы в базе ещё не должно быть')
+                            ->unique(
+                                table: 'animals',
+                                column: 'breed',
+                                ignorable: fn (?AnimalDetail $record) => $record?->animal,
+                            )
+                            ->validationMessages([
+                                'unique' => 'Такая порода уже существует в базе.',
+                            ]),
 
                         Forms\Components\FileUpload::make('photo')
                             ->image()
                             ->directory('animals-details')
-                            ->label('Фото'),
+                            ->label('Фото')
+                            ->columnSpanFull(),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Характеристики')

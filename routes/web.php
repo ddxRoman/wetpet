@@ -196,6 +196,11 @@ use App\Http\Controllers\AnimalReviewController;
 
 Route::post('/animals/{animal_id}/review', [AnimalReviewController::class, 'store'])->name('animals.review.store');
 
+Route::middleware(['auth'])->group(function () {
+    Route::put('/animal-reviews/{review}', [AnimalReviewController::class, 'update'])->name('animals.review.update');
+    Route::delete('/animal-reviews/{review}', [AnimalReviewController::class, 'destroy'])->name('animals.review.destroy');
+});
+
 Route::post('/add-organization', [OrganizationController::class, 'submit'])
     ->name('add-organization');
 Route::post('/submit-organization', [OrganizationController::class, 'submit'])->name('submit-organization');

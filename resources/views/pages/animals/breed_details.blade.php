@@ -115,6 +115,20 @@
         @forelse($animal->reviews as $review)
             <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;">
                 <div class="card-body p-4">
+                    @if(auth()->check() && auth()->id() === $review->user_id)
+                        <div class="d-flex justify-content-end gap-2 mb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editReviewModal{{ $review->id }}">
+                                <i class="bi bi-pencil-square me-1"></i>Редактировать
+                            </button>
+                            <form action="{{ route('animals.review.destroy', $review->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить этот отзыв? Действие необратимо.');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash me-1"></i>Удалить
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-4 border-end border-light">
                             <div class="d-flex align-items-center mb-3">
@@ -128,7 +142,7 @@
                             </div>
                             <div class="small text-secondary">
                                 <p class="mb-1"><strong>Характер:</strong> {{ $review->temperament }}</p>
-                                <p class="mb-1"><strong>Вес/Возраст:</strong> {{ $review->pet_weight }}кг / {{ $review->pet_age }}л</p>
+                                <p class="mb-1"><strong>Вес/Возраст:</strong> {{ $review->formatted_weight ?? '—' }} / {{ $review->formatted_age ?? '—' }}</p>
                                 <div class="mt-2 pt-2 border-top">
                                     <div class="mb-1">Интеллект: <span class="text-warning">@for($i=1;$i<=$review->intelligence;$i++)★@endfor</span></div>
                                     <div class="mb-1">Обучаемость: <span class="text-warning">@for($i=1;$i<=$review->trainability;$i++)★@endfor</span></div>
@@ -152,6 +166,87 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->check() && auth()->id() === $review->user_id)
+                <div class="modal fade" id="editReviewModal{{ $review->id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                            <div class="modal-header border-0 p-4 pb-0">
+                                <h5 class="fw-bold">Редактировать отзыв</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <form action="{{ route('animals.review.update', $review->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Общий характер</label>
+                                            <select name="temperament" class="form-select rounded-3">
+                                                @foreach($options['temperaments'] as $key => $desc)
+                                                    <option value="{{ $key }}" @selected($review->temperament === $key)>{{ $key }} ({{ $desc }})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label small fw-bold">Вес (кг)</label>
+                                            <input type="number" step="0.001" min="0" name="pet_weight" class="form-control rounded-3" placeholder="0.000" value="{{ old('pet_weight', $review->pet_weight !== null ? number_format($review->pet_weight / 1000, 3, '.', '') : '') }}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label small fw-bold">Возраст (лет)</label>
+                                            <input type="number" step="0.1" min="0" name="pet_age" class="form-control rounded-3" placeholder="0.0" value="{{ old('pet_age', $review->pet_age) }}">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Интеллект (1-5)</label>
+                                            <select name="intelligence" class="form-select rounded-3">
+                                                @foreach($options['scales'] as $val => $label)
+                                                    <option value="{{ $val }}" @selected((int) $val === (int) $review->intelligence)>{{ $val }} — {{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Обучаемость (1-5)</label>
+                                            <select name="trainability" class="form-select rounded-3">
+                                                @foreach($options['scales'] as $val => $label)
+                                                    <option value="{{ $val }}" @selected((int) $val === (int) $review->trainability)>{{ $val }} — {{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Дружелюбие (1-5)</label>
+                                            <select name="sociability" class="form-select rounded-3">
+                                                @foreach($options['scales'] as $val => $label)
+                                                    <option value="{{ $val }}" @selected((int) $val === (int) $review->sociability)>{{ $val }} — {{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label small fw-bold text-danger">Особенности здоровья / Проблемы</label>
+                                            <input type="text" name="health_issues" class="form-control rounded-3" placeholder="Например: аллергия, чувствительное пищеварение (через запятую)" value="{{ old('health_issues', is_array($review->health_issues) ? implode(', ', $review->health_issues) : '') }}">
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label small fw-bold">Ваш подробный отзыв</label>
+                                            <textarea name="comment" class="form-control rounded-3" rows="4" required>{{ old('comment', $review->comment) }}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end mt-4">
+                                        <button type="button" class="btn btn-light px-4 me-2" data-bs-dismiss="modal" style="border-radius: 12px;">Отмена</button>
+                                        <button type="submit" class="btn btn-primary px-5 shadow" style="border-radius: 12px;">Сохранить изменения</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         @empty
             <div class="text-center py-5 bg-light rounded-4 border border-dashed">
                 <i class="bi bi-chat-dots text-muted display-4"></i>
@@ -191,11 +286,11 @@
                         {{-- Вес и Возраст --}}
                         <div class="col-md-3">
                             <label class="form-label small fw-bold">Вес (кг)</label>
-                            <input type="number" step="0.1" name="pet_weight" class="form-control rounded-3" placeholder="0.0">
+                            <input type="number" step="0.001" min="0" name="pet_weight" class="form-control rounded-3" placeholder="0.000">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label small fw-bold">Возраст (лет)</label>
-                            <input type="number" name="pet_age" class="form-control rounded-3" placeholder="0">
+                            <input type="number" step="0.1" min="0" name="pet_age" class="form-control rounded-3" placeholder="0.0">
                         </div>
 
                         {{-- Оценки (Интеллект, Обучаемость, Дружелюбие) --}}
