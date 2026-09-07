@@ -70,7 +70,12 @@ public function index()
     public function show($slug)
     {
         // Находим текущую новость
-        $news = News::where('slug', $slug)->where('is_published', true)->firstOrFail();
+        logger()->error('NEWS_DEBUG: ищем новость', ['slug' => $slug]);
+$news = News::where('slug', $slug)->where('is_published', true)->first();
+logger()->error('NEWS_DEBUG: результат', ['found' => $news ? $news->id : null]);
+if (!$news) {
+    abort(404);
+}
         
         // Увеличиваем счетчик просмотров
         $news->increment('views');
@@ -83,20 +88,10 @@ public function index()
             ->limit(4)
             ->get();
 
-        // Формируем SEO-описание
-        $description = $news->excerpt;
-        if (empty($description)) {
-            $cleanedContent = strip_tags($news->content);
-            $description = mb_substr($cleanedContent, 0, 160) . '...';
-        }
-
-        $shareImage = $news->image ? asset('storage/' . $news->image) : asset('images/default-animal.webp');
-
-        $seoMeta = [
-            'title' => $news->seo_title . ' — Зверозор',
-            'description' => $description,
-            'image' => $shareImage
-        ];
+        // SEO/OG-теги берём из модели: там уже реализованы фолбэки
+        // (seo_title → title, seo_description → excerpt/content,
+        // og_image → image → дефолтная картинка).
+        $seoMeta = $news->toSeoMeta();
 
         // Передаем и саму новость ($news), и список последних ($recentNews) в Blade
         return view('pages.legal.news-show', compact('news', 'recentNews', 'seoMeta'));

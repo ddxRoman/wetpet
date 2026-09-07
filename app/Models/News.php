@@ -32,16 +32,11 @@ class News extends Model
         'is_published' => 'boolean',
     ];
 
-    // ──────────────────────────────────────────
-    // SEO-хелперы — вся логика фолбэков здесь,
-    // контроллер просто вызывает методы
-    // ──────────────────────────────────────────
-
     /**
      * SEO-заголовок страницы.
      * Приоритет: seo_title → title + бренд
      */
-    public function getSeoTitleAttribute(): string
+    public function getResolvedSeoTitleAttribute(): string
     {
         if (!empty($this->attributes['seo_title'])) {
             return $this->attributes['seo_title'];
@@ -53,7 +48,7 @@ class News extends Model
      * SEO-описание страницы.
      * Приоритет: seo_description → excerpt → первые 160 символов content
      */
-    public function getSeoDescriptionAttribute(): string
+    public function getResolvedSeoDescriptionAttribute(): string
     {
         if (!empty($this->attributes['seo_description'])) {
             return $this->attributes['seo_description'];
@@ -68,7 +63,7 @@ class News extends Model
      * OG-картинка для соцсетей.
      * Приоритет: og_image → image → дефолтная картинка сайта
      */
-    public function getOgImageAttribute(): string
+    public function getResolvedOgImageAttribute(): string
     {
         if (!empty($this->attributes['og_image'])) {
             return asset('storage/' . $this->attributes['og_image']);
@@ -96,8 +91,8 @@ class News extends Model
             '@context'         => 'https://schema.org',
             '@type'            => 'NewsArticle',
             'headline'         => $this->title,
-            'description'      => $this->seo_description,
-            'image'            => [$this->og_image],
+            'description'      => $this->resolved_seo_description,
+            'image'            => [$this->resolved_og_image],
             'datePublished'    => $this->created_at?->toIso8601String(),
             'dateModified'     => $this->updated_at?->toIso8601String(),
             'author'           => [
@@ -127,14 +122,14 @@ class News extends Model
     public function toSeoMeta(): array
     {
         return [
-            'title'                   => $this->seo_title,
-            'description'             => $this->seo_description,
+            'title'                   => $this->resolved_seo_title,
+            'description'             => $this->resolved_seo_description,
             'canonical'               => $this->canonical_url,
             'robots'                  => 'index, follow',
             'og_type'                 => 'article',
-            'og_title'                => $this->seo_title,
-            'og_description'          => $this->seo_description,
-            'image'                   => $this->og_image,
+            'og_title'                => $this->resolved_seo_title,
+            'og_description'          => $this->resolved_seo_description,
+            'image'                   => $this->resolved_og_image,
             'og_article_published_at' => $this->created_at?->toIso8601String(),
             'og_article_modified_at'  => $this->updated_at?->toIso8601String(),
             'schema'                  => $this->schema_json,

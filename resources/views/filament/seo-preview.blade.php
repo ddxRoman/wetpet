@@ -1,6 +1,6 @@
 @php
-    $title = $record->seo_title;
-    $description = $record->seo_description;
+    $title = $record->resolved_seo_title;
+    $description = $record->resolved_seo_description;
     $url = rtrim(config('app.url'), '/') . '/news/' . $record->slug;
 @endphp
 
