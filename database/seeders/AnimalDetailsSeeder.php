@@ -2333,6 +2333,7 @@ class AnimalDetailsSeeder extends Seeder
           'Привязанность' => 'Один хозяин',
         ),
       ],
+      
       [
         'animal_breed' => 'Кинг-чарльз-спаниель',
         'weight_range' => '3.6–6.3 кг',

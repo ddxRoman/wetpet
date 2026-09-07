@@ -14,6 +14,11 @@ class KzvsSeeder extends Seeder
      */
     public function run(): void
     {
+        // Отключаем внешние ключи, чтобы безопасно очистить таблицу
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('organizations')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         $organizations = [
     [
         'name' => 'Краснодарзооветснаб (КЗВС)',

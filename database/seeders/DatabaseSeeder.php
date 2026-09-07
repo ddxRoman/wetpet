@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             CitiesTableSeeder::class,
-            UserTableSeeder::class,
+            // UserTableSeeder::class,
             AnimalSeeder::class,
             FieldOfActivitySeeder::class,
             PetSeeder::class,
