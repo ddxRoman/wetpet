@@ -46,9 +46,9 @@ public function getFormattedWeightAttribute(): ?string
 }
 
 /**
- * pet_age хранится в годах (с точностью до 1 знака после запятой).
- * Если получившееся количество месяцев <= 12 — выводим в месяцах,
- * иначе — в годах с 1 знаком после запятой.
+ * pet_age хранится в годах, шаг 0.5 (полгода): 0, 0.5, 1, 1.5, 2 ...
+ * Меньше года — показываем в месяцах, иначе — в годах
+ * (целое число лет без ".0", либо с ".5" для половины года).
  */
 public function getFormattedAgeAttribute(): ?string
 {
@@ -57,10 +57,14 @@ public function getFormattedAgeAttribute(): ?string
     }
 
     $years = (float) $this->pet_age;
-    $months = round($years * 12);
+    $months = (int) round($years * 12);
 
-    if ($months <= 12) {
-        return (int) $months . ' мес.';
+    if ($months < 12) {
+        return $months . ' мес.';
+    }
+
+    if ($months % 12 === 0) {
+        return ($months / 12) . ' г.';
     }
 
     return number_format($years, 1, '.', ' ') . ' г.';

@@ -11,13 +11,13 @@ class AnimalReviewController extends Controller
     /**
      * Общие правила валидации для полей отзыва.
      * pet_weight — вводится в килограммах, максимум с 2 знаками после запятой (0.45, 12.30 ...).
-     * pet_age — число лет с максимум одним знаком после запятой (0.5, 1.5, 0.3 ...).
+     * pet_age — число лет с шагом 0.5 (0, 0.5, 1, 1.5, 2 ...).
      */
     protected function rules(): array
     {
         return [
             'pet_weight'    => ['nullable', 'numeric', 'min:0', 'max:999.999', 'regex:/^\d+(\.\d{1,3})?$/'],
-            'pet_age'       => ['nullable', 'numeric', 'min:0', 'max:99.9', 'regex:/^\d+(\.\d)?$/'],
+            'pet_age'       => ['nullable', 'numeric', 'min:0', 'max:99.5', 'regex:/^\d+(\.[05])?$/'],
             'temperament'   => 'required|string',
             'trainability'  => 'required|integer|between:1,5',
             'intelligence'  => 'nullable|integer|between:1,5',
@@ -31,7 +31,7 @@ class AnimalReviewController extends Controller
     {
         return [
             'pet_weight.regex' => 'Вес можно указывать максимум с тремя знаками после запятой (например: 0.450 или 12.3).',
-            'pet_age.regex'    => 'Возраст можно указывать максимум с одним знаком после запятой (например: 0.5 или 1.5).',
+            'pet_age.regex'    => 'Возраст указывается с шагом 0.5 (например: 0.5, 1, 1.5, 2).',
         ];
     }
 

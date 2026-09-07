@@ -196,7 +196,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label small fw-bold">Возраст (лет)</label>
-                                            <input type="number" step="0.1" min="0" name="pet_age" class="form-control rounded-3" placeholder="0.0" value="{{ old('pet_age', $review->pet_age) }}">
+                                            <input type="number" step="0.5" min="0" max="30" name="pet_age" class="form-control rounded-3" placeholder="напр. 1.5" value="{{ old('pet_age', $review->pet_age) }}">
                                         </div>
 
                                         <div class="col-md-6">
@@ -290,7 +290,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label small fw-bold">Возраст (лет)</label>
-                            <input type="number" step="0.1" min="0" name="pet_age" class="form-control rounded-3" placeholder="0.0">
+                            <input type="number" step="0.5" min="0" max="30" name="pet_age" class="form-control rounded-3" placeholder="напр. 1.5">
                         </div>
 
                         {{-- Оценки (Интеллект, Обучаемость, Дружелюбие) --}}
