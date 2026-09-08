@@ -1,6 +1,27 @@
 User-agent: *
+Allow: /
+
 Disallow: /admin
+Disallow: /admin/
+Disallow: /owner
+Disallow: /account
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /api/
 Disallow: /cabinet
+
+Disallow: /legal/privacy
+Disallow: /legal/terms
+Disallow: /legal/personal-data-agreement
+Disallow: /legal/partner-offer
+Disallow: /legal/cookies
+Disallow: /legal/content-rules
+Disallow: /legal/glossary
+Disallow: /legal/contacts
 
 User-agent: TelegramBot
 Allow: /
+
+Sitemap: https://zverozor.ru/sitemap.xml

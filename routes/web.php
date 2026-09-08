@@ -56,7 +56,9 @@ Route::get('legal/faq', function () {
 })->name('legal/faq');
 Route::get('legal/faq', [LegalController::class, 'faq'])->name('legal/faq');
 Route::get('legal/partner-offer', function () {
-    return view('pages.legal.partner-offer');
+    return view('pages.legal.partner-offer', [
+        'seoMeta' => ['robots' => 'noindex, follow'],
+    ]);
     })->name('legal/partner-offer');
 Route::get('legal/glossary', function () {
     return view('pages.legal.glossary');

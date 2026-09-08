@@ -71,7 +71,11 @@ Paginator::useBootstrapFive();
                     // Ищем модель для автоматической генерации мета-тегов
                     // Перебираем все возможные переменные — клиника, врач, организация, специалист и т.д.
                     $model = null;
-                    foreach (['clinic', 'doctor', 'organization', 'specialist', 'breed', 'animal'] as $key) {
+                    // ВАЖНО: 'doctor' проверяем раньше 'clinic' — иначе на странице
+                    // врача (DoctorController::show передаёт и $doctor, и $clinic)
+                    // SEO подхватывалось от клиники, к которой он привязан, вместо
+                    // собственного SEO врача.
+                    foreach (['doctor', 'specialist', 'clinic', 'organization', 'breed', 'animal'] as $key) {
                         if (!empty($data[$key]) && is_object($data[$key])) {
                             $candidate = $data[$key];
                             // Для animal берём details если есть

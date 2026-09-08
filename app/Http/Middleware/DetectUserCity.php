@@ -11,8 +11,43 @@ use Illuminate\Support\Facades\Auth;
 
 class DetectUserCity
 {
+    /**
+     * Поисковые боты и прочие краулеры не имеют сессии/cookies, поэтому под них
+     * ветка GeoIP срабатывала бы на КАЖДЫЙ их запрос, добавляя до 3 секунд задержки
+     * на внешний HTTP-вызов к ipwho.is. Это резко снижает краулинговый бюджет и
+     * может быть причиной того, что бот успевает обойти только главную страницу.
+     * Ботам город не нужен — сразу пропускаем их дальше.
+     */
+    private const BOT_UA_PATTERNS = [
+        'bot', 'spider', 'crawl', 'slurp', 'yandex', 'googlebot', 'bingbot',
+        'duckduckbot', 'mail.ru', 'ahrefsbot', 'semrushbot', 'facebookexternalhit',
+        'telegrambot', 'whatsapp', 'vkshare', 'okhttp', 'curl', 'wget',
+    ];
+
+    private function isBot(Request $request): bool
+    {
+        $ua = strtolower((string) $request->userAgent());
+
+        if ($ua === '') {
+            return true; // запросы без User-Agent почти всегда боты/скрипты
+        }
+
+        foreach (self::BOT_UA_PATTERNS as $pattern) {
+            if (str_contains($ua, $pattern)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function handle(Request $request, Closure $next)
     {
+        // 0. Боты: не тратим время на GeoIP и не плодим им сессии с городом.
+        if ($this->isBot($request)) {
+            return $next($request);
+        }
+
         // 1. ПРИОРИТЕТ №1: Проверяем, есть ли уже город в сессии (ручной выбор)
         // Если пользователь уже выбрал город сам, мы ничего не перезаписываем.
         if (session()->has('city_id')) {

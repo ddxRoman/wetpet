@@ -8,11 +8,34 @@ use App\Models\GlossaryTerm;
 
 class LegalController extends Controller
 {
+    // Страницы, которые не должны попадать в поисковую выдачу
+    // (закрыты и в robots.txt — здесь дублируем через noindex как подстраховку,
+    // на случай если бот всё же откроет страницу по внешней ссылке).
+    private const NOINDEX_SLUGS = [
+        'privacy',
+        'terms',
+        'personal-data-agreement',
+        'privacy-politics', // обрабатывает /legal/personal-data-agreement (obrabotka-personalnyh-dannyh)
+        'cookies',
+        'content-rules',
+    ];
+
     // ─── Твой оригинальный метод — не тронут ───
     public function show($slug)
     {
         $page = DB::table('legal_pages')->where('slug', $slug)->first();
         abort_if(!$page, 404);
+
+        // seoMeta передаём ТОЛЬКО когда нужно закрыть страницу от индексации —
+        // иначе затрём автогенерацию title/description из View::composer('*')
+        // в AppServiceProvider (она пропускает шаг, если seoMeta уже задан).
+        if (in_array($slug, self::NOINDEX_SLUGS, true)) {
+            return view('pages.legal.template', [
+                'page'    => $page,
+                'seoMeta' => ['robots' => 'noindex, follow'],
+            ]);
+        }
+
         return view('pages.legal.template', compact('page'));
     }
 
@@ -83,6 +106,7 @@ class LegalController extends Controller
             'letters'         => $letters,
             'categories'      => $categories,
             'currentCategory' => $currentCategory,
+            'seoMeta'         => ['robots' => 'noindex, follow'],
         ]);
     }
 }

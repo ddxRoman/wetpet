@@ -20,7 +20,7 @@
     <meta name="twitter:image"       content="{{ $seoMeta['image'] ?? asset('storage/logo/og-default.png') }}">
 
     <link rel="icon" href="{{ url('favicon.ico') }}" type="image/vnd.microsoft.icon">
-    <meta name="robots" content="all">
+    <meta name="robots" content="{{ $seoMeta['robots'] ?? 'all' }}">
     <title>{{ $seoMeta['title'] ?? $brandname }}</title>
     <meta name="description" content="{{ $seoMeta['description'] ?? '' }}">
     <link rel="canonical" href="{{ request()->url() }}">
