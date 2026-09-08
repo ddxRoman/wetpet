@@ -96,12 +96,23 @@ class OrganizationController extends Controller
         return view('pages.organizations._list_items', ['organizations' => $items])->render();
     }
 
+    // SEO: отдельные редактируемые шаблоны для каталога и для фильтра по типу деятельности
+    $seoManager = new \App\Services\SeoManager();
+    $seoVars = ['city' => $selectedCityName];
+    if ($selectedTypeId) {
+        $activityTypeName = $organizationTypes->firstWhere('id', (int) $selectedTypeId)?->name;
+        $seoMeta = $seoManager->getCatalogMeta('organizations_activity', $seoVars + ['activity_type' => $activityTypeName]);
+    } else {
+        $seoMeta = $seoManager->getCatalogMeta('organizations', $seoVars);
+    }
+
     return view('pages.organizations.index', [
         'organizations' => $items,
         'selectedCity' => $selectedCityName,
         'organizationTypes' => $organizationTypes,
         'selectedTypeId' => $selectedTypeId,
-        'currentCityId' => $cityId
+        'currentCityId' => $cityId,
+        'seoMeta' => $seoMeta,
     ]);
     }
 

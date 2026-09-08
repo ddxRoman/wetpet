@@ -36,13 +36,17 @@ public function index(Request $request)
         ->orderByDesc('reviews_avg_rating')
         ->paginate(16); // Было ->get()
 
+    // SEO: редактируемый шаблон каталога клиник
+    $seoManager = new \App\Services\SeoManager();
+    $seoMeta = $seoManager->getCatalogMeta('clinics', ['city' => $selectedCity]);
+
 // Если это AJAX (нажатие "Показать еще")
 if ($request->ajax()) {
     // Возвращаем ту же вьюху index, JS сам вырежет из неё новые карточки и кнопку
-    return view('pages.clinics.index', compact('clinics', 'selectedCity'));
+    return view('pages.clinics.index', compact('clinics', 'selectedCity', 'seoMeta'));
 }
 
-    return view('pages.clinics.index', compact('clinics', 'selectedCity'));
+    return view('pages.clinics.index', compact('clinics', 'selectedCity', 'seoMeta'));
 }
 
     /**

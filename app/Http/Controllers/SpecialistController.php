@@ -60,12 +60,20 @@ public function index(Request $request)
         ->paginate(16)
         ->withQueryString();
 
+    // SEO: отдельные редактируемые шаблоны для каталога и для фильтра по специализации
+    $seoManager = new \App\Services\SeoManager();
+    $seoVars = ['city' => $selectedCity];
+    $seoMeta = $selectedSpecialization
+        ? $seoManager->getCatalogMeta('specialists_specialization', $seoVars + ['specialization' => $selectedSpecialization])
+        : $seoManager->getCatalogMeta('specialists', $seoVars);
+
     return view('pages.specialists.index', [
         'specialists' => $items, 
         'selectedCity' => $selectedCity,
         'specializations' => $specializations, // Теперь тут только нужные теги
         'selectedSpecialization' => $selectedSpecialization,
-        'currentCityId' => $cityId
+        'currentCityId' => $cityId,
+        'seoMeta' => $seoMeta,
     ]);
 }
 

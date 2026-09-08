@@ -61,7 +61,12 @@ $animals = Animal::selectRaw('MAX(id) as id, species')
     ->orderBy('species', 'asc')
     ->get();
 
-        return view('pages.ads.index', compact('ads', 'animals'));
+        // SEO: редактируемый шаблон каталога объявлений
+        $cityForSeo = $request->get('city') ?: session('city_name');
+        $seoManager = new \App\Services\SeoManager();
+        $seoMeta = $seoManager->getCatalogMeta('ads', ['city' => $cityForSeo]);
+
+        return view('pages.ads.index', compact('ads', 'animals', 'seoMeta'));
     }
 
     public function show(Ad $ad)

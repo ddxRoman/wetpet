@@ -158,11 +158,19 @@ public function index(Request $request)
         ->paginate(16)
         ->withQueryString();
 
+    // SEO: отдельные редактируемые шаблоны для каталога и для фильтра по специализации
+    $seoManager = new \App\Services\SeoManager();
+    $seoVars = ['city' => $selectedCity];
+    $seoMeta = $selectedSpecialization
+        ? $seoManager->getCatalogMeta('doctors_specialization', $seoVars + ['specialization' => $selectedSpecialization])
+        : $seoManager->getCatalogMeta('doctors', $seoVars);
+
     return view('pages.doctors.index', compact(
         'doctors', 
         'selectedCity', 
         'specializations', 
-        'selectedSpecialization'
+        'selectedSpecialization',
+        'seoMeta'
     ));
 }
     /**
