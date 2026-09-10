@@ -76,7 +76,7 @@
     .breed-thumb {
         width: 64px;
         height: 64px;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: 8px;
         flex-shrink: 0;
         background-color: #f2f2f2;

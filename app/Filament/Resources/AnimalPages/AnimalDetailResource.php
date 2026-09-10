@@ -3,6 +3,10 @@
 namespace App\Filament\Resources\AnimalPages;
 
 use App\Models\AnimalDetail;
+use App\Models\Animal;
+use App\Models\Pet;
+use App\Models\Ad;
+use App\Models\AnimalReview;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,6 +17,8 @@ use App\Filament\Resources\AnimalPages\CreateAnimalDetail;
 use App\Filament\Resources\AnimalPages\EditAnimalDetail;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\DB;
 
 class AnimalDetailResource extends Resource
 {
@@ -195,12 +201,179 @@ class AnimalDetailResource extends Resource
                     ->label('Изменить')
                     ->iconButton()
                     ->color('warning'),
+
+                // 3. Удаление ПОРОДЫ целиком (не только карточки-описания).
+                // Если на породу уже ссылаются объявления/питомцы/отзывы —
+                // сначала просим выбрать породу-замену и переносим записи на неё.
+                Tables\Actions\Action::make('delete_breed')
+                    ->label('Удалить')
+                    ->icon('heroicon-o-trash')
+                    ->iconButton()
+                    ->color('danger')
+                    ->modalHeading(fn (AnimalDetail $record) => self::hasDependents($record->animal)
+                        ? 'У породы есть связанные записи'
+                        : 'Удалить породу?')
+                    ->modalDescription(fn (AnimalDetail $record) => self::hasDependents($record->animal)
+                        ? self::dependentsSummary($record->animal).' Выберите породу, на которую перенести эти записи перед удалением.'
+                        : 'Порода и её карточка будут удалены безвозвратно. Это действие нельзя отменить.')
+                    ->modalSubmitActionLabel('Удалить')
+                    ->form(fn (AnimalDetail $record) => self::hasDependents($record->animal)
+                        ? [
+                            Forms\Components\Select::make('replacement_animal_id')
+                                ->label('Перенести записи на породу')
+                                ->helperText('Питомцы, объявления и отзывы этой породы будут привязаны к выбранной.')
+                                ->options(fn () => Animal::query()
+                                    ->when($record->animal, fn ($q) => $q->where('id', '!=', $record->animal->id))
+                                    ->orderBy('species')->orderBy('breed')
+                                    ->get()
+                                    ->mapWithKeys(fn ($a) => [$a->id => "{$a->species} — {$a->breed}"]))
+                                ->searchable()
+                                ->required(),
+                        ]
+                        : [])
+                    ->action(function (AnimalDetail $record, array $data) {
+                        self::deleteOrMergeAnimal($record->animal, $data['replacement_animal_id'] ?? null);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('delete_breeds')
+                        ->label('Удалить породы')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->modalHeading('Удаление пород')
+                        ->modalDescription(function (\Illuminate\Support\Collection $records) {
+                            $animals = $records->map->animal->filter();
+                            $hasAny = $animals->contains(fn ($a) => self::hasDependents($a));
+
+                            return $hasAny
+                                ? 'У части выбранных пород есть связанные питомцы/объявления/отзывы. Выберите породу, на которую перенести все эти записи перед удалением.'
+                                : 'Выбранные породы и их карточки будут удалены безвозвратно.';
+                        })
+                        ->form(function (\Illuminate\Support\Collection $records) {
+                            $animalIds = $records->map->animal->filter()->pluck('id');
+                            $hasAny = $records->map->animal->filter()->contains(fn ($a) => self::hasDependents($a));
+
+                            return $hasAny
+                                ? [
+                                    Forms\Components\Select::make('replacement_animal_id')
+                                        ->label('Перенести записи на породу')
+                                        ->helperText('Нельзя выбрать одну из удаляемых пород.')
+                                        ->options(fn () => Animal::query()
+                                            ->whereNotIn('id', $animalIds)
+                                            ->orderBy('species')->orderBy('breed')
+                                            ->get()
+                                            ->mapWithKeys(fn ($a) => [$a->id => "{$a->species} — {$a->breed}"]))
+                                        ->searchable()
+                                        ->required(),
+                                ]
+                                : [];
+                        })
+                        ->action(function (\Illuminate\Support\Collection $records, array $data) {
+                            foreach ($records as $record) {
+                                self::deleteOrMergeAnimal($record->animal, $data['replacement_animal_id'] ?? null);
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
+    }
+
+    /**
+     * Есть ли у породы связанные питомцы/объявления/отзывы.
+     */
+    protected static function hasDependents(?Animal $animal): bool
+    {
+        if (!$animal) {
+            return false;
+        }
+
+        return Pet::where('animal_id', $animal->id)->exists()
+            || Ad::where('animal_id', $animal->id)->exists()
+            || AnimalReview::where('animal_id', $animal->id)->exists();
+    }
+
+    /**
+     * Человеко-читаемая сводка "у породы N питомцев, M объявлений, K отзывов".
+     */
+    protected static function dependentsSummary(?Animal $animal): string
+    {
+        if (!$animal) {
+            return '';
+        }
+
+        $parts = [];
+
+        if ($count = Pet::where('animal_id', $animal->id)->count()) {
+            $parts[] = "{$count} питомцев";
+        }
+        if ($count = Ad::where('animal_id', $animal->id)->count()) {
+            $parts[] = "{$count} объявлений";
+        }
+        if ($count = AnimalReview::where('animal_id', $animal->id)->count()) {
+            $parts[] = "{$count} отзывов";
+        }
+
+        return 'К этой породе привязаны: '.implode(', ', $parts).'.';
+    }
+
+    /**
+     * Удаляет породу целиком. Если есть зависимые записи — сначала
+     * переносит их на породу-замену (обязательный $replacementId),
+     * иначе просто удаляет (карточка animal_details уйдёт каскадом).
+     */
+    protected static function deleteOrMergeAnimal(?Animal $animal, ?int $replacementId): void
+    {
+        if (!$animal) {
+            Notification::make()
+                ->title('У этой карточки нет привязанной породы — нечего удалять')
+                ->danger()
+                ->send();
+            return;
+        }
+
+        if (self::hasDependents($animal)) {
+            if (!$replacementId) {
+                Notification::make()
+                    ->title('Нужно выбрать породу для переноса записей')
+                    ->danger()
+                    ->send();
+                return;
+            }
+
+            $replacement = Animal::find($replacementId);
+
+            if (!$replacement) {
+                Notification::make()
+                    ->title('Порода для переноса не найдена')
+                    ->danger()
+                    ->send();
+                return;
+            }
+
+            DB::transaction(function () use ($animal, $replacement) {
+                Pet::where('animal_id', $animal->id)->update(['animal_id' => $replacement->id]);
+                Ad::where('animal_id', $animal->id)->update(['animal_id' => $replacement->id]);
+                AnimalReview::where('animal_id', $animal->id)->update(['animal_id' => $replacement->id]);
+
+                // Каскадом удалит и animal_details — зависимых записей на этот
+                // момент уже не осталось (все перенесены на $replacement).
+                $animal->delete();
+            });
+
+            Notification::make()
+                ->title("Порода «{$animal->breed}» удалена, записи перенесены на «{$replacement->breed}»")
+                ->success()
+                ->send();
+        } else {
+            $breedName = $animal->breed;
+            $animal->delete();
+
+            Notification::make()
+                ->title("Порода «{$breedName}» удалена")
+                ->success()
+                ->send();
+        }
     }
 
     public static function getPages(): array

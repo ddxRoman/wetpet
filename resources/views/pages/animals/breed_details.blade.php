@@ -22,7 +22,7 @@
         <div class="row g-0">
             <div class="col-md-4 bg-light d-flex align-items-center justify-content-center border-end" style="min-height: 400px;">
                 @if($animal->details && $animal->details->photo)
-                    <img src="{{ asset('storage/' . $animal->details->photo) }}" class="img-fluid object-fit-cover h-100" alt="{{ $animal->breed }}">
+                    <img src="{{ asset('storage/' . $animal->details->photo) }}" class="img-fluid" style="max-height: 400px; width: auto; object-fit: contain;" alt="{{ $animal->breed }}">
                 @else
                     <div class="text-center text-muted">
                         <i class="bi bi-camera" style="font-size: 4rem;"></i>

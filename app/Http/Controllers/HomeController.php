@@ -41,13 +41,16 @@ public function index()
         \App\Models\Organization::class => ['column' => 'city',    'value' => $currentCityNameRaw],
     ];
 
-    // Собираем рейтинг/кол-во отзывов по каждому типу отдельно, с фильтром по городу
-    $stats = collect();
+    // Собираем рейтинг/кол-во отзывов по каждому типу отдельно —
+    // сразу и с фильтром по городу, и без него (нужно для фолбэка ниже,
+    // если в городе не наберётся достаточно записей).
+    $statsCity = collect();
+    $statsAll  = collect();
 
     foreach ($reviewableTypes as $modelClass => $cityFilter) {
         $table = (new $modelClass())->getTable();
 
-        $query = Review::query()
+        $baseQuery = fn () => Review::query()
             ->join($table, "{$table}.id", '=', 'reviews.reviewable_id')
             ->where('reviews.reviewable_type', $modelClass)
             ->whereNotNull('reviews.rating')
@@ -58,16 +61,32 @@ public function index()
                 DB::raw('COUNT(*) as reviews_count')
             );
 
-        if (!empty($cityFilter['value'])) {
-            $query->where("{$table}.{$cityFilter['column']}", $cityFilter['value']);
-        }
-
-        $rows = $query->get()->each(function ($row) use ($modelClass) {
+        // Без фильтра по городу — на случай фолбэка
+        $rowsAll = $baseQuery()->get()->each(function ($row) use ($modelClass) {
             $row->reviewable_type = $modelClass;
         });
+        $statsAll = $statsAll->merge($rowsAll);
 
-        $stats = $stats->merge($rows);
+        // С фильтром по городу
+        if (!empty($cityFilter['value'])) {
+            $rowsCity = $baseQuery()
+                ->where("{$table}.{$cityFilter['column']}", $cityFilter['value'])
+                ->get()
+                ->each(function ($row) use ($modelClass) {
+                    $row->reviewable_type = $modelClass;
+                });
+            $statsCity = $statsCity->merge($rowsCity);
+        }
     }
+
+    // Порог, при котором городской подбор считаем "рабочим"
+    $minCandidates = 5;
+
+    $cityHasEnough = $statsCity->filter(fn ($row) => $row->reviews_count >= 5)->count() >= $minCandidates;
+
+    // Если в городе достаточно кандидатов — используем городскую статистику,
+    // иначе показываем лучших по всей базе, чтобы блок не был пустым.
+    $stats = $cityHasEnough ? $statsCity : $statsAll;
 
     // Минимум 5 отзывов — обязательное условие в любом случае (и для основного отбора, и для fallback)
     $withEnoughReviews = $stats->filter(function ($row) {
@@ -111,6 +130,29 @@ public function index()
         ->orderBy('created_at', 'desc')
         ->take(3)
         ->get();
+
+    // ВРЕМЕННАЯ ОТЛАДКА — удалить после диагностики.
+    // Открыть на проде: https://zverozor.ru/?debug_recs=1
+    if (request()->has('debug_recs')) {
+        dd([
+            'city_id'              => $cityId,
+            'city_name_raw'        => $currentCityNameRaw,
+            'statsAll_total'       => $statsAll->count(),
+            'statsAll_qualified'   => $statsAll->filter(fn($r) => $r->reviews_count >= 5)->count(),
+            'statsCity_total'      => $statsCity->count(),
+            'statsCity_qualified'  => $statsCity->filter(fn($r) => $r->reviews_count >= 5)->count(),
+            'cityHasEnough'        => $cityHasEnough,
+            'withEnoughReviews'    => $withEnoughReviews->count(),
+            'highRated'            => $highRated->count(),
+            'chosen_count'         => $chosen->count(),
+            'topItems_count'       => $topItems->count(),
+            'topItems_sample'      => $topItems->take(2)->map(fn($m) => [
+                'type' => $m->reviewable_type,
+                'id'   => $m->id,
+                'name' => $m->name,
+            ]),
+        ]);
+    }
 
     // Добавляем 'news' и 'currentCityName' (если она нужна в шаблоне) в compact
     return view('welcome', compact('topItems', 'news', 'currentCityName'));

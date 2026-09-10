@@ -43,7 +43,7 @@
         {{-- Левый блок: Фото + Инфо --}}
         <div class="d-flex align-items-start flex-wrap flex-grow-1">
             <img src="{{ $photo }}"
-                 style="width:90px;height:90px;border-radius:10px;object-fit:cover"
+                 style="width:90px;height:90px;border-radius:10px;object-fit:contain;background:#f8f9fa"
                  class="me-3 border p-1">
 
             <div class="flex-grow-1">
@@ -169,7 +169,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <img src="{{ $photo }}"
-                         style="width:100%;max-width:280px;border-radius:10px;object-fit:cover">
+                         style="width:100%;max-width:280px;border-radius:10px;object-fit:contain">
                 </div>
             </div>
         </div>
