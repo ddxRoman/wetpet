@@ -23,7 +23,7 @@ class ClinicSeeder extends Seeder
 
         // Основные клиники
         $clinics = [
-            [
+[
                 'name' => 'Биосфера',
                 'country' => 'Россия',
                 'region' => 'Краснодарский край',
@@ -32,7 +32,7 @@ class ClinicSeeder extends Seeder
                 'house' => 'д.217',
                 'address_comment' => 'Дмитровская Дамба',
                 'logo' => 'clinics/logo/logo-biosfera.png',
-                'description' => '',
+                'description' => ' ',
                 'phone1' => '+7 (861) 251-67-85',
                 'phone2' => null,
                 'email' => 'info@hvostvet.ru',
@@ -43,7 +43,7 @@ class ClinicSeeder extends Seeder
                 'workdays' => 'Пн–Вс',
                 'service_ids' => [1, 2, 3, 4],
             ],
-            [
+[
                 'name' => 'ВетЛазарет',
                 'country' => 'Россия',
                 'region' => 'Краснодарский край',
@@ -52,7 +52,7 @@ class ClinicSeeder extends Seeder
                 'house' => '56А',
                 'address_comment' => 'Около ТЦ "Пассаж"',
                 'logo' => 'clinics/logo/vetlazaret.png',
-                'description' => 'Ветлазарет — помощь питомцам 24/7. Стационар, хирургия, УЗИ, стоматология.',
+                'description' => ' ',
                 'phone1' => '+7 (343) 333-22-11',
                 'phone2' => null,
                 'email' => 'aibolit24@vet.ru',
@@ -63,7 +63,7 @@ class ClinicSeeder extends Seeder
                 'workdays' => 'Пн–Вс',
                 'service_ids' => [1, 3, 6, 8],
             ],
-    [
+[
         'name' => 'Счастливая Морда',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -72,7 +72,7 @@ class ClinicSeeder extends Seeder
         'house' => '26/4',
         'address_comment' => 'Цокольный этаж жилого дома, отдельный вход',
         'logo' => 'clinics/logo/chactlivay_morda.png',
-        'description' => 'Круглосуточная ветеринарная помощь, УЗИ, хирургия, стационар, вакцинация и выезд на дом.',
+        'description' => ' ',
         'phone1' => '+7 (905) 476-75-75',
         'phone2' => '+7 (918) 400-00-00',
         'email' => 'info@doktorvet-krd.ru',
@@ -83,7 +83,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 3, 4, 5, 6, 7, 8],
     ],
-    [
+[
         'name' => 'Семейная ветеринарная клиника ЗооЛайн',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -92,7 +92,7 @@ class ClinicSeeder extends Seeder
         'house' => '56',
         'address_comment' => 'Рядом с парком, отдельное здание',
         'logo' => 'clinics/logo/zooline_logo.jpg',
-        'description' => 'Полный спектр услуг: терапия, дерматология, стоматология, лабораторная диагностика и груминг.',
+        'description' => ' ',
         'phone1' => '+7 (861) 274-44-44',
         'phone2' => null,
         'email' => 'zooline-krd@yandex.ru',
@@ -103,7 +103,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Сб',
         'service_ids' => [1, 2, 5, 6, 7, 9],
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Айболит',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -112,7 +112,7 @@ class ClinicSeeder extends Seeder
         'house' => '26',
         'address_comment' => '',
      'logo' => 'clinics/logo/ibotil_clinic_logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (989) 292-81-11',
         'phone2' => '+7(988) 248-77-22',
         'email' => 'aibolit-krd@yandex.ru',
@@ -123,7 +123,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Центр Ветеринарной Медицины',
         'country' => 'Россия',
         'region' => 'Донецкая Народная республика',
@@ -132,7 +132,7 @@ class ClinicSeeder extends Seeder
         'house' => '8',
         'address_comment' => '',
         'logo' => 'clinics/logo/dnr/cvm_dnr.png',
-        'description' => 'Работает по предварительной записи',
+        'description' => ' ',
         'phone1' => '+7 (949) 305-81-87',
         'phone2' => '+7(856) 345-03-15',
         'email' => 'cvm.dn@mail.ru',
@@ -143,7 +143,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Динго Зооветеринарной центр',
         'country' => 'Россия',
         'region' => 'Донецкая Народная республика',
@@ -152,7 +152,7 @@ class ClinicSeeder extends Seeder
         'house' => '140',
         'address_comment' => '',
         'logo' => 'clinics/logo/dnr/dingo_dnr.png',
-        'description' => 'Клиника в городе Донецк',
+        'description' => ' ',
         'phone1' => '+7 (949) 333-25-83 ',
         'phone2' => '+7(856) 335-41-90',
         'email' => 'donvet@mail.ru',
@@ -163,7 +163,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-        [
+[
         'name' => 'Доверие',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -172,7 +172,7 @@ class ClinicSeeder extends Seeder
         'house' => '43',
         'address_comment' => 'Есть филиалы, работает круглосуточно',
         'logo' => 'clinics/logo/doverie.jpg',
-        'description' => 'Ветеринарная клиника. Диагностика: УЗИ, рентген, лабораторные исследования.',
+        'description' => ' ',
         'phone1' => '+7 (861) 275-39-28',
         'phone2' => '+7 918 090-02-51',
         'email' => null,
@@ -183,9 +183,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
 'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-  
-    [
+[
         'name' => 'Участковая ветеринарная лечебница Центральная',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -194,7 +192,7 @@ class ClinicSeeder extends Seeder
         'house' => '15/1',
         'address_comment' => null,
         'logo' => 'clinics/logo/VGK.webp',
-        'description' => 'Государственная ветеринарная лечебница.',
+        'description' => ' ',
         'phone1' => '+7 (861) 213-06-53',
         'phone2' => null,
         'email' => null,
@@ -204,8 +202,8 @@ class ClinicSeeder extends Seeder
         'schedule' => '8:00 до 20:00',
         'workdays' => 'Пн–Вс',
 'service_ids' => [1, 2, 5, 6, 7, 9, 10],
-    ],      
-      [
+    ],
+[
         'name' => 'Ле Мурр',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -214,7 +212,7 @@ class ClinicSeeder extends Seeder
         'house' => '52',
         'address_comment' => 'Имеется ветеринарная аптека',
         'logo' => 'clinics/logo/le_Murr.avif',
-        'description' => 'Ветеринарная клиника с аптекой.',
+        'description' => ' ',
         'phone1' => '+7 (908) 677-87-27',
         'phone2' => 'null',
         'email' => null,
@@ -225,8 +223,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
 'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Участковая ветеринарная лечебница Калининская',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -235,7 +232,7 @@ class ClinicSeeder extends Seeder
         'house' => '319',
         'address_comment' => null,
         'logo' => 'clinics/logo/VGK.webp',
-        'description' => 'Государственная ветеринарная лечебница.',
+        'description' => ' ',
         'phone1' => '+7(988)243-06-40',
         'phone2' => '+7(861)202-97-46',
         'email' => null,
@@ -246,7 +243,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
 'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -255,7 +252,7 @@ class ClinicSeeder extends Seeder
         'house' => '105',
         'address_comment' => 'Имеется лаборатория',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника с лабораторией.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -266,8 +263,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -276,7 +272,7 @@ class ClinicSeeder extends Seeder
         'house' => '24',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -287,8 +283,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -297,7 +292,7 @@ class ClinicSeeder extends Seeder
         'house' => '4',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -308,8 +303,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -318,7 +312,7 @@ class ClinicSeeder extends Seeder
         'house' => '18',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -329,8 +323,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -339,7 +332,7 @@ class ClinicSeeder extends Seeder
         'house' => '5',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -350,8 +343,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -360,7 +352,7 @@ class ClinicSeeder extends Seeder
         'house' => '24/1',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -371,8 +363,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -381,7 +372,7 @@ class ClinicSeeder extends Seeder
         'house' => '31/2',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -392,8 +383,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -402,7 +392,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -413,8 +403,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -423,7 +412,7 @@ class ClinicSeeder extends Seeder
         'house' => '34',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -434,8 +423,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -444,7 +432,7 @@ class ClinicSeeder extends Seeder
         'house' => '15',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -455,8 +443,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -465,7 +452,7 @@ class ClinicSeeder extends Seeder
         'house' => '19 к3',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -476,8 +463,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Слон',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -486,7 +472,7 @@ class ClinicSeeder extends Seeder
         'house' => '57',
         'address_comment' => '',
         'logo' => 'clinics/logo/slon.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => null,
         'phone2' => null,
         'email' => null,
@@ -497,8 +483,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Ника',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -507,14 +492,7 @@ class ClinicSeeder extends Seeder
         'house' => '107/10',
         'address_comment' => '',
         'logo' => 'clinics/logo/Nika_logo.png',
-        'description' => 'Скидки на вакцинацию, стерилизацию и кастрацию <br>
-        Клиника: 10:00-22:00
-
-Вызов врача на дом: 8:00-24:00
-
-Заказ кормов: 10:00-22:00
-
-Доставка кормов: 20:00-24:00',
+        'description' => ' ',
         'phone1' => '+7 (918) 324-96-22',
         'phone2' => null,
         'email' => 'post@vetnica.ru',
@@ -525,8 +503,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
 'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'VetJoy',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -535,7 +512,7 @@ class ClinicSeeder extends Seeder
         'house' => '2А',
         'address_comment' => null,
         'logo' => 'clinics/logo/vetjoy.jpg',
-        'description' => 'Ветеринарная клиника с аптекой.',
+        'description' => ' ',
         'phone1' => '+7 977 099-67-07',
         'phone2' => null,
         'email' => 'info@joy.clinic',
@@ -545,8 +522,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–21:00',
         'workdays' => 'Пн–ВС'
     ],
-
-        [
+[
         'name' => 'Питомец',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -555,7 +531,7 @@ class ClinicSeeder extends Seeder
         'house' => '62',
         'address_comment' => '',
         'logo' => 'clinics/logo/pitomec.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '+7‒918‒033‒16‒50',
         'email' => null,
@@ -567,8 +543,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Вита',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -577,7 +552,7 @@ class ClinicSeeder extends Seeder
         'house' => '34А',
         'address_comment' => '',
         'logo' => 'clinics/logo/vita_clinic_web.png',
-        'description' => 'Ветеринарная клиника. Диагностика, сложные операции, стационар. Есть стационар, возможен вызов врача на дом',
+        'description' => ' ',
         'phone1' => '+7 (861) 260-21-99',
         'phone2' => '+7 (861) 207-21-90',
         'email' => null,
@@ -588,8 +563,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
 'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Вита',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -598,7 +572,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => 'clinics/logo/vita_clinic_web.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '+7 (861) 263-05-30',
         'phone2' => '+7 (989) 855-77-80',
         'email' => null,
@@ -609,8 +583,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Вита',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -619,7 +592,7 @@ class ClinicSeeder extends Seeder
         'house' => '15',
         'address_comment' => '',
         'logo' => 'clinics/logo/vita_clinic_web.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '+7 (861) 261-00-20',
         'phone2' => '',
         'email' => null,
@@ -630,8 +603,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Вита',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -640,7 +612,7 @@ class ClinicSeeder extends Seeder
         'house' => '21',
         'address_comment' => '',
         'logo' => 'clinics/logo/vita_clinic_web.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '+7 (861) 260-21-99',
         'phone2' => '+7 (861) 207-21-90',
         'email' => null,
@@ -651,8 +623,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Вита',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -661,7 +632,7 @@ class ClinicSeeder extends Seeder
         'house' => '2/2',
         'address_comment' => '',
         'logo' => 'clinics/logo/vita_clinic_web.png',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '+7 (861) 260-21-99',
         'phone2' => '+7 (861) 207-21-90',
         'email' => null,
@@ -672,7 +643,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Весниной Зинаиды Юрьевны',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -681,7 +652,7 @@ class ClinicSeeder extends Seeder
         'house' => '31',
         'address_comment' => '',
         'logo' => 'clinics/logo/Vesnina_clinic.jpg',
-        'description' => 'Ветеринарная клиника. Консультации, обследования, экстренная помощь, Вызов 24 часа.',
+        'description' => ' ',
         'phone1' => '+7 (918) 411-86-58',
         'phone2' => '+7 (953) 077-30-28',
         'email' => null,
@@ -692,8 +663,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Айболит',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -702,7 +672,7 @@ class ClinicSeeder extends Seeder
         'house' => '113/1',
         'address_comment' => null,
         'logo' => 'clinics/logo/ibotil_clinic_logo.jpg',
-        'description' => 'Ветеринарная клиника с базовым набором услуг.',
+        'description' => ' ',
         'phone1' => '+7 (861) 217-17-17',
         'phone2' => null,
         'email' => null,
@@ -713,8 +683,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Заботавет',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -723,7 +692,7 @@ class ClinicSeeder extends Seeder
         'house' => '47',
         'address_comment' => 'Въезд со стороны ул.Ставропольская',
         'logo' => null,
-        'description' => 'Клиника ветеринарной медицины и репродукции.',
+        'description' => ' ',
         'phone1' => '+7 (901) 246-57-32',
         'phone2' => null,
         'email' => null,
@@ -734,7 +703,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'ВетПомощь24',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -743,7 +712,7 @@ class ClinicSeeder extends Seeder
         'house' => '456',
         'address_comment' => 'Круглосуточный приём, выезд врача на дом',
         'logo' => null,
-        'description' => 'Ветеринарная клиника экстренной помощи. УЗИ, рентген, стационар, хирургия.',
+        'description' => ' ',
         'phone1' => '+7 (861) 220-00-20',
         'phone2' => null,
         'email' => 'vetpomosh24@mail.ru',
@@ -753,7 +722,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Зоодоктор',
         'country' => 'Россия',
         'region' => 'Свердловская область',
@@ -762,7 +731,7 @@ class ClinicSeeder extends Seeder
         'house' => '4',
         'address_comment' => 'Ост. Совхозная, авт. 059, 73. Ост. Шефская (ул. Фрезеровщиков), авт. 09, 053, 059, троллейбус 13.',
         'logo' => 'clinics/logo/zoodoctor_ekb.svg',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '36-36-300',
         'phone2' => '333-51-00',
         'email' => null,
@@ -773,7 +742,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Зоодоктор',
         'country' => 'Россия',
         'region' => 'Свердловская область',
@@ -782,7 +751,7 @@ class ClinicSeeder extends Seeder
         'house' => '30',
         'address_comment' => 'Ост. Техническая. Автобусы: 06, 08, 13а (по будням), 014, 024, 082, 083. Трамваи: 7, 10, 12, 13, 24.',
         'logo' => 'clinics/logo/zoodoctor_ekb.svg',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '36-36-300',
         'phone2' => '333-51-00',
         'email' => null,
@@ -793,7 +762,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Зоодоктор',
         'country' => 'Россия',
         'region' => 'Свердловская область',
@@ -802,7 +771,7 @@ class ClinicSeeder extends Seeder
         'house' => '25',
         'address_comment' => 'Орджоникидзевский район. Трамваи: 8, 17, 22, 24 до ост. Донбасская. Маршрутки: 033, 060 до ост. Культуры.',
         'logo' => 'clinics/logo/zoodoctor_ekb.svg',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '36-36-300',
         'phone2' => '333-51-00',
         'email' => null,
@@ -813,7 +782,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Зоодоктор',
         'country' => 'Россия',
         'region' => 'Свердловская область',
@@ -822,7 +791,7 @@ class ClinicSeeder extends Seeder
         'house' => '219',
         'address_comment' => 'Ленинский район. Автобусы: 12, 23, 37, 38, 42, 46, 50а, 50м, 76 до ост. Шаумяна. Троллейбусы: 11, 14 до ост. Шаумяна. Маршрутки: 010, 025, 044, 046, 047, 050, 055, 067.',
         'logo' => 'clinics/logo/zoodoctor_ekb.svg',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '36-36-300',
         'phone2' => '333-51-00',
         'email' => null,
@@ -833,7 +802,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Зоодоктор',
         'country' => 'Россия',
         'region' => 'Свердловская область',
@@ -842,7 +811,7 @@ class ClinicSeeder extends Seeder
         'house' => '45',
         'address_comment' => 'Чкаловский район, Вторчермет. Автобусы: 12, 42. Трамваи: 1, 15. Маршрутки: 016, 019, 024 до ост. Вторчермет.',
         'logo' => 'clinics/logo/zoodoctor_ekb.svg',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '36-36-300',
         'phone2' => '333-51-00',
         'email' => null,
@@ -853,7 +822,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Зоодоктор',
         'country' => 'Россия',
         'region' => 'Свердловская область',
@@ -862,7 +831,7 @@ class ClinicSeeder extends Seeder
         'house' => '22',
         'address_comment' => 'Юго-Западный район. Автобусы: 21, 23, 43, 50, 76 до ост. Онуфриева. Троллейбусы: 11, 14. Маршрутки: 010, 046, 047, 052, 067, 070.',
         'logo' => 'clinics/logo/zoodoctor_ekb.svg',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '36-36-300',
         'phone2' => '333-51-00',
         'email' => null,
@@ -873,7 +842,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-    [
+[
         'name' => 'Леовет',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -882,7 +851,7 @@ class ClinicSeeder extends Seeder
         'house' => '19',
         'address_comment' => 'Пересечение улицы весенняя и переулка коллективный',
         'logo' => '',
-        'description' => 'Ветеринарная клиника.',
+        'description' => ' ',
         'phone1' => '+7 (952) 877-06-81',
         'phone2' => '',
         'email' => null,
@@ -893,8 +862,7 @@ class ClinicSeeder extends Seeder
         'workdays' => 'Пн–Вс',
         'service_ids' => [1, 2, 5, 6, 7, 9, 10],
     ],
-
-    [
+[
         'name' => 'Феникс',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -903,7 +871,7 @@ class ClinicSeeder extends Seeder
         'house' => '102',
         'address_comment' => 'Специализируется на хирургии и травматологии',
         'logo' => 'clinics/logo/fenix.jpg',
-        'description' => 'Клиника с узкопрофильными специалистами: хирурги, травматологи, реабилитологи.',
+        'description' => ' ',
         'phone1' => '+7 (861) 222-22-22',
         'phone2' => null,
         'email' => null,
@@ -913,10 +881,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–СБ'
     ],
-
-                      // Тут стоп, остановил, пауза закончил
-
-    [
+[
         'name' => 'Пёс и Кот',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -925,7 +890,7 @@ class ClinicSeeder extends Seeder
         'house' => '245',
         'address_comment' => 'Семейный ветеринарный центр',
         'logo' => null,
-        'description' => 'Комплексное обслуживание: терапия, вакцинация, груминг, зоомагазин.',
+        'description' => ' ',
         'phone1' => '+7 (861) 224-44-44',
         'phone2' => null,
         'email' => null,
@@ -935,7 +900,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ВитаВет',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -944,7 +909,7 @@ class ClinicSeeder extends Seeder
         'house' => '27',
         'address_comment' => 'Современный центр с цифровой диагностикой',
         'logo' => null,
-        'description' => 'Клиника с цифровым рентгеном, УЗИ, эндоскопией, стационаром.',
+        'description' => ' ',
         'phone1' => '+7 (861) 225-55-55',
         'phone2' => null,
         'email' => 'vitavet@mail.ru',
@@ -954,7 +919,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Добрый Друг',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -963,7 +928,7 @@ class ClinicSeeder extends Seeder
         'house' => '5',
         'address_comment' => 'Работает с экзотическими животными',
         'logo' => null,
-        'description' => 'Лечение птиц, рептилий, грызунов. Терапия, хирургия, консультации.',
+        'description' => ' ',
         'phone1' => '+7 (861) 226-66-66',
         'phone2' => null,
         'email' => null,
@@ -973,7 +938,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '10:00–18:00',
         'workdays' => 'Пн–Сб'
     ],
-    [
+[
         'name' => 'Скорая ВетПомощь',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -982,7 +947,7 @@ class ClinicSeeder extends Seeder
         'house' => '189',
         'address_comment' => 'Экстренные вызовы 24/7, реанимация',
         'logo' => null,
-        'description' => 'Служба экстренной ветеринарной помощи. Реанимация, вызов врача на дом.',
+        'description' => ' ',
         'phone1' => '+7 (861) 227-77-77',
         'phone2' => '+7 918 555-77-77',
         'email' => 'skorvet@mail.ru',
@@ -992,7 +957,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Центр Ветеринарной Кардиологии',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1001,7 +966,7 @@ class ClinicSeeder extends Seeder
         'house' => '87',
         'address_comment' => 'Специализация: болезни сердца и сосудов',
         'logo' => null,
-        'description' => 'Диагностика и лечение кардиологических заболеваний у животных.',
+        'description' => ' ',
         'phone1' => '+7 (861) 228-88-88',
         'phone2' => null,
         'email' => 'cardiovet@mail.ru',
@@ -1011,7 +976,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–18:00',
         'workdays' => 'Пн–Пт'
     ],
-        [
+[
         'name' => 'ЗооКлиника на Красной',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1020,7 +985,7 @@ class ClinicSeeder extends Seeder
         'house' => '176',
         'address_comment' => 'В центре города, рядом с парком Горького',
         'logo' => null,
-        'description' => 'Многопрофильная ветеринарная клиника. Терапия, хирургия, стоматология, УЗИ.',
+        'description' => ' ',
         'phone1' => '+7 (861) 229-99-99',
         'phone2' => null,
         'email' => 'zooclinic-krd@mail.ru',
@@ -1030,7 +995,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ВетЭксперт',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1039,7 +1004,7 @@ class ClinicSeeder extends Seeder
         'house' => '100',
         'address_comment' => 'Клиника экспертного уровня диагностики',
         'logo' => null,
-        'description' => 'Высокоточная диагностика: МРТ, КТ, эндоскопия. Консультации узкопрофильных специалистов.',
+        'description' => ' ',
         'phone1' => '+7 (861) 230-00-00',
         'phone2' => null,
         'email' => 'vetexpert-krd@mail.ru',
@@ -1049,7 +1014,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Сб'
     ],
-    [
+[
         'name' => 'Кот и Пёс',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1058,7 +1023,7 @@ class ClinicSeeder extends Seeder
         'house' => '154',
         'address_comment' => 'Уютная клиника с дружелюбным персоналом',
         'logo' => null,
-        'description' => 'Базовые ветеринарные услуги: вакцинация, чипирование, терапия, хирургия.',
+        'description' => ' ',
         'phone1' => '+7 (861) 231-11-11',
         'phone2' => null,
         'email' => null,
@@ -1068,7 +1033,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '10:00–19:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Ветеринарный центр "Альянс"',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1077,7 +1042,7 @@ class ClinicSeeder extends Seeder
         'house' => '38',
         'address_comment' => 'Современный центр с цифровой аппаратурой',
         'logo' => null,
-        'description' => 'Полный цикл ветеринарной помощи: диагностика, лечение, реабилитация.',
+        'description' => ' ',
         'phone1' => '+7 (861) 232-22-22',
         'phone2' => null,
         'email' => 'alliancevet@mail.ru',
@@ -1087,7 +1052,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Здоровый питомец',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1096,7 +1061,7 @@ class ClinicSeeder extends Seeder
         'house' => '45',
         'address_comment' => 'Специализируется на профилактике заболеваний',
         'logo' => null,
-        'description' => 'Вакцинация, диспансеризация, консультации по кормлению и содержанию.',
+        'description' => ' ',
         'phone1' => '+7 (861) 233-33-33',
         'phone2' => null,
         'email' => 'zdorovpit@mail.ru',
@@ -1106,7 +1071,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–18:00',
         'workdays' => 'Пн–Пт'
     ],
-    [
+[
         'name' => 'ВетСервис',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1115,7 +1080,7 @@ class ClinicSeeder extends Seeder
         'house' => '120',
         'address_comment' => 'Выезд врача на дом, круглосуточная поддержка',
         'logo' => null,
-        'description' => 'Вызов ветеринара на дом, экстренная помощь, стационар.',
+        'description' => ' ',
         'phone1' => '+7 (861) 234-44-44',
         'phone2' => '+7 918 777-44-44',
         'email' => 'vetservice-krd@mail.ru',
@@ -1125,7 +1090,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Фауна',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1134,7 +1099,7 @@ class ClinicSeeder extends Seeder
         'house' => '56',
         'address_comment' => 'Клиника с акцентом на реабилитацию',
         'logo' => null,
-        'description' => 'Реабилитация после травм и операций, физиотерапия, массаж.',
+        'description' => ' ',
         'phone1' => '+7 (861) 235-55-55',
         'phone2' => null,
         'email' => 'fauna-vet@mail.ru',
@@ -1144,7 +1109,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Сб'
     ],
-   [
+[
         'name' => 'Верный Друг',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1153,7 +1118,7 @@ class ClinicSeeder extends Seeder
         'house' => '210',
         'address_comment' => 'Работаем с 2005 года, проверенные методики',
         'logo' => null,
-        'description' => 'Комплексное обслуживание животных: терапия, хирургия, вакцинация.',
+        'description' => ' ',
         'phone1' => '+7 (861) 236-66-66',
         'phone2' => null,
         'email' => null,
@@ -1163,7 +1128,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ЗооПрофи',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1172,7 +1137,7 @@ class ClinicSeeder extends Seeder
         'house' => '78',
         'address_comment' => 'Профессиональное оборудование',
         'logo' => null,
-        'description' => 'Диагностика: УЗИ, рентген, лабораторные анализы. Терапия и хирургия.',
+        'description' => ' ',
         'phone1' => '+7 (861) 237-77-77',
         'phone2' => null,
         'email' => 'zoprofi-krd@mail.ru',
@@ -1182,7 +1147,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Вс'
     ],
-        [
+[
         'name' => 'Счастливый Зверь',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1191,7 +1156,7 @@ class ClinicSeeder extends Seeder
         'house' => '92',
         'address_comment' => 'Современная клиника с дневным стационаром',
         'logo' => null,
-        'description' => 'Полный спектр ветеринарных услуг: диагностика, терапия, хирургия, реабилитация. Есть дневной стационар.',
+        'description' => ' ',
         'phone1' => '+7 (861) 238-88-88',
         'phone2' => null,
         'email' => 'happybeast-vet@mail.ru',
@@ -1201,7 +1166,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ВетГармония',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1210,7 +1175,7 @@ class ClinicSeeder extends Seeder
         'house' => '112',
         'address_comment' => 'Акцент на гуманное лечение и комфорт животных',
         'logo' => null,
-        'description' => 'Терапия, хирургия, стоматология. Используем щадящие методики и современное оборудование.',
+        'description' => ' ',
         'phone1' => '+7 (861) 239-99-99',
         'phone2' => null,
         'email' => 'vetharmony@mail.ru',
@@ -1220,7 +1185,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Сб'
     ],
-    [
+[
         'name' => 'ЗооДоктор Плюс',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1229,7 +1194,7 @@ class ClinicSeeder extends Seeder
         'house' => '77',
         'address_comment' => 'Есть собственная лаборатория и аптека',
         'logo' => null,
-        'description' => 'Диагностика: УЗИ, рентген, анализы. Терапия, хирургия, вакцинация, чипирование.',
+        'description' => ' ',
         'phone1' => '+7 (861) 240-00-00',
         'phone2' => null,
         'email' => 'zoodoctorplus@mail.ru',
@@ -1239,7 +1204,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Пушистый Друг',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1248,7 +1213,7 @@ class ClinicSeeder extends Seeder
         'house' => '88',
         'address_comment' => 'Специализируется на лечении мелких пород собак',
         'logo' => null,
-        'description' => 'Терапия, профилактика, хирургия для мелких и декоративных пород. Консультации по уходу.',
+        'description' => ' ',
         'phone1' => '+7 (861) 241-11-11',
         'phone2' => null,
         'email' => null,
@@ -1258,7 +1223,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '10:00–18:00',
         'workdays' => 'Пн–Пт'
     ],
-    [
+[
         'name' => 'Ветеринарный центр "Оптима"',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1267,7 +1232,7 @@ class ClinicSeeder extends Seeder
         'house' => '155',
         'address_comment' => 'Современные методы диагностики и лечения',
         'logo' => null,
-        'description' => 'УЗИ, рентген, эндоскопия, лабораторные исследования. Терапия, хирургия, стационар.',
+        'description' => ' ',
         'phone1' => '+7 (861) 242-22-22',
         'phone2' => null,
         'email' => 'optivet@mail.ru',
@@ -1277,7 +1242,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Добрый Ветеринар',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1286,7 +1251,7 @@ class ClinicSeeder extends Seeder
         'house' => '333',
         'address_comment' => 'Круглосуточный приём, выезд на дом',
         'logo' => null,
-        'description' => 'Экстренная помощь, стационар, диагностика, терапия. Возможен вызов врача на дом.',
+        'description' => ' ',
         'phone1' => '+7 (861) 243-33-33',
         'phone2' => '+7 918 999-33-33',
         'email' => 'dobryvet@mail.ru',
@@ -1296,7 +1261,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ВетКомфорт',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1305,7 +1270,7 @@ class ClinicSeeder extends Seeder
         'house' => '188',
         'address_comment' => 'Уютная атмосфера, индивидуальный подход',
         'logo' => null,
-        'description' => 'Базовые и специализированные ветеринарные услуги. Акцент на комфорт питомца и хозяина.',
+        'description' => ' ',
         'phone1' => '+7 (861) 244-44-44',
         'phone2' => null,
         'email' => null,
@@ -1315,7 +1280,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Сб'
     ],
-    [
+[
         'name' => 'ЗооПомощь',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1324,7 +1289,7 @@ class ClinicSeeder extends Seeder
         'house' => '101',
         'address_comment' => 'Работаем с экзотическими животными',
         'logo' => null,
-        'description' => 'Лечение птиц, рептилий, грызунов. Терапия, диагностика, консультации по содержанию.',
+        'description' => ' ',
         'phone1' => '+7 (861) 245-55-55',
         'phone2' => null,
         'email' => 'zoopomosh@mail.ru',
@@ -1334,7 +1299,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '10:00–18:00',
         'workdays' => 'Пн–Пт'
     ],
-    [
+[
         'name' => 'Ветеринарная клиника "Профи"',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1343,7 +1308,7 @@ class ClinicSeeder extends Seeder
         'house' => '66',
         'address_comment' => 'Профессиональное оборудование экспертного класса',
         'logo' => null,
-        'description' => 'МРТ, КТ, УЗИ, рентген. Узкопрофильные специалисты: кардиологи, хирурги, онкологи.',
+        'description' => ' ',
         'phone1' => '+7 (861) 246-66-66',
         'phone2' => null,
         'email' => 'profivet@mail.ru',
@@ -1352,7 +1317,7 @@ class ClinicSeeder extends Seeder
         'website' => 'profivet-krd.ru',
         'schedule' => '09:00–19:00'
     ],
-    [
+[
         'name' => 'Ветклиника на Бабушкина',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1361,7 +1326,7 @@ class ClinicSeeder extends Seeder
         'house' => '160',
         'address_comment' => 'Основная клиника, круглосуточный режим работы',
         'logo' => null,
-        'description' => 'Полный спектр ветеринарных услуг: хирургия, терапия, диагностика (УЗИ, рентген), стационар, вакцинация, чипирование. Работают узкопрофильные специалисты.',
+        'description' => ' ',
         'phone1' => '+7 (861) 217-62-93',
         'phone2' => '+7 (861) 217-65-47',
         'email' => null,
@@ -1371,7 +1336,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '08:00–22:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Ветеринарная клиника доктора Петросяна',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1380,20 +1345,7 @@ class ClinicSeeder extends Seeder
         'house' => '37/12',
         'address_comment' => 'Микрорайон Центральный, 1‑й этаж',
         'logo' => 'clinics/logo/petrosyan-clinic.png',
-        'description' => '
-        Кардиология
-Стоматология
-Хирургия
-Терапия
-Лаборатория и УЗИ
-Дерматология
-
-🐕 собаки
-🐈‍⬛ кошки
-🐇 кролики
-🐹 морские свинки
-🐻‍❄️ хорьки
-🐁 домашние крысы',
+        'description' => ' ',
         'phone1' => '+7 (918) 072-17-33',
         'phone2' => null,
         'email' => 'petrosyan-vet@mail.ru',
@@ -1403,7 +1355,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–21:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Белая лапа',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1412,7 +1364,7 @@ class ClinicSeeder extends Seeder
         'house' => '148',
         'address_comment' => 'Микрорайон Центральный, ветеринарная лаборатория',
         'logo' => null,
-        'description' => 'Диагностика (УЗИ, лабораторные анализы), терапия, хирургия, стоматология. Есть ветеринарная аптека.',
+        'description' => ' ',
         'phone1' => '+7 (861) 244-55-55',
         'phone2' => null,
         'email' => 'belayalapa-vet@mail.ru',
@@ -1422,7 +1374,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Борзая Краснодог',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1431,7 +1383,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => 'Школьный микрорайон, зоосалон и зоопарикмахерская',
         'logo' => null,
-        'description' => 'Ветеринарные услуги, груминг, стрижка, уход за животными. Терапия, вакцинация, обработка от паразитов.',
+        'description' => ' ',
         'phone1' => '+7 (861) 255-55-55',
         'phone2' => null,
         'email' => null,
@@ -1441,7 +1393,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '10:00–19:00',
         'workdays' => 'Пн–Сб'
     ],
-    [
+[
         'name' => 'Зооленд',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1450,7 +1402,7 @@ class ClinicSeeder extends Seeder
         'house' => '1/1',
         'address_comment' => 'Есть лаборатория, эндоскопические операции',
         'logo' => null,
-        'description' => 'Эндоскопические операции, УЗИ, рентген, лабораторные исследования. Терапия, хирургия, вакцинация.',
+        'description' => ' ',
         'phone1' => '+7 (861) 201-01-01',
         'phone2' => null,
         'email' => 'zoolend-krd@mail.ru',
@@ -1460,7 +1412,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–22:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Сеть ветеринарных клиник "Спасатель"',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1469,7 +1421,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => ' ',
         'logo' => 'clinics/logo/spasatel_krd.png',
-        'description' => 'Терапия, хирургия, диагностика (УЗИ, рентген). Работают опытные ветеринары, есть лаборатория.',
+        'description' => ' ',
         'phone1' => '+7 (988) 666 88 53',
         'phone2' => null,
         'email' => 'spasatel-vet@mail.ru',
@@ -1479,7 +1431,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Добрый Доктор',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1488,7 +1440,7 @@ class ClinicSeeder extends Seeder
         'house' => '134/1',
         'address_comment' => null,
         'logo' => null,
-        'description' => 'Терапия, хирургия, вакцинация. Специалисты экспертного уровня, современное оборудование.',
+        'description' => ' ',
         'phone1' => '+7 (861) 204-04-04',
         'phone2' => null,
         'email' => 'dobrydoctor-vet@mail.ru',
@@ -1498,7 +1450,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Добрые руки',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1507,7 +1459,7 @@ class ClinicSeeder extends Seeder
         'house' => '133',
         'address_comment' => 'Цокольный этаж',
         'logo' => 'clinics/logo/dobrye_ryki.webp',
-        'description' => 'Терапия, хирургия, вакцинация. Специалисты экспертного уровня, современное оборудование.',
+        'description' => ' ',
         'phone1' => '+7 (989) 262-98-81',
         'phone2' => null,
         'email' => 'vk_d_82@mail.ru',
@@ -1517,7 +1469,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '08:00–22:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ВикВет',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1526,7 +1478,7 @@ class ClinicSeeder extends Seeder
         'house' => '2Д',
         'address_comment' => 'Вход слева от двери «Магнита», цокольный этаж',
         'logo' => null,
-        'description' => 'Терапия, диагностика (УЗИ, рентген), вакцинация, обработка ран, хирургические операции. Есть аптека.',
+        'description' => ' ',
         'phone1' => '+7 (861) 266-66-66',
         'phone2' => null,
         'email' => 'vikvet-krd@mail.ru',
@@ -1536,7 +1488,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Ирбис',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1545,7 +1497,7 @@ class ClinicSeeder extends Seeder
         'house' => '110',
         'address_comment' => 'Круглосуточный приём, ветеринарная аптека',
         'logo' => null,
-        'description' => 'Экстренная помощь, стационар, УЗИ, рентген, терапия, хирургия. Работают круглосуточно.',
+        'description' => ' ',
         'phone1' => '+7 (861) 212-12-12',
         'phone2' => null,
         'email' => 'irbis-vet@mail.ru',
@@ -1555,7 +1507,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Большая Медведица',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1564,7 +1516,7 @@ class ClinicSeeder extends Seeder
         'house' => '150',
         'address_comment' => 'Основная площадка клиники',
         'logo' => 'clinics/logo/Bolshaya_medvedica.svg',
-        'description' => 'Многопрофильная ветеринарная клиника: хирургия, терапия, офтальмология, кардиология, онкология, стоматология. Есть круглосуточный стационар, лаборатория, эндоскопия, ингаляционный наркоз.',
+        'description' => ' ',
         'phone1' => '+7 (918) 071-15-50',
         'phone2' => '+7 (928) 881-57-00',
         'email' => 'welcome@vet-kuban.ru',
@@ -1574,7 +1526,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Большая Медведица (филиал)',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1583,7 +1535,7 @@ class ClinicSeeder extends Seeder
         'house' => '17',
         'address_comment' => 'Филиал клиники',
         'logo' => 'clinics/logo/Bolshaya_medvedica.svg',
-        'description' => 'Полный спектр ветеринарных услуг: диагностика, терапия, хирургия, стоматология, вакцинация. Работает лаборатория.',
+        'description' => ' ',
         'phone1' => '+7 928 881-57-00',
         'phone2' => null,
         'email' => 'welcome@vet-kuban.ru',
@@ -1593,7 +1545,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–21:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Ветуправление города Краснодара (Карасунская)',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1602,7 +1554,7 @@ class ClinicSeeder extends Seeder
         'house' => '110',
         'address_comment' => 'Государственное учреждение, КВО',
         'logo' => 'clinics/logo/VGK.webp',
-        'description' => 'Государственные ветеринарные услуги: вакцинация, кастрация/стерилизация, УЗИ, анализы, оформление документов. Доступные цены.',
+        'description' => ' ',
         'phone1' => '+7 (861) 202-96-56',
         'phone2' => null,
         'email' => null,
@@ -1612,7 +1564,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '08:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Ветуправление города Краснодара (1 Мая)',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1621,7 +1573,7 @@ class ClinicSeeder extends Seeder
         'house' => '319',
         'address_comment' => 'Государственное учреждение',
         'logo' => 'clinics/logo/VGK.webp',
-        'description' => 'Вакцинация, кастрация, УЗИ, лабораторные исследования, оформление ветеринарных документов. Государственная клиника.',
+        'description' => ' ',
         'phone1' => '+7 (861) 202-96-56',
         'phone2' => null,
         'email' => null,
@@ -1631,7 +1583,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '08:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Ветуправление города Краснодара (Московская)',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1640,7 +1592,7 @@ class ClinicSeeder extends Seeder
         'house' => '144',
         'address_comment' => 'Государственное учреждение',
         'logo' => 'clinics/logo/VGK.webp',
-        'description' => 'Комплексная ветеринарная помощь: диагностика, терапия, хирургия, вакцинация. Государственные расценки.',
+        'description' => ' ',
         'phone1' => '+7 (861) 202-96-56',
         'phone2' => null,
         'email' => null,
@@ -1650,7 +1602,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '08:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Ветуправление города Краснодара (Калинина)',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1659,7 +1611,7 @@ class ClinicSeeder extends Seeder
         'house' => '15/1',
         'address_comment' => 'Государственное учреждение',
         'logo' => 'clinics/logo/VGK.webp',
-        'description' => 'Ветеринарные услуги по госрасценкам: анализы, УЗИ, вакцинация, стерилизация, оформление документов.',
+        'description' => ' ',
         'phone1' => '+7 (861) 202-96-56',
         'phone2' => null,
         'email' => null,
@@ -1669,7 +1621,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '08:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ЗооДоктор на Северной',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1678,7 +1630,7 @@ class ClinicSeeder extends Seeder
         'house' => '222',
         'address_comment' => 'Рядом с ТЦ «Северный»',
         'logo' => null,
-        'description' => 'Терапия, хирургия, УЗИ, рентген, вакцинация, чипирование. Есть аптека и лаборатория.',
+        'description' => ' ',
         'phone1' => '+7 (861) 277-77-77',
         'phone2' => null,
         'email' => 'zoodoctor-north@mail.ru',
@@ -1688,7 +1640,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'ВетПомощь Плюс',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1697,7 +1649,7 @@ class ClinicSeeder extends Seeder
         'house' => '189',
         'address_comment' => 'Микрорайон Центральный',
         'logo' => null,
-        'description' => 'Экстренная помощь, стационар, УЗИ, рентген, терапия, хирургия. Круглосуточный приём.',
+        'description' => ' ',
         'phone1' => '+7 (861) 288-88-88',
         'phone2' => '+7 918 111-88-88',
         'email' => 'vetpomoshplus@mail.ru',
@@ -1707,7 +1659,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Лапки-Царапки',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1716,7 +1668,7 @@ class ClinicSeeder extends Seeder
         'house' => '205',
         'address_comment' => 'Специализируется на мелких животных и грызунах',
         'logo' => null,
-        'description' => 'Лечение кошек, собак мелких пород, грызунов, птиц. Терапия, хирургия, вакцинация, консультации по уходу.',
+        'description' => ' ',
         'phone1' => '+7 (861) 299-99-99',
         'phone2' => null,
         'email' => 'lapki-tsarapki@mail.ru',
@@ -1726,7 +1678,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Лапа Помощи',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1735,7 +1687,7 @@ class ClinicSeeder extends Seeder
         'house' => '7/1 к2',
         'address_comment' => 'Микрорайон Юбилейный',
         'logo' => null,
-        'description' => 'Комплексная ветеринарная помощь: терапия, хирургия, диагностика (УЗИ, рентген), стационар. Ответственный подход к лечению.',
+        'description' => ' ',
         'phone1' => '+7 (861) 277-00-00',
         'phone2' => null,
         'email' => 'lapapomoshi-krd@mail.ru',
@@ -1745,7 +1697,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–21:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Воля',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1754,7 +1706,7 @@ class ClinicSeeder extends Seeder
         'house' => '68',
         'address_comment' => 'пос. Берёзовый, городской округ Краснодар',
         'logo' => null,
-        'description' => 'Круглосуточная ветеринарная помощь: хирургия, терапия, диагностика (УЗИ, рентген), собственная лаборатория, стационар.',
+        'description' => ' ',
         'phone1' => '+7 (861) 288-00-00',
         'phone2' => null,
         'email' => 'vola-vet@mail.ru',
@@ -1764,7 +1716,7 @@ class ClinicSeeder extends Seeder
         'schedule' => 'круглосуточно',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'Здоровье',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1773,7 +1725,7 @@ class ClinicSeeder extends Seeder
         'house' => '11',
         'address_comment' => null,
         'logo' => null,
-        'description' => 'Ортопедические операции любой сложности, УЗИ, рентген, стационар. Приём ведут опытные специалисты.',
+        'description' => ' ',
         'phone1' => '+7 (861) 299-00-00',
         'phone2' => null,
         'email' => 'zdorovie-vet@mail.ru',
@@ -1783,7 +1735,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Сб'
     ],
-    [
+[
         'name' => 'Друг',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1792,7 +1744,7 @@ class ClinicSeeder extends Seeder
         'house' => '20',
         'address_comment' => 'Есть круглосуточный стационар',
         'logo' => null,
-        'description' => 'Терапия, хирургия, вакцинация, обработка от паразитов. Работают узкопрофильные специалисты.',
+        'description' => ' ',
         'phone1' => '+7 (861) 255-00-00',
         'phone2' => null,
         'email' => 'drug-vet@mail.ru',
@@ -1802,7 +1754,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–20:00',
         'workdays' => 'Пн–Вс'
     ],
-    [
+[
         'name' => 'VetAsist',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1811,7 +1763,7 @@ class ClinicSeeder extends Seeder
         'house' => '3/1',
         'address_comment' => null,
         'logo' => null,
-        'description' => 'Хирургия, терапия, УЗИ, рентген. Собственная лаборатория. Консультации по уходу и содержанию животных.',
+        'description' => ' ',
         'phone1' => '+7 (861) 266-00-00',
         'phone2' => null,
         'email' => 'vetasist-krd@mail.ru',
@@ -1821,8 +1773,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Сб'
     ],
-
-    [
+[
         'name' => 'Дар',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1831,7 +1782,7 @@ class ClinicSeeder extends Seeder
         'house' => '316/1',
         'address_comment' => null,
         'logo' => null,
-        'description' => 'Терапия, вакцинация, кастрация/стерилизация, диагностика (УЗИ, анализы). Миссия — дарить счастье питомцу и хозяину.',
+        'description' => ' ',
         'phone1' => '+7 (861) 222-00-00',
         'phone2' => null,
         'email' => 'dar-vet@mail.ru',
@@ -1841,12 +1792,7 @@ class ClinicSeeder extends Seeder
         'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Вс'
     ],
-
-
-    // Клиники из парсера Краснодар
-
-
-    [
+[
         'name' => 'Ветеринарная клиника Солнечная на Солнечной улице',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1855,7 +1801,7 @@ class ClinicSeeder extends Seeder
         'house' => '25',
         'address_comment' => '',
         'logo' => null,
-        'description' => 'Ветеринарная клиника Солнечная - это место, где для медицинской помощи домашним животным применяют',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -1867,8 +1813,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Ветеринарный Лазарет',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1877,7 +1822,7 @@ class ClinicSeeder extends Seeder
         'house' => '226',
         'address_comment' => '',
         'logo' => null,
-        'description' => 'Ветеринарная клиника Ветеринарный Лазарет открывает свои двери для жителей Западного округа, а также',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -1889,7 +1834,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ветеринар в кармане',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1898,7 +1843,7 @@ class ClinicSeeder extends Seeder
         'house' => '2/2',
         'address_comment' => '',
         'logo' => null,
-        'description' => 'Ветеринарная клиника Ветеринар в кармане - это место, где для медицинской помощи домашним животным',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -1910,7 +1855,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Ветэксперт',
         'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -1919,7 +1864,7 @@ class ClinicSeeder extends Seeder
         'house' => '2/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => 'В Ветеринарном центре Ветэксперт придут на помощь, если ваше домашнее животное почувствовало себя',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -1931,7 +1876,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника СитиVet',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1940,7 +1885,7 @@ class ClinicSeeder extends Seeder
         'house' => '1/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => 'В Ветеринарной клинике СитиVet работают специалисты, которые сделают все необходимое, чтобы помочь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -1952,7 +1897,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Динго',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1961,7 +1906,7 @@ class ClinicSeeder extends Seeder
         'house' => '350080',
         'address_comment' => '',
         'logo' => null,
-        'description' => 'В Ветеринарной клинике Динго рады жителям Карасунского округа, а также их домашним животным, и когда',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -1973,7 +1918,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Альфа',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -1982,7 +1927,7 @@ class ClinicSeeder extends Seeder
         'house' => '225',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (958) 609-74-98',
         'phone2' => '',
         'email' => null,
@@ -1994,7 +1939,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника доктора Петросяна',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2003,7 +1948,7 @@ class ClinicSeeder extends Seeder
         'house' => '37/12',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, важна забота о самочувствии. Резко ухудшившееся состояние,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2015,7 +1960,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ДАР',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2024,7 +1969,7 @@ class ClinicSeeder extends Seeder
         'house' => '316/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, важна забота об организме и его правильном функционировании.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2036,19 +1981,19 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Собачье сердце',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
         'city' => 'Краснодар',
-        'street' => 'Днепровская улица',
-        'house' => '1',
+        'street' => 'Волжская',
+        'house' => '12',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, жизненно необходима забота о самочувствии. Резко ухудшившееся',
-        'phone1' => '',
+        'description' => ' ',
+        'phone1' => '+7 (861) 205-11-39',
         'phone2' => '',
-        'email' => null,
+        'email' => 'krkooss@mail.ru',
         'telegram' => null,
         'whatsapp' => null,
         'website' => null,
@@ -2057,7 +2002,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Артвет',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2066,7 +2011,7 @@ class ClinicSeeder extends Seeder
         'house' => '35 к4',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Артвет работают специалисты, которые могут оказать срочную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2078,7 +2023,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Айболит',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2099,7 +2044,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на Российской',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2108,7 +2053,7 @@ class ClinicSeeder extends Seeder
         'house' => '532',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике на Российской работают специалисты, которые могут оказать срочную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2120,7 +2065,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Smile',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2129,7 +2074,7 @@ class ClinicSeeder extends Seeder
         'house' => '219',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Smile работают врачи, которые могут оказать срочную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2141,7 +2086,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Зоо-VIP',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2150,7 +2095,7 @@ class ClinicSeeder extends Seeder
         'house' => '68',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном центре Зоо-VIP работают доктора, которые способны оказать срочную помощь домашнему',
+        'description' => ' ',
         'phone1' => '+7 (918) 420-05-95',
         'phone2' => '',
         'email' => null,
@@ -2162,7 +2107,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Здоровье на 9-й Тихой улице',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2171,7 +2116,7 @@ class ClinicSeeder extends Seeder
         'house' => '11',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном центре Здоровье на 9-й Тихой улице работают врачи, которые могут оказать срочную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2183,7 +2128,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Лапа Помощи',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2192,7 +2137,7 @@ class ClinicSeeder extends Seeder
         'house' => '7/1 к2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, не обойтись без заботы о самочувствии. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2204,7 +2149,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Зоосервис',
                 'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -2213,7 +2158,7 @@ class ClinicSeeder extends Seeder
         'house' => '17',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном центре Зоосервис работают доктора, которые готовы оказать экстренную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2225,7 +2170,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Зооленд',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2234,7 +2179,7 @@ class ClinicSeeder extends Seeder
         'house' => '1/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, жизненно необходима забота о самочувствии. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2246,7 +2191,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Друг на Уральской улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2255,7 +2200,7 @@ class ClinicSeeder extends Seeder
         'house' => '184/2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, жизненно необходима забота о здоровье. Признаки недомогания,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2267,7 +2212,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на улице Болотникова',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2288,7 +2233,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на Южной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2309,7 +2254,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира на Товарной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2318,7 +2263,7 @@ class ClinicSeeder extends Seeder
         'house' => '6',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2330,7 +2275,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на улице Ленина',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2339,7 +2284,7 @@ class ClinicSeeder extends Seeder
         'house' => '152',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2351,7 +2296,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на Гимназической улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2360,7 +2305,7 @@ class ClinicSeeder extends Seeder
         'house' => '47',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2372,7 +2317,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Велес Старокорсунская',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2381,7 +2326,7 @@ class ClinicSeeder extends Seeder
         'house' => '182',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, важна забота о состоянии здоровья. Резкая смена',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2393,7 +2338,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника доктора А.В. Ветошкина',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2402,7 +2347,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, жизненно необходима забота о самочувствии. Признаки',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2414,7 +2359,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Весниной Зинаиды Юрьевны',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2423,7 +2368,7 @@ class ClinicSeeder extends Seeder
         'house' => '50',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Весниной Зинаиды Юрьевны работают специалисты, которые способны оказать срочную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2435,7 +2380,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Пегас',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2444,7 +2389,7 @@ class ClinicSeeder extends Seeder
         'house' => '133',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, жизненно необходима забота о здоровье. Признаки',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2456,7 +2401,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира в Прикубанском округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2477,7 +2422,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Белая лапа',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2486,7 +2431,7 @@ class ClinicSeeder extends Seeder
         'house' => '148',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2498,7 +2443,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Гама',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2507,7 +2452,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Гама работают доктора, которые готовы оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2519,7 +2464,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ВикВет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2528,7 +2473,7 @@ class ClinicSeeder extends Seeder
         'house' => '2д',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике ВикВет работают доктора, которые способны оказать экстренную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2540,7 +2485,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира в Карасунском округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2549,7 +2494,7 @@ class ClinicSeeder extends Seeder
         'house' => '311/4',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2561,7 +2506,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ВетПрофи',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2570,7 +2515,7 @@ class ClinicSeeder extends Seeder
         'house' => '57',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы об организме и его правильном',
+        'description' => ' ',
         'phone1' => '+7 (965) 460-75-55',
         'phone2' => '',
         'email' => 'info@profi.vet',
@@ -2582,7 +2527,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Мурчаль',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2591,7 +2536,7 @@ class ClinicSeeder extends Seeder
         'house' => '41',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Мурчаль работают врачи, которые готовы оказать срочную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2603,7 +2548,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника УВЛ Тургеневская на улице Тургенева',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2612,7 +2557,7 @@ class ClinicSeeder extends Seeder
         'house' => '135',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике УВЛ Тургеневская на улице Тургенева работают врачи, которые могут оказать',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2624,7 +2569,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Берегиня',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2633,7 +2578,7 @@ class ClinicSeeder extends Seeder
         'house' => '111',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2645,7 +2590,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Pat a pet',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2654,7 +2599,7 @@ class ClinicSeeder extends Seeder
         'house' => '79 к2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, важна забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2666,7 +2611,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Спасатель',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2675,7 +2620,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, важна забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2687,7 +2632,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на улице имени В.Н. Мачуги',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2708,7 +2653,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Доверие на улице Циолковского',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2729,7 +2674,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника VetAsist',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2738,7 +2683,7 @@ class ClinicSeeder extends Seeder
         'house' => '3/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, важна забота об организме и его правильном функционировании.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2750,8 +2695,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Аксинья',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2760,7 +2704,7 @@ class ClinicSeeder extends Seeder
         'house' => '12',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, жизненно необходима забота о самочувствии. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '+7 (928) 210-30-20',
         'phone2' => '+7 (905) 408-30-80',
         'email' => null,
@@ -2772,7 +2716,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр TerraZoon',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2781,7 +2725,7 @@ class ClinicSeeder extends Seeder
         'house' => '121к1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, не обойтись без заботы о состоянии здоровья. Признаки',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2793,7 +2737,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Шурнюр',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2802,7 +2746,7 @@ class ClinicSeeder extends Seeder
         'house' => '3 к2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Шурнюр работают врачи, которые способны оказать срочную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2814,7 +2758,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на улице Гоголя',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2835,7 +2779,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет на Линейной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2844,7 +2788,7 @@ class ClinicSeeder extends Seeder
         'house' => '119а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете на Линейной улице работают доктора, которые готовы оказать экстренную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2856,8 +2800,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарный центр Багира в Карасунском округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2878,7 +2821,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Доктор Вет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2887,7 +2830,7 @@ class ClinicSeeder extends Seeder
         'house' => '18',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете Доктор Вет работают врачи, которые могут оказать срочную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2899,7 +2842,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Dобрый Dоктор',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2920,7 +2863,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Друг в Карасунском округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2929,7 +2872,7 @@ class ClinicSeeder extends Seeder
         'house' => '20',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, не обойтись без заботы о самочувствии. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2941,7 +2884,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Doctor Vet',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2950,7 +2893,7 @@ class ClinicSeeder extends Seeder
         'house' => '120',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Doctor Vet работают специалисты, которые готовы оказать срочную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2962,7 +2905,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Лапа',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2971,7 +2914,7 @@ class ClinicSeeder extends Seeder
         'house' => '209',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, важна забота о самочувствии. Признаки недомогания, проблемы',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -2983,7 +2926,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет \"На Московской\"',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -2992,7 +2935,7 @@ class ClinicSeeder extends Seeder
         'house' => '63',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете \"На Московской\" работают специалисты, которые готовы оказать внеплановую',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3004,7 +2947,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Dogtor',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3013,7 +2956,7 @@ class ClinicSeeder extends Seeder
         'house' => '42к2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Dogtor работают врачи, которые готовы оказать экстренную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3025,7 +2968,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Вита',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3034,7 +2977,7 @@ class ClinicSeeder extends Seeder
         'house' => '34а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, важна забота о самочувствии. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3046,7 +2989,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3067,7 +3010,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Алиса',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3076,7 +3019,7 @@ class ClinicSeeder extends Seeder
         'house' => '34',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете Алиса работают врачи, которые могут оказать срочную помощь животному, если',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3088,7 +3031,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на Советской улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3109,7 +3052,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Цап Лап',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3118,7 +3061,7 @@ class ClinicSeeder extends Seeder
         'house' => '10',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном центре Цап Лап работают врачи, которые могут оказать срочную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '+7 (995) 322-12-79',
         'phone2' => '',
         'email' => null,
@@ -3130,7 +3073,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Vvk',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3139,7 +3082,7 @@ class ClinicSeeder extends Seeder
         'house' => '8',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, не обойтись без заботы об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3151,7 +3094,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3172,7 +3115,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3193,7 +3136,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Биос',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3202,7 +3145,7 @@ class ClinicSeeder extends Seeder
         'house' => '20',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, не обойтись без заботы о состоянии здоровья. Резко',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3214,7 +3157,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3235,7 +3178,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ВетЛайф',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3244,7 +3187,7 @@ class ClinicSeeder extends Seeder
         'house' => '76',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, не обойтись без заботы о состоянии здоровья. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3256,8 +3199,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника на улице Кирова',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3266,7 +3208,7 @@ class ClinicSeeder extends Seeder
         'house' => '265',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике на улице Кирова работают специалисты, которые способны оказать экстренную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3278,8 +3220,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Доктор Вет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3288,7 +3229,7 @@ class ClinicSeeder extends Seeder
         'house' => '14/2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, так же как и людям, не обойтись без заботы об организме и его правильном функционировании.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3300,7 +3241,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Добрые руки',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3309,7 +3250,7 @@ class ClinicSeeder extends Seeder
         'house' => '538',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3321,7 +3262,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Участковая ветеринарная лечебница Московская',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3342,7 +3283,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на Российской улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3351,7 +3292,7 @@ class ClinicSeeder extends Seeder
         'house' => '396',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике на Российской улице работают доктора, которые могут оказать экстренную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3363,7 +3304,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Brovet',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3372,7 +3313,7 @@ class ClinicSeeder extends Seeder
         'house' => '35 к1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Brovet работают врачи, которые могут оказать срочную помощь питомцу, когда',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3384,8 +3325,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарный диагностический центр',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3394,7 +3334,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Зачастую только осмотра недостаточно, чтобы на его основе сделать точное заключение о состоянии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3406,7 +3346,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Такса',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3415,7 +3355,7 @@ class ClinicSeeder extends Seeder
         'house' => '32/13',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  ',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3427,7 +3367,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Биосфера',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3436,7 +3376,7 @@ class ClinicSeeder extends Seeder
         'house' => '113/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, важна забота о здоровье. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3448,7 +3388,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Багира на улице Мира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3469,7 +3409,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Фламинго',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3478,7 +3418,7 @@ class ClinicSeeder extends Seeder
         'house' => '18к3',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Фламинго работают доктора, которые способны оказать внеплановую помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3490,7 +3430,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Красная Панда',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3499,7 +3439,7 @@ class ClinicSeeder extends Seeder
         'house' => '37 к1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Красная Панда работают доктора, которые способны оказать срочную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3511,7 +3451,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Бастет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3520,7 +3460,7 @@ class ClinicSeeder extends Seeder
         'house' => '39/2к6',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, жизненно необходима забота о здоровье. Резкая смена настроения,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3532,7 +3472,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ветпомощь',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3541,7 +3481,7 @@ class ClinicSeeder extends Seeder
         'house' => '430',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Ветпомощь работают доктора, которые могут оказать экстренную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3553,7 +3493,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Док',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3562,7 +3502,7 @@ class ClinicSeeder extends Seeder
         'house' => '26',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, важна забота о здоровье. Резко ухудшившееся состояние,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3574,8 +3514,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Dобрый Dоктор',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3584,7 +3523,7 @@ class ClinicSeeder extends Seeder
         'house' => '190',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Dобрый Dоктор работают специалисты, которые могут оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3596,7 +3535,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Доктор Лама',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3605,7 +3544,7 @@ class ClinicSeeder extends Seeder
         'house' => 'Надежная улица',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Доктор Лама работают специалисты, которые способны оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3617,8 +3556,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3639,7 +3577,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3648,7 +3586,7 @@ class ClinicSeeder extends Seeder
         'house' => '1/12 лит2',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3660,9 +3598,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
+[
         'name' => 'Управление ветеринарии Тимашевского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3683,8 +3619,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Вита',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3705,7 +3640,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3726,7 +3661,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Nutelove',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3735,7 +3670,7 @@ class ClinicSeeder extends Seeder
         'house' => '65а',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Nutelove приходят на помощь знание их психологии и физиологии, а',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3747,7 +3682,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Феникс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3756,7 +3691,7 @@ class ClinicSeeder extends Seeder
         'house' => '102',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, так же как и людям, важна забота о состоянии здоровья. Резко ухудшившееся состояние,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3768,7 +3703,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Еремизино-Борисовский ветеринарный участок',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3789,7 +3724,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Good Boy',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3810,7 +3745,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Зоомир',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3831,7 +3766,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Краснодарская краевая станция по борьбе с болезнями животных',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3852,7 +3787,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Айболит',
         'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -3861,7 +3796,7 @@ class ClinicSeeder extends Seeder
         'house' => '31/4 к2',
         'address_comment' => '',
      'logo' => 'clinics/logo/ibotil_clinic_logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3873,7 +3808,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Бублик',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3882,7 +3817,7 @@ class ClinicSeeder extends Seeder
         'house' => '83',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Бублик помогают знание особенностей поведения, характерного для каждого',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3894,7 +3829,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ростик',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3903,7 +3838,7 @@ class ClinicSeeder extends Seeder
         'house' => '108',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ростик необходимы знание особенностей их психологии и функционирования',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3915,7 +3850,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Южный лис',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3924,7 +3859,7 @@ class ClinicSeeder extends Seeder
         'house' => '5',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Южный лис работают специалисты, которые готовы оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3936,8 +3871,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Управление ветеринарии Крыловского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3946,7 +3880,7 @@ class ClinicSeeder extends Seeder
         'house' => '25',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Управление ветеринарии Крыловского района необходимы познания в области',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3958,7 +3892,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Любимец',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3967,7 +3901,7 @@ class ClinicSeeder extends Seeder
         'house' => '185а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На стендах аптеки в Любимец присутствуют лекарственные средства разной консистенции: драже, суспензии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -3979,7 +3913,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'МяffГаff',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -3988,7 +3922,7 @@ class ClinicSeeder extends Seeder
         'house' => '25',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' МяffГаff необходимы знание особенностей их психологии и функционирования',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4000,7 +3934,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Управление ветеринарии Северского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4009,7 +3943,7 @@ class ClinicSeeder extends Seeder
         'house' => '19',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто сбора анамнеза недостаточно, чтобы на его основе сделать корректное заключение о проблемах,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4021,7 +3955,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Наfаня',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4030,7 +3964,7 @@ class ClinicSeeder extends Seeder
         'house' => '88',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете Наfаня работают специалисты, которые готовы оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4042,8 +3976,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветуправление Тбилисского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4052,7 +3985,7 @@ class ClinicSeeder extends Seeder
         'house' => '16',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Ветуправление Тбилисского района необходимы знание особенностей их психологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4064,7 +3997,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Павловская зональная ветеринарная лаборатория',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4073,7 +4006,7 @@ class ClinicSeeder extends Seeder
         'house' => '7',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Чаще всего простого осмотра бывает недостаточно, чтобы на его основе сделать точное заключение о',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4085,7 +4018,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Светлоград',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4094,7 +4027,7 @@ class ClinicSeeder extends Seeder
         'house' => '1/4 к15',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Светлоград работают специалисты, которые готовы оказать срочную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4106,8 +4039,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Управление ветеринарии Новокубанского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4116,7 +4048,7 @@ class ClinicSeeder extends Seeder
         'house' => '124',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Управление ветеринарии Новокубанского района помогают познания в',
+        'description' => ' ',
         'phone1' => '+7 861 953-27-42',
         'phone2' => '',
         'email' => null,
@@ -4128,7 +4060,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Молдаванский ветеринарный участок Ветуправление Крымского района',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4149,7 +4081,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветуправление Крымского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4158,7 +4090,7 @@ class ClinicSeeder extends Seeder
         'house' => '116',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4170,7 +4102,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветуправление Крымского района на улице Комарова',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4179,7 +4111,7 @@ class ClinicSeeder extends Seeder
         'house' => '74',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4191,7 +4123,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветфарм',
                 'country' => 'Россия',
         'region' => 'Челябинская область',
@@ -4200,7 +4132,7 @@ class ClinicSeeder extends Seeder
         'house' => '100/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На полках аптеки в Ветфарм вы найдёте лекарственные средства в разнообразных формах выпуска: гранулы,',
+        'description' => ' ',
         'phone1' => '+7(351)225-34-34',
         'phone2' => '',
         'email' => 'uralagrowm@mail.ru',
@@ -4212,8 +4144,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Краснодарский филиал Федеральный центр охраны здоровья животных в Западном округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4222,7 +4153,7 @@ class ClinicSeeder extends Seeder
         'house' => '15',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Краснодарский филиал Федеральный центр охраны здоровья животных в Западном округе предлагает любящим',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4234,7 +4165,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Доверие на проспекте Чекистов',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4255,7 +4186,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Ирбис',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4264,7 +4195,7 @@ class ClinicSeeder extends Seeder
         'house' => '13',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном центре Ирбис работают доктора, которые способны оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4276,7 +4207,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Компьютерный центр Радар',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4285,7 +4216,7 @@ class ClinicSeeder extends Seeder
         'house' => '266',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Несмотря на то, что, как и люди, каждый питомец уникален, у представителей определённой породы есть',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4297,8 +4228,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Счастливая морда на Ставропольской улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4307,7 +4237,7 @@ class ClinicSeeder extends Seeder
         'house' => '268',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, жизненно необходима забота о здоровье. Перемены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4319,7 +4249,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр ЗооВита',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4328,7 +4258,7 @@ class ClinicSeeder extends Seeder
         'house' => '86Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, жизненно необходима забота о состоянии здоровья. Признаки',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4340,7 +4270,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'ВетДинск',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4349,7 +4279,7 @@ class ClinicSeeder extends Seeder
         'house' => '117Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Несмотря на то, что каждая особь уникальна, у представителей конкретной породы есть свои особые',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4361,7 +4291,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Акела',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4370,7 +4300,7 @@ class ClinicSeeder extends Seeder
         'house' => '163',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы о здоровье. Резкая смена',
+        'description' => ' ',
         'phone1' => '+7 (928) 223-05-15',
         'phone2' => '',
         'email' => null,
@@ -4382,7 +4312,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Мильвет',
                 'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -4391,7 +4321,7 @@ class ClinicSeeder extends Seeder
         'house' => '12',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Мильвет работают доктора, которые могут оказать экстренную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4403,7 +4333,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ВетУчасток',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4412,7 +4342,7 @@ class ClinicSeeder extends Seeder
         'house' => '23',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (988) 246-46-52',
         'phone2' => '',
         'email' => null,
@@ -4424,7 +4354,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Вет-Лев',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4433,7 +4363,7 @@ class ClinicSeeder extends Seeder
         'house' => '15',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, важна забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4445,7 +4375,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Воля',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4454,7 +4384,7 @@ class ClinicSeeder extends Seeder
         'house' => 'Целиноградская улица',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, жизненно необходима забота о состоянии здоровья.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4466,8 +4396,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'С Горы Мезмай',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4476,7 +4405,7 @@ class ClinicSeeder extends Seeder
         'house' => '5в',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Несмотря на тот факт, что, как и люди, каждый питомец уникален, у представителей конкретной породы',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4488,7 +4417,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Династия',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4497,7 +4426,7 @@ class ClinicSeeder extends Seeder
         'house' => '36',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете Династия работают доктора, которые способны оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4509,7 +4438,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'ГСББЖ \"Краснодарская\"',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4518,7 +4447,7 @@ class ClinicSeeder extends Seeder
         'house' => '110',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На стендах аптечного пункта в ГСББЖ \"Краснодарская\" вы найдёте фармакологические средства',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4530,8 +4459,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Айболит',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4540,7 +4468,7 @@ class ClinicSeeder extends Seeder
         'house' => '27/2',
         'address_comment' => '',
      'logo' => 'clinics/logo/ibotil_clinic_logo.jpg',
-        'description' => ' Братьям нашим меньшим, равно как и человеку, жизненно необходима забота о самочувствии. Признаки',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4552,7 +4480,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Спасатель',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4561,7 +4489,7 @@ class ClinicSeeder extends Seeder
         'house' => '11',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Спасатель работают специалисты, которые готовы оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4573,7 +4501,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Доброта',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4582,7 +4510,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Доброта работают врачи, которые могут оказать срочную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4594,7 +4522,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Джим',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4603,7 +4531,7 @@ class ClinicSeeder extends Seeder
         'house' => '124',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Джим работают специалисты, которые готовы оказать срочную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4615,7 +4543,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ковчег',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4624,7 +4552,7 @@ class ClinicSeeder extends Seeder
         'house' => '6',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Ковчег работают врачи, которые могут оказать экстренную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4636,7 +4564,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ветзащита',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4645,7 +4573,7 @@ class ClinicSeeder extends Seeder
         'house' => '123',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '+7 (918) 114-00-17',
         'phone2' => '',
         'email' => null,
@@ -4657,7 +4585,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Крылья, лапы и хвост',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4666,7 +4594,7 @@ class ClinicSeeder extends Seeder
         'house' => '32',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы о самочувствии. Признаки',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4678,7 +4606,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Маленький друг',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4687,7 +4615,7 @@ class ClinicSeeder extends Seeder
         'house' => '84а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, жизненно необходима забота о состоянии здоровья. Перемены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4699,7 +4627,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная лечебница Алиса',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4708,7 +4636,7 @@ class ClinicSeeder extends Seeder
         'house' => '91а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной лечебнице Алиса работают специалисты, которые могут оказать внеплановую помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4720,7 +4648,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветуправление Приморско-Ахтарского района',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4729,7 +4657,7 @@ class ClinicSeeder extends Seeder
         'house' => '35',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (86143) 2-17-98',
         'phone2' => '+7 (86143) 2-12-67',
         'email' => null,
@@ -4741,7 +4669,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника в Прикубанском округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4750,7 +4678,7 @@ class ClinicSeeder extends Seeder
         'house' => '13/9',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике в Прикубанском округе работают доктора, которые могут оказать экстренную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4762,7 +4690,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Белый кот',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4771,7 +4699,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, важна забота о самочувствии. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4783,7 +4711,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Служба здоровья животных Василиск',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4792,7 +4720,7 @@ class ClinicSeeder extends Seeder
         'house' => '30',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Несмотря на то, что каждая особь уникальна, у представителей определённой породы имеются свои особые',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4804,7 +4732,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Диагностический ветеринарный центр Сфера',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4813,7 +4741,7 @@ class ClinicSeeder extends Seeder
         'house' => '13',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Диагностическом ветеринарном центре Сфера работают специалисты, которые могут оказать экстренную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4825,7 +4753,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ева',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4834,7 +4762,7 @@ class ClinicSeeder extends Seeder
         'house' => '291/2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Ева работают доктора, которые могут оказать срочную помощь питомцу, когда',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4846,7 +4774,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ника на Ставропольской улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4855,7 +4783,7 @@ class ClinicSeeder extends Seeder
         'house' => '107/10',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Ника на Ставропольской улице работают врачи, которые могут оказать срочную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4867,7 +4795,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника VetOzon',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4876,7 +4804,7 @@ class ClinicSeeder extends Seeder
         'house' => '2 ст Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике VetOzon работают врачи, которые могут оказать срочную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4888,8 +4816,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Управление ветеринарии Ленинградского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4898,7 +4825,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Управление ветеринарии Ленинградского района необходимы познания в области',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4910,7 +4837,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Зоопарикмахерская Grooming City',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4919,7 +4846,7 @@ class ClinicSeeder extends Seeder
         'house' => 'микрорайон Московский улица имени Николая Семеновича Котлярова',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Зоопарикмахерской Grooming City вашему любимцу обеспечат надлежащий уход. В комплекс процедур',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4931,9 +4858,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
+[
         'name' => 'Ветеринарный кабинет Здоровье животных',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4942,7 +4867,7 @@ class ClinicSeeder extends Seeder
         'house' => '164',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, жизненно необходима забота о здоровье. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4954,7 +4879,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Любимец',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4963,7 +4888,7 @@ class ClinicSeeder extends Seeder
         'house' => '189',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, важна забота об организме и его правильном функционировании.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4975,7 +4900,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Снежный барс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -4984,7 +4909,7 @@ class ClinicSeeder extends Seeder
         'house' => '11 к1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Снежный барс работают врачи, которые способны оказать экстренную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -4996,7 +4921,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Зоосервис',
                 'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -5005,7 +4930,7 @@ class ClinicSeeder extends Seeder
         'house' => '88 к7',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, жизненно необходима забота о состоянии здоровья. Перемены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5017,7 +4942,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Центр Мой друг',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5026,7 +4951,7 @@ class ClinicSeeder extends Seeder
         'house' => '370',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Несмотря на то, что, как и люди, каждый питомец уникален, у представителей определённой породы замечены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5038,7 +4963,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Старокорсунская участковая ветеринарная лечебница',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5059,7 +4984,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Вита',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5068,7 +4993,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, не обойтись без заботы о здоровье. Резкая смена настроения,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5080,7 +5005,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Дай лапу',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5089,7 +5014,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Дай лапу помогают познания в области поведения, характерного для',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5101,7 +5026,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Пушистики',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5110,7 +5035,7 @@ class ClinicSeeder extends Seeder
         'house' => '93',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Пушистики помогают познания в области поведения, характерного для',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5122,8 +5047,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная лаборатория Управление ветеринарии Каневского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5144,7 +5068,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Импульс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5165,7 +5089,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Пункт выдачи рациона питания для животных',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5174,7 +5098,7 @@ class ClinicSeeder extends Seeder
         'house' => '29',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, так же как и людям, важна забота о здоровье. Признаки недомогания, проблемы с',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5186,7 +5110,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветуправление Крымского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5195,7 +5119,7 @@ class ClinicSeeder extends Seeder
         'house' => '168',
         'address_comment' => '',
         'logo' => 'clinics/logo/23-kubani-vet-clinic.png',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (86131) 4-23-67',
         'phone2' => '',
         'email' => 'wet.krymsk@mail.ru',
@@ -5207,7 +5131,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Terravet',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5216,7 +5140,7 @@ class ClinicSeeder extends Seeder
         'house' => '58',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, важна забота об организме и его правильном функционировании.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5228,7 +5152,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Хвостун',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5237,7 +5161,7 @@ class ClinicSeeder extends Seeder
         'house' => '47',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Хвостун работают доктора, которые способны оказать экстренную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5249,7 +5173,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Diamond',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5258,7 +5182,7 @@ class ClinicSeeder extends Seeder
         'house' => '92',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Diamond помогают знание поведения, характерного для каждого вида,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5270,8 +5194,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Витус',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5280,7 +5203,7 @@ class ClinicSeeder extends Seeder
         'house' => '39',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Витус работают доктора, которые готовы оказать экстренную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5292,7 +5215,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Новотитаровская ветеринарная лечебница',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5301,7 +5224,7 @@ class ClinicSeeder extends Seeder
         'house' => '97',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, не обойтись без заботы о здоровье. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5313,7 +5236,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Атрикс-вет',
         'country' => 'Россия',
         'region' => 'Донецкая Народная Республика',
@@ -5334,7 +5257,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ЛАПА',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5343,7 +5266,7 @@ class ClinicSeeder extends Seeder
         'house' => 'Персиковая улица',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике ЛАПА работают специалисты, которые готовы оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5355,7 +5278,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Незамаевская ветеринарная клиника',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5364,7 +5287,7 @@ class ClinicSeeder extends Seeder
         'house' => '21',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, важна забота о самочувствии. Резко ухудшившееся состояние,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5376,7 +5299,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Vet-dent',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5385,7 +5308,7 @@ class ClinicSeeder extends Seeder
         'house' => '84/1',
         'address_comment' => '',
         'logo' => 'clinics/logo/vetdent.png',
-        'description' => 'По предварительной записи',
+        'description' => ' ',
         'phone1' => '8 (900) 284-47-30',
         'phone2' => '',
         'email' => 'Vet-Dent@yandex.ru',
@@ -5397,7 +5320,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Управление ветеринарии Павловского района',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5406,7 +5329,7 @@ class ClinicSeeder extends Seeder
         'house' => '16',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Управление ветеринарии Павловского района необходимы знание особенностей',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5418,7 +5341,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Дмитриевский ветеринарный участок',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5439,8 +5362,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Фламинго ',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5449,7 +5371,7 @@ class ClinicSeeder extends Seeder
         'house' => '18',
         'address_comment' => 'к3 83-85 помещение; цокольный этаж',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7‒918‒395‒55‒51',
         'phone2' => '',
         'email' => null,
@@ -5461,8 +5383,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника 1Vet',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5483,9 +5404,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
+[
         'name' => 'Ветеринарная клиника Сфинкс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5494,7 +5413,7 @@ class ClinicSeeder extends Seeder
         'house' => '31',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Сфинкс работают врачи, которые могут оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5506,8 +5425,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Управление ветеринарии Брюховецкого района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5516,7 +5434,7 @@ class ClinicSeeder extends Seeder
         'house' => '186',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Зачастую только осмотра недостаточно для того, чтобы получить исчерпывающую информацию, а на её',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5528,7 +5446,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ивановский ветеринарный участок',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5537,7 +5455,7 @@ class ClinicSeeder extends Seeder
         'house' => '203а',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ивановский ветеринарный участок необходимы знание особенностей зоопсихологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5549,9 +5467,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
+[
         'name' => 'Ветеринарная клиника Веселый кот',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5560,7 +5476,7 @@ class ClinicSeeder extends Seeder
         'house' => '5а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы о состоянии здоровья. Резко',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5572,7 +5488,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Рыжий кот',
                 'country' => 'Россия',
         'region' => 'Нижегородская область',
@@ -5593,7 +5509,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Клиника Ветуправление Калининского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5602,7 +5518,7 @@ class ClinicSeeder extends Seeder
         'house' => '71',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ветуправление Калининского района необходимы знание их психологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5614,7 +5530,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветуправление Староминского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5623,7 +5539,7 @@ class ClinicSeeder extends Seeder
         'house' => '23',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто только осмотра недостаточно, чтобы на его основе сделать точное заключение о здоровье маленького',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5635,7 +5551,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Краснодарская межобластная ветеринарная лаборатория филиал (Мвл)',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5644,7 +5560,7 @@ class ClinicSeeder extends Seeder
         'house' => '10',
         'address_comment' => 'отдел 1',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (861) 226-47-41',
         'phone2' => '+7 (861) 221-61-62',
         'email' => null,
@@ -5656,7 +5572,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ейская зональная ветеринарная лаборатория',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5665,7 +5581,7 @@ class ClinicSeeder extends Seeder
         'house' => '89',
         'address_comment' => '',
         'logo' => 'clinics/logo/Eysk-zonal-lab.jpg',
-        'description' => ' Часто сбора анамнеза недостаточно, чтобы на его основе поставить окончательный диагноз и назначить',
+        'description' => ' ',
         'phone1' => '+7 (86132) 2-39-78',
         'phone2' => '',
         'email' => 'gukkvl48@kubanvet.ru',
@@ -5677,7 +5593,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ВетСи',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5698,7 +5614,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Изобильненская районная станция по борьбе с болезнями животных',
                 'country' => 'Россия',
         'region' => 'Ставропольский край',
@@ -5719,7 +5635,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Елга',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5728,7 +5644,7 @@ class ClinicSeeder extends Seeder
         'house' => '15',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Елга работают врачи, которые могут оказать экстренную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '+7 (918) 979-38-09',
         'phone2' => '',
         'email' => null,
@@ -5740,7 +5656,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на улице Адмирала Фадеева',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5749,7 +5665,7 @@ class ClinicSeeder extends Seeder
         'house' => '150/4',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы о самочувствии. Резкая смена',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5761,7 +5677,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ортос',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5770,7 +5686,7 @@ class ClinicSeeder extends Seeder
         'house' => '3',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, важна забота о самочувствии. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5782,7 +5698,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Счастливая морда на проспекте Писателя Знаменского',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5791,7 +5707,7 @@ class ClinicSeeder extends Seeder
         'house' => '9 к1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Счастливая морда на проспекте Писателя Знаменского работают доктора, которые',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5803,7 +5719,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Пух и Панда',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5812,7 +5728,7 @@ class ClinicSeeder extends Seeder
         'house' => 'микрорайон Московский улица имени Николая Семеновича Котлярова',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, не обойтись без заботы о самочувствии. Резкая',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5824,7 +5740,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Друг',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5833,7 +5749,7 @@ class ClinicSeeder extends Seeder
         'house' => '2а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5845,7 +5761,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Управление ветеринарии Динского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5854,7 +5770,7 @@ class ClinicSeeder extends Seeder
         'house' => '149',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, не обойтись без заботы о здоровье. Резкая смена настроения,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5866,7 +5782,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Саламандра',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5875,7 +5791,7 @@ class ClinicSeeder extends Seeder
         'house' => '7',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (905) 473-17-77',
         'phone2' => '',
         'email' => null,
@@ -5887,7 +5803,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Доверие',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5896,7 +5812,7 @@ class ClinicSeeder extends Seeder
         'house' => '100а',
         'address_comment' => '',
                 'logo' => ' ',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7‒928‒436‒18‒06',
         'phone2' => '',
         'email' => null,
@@ -5908,7 +5824,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Управление ветеринарии Усть-Лабинского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5917,7 +5833,7 @@ class ClinicSeeder extends Seeder
         'house' => '171',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, не обойтись без заботы об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5929,7 +5845,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Фармвет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5938,7 +5854,7 @@ class ClinicSeeder extends Seeder
         'house' => '2к4',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Фармвет работают специалисты, которые могут оказать внеплановую помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -5950,7 +5866,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Vet Planet',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5971,7 +5887,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Deni Vita',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -5980,7 +5896,7 @@ class ClinicSeeder extends Seeder
         'house' => '133А',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Deni Vita работают врачи, которые могут оказать экстренную помощь домашнему',
+        'description' => ' ',
         'phone1' => '+7 (918) 464-79-35',
         'phone2' => '',
         'email' => null,
@@ -5992,7 +5908,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Управление ветеринарии Белореченского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6001,7 +5917,7 @@ class ClinicSeeder extends Seeder
         'house' => '3',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Чаще всего только осмотра недостаточно, чтобы на его основе поставить точный диагноз и определить',
+        'description' => ' ',
         'phone1' => '+7 (86155) 2-32-83',
         'phone2' => '',
         'email' => null,
@@ -6013,7 +5929,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Зверополис',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6022,7 +5938,7 @@ class ClinicSeeder extends Seeder
         'house' => '41',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Зверополис работают доктора, которые готовы оказать экстренную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6034,9 +5950,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
+[
         'name' => 'Ветеринарная клиника Рыжий пёс',
                 'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -6045,7 +5959,7 @@ class ClinicSeeder extends Seeder
         'house' => '18/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На стендах аптеки в Рыжий пёс вы найдёте различные лекарственные средства, к примеру противопаразитарные',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6057,7 +5971,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Алиса',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6066,7 +5980,7 @@ class ClinicSeeder extends Seeder
         'house' => '68',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, не обойтись без заботы о состоянии здоровья. Перемены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6078,7 +5992,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Е.Н.Морозовой',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6087,7 +6001,7 @@ class ClinicSeeder extends Seeder
         'house' => '6а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, так же как и людям, важна забота о самочувствии. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6099,8 +6013,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарный госпиталь Пульс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6109,7 +6022,7 @@ class ClinicSeeder extends Seeder
         'house' => '107/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто простого осмотра недостаточно для того, чтобы сделать точное заключение о состоянии здоровья',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6121,7 +6034,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ирбис',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6130,7 +6043,7 @@ class ClinicSeeder extends Seeder
         'house' => '110',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, не обойтись без заботы об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6142,7 +6055,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная амбулатория',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6151,7 +6064,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Ветеринарная амбулатория необходимы знание зоопсихологии и анатомии,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6163,7 +6076,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Берегиня',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6172,7 +6085,7 @@ class ClinicSeeder extends Seeder
         'house' => '111',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Берегиня помогают знание поведения, характерного для каждого вида, и',
+        'description' => ' ',
         'phone1' => '+7 (961) 505-03-16',
         'phone2' => '',
         'email' => null,
@@ -6184,7 +6097,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Bones',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6193,7 +6106,7 @@ class ClinicSeeder extends Seeder
         'house' => '54А',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (928) 208-19-15',
         'phone2' => '',
         'email' => null,
@@ -6205,7 +6118,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Айболит',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6214,7 +6127,7 @@ class ClinicSeeder extends Seeder
         'house' => '26а',
         'address_comment' => '',
      'logo' => 'clinics/logo/ibotil_clinic_logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6226,7 +6139,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-            [
+[
         'name' => 'Зооспасатель',
         
         'country' => 'Россия',
@@ -6236,7 +6149,7 @@ class ClinicSeeder extends Seeder
         'house' => '216а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На полках аптеки в Зооспасатель можно встретить различные лекарства, например противопаразитарные',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6248,7 +6161,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на Весенней улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6257,7 +6170,7 @@ class ClinicSeeder extends Seeder
         'house' => '19',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6269,7 +6182,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Умка',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6278,7 +6191,7 @@ class ClinicSeeder extends Seeder
         'house' => '40',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, так же как и людям, важна забота о состоянии здоровья. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6290,8 +6203,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарный центр Dr.Tomas',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6300,7 +6212,7 @@ class ClinicSeeder extends Seeder
         'house' => '114',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, так же как и людям, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6312,7 +6224,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Лимпопо',
                 'country' => 'Россия',
         'region' => 'Воронежская область',
@@ -6321,7 +6233,7 @@ class ClinicSeeder extends Seeder
         'house' => '10А',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Лимпопо работают доктора, которые готовы оказать экстренную помощь домашнему',
+        'description' => ' ',
         'phone1' => '+7 (473) 232-06-12',
         'phone2' => '',
         'email' => null,
@@ -6333,7 +6245,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Лабинская районная ветеринарная лаборатория',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6342,7 +6254,7 @@ class ClinicSeeder extends Seeder
         'house' => '4',
         'address_comment' => '',
         'logo' => 'clinics/logo/gvs-labinsk-logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '(86169) 3-88-83',
         'phone2' => '(86169) 3-11-61',
         'email' => 'vetlabinsk@mail.ru',
@@ -6354,8 +6266,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Вознесенская участковая ветеринарная лечебница',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6364,7 +6275,7 @@ class ClinicSeeder extends Seeder
         'house' => '48',
         'address_comment' => '',
         'logo' => 'clinics/logo/gvs-labinsk-logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '(86169) 7-02-28',
         'phone2' => '',
         'email' => 'vetlabinsk@mail.ru',
@@ -6376,8 +6287,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Харьковская участковая ветеринарная лечебница',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6386,7 +6296,7 @@ class ClinicSeeder extends Seeder
         'house' => '165',
         'address_comment' => '',
         'logo' => 'clinics/logo/gvs-labinsk-logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => 'vetlabinsk@mail.ru',
@@ -6398,8 +6308,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Зассовская участковая ветеринарная лечебница',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6408,7 +6317,7 @@ class ClinicSeeder extends Seeder
         'house' => '43',
         'address_comment' => '',
         'logo' => 'clinics/logo/gvs-labinsk-logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '(86169) 7-84-79',
         'phone2' => '',
         'email' => 'vetlabinsk@mail.ru',
@@ -6420,8 +6329,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Владимирская участковая ветеринарная лечебница',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6430,7 +6338,7 @@ class ClinicSeeder extends Seeder
         'house' => '80',
         'address_comment' => '',
         'logo' => 'clinics/logo/gvs-labinsk-logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '(86169) 6-34-81',
         'phone2' => '',
         'email' => 'vetlabinsk@mail.ru',
@@ -6442,8 +6350,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ахметовская участковая ветеринарная лечебница',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6452,7 +6359,7 @@ class ClinicSeeder extends Seeder
         'house' => '17',
         'address_comment' => '',
         'logo' => 'clinics/logo/gvs-labinsk-logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '(86169) 6-61-97',
         'phone2' => '',
         'email' => 'vetlabinsk@mail.ru',
@@ -6464,8 +6371,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Каладжинская участковая ветеринарная лечебница',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6474,7 +6380,7 @@ class ClinicSeeder extends Seeder
         'house' => '43',
         'address_comment' => '',
         'logo' => 'clinics/logo/gvs-labinsk-logo.jpg',
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => 'vetlabinsk@mail.ru',
@@ -6486,9 +6392,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
+[
         'name' => 'Ветеринарная клиника Управление ветеринарии Тихорецкого района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6497,7 +6401,7 @@ class ClinicSeeder extends Seeder
         'house' => '16',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Управление ветеринарии Тихорецкого района работают доктора, которые готовы',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6509,7 +6413,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Доберман',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6518,7 +6422,7 @@ class ClinicSeeder extends Seeder
         'house' => '78',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (918) 153-92-45',
         'phone2' => '',
         'email' => null,
@@ -6530,8 +6434,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарный кабинет ВетДок',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6540,7 +6443,7 @@ class ClinicSeeder extends Seeder
         'house' => '39/2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете ВетДок работают врачи, которые готовы оказать срочную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6552,7 +6455,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная лаборатория Веттест-центр',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6561,7 +6464,7 @@ class ClinicSeeder extends Seeder
         'house' => '215',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Зачастую только осмотра бывает недостаточно, чтобы получить исчерпывающую информацию, а на её основе',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6573,7 +6476,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Зоосервис',
                 'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -6582,7 +6485,7 @@ class ClinicSeeder extends Seeder
         'house' => '7/2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, жизненно необходима забота о самочувствии.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6594,7 +6497,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Васюринская участковая ветлечебница',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6603,7 +6506,7 @@ class ClinicSeeder extends Seeder
         'house' => '88',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Васюринская участковая ветлечебница работают специалисты, которые готовы оказать срочную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6615,7 +6518,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Конечно, Вася!',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6636,7 +6539,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Любимец',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6657,8 +6560,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Управление ветеринарии Щербиновского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6679,8 +6581,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'ЗооВет',
                 'country' => 'Россия',
         'region' => 'Московская область',
@@ -6701,7 +6602,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Вита',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6722,7 +6623,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на Базарной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6731,7 +6632,7 @@ class ClinicSeeder extends Seeder
         'house' => '29',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6743,7 +6644,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная лечебница на улице Шевченко',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6764,7 +6665,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Армавирская зональная ветеринарная лаборатория',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6785,7 +6686,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Профи',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6794,7 +6695,7 @@ class ClinicSeeder extends Seeder
         'house' => '16',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, так же как и людям, не обойтись без заботы о самочувствии. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6806,7 +6707,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет на улице Коммунаров',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6815,7 +6716,7 @@ class ClinicSeeder extends Seeder
         'house' => '221/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете на улице Коммунаров работают доктора, которые могут оказать экстренную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6827,7 +6728,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Академия пушистых друзей',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6836,7 +6737,7 @@ class ClinicSeeder extends Seeder
         'house' => '78',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Академии пушистых друзей помогают знание особенностей их психологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6848,7 +6749,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный участок Ветуправление Славянского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6857,7 +6758,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ветеринарного участка Ветуправление Славянского района помогают познания',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6869,7 +6770,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Кириленко',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6878,7 +6779,7 @@ class ClinicSeeder extends Seeder
         'house' => '73',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (918) 076-92-37',
         'phone2' => '',
         'email' => null,
@@ -6890,7 +6791,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Аквариумный мир',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6899,7 +6800,7 @@ class ClinicSeeder extends Seeder
         'house' => '184',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Аквариумный мир необходимы знание особенностей зоопсихологии и строения',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6911,8 +6812,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Должанская ветеринарная лечебница',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6921,7 +6821,7 @@ class ClinicSeeder extends Seeder
         'house' => '70',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, так же как и людям, жизненно необходима забота о здоровье. Признаки недомогания,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6933,7 +6833,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Котопёс',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6954,7 +6854,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'ЗооОптТорг.рф',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6975,7 +6875,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Велес',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -6984,7 +6884,7 @@ class ClinicSeeder extends Seeder
         'house' => '20/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, так же как и людям, важна забота о самочувствии. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -6996,7 +6896,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Управление ветеринарии Белоглинского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7005,7 +6905,7 @@ class ClinicSeeder extends Seeder
         'house' => '45',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7017,7 +6917,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Зоомагия',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7038,7 +6938,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Зооняня',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7059,7 +6959,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Участковая ветеринарная лечебница Ветуправление г. Краснодара',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7068,7 +6968,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7080,8 +6980,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника на Советской улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7102,7 +7001,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Краснодарская межобластная ветеринарная лаборатория',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7111,7 +7010,7 @@ class ClinicSeeder extends Seeder
         'house' => '171',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто сбора анамнеза недостаточно, чтобы на его основе поставить адекватный диагноз и подобрать',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7123,7 +7022,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Бил',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7132,7 +7031,7 @@ class ClinicSeeder extends Seeder
         'house' => '25',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Бил работают специалисты, которые могут оказать внеплановую помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7144,7 +7043,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника VetOzon',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7153,7 +7052,7 @@ class ClinicSeeder extends Seeder
         'house' => '6',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике VetOzon работают специалисты, которые могут оказать внеплановую помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7165,7 +7064,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Управление ветеринарии Гулькевичского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7186,7 +7085,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Отдел лабораторных испытаний по карантину растений Федеральный центр охраны здоровья животных на Совхозной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7195,7 +7094,7 @@ class ClinicSeeder extends Seeder
         'house' => '10',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Отдел лабораторных испытаний по карантину растений Федеральный центр',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7207,7 +7106,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Казанский ветеринарный участок',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7216,7 +7115,7 @@ class ClinicSeeder extends Seeder
         'house' => '104',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Казанский ветеринарный участок необходимы знание их психологии и анатомии,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7228,7 +7127,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный участок Ветуправление успенского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7237,7 +7136,7 @@ class ClinicSeeder extends Seeder
         'house' => '22',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ветеринарного участка Ветуправление успенского района помогают познания',
+        'description' => ' ',
         'phone1' => '8 (86140) 5-52-74',
         'phone2' => '',
         'email' => null,
@@ -7249,8 +7148,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника на Железнодорожной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7259,7 +7157,7 @@ class ClinicSeeder extends Seeder
         'house' => '84',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике на Железнодорожной улице работают доктора, которые готовы оказать экстренную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7271,7 +7169,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Новоалександровская районная станция по борьбе с болезнями животных, ГБУ СК',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7280,7 +7178,7 @@ class ClinicSeeder extends Seeder
         'house' => '217',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Зачастую сбора анамнеза недостаточно, чтобы на его основе сделать корректное заключение о здоровье',
+        'description' => ' ',
         'phone1' => '+7 (86544) 6-49-57',
         'phone2' => '',
         'email' => null,
@@ -7292,7 +7190,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника 9 жизней',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7301,7 +7199,7 @@ class ClinicSeeder extends Seeder
         'house' => '99',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике 9 жизней работают врачи, которые могут оказать срочную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7313,7 +7211,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на Восточно-Кругликовской улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7322,7 +7220,7 @@ class ClinicSeeder extends Seeder
         'house' => '72',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике на Восточно-Кругликовской улице работают врачи, которые готовы оказать срочную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7334,7 +7232,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный центр Сафари',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7343,7 +7241,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном центре Сафари работают специалисты, которые могут оказать внеплановую помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7355,7 +7253,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Айболит',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7364,7 +7262,7 @@ class ClinicSeeder extends Seeder
         'house' => '106',
         'address_comment' => '',
      'logo' => 'clinics/logo/ibotil_clinic_logo.jpg',
-        'description' => ' Чаще всего только осмотра недостаточно, чтобы сделать корректное заключение о проблемах, возникших',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7376,7 +7274,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Каспер',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7385,7 +7283,7 @@ class ClinicSeeder extends Seeder
         'house' => '68/2а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете Каспер работают специалисты, которые могут оказать срочную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7397,7 +7295,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на Базарной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7406,7 +7304,7 @@ class ClinicSeeder extends Seeder
         'house' => '77',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, так же как и людям, важна забота о самочувствии. Резкая смена настроения, проблемы',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7418,8 +7316,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Кабинет ветеринарных услуг и зоотоваров',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7428,7 +7325,7 @@ class ClinicSeeder extends Seeder
         'house' => '6',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Кабинете ветеринарных услуг и зоотоваров работают врачи, которые могут оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7440,8 +7337,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника ОазисВет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7450,7 +7346,7 @@ class ClinicSeeder extends Seeder
         'house' => '4/4',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике ОазисВет работают специалисты, которые готовы оказать экстренную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7462,7 +7358,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Шанс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7471,7 +7367,7 @@ class ClinicSeeder extends Seeder
         'house' => '85/6',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Шанс работают доктора, которые могут оказать экстренную помощь питомцу, когда',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7483,7 +7379,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Вета',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7492,7 +7388,7 @@ class ClinicSeeder extends Seeder
         'house' => '46',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Вета работают врачи, которые готовы оказать экстренную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7504,7 +7400,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Синий кот',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7513,7 +7409,7 @@ class ClinicSeeder extends Seeder
         'house' => '2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Синий кот работают врачи, которые способны оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '+7 (900) 261-92-68',
         'phone2' => '',
         'email' => null,
@@ -7525,7 +7421,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Клиника Свой Доктор',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7534,7 +7430,7 @@ class ClinicSeeder extends Seeder
         'house' => '4Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '+7 (989) 288-77-78',
         'phone2' => '',
         'email' => null,
@@ -7546,8 +7442,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Шанс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7556,7 +7451,7 @@ class ClinicSeeder extends Seeder
         'house' => '130',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Шанс работают врачи, которые могут оказать срочную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7568,7 +7463,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная лечебница Алиса',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7577,7 +7472,7 @@ class ClinicSeeder extends Seeder
         'house' => '103',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной лечебнице Алиса работают специалисты, которые способны оказать срочную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7589,7 +7484,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Клиника Vetсервис',
                 'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -7598,7 +7493,7 @@ class ClinicSeeder extends Seeder
         'house' => '111/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Клинике Vetсервис работают специалисты, которые могут оказать срочную помощь домашнему животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7610,7 +7505,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Елизаветинский ветеринарный участок',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7619,7 +7514,7 @@ class ClinicSeeder extends Seeder
         'house' => '289/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто только осмотра недостаточно для того, чтобы на его основе сделать корректное заключение о',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7631,7 +7526,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'ЮгВетКлиника',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7652,7 +7547,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Акари Киар',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7661,7 +7556,7 @@ class ClinicSeeder extends Seeder
         'house' => '107',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Акари Киар приходят на помощь знание поведения, характерного для каждого',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7673,7 +7568,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Айболит',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7694,7 +7589,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Любимцы',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7715,7 +7610,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Кастильо',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7724,7 +7619,7 @@ class ClinicSeeder extends Seeder
         'house' => '13',
         'address_comment' => 'Цокольный этаж',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Кастильо работают врачи, которые могут оказать внеплановую помощь питомцу,',
+        'description' => ' ',
         'phone1' => '+7 (918) 443-70-37',
         'phone2' => '',
         'email' => null,
@@ -7736,7 +7631,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Краснодарская межобластная ветеринарная лаборатория на Новой улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7745,7 +7640,7 @@ class ClinicSeeder extends Seeder
         'house' => '97',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто простого осмотра недостаточно для того, чтобы получить исчерпывающую информацию, а на её основе',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7757,7 +7652,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника S-Vet',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7766,7 +7661,7 @@ class ClinicSeeder extends Seeder
         'house' => '68 к1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, не обойтись без заботы о самочувствии. Перемены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7778,7 +7673,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветуправление Кореновского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7787,7 +7682,7 @@ class ClinicSeeder extends Seeder
         'house' => '200',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ветуправление Кореновского района приходят на помощь знание их психологии',
+        'description' => ' ',
         'phone1' => '+7 (86142) 4-53-35',
         'phone2' => '+7 (86142) 4-52-03',
         'email' => null,
@@ -7799,7 +7694,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Участок №119 Фабрикантъ',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7808,7 +7703,7 @@ class ClinicSeeder extends Seeder
         'house' => '30/4',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Участок №119 Фабрикантъ помогают знание особенностей поведения, характерного',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7820,7 +7715,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Екатериновет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7829,7 +7724,7 @@ class ClinicSeeder extends Seeder
         'house' => '1/4 к2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Екатериновет работают специалисты, которые способны оказать срочную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7841,7 +7736,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Управление ветеринарии г. Геленджика',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7850,7 +7745,7 @@ class ClinicSeeder extends Seeder
         'house' => '90',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Управление ветеринарии г. Геленджика работают доктора, которые могут оказать',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7862,7 +7757,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Здоровье',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7871,7 +7766,7 @@ class ClinicSeeder extends Seeder
         'house' => '708/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, жизненно необходима забота о состоянии здоровья.',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7883,7 +7778,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника доктора Жигуновой',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7904,7 +7799,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Управление ветеринарии Павловского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7913,7 +7808,7 @@ class ClinicSeeder extends Seeder
         'house' => '9',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Управление ветеринарии Павловского района необходимы познания в области',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7925,7 +7820,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Zoo лекарь',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7934,7 +7829,7 @@ class ClinicSeeder extends Seeder
         'house' => '117',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На полках аптечного пункта в Zoo лекарь вы найдёте фармакологические средства разной консистенции:',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7946,7 +7841,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Милосердие',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7967,8 +7862,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Кабинет ветеринарного врача',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -7977,7 +7871,7 @@ class ClinicSeeder extends Seeder
         'house' => '55',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Кабинете ветеринарного врача работают специалисты, которые способны оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -7989,7 +7883,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника 9 жизней',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8010,7 +7904,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Добрый Вет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8019,7 +7913,7 @@ class ClinicSeeder extends Seeder
         'house' => '16А',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете Добрый Вет работают специалисты, которые способны оказать срочную помощь',
+        'description' => ' ',
         'phone1' => '+7 (4932) 37-04-42',
         'phone2' => '',
         'email' => null,
@@ -8031,7 +7925,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ст. Новорождественская Красная шапочка',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8040,7 +7934,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Ст. Новорождественская Красная шапочка помогают познания в области зоопсихологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8052,7 +7946,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветуправление Отрадненского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8061,7 +7955,7 @@ class ClinicSeeder extends Seeder
         'house' => '1а',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ветуправление Отрадненского района приходят на помощь знание их психологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8073,7 +7967,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Альфа Вет',
                 'country' => 'Россия',
         'region' => 'Республика Крым',
@@ -8094,7 +7988,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Управление ветеринарии г. Армавира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8103,7 +7997,7 @@ class ClinicSeeder extends Seeder
         'house' => '191',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На витринах аптечного пункта в Управление ветеринарии г. Армавира вы найдёте лекарства в разных',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8115,7 +8009,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Зоомир',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8136,7 +8030,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника в Карасунском округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8145,7 +8039,7 @@ class ClinicSeeder extends Seeder
         'house' => '220а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике в Карасунском округе работают врачи, которые способны оказать внеплановую',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8157,7 +8051,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Весёлый мопс',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8178,8 +8072,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Кабинет ветеринарного врача на Тоннельной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8188,7 +8081,7 @@ class ClinicSeeder extends Seeder
         'house' => '7а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, так же как и людям, не обойтись без заботы о здоровье. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8200,7 +8093,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Атаманская ветеринарная лечебница',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8209,7 +8102,7 @@ class ClinicSeeder extends Seeder
         'house' => '66',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, не обойтись без заботы о здоровье. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8221,7 +8114,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный пункт Архипо-Осиповка',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8230,7 +8123,7 @@ class ClinicSeeder extends Seeder
         'house' => '7',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '+7 (86141) 6‒04‒33',
         'phone2' => '',
         'email' => null,
@@ -8242,7 +8135,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Феникс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8251,7 +8144,7 @@ class ClinicSeeder extends Seeder
         'house' => '43/3',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Утрата любимца - серьёзное испытание для хозяина, ведь зачастую его считают настоящим другом. И',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8263,7 +8156,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Зоомагия',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8272,7 +8165,7 @@ class ClinicSeeder extends Seeder
         'house' => '430/2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Зоомагия работают врачи, которые способны оказать срочную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8284,28 +8177,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Любимец',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Любимец приходят на помощь знание их психологии и строения организма,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарный кабинет в Карасунском округе',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8314,7 +8186,7 @@ class ClinicSeeder extends Seeder
         'house' => '1 к4',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете в Карасунском округе работают доктора, которые готовы оказать срочную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8326,7 +8198,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Геленвет',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8335,7 +8207,7 @@ class ClinicSeeder extends Seeder
         'house' => '1 к3',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Геленвет работают доктора, которые готовы оказать экстренную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8347,8 +8219,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Ника на улице Благоева',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8357,7 +8228,7 @@ class ClinicSeeder extends Seeder
         'house' => '31 к1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, как и любому живому существу, важна забота о состоянии здоровья. Резкая смена',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8369,7 +8240,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Смоленская участковая ветеринарная лечебница',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8390,7 +8261,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ай-Болит',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8399,7 +8270,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Ай-Болит работают доктора, которые могут оказать экстренную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8411,7 +8282,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет Dr.Vet',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8420,7 +8291,7 @@ class ClinicSeeder extends Seeder
         'house' => '146',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, не обойтись без заботы о здоровье. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8432,91 +8303,28 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Ветеринарная клиника Panda',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' В Ветеринарной клинике Panda работают доктора, которые способны оказать экстренную помощь домашнему',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Центр ветеринарной медицины',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' На витринах аптечного пункта в Центре ветеринарной медицины вы найдёте фармакологические средства',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Ветеринарная клиника на Братской улице',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' В Ветеринарной клинике на Братской улице работают доктора, которые способны оказать экстренную помощь',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарная клиника Импульс',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
+        'city' => 'Кропоткин',
+        'street' => 'Обрывной пер.',
+        'house' => '2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Импульс работают доктора, которые способны оказать экстренную помощь питомцу,',
-        'phone1' => '',
+        'description' => ' ',
+        'phone1' => '+7 (928) 037-35-97',
         'phone2' => '',
         'email' => null,
         'telegram' => null,
         'whatsapp' => null,
         'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
+        'schedule' => '10:00–17:00',
+        'workdays' => 'Пн–Сб',
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Клуб защиты животных',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8525,7 +8333,7 @@ class ClinicSeeder extends Seeder
         'house' => '127',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Несмотря на тот факт, что каждый питомец уникален, у представителей определённой породы замечены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8537,28 +8345,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Тирамису',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Тирамису необходимы познания в области поведения, характерного для каждого',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарный кабинет Свой доктор',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8567,7 +8354,7 @@ class ClinicSeeder extends Seeder
         'house' => '4Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, равно как и человеку, жизненно необходима забота о здоровье. Перемены в психоэмоциональном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8579,7 +8366,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Багира',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8588,7 +8375,7 @@ class ClinicSeeder extends Seeder
         'house' => '131',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8600,28 +8387,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Ветуправление Апшеронского района',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Ветуправление Апшеронского района помогают познания в области зоопсихологии',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Виктория',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8630,7 +8396,7 @@ class ClinicSeeder extends Seeder
         'house' => '156',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На полках аптечного пункта в Виктория можно встретить разнообразные лекарства, например противомикробные',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8642,28 +8408,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Dr.Vet',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Dr.Vet приходят на помощь знание зоопсихологии и физиологии, а также',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарная клиника Династия',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8672,7 +8417,7 @@ class ClinicSeeder extends Seeder
         'house' => '87а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Династия работают специалисты, которые готовы оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8684,49 +8429,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Управление ветеринарии Ейского района',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' На стендах аптеки в Ветуправление Ейского района вы найдёте медикаменты разной консистенции: драже,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Правление ветеринарии Белореченского района',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Зачастую только осмотра недостаточно для того, чтобы на его основе сделать точное заключение о состоянии',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарный кабинет Ветврач',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8735,7 +8438,7 @@ class ClinicSeeder extends Seeder
         'house' => '221/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете Ветврач работают доктора, которые готовы оказать внеплановую помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8747,17 +8450,17 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Ника',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
+        'city' => 'Краснодар',
+        'street' => 'Ставропольская',
+        'house' => '107/10',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, не обойтись без заботы о самочувствии. Перемены в психоэмоциональном',
-        'phone1' => '',
+        'description' => ' ',
+        'phone1' => '+7 (918) 324-96-22',
         'phone2' => '',
         'email' => null,
         'telegram' => null,
@@ -8768,28 +8471,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Крокодиловая ферма',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Крокодиловой фермы необходимы знание особенностей зоопсихологии и анатомии,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Zoo Доктор',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8798,7 +8480,7 @@ class ClinicSeeder extends Seeder
         'house' => '45',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Zoo Доктор работают доктора, которые способны оказать внеплановую помощь питомцу, когда того потребует',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8810,7 +8492,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника на Прогонной улице',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8819,7 +8501,7 @@ class ClinicSeeder extends Seeder
         'house' => '75',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8831,7 +8513,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Сердце питомца',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8852,7 +8534,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Управление ветеринарии Каневского района',
                 'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8861,7 +8543,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Управление ветеринарии Каневского района работают доктора, которые готовы',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8873,28 +8555,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Краснодарская межобластная ветеринарная лаборатория',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Чаще всего простого осмотра недостаточно, чтобы на его основе сделать точное заключение о проблемах,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Управление ветеринарии Кущёвского района',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8903,7 +8564,7 @@ class ClinicSeeder extends Seeder
         'house' => '8',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Управление ветеринарии Кущёвского района помогают знание их психологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8915,28 +8576,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Ахтырский ветеринарный участок',
-        'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Ахтырский ветеринарный участок помогают познания в области поведения,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветуправление Выселковского района',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -8945,7 +8585,7 @@ class ClinicSeeder extends Seeder
         'house' => '11',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ветуправление Выселковского района помогают познания в области зоопсихологии',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -8957,95 +8597,91 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Виктория',
         'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
+        'region' => 'Ростовская область',
+        'city' => 'Волгодонск',
+        'street' => 'просп. Мира',
+        'house' => '35',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы о состоянии здоровья. Перемены',
-        'phone1' => '',
-        'phone2' => '',
+        'description' => ' ',
+        'phone1' => '+7 (8639) 23-36-53',
+        'phone2' => '+7 (988) 532-14-91',
         'email' => null,
         'telegram' => null,
-        'whatsapp' => null,
+        'whatsapp' => 'https://vk.ru/vet.viktoria',
         'website' => null,
         'schedule' => '9:00-20:00',
         'workdays' => 'Пн–Вс',
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
-        'name' => 'Ветеринарная клиника на улице Крупской',
+[
+        'name' => 'Ветеринарная клиника Виктория',
         'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
+        'region' => 'Ростовская область',
+        'city' => 'Волгодонск',
+        'street' => 'Степная',
+        'house' => '179',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним питомцам, так же как и людям, не обойтись без заботы о самочувствии. Признаки недомогания,',
-        'phone1' => '',
+        'description' => ' ',
+        'phone1' => '+7 (8639) 27-50-41',
         'phone2' => '',
         'email' => null,
         'telegram' => null,
-        'whatsapp' => null,
+        'whatsapp' => 'https://vk.ru/vet.viktoria',
         'website' => null,
-        'schedule' => '9:00-20:00',
+        'schedule' => '9:00-18:00',
         'workdays' => 'Пн–Вс',
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Ветеринарная клиника Храброе Сердце',
+[
+        'name' => 'МаксиВет',
         'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
+        'region' => 'Ростовская область',
+        'city' => 'Волгодонск',
+        'street' => 'Лазоревый просп',
+        'house' => '71',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Храброе Сердце работают специалисты, которые могут оказать внеплановую помощь',
-        'phone1' => '',
-        'phone2' => '',
+        'description' => ' ',
+        'phone1' => '+7 (988) 566-71-71',
+        'phone2' => '+7 (977) 017-56-53',
         'email' => null,
         'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
+        'whatsapp' => '',
+        'website' => 'https://maxi.vet/',
         'schedule' => '9:00-20:00',
         'workdays' => 'Пн–Вс',
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
-        'name' => 'Управление ветеринарии Успенского района',
+[
+        'name' => 'Балу',
         'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => '',
-        'street' => '',
-        'house' => '',
+        'region' => 'Ростовская область',
+        'city' => 'Волгодонск',
+        'street' => 'Гагарина',
+        'house' => '9',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто простого осмотра недостаточно, чтобы на его основе сделать точное заключение о состоянии здоровья',
-        'phone1' => '',
+        'description' => ' ',
+        'phone1' => '+7 (989) 540-03-03',
         'phone2' => '',
         'email' => null,
         'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
+        'whatsapp' => 'https://vk.ru/vet_balu.volgodonsk',
+        'website' => '',
+        'schedule' => '09:00–19:00',
         'workdays' => 'Пн–Вс',
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Теучежская районная станция по борьбе с болезнями животных',
         'country' => 'Россия',
         'region' => 'Республика Адыгея',
@@ -9054,7 +8690,7 @@ class ClinicSeeder extends Seeder
         'house' => '83',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Теучежская районная станция по борьбе с болезнями животных необходимы',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9066,8 +8702,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарный кабинет Айболит плюс',
         'country' => 'Россия',
         'region' => 'Краснодарский край',
@@ -9076,7 +8711,7 @@ class ClinicSeeder extends Seeder
         'house' => '73',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  ',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9088,32 +8723,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Управление ветеринарии Туапсинского района',
-                'country' => 'Россия',
-        'region' => 'Краснодарский край',
-        'city' => 'Туапсе',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' На витринах аптеки в Управление ветеринарии Туапсинского района вы найдёте медикаменты в разнообразных',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    // Клиники из парсера Белгород
-
-    
-    [
+[
         'name' => 'Ветеринарная клиника Тавровский',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9122,7 +8732,7 @@ class ClinicSeeder extends Seeder
         'house' => 'микрорайон Таврово-4 Центральная улица',
         'address_comment' => '',
         'logo' => null,
-        'description' => 'В Ветеринарном центре Тавровский работают специалисты, которые готовы оказать срочную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9134,7 +8744,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Пёс&Ко',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9143,7 +8753,7 @@ class ClinicSeeder extends Seeder
         'house' => '65',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, важна забота о самочувствии. Резкая смена настроения,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9155,28 +8765,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => ' Мокрый Нос',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' В Ветеринарной клинике Мокрый Нос работают специалисты, которые способны оказать экстренную помощь',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарная клиника ВетПлюс',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9185,7 +8774,7 @@ class ClinicSeeder extends Seeder
         'house' => '50',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике ВетПлюс работают врачи, которые готовы оказать экстренную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9197,7 +8786,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Торговая фирма Зооспектр',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9206,7 +8795,7 @@ class ClinicSeeder extends Seeder
         'house' => '5а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' На полках аптечного пункта в Торговой фирме Зооспектр расположены различные фармакологические средства,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9218,7 +8807,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Клиника ветеринарной хирургии и травматологии',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9227,7 +8816,7 @@ class ClinicSeeder extends Seeder
         'house' => '39А',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, жизненно необходима забота о состоянии здоровья. Резко',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9239,7 +8828,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника 4 с хвостиком',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9248,7 +8837,7 @@ class ClinicSeeder extends Seeder
         'house' => '45и',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике 4 с хвостиком работают доктора, которые способны оказать экстренную помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9260,7 +8849,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Друзья на улице Будённого',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9269,7 +8858,7 @@ class ClinicSeeder extends Seeder
         'house' => '17г',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Друзья на улице Будённого работают доктора, которые готовы оказать экстренную',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9281,8 +8870,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника ВЕТэксперт',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9291,7 +8879,7 @@ class ClinicSeeder extends Seeder
         'house' => '10',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, равно как и человеку, не обойтись без заботы о состоянии здоровья. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9303,8 +8891,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Котёнок Гав',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9313,7 +8900,7 @@ class ClinicSeeder extends Seeder
         'house' => '20',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Котёнок Гав предлагает любящим хозяевам вызвать доктора к себе домой - чтобы не усугубить состояние',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9325,71 +8912,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Ветеринарная клиника Центр инновационной ветеринарной медицины, Белгородский ГАУ им. В.Я. Горина',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, жизненно необходима забота о состоянии здоровья.',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Стрелецкий ветеринарный госпиталь',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Часто простого осмотра недостаточно, чтобы на его основе поставить окончательный диагноз и назначить',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Ветеринарный кабинет Доктор Яра',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, жизненно необходима забота об организме и его правильном',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Крепыш',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9398,7 +8921,7 @@ class ClinicSeeder extends Seeder
         'house' => '8/1',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Крепыш работают специалисты, которые могут оказать внеплановую помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9410,7 +8933,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника МедВет31',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9419,7 +8942,7 @@ class ClinicSeeder extends Seeder
         'house' => '10',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, так же как и людям, не обойтись без заботы о состоянии здоровья. Резкая смена',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9431,7 +8954,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Косметологическая клиника Prostocosm',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9452,28 +8975,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Лилу',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Лилу помогают знание их психологии и физиологии, а также навыки общения',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарная клиника Кот да Винчи',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9482,7 +8984,7 @@ class ClinicSeeder extends Seeder
         'house' => '22',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Кот да Винчи работают специалисты, которые способны оказать внеплановую помощь',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9494,8 +8996,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная лаборатория НовиСтем',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9504,7 +9005,7 @@ class ClinicSeeder extends Seeder
         'house' => '193',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Чаще всего только осмотра недостаточно для того, чтобы на его основе поставить адекватный диагноз',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9516,8 +9017,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Ветеринарная клиника Фауна',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9526,7 +9026,7 @@ class ClinicSeeder extends Seeder
         'house' => '18',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, жизненно необходима забота об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9538,7 +9038,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника 4 с хвостиком',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9547,7 +9047,7 @@ class ClinicSeeder extends Seeder
         'house' => '42',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике 4 с хвостиком работают врачи, которые могут оказать срочную помощь питомцу,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9559,7 +9059,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Федеральный центр охраны здоровья животных',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9568,7 +9068,7 @@ class ClinicSeeder extends Seeder
         'house' => '32',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Зачастую простого осмотра бывает недостаточно, чтобы сделать точное заключение о проблемах, возникших',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9580,7 +9080,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Друзья на улице Губкина',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9589,7 +9089,7 @@ class ClinicSeeder extends Seeder
         'house' => '14в',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, не обойтись без заботы об организме и его правильном',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9601,8 +9101,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Акуна Матата',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9611,7 +9110,7 @@ class ClinicSeeder extends Seeder
         'house' => '33а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Акуна Матата приходят на помощь знание их психологии и физиологии, а',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9623,7 +9122,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Друзья на улице Богдана Хмельницкого',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9632,7 +9131,7 @@ class ClinicSeeder extends Seeder
         'house' => '135д к2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Друзья на улице Богдана Хмельницкого работают врачи, которые способны оказать',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9644,7 +9143,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Эра Терьера',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9653,7 +9152,7 @@ class ClinicSeeder extends Seeder
         'house' => '31',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, как и любому живому существу, важна забота о здоровье. Признаки недомогания,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9665,7 +9164,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника и стоматология ВетДоктор 31',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9674,7 +9173,7 @@ class ClinicSeeder extends Seeder
         'house' => '361Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, жизненно необходима забота о самочувствии. Резко ухудшившееся',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9686,7 +9185,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника КорВет',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9695,7 +9194,7 @@ class ClinicSeeder extends Seeder
         'house' => '20',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы о состоянии здоровья. Признаки',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9707,7 +9206,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Мимика',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9716,7 +9215,7 @@ class ClinicSeeder extends Seeder
         'house' => '9 к2',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Мимика необходимы познания в области их психологии и физиологии, а также',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9728,29 +9227,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
-        'name' => 'Ветеринарная клиника СвойВЕТ',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' В Ветеринарной клинике СвойВЕТ работают доктора, которые могут оказать внеплановую помощь питомцу,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарная клиника Свой вет',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9759,7 +9236,7 @@ class ClinicSeeder extends Seeder
         'house' => '17',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Братьям нашим меньшим, равно как и человеку, важна забота о здоровье. Резкая смена настроения, проблемы',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9771,7 +9248,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Симба',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9780,7 +9257,7 @@ class ClinicSeeder extends Seeder
         'house' => '2Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Симба предлагает любящим хозяевам вызвать врача по месту нахождения - для того, чтобы больному животному',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9792,7 +9269,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника Вита',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9801,7 +9278,7 @@ class ClinicSeeder extends Seeder
         'house' => '1г',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике Вита работают доктора, которые способны оказать экстренную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -9813,7 +9290,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Белгородский филиал',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9834,73 +9311,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-
-    [
-        'name' => 'Шаталовская ветлечебница',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' В Шаталовская ветлечебница работают специалисты, которые могут оказать внеплановую помощь животному,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Тритосфера',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '  Тритосфера приходят на помощь познания в области поведения, характерного',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
-        'name' => 'ОГБУ Прохоровская станция по борьбе с болезням животных',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '  ОГБУ Прохоровская станция по борьбе с болезням животных помогают',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Vet. Доверие',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -9921,161 +9332,13 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Золотая рыбка',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Золотая рыбка необходимы познания в области зоопсихологии и функционирования',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Акуна Матата',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
         'city' => 'Белгород',
         'street' => 'проспект Славы',
         'house' => '7Б',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Акуна Матата приходят на помощь знание поведения, характерного для каждого',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
-        'name' => 'Радость моя',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => 'Белгород',
-        'street' => 'улица Князя Трубецкого',
-        'house' => '68',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Радость моя необходимы знание особенностей зоопсихологии и анатомии,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Пункт временной передержки безнадзорных животных',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Домашним питомцам, так же как и людям, важна забота о самочувствии. Перемены в психоэмоциональном',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Петушок',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '  Петушок помогают знание особенностей поведения, характерного для',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Межрайонная станция по борьбе с болезнями животных по Ивнянскому и Яковлевскому районам',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Межрайонная станция по борьбе с болезнями животных по Ивнянскому и Яковлевскому',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Межрайонная станция по борьбе с болезнями животных по Грайвороновскому и Борисовскому районам',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '  Межрайонная станция по борьбе с болезнями животных по Грайвороновскому',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Стрелецкая участковая ветеринарная лечебница',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
         'address_comment' => '',
         'logo' => null,
         'description' => ' ',
@@ -10090,7 +9353,28 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
+        'name' => 'Радость моя',
+                'country' => 'Россия',
+        'region' => 'Белгородская область',
+        'city' => 'Белгород',
+        'street' => 'улица Князя Трубецкого',
+        'house' => '68',
+        'address_comment' => '',
+        'logo' => null,
+        'description' => ' ',
+        'phone1' => '',
+        'phone2' => '',
+        'email' => null,
+        'telegram' => null,
+        'whatsapp' => null,
+        'website' => null,
+        'schedule' => '9:00-20:00',
+        'workdays' => 'Пн–Вс',
+        'seo_title' => null,
+        'seo_description' => null,
+    ],
+[
         'name' => 'Буль Dog',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10099,7 +9383,7 @@ class ClinicSeeder extends Seeder
         'house' => '72',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Буль Dog помогают познания в области их психологии и строения организма,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10111,49 +9395,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Служба ветеринарной помощи на улице Мира',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '  Службы ветеринарной помощи на улице Мира необходимы знание особенностей',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Ветеринарная клиника Доктор Кот',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' В Ветеринарной клинике Доктор Кот работают врачи, которые могут оказать срочную помощь животному,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветстанция по городу Белгороду',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10162,7 +9404,7 @@ class ClinicSeeder extends Seeder
         'house' => '22а',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  Ветстанция по городу Белгороду приходят на помощь знание особенностей',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10174,7 +9416,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ЛапУшки',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10183,7 +9425,7 @@ class ClinicSeeder extends Seeder
         'house' => '22Б',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарной клинике ЛапУшки работают доктора, которые могут оказать экстренную помощь животному,',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10195,7 +9437,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Белгородская районная ветеринарная лаборатория',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10204,7 +9446,7 @@ class ClinicSeeder extends Seeder
         'house' => '6а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Часто простого осмотра бывает недостаточно, чтобы сделать корректное заключение о здоровье маленького',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10216,7 +9458,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарный кабинет ДокторВет',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10225,7 +9467,7 @@ class ClinicSeeder extends Seeder
         'house' => '9а',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' В Ветеринарном кабинете ДокторВет работают врачи, которые способны оказать срочную помощь домашнему',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10237,28 +9479,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Зоомен',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '  Зоомен необходимы познания в области их психологии и функционирования',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарная клиника',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10267,7 +9488,7 @@ class ClinicSeeder extends Seeder
         'house' => '11',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Домашним животным, как и любому живому существу, не обойтись без заботы о состоянии здоровья. Перемены',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10279,7 +9500,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Центр содержания и защиты бездомных животных Лучик надежды',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10288,7 +9509,7 @@ class ClinicSeeder extends Seeder
         'house' => '22',
         'address_comment' => '',
         'logo' => null,
-        'description' => ' Центр содержания и защиты бездомных животных Лучик надежды помогают познания',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10300,71 +9521,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Котёнок Гав',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => 'Белгород',
-        'street' => 'улица Попова',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' На витринах аптечного пункта в Котёнок Гав вы найдёте разнообразные фармакологические средства,',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
-        'name' => 'Межрайонная ветеринарная лаборатория',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Чаще всего только осмотра недостаточно для того, чтобы на его основе поставить окончательный диагноз',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Межрайонная ветстанция по Ракитянскому и Краснояружскому районам',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '  Межрайонная ветстанция по Ракитянскому и Краснояружскому районам',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Зоомир',
                 'country' => 'Россия',
         'region' => 'Нижегородская область',
@@ -10373,7 +9530,7 @@ class ClinicSeeder extends Seeder
         'house' => '1',
         'address_comment' => '',
         'logo' => null,
-        'description' => '  ',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10385,7 +9542,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Ветеринарная клиника ZetVet',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10406,94 +9563,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Клиника ДокторВет',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' ',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
-        'name' => 'Вейделевская ветлечебница',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' ',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
-        'name' => 'Ветеринарная клиника Барбоскины',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' ',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
-        'name' => 'Степашкин дом',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' Если вам не с кем оставить любимчика на время командировки, Степашкин дом предлагает поселить его у нас',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'БелЛифтСнаб',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10502,7 +9572,7 @@ class ClinicSeeder extends Seeder
         'house' => '23',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10514,92 +9584,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Зоодом на Просторной улице',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Разуменский ветеринарный участок Белгородская районная станция по борьбе с болезнями животных',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Ветеринарная клиника Кот да Винчи',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Ветеринарная клиника на Ливенской улице',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
+[
         'name' => 'Ветеринарная клиника на Каштановой улице',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10608,7 +9593,7 @@ class ClinicSeeder extends Seeder
         'house' => '18',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10620,8 +9605,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-
-    [
+[
         'name' => 'Межрайонная станция по борьбе с болезнями животных по Алексеевскому и Красненскому районам',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10630,7 +9614,7 @@ class ClinicSeeder extends Seeder
         'house' => '126',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
+        'description' => ' ',
         'phone1' => '',
         'phone2' => '',
         'email' => null,
@@ -10642,7 +9626,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Городской клуб собаководства',
                 'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10651,28 +9635,6 @@ class ClinicSeeder extends Seeder
         'house' => '10',
         'address_comment' => '',
         'logo' => null,
-        'description' => '',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-    [
-        'name' => 'Межрайонная ветстанция по Алексеевскому и Красненскому районам',
-        'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
         'description' => ' ',
         'phone1' => '',
         'phone2' => '',
@@ -10685,28 +9647,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Зоо спа',
-        'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' ',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
+[
         'name' => 'Ветеринарная клиника Добрый дом',
         'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10727,7 +9668,7 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
+[
         'name' => 'Зоодом на Хлебной улице',
         'country' => 'Россия',
         'region' => 'Белгородская область',
@@ -10748,92 +9689,6 @@ class ClinicSeeder extends Seeder
         'seo_title' => null,
         'seo_description' => null,
     ],
-    [
-        'name' => 'Межрайонная станция по борьбе с болезнями животных по Грайвороновскому и Борисовскому районам',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' ',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Межрайонная ветстанция по Волоконоскому и Валуйскому районам',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' ',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Станция по борьбе с болезнями животных по Чернянскому району',
-                'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => ' ',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-    [
-        'name' => 'Межрайонная ветстанция по Ивнянскому и Яковлевскому районам',
-        'country' => 'Россия',
-        'region' => 'Белгородская область',
-        'city' => '',
-        'street' => '',
-        'house' => '',
-        'address_comment' => '',
-        'logo' => null,
-        'description' => '',
-        'phone1' => '',
-        'phone2' => '',
-        'email' => null,
-        'telegram' => null,
-        'whatsapp' => null,
-        'website' => null,
-        'schedule' => '9:00-20:00',
-        'workdays' => 'Пн–Вс',
-        'seo_title' => null,
-        'seo_description' => null,
-    ],
-
-
 ];
 
 // Создаём клиники и прикрепляем услуги
