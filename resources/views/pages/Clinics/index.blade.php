@@ -46,7 +46,7 @@
 
         <div class="col-lg-3 col-md-4 col-12 clinic-item">
             <a href="{{ route('clinics.show', $clinic->slug) }}" title="Перейти в карточку клиники" class="text-decoration-none text-reset">
-                <div class="card h-100 shadow-sm hover-shadow position-relative transition">
+                <div class="card catalog-card h-100 shadow-sm hover-shadow position-relative transition">
                     {{-- Rating badge --}}
                     <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"
                         data-bs-toggle="tooltip"
@@ -65,12 +65,13 @@
                     <img src="{{ $logo }}" class="card-img-top object-fit-contain p-3" alt="{{ $clinic->name }}">
 
                     <div class="card-body">
-                        <h5 class="card-title">{{ $clinic->name }}</h5>
-                        <p class="card-text mb-2">
+                        <h5 class="org-card-title">{{ $clinic->name }}</h5>
+                        <p class="org-address mb-2">
+                            <i class="bi bi-geo-alt-fill"></i>
                             {{ $clinic->country }}, {{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}
                         </p>
                         @if(!empty($clinic->schedule))
-                        <p class="text-muted mb-0">
+                        <p class="org-hours">
                             График: {{ $clinic->schedule }}
                         </p>
                         @endif

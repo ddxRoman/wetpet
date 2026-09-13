@@ -1,6 +1,8 @@
-
-    {{-- Хедер --}}
+{{-- Хедер --}}
     @include('layouts.header')
+
+    @vite(['resources/css/catalog-cards.css'])
+
 
     {{-- Контент --}}
     <main class="flex-grow-1">
@@ -9,4 +11,3 @@
 
     {{-- Футер --}}
     @include('layouts.footer')
-

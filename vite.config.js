@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/css/main.css',
                 'resources/css/slider.css',
                 'resources/css/mobile.css',
+                'resources/css/catalog-cards.css',
                 'resources/sass/app.scss',
                 'resources/js/app.js',
             ],

@@ -1,7 +1,7 @@
 @foreach ($organizations as $org)
     <div class="col-lg-3 col-md-4 col-12 organization-item">
         <a href="{{ route('organizations.show', $org->slug) }}" class="text-decoration-none text-reset">
-            <div class="card h-100 shadow-sm hover-shadow position-relative transition">
+            <div class="card catalog-card h-100 shadow-sm hover-shadow position-relative transition">
                 @php
                     $avgRating = number_format($org->reviews_avg_rating ?? 0, 1);
                     $reviewCount = $org->reviews_count ?? 0;

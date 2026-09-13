@@ -22,7 +22,7 @@
         <div class="row g-0">
             <div class="col-md-4 bg-light d-flex align-items-center justify-content-center border-end" style="min-height: 400px;">
                 @if($animal->details && $animal->details->photo)
-                    <img src="{{ asset('storage/' . $animal->details->photo) }}" class="img-fluid" style="max-height: 400px; width: auto; object-fit: contain;" alt="{{ $animal->breed }}">
+                    <img src="{{ asset('storage/' . $animal->details->photo) }}" class="img-fluid object-fit-cover h-100" alt="{{ $animal->breed }}">
                 @else
                     <div class="text-center text-muted">
                         <i class="bi bi-camera" style="font-size: 4rem;"></i>
@@ -104,7 +104,80 @@
     <hr class="my-5 opacity-25">
 
     {{-- Секция отзывов --}}
-    <div class="reviews-container">
+    <div class="reviews-container breed-reviews">
+        <style>
+            /* Мобильная стилизация отзывов на странице породы */
+            @media (max-width: 767.98px) {
+                .breed-reviews .d-flex.justify-content-between.align-items-center.mb-4 {
+                    flex-direction: column;
+                    align-items: stretch !important;
+                    gap: 0.75rem;
+                }
+                .breed-reviews .d-flex.justify-content-between.align-items-center.mb-4 h2 {
+                    font-size: 1.3rem;
+                    text-align: center;
+                    margin-bottom: 0;
+                }
+                .breed-reviews .d-flex.justify-content-between.align-items-center.mb-4 .btn {
+                    width: 100%;
+                }
+
+                .breed-reviews .card {
+                    border-radius: 16px !important;
+                }
+                .breed-reviews .card-body {
+                    padding: 1.1rem !important;
+                }
+
+                /* Кнопки "Редактировать"/"Удалить" на мобильном — только иконки,
+                   компактные круглые кнопки справа, а не на всю ширину */
+                .breed-reviews .d-flex.justify-content-end.gap-2.mb-2 {
+                    justify-content: flex-end !important;
+                    flex-wrap: nowrap;
+                }
+                .breed-reviews .d-flex.justify-content-end.gap-2.mb-2 .btn {
+                    flex: 0 0 auto;
+                    width: 36px;
+                    height: 36px;
+                    padding: 0;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    font-size: 1rem;
+                }
+
+                /* Убираем вертикальный разделитель колонок — на мобильном
+                   они идут одна под другой, и линия справа выглядит
+                   как случайный обрубок */
+                .breed-reviews .row > .col-md-4.border-end {
+                    border-right: none !important;
+                    border-bottom: 1px solid #e9ecef;
+                    padding-bottom: 1rem;
+                    margin-bottom: 1rem;
+                }
+                .breed-reviews .row > .col-md-8 {
+                    padding-left: 0.75rem !important;
+                }
+
+                .breed-reviews .col-md-4 .d-flex.align-items-center.mb-3 > div:first-child {
+                    width: 38px !important;
+                    height: 38px !important;
+                    font-size: 0.9rem;
+                    flex-shrink: 0;
+                }
+
+                .breed-reviews small.text-muted {
+                    font-size: 0.75rem;
+                }
+                .breed-reviews .small.text-secondary {
+                    font-size: 0.8rem;
+                }
+                .breed-reviews .text-secondary.lh-base {
+                    font-size: 0.88rem;
+                }
+            }
+        </style>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold">Отзывы владельцев</h2>
             <button class="btn btn-dark px-4 shadow-sm" style="border-radius: 12px;" data-bs-toggle="modal" data-bs-target="#addReviewModal">
@@ -117,14 +190,14 @@
                 <div class="card-body p-4">
                     @if(auth()->check() && auth()->id() === $review->user_id)
                         <div class="d-flex justify-content-end gap-2 mb-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editReviewModal{{ $review->id }}">
-                                <i class="bi bi-pencil-square me-1"></i>Редактировать
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editReviewModal{{ $review->id }}" title="Редактировать">
+                                <i class="bi bi-pencil-square d-md-none"></i><i class="bi bi-pencil-square me-1 d-none d-md-inline">выфвфы</i><span class="d-none d-md-inline">Редактировать</span>
                             </button>
                             <form action="{{ route('animals.review.destroy', $review->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Удалить этот отзыв? Действие необратимо.');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash me-1"></i>Удалить
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Удалить">
+                                    <i class="bi bi-trash d-md-none"></i><i class="bi bi-trash me-1 d-none d-md-inline"></i><span class="d-none d-md-inline">Удалить</span>
                                 </button>
                             </form>
                         </div>

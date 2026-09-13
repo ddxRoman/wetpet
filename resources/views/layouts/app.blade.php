@@ -72,6 +72,10 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    {{-- Bootstrap Icons: используется классами "bi bi-*" в шаблонах на этом
+         layout, но нигде не подключалась ни через npm, ни через CDN. --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- Scripts & Styles -->
     @vite([
         'resources/css/main.css',

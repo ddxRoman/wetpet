@@ -5,8 +5,13 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/catalog-cards.css": {
+    "file": "assets/catalog-cards-UD4Zxpdt.css",
+    "src": "resources/css/catalog-cards.css",
+    "isEntry": true
+  },
   "resources/css/main.css": {
-    "file": "assets/main-D9zp27jA.css",
+    "file": "assets/main-DUBrf29v.css",
     "src": "resources/css/main.css",
     "isEntry": true
   },
@@ -21,7 +26,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-KlkMQKWm.js",
+    "file": "assets/app-CqpdMAj5.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

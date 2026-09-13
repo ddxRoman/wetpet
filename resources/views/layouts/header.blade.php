@@ -25,6 +25,11 @@
     <meta name="description" content="{{ $seoMeta['description'] ?? '' }}">
     <link rel="canonical" href="{{ request()->url() }}">
 
+    {{-- Bootstrap Icons: используется классами "bi bi-*" в 17 шаблонах по сайту,
+         но нигде раньше не подключалась ни через npm, ни через CDN — иконки
+         рендерились пустыми. Подключаем через CDN, без изменений в сборке Vite. --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 @vite(['resources/css/main.css', 'resources/css/mobile.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     @stack('scripts')
 
@@ -414,13 +419,29 @@
                 </div>
             </div>
 
+
             <div class="mobile-nav-section">
                 <div class="mobile-nav-label">Навигация</div>
                 <a href="/" class="mobile-nav-link" >
                     <span class="nav-icon">🏠</span> Главная
                 </a>
+                <a href="{{ route('animals.index') }}" class="mobile-nav-link" >
+                    <span class="nav-icon">🐾</span> Животные
+                </a>
+                <a href="{{ route('clinics.index') }}" class="mobile-nav-link" >
+                    <span class="nav-icon">🏥</span> Клиники
+                </a>
+                <a href="{{ route('doctors.index') }}" class="mobile-nav-link" >
+                    <span class="nav-icon">🩺</span> Ветеринары
+                </a>
+                <a href="{{ route('specialists.index') }}" class="mobile-nav-link" >
+                    <span class="nav-icon">🧑‍⚕️</span> Специалисты
+                </a>
                 <a href="{{ route('organizations.index') }}" class="mobile-nav-link" >
-                    <span class="nav-icon">🏥</span> Организации
+                    <span class="nav-icon">🏢</span> Организации
+                </a>
+                <a href="{{ route('ads.index') }}" class="mobile-nav-link" >
+                    <span class="nav-icon">📢</span> Объявления
                 </a>
                 <a href="{{ route('legal/news') }}" class="mobile-nav-link" >
                     <span class="nav-icon">📰</span> Новости
