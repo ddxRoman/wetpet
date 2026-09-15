@@ -80,6 +80,39 @@
 .compact-row-top .profile_link {
     font-size: 13px;
 }
+
+/* ── Анимация «принюхивания» иконки-носа в кнопке поиска ──
+   Включается через JS (класс .is-sniffing) во время набора текста
+   в поле поиска и выключается, когда пользователь перестаёт печатать. */
+@keyframes nose-sniff {
+    from {
+        transform: scale(1, 1);
+    }
+    30% {
+        transform: scale(1.25, .75);
+    }
+    50% {
+        transform: scale(.75, 1.25);
+    }
+    70% {
+        transform: scale(1.15, .85);
+    }
+    to {
+        transform: scale(1, 1);
+    }
+}
+
+.search_btn img.is-sniffing {
+    animation-name: nose-sniff;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-play-state: running;
+    transform-origin: 50% 60%;
+}
 </style>
 
     @if(!isset($h))
@@ -248,6 +281,51 @@
                     @endauth
                 </div>
             </div>
+
+<style>
+    .search_btn img {
+    transform-origin: 52% 67%;
+    animation: sniff-nose 1.4s ease-in-out infinite;
+    will-change: transform;
+}
+
+@keyframes sniff-nose {
+    /* спокойное состояние */
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    /* нос слегка тянется вперёд */
+    12% {
+        transform: translate(-0.5px, -1px) rotate(-1.5deg) scale(1.025);
+    }
+
+    /* вдох */
+    24% {
+        transform: translate(0.8px, -2px) rotate(1.8deg) scale(1.055);
+    }
+
+    /* маленькая отдача */
+    34% {
+        transform: translate(-0.4px, -0.8px) rotate(-0.8deg) scale(1.018);
+    }
+
+    /* второй, более короткий вдох */
+    44% {
+        transform: translate(0.7px, -1.5px) rotate(1.3deg) scale(1.04);
+    }
+
+    /* возвращается */
+    56% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    /* небольшая пауза */
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+}
+</style>
 
             <div class="container mt-3">
                 <div class="text-center">
@@ -692,4 +770,4 @@
 </script>
 
 </body>
-</html>
+</html> 

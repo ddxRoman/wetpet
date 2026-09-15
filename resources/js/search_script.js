@@ -3,6 +3,47 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultsContainer = document.getElementById('search-results');
 
     if (!searchInput) return;
+
+    // ── Анимация «принюхивания» иконки-носа в кнопке поиска ──
+    // Пока пользователь печатает — иконка «нюхает» (двигается/крутится),
+    // как только набор текста прекращается — анимация останавливается.
+    const noseIcon = document.querySelector('.search_btn img');
+    let sniffTimeout = null;
+
+    function startSniffing() {
+        if (!noseIcon) return;
+        noseIcon.classList.add('is-sniffing');
+        clearTimeout(sniffTimeout);
+        sniffTimeout = setTimeout(stopSniffing, 500);
+    }
+
+    function stopSniffing() {
+        if (!noseIcon) return;
+        noseIcon.classList.remove('is-sniffing');
+    }
+
+    // Кнопка поиска и обработка Enter — назначаем сразу при загрузке,
+    // а не только после первого успешного запроса (раньше обработчик
+    // клика вешался внутри performSearch().then(), поэтому кнопка была
+    // нерабочей, пока не пришёл первый ответ от сервера).
+    const searchBtn = document.querySelector('.search_btn');
+
+    function performFullSearch() {
+        const query = searchInput.value.trim();
+        if (query.length >= 2) {
+            const items = resultsContainer.querySelectorAll('.search-result-item');
+            if (items.length === 1) {
+                items[0].click();
+            } else {
+                window.location.href = `/search?q=${encodeURIComponent(query)}`;
+            }
+        }
+    }
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', performFullSearch);
+    }
+
     function renderResultItem(item) {
         switch (item.type) {
             case 'clinic':
@@ -105,25 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     resultsContainer.innerHTML = results.map(renderResultItem).join('');
                 }
 
-                // Логика кнопки поиска и Enter
-                const searchBtn = document.querySelector('.search_btn');
-                function performFullSearch() {
-                    const query = searchInput.value.trim();
-                    if (query.length >= 2) {
-                        const items = resultsContainer.querySelectorAll('.search-result-item');
-                        if (items.length === 1) {
-                            items[0].click();
-                        } else {
-                            window.location.href = `/search?q=${encodeURIComponent(query)}`;
-                        }
-                    }
-                }
-
-                if (searchBtn) {
-                    // Удаляем старый слушатель перед добавлением (на всякий случай)
-                    searchBtn.onclick = performFullSearch;
-                }
-
                 if (results.length > 0) {
                     resultsContainer.classList.remove('d-none');
                 } else {
@@ -140,6 +162,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     searchInput.addEventListener('input', function() {
         const query = this.value;
+
+        startSniffing();
 
         if (query.length < 2) {
             if (currentController) currentController.abort();

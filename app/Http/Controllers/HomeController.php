@@ -98,15 +98,22 @@ public function index()
         return $row->avg_rating >= 4.7 && $row->avg_rating <= 5;
     });
 
-    if ($highRated->count() >= 5) {
+    if ($withEnoughReviews->isEmpty()) {
+
+        $chosen = $stats
+            ->sort(function ($a, $b) {
+                if ($a->reviews_count === $b->reviews_count) {
+                    return $b->avg_rating <=> $a->avg_rating;
+                }
+                return $b->reviews_count <=> $a->reviews_count;
+            })
+            ->values()
+            ->take(5);
+    } elseif ($highRated->count() >= 5) {
         // Достаточно записей — берём 5 случайных из них
         $chosen = $highRated->shuffle()->take(5);
     } else {
-        // Записей с рейтингом 4.7–5 не хватает — дополняем самыми рейтинговыми
-        // (но по-прежнему только среди записей с минимум 5 отзывами).
-        // Сначала перемешиваем, а затем сортируем по рейтингу — так записи
-        // с одинаковым рейтингом каждый раз идут в случайном порядке,
-        // и подборка меняется при каждой перезагрузке страницы.
+
         $chosen = $withEnoughReviews->shuffle()->sortByDesc('avg_rating')->values()->take(5);
     }
 
@@ -143,6 +150,7 @@ public function index()
             'statsCity_qualified'  => $statsCity->filter(fn($r) => $r->reviews_count >= 5)->count(),
             'cityHasEnough'        => $cityHasEnough,
             'withEnoughReviews'    => $withEnoughReviews->count(),
+            'usedFallbackNoReviewsThreshold' => $withEnoughReviews->isEmpty(),
             'highRated'            => $highRated->count(),
             'chosen_count'         => $chosen->count(),
             'topItems_count'       => $topItems->count(),
