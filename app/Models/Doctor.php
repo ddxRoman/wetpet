@@ -135,6 +135,33 @@ class Doctor extends Model
         return $this->hasMany(Award::class);
     }
 
+    // Множественные специализации (справочник field_of_activities)
+    public function specializations()
+    {
+        return $this->belongsToMany(
+            \App\Models\FieldOfActivity::class,
+            'doctor_field_of_activity',
+            'doctor_id',
+            'field_of_activity_id'
+        )->withTimestamps();
+    }
+
+    // Читаемый список специализаций через запятую.
+    // Пока держим старую строковую колонку 'specialization' синхронизированной
+    // (см. DoctorResource\Pages\CreateDoctor/EditDoctor), поэтому весь старый код
+    // (поиск, подбор услуг, SEO, уведомления) продолжает работать без изменений.
+    public function getSpecializationLabelAttribute(): string
+    {
+        if ($this->relationLoaded('specializations') || $this->exists) {
+            $names = $this->specializations->pluck('name');
+            if ($names->isNotEmpty()) {
+                return $names->implode(', ');
+            }
+        }
+
+        return $this->specialization ?? '';
+    }
+
     public function promotions()
     {
         return $this->morphMany(\App\Models\Promotion::class, 'promotable');

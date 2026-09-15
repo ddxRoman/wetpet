@@ -28,8 +28,17 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->authGuard('web')
+            ->brandName(config('app.name', 'Зверозор'))
+            ->brandLogo(fn () => \Illuminate\Support\Facades\Storage::url('logo/logo3.png'))
+            ->brandLogoHeight('2.2rem')
+            ->favicon(asset('favicon.ico'))
+            ->font('Rubik')
             ->colors([
-                'primary' => Color::Amber,
+                // Фирменный синий сайта (кнопка входа, ссылки, акценты)
+                'primary' => Color::hex('#ff00ff'),
+                // Холодный сине-серый вместо стандартного нейтрального серого —
+                // ближе к светлым сине-белым фонам сайта (#f8faff / #eef3ff)
+                'gray' => Color::Slate,
             ])
             // Оставляем только основной путь, он сам просканирует подпапки
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

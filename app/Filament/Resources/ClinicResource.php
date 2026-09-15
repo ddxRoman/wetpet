@@ -40,13 +40,23 @@ class ClinicResource extends Resource
                         ->onColor('success')
                         ->offColor('warning'),
 
+                    Forms\Components\Actions::make([
+                        Forms\Components\Actions\Action::make('open_card')
+                            ->label('Открыть карточку на сайте')
+                            ->icon('heroicon-o-arrow-top-right-on-square')
+                            ->color('gray')
+                            ->url(fn ($record) => $record ? route('clinics.show', $record) : null)
+                            ->openUrlInNewTab()
+                            ->visible(fn ($record) => $record !== null),
+                    ]),
+
                     Forms\Components\Placeholder::make('creator_info')
                         ->label('Кто добавил')
                         ->content(fn ($record) => $record?->creator?->name
                             ? $record->creator->name . ' (' . $record->creator->email . ')'
                             : 'Добавлено администратором / системой'),
                 ])
-                ->columns(2),
+                ->columns(3),
 
             Forms\Components\TextInput::make('name')
                 ->label('Название')

@@ -10,6 +10,14 @@ class CreateDoctor extends CreateRecord
 {
     protected static string $resource = DoctorResource::class;
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+
+        $data['specialization'] = '';
+
+        return $data;
+    }
+
     protected function afterCreate(): void
     {
         // Синхронизируем старую строковую колонку 'specialization' (через запятую),
