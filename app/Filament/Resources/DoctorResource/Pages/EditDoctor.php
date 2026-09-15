@@ -18,4 +18,13 @@ class EditDoctor extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function afterSave(): void
+    {
+        // Синхронизируем старую строковую колонку 'specialization' (через запятую),
+        // от неё зависят поиск, подбор услуг, SEO-шаблоны и уведомления.
+        $this->record->update([
+            'specialization' => $this->record->specializations()->pluck('name')->implode(', '),
+        ]);
+    }
 }

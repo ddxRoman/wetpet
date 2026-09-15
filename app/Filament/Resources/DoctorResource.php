@@ -65,16 +65,19 @@ Forms\Components\TextInput::make('slug')
     ->required()
     ->unique(ignoreRecord: true),
 
-        // ───── СПЕЦИАЛИЗАЦИЯ ─────
-Forms\Components\Select::make('specialization')
-    ->label('Специализация')
-    ->options(
-        \App\Models\FieldOfActivity::query()
+        // ───── СПЕЦИАЛИЗАЦИИ (несколько) ─────
+Forms\Components\Select::make('specializations')
+    ->label('Специализации')
+    ->multiple()
+    ->relationship(
+        name: 'specializations',
+        titleAttribute: 'name',
+        modifyQueryUsing: fn ($query) => $query
             ->where('type', 'specialist')
-            ->where('activity', 'doctor')
-            ->pluck('name', 'name')
+            ->where('activity', 'doctor'),
     )
     ->searchable()
+    ->preload()
     ->required(),
 
 
@@ -139,6 +142,7 @@ Forms\Components\Select::make('clinic_id')
 
 Forms\Components\TextInput::make('experience')
     ->label('Опыт (лет)')
+    ->numeric()              // приводит '' к null, не даёт SQL-ошибку
     ->type('number')        // 🔥 ВАЖНО
     ->reactive()            // 🔥 ВАЖНО
     ->minValue(0)
@@ -231,6 +235,7 @@ Forms\Components\FileUpload::make('photo')
         Forms\Components\HasManyRepeater::make('awards')
             ->relationship('awards')
             ->label('Награды')
+            ->defaultItems(0)
             ->schema([
                 Forms\Components\FileUpload::make('image')
                     ->label('Изображение')
@@ -312,6 +317,12 @@ Tables\Columns\TextColumn::make('specialization_label')
                     ->trueLabel('Только проверенные')
                     ->falseLabel('Только непроверенные')
                     ->native(false),
+
+                Tables\Filters\SelectFilter::make('clinic_id')
+                    ->label('Клиника')
+                    ->relationship('clinic', 'name')
+                    ->searchable()
+                    ->preload(),
             ])
             ->defaultSort('is_verified', 'asc')
             ->actions([

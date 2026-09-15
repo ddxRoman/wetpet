@@ -181,6 +181,12 @@ class SpecialistResource extends Resource
                     ->trueLabel('Только проверенные')
                     ->falseLabel('Только непроверенные')
                     ->native(false),
+
+                Tables\Filters\SelectFilter::make('organization_id')
+                    ->label('Организация')
+                    ->relationship('organization', 'name')
+                    ->searchable()
+                    ->preload(),
             ])
             ->defaultSort('is_verified', 'asc')
             ->actions([
