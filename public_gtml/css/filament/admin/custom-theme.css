@@ -1,0 +1,76 @@
+/**
+ * Кастомная тема админки Filament для «Зверозор».
+ *
+ * Светлая бело-голубая палитра в духе сайта (личный кабинет — #f6f8fc / #e0e4f1 /
+ * #e3e9ff / #0066ff): почти белый фон, лёгкий голубой оттенок на сайдбаре/топбаре,
+ * синий акцент на активном пункте меню.
+ *
+ * Подключается через FilamentAsset (см. AdminPanelProvider::boot()) как
+ * обычный CSS-файл — сборка Vite/Tailwind для этого не требуется.
+ */
+
+:root {
+    --zv-admin-sidebar-bg: #dceafd;
+    --zv-admin-sidebar-border: #b9d0f0;
+    --zv-admin-sidebar-text: #274666;
+    --zv-admin-sidebar-hover-bg: #cfe0fb;
+    --zv-admin-sidebar-active-bg: #bcd8fb;
+    --zv-admin-sidebar-active-text: #0052cc;
+
+    --zv-admin-topbar-bg: #e3edfc;
+    --zv-admin-topbar-border: #c9dcf5;
+
+    --zv-admin-content-bg: #eef4fc;
+}
+
+/* ───────── Общий фон страницы (за пределами карточек) ───────── */
+.fi-body {
+    background-color: var(--zv-admin-content-bg) !important;
+}
+
+/* ───────── Верхняя панель ───────── */
+.fi-topbar {
+    background-color: var(--zv-admin-topbar-bg) !important;
+    border-bottom: 1px solid var(--zv-admin-topbar-border) !important;
+}
+
+.fi-topbar nav {
+    background-color: transparent !important;
+}
+
+/* ───────── Боковое меню ───────── */
+.fi-sidebar {
+    background-color: var(--zv-admin-sidebar-bg) !important;
+    border-right: 1px solid var(--zv-admin-sidebar-border) !important;
+}
+
+.fi-sidebar-header {
+    background-color: var(--zv-admin-sidebar-bg) !important;
+    border-bottom: 1px solid var(--zv-admin-sidebar-border) !important;
+}
+
+.fi-sidebar-nav {
+    background-color: transparent !important;
+}
+
+.fi-sidebar-group-label {
+    color: #6b7a99 !important;
+}
+
+.fi-sidebar-item-icon,
+.fi-sidebar-item-label,
+.fi-sidebar-item-button {
+    color: var(--zv-admin-sidebar-text) !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: var(--zv-admin-sidebar-hover-bg) !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-button,
+.fi-sidebar-item-active .fi-sidebar-item-icon,
+.fi-sidebar-item-active .fi-sidebar-item-label {
+    background-color: var(--zv-admin-sidebar-active-bg) !important;
+    color: var(--zv-admin-sidebar-active-text) !important;
+    font-weight: 600;
+}

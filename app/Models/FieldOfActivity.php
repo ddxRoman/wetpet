@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FieldOfActivity extends Model
 {
-    protected $fillable = ['name', 'type', 'activity '];
+    protected $fillable = ['name', 'type', 'activity'];
     
 public function doctors()
 {
@@ -16,6 +16,13 @@ public function organizations()
 {
     // У одного типа деятельности может быть много организаций
     return $this->hasMany(Organization::class, 'field_of_activity_id');
+}
+
+// Корректная связь "многие ко многим" с врачами через пивот-таблицу
+// (используется, например, для подсчёта, сколько врачей выбрали это направление).
+public function doctorsPivot()
+{
+    return $this->belongsToMany(Doctor::class, 'doctor_field_of_activity', 'field_of_activity_id', 'doctor_id');
 }
 
 }
