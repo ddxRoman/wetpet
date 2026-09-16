@@ -20,12 +20,24 @@
     {{-- Группируем породы по первой букве --}}
     @php
         $groupedBreeds = $breeds->sortBy('breed')->groupBy(function($item) {
-            return mb_substr($item->breed, 0, 1);
+            return mb_strtoupper(mb_substr($item->breed, 0, 1));
         });
+        $russianAlphabet = ['А','Б','В','Г','Д','Е','Ж','З','И','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Э','Ю','Я'];
     @endphp
 
+    {{-- Алфавитная навигация — только на мобильных --}}
+    <div class="alpha-nav d-md-none">
+        <div class="alpha-nav__scroll">
+            @foreach($russianAlphabet as $letter)
+                @if($groupedBreeds->has($letter))
+                    <a href="#letter-{{ $letter }}" class="alpha-nav__item" data-letter="{{ $letter }}">{{ $letter }}</a>
+                @endif
+            @endforeach
+        </div>
+    </div>
+
     @foreach($groupedBreeds as $letter => $items)
-        <div class="row mb-4">
+        <div class="row mb-4" id="letter-{{ $letter }}">
             <div class="col-12">
                 {{-- Заголовок буквы --}}
                 <div class="d-flex align-items-center mb-3">
@@ -89,6 +101,99 @@
         border-radius: 10px !important;
         background-color: #ffb70007 !important;
     }
+
+    /* ── Мобильная алфавитная навигация ── */
+    .alpha-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        margin: 0 -12px 16px;
+        padding: 8px 0;
+        background: #fff;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .alpha-nav__scroll {
+        display: flex;
+        gap: 4px;
+        overflow-x: auto;
+        padding: 0 12px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .alpha-nav__scroll::-webkit-scrollbar {
+        display: none;
+    }
+    .alpha-nav__item {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        color: #0d6efd;
+        background: #f2f6ff;
+        scroll-snap-align: start;
+    }
+    .alpha-nav__item.is-active {
+        background: #0d6efd;
+        color: #fff;
+    }
+
+    /* Чтобы заголовок буквы не пряталсья под липкой навигацией при переходе по якорю */
+    [id^="letter-"] {
+        scroll-margin-top: 56px;
+    }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var navItems = document.querySelectorAll('.alpha-nav__item[href^="#letter-"]');
+    var sections = Array.from(document.querySelectorAll('[id^="letter-"]'));
+    if (!navItems.length || !sections.length) return;
+
+    function setActive(letter) {
+        navItems.forEach(function (item) {
+            item.classList.toggle('is-active', item.dataset.letter === letter);
+        });
+        var activeItem = document.querySelector('.alpha-nav__item.is-active');
+        if (activeItem) {
+            scrollNavItemIntoView(activeItem);
+        }
+    }
+
+    function scrollNavItemIntoView(item) {
+        var container = item.closest('.alpha-nav__scroll');
+        if (!container) return;
+        // Двигаем только scrollLeft контейнера — scrollIntoView() трогать нельзя,
+        // т.к. у контейнера нет overflow-y, и браузер в качестве "ближайшего
+        // скроллящегося родителя" по вертикали берёт всю страницу.
+        var target = item.offsetLeft - (container.clientWidth / 2) + (item.offsetWidth / 2);
+        container.scrollTo({ left: target, behavior: 'smooth' });
+    }
+
+    navItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            setActive(item.dataset.letter);
+        });
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                setActive(entry.target.id.replace('letter-', ''));
+            }
+        });
+    }, { rootMargin: '-56px 0px -70% 0px', threshold: 0 });
+
+    sections.forEach(function (section) {
+        observer.observe(section);
+    });
+});
+</script>
 
 @endsection

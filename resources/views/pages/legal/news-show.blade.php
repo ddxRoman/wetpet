@@ -3,6 +3,7 @@
 @section('title', $news->title. ' — Новости Зверозор')
 
 @section('content')
+@include('layouts.header')
 <main class="py-5 bg-light">
     <div class="container">
         

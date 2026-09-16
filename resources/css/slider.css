@@ -1,4 +1,3 @@
-
 /* -------------------------------------------------------Карусель------------------------------------------ */
 @mixin aspect-ratio($width, $height) {
     position: relative;
@@ -82,12 +81,16 @@
   width: 75%;
   height: 500px;
   aspect-ratio: 2 / 1;
-  object-fit: cover;
+  object-fit: contain !important;
+  background-color: #ffffff15;
   border-radius: 15px;
   margin: 0 auto;
   display: block;
   }
 
+  .carousel__slide img{
+    object-fit: contain !important;
+  }
   .carousel__slide {
       position: relative;
       display: block;

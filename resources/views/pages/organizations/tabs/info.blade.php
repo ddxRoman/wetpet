@@ -74,15 +74,6 @@
             </td>
         </tr>
 
-        {{-- 3. Статус верификации --}}
-        @if($organization->is_verified)
-        <tr>
-            <td colspan="2">
-                <span class="exotic-badge">✓ Верифицированная организация</span>
-            </td>
-        </tr>
-        @endif
-
         {{-- 4. Описание --}}
         @if(!empty($organization->description))
         <tr>

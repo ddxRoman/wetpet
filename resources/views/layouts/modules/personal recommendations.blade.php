@@ -21,12 +21,23 @@
                   'Clinic' => $item->logo,
                   default  => $item->photo ?? null,
               };
+
+              // Клиники и организации живут на /{type}/{city}/{slug} —
+              // без city_slug ссылка попадает на URI, зарегистрированный
+              // только под PUT/DELETE, и Laravel отдаёт 405.
+              $itemUrl = match ($item->reviewable_type) {
+                  'Doctor'       => route('doctors.show', $item->slug),
+                  'Specialist'   => route('specialists.show', $item->slug),
+                  'Clinic'       => route('clinics.show', ['city' => $item->city_slug, 'clinic' => $item->slug]),
+                  'Organization' => route('organizations.show', ['city' => $item->city_slug, 'slug' => $item->slug]),
+                  default        => url(strtolower($item->reviewable_type).'s/'.$item->slug),
+              };
           @endphp
 
           <li class="carousel__slide">
               <figure>
                   <div>
-                      <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->slug) }}">
+                      <a href="{{ $itemUrl }}">
                           <img
                               class="carousel__slide_img_prewiew"
                               src="{{ $image ? asset('storage/'.$image) : asset('storage/clinics/logo/default-clinic.webp') }}"
@@ -36,10 +47,10 @@
                   </div>
 
                   <figcaption>
-                    <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->slug) }}">
+                    <a href="{{ $itemUrl }}">
                       {{ $item->name }}
                     </a>
-                    <a href="{{ url(strtolower($item->reviewable_type).'s/'.$item->slug) }}?tab=reviews">
+                    <a href="{{ $itemUrl }}?tab=reviews">
                       <span class="credit">
                           ⭐ {{ $item->avg_rating }} / 5
                           ({{ $item->reviews_count }} отзывов)
