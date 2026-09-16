@@ -1,28 +1,28 @@
 <style>
-.org-info-table {
+.doctor-info-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 6px;
 }
 
-.org-info-table td:first-child {
+.doctor-info-table td:first-child {
     font-weight: 600;
     color: #333;
     width: 125px;
     vertical-align: top;
 }
 
-.org-info-table td {
+.doctor-info-table td {
     padding: 4px 0;
     font-size: 0.95rem;
 }
 
-.org-info-table a {
+.doctor-info-table a {
     color: #0d6efd;
     font-weight: 500;
 }
 
-.org-info-table img.go-icon {
+.doctor-info-table img.go-icon {
     width: 16px;
     height: 16px;
     margin-left: 4px;
@@ -30,7 +30,7 @@
     opacity: 0;
 }
 
-.org-info-table a:hover img.go-icon {
+.doctor-info-table a:hover img.go-icon {
     opacity: 1;
 }
 
@@ -45,14 +45,26 @@
 }
 </style>
 
-<table class="org-info-table">
+<table class="doctor-info-table">
     <tbody>
         {{-- 1. Вывод Адреса (если заполнены street или house) --}}
-        @if(!empty($organization->street) || !empty($organization->house))
+        @if(!empty($doctor->street) || !empty($doctor->house))
         <tr>
-            <td>Адрес:</td>
+            <td>Частная практика:</td>
             <td>
-                {{ $organization->street }}{{ !empty($organization->house) ? ', д.' . $organization->house : '' }}
+                {{ $doctor->street }}{{ !empty($doctor->house) ? ', д.' . $doctor->house : '' }}
+            </td>
+        </tr>
+        @endif
+
+        @if($doctor->organization)
+        <tr>
+            <td>Клиника:</td>
+            <td>
+                <a href="{{ route('organizations.show', ['city' => $doctor->organization->city_slug, 'slug' => $doctor->organization->slug]) }}" title="Перейти на страницу клиники" class="text-decoration-none">
+                    {{ $doctor->organization->name }}
+                    <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
+                </a>
             </td>
         </tr>
         @endif
@@ -60,8 +72,8 @@
         <tr>
             <td>Город:</td>
             <td>
-                @if($organization->city)
-                    {{ $organization->city }}
+                @if($doctor->city)
+                    {{ $doctor->city->name }}
                 @else
                     —
                 @endif
@@ -69,31 +81,31 @@
         </tr>
 
         <tr>
-            <td>Сфера деятельности:</td>
+            <td>Стаж:</td>
             <td>
-                @if($organization->activityType)
-                    {{ $organization->activityType->name }}
+                @if($doctor->experience)
+                    {{ $doctor->experience }} лет
                 @else
                     —
                 @endif
             </td>
         </tr>
 
-        @if(!empty($organization->schedule) || !empty($organization->workdays))
+        {{-- 3. Специалист по экзотам --}}
+        @if($doctor->exotic_animals == 'Да')
         <tr>
-            <td>График работы:</td>
-            <td>
-                {{ $organization->workdays }}{{ !empty($organization->workdays) && !empty($organization->schedule) ? ', ' : '' }}{{ $organization->schedule }}
+             <td colspan="2">
+                <span class="exotic-badge">Специалист по экзотическим животным</span>
             </td>
         </tr>
         @endif
 
         {{-- 4. Описание --}}
-        @if(!empty($organization->description))
+        @if(!empty($doctor->description))
         <tr>
             <td colspan="2" class="pt-3">
-                <div class="text-muted small mb-1">Об организации:</div>
-                {{ $organization->description }}
+                <div class="text-muted small mb-1">О себе:</div>
+                {{ $doctor->description }}
             </td>
         </tr>
         @endif

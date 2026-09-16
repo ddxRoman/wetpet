@@ -170,14 +170,20 @@ public function destroy($id)
 
     // Определяем роут на основе типа удаленного отзыва
     $routeName = 'clinics.show';
+    $routeParams = ['city' => $model->city_slug, 'clinic' => $model];
     if (str_contains($type, 'Specialist')) {
         $routeName = 'specialists.show';
+        $routeParams = $model->slug;
     } elseif (str_contains($type, 'Doctor')) {
         $routeName = 'doctors.show';
+        $routeParams = $model->slug;
+    } elseif (str_contains($type, 'Organization')) {
+        $routeName = 'organizations.show';
+        $routeParams = ['city' => $model->city_slug, 'slug' => $model->slug];
     }
 
     return redirect()
-        ->route($routeName, $model->slug)
+        ->route($routeName, $routeParams)
         ->with('success', 'Отзыв удалён');
 }
 }

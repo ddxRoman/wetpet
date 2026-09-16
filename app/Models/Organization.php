@@ -45,24 +45,30 @@ protected static function boot()
     parent::boot();
 
     static::creating(function ($organization) {
-        $organization->slug = static::generateUniqueSlug($organization);
+        $organization->slug = static::generateUniqueSlug(
+            static::buildSlugSource($organization->name, $organization->city, $organization->street, $organization->house),
+            $organization->id
+        );
     });
 
     static::updating(function ($organization) {
         if ($organization->isDirty(['name', 'city', 'street', 'house'])) {
-            $organization->slug = static::generateUniqueSlug($organization);
+            $organization->slug = static::generateUniqueSlug(
+                static::buildSlugSource($organization->name, $organization->city, $organization->street, $organization->house),
+                $organization->id
+            );
         }
     });
 }
 
-private static function generateUniqueSlug($organization)
+/**
+ * Собирает и транслитерирует исходную строку для слага из названия и адреса
+ * (город, улица, дом). Используется и при автосохранении, и в реактивной
+ * форме админки (см. OrganizationResource).
+ */
+public static function buildSlugSource(?string $name, ?string $city = null, ?string $street = null, ?string $house = null): string
 {
-    $source = collect([
-        $organization->name,
-        $organization->city,
-        $organization->street,
-        $organization->house
-    ])->filter()->implode('-');
+    $source = collect([$name, $city, $street, $house])->filter()->implode('-');
 
     // Транслитерация кириллицы
     $map = [
@@ -73,19 +79,27 @@ private static function generateUniqueSlug($organization)
         'ъ'=>'','ы'=>'y','ь'=>'','э'=>'e','ю'=>'yu','я'=>'ya',
     ];
     $translit = mb_strtolower($source);
-    $translit = strtr($translit, $map);
 
-    $originalSlug = \Illuminate\Support\Str::slug($translit);
+    return strtr($translit, $map);
+}
 
-    // Если slug пустой — берём transliterated первое слово или id
+/**
+ * Слагифицирует источник (см. buildSlugSource) и гарантирует уникальность,
+ * при необходимости исключая текущую запись ($ignoreId) из проверки.
+ */
+public static function generateUniqueSlug(string $source, $ignoreId = null): string
+{
+    $originalSlug = \Illuminate\Support\Str::slug($source);
+
+    // Если slug пустой — берём id/время как запасной вариант
     if (empty($originalSlug)) {
-        $originalSlug = 'org-' . ($organization->id ?? time());
+        $originalSlug = 'org-' . ($ignoreId ?? time());
     }
 
     $slug = $originalSlug;
     $count = 1;
 
-    while (static::where('slug', $slug)->where('id', '!=', $organization->id ?? 0)->exists()) {
+    while (static::where('slug', $slug)->where('id', '!=', $ignoreId ?? 0)->exists()) {
         $slug = "{$originalSlug}-{$count}";
         $count++;
     }
@@ -118,6 +132,14 @@ public function fieldOfActivity(): BelongsTo
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * Слаг города для сегмента маршрута /organizations/{city}/{slug}.
+     */
+    public function getCitySlugAttribute(): string
+    {
+        return Str::slug($this->city ?? '');
     }
     
 public function prices()

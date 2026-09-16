@@ -48,7 +48,7 @@
 
                 @if($organization->whatsapp)
                     <div>
-                        💬 WhatsApp: 
+                        💬 VK: 
                         <a href="{{$organization->whatsapp }}" target="_blank" class="text-decoration-none">
                             
                             <img width="24px" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" title="Связаться через WhatsApp" alt="WhatsApp">

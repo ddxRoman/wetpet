@@ -32,10 +32,10 @@
         {{-- 💬 WhatsApp --}}
         @if(!empty($contact->whatsapp))
             <div class="mb-2">
-                💬 WhatsApp: 
-                <a href="https://wa.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank" class="text-decoration-none">
+                💬 VK: 
+                <a href="{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank" class="text-decoration-none">
                     {{ $contact->whatsapp }}
-                    <img width="20" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" alt="Вотсапп">
+                    <img width="20" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" alt="Вконтакте">
                 </a>
             </div>
         @endif

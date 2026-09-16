@@ -305,7 +305,11 @@ Forms\Components\FileUpload::make('photo')
 Tables\Columns\TextColumn::make('specialization_label')
     ->label('Специализация'),
 
-                    
+                    Tables\Columns\TextColumn::make('city.name')
+                        ->label('Город')
+                        ->sortable()
+                        ->searchable()
+                        ->toggleable(),
 
                 Tables\Columns\TextColumn::make('experience')
                     ->label('Опыт (лет)'),
@@ -331,6 +335,12 @@ Tables\Columns\TextColumn::make('specialization_label')
                 Tables\Filters\SelectFilter::make('clinic_id')
                     ->label('Клиника')
                     ->relationship('clinic', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('city_id')
+                    ->label('Город')
+                    ->relationship('city', 'name')
                     ->searchable()
                     ->preload(),
             ])

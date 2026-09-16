@@ -21,7 +21,7 @@
             
             <div class="d-flex gap-2">
                 @if($clinic->slug)
-                    <a href="{{ route('clinics.show', $clinic->slug) }}" 
+                    <a href="{{ route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic->slug]) }}" 
                        target="_blank" 
                        class="btn-view-profile d-flex align-items-center justify-content-center shadow-sm"
                        title="Перейти к карточке клиники">
@@ -202,5 +202,3 @@
         <p>Вы можете зарегистрировать свой объект в разделе «Добавить объект».</p>
     </div>
 @endif
-
-

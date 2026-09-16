@@ -167,6 +167,12 @@ class SpecialistResource extends Resource
                     ->label('Специализация')
                     ->searchable(),
 
+                Tables\Columns\TextColumn::make('city.name')
+                    ->label('Город')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('organization.name')
                     ->label('Организация')
                     ->searchable(),
@@ -195,6 +201,12 @@ class SpecialistResource extends Resource
                 Tables\Filters\SelectFilter::make('organization_id')
                     ->label('Организация')
                     ->relationship('organization', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('city_id')
+                    ->label('Город')
+                    ->relationship('city', 'name')
                     ->searchable()
                     ->preload(),
             ])

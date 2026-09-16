@@ -45,7 +45,7 @@
         @endphp
 
         <div class="col-lg-3 col-md-4 col-12 clinic-item">
-            <a href="{{ route('clinics.show', $clinic->slug) }}" title="Перейти в карточку клиники" class="text-decoration-none text-reset">
+            <a href="{{ route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic->slug]) }}" title="Перейти в карточку клиники" class="text-decoration-none text-reset">
                 <div class="card catalog-card h-100 shadow-sm hover-shadow position-relative transition">
                     {{-- Rating badge --}}
                     <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"

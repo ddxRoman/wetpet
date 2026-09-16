@@ -44,14 +44,26 @@ class Clinic extends Model
     {
         static::creating(function ($clinic) {
             if (empty($clinic->slug)) {
-                $clinic->slug = static::generateUniqueSlug($clinic->name);
+                $clinic->slug = static::generateUniqueSlug(
+                    static::buildSlugSource($clinic->name, $clinic->city, $clinic->street, $clinic->house)
+                );
             }
         });
     }
 
-    private static function generateUniqueSlug(string $name): string
+    /**
+     * Собирает исходную строку для слага из названия и адреса
+     * (город, улица, дом) — чтобы слаги разных клиник с похожим
+     * названием не совпадали и не плодили числовые суффиксы.
+     */
+    public static function buildSlugSource(?string $name, ?string $city = null, ?string $street = null, ?string $house = null): string
     {
-        $slug = Str::slug($name);
+        return trim(implode(' ', array_filter([$name, $city, $street, $house])));
+    }
+
+    public static function generateUniqueSlug(string $source): string
+    {
+        $slug = Str::slug($source);
         $original = $slug;
         $i = 1;
 
@@ -60,6 +72,14 @@ class Clinic extends Model
         }
 
         return $slug;
+    }
+
+    /**
+     * Слаг города для сегмента маршрута /clinics/{city}/{slug}.
+     */
+    public function getCitySlugAttribute(): string
+    {
+        return Str::slug($this->city ?? '');
     }
 
     protected $casts = [

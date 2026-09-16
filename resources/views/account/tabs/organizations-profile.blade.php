@@ -14,7 +14,7 @@
     
     <div class="d-flex gap-2">
         @if($organization->slug)
-            <a href="{{ route('organizations.show', $organization->slug) }}" 
+            <a href="{{ route('organizations.show', ['city' => $organization->city_slug, 'slug' => $organization->slug]) }}" 
                target="_blank" 
                class="btn-view-profile d-flex align-items-center justify-content-center shadow-sm"
                title="Перейти к карточке организации">

@@ -187,13 +187,19 @@ if ($request->ajax()) {
     }
     }
 
-    public function show($slug)
+    public function show($city, $slug)
     {
     $organization = Organization::with(['activityType'])
         ->withCount('reviews') // Теперь будет искать по reviewable_id
         ->withAvg('reviews', 'rating')
         ->where('slug', $slug)
         ->firstOrFail();
+
+    // Каноническая ссылка вида /organizations/{city}/{slug}: если сегмент города
+    // в URL не совпадает с актуальным городом организации — редиректим на верный адрес.
+    if ($city !== $organization->city_slug) {
+        return redirect()->route('organizations.show', ['city' => $organization->city_slug, 'slug' => $organization->slug], 301);
+    }
 
     return view('pages.organizations.show', compact('organization'));
     }

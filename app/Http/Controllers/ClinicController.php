@@ -52,8 +52,15 @@ if ($request->ajax()) {
     /**
      * Просмотр одной клиники
      */
-    public function show(Clinic $clinic)
+    public function show(string $city, Clinic $clinic)
     {
+        // Каноническая ссылка вида /clinics/{city}/{slug}: если сегмент города
+        // в URL не совпадает с актуальным городом клиники (переехала, опечатка
+        // в старой ссылке и т.п.) — редиректим на правильный адрес.
+        if ($city !== $clinic->city_slug) {
+            return redirect()->route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic], 301);
+        }
+
         $clinic->load(['awards', 'doctors']);
         return view('pages.clinics.show', compact('clinic'));
     }
@@ -121,7 +128,7 @@ if ($request->ajax()) {
         );
 
         return redirect()
-            ->route('clinics.show', $clinic)
+            ->route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic])
             ->with('success', 'Клиника добавлена');
     }
 
@@ -473,7 +480,7 @@ public function fullSearch(Request $request)
 
         $clinic->update($data);
 
-        return redirect()->route('pages.clinics.show', $clinic->slug)
+        return redirect()->route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic])
                          ->with('success', 'Клиника обновлена');
     }
 

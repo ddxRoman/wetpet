@@ -163,7 +163,10 @@ Route::get('/animals/{species_slug}/{breed_slug}', [PetController::class, 'showB
 Route::get('/breeds', [PetController::class, 'getBreeds']);
 
 // 🏥 Клиники и отзывы (публичные)
-Route::resource('clinics', ClinicController::class);
+// 'show' зарегистрирован отдельно ниже с двумя сегментами (/clinics/{city}/{slug}) —
+// исключаем его здесь, чтобы старый однослотовый маршрут ресурса не конфликтовал
+// и не падал с ошибкой из-за нового обязательного параметра {city}.
+Route::resource('clinics', ClinicController::class)->except(['show']);
 Route::resource('reviews', ReviewController::class);
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
@@ -207,7 +210,7 @@ Route::post('/add-organization', [OrganizationController::class, 'submit'])
     ->name('add-organization');
 Route::post('/submit-organization', [OrganizationController::class, 'submit'])->name('submit-organization');
 
-Route::get('/clinics/{clinic:slug}', [ClinicController::class, 'show'])
+Route::get('/clinics/{city}/{clinic:slug}', [ClinicController::class, 'show'])
     ->name('clinics.show');
 
 Route::post('/add-specialist', [SpecialistCreateController::class, 'store']);
@@ -234,7 +237,7 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/organizations', [OrganizationController::class, 'catalog'])->name('organizations.index');
 
-Route::get('/organizations/{slug}', [OrganizationController::class, 'show'])->name('organizations.show');
+Route::get('/organizations/{city}/{slug}', [OrganizationController::class, 'show'])->name('organizations.show');
 
 Route::get('/get-organizations/{city_id}', function ($city_id) {
     $organizations = \App\Models\Organization::where('city_id', $city_id)

@@ -61,7 +61,7 @@
         <tr>
             <td>Клиника:</td>
             <td>
-                <a href="{{ route('organizations.show', $doctor->organization->slug) }}" title="Перейти на страницу клиники" class="text-decoration-none">
+                <a href="{{ route('organizations.show', ['city' => $doctor->organization->city_slug, 'slug' => $doctor->organization->slug]) }}" title="Перейти на страницу клиники" class="text-decoration-none">
                     {{ $doctor->organization->name }}
                     <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
                 </a>

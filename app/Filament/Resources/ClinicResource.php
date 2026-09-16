@@ -45,7 +45,7 @@ class ClinicResource extends Resource
                             ->label('Открыть карточку на сайте')
                             ->icon('heroicon-o-arrow-top-right-on-square')
                             ->color('gray')
-                            ->url(fn ($record) => $record ? route('clinics.show', $record) : null)
+                            ->url(fn ($record) => $record ? route('clinics.show', ['city' => $record->city_slug, 'clinic' => $record]) : null)
                             ->openUrlInNewTab()
                             ->visible(fn ($record) => $record !== null),
                     ]),
@@ -58,28 +58,82 @@ class ClinicResource extends Resource
                 ])
                 ->columns(3),
 
+            Forms\Components\Hidden::make('slug_touched')
+                ->default(false)
+                ->dehydrated(false)
+                ->afterStateHydrated(function (Forms\Components\Hidden $component, $record) {
+                    // На редактировании уже существующей клиники не трогаем слаг
+                    // автоматически при правке названия/адреса — только вручную.
+                    $component->state($record !== null);
+                }),
+
             Forms\Components\TextInput::make('name')
                 ->label('Название')
                 ->required()
-                ->reactive()
+                ->live(onBlur: true)
                 ->afterStateUpdated(function ($state, callable $set, $get) {
-                    if (! $get('slug')) {
-                        $set('slug', \Illuminate\Support\Str::slug($state));
+                    if (! $get('slug_touched')) {
+                        $set('slug', Clinic::generateUniqueSlug(
+                            Clinic::buildSlugSource($state, $get('city'), $get('street'), $get('house'))
+                        ));
                     }
                 }),
 
             Forms\Components\TextInput::make('slug')
                 ->label('Slug')
+                ->helperText('Собирается автоматически из названия и адреса (город, улица, дом). Можно поправить вручную — после этого авто-обновление отключится.')
                 ->required()
-                ->unique(ignoreRecord: true),
+                ->unique(ignoreRecord: true)
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (callable $set) => $set('slug_touched', true))
+                ->suffixAction(
+                    Forms\Components\Actions\Action::make('regenerate_slug')
+                        ->label('Пересобрать')
+                        ->icon('heroicon-o-arrow-path')
+                        ->action(function (callable $set, callable $get) {
+                            $set('slug', Clinic::generateUniqueSlug(
+                                Clinic::buildSlugSource($get('name'), $get('city'), $get('street'), $get('house'))
+                            ));
+                            $set('slug_touched', false);
+                        })
+                ),
 
             Forms\Components\Section::make('Адрес')
                 ->schema([
                     Forms\Components\TextInput::make('country')->label('Страна'),
                     Forms\Components\TextInput::make('region')->label('Регион'),
-                    Forms\Components\TextInput::make('city')->label('Город')->required(),
-                    Forms\Components\TextInput::make('street')->label('Улица')->required(),
-                    Forms\Components\TextInput::make('house')->label('Дом'),
+                    Forms\Components\TextInput::make('city')
+                        ->label('Город')
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            if (! $get('slug_touched')) {
+                                $set('slug', Clinic::generateUniqueSlug(
+                                    Clinic::buildSlugSource($get('name'), $state, $get('street'), $get('house'))
+                                ));
+                            }
+                        }),
+                    Forms\Components\TextInput::make('street')
+                        ->label('Улица')
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            if (! $get('slug_touched')) {
+                                $set('slug', Clinic::generateUniqueSlug(
+                                    Clinic::buildSlugSource($get('name'), $get('city'), $state, $get('house'))
+                                ));
+                            }
+                        }),
+                    Forms\Components\TextInput::make('house')
+                        ->label('Дом')
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            if (! $get('slug_touched')) {
+                                $set('slug', Clinic::generateUniqueSlug(
+                                    Clinic::buildSlugSource($get('name'), $get('city'), $get('street'), $state)
+                                ));
+                            }
+                        }),
                     Forms\Components\TextInput::make('address_comment')->label('Комментарий к адресу')->columnSpanFull(),
                 ])
                 ->columns(3),
@@ -170,6 +224,16 @@ class ClinicResource extends Resource
                     ->trueLabel('Только проверенные')
                     ->falseLabel('Только непроверенные')
                     ->native(false),
+
+                Tables\Filters\SelectFilter::make('city')
+                    ->label('Город')
+                    ->options(fn () => Clinic::query()
+                        ->whereNotNull('city')
+                        ->distinct()
+                        ->orderBy('city')
+                        ->pluck('city', 'city')
+                        ->toArray())
+                    ->searchable(),
             ])
             ->defaultSort('is_verified', 'asc')
             ->actions([

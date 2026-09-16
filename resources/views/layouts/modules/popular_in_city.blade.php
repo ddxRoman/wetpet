@@ -74,7 +74,15 @@ $routeMap  = [
                         @php
                             $entity = $promo->promotable;
                             $typeStr = class_basename($promo->promotable_type);
-                            $url = isset($routeMap[$typeStr]) ? route($routeMap[$typeStr], $entity->slug ?? '#') : '#';
+                            $url = '#';
+                            if (isset($routeMap[$typeStr]) && $entity) {
+                                $routeParams = match ($typeStr) {
+                                    'Clinic' => ['city' => $entity->city_slug, 'clinic' => $entity->slug],
+                                    'Organization' => ['city' => $entity->city_slug, 'slug' => $entity->slug],
+                                    default => ($entity->slug ?? '#'),
+                                };
+                                $url = route($routeMap[$typeStr], $routeParams);
+                            }
                         @endphp
                         <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2 {{ !$loop->last ? 'border-bottom' : '' }}">
                             <a class="link_in_category_specialist font-weight-bold" href="{{ $url }}" title="{{ $promo->title }}">
@@ -116,7 +124,15 @@ $routeMap  = [
             @php
                 $entity = $promo->promotable;
                 $typeStr = class_basename($promo->promotable_type);
-                $url = isset($routeMap[$typeStr]) ? route($routeMap[$typeStr], $entity->slug ?? '#') : '#';
+                $url = '#';
+                if (isset($routeMap[$typeStr]) && $entity) {
+                    $routeParams = match ($typeStr) {
+                        'Clinic' => ['city' => $entity->city_slug, 'clinic' => $entity->slug],
+                        'Organization' => ['city' => $entity->city_slug, 'slug' => $entity->slug],
+                        default => ($entity->slug ?? '#'),
+                    };
+                    $url = route($routeMap[$typeStr], $routeParams);
+                }
             @endphp
             <div class="mobile-popular-item">
                 <a class="mobile-popular-link" href="{{ $url }}">{{ $promo->title }}</a>
