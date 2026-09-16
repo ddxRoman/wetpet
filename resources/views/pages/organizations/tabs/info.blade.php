@@ -47,24 +47,22 @@
 
 <table class="doctor-info-table">
     <tbody>
-        {{-- 1. Вывод Адреса (если заполнены street или house) --}}
-        @if(!empty($doctor->street) || !empty($doctor->house))
+        {{-- 1. Вид деятельности --}}
+        @if($organization->activityType)
         <tr>
-            <td>Частная практика:</td>
+            <td>Вид деятельности:</td>
             <td>
-                {{ $doctor->street }}{{ !empty($doctor->house) ? ', д.' . $doctor->house : '' }}
+                {{ $organization->activityType->name }}
             </td>
         </tr>
         @endif
 
-        @if($doctor->organization)
+        {{-- 2. Адрес --}}
+        @if(!empty($organization->street) || !empty($organization->house))
         <tr>
-            <td>Клиника:</td>
+            <td>Адрес:</td>
             <td>
-                <a href="{{ route('organizations.show', ['city' => $doctor->organization->city_slug, 'slug' => $doctor->organization->slug]) }}" title="Перейти на страницу клиники" class="text-decoration-none">
-                    {{ $doctor->organization->name }}
-                    <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
-                </a>
+                {{ $organization->street }}{{ !empty($organization->house) ? ', д.' . $organization->house : '' }}
             </td>
         </tr>
         @endif
@@ -72,40 +70,25 @@
         <tr>
             <td>Город:</td>
             <td>
-                @if($doctor->city)
-                    {{ $doctor->city->name }}
-                @else
-                    —
-                @endif
+                {{ $organization->city ?: '—' }}
             </td>
         </tr>
 
+        {{-- 3. Статус верификации --}}
+        @if($organization->is_verified)
         <tr>
-            <td>Стаж:</td>
-            <td>
-                @if($doctor->experience)
-                    {{ $doctor->experience }} лет
-                @else
-                    —
-                @endif
-            </td>
-        </tr>
-
-        {{-- 3. Специалист по экзотам --}}
-        @if($doctor->exotic_animals == 'Да')
-        <tr>
-             <td colspan="2">
-                <span class="exotic-badge">Специалист по экзотическим животным</span>
+            <td colspan="2">
+                <span class="exotic-badge">✓ Верифицированная организация</span>
             </td>
         </tr>
         @endif
 
         {{-- 4. Описание --}}
-        @if(!empty($doctor->description))
+        @if(!empty($organization->description))
         <tr>
             <td colspan="2" class="pt-3">
-                <div class="text-muted small mb-1">О себе:</div>
-                {{ $doctor->description }}
+                <div class="text-muted small mb-1">Об организации:</div>
+                {{ $organization->description }}
             </td>
         </tr>
         @endif

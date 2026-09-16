@@ -58,7 +58,38 @@
         <meta name="twitter:image" content="{{ $seoMeta['image'] }}">
     @endif
 
-    {{-- ── JSON-LD Schema.org (для Google) ── --}}
+    {{-- ── JSON-LD Schema.org: сайт/организация (для Google, на всех страницах) ── --}}
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@graph'   => [
+            [
+                '@type' => 'WebSite',
+                '@id'   => rtrim(config('app.url'), '/') . '/#website',
+                'name'  => 'Зверозор',
+                'url'   => config('app.url'),
+                'inLanguage' => 'ru-RU',
+                'potentialAction' => [
+                    '@type'       => 'SearchAction',
+                    'target'      => [
+                        '@type'       => 'EntryPoint',
+                        'urlTemplate' => rtrim(config('app.url'), '/') . '/search?q={search_term_string}',
+                    ],
+                    'query-input' => 'required name=search_term_string',
+                ],
+            ],
+            [
+                '@type' => 'Organization',
+                '@id'   => rtrim(config('app.url'), '/') . '/#organization',
+                'name'  => 'Зверозор',
+                'url'   => config('app.url'),
+                'logo'  => asset('images/logo.png'),
+            ],
+        ],
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+
+    {{-- ── JSON-LD Schema.org для конкретной страницы (например, статьи) ── --}}
     @if(!empty($seoMeta['schema']))
         <script type="application/ld+json">{!! $seoMeta['schema'] !!}</script>
     @endif
