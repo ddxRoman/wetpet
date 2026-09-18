@@ -170,6 +170,12 @@ public function liveSearch(Request $request)
     $query = $request->get('q');
     if (mb_strlen($query) < 2) return response()->json(['results' => []]);
 
+    // ── Вариант запроса "в другой раскладке" ──────────────────
+    // Если человек набрал русское слово при включённой английской
+    // раскладке (или наоборот), $queryAlt даёт правильный вариант.
+    // Ищем ОБА варианта одновременно.
+    $queryAlt = \App\Support\KeyboardLayout::swap($query);
+
     // ── Определение целевого города ──────────────────────────
     // 1. Если в самом запросе явно указан город ("Мопс Новосибирск") —
     //    вычленяем его название и убираем из текста поиска, чтобы оно
@@ -200,61 +206,81 @@ public function liveSearch(Request $request)
         }
     }
 
+    // Раскладочный вариант поискового термина (после вычитания города)
+    $searchTermAlt = \App\Support\KeyboardLayout::swap($searchTerm);
+
+    // Город, В КОТОРОМ ищем — теперь это ЖЁСТКИЙ фильтр, а не просто
+    // приоритет сортировки: если город определён (явно в запросе или
+    // текущий город пользователя), результаты из других городов вообще
+    // не показываем. Породы животных к городу не привязаны — их фильтр
+    // не касается.
     $targetCityName = $matchedCityName ?: session('city_name');
+    $targetCityNameLower = $targetCityName ? mb_strtolower(trim($targetCityName)) : null;
 
     // Разбиваем запрос на отдельные слова для гибкого поиска
     $words = explode(' ', $searchTerm);
+    $wordsAlt = explode(' ', $searchTermAlt);
 
-    // Вспомогательная функция для расширенного поиска (Название + Адрес)
+    // Вспомогательная функция для расширенного поиска (Название + Адрес).
+    // Для каждого слова проверяем и обычный вариант, и вариант в другой
+    // раскладке — при этом каждое СЛОВО должно совпасть хотя бы в одном
+    // из вариантов (а между словами — обычное И, как и раньше).
     // Используется в Клиниках и Организациях
-    $applyAdvancedSearch = function($q) use ($words) {
-        foreach ($words as $word) {
-            $q->where(function($sub) use ($word) {
+    $applyAdvancedSearch = function($q) use ($words, $wordsAlt) {
+        foreach ($words as $i => $word) {
+            $wordAlt = $wordsAlt[$i] ?? $word;
+            $q->where(function($sub) use ($word, $wordAlt) {
                 $sub->where('name', 'LIKE', "%{$word}%")
                     ->orWhere('street', 'LIKE', "%{$word}%")
                     ->orWhere('city', 'LIKE', "%{$word}%")
                     ->orWhere('house', 'LIKE', "%{$word}%");
+                if ($wordAlt !== $word) {
+                    $sub->orWhere('name', 'LIKE', "%{$wordAlt}%")
+                        ->orWhere('street', 'LIKE', "%{$wordAlt}%")
+                        ->orWhere('city', 'LIKE', "%{$wordAlt}%")
+                        ->orWhere('house', 'LIKE', "%{$wordAlt}%");
+                }
             });
         }
     };
 
-    // Тир по городу: 0 — совпадает с целевым городом (или у сущности
-    // вообще нет привязки к городу, как у пород), 1 — другой город.
-    // Используется как ГЛАВНЫЙ ключ сортировки, чтобы "свой" город
-    // (или явно указанный в запросе) всегда шёл выше результатов
-    // из других городов.
-    $cityTier = function (?string $itemCityName) use ($targetCityName) {
-        if (!$targetCityName || !$itemCityName) {
-            return 0;
+    // Жёсткий фильтр по городу для клиник/организаций (строковое поле city)
+    $applyCityFilter = function($q) use ($targetCityNameLower) {
+        if ($targetCityNameLower) {
+            $q->whereRaw('LOWER(city) = ?', [$targetCityNameLower]);
         }
-        return mb_strtolower(trim($itemCityName)) === mb_strtolower(trim($targetCityName)) ? 0 : 1;
     };
 
     // Определяет "силу" совпадения, чтобы прямые вхождения (точное
     // совпадение / совпадение с начала слова) шли раньше, чем те,
     // где запрос найден только как часть названия или в доп.полях
-    // (адрес, специализация и т.д.)
+    // (адрес, специализация и т.д.). Проверяем оба варианта раскладки
+    // и берём лучший (меньший) результат.
     // 0 — точное совпадение, 1 — совпадение с начала, 2 — вхождение
     // в основное поле, 3 — совпадение только по доп.полям
-    $matchPriority = function (string $primary, array $altFields = []) use ($searchTerm) {
-        $qNorm = mb_strtolower(trim($searchTerm));
-        $pNorm = mb_strtolower(trim($primary));
+    $matchPriority = function (string $primary, array $altFields = []) use ($searchTerm, $searchTermAlt) {
+        $score = function (string $qNorm) use ($primary, $altFields) {
+            $qNorm = mb_strtolower(trim($qNorm));
+            $pNorm = mb_strtolower(trim($primary));
 
-        if ($qNorm !== '' && $pNorm === $qNorm) {
-            return 0;
-        }
-        if ($qNorm !== '' && mb_strpos($pNorm, $qNorm) === 0) {
-            return 1;
-        }
-        if ($qNorm !== '' && mb_stripos($pNorm, $qNorm) !== false) {
-            return 2;
-        }
-        foreach ($altFields as $alt) {
-            if ($alt && mb_stripos(mb_strtolower($alt), $qNorm) !== false) {
-                return 3;
+            if ($qNorm !== '' && $pNorm === $qNorm) {
+                return 0;
             }
-        }
-        return 4;
+            if ($qNorm !== '' && mb_strpos($pNorm, $qNorm) === 0) {
+                return 1;
+            }
+            if ($qNorm !== '' && mb_stripos($pNorm, $qNorm) !== false) {
+                return 2;
+            }
+            foreach ($altFields as $alt) {
+                if ($alt && mb_stripos(mb_strtolower($alt), $qNorm) !== false) {
+                    return 3;
+                }
+            }
+            return 4;
+        };
+
+        return min($score($searchTerm), $score($searchTermAlt));
     };
 
     $results = collect();
@@ -263,30 +289,43 @@ public function liveSearch(Request $request)
     \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
             $applyAdvancedSearch($q);
         })
-        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
+        ->when($targetCityNameLower, $applyCityFilter)
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
             $results->push([
                 'type' => 'clinic',
                 'name' => $item->name,
                 'slug' => $item->slug,
+                'city_slug' => $item->city_slug,
                 'address' => "{$item->city}, {$item->street} {$item->house}",
                 'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/clinics/logo/default-clinic.webp'),
                 '_priority' => $matchPriority($item->name, [$item->street, $item->city, $item->house]),
-                '_city_tier' => $cityTier($item->city),
                 '_type_order' => 0,
             ]);
         });
 
     // 2. Врачи
     \App\Models\Doctor::with(['clinic', 'city'])
-        ->where(function($q) use ($searchTerm) {
+        ->where(function($q) use ($searchTerm, $searchTermAlt) {
             $q->where('name', 'LIKE', "%{$searchTerm}%")
               ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
+            if ($searchTermAlt !== $searchTerm) {
+                $q->orWhere('name', 'LIKE', "%{$searchTermAlt}%")
+                  ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
+            }
         })
-        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
+        ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
+            $q->where(function ($inner) use ($targetCityNameLower) {
+                $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
+                    ->orWhereHas('clinic', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                    ->orWhere(function ($none) {
+                        $none->whereNull('city_id')->whereNull('clinic_id');
+                    });
+            });
+        })
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
             $clinicAddress = $item->clinic 
                 ? " ({$item->clinic->city}, {$item->clinic->street} {$item->clinic->house})" 
                 : "";
-            $doctorCityName = $item->city->name ?? $item->clinic?->city ?? null;
             $results->push([
                 'type' => 'doctor',
                 'name' => $item->name,
@@ -295,7 +334,6 @@ public function liveSearch(Request $request)
                 'clinic_info' => ($item->clinic->name ?? 'Частная практика') . $clinicAddress,
                 'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp'),
                 '_priority' => $matchPriority($item->name, [$item->specialization]),
-                '_city_tier' => $cityTier($doctorCityName),
                 '_type_order' => 2,
             ]);
         });
@@ -305,34 +343,46 @@ public function liveSearch(Request $request)
         ->where(function($q) use ($applyAdvancedSearch) {
             $applyAdvancedSearch($q);
         })
-        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
+        ->when($targetCityNameLower, $applyCityFilter)
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
             $results->push([
                 'type' => 'organization',
                 'name' => $item->name,
                 'slug' => $item->slug,
+                'city_slug' => $item->city_slug,
                 'category_name' => $item->fieldOfActivity->name ?? '', 
                 'address' => "{$item->city}, {$item->street} {$item->house}",
                 'image' => $item->logo ? \Storage::url($item->logo) : asset('storage/organizations/default-org.webp'),
                 '_priority' => $matchPriority($item->name, [$item->street, $item->city, $item->house]),
-                '_city_tier' => $cityTier($item->city),
                 '_type_order' => 1,
             ]);
         });
 
     // 4. Специалисты
     \App\Models\Specialist::with(['organization', 'city'])
-        ->where(function($q) use ($searchTerm) {
+        ->where(function($q) use ($searchTerm, $searchTermAlt) {
             $q->where('name', 'LIKE', "%{$searchTerm}%")
               ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
+            if ($searchTermAlt !== $searchTerm) {
+                $q->orWhere('name', 'LIKE', "%{$searchTermAlt}%")
+                  ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
+            }
         })
-        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $cityTier) {
+        ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
+            $q->where(function ($inner) use ($targetCityNameLower) {
+                $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
+                    ->orWhereHas('organization', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                    ->orWhere(function ($none) {
+                        $none->whereNull('city_id')->whereNull('organization_id');
+                    });
+            });
+        })
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
             if ($item->organization) {
                 $location = "{$item->organization->name} ({$item->organization->city}, {$item->organization->street} {$item->organization->house})";
-                $specialistCityName = $item->organization->city ?? null;
             } else {
                 $cityName = $item->city->name ?? 'Город не указан'; 
                 $location = "Частный специалист: {$cityName}, {$item->street} {$item->house}";
-                $specialistCityName = $item->city->name ?? null;
             }
             $results->push([
                 'type' => 'specialist',
@@ -342,18 +392,23 @@ public function liveSearch(Request $request)
                 'location_info' => $location,
                 'image' => $item->photo ? \Storage::url($item->photo) : asset('storage/doctors/default-doctor.webp'),
                 '_priority' => $matchPriority($item->name, [$item->specialization]),
-                '_city_tier' => $cityTier($specialistCityName),
                 '_type_order' => 3,
             ]);
         });
 
-    // 5. Животные (породы) — не привязаны к городу, тир всегда нейтральный
+    // 5. Животные (породы) — не привязаны к городу, фильтр по городу
+    // на них не действует
     \App\Models\Animal::with('details')
-        ->where(function($q) use ($searchTerm) {
+        ->where(function($q) use ($searchTerm, $searchTermAlt) {
             // Поиск по породе или виду
             $q->where('breed', 'LIKE', "%{$searchTerm}%")
               ->orWhere('species', 'LIKE', "%{$searchTerm}%")
               ->orWhereRaw("CONCAT(species, ' ', breed) LIKE ?", ["%{$searchTerm}%"]);
+            if ($searchTermAlt !== $searchTerm) {
+                $q->orWhere('breed', 'LIKE', "%{$searchTermAlt}%")
+                  ->orWhere('species', 'LIKE', "%{$searchTermAlt}%")
+                  ->orWhereRaw("CONCAT(species, ' ', breed) LIKE ?", ["%{$searchTermAlt}%"]);
+            }
         })
         ->limit(5)->get()->each(function($item) use (&$results, $matchPriority) {
             $results->push([
@@ -364,20 +419,18 @@ public function liveSearch(Request $request)
                 'category' => $item->species,
                 'image' => ($item->details->photo ?? null) ? \Storage::url($item->details->photo) : asset('storage/animals/default-animal.webp'),
                 '_priority' => $matchPriority($item->breed, [$item->species]),
-                '_city_tier' => 0,
                 '_type_order' => 4,
             ]);
         });
 
-    // Город — главный ключ сортировки (свой/указанный город всегда
-    // выше, другие города — внизу), затем релевантность текста,
-    // затем порядок типов (клиники/организации/врачи/специалисты/животные)
+    // Теперь город больше не влияет на сортировку (он уже жёсткий фильтр
+    // выше) — сортируем только по релевантности текста и порядку типов.
     $sorted = $results
-        ->sortBy(['_city_tier', '_priority', '_type_order'])
+        ->sortBy(['_priority', '_type_order'])
         ->values()
         ->take(20)
         ->map(function ($item) {
-            unset($item['_priority'], $item['_city_tier'], $item['_type_order']);
+            unset($item['_priority'], $item['_type_order']);
             return $item;
         });
 
@@ -389,62 +442,159 @@ public function fullSearch(Request $request)
     $query = $request->get('q');
     if (!$query) return redirect()->back();
 
-    $words = explode(' ', $query);
+    // Вариант запроса в другой раскладке (см. liveSearch выше) — ищем
+    // одновременно и обычный текст, и его "перевёрнутый" вариант.
+    $queryAlt = \App\Support\KeyboardLayout::swap($query);
 
-    // Универсальная функция поиска по адресу/названию
-    $applyAdvancedSearch = function($q) use ($words) {
-        foreach ($words as $word) {
-            $q->where(function($sub) use ($word) {
+    // Город, явно упомянутый в запросе ("Мопс Краснодар"), либо —
+    // если в запросе города нет — текущий город пользователя из сессии.
+    // Если город определён, он становится жёстким фильтром: результаты
+    // из других городов не показываются (кроме пород животных — они
+    // к городу не привязаны).
+    $queryLower = mb_strtolower($query);
+    $matchedCityName = null;
+    $matchedLength = 0;
+
+    foreach (\App\Models\City::pluck('name') as $cityName) {
+        $cityNameLower = mb_strtolower(trim($cityName));
+        if ($cityNameLower !== '' && mb_stripos($queryLower, $cityNameLower) !== false) {
+            if (mb_strlen($cityNameLower) > $matchedLength) {
+                $matchedCityName = $cityName;
+                $matchedLength = mb_strlen($cityNameLower);
+            }
+        }
+    }
+
+    $searchTerm = $query;
+    if ($matchedCityName) {
+        $stripped = trim(preg_replace('/' . preg_quote($matchedCityName, '/') . '/iu', '', $query));
+        if (mb_strlen($stripped) >= 2) {
+            $searchTerm = $stripped;
+        }
+    }
+    $searchTermAlt = \App\Support\KeyboardLayout::swap($searchTerm);
+
+    $targetCityName = $matchedCityName ?: session('city_name');
+    $targetCityNameLower = $targetCityName ? mb_strtolower(trim($targetCityName)) : null;
+
+    $words = explode(' ', $searchTerm);
+    $wordsAlt = explode(' ', $searchTermAlt);
+
+    // Универсальная функция поиска по адресу/названию (обычная раскладка + альтернативная)
+    $applyAdvancedSearch = function($q) use ($words, $wordsAlt) {
+        foreach ($words as $i => $word) {
+            $wordAlt = $wordsAlt[$i] ?? $word;
+            $q->where(function($sub) use ($word, $wordAlt) {
                 $sub->where('name', 'LIKE', "%{$word}%")
                     ->orWhere('street', 'LIKE', "%{$word}%")
                     ->orWhere('city', 'LIKE', "%{$word}%")
                     ->orWhere('house', 'LIKE', "%{$word}%");
+                if ($wordAlt !== $word) {
+                    $sub->orWhere('name', 'LIKE', "%{$wordAlt}%")
+                        ->orWhere('street', 'LIKE', "%{$wordAlt}%")
+                        ->orWhere('city', 'LIKE', "%{$wordAlt}%")
+                        ->orWhere('house', 'LIKE', "%{$wordAlt}%");
+                }
             });
+        }
+    };
+
+    // Жёсткий фильтр по городу для клиник/организаций (строковое поле city)
+    $applyCityFilter = function($q) use ($targetCityNameLower) {
+        if ($targetCityNameLower) {
+            $q->whereRaw('LOWER(city) = ?', [$targetCityNameLower]);
         }
     };
 
     $results = [
         'clinics' => \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
-            $applyAdvancedSearch($q);
-        })->get(),
+                $applyAdvancedSearch($q);
+            })
+            ->when($targetCityNameLower, $applyCityFilter)
+            ->get(),
 
         'organizations' => \App\Models\Organization::with('fieldOfActivity')
             ->where(function($q) use ($applyAdvancedSearch) {
                 $applyAdvancedSearch($q);
-            })->get(),
+            })
+            ->when($targetCityNameLower, $applyCityFilter)
+            ->get(),
 
         'doctors' => \App\Models\Doctor::with('clinic')
-            ->where(function($q) use ($query, $words) {
-                // Ищем по имени врача целиком
-                $q->where('name', 'LIKE', "%{$query}%")
-                  ->orWhere('specialization', 'LIKE', "%{$query}%")
-                  // ИЛИ по адресу клиники (разбивая на слова)
-                  ->orWhereHas('clinic', function($sub) use ($words) {
-                      foreach ($words as $word) {
-                          $sub->where(function($inner) use ($word) {
-                              $inner->where('city', 'LIKE', "%{$word}%")
-                                    ->orWhere('street', 'LIKE', "%{$word}%");
-                          });
-                      }
-                  });
-            })->get(),
+            ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
+                // Ищем по имени врача целиком (обе раскладки)
+                $q->where('name', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
+                if ($searchTermAlt !== $searchTerm) {
+                    $q->orWhere('name', 'LIKE', "%{$searchTermAlt}%")
+                      ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
+                }
+                // ИЛИ по адресу клиники (разбивая на слова, обе раскладки)
+                $q->orWhereHas('clinic', function($sub) use ($words, $wordsAlt) {
+                    foreach ($words as $i => $word) {
+                        $wordAlt = $wordsAlt[$i] ?? $word;
+                        $sub->where(function($inner) use ($word, $wordAlt) {
+                            $inner->where('city', 'LIKE', "%{$word}%")
+                                  ->orWhere('street', 'LIKE', "%{$word}%");
+                            if ($wordAlt !== $word) {
+                                $inner->orWhere('city', 'LIKE', "%{$wordAlt}%")
+                                      ->orWhere('street', 'LIKE', "%{$wordAlt}%");
+                            }
+                        });
+                    }
+                });
+            })
+            ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
+                $q->where(function ($inner) use ($targetCityNameLower) {
+                    $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
+                        ->orWhereHas('clinic', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                        ->orWhere(function ($none) {
+                            $none->whereNull('city_id')->whereNull('clinic_id');
+                        });
+                });
+            })
+            ->get(),
 
         'specialists' => \App\Models\Specialist::with(['organization', 'city'])
-            ->where(function($q) use ($query, $words) {
-                $q->where('name', 'LIKE', "%{$query}%")
-                  ->orWhere('specialization', 'LIKE', "%{$query}%")
-                  ->orWhereHas('organization', function($sub) use ($words) {
-                      foreach ($words as $word) {
-                          $sub->where(function($inner) use ($word) {
-                              $inner->where('city', 'LIKE', "%{$word}%")
-                                    ->orWhere('street', 'LIKE', "%{$word}%");
-                          });
-                      }
-                  });
-            })->get(),
+            ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
+                $q->where('name', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
+                if ($searchTermAlt !== $searchTerm) {
+                    $q->orWhere('name', 'LIKE', "%{$searchTermAlt}%")
+                      ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
+                }
+                $q->orWhereHas('organization', function($sub) use ($words, $wordsAlt) {
+                    foreach ($words as $i => $word) {
+                        $wordAlt = $wordsAlt[$i] ?? $word;
+                        $sub->where(function($inner) use ($word, $wordAlt) {
+                            $inner->where('city', 'LIKE', "%{$word}%")
+                                  ->orWhere('street', 'LIKE', "%{$word}%");
+                            if ($wordAlt !== $word) {
+                                $inner->orWhere('city', 'LIKE', "%{$wordAlt}%")
+                                      ->orWhere('street', 'LIKE', "%{$wordAlt}%");
+                            }
+                        });
+                    }
+                });
+            })
+            ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
+                $q->where(function ($inner) use ($targetCityNameLower) {
+                    $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
+                        ->orWhereHas('organization', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                        ->orWhere(function ($none) {
+                            $none->whereNull('city_id')->whereNull('organization_id');
+                        });
+                });
+            })
+            ->get(),
 
-        'animals' => \App\Models\Animal::where('breed', 'LIKE', "%{$query}%")
-            ->orWhere('species', 'LIKE', "%{$query}%")
+        // Породы животных не привязаны к городу — фильтр по городу их не касается
+        'animals' => \App\Models\Animal::where('breed', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('species', 'LIKE', "%{$searchTerm}%")
+            ->when($searchTermAlt !== $searchTerm, function ($q) use ($searchTermAlt) {
+                $q->orWhere('breed', 'LIKE', "%{$searchTermAlt}%")
+                  ->orWhere('species', 'LIKE', "%{$searchTermAlt}%");
+            })
             ->get(),
     ];
 

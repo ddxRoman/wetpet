@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
         switch (item.type) {
             case 'clinic':
                 return `
-                    <a href="/clinics/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                    <a href="/clinics/${item.city_slug}/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
                         <img src="${item.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
                         <div class="ms-2">
                             <div class="result-title text-primary"><small>🏥 Клиника:</small> ${item.name}</div>
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'organization': {
                 const category = item.category_name ? `<span class="text-muted small">(${item.category_name})</span>` : '';
                 return `
-                    <a href="/organizations/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
+                    <a href="/organizations/${item.city_slug}/${item.slug}" class="search-result-item d-flex align-items-center p-2 text-decoration-none border-bottom">
                         <img src="${item.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
                         <div class="ms-2">
                             <div class="result-title text-success">

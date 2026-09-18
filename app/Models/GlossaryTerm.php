@@ -27,6 +27,11 @@ class GlossaryTerm extends Model
         'platform'   => 'Термины платформы',
     ];
 
+    public static function categories(): array
+    {
+        return self::CATEGORIES;
+    }
+
     protected static function booted(): void
     {
         static::saving(function (GlossaryTerm $model) {

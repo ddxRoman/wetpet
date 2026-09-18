@@ -55,7 +55,7 @@
                     @endforeach
                     <hr class="my-2 opacity-25">
                     @if(!empty($entity->slug))
-                        <a href="{{ url('clinics/' . $entity->slug) }}" target="_blank"
+                        <a href="{{ route('clinics.show', ['city' => $entity->city_slug, 'clinic' => $entity->slug]) }}" target="_blank"
                            class="d-flex align-items-center gap-2 px-3 py-2 text-decoration-none text-muted"
                            style="font-size:13px;">
                             🌐 Публичная страница

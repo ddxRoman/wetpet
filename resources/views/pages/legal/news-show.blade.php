@@ -1,6 +1,6 @@
 @extends('layouts.app') {{-- Твой главный шаблон сайта --}}
 
-@section('title', $news->title. ' — Новости Зверозор')
+@section('title', $news->title. ' — Новости о животных Зверозор')
 
 @section('content')
 @include('layouts.header')

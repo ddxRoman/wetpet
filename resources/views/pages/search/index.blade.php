@@ -18,7 +18,7 @@
                         <div class="card-body d-flex align-items-center">
                             <img src="{{ $clinic->logo ? Storage::url($clinic->logo) : asset('storage/clinics/logo/default-clinic.webp') }}" style="width: 80px; height: 80px; object-fit: cover;" class="rounded" alt="">
                             <div class="ms-3">
-                                <h5 class="mb-1"><a href="/clinics/{{ $clinic->slug }}">{{ $clinic->name }}</a></h5>
+                                <h5 class="mb-1"><a href="{{ route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic->slug]) }}">{{ $clinic->name }}</a></h5>
                                 <p class="text-muted mb-0">{{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}</p>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                             <img src="{{ $org->logo ? Storage::url($org->logo) : asset('storage/organizations/default-org.webp') }}" style="width: 80px; height: 80px; object-fit: cover;" class="rounded" alt="">
                             <div class="ms-3">
                                 <h5 class="mb-1">
-                                    <a href="/organizations/{{ $org->slug }}">{{ $org->name }}</a>
+                                    <a href="{{ route('organizations.show', ['city' => $org->city_slug, 'slug' => $org->slug]) }}">{{ $org->name }}</a>
                                 </h5>
                                 <p class="text-muted mb-1">{{ $org->city }}, {{ $org->street }} {{ $org->house }}</p>
                                 @if($org->fieldOfActivity)
@@ -112,7 +112,7 @@
         </div>
 
         {{-- Боковая панель (Реклама) --}}
-        <!-- <div class="col-lg-4">
+        {{-- <!-- <div class="col-lg-4">
             <div class="card border-0 shadow-sm bg-light">
                 <div class="card-body">
                     <h5>Поиск по категориям</h5>
@@ -123,7 +123,7 @@
                     </ul>
                 </div>
             </div>
-        </div> -->
+        </div> --> --}}
     </div>
 </div>
 @endsection

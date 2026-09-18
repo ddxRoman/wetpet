@@ -15,8 +15,8 @@ public function index()
     $news = News::where('is_published', true)->orderBy('created_at', 'desc')->paginate(9);
     
     $seoMeta = [
-        'title' => 'Новости и статьи — Зверозор',
-        'description' => 'Актуальные новости из мира ветеринарии и полезные статьи о питомцах.',
+        'title' => 'Новости и статьи о животных на сайте Зверозор',
+        'description' => 'Актуальные новости из мира ветеринарии и домашних питомцах, новые законы и правила про домашних животных в России. Важные события в мире питомцев, зооновости',
         'image' => asset('images/default-news-share.webp')
     ];
     

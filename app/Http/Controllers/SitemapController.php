@@ -33,10 +33,10 @@ class SitemapController extends Controller
         }
 
         // Клиники
-        Clinic::whereNotNull('slug')->where('slug', '!=', '')->select('slug', 'updated_at')->chunk(200, function ($items) use (&$urls) {
+        Clinic::whereNotNull('slug')->where('slug', '!=', '')->select('slug', 'city', 'updated_at')->chunk(200, function ($items) use (&$urls) {
             foreach ($items as $item) {
                 $urls[] = [
-                    'loc'        => url('/clinics/' . $item->slug),
+                    'loc'        => route('clinics.show', ['city' => $item->city_slug, 'clinic' => $item->slug]),
                     'lastmod'    => $item->updated_at?->toAtomString(),
                     'changefreq' => 'weekly',
                     'priority'   => '0.8',
@@ -57,10 +57,10 @@ class SitemapController extends Controller
         });
 
         // Организации
-        Organization::whereNotNull('slug')->where('slug', '!=', '')->select('slug', 'updated_at')->chunk(200, function ($items) use (&$urls) {
+        Organization::whereNotNull('slug')->where('slug', '!=', '')->select('slug', 'city', 'updated_at')->chunk(200, function ($items) use (&$urls) {
             foreach ($items as $item) {
                 $urls[] = [
-                    'loc'        => url('/organizations/' . $item->slug),
+                    'loc'        => route('organizations.show', ['city' => $item->city_slug, 'slug' => $item->slug]),
                     'lastmod'    => $item->updated_at?->toAtomString(),
                     'changefreq' => 'weekly',
                     'priority'   => '0.8',
