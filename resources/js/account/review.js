@@ -11,33 +11,56 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 const reviewsList = document.getElementById('reviews-list');
 const tabBtn = document.querySelector('[data-tab="reviews"]');
 let loaded = false;
+let currentReviewsPage = 1;
 
-async function loadReviews() {
+async function loadReviews(page = 1) {
     if (!reviewsList) return;
 
     try {
-        const res = await fetch('/account/reviews', { credentials: 'same-origin' });
+        const res = await fetch(`/account/reviews?page=${page}`, { credentials: 'same-origin' });
         if (!res.ok) throw new Error(await res.text());
-        const data = await res.json();
+        const payload = await res.json();
 
-        data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        const data = payload.data ?? [];
+        currentReviewsPage = payload.current_page ?? 1;
+        const lastPage = payload.last_page ?? 1;
 
         reviewsList.innerHTML = data.length
             ? data.map(renderCard).join('')
             : '<p class="empty-message">Вы пока не оставили ни одного отзыва.</p>';
+
+        renderPagination(currentReviewsPage, lastPage);
+
+        reviewsList.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (e) {
         console.error(e);
         reviewsList.innerHTML =
             '<p class="empty-message" style="color:red;">Ошибка при загрузке отзывов.</p>';
+        removePagination();
+    }
+}
+
+// Строит правильную ссылку на объект отзыва в зависимости от его типа.
+// У клиник и организаций роут двухсегментный (нужен слаг города),
+// у врачей и специалистов — односегментный.
+function buildTargetUrl(r) {
+    const identifier = r.target_slug || r.target_id;
+
+    switch (r.target_type) {
+        case 'Clinic':
+            return `/clinics/${r.target_city_slug ?? ''}/${identifier}`;
+        case 'Organization':
+            return `/organizations/${r.target_city_slug ?? ''}/${identifier}`;
+        case 'Specialist':
+            return `/specialists/${identifier}`;
+        case 'Doctor':
+        default:
+            return `/doctors/${identifier}`;
     }
 }
 
 function renderCard(r) {
     const isClinic = r.target_type === 'Clinic';
-    const isDoctor = r.target_type === 'Doctor';
-
-    // Используем slug, если он пришел с сервера, иначе используем ID
-    const identifier = r.target_slug || r.target_id;
 
     const address = isClinic
         ? [r.region, r.city, r.street, r.house]
@@ -54,7 +77,7 @@ function renderCard(r) {
 
     <header class="review-header">
         <div class="clinic-info-block">
-            <a href="/${isClinic ? 'clinics' : 'doctors'}/${identifier}" 
+            <a href="${buildTargetUrl(r)}" 
                title="Открыть"
                class="clinic-name">
                ${escapeHtml(r.target_name)}
@@ -73,6 +96,36 @@ function renderCard(r) {
         <div class="review-rating">Оценка: ${r.rating ?? 0}</div>
     </footer>
 </article>`;
+}
+
+/* =========================================================
+   🔹 ПАГИНАЦИЯ (по 20 отзывов на странице)
+========================================================= */
+function removePagination() {
+    document.getElementById('reviews-pagination')?.remove();
+}
+
+function renderPagination(current, last) {
+    removePagination();
+    if (!reviewsList || last <= 1) return;
+
+    const nav = document.createElement('div');
+    nav.id = 'reviews-pagination';
+    nav.className = 'd-flex align-items-center justify-content-center gap-2 mt-3';
+    nav.innerHTML = `
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-page="${current - 1}" ${current <= 1 ? 'disabled' : ''}>← Назад</button>
+        <span class="small text-muted">Страница ${current} из ${last}</span>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-page="${current + 1}" ${current >= last ? 'disabled' : ''}>Вперёд →</button>
+    `;
+
+    nav.querySelectorAll('button[data-page]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const page = parseInt(btn.dataset.page, 10);
+            if (page >= 1 && page <= last) loadReviews(page);
+        });
+    });
+
+    reviewsList.insertAdjacentElement('afterend', nav);
 }
 
 /* =========================================================

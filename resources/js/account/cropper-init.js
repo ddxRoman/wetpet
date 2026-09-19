@@ -5,7 +5,18 @@ import 'cropperjs/dist/cropper.min.css';
 
 let cropper = null;
 
-export function initCropper(fileInput, previewImg) {
+/**
+ * @param {HTMLInputElement} fileInput
+ * @param {HTMLImageElement} previewImg
+ * @param {Object} [options]
+ * @param {(file: File) => (void|Promise<void>)} [options.onCropped] - если передан,
+ *   вызывается сразу после обрезки с готовым webp-файлом (используется, например,
+ *   для мгновенной загрузки аватара на сервер без нажатия основной кнопки "Сохранить").
+ * @param {string} [options.fileName] - имя файла для обрезанного изображения.
+ */
+export function initCropper(fileInput, previewImg, options = {}) {
+    const { onCropped, fileName = 'photo.webp' } = options;
+
     const cropperModal = document.getElementById('cropper-modal');
     const cropperImage = document.getElementById('cropper-image');
     const closeCropper = document.getElementById('close-cropper');
@@ -45,9 +56,9 @@ export function initCropper(fileInput, previewImg) {
         });
 
         // конвертация в webp
-        canvas.toBlob(blob => {
+        canvas.toBlob(async blob => {
             if (!blob) return;
-            const webpFile = new File([blob], 'pet-photo.webp', { type: 'image/webp' });
+            const webpFile = new File([blob], fileName, { type: 'image/webp' });
 
             // создаем превью
             previewImg.src = URL.createObjectURL(webpFile);
@@ -60,6 +71,10 @@ export function initCropper(fileInput, previewImg) {
 
             cropperModal.style.display = 'none';
             cropper.destroy();
+
+            if (typeof onCropped === 'function') {
+                await onCropped(webpFile);
+            }
         }, 'image/webp', 0.9);
     });
 }

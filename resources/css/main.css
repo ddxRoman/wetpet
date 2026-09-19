@@ -1445,14 +1445,29 @@ select:focus {
 
 /* Загрузка фото */
 .modal_cropp_photo {
-    padding: 1% 0%;
+    padding: 1% 20px;
     background: #fff;
-    min-height: 600px;
     border-radius: 10px;
     max-width: 100%;
     width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
     text-align: center;
     position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#cropper-image {
+    max-width: 100%;
+    max-height: 55vh;
+    display: block;
+}
+
+.modal_cropp_photo .save-btn {
+    flex-shrink: 0;
 }
 
 .cropper-canvas {

@@ -263,7 +263,7 @@
         <div class="modal_cropp_photo">
             <button id="close-cropper" style="position:absolute; top:8px; right:10px; background:none; border:none; font-size:18px;">✖</button>
             <h3>Обрезка фото </h3>
-            <img id="cropper-image" title="обрезать фото" src="" style="max-width:100%; margin-top:10px; border-radius:8px;">
+            <img id="cropper-image" title="обрезать фото" src="" style="margin-top:10px; border-radius:8px;">
             <button id="save-cropped" class="save-btn" style="margin-top:15px;">Сохранить</button>
         </div>
     </div>

@@ -77,10 +77,15 @@ public function store(Request $request)
 // === ФИКС РЕДИРЕКТА (Врачи, Специалисты, Организации) ===
     $slug = $validated['redirect_slug'];
 
-    // 1. Для Организаций (используем прямой путь, так как роут настроен на /organizations/)
+    // 1. Для Организаций: роут двухсегментный — /organizations/{city}/{slug}
     if (str_contains($rawType, 'Organization')) {
+        $organization = \App\Models\Organization::find($validated['reviewable_id']);
         return redirect()
-            ->to("/organizations/{$slug}?tab=reviews")
+            ->route('organizations.show', [
+                'city' => $organization?->city_slug,
+                'slug' => $slug,
+                'tab'  => 'reviews',
+            ])
             ->with('success', 'Спасибо! Ваш отзыв о клинике добавлен.');
     } 
     

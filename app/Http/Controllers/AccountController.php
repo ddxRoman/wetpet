@@ -35,13 +35,13 @@ public function index()
     $pets = Pet::where('user_id', $user->id)->get();
 
     // --- Клиники ---
-    $clinicOwners = \App\Models\ClinicOwner::with(['clinic.documents'])
+    $clinicOwners = \App\Models\ClinicOwner::with(['clinic', 'documents'])
         ->where('user_id', $user->id)
         ->get();
     $hasClinic = $clinicOwners->isNotEmpty();
 
     // --- Организации ---
-    $organizationOwners = \App\Models\OrganizationOwner::with(['organization.documents'])
+    $organizationOwners = \App\Models\OrganizationOwner::with(['organization', 'documents'])
         ->where('user_id', $user->id)
         ->get();
     $hasOrganization = $organizationOwners->isNotEmpty();
@@ -149,6 +149,29 @@ public function index()
         return redirect()->back()->with('success', 'Профиль обновлён');
     }
 
+    // === Мгновенное сохранение аватара (AJAX, без остальной формы) ===
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:8192',
+        ]);
+
+        $user = auth()->user();
+
+        if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
+            Storage::delete('public/' . $user->avatar);
+        }
+
+        $path = $request->file('avatar')->store('avatars', 'public');
+        $user->avatar = $path;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'avatar_url' => asset('storage/' . $path),
+        ]);
+    }
+
     // === Обновление города (AJAX) ===
     public function updateCity(Request $request)
     {
@@ -169,26 +192,24 @@ public function index()
         return response()->json(['success' => true]);
     }
 
-    // === Получение отзывов текущего пользователя ===
-    public function getReviews()
+    // === Получение отзывов текущего пользователя (с пагинацией) ===
+    public function getReviews(Request $request)
     {
         $userId = auth()->id();
+        $perPage = 20;
+        $page = max(1, (int) $request->query('page', 1));
 
         try {
-            $reviews = Review::where('user_id', $userId)
+            $paginator = Review::where('user_id', $userId)
                 ->with([
-                     'reviewable', 
+                     'reviewable',
                     'photos:id,review_id,photo_path',
                     'receipts:id,review_id,path'
                 ])
                 ->latest()
-                ->get();
+                ->paginate($perPage, ['*'], 'page', $page);
 
-            if ($reviews->isEmpty()) {
-                return response()->json([]);
-            }
-
-            $formatted = $reviews->map(function ($r) {
+            $formatted = collect($paginator->items())->map(function ($r) {
                 $target = $r->reviewable;
 
                 return [
@@ -197,6 +218,10 @@ public function index()
                     'target_type' => class_basename($target),
                     'target_name' => $target?->name ?? '—',
                     'target_slug' => $target ? $target->slug : null,
+                    // Нужен для ссылок на клиники/организации: их роут двухсегментный
+                    // (/clinics/{city}/{slug}, /organizations/{city}/{slug}).
+                    // У врачей/специалистов такого accessor'а нет — вернётся null, это ок.
+                    'target_city_slug' => $target?->city_slug ?? null,
                     'region' => $target?->region ?? null,
                     'city' => $target?->city ?? null,
                     'street' => $target?->street ?? null,
@@ -217,7 +242,13 @@ public function index()
                 ];
             });
 
-            return response()->json($formatted);
+            return response()->json([
+                'data' => $formatted,
+                'current_page' => $paginator->currentPage(),
+                'last_page' => $paginator->lastPage(),
+                'total' => $paginator->total(),
+                'per_page' => $perPage,
+            ]);
         } catch (\Throwable $e) {
             \Log::error('Ошибка getReviews: ' . $e->getMessage());
             return response()->json(['error' => 'Ошибка загрузки отзывов'], 500);

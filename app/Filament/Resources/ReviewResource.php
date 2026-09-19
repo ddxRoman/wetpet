@@ -124,7 +124,17 @@ class ReviewResource extends Resource
                         return $record->reviewable->name;
                     }
                     return '—';
-                }),
+                })
+                ->url(function ($record) {
+                    $reviewable = $record->reviewable;
+                    if ($reviewable instanceof \App\Models\Clinic) {
+                        return route('clinics.show', [
+                            'city'   => $reviewable->city_slug,
+                            'clinic' => $reviewable,
+                        ]);
+                    }
+                    return null;
+                }, shouldOpenInNewTab: true),
 
             Tables\Columns\TextColumn::make('created_at')
                 ->label('Дата')
