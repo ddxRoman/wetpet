@@ -73,13 +73,17 @@ class SpecialistResource extends Resource
                 ->required()
                 ->unique(ignoreRecord: true),
 
-            Forms\Components\TextInput::make('specialization')
-                ->label('Специализация')
-                ->required(),
-
-            Forms\Components\Select::make('city_id')
-                ->label('Город')
-                ->relationship('city', 'name')
+            // ───── СПЕЦИАЛИЗАЦИИ (несколько) ─────
+            Forms\Components\Select::make('specializations')
+                ->label('Специализации')
+                ->multiple()
+                ->relationship(
+                    name: 'specializations',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: fn ($query) => $query
+                        ->where('type', 'specialist')
+                        ->where('activity', '!=', 'doctor'),
+                )
                 ->searchable()
                 ->preload()
                 ->required(),
@@ -88,10 +92,92 @@ class SpecialistResource extends Resource
                 ->label('Организация')
                 ->relationship('organization', 'name')
                 ->searchable()
-                ->preload(),
+                ->preload()
+                ->live()
+                ->helperText('Если специалист работает в организации — страна, регион и город подтянутся из её адреса.')
+                ->afterStateUpdated(function ($state, callable $set) {
+                    if (! $state) {
+                        return;
+                    }
 
-            Forms\Components\TextInput::make('street')->label('Улица'),
-            Forms\Components\TextInput::make('house')->label('Дом'),
+                    $organization = \App\Models\Organization::find($state);
+                    if (! $organization) {
+                        return;
+                    }
+
+                    $matchedCity = \App\Models\City::query()
+                        ->where('name', $organization->city)
+                        ->when($organization->region, fn ($q, $region) => $q->where('region', $region))
+                        ->when($organization->country, fn ($q, $country) => $q->where('country', $country))
+                        ->first();
+
+                    $set('country', $organization->country);
+                    $set('region', $organization->region);
+                    $set('city_id', $matchedCity?->id);
+                }),
+
+            Forms\Components\Section::make('Адрес')
+                ->schema([
+                    Forms\Components\Select::make('country')
+                        ->label('Страна')
+                        ->options(fn () => \App\Models\City::query()
+                            ->whereNotNull('country')
+                            ->distinct()
+                            ->orderBy('country')
+                            ->pluck('country', 'country'))
+                        ->live()
+                        ->dehydrated(false)
+                        ->disabled(fn (callable $get) => filled($get('organization_id')))
+                        ->helperText('Необязательно: доп. фильтр по городу. У большинства городов страна не указана — ориентируйтесь на регион.')
+                        ->afterStateHydrated(function (Forms\Components\Select $component, $record) {
+                            if ($record?->city) {
+                                $component->state($record->city->country);
+                            }
+                        })
+                        ->afterStateUpdated(fn (callable $set) => $set('city_id', null)),
+
+                    Forms\Components\Select::make('region')
+                        ->label('Регион')
+                        ->options(fn (callable $get) => \App\Models\City::query()
+                            ->when($get('country'), fn ($q, $country) => $q->where('country', $country))
+                            ->whereNotNull('region')
+                            ->distinct()
+                            ->orderBy('region')
+                            ->pluck('region', 'region'))
+                        ->searchable()
+                        ->live()
+                        ->dehydrated(false)
+                        ->disabled(fn (callable $get) => filled($get('organization_id')))
+                        ->afterStateHydrated(function (Forms\Components\Select $component, $record) {
+                            if ($record?->city) {
+                                $component->state($record->city->region);
+                            }
+                        })
+                        ->afterStateUpdated(fn (callable $set) => $set('city_id', null)),
+
+                    Forms\Components\Select::make('city_id')
+                        ->label('Город')
+                        ->options(fn (callable $get) => \App\Models\City::query()
+                            ->when($get('country'), fn ($q, $country) => $q->where('country', $country))
+                            ->when($get('region'), fn ($q, $region) => $q->where('region', $region))
+                            ->orderBy('name')
+                            ->pluck('name', 'id'))
+                        ->searchable()
+                        ->live()
+                        ->helperText('Список сужается по региону (и стране, если указана). Если организация выбрана, город подставляется автоматически — при необходимости его можно скорректировать вручную.')
+                        ->required(),
+                ])
+                ->columns(3),
+
+            Forms\Components\Section::make('Частная практика')
+                ->description('Заполняется, если специалист принимает самостоятельно (не от организации) — например, на дому или в частном кабинете.')
+                ->schema([
+                    Forms\Components\TextInput::make('street')->label('Улица'),
+                    Forms\Components\TextInput::make('house')->label('Дом'),
+                ])
+                ->columns(2)
+                ->visible(fn (callable $get) => blank($get('organization_id')))
+                ->collapsible(),
 
             Forms\Components\TextInput::make('experience')
                 ->label('Опыт (лет)')

@@ -61,6 +61,33 @@ public function contacts()
     return $this->hasOne(SpecialistContact::class);
 }
 
+// Множественные специализации (справочник field_of_activities)
+public function specializations()
+{
+    return $this->belongsToMany(
+        \App\Models\FieldOfActivity::class,
+        'specialist_field_of_activity',
+        'specialist_id',
+        'field_of_activity_id'
+    )->withTimestamps();
+}
+
+// Читаемый список специализаций через запятую.
+// Старая строковая колонка 'specialization' синхронизируется в
+// SpecialistResource\Pages\CreateSpecialist/EditSpecialist, чтобы поиск,
+// подбор услуг, SEO-шаблоны и уведомления продолжали работать без изменений.
+public function getSpecializationLabelAttribute(): string
+{
+    if ($this->relationLoaded('specializations') || $this->exists) {
+        $names = $this->specializations->pluck('name');
+        if ($names->isNotEmpty()) {
+            return $names->implode(', ');
+        }
+    }
+
+    return $this->specialization ?? '';
+}
+
 
 
 protected static function boot()
