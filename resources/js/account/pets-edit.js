@@ -31,6 +31,7 @@ export function openEditModal(petId) {
     const photo = card.querySelector('img')?.getAttribute('src') || '';
 
     const birth = card.dataset.birth || '';
+    const death = card.dataset.death || '';
     const age   = card.dataset.age || '';
 
     // —————— Разбор вида и породы ——————
@@ -55,6 +56,7 @@ export function openEditModal(petId) {
     const ageBlock     = document.getElementById('edit-age-block');
 
     birthInput.value = birth || '';
+    document.getElementById('edit-pet-death').value = death;
 
     if (birth) {
         unknownBirth.checked = false;
@@ -200,6 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
             fd.append('age', '');
         }
 
+        // Пустое значение = «питомец жив» (дата смерти сбрасывается)
+        fd.append('death_date', document.getElementById('edit-pet-death').value);
+
         fd.append('_method', 'PUT');
 
         if (photoInput.files.length > 0) {
@@ -213,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch(`/pets/${id}`, {
                 method: 'POST',
-                headers: { 'X-CSRF-TOKEN': token },
+                headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
                 body: fd
             });
 

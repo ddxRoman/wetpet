@@ -30,6 +30,7 @@ use App\Http\Controllers\{
     NewsController,
     LegalController,
     OwnerCabinetController,
+    UserProfileController,
 };
 
 /*
@@ -172,10 +173,9 @@ Route::resource('reviews', ReviewController::class);
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 // 👤 Публичный профиль пользователя
-Route::get('/user/{id}', function ($id) {
-    $user = \App\Models\User::findOrFail($id);
-    return view('pages.user.profile', compact('user'));
-})->name('user.profile');
+Route::get('/user/{id}', [UserProfileController::class, 'show'])
+    ->whereNumber('id')
+    ->name('user.profile');
 
 // Страница всех докторов
 Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');

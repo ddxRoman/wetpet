@@ -223,7 +223,7 @@
 
                 <div class="logo-block">
                     <a href="/" class="header-logo-link">
-                        <img class="header_logo" src="{{ Storage::url('logo/logo1.png') }}" alt="{{ $brandname }}">
+                        <img class="header_logo" src="{{ Storage::url('logo/logo2.png') }}" alt="{{ $brandname }}">
                     </a>
                 </div>
 

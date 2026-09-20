@@ -234,6 +234,13 @@
             <div id="edit-age-block" style="display:none; margin-bottom:10px;">
                 <label>Возраст</label>
                 <input type="number" id="edit-pet-age" style="width:100%;" min="0">
+                <small style="color:#666;">Если ниже указана дата смерти — это возраст на момент смерти.</small>
+            </div>
+
+            <div style="margin-bottom:10px;">
+                <label>Дата смерти <small style="color:#888;">(если питомца уже нет с нами)</small></label>
+                <input type="date" id="edit-pet-death" style="width:100%;"
+                       max="{{ date('Y-m-d') }}">
             </div>
 
             <div style="margin-bottom:10px; text-align:center;">

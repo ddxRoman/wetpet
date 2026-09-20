@@ -138,27 +138,48 @@ public function update(Request $request, Pet $pet)
         'animal_id'  => 'nullable|exists:animals,id',
         'name'       => 'nullable|string|max:255',
         'birth_date' => 'nullable|date',
+        'death_date' => 'nullable|date|before_or_equal:today',
         'age'        => 'nullable|integer|min:0',
         'photo'      => 'nullable|image|mimes:webp|max:5120',
         'gender'     => 'nullable|string|max:10',
+    ], [
+        'death_date.date'            => 'Некорректная дата смерти',
+        'death_date.before_or_equal' => 'Дата смерти не может быть в будущем',
     ]);
 
     // Берём входные данные
     $birth = $request->birth_date;
     $age   = $request->age;
 
+    // Дата смерти: если поле пришло (даже пустое) — берём его, пустое = «питомец жив».
+    // Если поле не пришло вообще — оставляем то, что уже сохранено.
+    $death = $request->has('death_date')
+        ? $request->death_date
+        : $pet->death_date?->format('Y-m-d');
+
+    // Возраст считаем на момент смерти, а для живого питомца — на сегодня
+    $end = $death ? \Carbon\Carbon::parse($death) : \Carbon\Carbon::now();
+
     // --- ТА ЖЕ ЛОГИКА, ЧТО И В store() ---
     if ($birth) {
-        // Если есть дата рождения → вычисляем новый возраст
-        $age = \Carbon\Carbon::parse($birth)->age;
+        // Если есть дата рождения → вычисляем возраст (на момент смерти или на сегодня)
+        $age = \Carbon\Carbon::parse($birth)->diff($end)->y;
     }
     elseif ($age) {
         // Если даты нет, но есть возраст → вычисляем дату рождения
-        $birth = \Carbon\Carbon::now()->subYears($age)->format('Y-m-d');
+        // (для умершего питомца возраст — это возраст на момент смерти)
+        $birth = $end->copy()->subYears((int) $age)->format('Y-m-d');
     } else {
         // Если оба поля НЕ переданы — оставляем старые значения
         $birth = $pet->birth_date;
         $age   = $pet->age;
+    }
+
+    if ($death && $birth && \Carbon\Carbon::parse($death)->lt(\Carbon\Carbon::parse($birth))) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Дата смерти не может быть раньше даты рождения',
+        ], 422);
     }
 
     // Собираем данные
@@ -166,6 +187,7 @@ public function update(Request $request, Pet $pet)
         'animal_id'  => $request->animal_id ?? $pet->animal_id,
         'name'       => $request->name ?? $pet->name,
         'birth_date' => $birth,
+        'death_date' => $death ?: null,
         'age'        => $age,
         'gender'     => $request->gender ?? $pet->gender,
     ];

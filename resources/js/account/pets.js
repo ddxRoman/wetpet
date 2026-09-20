@@ -69,6 +69,7 @@ petsList.insertAdjacentHTML('beforeend', `
          data-name="${p.name}"
          data-gender="${p.gender || ''}"
          data-birth="${p.birth_date || ''}"
+         data-death="${p.death_date || ''}"
          data-age="${p.age || ''}"
          data-breed="${p.animal?.breed || ''}"
          data-breed-id="${p.animal_id || ''}"
