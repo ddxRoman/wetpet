@@ -17,9 +17,10 @@
         @foreach($topItems as $item)
           @php
               $image = match ($item->reviewable_type) {
-                  'Doctor' => $item->photo,
-                  'Clinic' => $item->logo,
-                  default  => $item->photo ?? null,
+                  'Doctor'       => $item->photo,
+                  'Clinic'       => $item->logo,
+                  'Organization' => $item->logo,
+                  default        => $item->photo ?? null,
               };
 
               // Клиники и организации живут на /{type}/{city}/{slug} —
@@ -69,9 +70,10 @@
         @foreach($topItems as $index => $item)
           @php
               $image = match ($item->reviewable_type) {
-                  'Doctor' => $item->photo,
-                  'Clinic' => $item->logo,
-                  default  => $item->photo ?? null,
+                  'Doctor'       => $item->photo,
+                  'Clinic'       => $item->logo,
+                  'Organization' => $item->logo,
+                  default        => $item->photo ?? null,
               };
           @endphp
 

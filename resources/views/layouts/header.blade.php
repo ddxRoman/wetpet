@@ -426,7 +426,7 @@
         {{-- Строка 2: логотип слева + поиск --}}
         <div class="compact-row-bottom d-none d-md-flex align-items-center gap-3 px-3 py-2">
             <a href="/" class="flex-shrink-0">
-                <img src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}" class="header_logo_compact">
+                <img src="{{ Storage::url('logo/logo2.png') }}" alt="{{ $brandname }}" class="header_logo_compact">
             </a>
             @if($h->showSearch)
             <div class="flex-grow-1 position-relative">
@@ -454,7 +454,7 @@
                 </svg>
             </button>
             <a href="/">
-                <img src="{{ Storage::url('logo/logo3.png') }}" alt="{{ $brandname }}" class="header_logo_compact">
+                <img src="{{ Storage::url('logo/logo2.png') }}" alt="{{ $brandname }}" class="header_logo_compact">
             </a>
             <div style="width:36px;"></div>
         </div>
