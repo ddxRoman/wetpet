@@ -142,6 +142,8 @@ Route::get('/account/reviews', [AccountController::class, 'getReviews'])
 // ✅ Обновление, удаление и управление отзывами
 Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('reviews.update');
 Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+// Удаление своего отзыва (JSON) — личный кабинет и карточки организаций, клиник, врачей, специалистов
+Route::delete('/account/reviews/{id}', [AccountController::class, 'deleteReview'])->middleware('auth')->name('account.reviews.delete');
 // ✅ Удаление фото и чеков
 Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])->name('review_photos.delete');
 Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])->name('review_receipts.delete');

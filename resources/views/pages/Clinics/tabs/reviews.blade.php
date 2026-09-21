@@ -192,21 +192,7 @@
                                             <span class="verifed_client">
                                             </span>
                                             @endif
-                                            <div class="mt-1">
-                                                <!-- <button class="btn btn-sm btn-outline-primary edit-review"
-                                                    data-id="{{ $review->id }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editReviewModal">
-                                                    ✏️ Редактировать
-                                                </button> -->
-
-                                                <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                        onclick="return confirm('Удалить отзыв?')">Удалить</button>
-                                                </form>
-                                            </div>
+                                            @include('partials.review-owner-actions', ['review' => $review])
                                             @endif
 
                                         </div>

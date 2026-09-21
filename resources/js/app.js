@@ -2,6 +2,7 @@ import $ from 'jquery';
 window.$ = window.jQuery = $;
 
 import './notify';
+import './review-manage';
 import './heic-convertor'; 
 import './bootstrap';
 import 'select2';

@@ -268,7 +268,7 @@ public function index()
             'liked' => 'nullable|string|max:500',
             'disliked' => 'nullable|string|max:500',
             'content' => 'nullable|string|max:2000',
-            'rating' => 'nullable|numeric|min:1|max:5',
+            'rating' => 'required|integer|min:1|max:5',
             'photos.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'receipts.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:4096',
         ]);
@@ -293,6 +293,7 @@ public function index()
                 ReviewReceipt::create([
                     'review_id' => $review->id,
                     'path' => $path,
+                    'status' => 'pending',
                 ]);
             }
         }
@@ -324,20 +325,31 @@ public function index()
     // === Удаление фото ===
     public function deletePhoto($id)
     {
-        $photo = ReviewPhoto::findOrFail($id);
+        $photo = ReviewPhoto::with('review')->findOrFail($id);
+
+        // Сначала проверяем владельца, и только потом удаляем файл
+        if (!$photo->review || $photo->review->user_id !== auth()->id()) {
+            abort(403);
+        }
+
         Storage::delete('public/' . $photo->photo_path);
         $photo->delete();
-        if ($photo->review->user_id !== auth()->id()) abort(403);
+
         return response()->json(['success' => true]);
     }
 
     // === Удаление чека ===
     public function deleteReceipt($id)
     {
-        $receipt = ReviewReceipt::findOrFail($id);
+        $receipt = ReviewReceipt::with('review')->findOrFail($id);
+
+        if (!$receipt->review || $receipt->review->user_id !== auth()->id()) {
+            abort(403);
+        }
+
         Storage::delete('public/' . $receipt->path);
         $receipt->delete();
-        if ($photo->review->user_id !== auth()->id()) abort(403);
+
         return response()->json(['success' => true]);
     }
 }

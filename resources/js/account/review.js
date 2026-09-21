@@ -23,6 +23,11 @@ async function loadReviews(page = 1) {
 
         const data = payload.data ?? [];
         currentReviewsPage = payload.current_page ?? 1;
+
+        // Удалили последний отзыв на странице — переходим на предыдущую
+        if (!data.length && currentReviewsPage > 1) {
+            return loadReviews(currentReviewsPage - 1);
+        }
         const lastPage = payload.last_page ?? 1;
 
         reviewsList.innerHTML = data.length
@@ -57,6 +62,19 @@ function buildTargetUrl(r) {
         default:
             return `/doctors/${identifier}`;
     }
+}
+
+// Данные отзыва для формы редактирования (resources/js/review-manage.js)
+function reviewPayload(r) {
+    return {
+        id: r.id,
+        rating: r.rating,
+        liked: r.liked,
+        disliked: r.disliked,
+        content: r.content,
+        photos: (r.photos || []).map(p => ({ id: p.id, url: `/storage/${p.photo_path}` })),
+        receipts: (r.receipts || []).map(f => ({ id: f.id, name: String(f.receipt_path || '').split('/').pop() })),
+    };
 }
 
 function renderCard(r) {
@@ -94,6 +112,13 @@ function renderCard(r) {
 
     <footer class="review-footer">
         <div class="review-rating">Оценка: ${r.rating ?? 0}</div>
+        <div class="review-actions d-flex gap-2 mt-2">
+            <button type="button" class="btn btn-sm btn-outline-primary"
+                    data-review-edit
+                    data-review="${escapeHtml(JSON.stringify(reviewPayload(r)))}">✏️ Редактировать</button>
+            <button type="button" class="btn btn-sm btn-outline-danger"
+                    data-review-delete="${r.id}">Удалить</button>
+        </div>
     </footer>
 </article>`;
 }
@@ -144,6 +169,14 @@ function escapeHtml(str) {
 /* =========================================================
    🔹 ТАБ "ОТЗЫВЫ"
 ========================================================= */
+// После редактирования/удаления отзыва обновляем список без перезагрузки страницы
+if (reviewsList) {
+    document.addEventListener('review:changed', e => {
+        e.preventDefault();
+        loadReviews(currentReviewsPage);
+    });
+}
+
 tabBtn?.addEventListener('click', () => {
     if (!loaded) {
         loadReviews();
