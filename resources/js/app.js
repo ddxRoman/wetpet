@@ -1,6 +1,7 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
+import './notify';
 import './heic-convertor'; 
 import './bootstrap';
 import 'select2';

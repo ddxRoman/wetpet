@@ -112,14 +112,10 @@
                 </select>
             </div>
 
-<div class="form-check form-switch mb-3">
-    <input class="form-check-input" type="checkbox" id="is_private" 
-           {{ is_null($specialist->organization_id) ? 'checked' : '' }}>
-    <label class="form-check-label" for="is_private">Я частный специалист (работаю без привязки к клинике/центру)</label>
-</div>
-
-<div id="address-section" style="{{ is_null($specialist->organization_id) ? '' : 'display: none;' }}">
-    <div class="row mt-3">
+<div id="address-section" class="mb-3">
+    <div class="fw-semibold mt-3">Частная практика</div>
+    <div class="text-muted small">Если вы ведёте частную практику (в том числе параллельно с работой в организации), укажите улицу и дом.</div>
+    <div class="row mt-2">
         <div class="col-md-6">
             <label for="street" class="form-label">Улица</label>
             <input type="text" name="street" id="street" 

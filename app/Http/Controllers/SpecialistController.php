@@ -80,13 +80,19 @@ public function index(Request $request)
 
     public function create() {}
 
+    public function store(Request $request)
+    {
+        // Защита от двойной отправки формы (двойной клик, повторный запрос)
+        return \App\Support\DuplicateSubmissionGuard::run($request, 'specialist', fn () => $this->performStore($request));
+    }
+
     /**
      * ===============================
      * СОЗДАНИЕ (модалка «Добавление специалиста», не-врачебные специальности)
      * Создаёт запись Specialist. Врачи создаются в DoctorController::store.
      * ===============================
      */
-public function store(Request $request)
+private function performStore(Request $request)
 {
     // 1. Валидация
     $validated = $request->validate([
@@ -121,10 +127,11 @@ public function store(Request $request)
         $photoPath = $request->file('photo')->store('specialists', 'public');
     }
 
-    // 🔹 Адрес частной практики указывается только если нет организации
+    // 🔹 Специалист может работать в организации и параллельно вести частную практику,
+    //    поэтому организация и адрес частной практики (улица, дом) сохраняются независимо
     $organizationId = $validated['organization_id'] ?? null;
-    $street = $organizationId ? null : ($validated['street'] ?? null);
-    $house  = $organizationId ? null : ($validated['house'] ?? null);
+    $street = $validated['street'] ?? null;
+    $house  = $validated['house'] ?? null;
 
     // 🔹 Slug: ФИО + организация (или адрес частной практики)
     $slug = Specialist::generateSlug($validated['name'], $organizationId, $street, $house);
@@ -185,6 +192,7 @@ public function store(Request $request)
         'success' => true,
         'id'      => $specialist->id,
         'type'    => 'specialist',
+        'redirect_url' => route('specialists.show', $specialist->slug),
     ]);
 }
 
@@ -264,13 +272,10 @@ public function update(Request $request, Specialist $specialist)
     $validated['exotic_animals'] = $request->has('exotic_animals') ? 'Да' : 'Нет';
     $validated['On_site_assistance'] = $request->has('On_site_assistance') ? 'Да' : 'Нет';
 
-    // Если организация не выбрана (частник), зануляем связь
+    // Если организация не выбрана (частник), зануляем связь.
+    // Улица и дом (частная практика) сохраняются независимо от организации.
     if (!$request->filled('organization_id')) {
         $validated['organization_id'] = null;
-    } else {
-        // Если выбрана организация, зануляем ручной адрес
-        $validated['street'] = null;
-        $validated['house'] = null;
     }
 
     // Обработка фото

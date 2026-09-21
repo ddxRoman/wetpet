@@ -1,3 +1,4 @@
+import { notify, notifyAfterReload } from '../notify';
 import Choices from 'choices.js';
 import 'choices.js/public/assets/styles/choices.min.css';
 
@@ -149,8 +150,12 @@ remove.addEventListener('click', () => {
 
     /* ===== AJAX submit ===== */
 if (form) {
+    let isSubmitting = false;
     form.addEventListener('submit', async e => {
         e.preventDefault();
+        if (isSubmitting) return; // защита от повторной отправки
+        isSubmitting = true;
+        let redirected = false;
         errBox.classList.add('d-none');
         errBox.innerHTML = '';
 
@@ -172,12 +177,23 @@ if (form) {
             }
 
             if (json.success) {
-                location.reload();
+                redirected = true;
+                notifyAfterReload(json.message || 'Организация успешно добавлена!', 'success');
+                // Сразу открываем карточку только что созданной клиники / организации
+                if (json.redirect_url) {
+                    window.location.href = json.redirect_url;
+                } else {
+                    location.reload();
+                }
             } else {
                 console.error('Server error:', json);
+                notify('Не удалось сохранить. Попробуйте ещё раз.', 'error');
             }
         } catch (error) {
             console.error('Fetch error:', error);
+            notify('Не удалось сохранить. Попробуйте ещё раз.', 'error');
+        } finally {
+            if (!redirected) isSubmitting = false;
         }
     });
 }

@@ -116,7 +116,13 @@ class OrganizationController extends Controller
     ]);
     }
 
-    public function submit(Request $request)
+        public function submit(Request $request)
+    {
+        // Защита от двойной отправки формы (двойной клик, повторный запрос)
+        return \App\Support\DuplicateSubmissionGuard::run($request, 'organization', fn () => $this->performSubmit($request));
+    }
+
+private function performSubmit(Request $request)
     {
     $isOwner = $request->boolean('its_me');
     $user = auth()->user();
@@ -179,12 +185,25 @@ class OrganizationController extends Controller
 
     $this->sendTelegramNotification($model, ($type == 'clinics' ? 'клиника' : 'организация'), $type);
 
-if ($request->ajax()) {
+$successMessage = $type === 'clinics'
+    ? 'Клиника успешно добавлена!'
+    : 'Организация успешно добавлена!';
+
+// Адрес только что созданной карточки
+$redirectUrl = $type === 'clinics'
+    ? route('clinics.show', ['city' => $model->city_slug, 'clinic' => $model->slug])
+    : route('organizations.show', ['city' => $model->city_slug, 'slug' => $model->slug]);
+
+if ($request->ajax() || $request->expectsJson()) {
     return response()->json([
-        'success' => true,
-        'message' => 'Организация успешно добавлена!'
+        'success'      => true,
+        'type'         => $type === 'clinics' ? 'clinic' : 'organization',
+        'message'      => $successMessage,
+        'redirect_url' => $redirectUrl,
     ]);
-    }
+}
+
+return redirect()->to($redirectUrl)->with('success', $successMessage);
     }
 
     public function show($city, $slug)

@@ -243,49 +243,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('addOrganizationForm')?.requestSubmit();
     });
 
-    // Форма
-    const form       = document.getElementById('addOrganizationForm');
-    const errorBlock = document.getElementById('orgErrors');
-
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            errorBlock.classList.add('d-none');
-            errorBlock.innerHTML = '';
-
-            const formData       = new FormData(form);
-            const isItsMeChecked = form.querySelector('input[name="its_me"]').checked;
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            })
-            .then(async response => {
-                const data = await response.json();
-                if (response.ok) {
-                    window.location.href = isItsMeChecked
-                        ? "{{ route('owner.index') }}"
-                        : window.location.href;
-                    window.location.reload();
-                } else {
-                    errorBlock.classList.remove('d-none');
-                    if (data.errors) {
-                        let html = '<ul class="mb-0">';
-                        Object.values(data.errors).forEach(arr => arr.forEach(m => { html += `<li>${m}</li>`; }));
-                        html += '</ul>';
-                        errorBlock.innerHTML = html;
-                    } else {
-                        errorBlock.innerText = data.message || 'Произошла ошибка при сохранении.';
-                    }
-                    errorBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            })
-            .catch(() => {
-                errorBlock.classList.remove('d-none');
-                errorBlock.innerText = 'Системная ошибка при отправке формы.';
-            });
-        });
-    }
+    // Отправку формы (AJAX, редирект на карточку, уведомление) выполняет resources/js/Pages/add_organization.js
 });
 </script>

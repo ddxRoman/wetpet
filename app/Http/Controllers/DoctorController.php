@@ -12,10 +12,16 @@ use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
+    public function store(Request $request)
+    {
+        // Защита от двойной отправки формы (двойной клик, повторный запрос)
+        return \App\Support\DuplicateSubmissionGuard::run($request, 'doctor', fn () => $this->performStore($request));
+    }
+
     /**
      * 🔹 Создание врача (AJAX, модалка, Telegram)
      */
-public function store(Request $request)
+private function performStore(Request $request)
 {
     // 1. Валидация
     $validated = $request->validate([
@@ -88,7 +94,12 @@ public function store(Request $request)
         $doctor->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
     }
 
-    return response()->json(['success' => true, 'id' => $doctor->id, 'type' => 'doctor']);
+    return response()->json([
+        'success'      => true,
+        'id'           => $doctor->id,
+        'type'         => 'doctor',
+        'redirect_url' => $doctor->slug ? route('doctors.show', $doctor->slug) : null,
+    ]);
 }
 
 /**

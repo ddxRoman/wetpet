@@ -76,15 +76,15 @@
                                 <div class="fw-semibold" style="font-size:14px;color:#0a6e7a;">Частная практика</div>
                                 <div class="text-muted mb-3" style="font-size:12px;margin-top:2px;">
                                     Выберите регион и город. Если специалист работает в организации, выберите её ниже — список
-                                    организаций подбирается по выбранному городу. Улицу и дом укажите для приёма вне организации,
-                                    например на дому или в частном кабинете (для врачей адрес не указывается).
+                                    организаций подбирается по выбранному городу. Улицу и дом укажите, если специалист ведёт
+                                    частную практику — в том числе параллельно с работой в организации (для врачей адрес не указывается).
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Регион</label>
                                         <select name="region" id="regionSelect" class="form-select wpm-input">
                                             <option value="">Выберите регион</option>
-                                            @foreach($cities->unique('region') as $city)
+                                            @foreach($cities->unique(fn ($c) => mb_strtolower(trim($c->region))) as $city)
                                                 <option value="{{ $city->region }}">{{ $city->region }}</option>
                                             @endforeach
                                         </select>
@@ -261,50 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('addDoctorForm')?.requestSubmit();
     });
 
-    // Форма
-    const form       = document.getElementById('addDoctorForm');
-    const errorBlock = document.getElementById('doctorErrors');
-
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            errorBlock.classList.add('d-none');
-            errorBlock.innerHTML = '';
-
-            const formData      = new FormData(form);
-            const itsMeCheckbox = form.querySelector('input[name="its_me"]');
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            })
-            .then(async response => {
-                if (response.ok) {
-                    if (itsMeCheckbox && itsMeCheckbox.checked) {
-                        window.location.href = "/owner";
-                    } else {
-                        window.location.reload();
-                    }
-                } else {
-                    const data = await response.json();
-                    if (data.errors) {
-                        let html = '<ul class="mb-0">';
-                        Object.values(data.errors).forEach(arr => arr.forEach(m => { html += `<li>${m}</li>`; }));
-                        html += '</ul>';
-                        errorBlock.innerHTML = html;
-                    } else {
-                        errorBlock.innerText = data.message || 'Ошибка валидации.';
-                    }
-                    errorBlock.classList.remove('d-none');
-                    errorBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-            })
-            .catch(() => {
-                errorBlock.classList.remove('d-none');
-                errorBlock.innerText = 'Системная ошибка при отправке данных.';
-            });
-        });
-    }
+    // Отправку формы (AJAX, редирект на карточку, уведомление) выполняет resources/js/Pages/add_doctor.js
 });
 </script>

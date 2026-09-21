@@ -147,6 +147,14 @@ public function prices()
     // Важно: второй параметр 'priceable' должен совпадать с тем, что в миграции
     return $this->morphMany(\App\Models\Price::class, 'priceable');
 }
+/**
+ * Специалисты, работающие в этой организации (specialists.organization_id)
+ */
+public function specialists()
+{
+    return $this->hasMany(Specialist::class, 'organization_id');
+}
+
 public function reviews()
 {
     // 'reviewable' — это название префикса для полей reviewable_type и reviewable_id

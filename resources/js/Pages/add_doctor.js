@@ -1,3 +1,4 @@
+import { notify, notifyAfterReload } from '../notify';
 import Choices from 'choices.js';
 import 'choices.js/public/assets/styles/choices.min.css';
 
@@ -73,20 +74,18 @@ function initAddDoctorScripts(modal) {
         citySelect.addEventListener('change', loadOrganizations);
     }
 
-    /* Адрес частной практики: только для специалистов и только если не выбрана организация */
+    /* Адрес частной практики: только для специалистов. Организация и частная практика
+       могут быть указаны одновременно, поэтому выбор организации адрес не блокирует. */
     syncAddressFields = () => {
         const cols = modal.querySelectorAll('.private-address-col');
-        const hasOrganization = !!(clinicSelect && clinicSelect.value);
         cols.forEach(col => {
             col.classList.toggle('d-none', isDoctorMode);
             col.querySelectorAll('input').forEach(input => {
-                const disabled = isDoctorMode || hasOrganization;
-                input.disabled = disabled;
-                if (disabled) input.value = '';
+                input.disabled = isDoctorMode;
+                if (isDoctorMode) input.value = '';
             });
         });
     };
-    if (clinicSelect) clinicSelect.addEventListener('change', syncAddressFields);
     syncAddressFields();
 
     /* ===== БЛОК 3 — Сферы деятельности (с логикой смены Action) ===== */
@@ -181,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isSubmitting) return;
 
             isSubmitting = true;
+            let redirected = false;
             if (errorsBox) errorsBox.classList.add('d-none');
 
             try {
@@ -197,8 +197,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
 
                 if (data.success) {
-                    alert('Успешно сохранено!');
-                    window.location.reload();
+                    redirected = true;
+                    notifyAfterReload(
+                        data.message || (data.type === 'doctor' ? 'Ветеринар успешно добавлен' : 'Специалист успешно добавлен'),
+                        'success'
+                    );
+                    // Сразу открываем карточку только что созданного специалиста / врача
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        window.location.reload();
+                    }
                 } else if (data.errors) {
                     if (errorsBox) {
                         errorsBox.innerHTML = Object.values(data.errors)
@@ -209,12 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error('Ошибка:', err);
+                notify('Не удалось сохранить. Попробуйте ещё раз.', 'error');
                 if (errorsBox) {
                     errorsBox.innerText = 'Ошибка при сохранении.';
                     errorsBox.classList.remove('d-none');
                 }
             } finally {
-                isSubmitting = false;
+                if (!redirected) isSubmitting = false;
             }
         });
     }
