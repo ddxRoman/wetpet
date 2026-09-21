@@ -14,10 +14,10 @@ class AddDoctorController extends Controller
         // 🔹 1. Валидация данных
         $validated = $request->validate([
             'name'              => 'required|string|max:255',
-            'date_of_birth'     => 'nullable|date',
+            'date_of_birth'     => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
             'field_of_activity_id' => 'required|integer|exists:field_of_activities,id',
             'city_id'           => 'required|integer',
-            'experience'        => 'nullable|integer|min:0',
+            'practice_started_at' => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
             'exotic_animals'    => 'required|string',
             'On_site_assistance'=> 'required|string',
             'description'       => 'nullable|string',
@@ -61,7 +61,7 @@ class AddDoctorController extends Controller
         $model->date_of_birth = $request->date_of_birth;
         $model->city_id = $request->city_id;
         $model->clinic_id = $request->clinic_id;
-        $model->experience = $request->experience;
+        $model->practice_started_at = $request->practice_started_at;
         $model->exotic_animals = $request->exotic_animals;
         $model->On_site_assistance = $request->On_site_assistance;
         $model->photo = $photoPath;

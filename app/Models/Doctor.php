@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use App\Models\Concerns\HasPracticeExperience;
 
 class Doctor extends Model
 {
     use HasFactory;
     use Notifiable;
+    use HasPracticeExperience;
 
     protected $table = 'doctors';
 
@@ -18,7 +20,7 @@ class Doctor extends Model
         'is_verified',
         'created_by',
         'name', 'slug', 'specialization', 'date_of_birth', 'city_id',
-        'clinic_id', 'experience', 'exotic_animals',
+        'clinic_id', 'practice_started_at', 'exotic_animals',
         'On_site_assistance', 'photo', 'description', 'seo_title',
         'seo_description'
     ];

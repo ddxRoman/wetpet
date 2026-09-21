@@ -83,10 +83,10 @@
         <tr>
             <td>Стаж:</td>
             <td>
-                @if($doctor->experience)
-                    {{ $doctor->experience }} лет
+                @if($doctor->experience_label)
+                    {{ $doctor->experience_label }}
                 @else
-                    —
+                    Данные не указаны
                 @endif
             </td>
         </tr>

@@ -8,21 +8,18 @@ function initAddDoctorScripts(modal) {
 
     const form = modal.querySelector('#addDoctorForm');
 
-    /* ===== БЛОК 1 — Стаж от возраста ===== */
+    /* ===== БЛОК 1 — Начало практики не раньше 16 лет после рождения ===== */
     const dobInput = modal.querySelector('#date_of_birth');
-    const expInput = modal.querySelector('#experience');
+    const practiceInput = modal.querySelector('#practice_started_at');
 
-    if (dobInput && expInput) {
+    if (dobInput && practiceInput) {
         dobInput.addEventListener('change', () => {
             const dob = new Date(dobInput.value);
             if (isNaN(dob)) return;
-            const now = new Date();
-            const age = now.getFullYear() - dob.getFullYear() -
-                ((now.getMonth() < dob.getMonth() || 
-                (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate())) ? 1 : 0);
-            const maxExperience = Math.max(age - 18, 0);
-            expInput.max = maxExperience;
-            if (+expInput.value > maxExperience) expInput.value = maxExperience;
+            const minDate = new Date(dob.getFullYear() + 16, dob.getMonth(), 1);
+            const min = `${minDate.getFullYear()}-${String(minDate.getMonth() + 1).padStart(2, '0')}`;
+            practiceInput.min = min;
+            if (practiceInput.value && practiceInput.value < min) practiceInput.value = min;
         });
     }
 
@@ -31,6 +28,12 @@ function initAddDoctorScripts(modal) {
     const citySelect   = modal.querySelector('#citySelect');
     const clinicSelect = modal.querySelector('#clinicSelect');
     let regionChoices, cityChoices, clinicChoices;
+
+    // Врач → список клиник (clinic_id), остальные специалисты → организации (organization_id).
+    // По умолчанию форма отправляется в /specialist, поэтому стартуем в режиме специалиста.
+    let isDoctorMode = false;
+    let loadOrganizations = () => {};
+    let syncAddressFields = () => {};
 
     if (regionSelect && citySelect && clinicSelect) {
         regionChoices = new Choices(regionSelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
@@ -42,6 +45,7 @@ function initAddDoctorScripts(modal) {
             cityChoices.clearChoices();
             clinicChoices.clearChoices();
             cityChoices.setChoices([{ value: '', label: 'Выберите город', selected: true }], 'value', 'label', true);
+            syncAddressFields();
             if (!region) return;
             fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
                 .then(r => r.json())
@@ -50,18 +54,40 @@ function initAddDoctorScripts(modal) {
                 });
         });
 
-        citySelect.addEventListener('change', () => {
+        loadOrganizations = () => {
             const cityId = citySelect.value;
             clinicChoices.clearChoices();
-            clinicChoices.setChoices([{ value: '', label: 'Выберите клинику', selected: true }], 'value', 'label', true);
+            clinicChoices.setChoices([{ value: '', label: 'Выберите организацию', selected: true }], 'value', 'label', true);
+            syncAddressFields();
             if (!cityId) return;
-            fetch(`/api/clinics/by-city/${cityId}`)
+            const url = isDoctorMode
+                ? `/api/clinics/by-city/${cityId}`
+                : `/get-organizations-by-city-id/${cityId}`;
+            fetch(url)
                 .then(r => r.json())
                 .then(list => {
                     clinicChoices.setChoices(list.map(c => ({ value: c.id, label: c.name })), 'value', 'label', true);
                 });
-        });
+        };
+
+        citySelect.addEventListener('change', loadOrganizations);
     }
+
+    /* Адрес частной практики: только для специалистов и только если не выбрана организация */
+    syncAddressFields = () => {
+        const cols = modal.querySelectorAll('.private-address-col');
+        const hasOrganization = !!(clinicSelect && clinicSelect.value);
+        cols.forEach(col => {
+            col.classList.toggle('d-none', isDoctorMode);
+            col.querySelectorAll('input').forEach(input => {
+                const disabled = isDoctorMode || hasOrganization;
+                input.disabled = disabled;
+                if (disabled) input.value = '';
+            });
+        });
+    };
+    if (clinicSelect) clinicSelect.addEventListener('change', syncAddressFields);
+    syncAddressFields();
 
     /* ===== БЛОК 3 — Сферы деятельности (с логикой смены Action) ===== */
     const fieldSelect = modal.querySelector('#fieldOfActivitySelect');
@@ -98,14 +124,20 @@ fieldSelect.addEventListener('change', function() {
     const selectedOption = this.options[this.selectedIndex];
     const activity = selectedOption.getAttribute('data-activity');
 
-    if (activity === 'doctor') {
+    isDoctorMode = activity === 'doctor';
+
+    if (isDoctorMode) {
         // Меняем на точный путь из web.php для сохранения доктора
-        form.action = '/doctors/store'; 
+        form.action = '/doctors/store';
     } else {
         // Меняем на точный путь из web.php для сохранения специалиста
-        form.action = '/specialist'; 
+        form.action = '/specialist';
     }
-    console.log('Action changed to:', form.action);
+
+    // Врач привязывается к клинике, специалист — к организации
+    if (clinicSelect) clinicSelect.name = isDoctorMode ? 'clinic_id' : 'organization_id';
+    loadOrganizations();
+    syncAddressFields();
 });
     }
 
@@ -133,24 +165,6 @@ fieldSelect.addEventListener('change', function() {
                 picker.style.display = 'flex';
             };
         }
-    }
-
-    /* ===== БЛОК 5 — Частный специалист ===== */
-    const isPrivateCheckbox = modal.querySelector('#is_private');
-    const addressSection = modal.querySelector('#address-section-add');
-    if (isPrivateCheckbox && addressSection) {
-        isPrivateCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                addressSection.style.display = 'block';
-                if (clinicChoices) {
-                    clinicChoices.setChoiceByValue('');
-                    clinicChoices.disable();
-                }
-            } else {
-                addressSection.style.display = 'none';
-                if (clinicChoices) clinicChoices.enable();
-            }
-        });
     }
 }
 

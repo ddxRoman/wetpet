@@ -105,9 +105,9 @@
                                         </p>
                                     @endif
 
-                                    @if(!empty($doctor->experience))
+                                    @if(!empty($doctor->experience_label))
                                         <p class="org-hours">
-                                            Стаж: {{ $doctor->experience }}
+                                            Стаж: {{ $doctor->experience_label }}
                                         </p>
                                     @endif
                                     @include('partials._promotions-badge', ['entity' => $doctor])

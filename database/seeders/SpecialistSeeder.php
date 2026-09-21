@@ -333,7 +333,13 @@ class SpecialistSeeder extends Seeder
             ],
         ];
         $data = collect($specialists)->map(function ($specialist) {
+            $experience = $specialist['experience'] ?? null;
+            unset($specialist['experience']);
+
             return array_merge($specialist, [
+                'practice_started_at' => $experience !== null
+                    ? Carbon::now()->startOfMonth()->subYears((int) $experience)->toDateString()
+                    : null,
                 'organization_id' => $specialist['organization_id'],
                 'photo' => $specialist['photo'],
                 'slug' => Str::slug($specialist['name']),

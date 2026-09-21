@@ -57,27 +57,26 @@
             {{-- Дата рождения --}}
             <div class="col-md-6">
                 <label>Дата рождения</label>
-                <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" 
+                <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" max="{{ now()->subYears(16)->format('Y-m-d') }}"
                        value="{{ old('date_of_birth', isset($specialist->date_of_birth) ? \Carbon\Carbon::parse($specialist->date_of_birth)->format('Y-m-d') : '') }}">
             </div>
 
 {{-- Сначала рассчитаем лимит в начале файла --}}
 @php
-    $yearsOld = isset($specialist->date_of_birth) ? \Carbon\Carbon::parse($specialist->date_of_birth)->age : 0;
-    $maxExperience = max(0, $yearsOld - 18);
+    $minPractice = isset($specialist->date_of_birth) ? \Carbon\Carbon::parse($specialist->date_of_birth)->addYears(16)->format('Y-m') : '1950-01';
 @endphp
 
-{{-- Поле Стаж --}}
+{{-- Начало практики (стаж считается автоматически) --}}
 <div class="col-md-6">
-    <label>Стаж (лет)</label>
-    <input type="number" 
-           name="experience" 
-           id="experienceInput"
-           class="form-control" 
-           min="0"
-           max="{{ $maxExperience }}" 
-           value="{{ old('experience', $specialist->experience ?? '0') }}">
-    <small class="text-muted">Максимум для данного возраста: {{ $maxExperience }} лет</small>
+    <label>Начало практики (год и месяц)</label>
+    <input type="month"
+           name="practice_started_at"
+           id="practiceStartInput"
+           class="form-control"
+           min="{{ $minPractice }}"
+           max="{{ now()->format('Y-m') }}"
+           value="{{ old('practice_started_at', optional($specialist->practice_started_at)->format('Y-m')) }}">
+    <small class="text-muted">Укажите год и месяц начала практики, и по этим данным будет рассчитан стаж</small>
 </div>
 
 {{-- Переключатели (Свитчи) --}}

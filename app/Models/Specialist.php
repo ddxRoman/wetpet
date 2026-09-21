@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\Concerns\HasPracticeExperience;
 
 class Specialist extends Model
 {
+use HasPracticeExperience;
+
 protected $fillable = [
         'is_verified',
         'created_by',
@@ -16,7 +19,7 @@ protected $fillable = [
     'organization_id', 
     'street',
     'house',
-    'experience', 
+    'practice_started_at',
     'description', 
     'slug',
     'photo',
@@ -89,6 +92,31 @@ public function getSpecializationLabelAttribute(): string
 }
 
 
+
+/**
+ * Slug из ФИО + организации (если нет — из адреса частной практики).
+ * При совпадении добавляет числовой суффикс.
+ */
+public static function generateSlug(?string $name, $organizationId = null, ?string $street = null, ?string $house = null, ?int $ignoreId = null): string
+{
+    $suffix = $organizationId
+        ? Organization::whereKey($organizationId)->value('name')
+        : trim(($street ?? '') . ' ' . ($house ?? ''));
+
+    $base = Str::slug(trim(($name ?? '') . ' ' . ($suffix ?? '')), '-', 'ru');
+
+    if ($base === '') {
+        return '';
+    }
+
+    $slug = $base;
+    $i = 2;
+    while (static::where('slug', $slug)->when($ignoreId, fn ($q) => $q->whereKeyNot($ignoreId))->exists()) {
+        $slug = $base . '-' . $i++;
+    }
+
+    return $slug;
+}
 
 protected static function boot()
 {

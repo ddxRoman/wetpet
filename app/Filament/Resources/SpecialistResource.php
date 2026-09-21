@@ -28,6 +28,24 @@ class SpecialistResource extends Resource
         return 'warning';
     }
 
+    /**
+     * Автозаполнение slug при создании: ФИО + организация,
+     * а если организации нет — ФИО + адрес частной практики.
+     */
+    protected static function fillSlug(callable $set, callable $get, string $operation): void
+    {
+        if ($operation !== 'create') {
+            return; // slug существующих записей не меняем — сломаются ссылки
+        }
+
+        $set('slug', Specialist::generateSlug(
+            $get('name'),
+            $get('organization_id'),
+            $get('street'),
+            $get('house'),
+        ));
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -59,17 +77,14 @@ class SpecialistResource extends Resource
                 ->columns(3),
 
             Forms\Components\TextInput::make('name')
-                ->label('Имя')
+                ->label('ФИО')
                 ->required()
-                ->reactive()
-                ->afterStateUpdated(function ($state, callable $set, $get) {
-                    if (! $get('slug')) {
-                        $set('slug', \Illuminate\Support\Str::slug($state));
-                    }
-                }),
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn ($state, callable $set, callable $get, string $operation) => static::fillSlug($set, $get, $operation)),
 
             Forms\Components\TextInput::make('slug')
                 ->label('Slug')
+                ->helperText('Формируется автоматически из ФИО и организации (или адреса частной практики). Можно изменить вручную.')
                 ->required()
                 ->unique(ignoreRecord: true),
 
@@ -94,60 +109,44 @@ class SpecialistResource extends Resource
                 ->searchable()
                 ->preload()
                 ->live()
-                ->helperText('Если специалист работает в организации — страна, регион и город подтянутся из её адреса.')
-                ->afterStateUpdated(function ($state, callable $set) {
-                    if (! $state) {
-                        return;
+                ->helperText('Если специалист работает в организации — регион и город подтянутся из её адреса.')
+                ->afterStateUpdated(function ($state, callable $set, callable $get, string $operation) {
+                    if ($state) {
+                        $organization = \App\Models\Organization::find($state);
+
+                        if ($organization) {
+                            $cityName = trim((string) $organization->city);
+
+                            // Сначала ищем по названию + региону, затем только по названию
+                            // (регион у организации вводится вручную и может не совпадать с cities.region).
+                            $matchedCity = \App\Models\City::query()
+                                ->whereRaw('LOWER(TRIM(name)) = ?', [mb_strtolower($cityName)])
+                                ->when($organization->region, fn ($q, $region) => $q->orderByRaw('region = ? DESC', [$region]))
+                                ->first();
+
+                            // Регион берём у найденного города, чтобы он был в списке и город отображался.
+                            $set('region', $matchedCity?->region ?? $organization->region);
+                            $set('city_id', $matchedCity?->id);
+                        }
                     }
 
-                    $organization = \App\Models\Organization::find($state);
-                    if (! $organization) {
-                        return;
-                    }
-
-                    $matchedCity = \App\Models\City::query()
-                        ->where('name', $organization->city)
-                        ->when($organization->region, fn ($q, $region) => $q->where('region', $region))
-                        ->when($organization->country, fn ($q, $country) => $q->where('country', $country))
-                        ->first();
-
-                    $set('country', $organization->country);
-                    $set('region', $organization->region);
-                    $set('city_id', $matchedCity?->id);
+                    static::fillSlug($set, $get, $operation);
                 }),
 
-            Forms\Components\Section::make('Адрес')
+            Forms\Components\Section::make('Частная практика')
+                ->description('Город подставляется из организации, если она выбрана. Улицу и дом укажите для приёма вне организации — например, на дому или в частном кабинете.')
                 ->schema([
-                    Forms\Components\Select::make('country')
-                        ->label('Страна')
-                        ->options(fn () => \App\Models\City::query()
-                            ->whereNotNull('country')
-                            ->distinct()
-                            ->orderBy('country')
-                            ->pluck('country', 'country'))
-                        ->live()
-                        ->dehydrated(false)
-                        ->disabled(fn (callable $get) => filled($get('organization_id')))
-                        ->helperText('Необязательно: доп. фильтр по городу. У большинства городов страна не указана — ориентируйтесь на регион.')
-                        ->afterStateHydrated(function (Forms\Components\Select $component, $record) {
-                            if ($record?->city) {
-                                $component->state($record->city->country);
-                            }
-                        })
-                        ->afterStateUpdated(fn (callable $set) => $set('city_id', null)),
-
                     Forms\Components\Select::make('region')
                         ->label('Регион')
-                        ->options(fn (callable $get) => \App\Models\City::query()
-                            ->when($get('country'), fn ($q, $country) => $q->where('country', $country))
+                        ->options(fn () => \App\Models\City::query()
                             ->whereNotNull('region')
+                            ->where('region', '!=', '')
                             ->distinct()
                             ->orderBy('region')
                             ->pluck('region', 'region'))
                         ->searchable()
                         ->live()
                         ->dehydrated(false)
-                        ->disabled(fn (callable $get) => filled($get('organization_id')))
                         ->afterStateHydrated(function (Forms\Components\Select $component, $record) {
                             if ($record?->city) {
                                 $component->state($record->city->region);
@@ -157,36 +156,46 @@ class SpecialistResource extends Resource
 
                     Forms\Components\Select::make('city_id')
                         ->label('Город')
-                        ->options(fn (callable $get) => \App\Models\City::query()
-                            ->when($get('country'), fn ($q, $country) => $q->where('country', $country))
-                            ->when($get('region'), fn ($q, $region) => $q->where('region', $region))
-                            ->orderBy('name')
-                            ->pluck('name', 'id'))
+                        ->options(fn (callable $get) => $get('region')
+                            ? \App\Models\City::query()
+                                ->where('region', $get('region'))
+                                ->orderBy('name')
+                                ->pluck('name', 'id')
+                            : [])
                         ->searchable()
                         ->live()
-                        ->helperText('Список сужается по региону (и стране, если указана). Если организация выбрана, город подставляется автоматически — при необходимости его можно скорректировать вручную.')
+                        ->placeholder(fn (callable $get) => $get('region') ? 'Выберите город' : 'Сначала выберите регион')
                         ->required(),
-                ])
-                ->columns(3),
 
-            Forms\Components\Section::make('Частная практика')
-                ->description('Заполняется, если специалист принимает самостоятельно (не от организации) — например, на дому или в частном кабинете.')
-                ->schema([
-                    Forms\Components\TextInput::make('street')->label('Улица'),
-                    Forms\Components\TextInput::make('house')->label('Дом'),
+                    Forms\Components\TextInput::make('street')
+                        ->label('Улица')
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn ($state, callable $set, callable $get, string $operation) => static::fillSlug($set, $get, $operation)),
+
+                    Forms\Components\TextInput::make('house')
+                        ->label('Дом')
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn ($state, callable $set, callable $get, string $operation) => static::fillSlug($set, $get, $operation)),
                 ])
                 ->columns(2)
-                ->visible(fn (callable $get) => blank($get('organization_id')))
                 ->collapsible(),
 
-            Forms\Components\TextInput::make('experience')
-                ->label('Опыт (лет)')
-                ->numeric()
-                ->minValue(0)
-                ->maxValue(70),
-
             Forms\Components\DatePicker::make('date_of_birth')
-                ->label('Дата рождения'),
+                ->label('Дата рождения')
+                ->maxDate(now()->subYears(16))
+                ->live(),
+
+            Forms\Components\TextInput::make('practice_started_at')
+                ->label('Начало практики (год и месяц)')
+                ->type('month')
+                ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('Y-m') : null)
+                ->extraInputAttributes(fn (callable $get) => [
+                    'min' => \App\Models\Specialist::earliestPracticeStart($get('date_of_birth')),
+                    'max' => now()->format('Y-m'),
+                ])
+                ->rules(fn (callable $get) => \App\Models\Specialist::practiceStartRules($get('date_of_birth')))
+                ->validationMessages(['after_or_equal' => 'Начало практики не может быть раньше чем через 16 лет после даты рождения.'])
+                ->helperText('Укажите год и месяц начала практики, и по этим данным будет рассчитан стаж'),
 
             Forms\Components\Select::make('exotic_animals')
                 ->label('Экзотические животные')
@@ -263,8 +272,9 @@ class SpecialistResource extends Resource
                     ->label('Организация')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('experience')
-                    ->label('Опыт (лет)'),
+                Tables\Columns\TextColumn::make('experience_label')
+                    ->label('Стаж')
+                    ->placeholder('Данные не указаны'),
 
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Кто добавил')

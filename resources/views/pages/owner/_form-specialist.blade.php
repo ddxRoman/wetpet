@@ -57,13 +57,14 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label fw-medium">Дата рождения</label>
-                <input type="date" name="date_of_birth" class="form-control"
+                <input type="date" name="date_of_birth" class="form-control" max="{{ now()->subYears(16)->format('Y-m-d') }}"
                        value="{{ old('date_of_birth', optional($entity->date_of_birth)->format('Y-m-d')) }}">
             </div>
             <div class="col-md-4">
-                <label class="form-label fw-medium">Опыт работы (лет)</label>
-                <input type="number" name="experience" class="form-control" min="0" max="70"
-                       value="{{ old('experience', $entity->experience) }}">
+                <label class="form-label fw-medium">Начало практики (год и месяц)</label>
+                <input type="month" name="practice_started_at" class="form-control" min="1950-01" max="{{ now()->format('Y-m') }}"
+                       value="{{ old('practice_started_at', optional($entity->practice_started_at)->format('Y-m')) }}">
+                <div class="form-text">Укажите год и месяц начала практики, и по этим данным будет рассчитан стаж</div>
             </div>
             <div class="col-md-4">
                 <label class="form-label fw-medium">Город</label>

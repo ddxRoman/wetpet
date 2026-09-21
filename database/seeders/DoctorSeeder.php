@@ -868,8 +868,14 @@ class DoctorSeeder extends Seeder
 
             $slug = Str::slug(implode(' ', $slugParts));
 
+            $experience = $doctor['experience'] ?? null;
+            unset($doctor['experience']);
+
             DB::table('doctors')->insert([
                 ...$doctor,
+                'practice_started_at' => $experience !== null
+                    ? now()->startOfMonth()->subYears((int) $experience)->toDateString()
+                    : null,
                 'slug' => $slug,
                 'created_at' => now(),
                 'updated_at' => now(),

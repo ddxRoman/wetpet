@@ -66,18 +66,15 @@ $(document).ready(function () {
             });
     });
 
-    // 3. СТАЖ
+    // 3. НАЧАЛО ПРАКТИКИ (не раньше 16 лет после рождения)
     $('#date_of_birth').on('change', function() {
         const dob = new Date($(this).val());
-        const today = new Date();
         if (isNaN(dob.getTime())) return;
-        let age = today.getFullYear() - dob.getFullYear();
-        if (new Date(today.getFullYear(), today.getMonth(), today.getDate()) < new Date(today.getFullYear(), dob.getMonth(), dob.getDate())) age--;
-        const maxExp = Math.max(0, age - 18);
-        const $expInput = $('#experienceInput');
-        $expInput.attr('max', maxExp);
-        if (parseInt($expInput.val()) > maxExp) $expInput.val(maxExp);
-        $expInput.siblings('.text-muted').text(`Максимум для данного возраста: ${maxExp} лет`);
+        const minDate = new Date(dob.getFullYear() + 16, dob.getMonth(), 1);
+        const min = `${minDate.getFullYear()}-${String(minDate.getMonth() + 1).padStart(2, '0')}`;
+        const $input = $('#practiceStartInput');
+        $input.attr('min', min);
+        if ($input.val() && $input.val() < min) $input.val(min);
     });
 
     // 4. МЕССЕНДЖЕРЫ

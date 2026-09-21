@@ -23,7 +23,8 @@ public function store(Request $request)
         'field_of_activity_id' => 'required|exists:field_of_activities,id',
         'city_id'              => 'nullable|exists:cities,id',
         'clinic_id'            => 'nullable|exists:clinics,id',
-        'experience'           => 'nullable|string|max:255',
+        'date_of_birth'        => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
+        'practice_started_at'  => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
         'description'          => 'nullable|string',
         'exotic_animals'       => 'nullable|string', 
         'On_site_assistance'   => 'nullable|string',
@@ -49,7 +50,8 @@ public function store(Request $request)
         'field_of_activity_id' => $field->id,
         'city_id'              => $validated['city_id'] ?? null,
         'clinic_id'            => $validated['clinic_id'] ?? null,
-        'experience'           => $validated['experience'] ?? null,
+        'date_of_birth'        => $validated['date_of_birth'] ?? null,
+        'practice_started_at'  => $validated['practice_started_at'] ?? null,
         'description'          => $validated['description'] ?? null,
         'exotic_animals'       => $request->has('exotic_animals') ? 'Да' : 'Нет',
         'On_site_assistance'   => $request->has('On_site_assistance') ? 'Да' : 'Нет',
@@ -234,8 +236,8 @@ public function update(Request $request, Doctor $doctor)
         'specialization' => 'nullable|string|max:255',
         'city_id'        => 'nullable|exists:cities,id',
         'organization_id'=> 'nullable|exists:clinics,id',
-        'experience'     => 'nullable|integer|min:0',
-        'date_of_birth'  => 'nullable|date',
+        'practice_started_at' => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
+        'date_of_birth'  => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
         'description'    => 'nullable|string',
         'photo'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
         'phone'          => 'nullable|string|max:20',
@@ -250,7 +252,7 @@ public function update(Request $request, Doctor $doctor)
     // 2. Подготовка данных для doctors
     $doctorData = $request->only([
         'name', 'specialization', 'city_id', 'organization_id', 
-        'experience', 'description', 'date_of_birth',
+        'practice_started_at', 'description', 'date_of_birth',
         'exotic_animals', 'On_site_assistance'
     ]);
 

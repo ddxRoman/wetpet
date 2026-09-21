@@ -61,61 +61,57 @@
                         <div class="col-md-6">
                             <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Дата рождения</label>
                             <input type="date" id="date_of_birth" name="date_of_birth" class="form-control wpm-input"
-                                   max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}">
+                                   max="{{ \Carbon\Carbon::now()->subYears(16)->format('Y-m-d') }}">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Стаж (лет)</label>
-                            <input type="number" id="experience" name="experience"
-                                   class="form-control wpm-input" min="0" placeholder="0">
+                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Начало практики (год и месяц)</label>
+                            <input type="month" id="practice_started_at" name="practice_started_at"
+                                   class="form-control wpm-input" min="1950-01" max="{{ \Carbon\Carbon::now()->format('Y-m') }}">
+                            <small class="text-muted">Укажите год и месяц начала практики, и по этим данным будет рассчитан стаж</small>
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Регион</label>
-                            <select name="region" id="regionSelect" class="form-select wpm-input">
-                                <option value="">Выберите регион</option>
-                                @foreach($cities->unique('region') as $city)
-                                    <option value="{{ $city->region }}">{{ $city->region }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Город</label>
-                            <select name="city_id" id="citySelect" class="form-select wpm-input">
-                                <option value="">Сначала выберите регион</option>
-                            </select>
+                        {{-- Частная практика: регион, город, улица и дом --}}
+                        <div class="col-12">
+                            <div class="p-3 rounded-3" style="background:#f0f8ff;border:1px solid #b2dff0;">
+                                <div class="fw-semibold" style="font-size:14px;color:#0a6e7a;">Частная практика</div>
+                                <div class="text-muted mb-3" style="font-size:12px;margin-top:2px;">
+                                    Выберите регион и город. Если специалист работает в организации, выберите её ниже — список
+                                    организаций подбирается по выбранному городу. Улицу и дом укажите для приёма вне организации,
+                                    например на дому или в частном кабинете (для врачей адрес не указывается).
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Регион</label>
+                                        <select name="region" id="regionSelect" class="form-select wpm-input">
+                                            <option value="">Выберите регион</option>
+                                            @foreach($cities->unique('region') as $city)
+                                                <option value="{{ $city->region }}">{{ $city->region }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Город</label>
+                                        <select name="city_id" id="citySelect" class="form-select wpm-input">
+                                            <option value="">Сначала выберите регион</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 private-address-col">
+                                        <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Улица</label>
+                                        <input type="text" name="street" id="street" class="form-control wpm-input" placeholder="ул. Мира">
+                                    </div>
+                                    <div class="col-md-6 private-address-col">
+                                        <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Дом</label>
+                                        <input type="text" name="house" id="house" class="form-control wpm-input" placeholder="10/1">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Организация</label>
-                            <select name="clinic_id" id="clinicSelect" class="form-select wpm-input">
+                            <select name="organization_id" id="clinicSelect" class="form-select wpm-input">
                                 <option value="">Сначала выберите город</option>
                             </select>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="p-3 rounded-3" style="background:#f0f8ff;border:1px solid #b2dff0;">
-                                <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
-                                    <input class="form-check-input flex-shrink-0" type="checkbox"
-                                           id="is_private" style="width:42px;height:22px;cursor:pointer;accent-color:#1ccfc9;">
-                                    <label class="form-check-label m-0" for="is_private"
-                                           style="font-size:13px;color:#374151;cursor:pointer;">
-                                        Я частный специалист (работаю без привязки к клинике/центру)
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="address-section-add" style="display:none;" class="col-12">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Улица</label>
-                                    <input type="text" name="street" id="street" class="form-control wpm-input" placeholder="ул. Мира">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Дом</label>
-                                    <input type="text" name="house" id="house" class="form-control wpm-input" placeholder="10/1">
-                                </div>
-                            </div>
                         </div>
 
                         <div class="col-md-6">

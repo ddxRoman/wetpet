@@ -93,9 +93,21 @@ Forms\Components\Select::make('specializations')
 
 Forms\Components\DatePicker::make('date_of_birth')
     ->label('Дата рождения')
-    ->maxDate(now()->subYears(18))
+    ->maxDate(now()->subYears(16))
     ->minDate(now()->subYears(70))
      ->reactive(),   // 🔥 ВАЖНО
+
+Forms\Components\TextInput::make('practice_started_at')
+    ->label('Начало практики (год и месяц)')
+    ->type('month')
+    ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('Y-m') : null)
+    ->extraInputAttributes(fn (callable $get) => [
+        'min' => \App\Models\Doctor::earliestPracticeStart($get('date_of_birth')),
+        'max' => now()->format('Y-m'),
+    ])
+    ->rules(fn (callable $get) => \App\Models\Doctor::practiceStartRules($get('date_of_birth')))
+    ->validationMessages(['after_or_equal' => 'Начало практики не может быть раньше чем через 16 лет после даты рождения.'])
+    ->helperText('Укажите год и месяц начала практики, и по этим данным будет рассчитан стаж'),
 
         // ───── РЕГИОН (виртуальное поле) ─────
         Forms\Components\Select::make('region')
@@ -150,41 +162,6 @@ Forms\Components\Select::make('clinic_id')
     ->searchable()
     ->reactive(),
 
-Forms\Components\TextInput::make('experience')
-    ->label('Опыт (лет)')
-    ->numeric()              // приводит '' к null, не даёт SQL-ошибку
-    ->type('number')        // 🔥 ВАЖНО
-    ->reactive()            // 🔥 ВАЖНО
-    ->minValue(0)
-    ->maxValue(function (callable $get) {
-        $birthDate = $get('date_of_birth');
-
-        if (! $birthDate) {
-            return null;
-        }
-
-        return max(
-            0,
-            Carbon::parse($birthDate)->diffInYears(now()) - 18
-        );
-    })
-    ->extraInputAttributes(function (callable $get) {
-        $birthDate = $get('date_of_birth');
-
-        if (! $birthDate) {
-            return [];
-        }
-
-        return [
-            'type' => 'number',
-            'min'  => 0,
-            'max'  => max(
-                0,
-                Carbon::parse($birthDate)->diffInYears(now()) - 18
-            ),
-        ];
-    })
-    ->helperText('Опыт не может быть больше чем период совершеннолетия врача'),
 
 
         Forms\Components\Select::make('exotic_animals')
@@ -311,8 +288,9 @@ Tables\Columns\TextColumn::make('specialization_label')
                         ->searchable()
                         ->toggleable(),
 
-                Tables\Columns\TextColumn::make('experience')
-                    ->label('Опыт (лет)'),
+                Tables\Columns\TextColumn::make('experience_label')
+                    ->label('Стаж')
+                    ->placeholder('Данные не указаны'),
 
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Кто добавил')

@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Doctor;
@@ -81,7 +82,8 @@ public function index(Request $request)
 
     /**
      * ===============================
-     * СОЗДАНИЕ (НЕ ТРОГАЕМ)
+     * СОЗДАНИЕ (модалка «Добавление специалиста», не-врачебные специальности)
+     * Создаёт запись Specialist. Врачи создаются в DoctorController::store.
      * ===============================
      */
 public function store(Request $request)
@@ -90,18 +92,22 @@ public function store(Request $request)
     $validated = $request->validate([
         'name'                 => 'required|string|max:255',
         'field_of_activity_id' => 'required|exists:field_of_activities,id',
-        'city_id'              => 'nullable|exists:cities,id',
-        'clinic_id'            => 'nullable|exists:clinics,id',
-        'experience'           => 'nullable|string|max:255',
+        'city_id'              => 'required|exists:cities,id',
+        'organization_id'      => 'nullable|exists:organizations,id',
+        'street'               => 'nullable|string|max:255',
+        'house'                => 'nullable|string|max:20',
+        'date_of_birth'        => ['nullable', 'date', 'before_or_equal:' . \App\Models\Specialist::latestBirthDate()],
+        'practice_started_at'  => \App\Models\Specialist::practiceStartRules($request->date_of_birth),
         'description'          => 'nullable|string',
-        'exotic_animals'       => 'nullable|string', 
+        'exotic_animals'       => 'nullable|string',
         'On_site_assistance'   => 'nullable|string',
         'phone'                => 'nullable|string|max:255',
         'mail'                 => 'nullable|string|email|max:255',
         'messengers'           => 'nullable|array',
-        'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Валидация фото
+        'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         'personal_data_agreement' => 'required|accepted',
     ], [
+        'city_id.required' => 'Выберите город.',
         'personal_data_agreement.required' => 'Необходимо согласие на обработку персональных данных.',
         'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
     ]);
@@ -109,33 +115,49 @@ public function store(Request $request)
     // 🔹 Получаем специализацию
     $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
 
-    // 🔹 Обработка фото (СОХРАНЕНИЕ НА ДИСК)
+    // 🔹 Обработка фото
     $photoPath = null;
     if ($request->hasFile('photo')) {
-        $photoPath = $request->file('photo')->store('doctors', 'public');
+        $photoPath = $request->file('photo')->store('specialists', 'public');
     }
 
-    // 🔹 Создаём врача
-    $doctor = Doctor::create([
-        'name'                 => $validated['name'],
-        'specialization'       => $field->name,
-        'field_of_activity_id' => $field->id,
-        'city_id'              => $validated['city_id'] ?? null,
-        'clinic_id'            => $validated['clinic_id'] ?? null,
-        'experience'           => $validated['experience'] ?? null,
-        'description'          => $validated['description'] ?? null,
-        'exotic_animals'       => $request->has('exotic_animals') ? 'Да' : 'Нет',
-        'On_site_assistance'   => $request->has('On_site_assistance') ? 'Да' : 'Нет',
-        'photo'                => $photoPath, // ЗАПИСЬ В БАЗУ
-        'slug'                 => Str::slug($validated['name']) . '-' . rand(100, 999),
+    // 🔹 Адрес частной практики указывается только если нет организации
+    $organizationId = $validated['organization_id'] ?? null;
+    $street = $organizationId ? null : ($validated['street'] ?? null);
+    $house  = $organizationId ? null : ($validated['house'] ?? null);
+
+    // 🔹 Slug: ФИО + организация (или адрес частной практики)
+    $slug = Specialist::generateSlug($validated['name'], $organizationId, $street, $house);
+    if ($slug === '') {
+        $slug = 'specialist-' . rand(1000, 9999);
+    }
+
+    // 🔹 Создаём специалиста
+    $specialist = Specialist::create([
+        'name'                => $validated['name'],
+        'slug'                => $slug,
+        'specialization'      => $field->name,
+        'city_id'             => $validated['city_id'],
+        'organization_id'     => $organizationId,
+        'street'              => $street,
+        'house'               => $house,
+        'date_of_birth'       => $validated['date_of_birth'] ?? null,
+        'practice_started_at' => $validated['practice_started_at'] ?? null,
+        'description'         => $validated['description'] ?? null,
+        'exotic_animals'      => $request->has('exotic_animals') ? 'Да' : 'Нет',
+        'On_site_assistance'  => $request->has('On_site_assistance') ? 'Да' : 'Нет',
+        'photo'               => $photoPath,
     ]);
+
+    // Специализация (справочник field_of_activities)
+    $specialist->specializations()->syncWithoutDetaching([$field->id]);
 
     // СОХРАНЕНИЕ КОНТАКТОВ
     $telegram = ($request->messengers && in_array('telegram', $request->messengers)) ? $request->phone : null;
     $whatsapp = ($request->messengers && in_array('whatsapp', $request->messengers)) ? $request->phone : null;
     $max      = ($request->messengers && in_array('messenger', $request->messengers)) ? $request->phone : null;
 
-    $doctor->contacts()->create([
+    $specialist->contacts()->create([
         'phone'    => $request->phone,
         'email'    => $request->mail,
         'telegram' => $telegram,
@@ -145,24 +167,24 @@ public function store(Request $request)
 
     // Уведомление в Telegram
     try {
-        $url = route('doctors.show', $doctor->slug); 
+        $url = route('specialists.show', $specialist->slug);
         Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
             'chat_id' => config('services.telegram.chat_id'),
             'parse_mode' => 'HTML',
-            'text' => "🩺 <b>Новый специалист</b>\n\n" . "👤 <b>Имя:</b> {$doctor->name}\n" . "📌 <b>Специализация:</b> {$doctor->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
+            'text' => "🩺 <b>Новый специалист</b>\n\n" . "👤 <b>Имя:</b> {$specialist->name}\n" . "📌 <b>Специализация:</b> {$specialist->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
         ]);
     } catch (\Throwable $e) {
         logger()->warning('Telegram notify failed', ['error' => $e->getMessage()]);
     }
 
     if ($request->boolean('its_me') && auth()->check()) {
-        $doctor->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
+        $specialist->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
     }
 
-return response()->json([
-        'success' => true, 
-        'id'      => $doctor->id, 
-        'type'    => 'doctor'
+    return response()->json([
+        'success' => true,
+        'id'      => $specialist->id,
+        'type'    => 'specialist',
     ]);
 }
 
@@ -216,17 +238,11 @@ public function edit(Specialist $specialist)
 
 public function update(Request $request, Specialist $specialist)
 {
-    $maxExp = 0;
-    if ($request->date_of_birth) {
-        $yearsOld = Carbon::parse($request->date_of_birth)->age;
-        $maxExp = max(0, $yearsOld - 18);
-    }
-
     $validated = $request->validate([
         'name'               => 'required|string|max:255',
         'specialization'     => 'nullable|string',
-        'date_of_birth'      => 'nullable|date',
-        'experience'         => "nullable|integer|min:0|max:$maxExp",
+        'date_of_birth'      => ['nullable', 'date', 'before_or_equal:' . \App\Models\Specialist::latestBirthDate()],
+        'practice_started_at' => \App\Models\Specialist::practiceStartRules($request->date_of_birth),
         'city_id'            => 'nullable|exists:cities,id',
         'organization_id'    => 'nullable|exists:organizations,id',
         'street'             => 'nullable|string|max:255', 
@@ -239,7 +255,9 @@ public function update(Request $request, Specialist $specialist)
         'whatsapp'           => 'nullable|string|max:255', 
         'max'                => 'nullable|string|max:255',
     ], [
-        'experience.max' => "Стаж не может превышать $maxExp лет.",
+        'practice_started_at.after_or_equal' => 'Начало практики не может быть раньше чем через 16 лет после даты рождения.',
+        'practice_started_at.before_or_equal' => 'Начало практики не может быть в будущем.',
+        'practice_started_at.date_format' => 'Укажите год и месяц начала практики.',
     ]);
 
     // Обработка чекбоксов Да/Нет
