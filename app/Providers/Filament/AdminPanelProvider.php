@@ -4,7 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
@@ -41,12 +41,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->authGuard('web')
             ->brandName(config('app.name', 'Зверозор'))
-            ->brandLogo(fn () => \Illuminate\Support\Facades\Storage::url('logo/logo3.png'))
+            ->brandLogo(fn () => \Illuminate\Support\Facades\Storage::url('logo/logo1.png'))
             ->brandLogoHeight('2.2rem')
             ->favicon(asset('favicon.ico'))
             ->font('Rubik')
             // Админка всегда светлая — не зависит от системной/браузерной тёмной темы
-            ->darkMode(false)
+            // ->darkMode(false)
             ->colors([
                 // Фирменный сине-бирюзовый акцент сайта (кнопки, ссылки, активные пункты меню)
                 'primary' => Color::hex('#1ccfc9'),

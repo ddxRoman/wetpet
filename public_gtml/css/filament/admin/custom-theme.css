@@ -74,3 +74,9 @@
     color: var(--zv-admin-sidebar-active-text) !important;
     font-weight: 600;
 }
+/* Отключаем глобальное затемнение экрана при загрузке/поиске в Filament */
+.bg-gray-950\/50,
+div[wire\:loading] .bg-gray-950\/50 {
+    background-color: transparent !important;
+    pointer-events: none !important;
+}
