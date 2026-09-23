@@ -18,12 +18,12 @@
         <div class="d-inline-flex gap-2 specialization-filter pb-2">
             <a href="{{ route('organizations.index', ['city_id' => $currentCityId]) }}" 
                class="org-filter-pill {{ empty($selectedTypeId) ? 'org-filter-pill--active' : '' }}">
-                Все организации
+                Все организации <span class="org-filter-pill__count">{{ $totalOrganizationsCount }}</span>
             </a>
             @foreach($organizationTypes as $type)
                 <a href="{{ route('organizations.index', ['type_id' => $type->id, 'city_id' => $currentCityId]) }}" 
                    class="org-filter-pill {{ $selectedTypeId == $type->id ? 'org-filter-pill--active' : '' }}">
-                    {{ $type->name }}
+                    {{ $type->name }} <span class="org-filter-pill__count">{{ $type->count }}</span>
                 </a>
             @endforeach
         </div>

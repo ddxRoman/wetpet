@@ -144,7 +144,12 @@ class AnimalDetailResource extends Resource
     {
         return $table
             ->columns([
-
+                Tables\Columns\TextColumn::make('animal.species')
+                    ->label('Тип')
+                    ->badge()
+                    ->color('info')
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('animal.breed')
                     ->label('Порода')
@@ -160,12 +165,10 @@ class AnimalDetailResource extends Resource
                 Tables\Columns\TextColumn::make('lifespan')
                     ->label('Жизнь'),
 
-                Tables\Columns\TextColumn::make('animal.species')
-                    ->label('Тип')
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Категория')
                     ->badge()
-                    ->color('info')
-                    ->searchable()
-                    ->sortable(),
+                    ->color('gray'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('species')
@@ -189,7 +192,18 @@ class AnimalDetailResource extends Resource
 
                 Tables\Filters\Filter::make('no_photo')
                     ->label('Без фото')
-                    ->query(fn ($query) => $query->whereNull('photo'))
+                    ->query(function ($query) {
+                        $missingIds = AnimalDetail::query()
+                            ->select('id', 'photo')
+                            ->get()
+                            ->filter(function ($record) {
+                                return blank($record->photo)
+                                    || !\Illuminate\Support\Facades\Storage::exists($record->photo);
+                            })
+                            ->pluck('id');
+
+                        return $query->whereIn('id', $missingIds);
+                    })
                     ->toggle(),
 
                 Tables\Filters\Filter::make('empty_description')

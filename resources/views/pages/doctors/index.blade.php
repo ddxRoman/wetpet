@@ -15,26 +15,26 @@
     @else
 
         {{-- Фильтр по специализациям (Теги) --}}
-<div class="specialization-filter-container mb-4">
-    <div class="scroll-wrapper">
+<div class="specialization-filter-wrapper mb-4">
+    <div class="d-inline-flex gap-2 specialization-filter pb-2">
         <div class="specialization-filter">
             {{-- Ссылка "Все" --}}
             <a href="{{ route('doctors.index', ['city_id' => request('city_id')]) }}" 
                class="org-filter-pill {{ empty($selectedSpecialization) ? 'org-filter-pill--active' : '' }}">
-                Все
+                Все <span class="org-filter-pill__count">{{ $totalDoctorsCount }}</span>
             </a>
 
             @foreach($specializations as $spec)
-                @if(!empty($spec))
+
                     <a href="{{ route('doctors.index', ['specialization' => $spec, 'city_id' => request('city_id')]) }}" 
                        class="org-filter-pill {{ $selectedSpecialization == $spec ? 'org-filter-pill--active' : '' }}">
-                        {{ $spec }}
+                        {{ $spec }} <span class="org-filter-pill__count">{{ $specializationCounts[$spec] ?? 0 }}</span>
                     </a>
-                @endif
             @endforeach
         </div>
     </div>
 </div>
+
 
         {{-- Если нет врачей для выбранного города --}}
         @if($doctors->isEmpty())

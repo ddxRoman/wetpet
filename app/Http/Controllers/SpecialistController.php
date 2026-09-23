@@ -45,6 +45,25 @@ public function index(Request $request)
         ->distinct()
         ->pluck('name'); 
 
+    // 2.1. Считаем количество специалистов для каждого тега (и общий итог), с учётом города
+    $specialistCountsBaseQuery = Specialist::query()
+        ->when($cityId, function ($q) use ($cityId) {
+            $q->where('city_id', $cityId);
+        });
+
+    $totalSpecialistsCount = (clone $specialistCountsBaseQuery)->count();
+
+    $specializationCounts = [];
+    foreach ($specializations as $spec) {
+        $searchTerm = mb_substr($spec, 0, -3);
+        if (mb_strlen($searchTerm) < 3) {
+            $searchTerm = $spec;
+        }
+        $specializationCounts[$spec] = (clone $specialistCountsBaseQuery)
+            ->where('specialization', 'LIKE', '%' . $searchTerm . '%')
+            ->count();
+    }
+
     // 3. ЗАПРОС: Фильтруем список специалистов
     $items = Specialist::with(['promotions' => fn($q) => $q->active()])
         ->withAvg('reviews', 'rating')
@@ -59,7 +78,10 @@ public function index(Request $request)
         ->orderByDesc('reviews_avg_rating') 
         ->orderBy('name')
         ->paginate(16)
-        ->withQueryString();
+        ->appends(array_filter([
+            'city_id' => $cityId,
+            'specialization' => $selectedSpecialization,
+        ]));
 
     // SEO: отдельные редактируемые шаблоны для каталога и для фильтра по специализации
     $seoManager = new \App\Services\SeoManager();
@@ -75,6 +97,8 @@ public function index(Request $request)
         'selectedSpecialization' => $selectedSpecialization,
         'currentCityId' => $cityId,
         'seoMeta' => $seoMeta,
+        'totalSpecialistsCount' => $totalSpecialistsCount,
+        'specializationCounts' => $specializationCounts,
     ]);
 }
 

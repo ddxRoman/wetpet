@@ -71,6 +71,21 @@
         color: #fff;
     }
 
+    /* Счётчик количества записей внутри пилюли фильтра */
+    .org-filter-pill__count {
+        display: inline-block;
+        margin-left: 0.35rem;
+        padding: 0.05rem 0.45rem;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        background-color: rgba(37, 99, 235, 0.12);
+        color: inherit;
+    }
+    .org-filter-pill--active .org-filter-pill__count {
+        background-color: rgba(255, 255, 255, 0.25);
+    }
+
     /* Карточка в списке: визуальная иерархия текста */
     .org-card-title {
         font-size: 1.05rem;

@@ -20,7 +20,7 @@
                 {{-- Ссылка "Все" теперь ведет на specialists.index --}}
                 <a href="{{ route('specialists.index', ['city_id' => $currentCityId ?? request('city_id')]) }}" 
                    class="org-filter-pill {{ empty($selectedSpecialization) ? 'org-filter-pill--active' : '' }}">
-                    Все
+                    Все <span class="org-filter-pill__count">{{ $totalSpecialistsCount }}</span>
                 </a>
 
                 @foreach($specializations as $spec)
@@ -30,7 +30,7 @@
                                 'city_id' => $currentCityId ?? request('city_id')
                             ]) }}" 
                            class="org-filter-pill {{ $selectedSpecialization == $spec ? 'org-filter-pill--active' : '' }}">
-                            {{ $spec }}
+                            {{ $spec }} <span class="org-filter-pill__count">{{ $specializationCounts[$spec] ?? 0 }}</span>
                         </a>
                     @endif
                 @endforeach
