@@ -22,7 +22,12 @@
         <div class="row g-0">
             <div class="col-md-4 bg-light d-flex align-items-center justify-content-center border-end" style="min-height: 400px;">
                 @if($animal->details && $animal->details->photo)
-                    <img src="{{ asset('storage/' . $animal->details->photo) }}" class="img-fluid object-fit-cover h-100" alt="{{ $animal->breed }}">
+                    <img src="{{ asset('storage/' . $animal->details->photo) }}"
+                         class="img-fluid h-100"
+                         style="object-fit: contain; cursor: zoom-in;"
+                         alt="{{ $animal->breed }}"
+                         data-bs-toggle="modal"
+                         data-bs-target="#breedPhotoModal">
                 @else
                     <div class="text-center text-muted">
                         <i class="bi bi-camera" style="font-size: 4rem;"></i>
@@ -73,6 +78,23 @@
             </div>
         </div>
     </div>
+
+    {{-- Модалка для полноразмерного просмотра фото породы --}}
+    @if($animal->details && $animal->details->photo)
+        <div class="modal fade" id="breedPhotoModal" tabindex="-1" aria-labelledby="breedPhotoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content bg-transparent border-0">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" style="z-index: 1;" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    <div class="modal-body p-0 d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('storage/' . $animal->details->photo) }}"
+                             class="img-fluid"
+                             style="max-height: 90vh; width: auto; object-fit: contain;"
+                             alt="{{ $animal->breed }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     {{-- Описание и детали --}}
     @if($animal->details && $animal->details->full_description)

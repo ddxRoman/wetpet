@@ -144,6 +144,8 @@ class AnimalDetailResource extends Resource
     {
         return $table
             ->columns([
+
+
                 Tables\Columns\TextColumn::make('animal.breed')
                     ->label('Порода')
                     ->searchable()
@@ -158,10 +160,12 @@ class AnimalDetailResource extends Resource
                 Tables\Columns\TextColumn::make('lifespan')
                     ->label('Жизнь'),
 
-                Tables\Columns\TextColumn::make('type')
+                Tables\Columns\TextColumn::make('animal.species')
                     ->label('Тип')
                     ->badge()
-                    ->color('gray'),
+                    ->color('info')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('species')
@@ -182,6 +186,19 @@ class AnimalDetailResource extends Resource
                     })
                     ->searchable()
                     ->preload(),
+
+                Tables\Filters\Filter::make('no_photo')
+                    ->label('Без фото')
+                    ->query(fn ($query) => $query->whereNull('photo'))
+                    ->toggle(),
+
+                Tables\Filters\Filter::make('empty_description')
+                    ->label('Не заполненые')
+                    ->query(fn ($query) => $query->where(function ($q) {
+                        $q->whereNull('full_description')
+                            ->orWhereRaw('CHAR_LENGTH(full_description) < 300');
+                    }))
+                    ->toggle(),
             ])
             ->actions([
                 // 1. Кнопка "На сайт" в виде иконки
