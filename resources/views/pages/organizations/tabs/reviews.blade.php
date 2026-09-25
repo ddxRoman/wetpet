@@ -135,7 +135,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
             @empty
             <option disabled>Добавьте питомца в профиле</option>
             @endforelse
-            <option >Другой питомец</option>
+            <option class="other_pets_option" value="">Другой питомец</option>
     </select>
 </div>
                 {{-- 📎 Загрузка чека --}}
@@ -330,4 +330,3 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
         </div>
     </div>
 </div>
-

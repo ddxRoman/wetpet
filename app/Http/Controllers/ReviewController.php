@@ -51,7 +51,10 @@ public function store(Request $request)
     $review->liked = $validated['liked'] ?? null;
     $review->disliked = $validated['disliked'] ?? null;
     $review->content = $validated['content'] ?? null;
-    $review->pet_id = $validated['pet_id'] ?? null;
+    // "?:" вместо "??", т.к. пустая строка (например, от <option value=""> без выбора)
+    // это не null, и "?? null" её не поймает — а колонка pet_id должна быть либо NULL,
+    // либо реальным id питомца.
+    $review->pet_id = $validated['pet_id'] ?: null;
     $review->review_date = now();
     $review->save();
 

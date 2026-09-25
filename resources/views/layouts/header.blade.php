@@ -71,6 +71,27 @@
     max-width: 55%;
 }
 
+/* ── Разворачивающаяся строка поиска на мобильных ── */
+.mobile-search-row {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .25s ease, opacity .2s ease;
+}
+.mobile-search-row.open {
+    display: block;
+    max-height: 120px;
+    opacity: 1;
+    overflow: visible;
+}
+.mobile-search-toggle {
+    line-height: 0;
+}
+.mobile-search-toggle.active img {
+    filter: opacity(0.6);
+}
+
 /* Аватар меньше в компактном режиме */
 .compact-row-top .avatars_pics {
     width: 28px !important;
@@ -333,7 +354,7 @@
                     <p class="description_index_page">{!! $h->description !!}</p>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <div class="input-group position-relative">
+                    <div class="input-group position-relative live-search-widget">
                         <input type="search" id="clinic-live-search" class="form-control header-search"
                                placeholder="Введите название клиники..." autocomplete="off">
                         <button class="search_btn" type="button">
@@ -430,7 +451,7 @@
             </a>
             @if($h->showSearch)
             <div class="flex-grow-1 position-relative">
-                <div class="input-group">
+                <div class="input-group live-search-widget">
                     <input type="search" id="clinic-live-search" class="form-control header-search"
                            placeholder="Введите название клиники..." autocomplete="off"
                            style="margin:0;height:40px;">
@@ -456,8 +477,29 @@
             <a href="/">
                 <img src="{{ Storage::url('logo/logo2.png') }}" alt="{{ $brandname }}" class="header_logo_compact">
             </a>
-            <div style="width:36px;"></div>
+            @if($h->showSearch)
+                <button class="btn p-1 mobile-search-toggle" type="button" id="mobile-search-toggle" aria-label="Поиск">
+                    <img src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск" style="width:26px;height:26px;">
+                </button>
+            @else
+                <div style="width:36px;"></div>
+            @endif
         </div>
+
+        {{-- Разворачивающаяся строка поиска на мобильных (появляется по клику на лупу) --}}
+        @if($h->showSearch)
+        <div class="mobile-search-row d-md-none px-3 pb-2" id="mobile-search-row">
+            <div class="input-group position-relative live-search-widget">
+                <input type="search" id="mobile-clinic-live-search" class="form-control header-search"
+                       placeholder="Введите название клиники..." autocomplete="off"
+                       style="margin:0;height:40px;">
+                <button class="search_btn" type="button">
+                    <img src="{{ Storage::url('icon/button/search.svg') }}" alt="Поиск" style="width:32px;height:32px;">
+                </button>
+                <div id="mobile-search-results" class="search-results-dropdown d-none"></div>
+            </div>
+        </div>
+        @endif
 
         @endif
     </div>
@@ -670,6 +712,31 @@
             });
         }
 
+        // ── Разворачивающаяся строка поиска на мобильных ─────────
+        const searchToggle = document.getElementById('mobile-search-toggle');
+        const searchRow    = document.getElementById('mobile-search-row');
+
+        if (searchToggle && searchRow) {
+            const mobileInput = searchRow.querySelector('input.header-search');
+
+            searchToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = searchRow.classList.toggle('open');
+                searchToggle.classList.toggle('active', isOpen);
+                if (isOpen && mobileInput) {
+                    setTimeout(() => mobileInput.focus(), 50);
+                }
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!searchRow.classList.contains('open')) return;
+                if (searchRow.contains(e.target) || searchToggle.contains(e.target)) return;
+                searchRow.classList.remove('open');
+                searchToggle.classList.remove('active');
+            });
+        }
+
         // ── Выбор города ─────────────────────────────────────────
         const toggle    = document.getElementById('mobile-city-toggle');
         const panel     = document.getElementById('mobile-city-panel');
@@ -770,4 +837,4 @@
 </script>
 
 </body>
-</html> 
+</html>
