@@ -8,13 +8,7 @@
         abort(404);
     }
 
-    // Доверяем полю из базы, как в каталоге (resources/views/pages/organizations/_list_items.blade.php).
-    // file_exists()/Storage::exists() здесь не используем: на Linux-сервере такая
-    // проверка может ложно возвращать false из-за регистра или юникод-нормализации
-    // имени файла, из-за чего лого молча заменялось заглушкой, хотя файл реально
-    // существовал (и сразу появлялся после переливки — новый файл записывался
-    // с именем, совпадающим побайтово с тем, что в базе).
-    $photo = !empty($organization->logo)
+    $photo = $organization->logo && file_exists(public_path('storage/'.$organization->logo))
         ? asset('storage/'.$organization->logo)
         : asset('storage/organizations/default-organization.webp');
 
@@ -177,6 +171,10 @@
                     <img src="{{ $photo }}"
                          style="width:100%;max-width:280px;border-radius:10px;object-fit:contain">
                 </div>
+            </div>
+
+            <div class="mt-3">
+                @include('partials._working-hours-card', ['entity' => $organization])
             </div>
         </div>
     </div>

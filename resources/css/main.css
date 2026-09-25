@@ -1024,10 +1024,10 @@ select:focus {
 }
 
 .review-card a {
-    color: #525252;
-    font-weight: 400;
+    color: #3b82f6;
+    font-weight: 600;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 17px;
 }
 
 .review-card a:hover {
@@ -2404,3 +2404,27 @@ pre.politics {
         /* width: 100%; */
 
     }
+/* ================= КАРТОЧКА "РЕЖИМ РАБОТЫ" (организации/клиники) ================= */
+.working-hours-card {
+    border-radius: 10px;
+    border: 1px solid #eef0f2;
+}
+.working-hours-icon {
+    color: #2563eb;
+    font-size: 1.15rem;
+}
+.working-hours-row {
+    color: #495057;
+    font-size: 0.95rem;
+}
+.working-hours-days {
+    font-weight: 600;
+    color: #212529;
+}
+.working-hours-sep {
+    margin: 0 0.35rem;
+    color: #adb5bd;
+}
+.working-hours-time {
+    color: #495057;
+}

@@ -167,6 +167,10 @@
                          style="width:100%;max-width:280px;border-radius:10px;object-fit:contain">
                 </div>
             </div>
+
+            <div class="mt-3">
+                @include('partials._working-hours-card', ['entity' => $clinic])
+            </div>
         </div>
     </div>
 
