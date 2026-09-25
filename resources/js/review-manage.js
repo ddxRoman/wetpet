@@ -99,6 +99,12 @@ function ensureEditModal() {
                         <input type="text" class="form-control" maxlength="500" data-role="disliked" placeholder="Что можно улучшить">
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Ваш питомец</label>
+                        <select class="form-select" data-role="pet">
+                            <option value="">Другой питомец</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Ваш отзыв</label>
                         <textarea class="form-control" rows="4" maxlength="2000" data-role="content" placeholder="Напишите свой отзыв..."></textarea>
                     </div>
@@ -178,6 +184,32 @@ function renderAttachments() {
     });
 }
 
+/* ------------------------------------------------------------------ */
+/*  Список питомцев пользователя (для селекта в модалке редактирования) */
+/* ------------------------------------------------------------------ */
+let petsPromise = null;
+
+function loadPets() {
+    if (!petsPromise) {
+        petsPromise = request('/pets').then(result => result.data?.pets || []);
+    }
+    return petsPromise;
+}
+
+async function fillPetSelect(selectedPetId) {
+    const select = editModalEl.querySelector('[data-role="pet"]');
+    const pets = await loadPets();
+
+    select.innerHTML = '<option value="">Другой питомец</option>' + pets.map(p => {
+        const breed = p.animal?.breed ? ` — ${esc(p.animal.breed)}` : '';
+        return `<option value="${p.id}">${esc(p.name)}${breed}</option>`;
+    }).join('');
+
+    select.value = selectedPetId ? String(selectedPetId) : '';
+    // Если питомец, который был выбран в отзыве, с тех пор удалили из профиля,
+    // ни одна option не совпадёт и select сам останется на «Другой питомец» (value="").
+}
+
 function openEdit(data) {
     ensureEditModal();
     current = data;
@@ -192,6 +224,7 @@ function openEdit(data) {
     editModalEl.querySelector('[data-role="new-receipts"]').value = '';
     setRating(Number(data.rating) || 0);
     renderAttachments();
+    fillPetSelect(data.pet_id);
 
     editModal.show();
 }
@@ -224,6 +257,7 @@ async function saveEdit() {
         body.append('liked', editModalEl.querySelector('[data-role="liked"]').value);
         body.append('disliked', editModalEl.querySelector('[data-role="disliked"]').value);
         body.append('content', editModalEl.querySelector('[data-role="content"]').value);
+        body.append('pet_id', editModalEl.querySelector('[data-role="pet"]').value);
         Array.from(editModalEl.querySelector('[data-role="new-photos"]').files).forEach(f => body.append('photos[]', f));
         Array.from(editModalEl.querySelector('[data-role="new-receipts"]').files).forEach(f => body.append('receipts[]', f));
 

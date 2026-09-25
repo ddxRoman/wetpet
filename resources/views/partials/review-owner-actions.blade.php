@@ -6,6 +6,7 @@
         'liked'    => $review->liked,
         'disliked' => $review->disliked,
         'content'  => $review->content,
+        'pet_id'   => $review->pet_id,
         'photos'   => $review->photos->map(fn ($p) => [
             'id'  => $p->id,
             'url' => asset('storage/' . $p->photo_path),

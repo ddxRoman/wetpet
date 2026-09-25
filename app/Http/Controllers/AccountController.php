@@ -269,11 +269,17 @@ public function index()
             'disliked' => 'nullable|string|max:500',
             'content' => 'nullable|string|max:2000',
             'rating' => 'required|integer|min:1|max:5',
+            'pet_id' => 'nullable|integer',
             'photos.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'receipts.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:4096',
         ]);
 
         $review->update($request->only('liked', 'disliked', 'content', 'rating'));
+
+        // "?:" — пустая строка (питомец не выбран / «Другой питомец») должна
+        // сохраняться как NULL, а не как '' (см. аналогичный фикс в ReviewController::store).
+        $review->pet_id = $request->input('pet_id') ?: null;
+        $review->save();
 
         // Фото
         if ($request->hasFile('photos')) {
