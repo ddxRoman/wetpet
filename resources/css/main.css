@@ -1024,10 +1024,10 @@ select:focus {
 }
 
 .review-card a {
-    color: #3b82f6;
-    font-weight: 600;
+    color: #525252;
+    font-weight: 400;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 12px;
 }
 
 .review-card a:hover {

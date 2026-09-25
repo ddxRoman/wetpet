@@ -42,7 +42,7 @@ function initAddOrganizationModal(modal) {
 
     /* ===== Elements ===== */
     const form = modal.querySelector('#addOrganizationForm');
-    const errBox = modal.querySelector('#doctorErrors');
+    const errBox = modal.querySelector('#orgErrors');
 
     const fieldSelect  = modal.querySelector('#fieldOfActivitySelect');
     const regionSelect = modal.querySelector('#regionSelect');
@@ -156,8 +156,8 @@ if (form) {
         if (isSubmitting) return; // защита от повторной отправки
         isSubmitting = true;
         let redirected = false;
-        errBox.classList.add('d-none');
-        errBox.innerHTML = '';
+        errBox?.classList.add('d-none');
+        if (errBox) errBox.innerHTML = '';
 
         try {
             const res = await fetch(form.action, {
@@ -169,10 +169,12 @@ if (form) {
             const json = await res.json();
 
             if (res.status === 422) { // Ошибка валидации Laravel
-                errBox.innerHTML = Object.values(json.errors)
-                    .flat()
-                    .map(e => `<div>${e}</div>`).join('');
-                errBox.classList.remove('d-none');
+                if (errBox) {
+                    errBox.innerHTML = Object.values(json.errors)
+                        .flat()
+                        .map(e => `<div>${e}</div>`).join('');
+                    errBox.classList.remove('d-none');
+                }
                 return; // ВАЖНО: выходим, чтобы не было релоада
             }
 
@@ -198,4 +200,3 @@ if (form) {
     });
 }
 }
-

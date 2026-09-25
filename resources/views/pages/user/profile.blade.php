@@ -59,9 +59,9 @@
         <div class="row g-3 mb-5">
             @foreach($pets as $pet)
                 @php
-                    $petPhoto = $pet->photo
-                        ? asset('storage/' . $pet->photo)
-                        : asset('storage/pets/default-pet.jpg');
+                    // Фото питомца, либо дефолт по виду (кошка/собака/другое) —
+                    // см. App\Models\Pet::getPhotoUrlAttribute()
+                    $petPhoto = $pet->photo_url;
                 @endphp
                 <div class="col-6 col-md-4">
                     <div class="card h-100 border-0 shadow-sm" style="border-radius: 16px; overflow: hidden;" data-zoom-scope>
@@ -169,11 +169,30 @@
                     @endif
 
                     @if($review->pet)
-                        <div class="small text-muted mt-2">
-                            <em>Питомец:</em> {{ $review->pet->name }}
-                            @if($review->pet->animal)
+                        <div class="small text-muted mt-2" data-zoom-scope>
+                            <em>Питомец:</em>
+                            <a href="{{ $review->pet->photo_url }}" class="js-zoom text-reset text-decoration-none" style="color:inherit; text-decoration:none;" data-title="{{ $review->pet->name }}" title="Посмотреть фото питомца">{{ $review->pet->name }}@if($review->pet->animal)
                                 ({{ $review->pet->animal->species }} — {{ $review->pet->animal->breed }})
-                            @endif
+                            @endif</a>
+
+                            {{-- Скрытая подпись для модалки — тот же вид, что в карточке питомца выше --}}
+                            <div class="d-none" data-zoom-info>
+                                <div class="fw-semibold">{{ $review->pet->name }}</div>
+                                @if($review->pet->animal)
+                                    <div class="small text-muted">{{ $review->pet->animal->species }}@if($review->pet->animal->breed) ({{ $review->pet->animal->breed }})@endif</div>
+                                @endif
+                                @if(isset($genderLabels[$review->pet->gender]))
+                                    <div class="small text-muted">{{ $genderLabels[$review->pet->gender] }}</div>
+                                @endif
+                                @if($review->pet->death_date)
+                                    <div class="small text-muted">Дата смерти: {{ $review->pet->death_date->format('d.m.Y') }}</div>
+                                    @if($review->pet->age_label)
+                                        <div class="small text-muted">Возраст на момент смерти: {{ $review->pet->age_label }}</div>
+                                    @endif
+                                @elseif($review->pet->age_label)
+                                    <div class="small text-muted">Возраст: {{ $review->pet->age_label }}</div>
+                                @endif
+                            </div>
                         </div>
                     @endif
 
@@ -202,63 +221,7 @@
 
 </div>
 
-{{-- ===================== Просмотр фото (аватар, питомцы) ===================== --}}
-<div class="modal fade" id="imageZoomModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content bg-dark border-0">
-            <div class="modal-header border-0 pb-0">
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body text-center">
-                <img id="imageZoomImg" src="" alt="" class="img-fluid rounded" style="max-height: 70vh; object-fit: contain;">
-                {{-- Сюда копируется подпись с миниатюры (имя, возраст, дата смерти и т.д.) --}}
-                <div id="imageZoomCaption" class="mt-3 text-white text-center"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    /* Умершие питомцы: чёрно-белое фото, при наведении — цветное */
-    .pet-deceased { filter: grayscale(1); transition: filter .3s ease; }
-    a.js-zoom:hover .pet-deceased { filter: none; }
-
-    #imageZoomCaption .text-muted { color: #c9d1d9 !important; }
-    #imageZoomCaption .bi { color: #1ccfc9; }
-</style>
-
-<script>
-document.addEventListener('click', function (e) {
-    const link = e.target.closest('a.js-zoom');
-    if (!link) return;
-
-    const modalEl = document.getElementById('imageZoomModal');
-    // Если Bootstrap по какой-то причине не загрузился — ссылка откроет фото в этой же вкладке
-    if (!modalEl || !window.bootstrap?.Modal) return;
-
-    e.preventDefault();
-    document.getElementById('imageZoomImg').src = link.getAttribute('href');
-    document.getElementById('imageZoomImg').alt = link.dataset.title || '';
-
-    // Подпись под фото = ровно то, что написано рядом с миниатюрой
-    const caption = document.getElementById('imageZoomCaption');
-    caption.innerHTML = '';
-    const info = link.closest('[data-zoom-scope]')?.querySelector('[data-zoom-info]');
-    if (info) {
-        const clone = info.cloneNode(true);
-        clone.className = '';
-        clone.removeAttribute('data-zoom-info');
-        // В модалке не должно быть второго <h1> на странице
-        clone.querySelectorAll('h1').forEach(function (h) {
-            const d = document.createElement('div');
-            d.className = 'h4 fw-bold mb-2';
-            d.innerHTML = h.innerHTML;
-            h.replaceWith(d);
-        });
-        caption.appendChild(clone);
-    }
-    window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
-});
-</script>
+{{-- Модалка просмотра фото (аватар, питомцы, отзывы) подключена глобально
+     в layouts/footer.blade.php — partials/image-zoom-modal.blade.php --}}
 
 @endsection

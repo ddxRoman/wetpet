@@ -50,3 +50,5 @@
         </div>
     </div>
 </footer>
+
+@include('partials.image-zoom-modal')

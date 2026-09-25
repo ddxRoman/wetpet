@@ -252,12 +252,32 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                     @endif
 
 @if($review->pet)
-    <div class="small text-muted mt-2">
+    <div class="small text-muted mt-2" data-zoom-scope>
         <em>Питомец:</em>
-        {{ $review->pet->name }}
-        @if($review->pet->animal)
+        <a href="{{ $review->pet->photo_url }}" class="js-zoom text-reset text-decoration-none" style="color:inherit; text-decoration:none;" data-title="{{ $review->pet->name }}" title="Посмотреть фото питомца">{{ $review->pet->name }}@if($review->pet->animal)
             ({{ $review->pet->animal->species }} — {{ $review->pet->animal->breed }})
-        @endif
+        @endif</a>
+
+        {{-- Скрытая подпись для модалки — тот же вид, что в карточке питомца в профиле --}}
+        <div class="d-none" data-zoom-info>
+            <div class="fw-semibold">{{ $review->pet->name }}</div>
+            @if($review->pet->animal)
+                <div class="small text-muted">{{ $review->pet->animal->species }}@if($review->pet->animal->breed) ({{ $review->pet->animal->breed }})@endif</div>
+            @endif
+            @if($review->pet->gender === 'male')
+                <div class="small text-muted">Самец</div>
+            @elseif($review->pet->gender === 'female')
+                <div class="small text-muted">Самка</div>
+            @endif
+            @if($review->pet->death_date)
+                <div class="small text-muted">Дата смерти: {{ $review->pet->death_date->format('d.m.Y') }}</div>
+                @if($review->pet->age_label)
+                    <div class="small text-muted">Возраст на момент смерти: {{ $review->pet->age_label }}</div>
+                @endif
+            @elseif($review->pet->age_label)
+                <div class="small text-muted">Возраст: {{ $review->pet->age_label }}</div>
+            @endif
+        </div>
     </div>
 @endif
 

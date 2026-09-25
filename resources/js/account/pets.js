@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             data.pets.forEach(p => {
                 const cls = getTypeClass(p.animal?.species);
+                // photo_url приходит с бэкенда (App\Models\Pet::getPhotoUrlAttribute):
+                // собственное фото питомца, либо дефолт по виду животного
+                // (кошка/собака/другое) — единая логика для всего проекта.
+                const photoUrl = p.photo_url || '/storage/pets/default-pet.jpg';
 petsList.insertAdjacentHTML('beforeend', `
     <div class="pet-card ${cls}"
          data-id="${p.id}"
@@ -73,7 +77,7 @@ petsList.insertAdjacentHTML('beforeend', `
          data-age="${p.age || ''}"
          data-breed="${p.animal?.breed || ''}"
          data-breed-id="${p.animal_id || ''}"
-         data-photo="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
+         data-photo="${photoUrl}"
          style="position:relative;">
 
         <button class="delete-pet-btn" data-id="${p.id}" aria-label="Удалить питомца"
@@ -81,7 +85,7 @@ petsList.insertAdjacentHTML('beforeend', `
             🗑
         </button>
 
-        <img src="${p.photo ? '/storage/' + p.photo : '/storage/pets/default-pet.jpg'}"
+        <img src="${photoUrl}"
              alt="${p.name}"
              title="фотография животного"
              style="max-width:100%; display:block; margin-bottom:8px; border-radius:10px;">

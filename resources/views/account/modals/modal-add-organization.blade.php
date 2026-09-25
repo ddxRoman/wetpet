@@ -73,7 +73,7 @@
                             <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Регион</label>
                             <select name="region" id="regionSelect" class="form-select wpm-input">
                                 <option value="">Выберите регион</option>
-                                @foreach($cities as $city)
+                                @foreach($cities->unique(fn ($c) => mb_strtolower(trim($c->region))) as $city)
                                     <option value="{{ $city->region }}">{{ $city->region }}</option>
                                 @endforeach
                             </select>

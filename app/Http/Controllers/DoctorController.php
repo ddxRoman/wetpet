@@ -146,7 +146,7 @@ public function index(Request $request)
         ->orderBy('name') 
         ->pluck('name'); 
 
-    // 3.1. Считаем количество врачей для каждой специализации (и общий итог), с учётом города
+ // 3.1. Считаем количество врачей для каждой специализации (и общий итог), с учётом города
     $doctorCountsBaseQuery = Doctor::query()
         ->when($cityId, function ($query) use ($cityId) {
             $query->where('city_id', $cityId);
@@ -164,25 +164,30 @@ public function index(Request $request)
             ->where('specialization', 'LIKE', '%' . $searchTerm . '%')
             ->count();
     }
-
     // 4. Запрос списка врачей
-// В DoctorController.php
-$doctors = Doctor::with(['promotions' => fn($q) => $q->active()])
-    ->withAvg('reviews', 'rating')
-    ->when($cityId, function ($query) use ($cityId) {
-        $query->where('city_id', $cityId);
-    })
-    ->when($selectedSpecialization, function ($query) use ($selectedSpecialization) {
-        $searchTerm = mb_substr($selectedSpecialization, 0, -3);
-        if (mb_strlen($searchTerm) < 3) {
-            $searchTerm = $selectedSpecialization;
-        }
-        $query->where('specialization', 'LIKE', '%' . $searchTerm . '%');
-    })
-    ->orderByDesc('reviews_avg_rating') 
-    ->orderBy('name')
-    ->paginate(16)
-    ->appends(array_filter([
+    $doctors = Doctor::with(['promotions' => fn($q) => $q->active()])
+        ->withAvg('reviews', 'rating')
+        ->when($cityId, function ($query) use ($cityId) {
+            $query->where('city_id', $cityId);
+        })
+        ->when($selectedSpecialization, function ($query) use ($selectedSpecialization) {
+            /** * Логика сопоставления:
+             * Отрезаем последние 3 буквы от тега (например, "Кардиолог" -> "Кардиол")
+             * и ищем вхождение этой части в поле специализации доктора.
+             */
+            $searchTerm = mb_substr($selectedSpecialization, 0, -3);
+            
+            // Если слово слишком короткое (меньше 3 букв после обрезки), ищем как есть
+            if (mb_strlen($searchTerm) < 3) {
+                $searchTerm = $selectedSpecialization;
+            }
+
+            $query->where('specialization', 'LIKE', '%' . $searchTerm . '%');
+        })
+        ->orderByDesc('reviews_avg_rating') 
+        ->orderBy('name')
+        ->paginate(16)
+            ->appends(array_filter([
         'city_id' => $cityId,
         'specialization' => $selectedSpecialization,
     ]));
@@ -243,7 +248,7 @@ public function welcome()
         $clinic = $doctor->clinic;
 
         $reviews = $doctor->reviews()
-            ->with('user', 'photos')
+            ->with('user', 'photos', 'pet.animal')
             ->latest()
             ->get();
 

@@ -48,95 +48,91 @@ class OrganizationController extends Controller
         ));
     }
 
-public function catalog(Request $request)
+    public function catalog(Request $request)
     {
-        $user = auth()->user();
-        $cityId = $request->get('city_id');
-        $selectedCityName = null;
+    $user = auth()->user();
+    $cityId = $request->get('city_id');
+    $selectedCityName = null;
 
-        // 1. Приоритет выбора города: Request -> Session -> User Profile
-        if (!$cityId) {
-            $cityId = session('city_id') ?: ($user ? $user->city_id : null);
+    // 1. Приоритет выбора города: Request -> Session -> User Profile
+    if (!$cityId) {
+        $cityId = session('city_id') ?: ($user ? $user->city_id : null);
+    }
+
+    if ($cityId) {
+        $cityModel = City::find($cityId);
+        if ($cityModel) {
+            $selectedCityName = $cityModel->name;
+            // Сохраняем в сессию, чтобы при переходе по страницам город не терялся
+            session(['city_id' => $cityId]);
         }
+    }
 
-        if ($cityId) {
-            $cityModel = City::find($cityId);
-            if ($cityModel) {
-                $selectedCityName = $cityModel->name;
-                // Сохраняем в сессию, чтобы при переходе по страницам город не терялся
-                session(['city_id' => $cityId]);
-            }
-        }
+    $selectedTypeId = $request->get('type_id');
 
-        $selectedTypeId = $request->get('type_id');
+    // 2. Получаем типы организаций для тегов
+    $organizationTypes = FieldOfActivity::where('type', 'organization')
+        ->whereNotIn('activity', ['vetclinic', 'doctor'])
+        ->orderBy('name')
+        ->get(['id', 'name']);
 
-        // 2. Получаем типы организаций для тегов
-        $organizationTypes = FieldOfActivity::where('type', 'organization')
-            ->whereNotIn('activity', ['vetclinic', 'doctor'])
-            ->orderBy('name')
-            ->get(['id', 'name']);
-
-        // 2.1. Считаем количество организаций для каждого типа (и общий итог), с учётом выбранного города
-        $orgCountsBaseQuery = Organization::query()
-            ->when($selectedCityName, function ($q) use ($selectedCityName) {
-                $q->where('city', $selectedCityName);
-            });
-
-        $totalOrganizationsCount = (clone $orgCountsBaseQuery)->count();
-
-        $organizationTypeCounts = (clone $orgCountsBaseQuery)
-            ->whereNotNull('field_of_activity_id')
-            ->selectRaw('field_of_activity_id, COUNT(*) as aggregate')
-            ->groupBy('field_of_activity_id')
-            ->pluck('aggregate', 'field_of_activity_id');
-
-        $organizationTypes->each(function ($type) use ($organizationTypeCounts) {
-            $type->count = $organizationTypeCounts->get($type->id, 0);
+    // 2.1. Считаем количество организаций для каждого типа (и общий итог), с учётом выбранного города
+    $orgCountsBaseQuery = Organization::query()
+        ->when($selectedCityName, function ($q) use ($selectedCityName) {
+            $q->where('city', $selectedCityName);
         });
 
-        // 3. Запрос организаций
-        $items = Organization::query()
-            // Фильтр по городу ОБЯЗАТЕЛЕН (если город не выбран, можно либо ничего не выводить, либо всё)
-            ->when($selectedCityName, function ($q) use ($selectedCityName) {
-                $q->where('city', $selectedCityName);
-            })
-            ->when($selectedTypeId, function ($q) use ($selectedTypeId) {
-                $q->where('field_of_activity_id', $selectedTypeId);
-            })
-            ->withCount('reviews') // Для бейджа рейтинга
-            ->withAvg('reviews', 'rating') // Для звезд
-            ->with(['promotions' => fn($q) => $q->active(), 'fieldOfActivity'])
-            ->orderBy('name')
-            ->paginate(16)
-            ->appends(array_filter([
-                'city_id' => $cityId,
-                'type_id' => $selectedTypeId,
-            ]));
+    $totalOrganizationsCount = (clone $orgCountsBaseQuery)->count();
 
-        // Если это AJAX запрос (нажата кнопка "Показать еще")
-        if ($request->ajax()) {
-            return view('pages.organizations._list_items', ['organizations' => $items])->render();
-        }
+    $organizationTypeCounts = (clone $orgCountsBaseQuery)
+        ->whereNotNull('field_of_activity_id')
+        ->selectRaw('field_of_activity_id, COUNT(*) as aggregate')
+        ->groupBy('field_of_activity_id')
+        ->pluck('aggregate', 'field_of_activity_id');
 
-// SEO: отдельные редактируемые шаблоны для каталога и для фильтра по типу деятельности
-        $seoManager = new \App\Services\SeoManager();
-        $seoVars = ['city' => $selectedCityName];
-        if ($selectedTypeId) {
-            $activityTypeName = $organizationTypes->firstWhere('id', (int) $selectedTypeId)?->name;
-            $seoMeta = $seoManager->getCatalogMeta('organizations_activity', $seoVars + ['activity_type' => $activityTypeName]);
-        } else {
-            $seoMeta = $seoManager->getCatalogMeta('organizations', $seoVars);
-        }
+    $organizationTypes->each(function ($type) use ($organizationTypeCounts) {
+        $type->count = $organizationTypeCounts->get($type->id, 0);
+    });
 
-        return view('pages.organizations.index', [
-            'organizations' => $items,
-            'selectedCity' => $selectedCityName,
-            'organizationTypes' => $organizationTypes,
-            'selectedTypeId' => $selectedTypeId,
-            'currentCityId' => $cityId,
-            'seoMeta' => $seoMeta,
-            'totalOrganizationsCount' => $totalOrganizationsCount,
-        ]);
+    // 3. Запрос организаций
+    $items = Organization::query()
+        // Фильтр по городу ОБЯЗАТЕЛЕН (если город не выбран, можно либо ничего не выводить, либо всё)
+        ->when($selectedCityName, function ($q) use ($selectedCityName) {
+            $q->where('city', $selectedCityName);
+        })
+        ->when($selectedTypeId, function ($q) use ($selectedTypeId) {
+            $q->where('field_of_activity_id', $selectedTypeId);
+        })
+        ->withCount('reviews') // Для бейджа рейтинга
+        ->withAvg('reviews', 'rating') // Для звезд
+        ->with(['promotions' => fn($q) => $q->active(), 'fieldOfActivity'])
+        ->orderBy('name')
+        ->paginate(16);
+
+    // Если это AJAX запрос (нажата кнопка "Показать еще")
+    if ($request->ajax()) {
+        return view('pages.organizations._list_items', ['organizations' => $items])->render();
+    }
+
+    // SEO: отдельные редактируемые шаблоны для каталога и для фильтра по типу деятельности
+    $seoManager = new \App\Services\SeoManager();
+    $seoVars = ['city' => $selectedCityName];
+    if ($selectedTypeId) {
+        $activityTypeName = $organizationTypes->firstWhere('id', (int) $selectedTypeId)?->name;
+        $seoMeta = $seoManager->getCatalogMeta('organizations_activity', $seoVars + ['activity_type' => $activityTypeName]);
+    } else {
+        $seoMeta = $seoManager->getCatalogMeta('organizations', $seoVars);
+    }
+
+    return view('pages.organizations.index', [
+        'organizations' => $items,
+        'selectedCity' => $selectedCityName,
+        'organizationTypes' => $organizationTypes,
+        'selectedTypeId' => $selectedTypeId,
+        'currentCityId' => $cityId,
+        'seoMeta' => $seoMeta,
+        'totalOrganizationsCount' => $totalOrganizationsCount,
+    ]);
     }
 
         public function submit(Request $request)
@@ -307,7 +303,7 @@ return redirect()->to($redirectUrl)->with('success', $successMessage);
     private function sendTelegramNotification($model, $label, $routePart)
     {
         $user = auth()->user();
-        $url = config('app.url') . "/{$routePart}/" . ($model->slug ?? $model->id);
+        $url = config('app.url') . "/{$routePart}/{$model->city_slug}/" . ($model->slug ?? $model->id);
 
         $message = "<b>Новая {$label}</b>\n\n" .
                    "Название: <a href=\"{$url}\">{$model->name}</a>\n" .

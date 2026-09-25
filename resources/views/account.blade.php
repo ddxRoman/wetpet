@@ -247,7 +247,7 @@
                 <label for="edit-pet-photo" style="cursor:pointer; display:inline-block;">
                     <img id="edit-photo-preview"
                     title="Изменить фото"
-                        src="/storage/pets/default-pet.jpg"
+                        src="/storage/pets/default-pet.png"
                         alt="Фото питомца"
                         style="max-width:150px; border-radius:10px; margin-bottom:8px; border:2px solid #ddd; transition:0.3s;">
                 </label>
