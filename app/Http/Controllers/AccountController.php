@@ -151,9 +151,10 @@ public function index()
 
     public function updatePassword(Request $request)
     {
-        // Якорь на заголовок блока — безопасно, т.к. tabs.js теперь игнорирует
-        // хэши, которые не совпадают ни с одной вкладкой (см. resources/js/account/tabs.js).
-        $redirectTo = url()->previous() . '#password-section';
+        // route('account') вместо url()->previous(): форма всегда живёт на /account,
+        // а previous() зависит от Referer/сессии и иногда уводит не туда, из-за чего
+        // flash-сообщение об ошибке/успехе просто терялось.
+        $redirectTo = route('account') . '#password-section';
 
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'current_password' => ['required', 'current_password'],

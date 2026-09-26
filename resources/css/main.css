@@ -2429,6 +2429,61 @@ pre.politics {
     color: #495057;
 }
 
+
+/* Смена пароля — визуально отделённый блок внутри вкладки "Профиль" */
+.password-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #eef0f2;
+}
+
+#password-section {
+    scroll-margin-top: 20px;
+}
+
+.password-section h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.password-section .section-hint {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.password-section .save-btn {
+    background-color: #007bff;
+}
+
+.password-section .save-btn:hover {
+    background-color: #0069d9;
+}
+
+.password-alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-size: 14px;
+}
+
+.password-alert.success {
+    background-color: #e6f7ee;
+    color: #1c8a4b;
+    border: 1px solid #b6e6cc;
+}
+
+.password-alert.error {
+    background-color: #fdecec;
+    color: #c0392b;
+    border: 1px solid #f5b7b1;
+}
+
+
 /* ================= ГАЛЕРЕЯ ФОТО (лайтбокс + менеджер в кабинете) ================= */
 .gallery-nav {
     position: absolute;
