@@ -149,6 +149,30 @@ public function index()
         return redirect()->back()->with('success', 'Профиль обновлён');
     }
 
+    public function updatePassword(Request $request)
+    {
+        // Якорь на заголовок блока — безопасно, т.к. tabs.js теперь игнорирует
+        // хэши, которые не совпадают ни с одной вкладкой (см. resources/js/account/tabs.js).
+        $redirectTo = url()->previous() . '#password-section';
+
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'current_password' => ['required', 'current_password'],
+            'password'          => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::min(8)],
+        ], [
+            'current_password.current_password' => 'Текущий пароль указан неверно.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect($redirectTo)->withErrors($validator);
+        }
+
+        $request->user()->update([
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+        ]);
+
+        return redirect($redirectTo)->with('password_success', 'Пароль успешно изменён.');
+    }
+
     // === Мгновенное сохранение аватара (AJAX, без остальной формы) ===
     public function updateAvatar(Request $request)
     {

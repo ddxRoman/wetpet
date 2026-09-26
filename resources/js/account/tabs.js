@@ -8,17 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tabButtons.length || !tabContents.length) return;
 
     function openTab(tab) {
+        const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
+        const activeContent = document.getElementById(tab);
+
+        // Если такой вкладки нет (например, в хэше пришёл якорь на блок
+        // внутри вкладки, а не сама вкладка — как #password-section) —
+        // ничего не трогаем и оставляем текущее состояние как есть,
+        // а не прячем все вкладки разом.
+        if (!activeBtn || !activeContent) return;
+
         // Скрываем всё
         tabButtons.forEach(btn => btn.classList.remove('active'));
         tabContents.forEach(content => {
             content.style.display = 'none';
         });
-
-        // Активируем нужную
-        const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
-        const activeContent = document.getElementById(tab);
-
-        if (!activeBtn || !activeContent) return;
 
         activeBtn.classList.add('active');
         activeContent.style.display = 'block';

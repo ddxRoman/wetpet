@@ -106,6 +106,43 @@
 
                     <button type="submit" class="save-btn">Сохранить изменения</button>
                 </form>
+
+                {{-- 🔒 Смена пароля — визуально отдельный блок и отдельная форма --}}
+                <div class="password-section">
+                    <h3 id="password-section"><i class="bi bi-shield-lock"></i> Смена пароля</h3>
+                    <p class="section-hint">Введите текущий пароль и придумайте новый (минимум 8 символов).</p>
+
+                    @if(session('password_success'))
+                        <div class="password-alert success">{{ session('password_success') }}</div>
+                    @endif
+
+                    @if($errors->has('current_password') || $errors->has('password'))
+                        <div class="password-alert error">
+                            {{ $errors->first('current_password') ?: $errors->first('password') }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('account.updatePassword') }}">
+                        @csrf
+
+                        <div class="form-group">
+                            <label>Текущий пароль *</label>
+                            <input type="password" name="current_password" autocomplete="current-password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Новый пароль *</label>
+                            <input type="password" name="password" autocomplete="new-password" minlength="8" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Повторите новый пароль *</label>
+                            <input type="password" name="password_confirmation" autocomplete="new-password" minlength="8" required>
+                        </div>
+
+                        <button type="submit" class="save-btn">Сменить пароль</button>
+                    </form>
+                </div>
             </div>
 
             {{-- 🔹 Вкладка питомцев --}}
@@ -247,7 +284,7 @@
                 <label for="edit-pet-photo" style="cursor:pointer; display:inline-block;">
                     <img id="edit-photo-preview"
                     title="Изменить фото"
-                        src="/storage/pets/default-pet.png"
+                        src="/storage/pets/default-pet.jpg"
                         alt="Фото питомца"
                         style="max-width:150px; border-radius:10px; margin-bottom:8px; border:2px solid #ddd; transition:0.3s;">
                 </label>

@@ -133,6 +133,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
     Route::post('/account/avatar', [AccountController::class, 'updateAvatar'])->name('account.updateAvatar');
+    Route::post('/account/password', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
