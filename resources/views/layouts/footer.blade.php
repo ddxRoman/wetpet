@@ -51,4 +51,4 @@
     </div>
 </footer>
 
-@include('partials.image-zoom-modal')
+@include('partials._gallery-modal')

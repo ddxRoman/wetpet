@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\Concerns\HasPracticeExperience;
+use App\Models\Concerns\HasGalleryPhotos;
 
 class Specialist extends Model
 {
 use HasPracticeExperience;
+use HasGalleryPhotos;
 
 protected $fillable = [
         'is_verified',

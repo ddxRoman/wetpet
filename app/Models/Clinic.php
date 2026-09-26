@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\Concerns\HasGalleryPhotos;
 
 
 class Clinic extends Model
 {
     use HasFactory;
+    use HasGalleryPhotos;
 
     protected $fillable = [
         'is_verified',

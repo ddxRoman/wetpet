@@ -133,9 +133,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
     Route::post('/account/avatar', [AccountController::class, 'updateAvatar'])->name('account.updateAvatar');
-    Route::post('/account/password', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    // 🖼 Фотогалерея карточек (организации/клиники/врачи/специалисты)
+    Route::post('/account/gallery/{type}/{id}/upload', [\App\Http\Controllers\GalleryController::class, 'upload'])
+        ->name('account.gallery.upload');
+    Route::delete('/account/gallery/{type}/{id}/photo/{photoId}', [\App\Http\Controllers\GalleryController::class, 'destroy'])
+        ->name('account.gallery.destroy');
+    Route::post('/account/gallery/{type}/{id}/reorder', [\App\Http\Controllers\GalleryController::class, 'reorder'])
+        ->name('account.gallery.reorder');
 });
 // 🧾 Отзывы пользователя (всегда для текущего пользователя)
 Route::get('/account/reviews', [AccountController::class, 'getReviews'])

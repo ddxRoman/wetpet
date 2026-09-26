@@ -163,8 +163,11 @@
             {{-- Правая колонка с логотипом как в show2 --}}
             <div class="card shadow-sm">
                 <div class="card-body text-center">
-                    <img src="{{ $logo }}"
-                         style="width:100%;max-width:280px;border-radius:10px;object-fit:contain">
+                    @include('partials._gallery-cover', [
+                        'entity' => $clinic,
+                        'fallbackUrl' => $logo,
+                        'alt' => $clinic->name,
+                    ])
                 </div>
             </div>
 

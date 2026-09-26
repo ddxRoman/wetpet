@@ -259,6 +259,12 @@
                     </div>
                 </div>
 
+                {{-- Фотогалерея --}}
+                <div class="col-12 mt-3">
+                    <label class="fw-bold mb-2 d-block">Фотографии организации</label>
+                    @include('partials._gallery-manager', ['entity' => $organization, 'type' => 'organization'])
+                </div>
+
                 {{-- Описание --}}
                 <div class="col-12">
                     <label class="fw-bold">Описание</label>

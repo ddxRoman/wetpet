@@ -270,6 +270,12 @@
                 <input type="file" id="doctorPhotoInput" name="photo" accept="image/*" class="d-none">
             </div>
 
+            {{-- Фотогалерея --}}
+            <div class="col-12 mt-3">
+                <label class="fw-bold mb-2 d-block">Фотографии врача</label>
+                @include('partials._gallery-manager', ['entity' => $doctor, 'type' => 'doctor'])
+            </div>
+
             {{-- Описание --}}
             <div class="col-12">
                 <label class="form-label">Расскажите о враче</label>

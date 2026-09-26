@@ -168,8 +168,11 @@
         <div class="col-lg-4">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
-                    <img src="{{ $photo }}"
-                         style="width:100%;max-width:280px;border-radius:10px;object-fit:contain">
+                    @include('partials._gallery-cover', [
+                        'entity' => $organization,
+                        'fallbackUrl' => $photo,
+                        'alt' => $organization->name,
+                    ])
                 </div>
             </div>
 

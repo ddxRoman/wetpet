@@ -253,6 +253,13 @@ class OrganizationResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            \App\Filament\RelationManagers\PhotosRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [

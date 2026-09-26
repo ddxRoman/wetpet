@@ -163,7 +163,11 @@ public function index()
         ]);
 
         if ($validator->fails()) {
-            return redirect($redirectTo)->withErrors($validator);
+            // Именованный error bag: чтобы ошибка НЕ попадала в общий $errors
+            // (у вас где-то есть глобальный блок вверху страницы, который выводит
+            // весь $errors->all() — из-за него ошибка дублировалась вверху сайта).
+            // Наш собственный блок под формой смотрит в этот же именованный bag.
+            return redirect($redirectTo)->withErrors($validator, 'password');
         }
 
         $request->user()->update([

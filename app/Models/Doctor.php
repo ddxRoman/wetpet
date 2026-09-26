@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use App\Models\Concerns\HasPracticeExperience;
+use App\Models\Concerns\HasGalleryPhotos;
 
 class Doctor extends Model
 {
     use HasFactory;
     use Notifiable;
     use HasPracticeExperience;
+    use HasGalleryPhotos;
 
     protected $table = 'doctors';
 

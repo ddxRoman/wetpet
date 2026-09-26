@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Concerns\HasGalleryPhotos;
 
 
 class Organization extends Model
 {
+   use HasGalleryPhotos;
+
    protected $fillable = [
         'is_verified',
         'created_by',

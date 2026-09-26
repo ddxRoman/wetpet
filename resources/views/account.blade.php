@@ -116,9 +116,9 @@
                         <div class="password-alert success">{{ session('password_success') }}</div>
                     @endif
 
-                    @if($errors->has('current_password') || $errors->has('password'))
+                    @if($errors->password->any())
                         <div class="password-alert error">
-                            {{ $errors->first('current_password') ?: $errors->first('password') }}
+                            {{ $errors->password->first('current_password') ?: $errors->password->first('password') }}
                         </div>
                     @endif
 
