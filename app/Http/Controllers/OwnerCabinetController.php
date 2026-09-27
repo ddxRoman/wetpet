@@ -203,9 +203,7 @@ class OwnerCabinetController extends Controller
 
         $allUserEntities = $this->getAllUserEntities();
 
-        $allCities = \App\Models\City::select('id', 'name', 'region')->orderBy('name')->get();
-
-        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices', 'allUserEntities', 'allCities'));
+        return view('pages.owner.clinic', compact('clinic', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     public function updateClinic(Request $request, int $id)
@@ -216,6 +214,7 @@ class OwnerCabinetController extends Controller
         $data = $request->validate([
             'name'            => 'required|string|max:255',
             'description'     => 'nullable|string',
+            'country'         => 'required|string|max:255',
             'region'          => 'nullable|string|max:255',
             'city'            => 'required|string|max:255',
             'street'          => 'required|string|max:255',
@@ -244,11 +243,6 @@ class OwnerCabinetController extends Controller
         // либо генерируем из названия, если его почему-то ещё нет.
         if (empty($clinic->slug)) {
             $data['slug'] = \Illuminate\Support\Str::slug($data['name']) . '-' . $id;
-        }
-
-        // Поле "Страна" убрано из формы — сохраняем как есть, если уже было заполнено.
-        if (empty($clinic->country)) {
-            $data['country'] = 'Россия';
         }
 
         $clinic->update($data);
@@ -301,9 +295,7 @@ public function organization(int $id)
         $allUserEntities = $this->getAllUserEntities();
 
         // 4. Передаем всё в шаблон
-        $allCities = \App\Models\City::select('id', 'name', 'region')->orderBy('name')->get();
-
-        return view('pages.owner.organization', compact('organization', 'photos', 'relevantServices', 'allServices', 'allUserEntities', 'allCities'));
+        return view('pages.owner.organization', compact('organization', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     /**
@@ -581,6 +573,7 @@ public function organization(int $id)
             'name'                 => 'required|string|max:255',
             'field_of_activity_id' => 'nullable|exists:field_of_activities,id',
             'description'          => 'nullable|string',
+            'country'              => 'required|string|max:255',
             'region'               => 'nullable|string|max:255',
             'city'                 => 'required|string|max:255',
             'street'               => 'required|string|max:255',
@@ -607,10 +600,6 @@ public function organization(int $id)
 
         if (empty($organization->slug)) {
             $data['slug'] = \Illuminate\Support\Str::slug($data['name']) . '-' . $id;
-        }
-
-        if (empty($organization->country)) {
-            $data['country'] = 'Россия';
         }
 
         $organization->update($data);
@@ -641,7 +630,7 @@ public function organization(int $id)
             ]);
         }
 
-        $doctor = Doctor::with(['services', 'prices.service', 'contacts'])->findOrFail($id);
+        $doctor = Doctor::with(['services', 'prices.service', 'contacts', 'city', 'clinic'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -655,9 +644,7 @@ public function organization(int $id)
 
         $allUserEntities = $this->getAllUserEntities();
 
-        $allCities = \App\Models\City::select('id', 'name', 'region')->orderBy('name')->get();
-
-        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices', 'allUserEntities', 'allCities'));
+        return view('pages.owner.doctor', compact('doctor', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     public function updateDoctor(Request $request, int $id)
@@ -735,7 +722,7 @@ public function organization(int $id)
             ]);
         }
 
-        $specialist = Specialist::with(['prices.service', 'contacts'])->findOrFail($id);
+        $specialist = Specialist::with(['prices.service', 'contacts', 'city', 'organization'])->findOrFail($id);
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -748,9 +735,7 @@ public function organization(int $id)
 
         $allUserEntities = $this->getAllUserEntities();
 
-        $allCities = \App\Models\City::select('id', 'name', 'region')->orderBy('name')->get();
-
-        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices', 'allUserEntities', 'allCities'));
+        return view('pages.owner.specialist', compact('specialist', 'photos', 'relevantServices', 'allServices', 'allUserEntities'));
     }
 
     public function updateSpecialist(Request $request, int $id)

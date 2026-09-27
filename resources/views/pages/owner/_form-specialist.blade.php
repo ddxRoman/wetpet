@@ -67,83 +67,16 @@
                 <div class="form-text">Укажите год и месяц начала практики, и по этим данным будет рассчитан стаж</div>
             </div>
             <div class="col-md-4">
-                <label class="form-label fw-medium">Регион</label>
-                <select id="ownerDoctorRegionSelect" class="form-select">
-                    <option value="">Выберите регион</option>
-                    @php $currentRegion = $allCities->firstWhere('id', old('city_id', $entity->city_id))?->region; @endphp
-                    @foreach($allCities->pluck('region')->unique()->sort() as $regionName)
-                        <option value="{{ $regionName }}" {{ $currentRegion === $regionName ? 'selected' : '' }}>
-                            {{ $regionName }}
+                <label class="form-label fw-medium">Город</label>
+                <select name="city_id" class="form-select" required>
+                    <option value="">— выберите город —</option>
+                    @foreach(\App\Models\City::orderBy('name')->get() as $city)
+                        <option value="{{ $city->id }}" {{ (old('city_id', $entity->city_id) == $city->id) ? 'selected' : '' }}>
+                            {{ $city->name }}
                         </option>
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label fw-medium">Город</label>
-                <select name="city_id" id="ownerDoctorCitySelect" class="form-select" required>
-                    @php $currentCityModel = $allCities->firstWhere('id', old('city_id', $entity->city_id)); @endphp
-                    @if($currentCityModel)
-                        <option value="{{ $currentCityModel->id }}" selected>{{ $currentCityModel->name }}</option>
-                    @else
-                        <option value="">Сначала выберите регион</option>
-                    @endif
-                </select>
-            </div>
-
-            <script>
-            (function () {
-                const regionSelect = document.getElementById('ownerDoctorRegionSelect');
-                const citySelect   = document.getElementById('ownerDoctorCitySelect');
-                const currentCityId = @json(old('city_id', $entity->city_id));
-                let $region, $city;
-
-                function initSelect2() {
-                    $region = $('#ownerDoctorRegionSelect').select2({ placeholder: 'Поиск региона...', width: '100%' });
-                    $city   = $('#ownerDoctorCitySelect').select2({ placeholder: 'Поиск города...', width: '100%' });
-
-                    $region.on('change', () => loadCities($region.val(), null));
-
-                    if (regionSelect.value) {
-                        loadCities(regionSelect.value, currentCityId);
-                    }
-                }
-
-                function loadCities(region, preselectId) {
-                    citySelect.innerHTML = '<option value="">Загрузка...</option>';
-                    $city.trigger('change.select2');
-
-                    if (!region) {
-                        citySelect.innerHTML = '<option value="">Сначала выберите регион</option>';
-                        $city.trigger('change.select2');
-                        return;
-                    }
-
-                    fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
-                        .then(r => r.json())
-                        .then(list => {
-                            citySelect.innerHTML = '<option value="">Выберите город</option>';
-                            list.forEach(c => {
-                                const opt = document.createElement('option');
-                                opt.value = c.id;
-                                opt.textContent = c.name;
-                                if (preselectId && String(c.id) === String(preselectId)) opt.selected = true;
-                                citySelect.appendChild(opt);
-                            });
-                            $city.trigger('change.select2');
-                        })
-                        .catch(() => {
-                            citySelect.innerHTML = '<option value="">Ошибка загрузки</option>';
-                            $city.trigger('change.select2');
-                        });
-                }
-
-                if (window.jQuery && $.fn.select2) {
-                    initSelect2();
-                } else {
-                    document.addEventListener('DOMContentLoaded', initSelect2);
-                }
-            })();
-            </script>
         </div>
 
         <hr class="my-4 opacity-25">

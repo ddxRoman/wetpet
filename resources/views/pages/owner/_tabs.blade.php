@@ -10,9 +10,9 @@
 {{-- ════════════════ ВКЛАДКА: ОСНОВНАЯ ИНФОРМАЦИЯ ════════════════ --}}
 @if($activeTab === 'info')
     @if(in_array($type, ['organization', 'clinic']))
-        @include('pages.owner._form-organization', ['entity' => $entity, 'type' => $type, 'entityId' => $entityId, 'allCities' => $allCities])
+        @include('pages.owner._form-organization', ['entity' => $entity, 'type' => $type, 'entityId' => $entityId])
     @else
-        @include('pages.owner._form-specialist', ['entity' => $entity, 'type' => $type, 'entityId' => $entityId, 'allCities' => $allCities])
+        @include('pages.owner._form-specialist', ['entity' => $entity, 'type' => $type, 'entityId' => $entityId])
     @endif
 @endif
 
