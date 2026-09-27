@@ -1,15 +1,15 @@
 @php
     // $entity      — модель с трейтом HasGalleryPhotos (Organization|Clinic|Doctor|Specialist)
-    // $fallbackUrl — картинка по умолчанию (лого/фото), если галерея пуста
+    // $fallbackUrl — логотип/фото профиля. ВСЕГДА показывается как обложка —
+    //                фото из галереи её не подменяют, а доступны через лайтбокс.
     // $alt         — alt для изображения
     // $imgStyle    — inline-стили для <img> (под конкретную карточку)
     $photos = $entity->photos;
-    $coverUrl = $photos->first() ? asset('storage/' . $photos->first()->path) : $fallbackUrl;
-    $extraCount = max(0, $photos->count() - 1);
-    $photoUrls = $photos->pluck('path')->map(fn ($p) => asset('storage/' . $p))->values();
-    if ($photoUrls->isEmpty()) {
-        $photoUrls = collect([$fallbackUrl]);
-    }
+    $coverUrl = $fallbackUrl;
+    $extraCount = $photos->count();
+    $galleryUrls = $photos->pluck('path')->map(fn ($p) => asset('storage/' . $p))->values();
+    // В лайтбоксе логотип идёт первым, дальше — фото галереи.
+    $photoUrls = collect([$fallbackUrl])->merge($galleryUrls)->values();
 @endphp
 
 <img src="{{ $coverUrl }}"
