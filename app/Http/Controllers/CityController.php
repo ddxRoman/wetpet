@@ -70,6 +70,19 @@ public function citiesByRegion($region)
     return response()->json($cities);
 }
 
+// Список регионов из справочника городов — для выпадающего списка с поиском
+public function regions()
+{
+    $regions = \App\Models\City::whereNotNull('region')
+        ->where('region', '!=', '')
+        ->select('region')
+        ->distinct()
+        ->orderBy('region')
+        ->pluck('region');
+
+    return response()->json($regions);
+}
+
 public function getCities()
 {
     $user = Auth::user();

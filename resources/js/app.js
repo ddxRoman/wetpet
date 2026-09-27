@@ -9,8 +9,8 @@ import 'select2';
 import './search_script';
 import './gallery';
 import 'select2/dist/css/select2.css';
-import './pages/add_organization';
-import './pages/add_doctor'; 
+import './Pages/add_organization';
+import './Pages/add_doctor'; 
 import './add'; 
 import './slider_doctor';
 import './photo-slider';
@@ -19,7 +19,8 @@ import './account/cropper-init';
 import './account/toast'; 
 import './reset_password/timer_mail_reset';
 import './slider/personal_recommendations';
-import './pages/pagination';
+import './Pages/pagination';
+import './owner/address-select';
 
 
 // Слушаем событие ошибки на стадии захвата (capture), 

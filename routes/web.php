@@ -52,18 +52,12 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
 // 2. Изолированные функциональные страницы (Вынесены из БД и общего цикла)
 // Сохраняем старые имена со слэшем, чтобы ссылки в шаблонах не выдавали ошибку
-Route::get('legal/faq', function () {
-    return view('pages.legal.faq');
-})->name('legal/faq');
 Route::get('legal/faq', [LegalController::class, 'faq'])->name('legal/faq');
 Route::get('legal/partner-offer', function () {
     return view('pages.legal.partner-offer', [
         'seoMeta' => ['robots' => 'noindex, follow'],
     ]);
     })->name('legal/partner-offer');
-Route::get('legal/glossary', function () {
-    return view('pages.legal.glossary');
-})->name('legal/glossary');
 Route::get('legal/glossary', [LegalController::class, 'glossary'])->name('legal/glossary');
 Route::get('legal/contacts', function () {
     return view('pages.legal.contacts');
@@ -94,8 +88,12 @@ Route::get('/legal/{slug}', [LegalController::class, 'show'])->name('legal.show'
 
 
 // 🔐 Аутентификация
-Auth::routes();
-require __DIR__ . '/auth.php';
+// Auth::routes() и routes/auth.php убраны: они дублировали (и конфликтовали по именам
+// login/register/logout/password.*) с маршрутами ниже, которые реально использует
+// проект (AuthController, Auth\ForgotPasswordController, Auth\ResetPasswordController).
+// Функциональность подтверждения e-mail и "confirm password" из этих файлов
+// в проекте нигде не подключена (нет middleware 'verified', User не implements
+// MustVerifyEmail), поэтому её отключение ничего не ломает.
 
 // Регистрация / Логин / Логаут
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
@@ -140,8 +138,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/account/reviews', [AccountController::class, 'getReviews'])
     ->name('account.reviews');
 // ✅ Обновление, удаление и управление отзывами
-Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('reviews.update');
-Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('account.reviews.update');
 // Удаление своего отзыва (JSON) — личный кабинет и карточки организаций, клиник, врачей, специалистов
 Route::delete('/account/reviews/{id}', [AccountController::class, 'deleteReview'])->middleware('auth')->name('account.reviews.delete');
 // ✅ Удаление фото и чеков
@@ -172,7 +169,6 @@ Route::get('/breeds', [PetController::class, 'getBreeds']);
 // и не падал с ошибкой из-за нового обязательного параметра {city}.
 Route::resource('clinics', ClinicController::class)->except(['show']);
 Route::resource('reviews', ReviewController::class);
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 // 👤 Публичный профиль пользователя
 Route::get('/user/{id}', [UserProfileController::class, 'show'])
@@ -183,13 +179,8 @@ Route::get('/user/{id}', [UserProfileController::class, 'show'])
 Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
 
 Route::get('/doctors/update/{slug}', [DoctorController::class, 'update'])->name('doctors.update');
-// Доктор Редактирование
-Route::post('/doctors/{id}/update', [DoctorController::class, 'update'])
-    ->name('doctor.update')
-    ->middleware('auth'); // при необходимости добавь middleware
 Route::post('/doctors/store', [DoctorController::class, 'store'])->name('doctors.store');
 Route::post('/add-doctor', [AddDoctorController::class, 'store'])->name('add.doctor');
-Route::post('/clinics/store', [ClinicController::class, 'store'])->name('clinics.store');
 Route::get('/doctors/{doctor:slug}', [DoctorController::class, 'show'])
     ->name('doctors.show');
 
@@ -199,6 +190,8 @@ Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpe
 
 // возвращает города для региона (используется в модалке)
 Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);
+// возвращает список всех регионов (для выпадающего списка с поиском)
+Route::get('/api/regions', [\App\Http\Controllers\CityController::class, 'regions'])->name('api.regions');
 
 use App\Http\Controllers\AnimalReviewController;
 
@@ -232,11 +225,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('specialist.update');
 
     Route::resource('organizations-profile', OrganizationController::class);
-    // Маршрут для показа формы редактирования
-    Route::get('/organizations-profile/{id}/edit', [OrganizationController::class, 'edit'])->name('organizations-profile.edit');
-
-    // Маршрут для сохранения
-    Route::put('/organizations-profile/{id}', [OrganizationController::class, 'update'])->name('organizations-profile.update');
 });
 Route::get('/organizations', [OrganizationController::class, 'catalog'])->name('organizations.index');
 
@@ -265,9 +253,6 @@ Route::get('/get-organizations-by-city-id/{city_id}', function ($city_id) {
 
     return response()->json($organizations);
 });
-Route::get('/doctors/{specialist:slug}', [DoctorController::class, 'show'])
-    ->name('doctors.show');
-
 Route::delete('/organizations/{id}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
 Route::put('/doctor/{doctor}', [DoctorController::class, 'update'])->name('doctor.update');
 Route::delete('/doctor/{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');

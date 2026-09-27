@@ -149,7 +149,7 @@ class SeoManager
                 );
             case 'Organization':
                 return $this->build(
-                    "«{$name}»" . ($city ? " — {$city}" : '') . " | Зверозор",
+                    "«{$name}»" . ($city ? " — {$city}" : '') . " Отзывы, адрес, график | Зверозор",
                     "«{$name}»" . ($city ? " в {$city}" : '') . ". Услуги, контакты, отзывы клиентов на Зверозор."
                 );
             case 'Specialist':

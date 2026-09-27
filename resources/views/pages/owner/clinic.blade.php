@@ -67,7 +67,7 @@
 
         {{-- Контент --}}
         <div class="col-lg-9">
-            @include('pages.owner._tabs', compact('entity', 'entityId', 'type', 'photos', 'relevantServices', 'allServices'))
+            @include('pages.owner._tabs', compact('entity', 'entityId', 'type', 'photos', 'relevantServices', 'allServices', 'allCities'))
         </div>
 
     </div>
