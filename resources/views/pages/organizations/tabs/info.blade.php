@@ -73,6 +73,16 @@
                 {{ $organization->city ?: '—' }}
             </td>
         </tr>
+        <tr>
+            <td>Сайт:</td>
+            <td>
+                                                                @if($organization->website)
+                                        <div>  <a href="{{ $organization->website }}" target="_blank" class="link_go_to_website" title="Перейти на сайт клиники">Перейти на сайт 🌐</a></div>
+                                        @endif
+            </td>
+        </tr>
+
+
 
         {{-- 4. Описание --}}
         @if(!empty($organization->description))

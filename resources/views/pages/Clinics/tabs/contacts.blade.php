@@ -24,7 +24,7 @@
                                         <div>💬 VK: <a href="{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" title="Группа в ВК" alt="Вконтакте"></a></div>
                                         @endif
                                         @if($clinic->website)
-                                        <div>💬 <a href="{{ $clinic->website }}" target="_blank" title="Перейти на сайт клиники">Перейти на сайт</a></div>
+                                        <div>  <a href="{{ $clinic->website }}" class="link_go_to_website" target="_blank" title="Перейти на сайт клиники">Перейти на сайт 🌐</a></div>
                                         @endif
                                          @if($clinic->description)
                                          <br>

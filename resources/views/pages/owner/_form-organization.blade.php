@@ -1,4 +1,6 @@
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
+
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
     <h5 class="fw-bold mb-4">📋 Основная информация</h5>
 
@@ -46,13 +48,25 @@
                 <label class="form-label fw-medium">Страна</label>
                 <input type="text" name="country" class="form-control" value="{{ old('country', $entity->country) }}" required>
             </div>
+            @php
+                $currentRegionValue = old('region', $entity->region);
+                $currentCityValue   = old('city', $entity->city);
+            @endphp
             <div class="col-md-4">
                 <label class="form-label fw-medium">Регион</label>
-                <input type="text" name="region" class="form-control" value="{{ old('region', $entity->region) }}">
+                <select name="region" id="owner-region-select" class="form-select" data-current="{{ $currentRegionValue }}">
+                    @if(!empty($currentRegionValue))
+                        <option value="{{ $currentRegionValue }}" selected>{{ $currentRegionValue }}</option>
+                    @endif
+                </select>
             </div>
             <div class="col-md-4">
                 <label class="form-label fw-medium">Город</label>
-                <input type="text" name="city" class="form-control" value="{{ old('city', $entity->city) }}" required>
+                <select name="city" id="owner-city-select" class="form-select" data-current="{{ $currentCityValue }}" required>
+                    @if(!empty($currentCityValue))
+                        <option value="{{ $currentCityValue }}" selected>{{ $currentCityValue }}</option>
+                    @endif
+                </select>
             </div>
 
             <div class="col-md-8">
@@ -167,3 +181,80 @@
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var regionSelect = document.getElementById('owner-region-select');
+    var citySelect   = document.getElementById('owner-city-select');
+    if (!regionSelect || !citySelect) return;
+
+    var hasSelect2 = !!(window.jQuery && typeof window.jQuery.fn.select2 === 'function');
+
+    function initSelect2(select, placeholder) {
+        if (!hasSelect2 || !select) return;
+        window.jQuery(select).select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: placeholder,
+            allowClear: true,
+            language: {
+                noResults: function () { return 'Ничего не найдено'; },
+                searching: function () { return 'Поиск…'; }
+            }
+        });
+    }
+
+    function fillOptions(select, values, selectedValue) {
+        var fallbackOption = select.querySelector('option[selected]');
+        var fallbackLabel  = fallbackOption ? fallbackOption.textContent : selectedValue;
+
+        select.innerHTML = '';
+        select.appendChild(new Option('', '', false, false));
+
+        var found = false;
+        values.forEach(function (value) {
+            var isSelected = selectedValue !== null && selectedValue !== undefined && selectedValue !== '' && String(value) === String(selectedValue);
+            if (isSelected) found = true;
+            select.appendChild(new Option(value, value, isSelected, isSelected));
+        });
+
+        if (selectedValue && !found) {
+            select.appendChild(new Option(fallbackLabel, selectedValue, true, true));
+        }
+
+        if (hasSelect2) window.jQuery(select).trigger('change.select2');
+    }
+
+    var currentRegion = regionSelect.dataset.current || '';
+    var currentCity   = citySelect.dataset.current || '';
+
+    initSelect2(regionSelect, 'Начните вводить регион...');
+    initSelect2(citySelect, 'Сначала выберите регион');
+
+    function loadCities(region, selectedCity) {
+        if (!region) {
+            fillOptions(citySelect, [], selectedCity);
+            return;
+        }
+        fetch('/api/cities/by-region/' + encodeURIComponent(region))
+            .then(function (res) { return res.json(); })
+            .then(function (cities) {
+                var names = Array.isArray(cities) ? cities.map(function (c) { return c.name; }) : [];
+                fillOptions(citySelect, names, selectedCity);
+            })
+            .catch(function (err) { console.error('Не удалось загрузить города региона:', err); });
+    }
+
+    fetch('/api/regions')
+        .then(function (res) { return res.json(); })
+        .then(function (regions) {
+            fillOptions(regionSelect, Array.isArray(regions) ? regions : [], currentRegion);
+            loadCities(currentRegion, currentCity);
+        })
+        .catch(function (err) { console.error('Не удалось загрузить список регионов:', err); });
+
+    regionSelect.addEventListener('change', function () {
+        loadCities(regionSelect.value, null);
+    });
+});
+</script>

@@ -2463,3 +2463,8 @@ pre.politics {
     border-radius: 12px;
     font-size: 0.85rem;
 }
+.link_go_to_website{
+    text-decoration: none;
+font-weight: 900;
+
+}

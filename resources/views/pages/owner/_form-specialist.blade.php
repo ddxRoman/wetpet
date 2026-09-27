@@ -9,6 +9,8 @@
     seo_title, seo_description
 --}}
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
+
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
     <h5 class="fw-bold mb-4">📋 Основная информация</h5>
 
@@ -66,15 +68,27 @@
                        value="{{ old('practice_started_at', optional($entity->practice_started_at)->format('Y-m')) }}">
                 <div class="form-text">Укажите год и месяц начала практики, и по этим данным будет рассчитан стаж</div>
             </div>
+            @php
+                $currentCityId = old('city_id', $entity->city_id);
+                $currentCity   = $currentCityId ? \App\Models\City::find($currentCityId) : null;
+                $currentRegion = $currentCity->region ?? '';
+            @endphp
+            <div class="col-md-4">
+                <label class="form-label fw-medium">Регион</label>
+                <select id="owner-specialist-region-select" class="form-select" data-current="{{ $currentRegion }}">
+                    @if(!empty($currentRegion))
+                        <option value="{{ $currentRegion }}" selected>{{ $currentRegion }}</option>
+                    @endif
+                </select>
+                <div class="form-text">Только для фильтра городов, отдельно не сохраняется.</div>
+            </div>
             <div class="col-md-4">
                 <label class="form-label fw-medium">Город</label>
-                <select name="city_id" class="form-select" required>
+                <select name="city_id" id="owner-specialist-city-select" class="form-select" data-current="{{ $currentCityId }}" required>
                     <option value="">— выберите город —</option>
-                    @foreach(\App\Models\City::orderBy('name')->get() as $city)
-                        <option value="{{ $city->id }}" {{ (old('city_id', $entity->city_id) == $city->id) ? 'selected' : '' }}>
-                            {{ $city->name }}
-                        </option>
-                    @endforeach
+                    @if($currentCity)
+                        <option value="{{ $currentCity->id }}" selected>{{ $currentCity->name }}</option>
+                    @endif
                 </select>
             </div>
         </div>
@@ -85,28 +99,34 @@
         <h6 class="fw-semibold mb-3">Место работы</h6>
         <div class="row g-3">
             @if($type === 'doctor')
+                @php
+                    $currentClinicId = old('clinic_id', $entity->clinic_id);
+                    $currentClinic   = $currentClinicId ? \App\Models\Clinic::find($currentClinicId) : null;
+                @endphp
                 <div class="col-12">
                     <label class="form-label fw-medium">Клиника</label>
-                    <select name="clinic_id" class="form-select">
+                    <select name="clinic_id" id="owner-doctor-workplace-select" class="form-select" data-current="{{ $currentClinicId }}">
                         <option value="">— не выбрано (частная практика) —</option>
-                        @foreach(\App\Models\Clinic::orderBy('name')->get() as $clinic)
-                            <option value="{{ $clinic->id }}" {{ (old('clinic_id', $entity->clinic_id) == $clinic->id) ? 'selected' : '' }}>
-                                {{ $clinic->name }}
-                            </option>
-                        @endforeach
+                        @if($currentClinic)
+                            <option value="{{ $currentClinic->id }}" selected>{{ $currentClinic->name }}</option>
+                        @endif
                     </select>
+                    <div class="form-text">Список зависит от выбранного города.</div>
                 </div>
             @else
+                @php
+                    $currentOrganizationId = old('organization_id', $entity->organization_id);
+                    $currentOrganization   = $currentOrganizationId ? \App\Models\Organization::find($currentOrganizationId) : null;
+                @endphp
                 <div class="col-12">
                     <label class="form-label fw-medium">Организация</label>
-                    <select name="organization_id" class="form-select">
+                    <select name="organization_id" id="owner-specialist-workplace-select" class="form-select" data-current="{{ $currentOrganizationId }}">
                         <option value="">— не выбрано (частная практика) —</option>
-                        @foreach(\App\Models\Organization::orderBy('name')->get() as $org)
-                            <option value="{{ $org->id }}" {{ (old('organization_id', $entity->organization_id) == $org->id) ? 'selected' : '' }}>
-                                {{ $org->name }}
-                            </option>
-                        @endforeach
+                        @if($currentOrganization)
+                            <option value="{{ $currentOrganization->id }}" selected>{{ $currentOrganization->name }}</option>
+                        @endif
                     </select>
+                    <div class="form-text">Список зависит от выбранного города.</div>
                 </div>
             @endif
         </div>
@@ -183,3 +203,112 @@
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var regionSelect     = document.getElementById('owner-specialist-region-select');
+    var citySelect       = document.getElementById('owner-specialist-city-select');
+    var workplaceSelect  = document.getElementById('owner-doctor-workplace-select')
+        || document.getElementById('owner-specialist-workplace-select');
+    if (!regionSelect || !citySelect) return;
+
+    var isDoctor    = !!document.getElementById('owner-doctor-workplace-select');
+    var hasSelect2  = !!(window.jQuery && typeof window.jQuery.fn.select2 === 'function');
+
+    function initSelect2(select, placeholder) {
+        if (!hasSelect2 || !select) return;
+        window.jQuery(select).select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: placeholder,
+            allowClear: true,
+            language: {
+                noResults: function () { return 'Ничего не найдено'; },
+                searching: function () { return 'Поиск…'; }
+            }
+        });
+    }
+
+    // values: массив строк (регион) или массив {id, name} (город/клиника/организация)
+    function fillOptions(select, values, selectedValue, isIdBased) {
+        if (!select) return;
+        var fallbackOption = select.querySelector('option[selected]');
+        var fallbackLabel  = fallbackOption ? fallbackOption.textContent : selectedValue;
+
+        select.innerHTML = '';
+        select.appendChild(new Option('', '', false, false));
+
+        var found = false;
+        values.forEach(function (item) {
+            var value = isIdBased ? item.id : item;
+            var label = isIdBased ? item.name : item;
+            var isSelected = selectedValue !== null && selectedValue !== undefined && selectedValue !== '' && String(value) === String(selectedValue);
+            if (isSelected) found = true;
+            select.appendChild(new Option(label, value, isSelected, isSelected));
+        });
+
+        if (selectedValue !== null && selectedValue !== undefined && selectedValue !== '' && !found) {
+            select.appendChild(new Option(fallbackLabel, selectedValue, true, true));
+        }
+
+        if (hasSelect2) window.jQuery(select).trigger('change.select2');
+    }
+
+    var currentRegion       = regionSelect.dataset.current || '';
+    var currentCityId       = citySelect.dataset.current || '';
+    var currentWorkplaceId  = workplaceSelect ? (workplaceSelect.dataset.current || '') : '';
+
+    initSelect2(regionSelect, 'Начните вводить регион...');
+    initSelect2(citySelect, 'Начните вводить город...');
+    initSelect2(workplaceSelect, isDoctor ? 'Начните вводить клинику...' : 'Начните вводить организацию...');
+
+    function loadWorkplaces(cityId, selectedId) {
+        if (!workplaceSelect) return;
+        if (!cityId) {
+            fillOptions(workplaceSelect, [], selectedId, true);
+            return;
+        }
+        var url = isDoctor
+            ? '/api/clinics/by-city/' + encodeURIComponent(cityId)
+            : '/get-organizations-by-city-id/' + encodeURIComponent(cityId);
+
+        fetch(url)
+            .then(function (res) { return res.json(); })
+            .then(function (list) {
+                fillOptions(workplaceSelect, Array.isArray(list) ? list : [], selectedId, true);
+            })
+            .catch(function (err) { console.error('Не удалось загрузить список по городу:', err); });
+    }
+
+    function loadCities(region, selectedCityId) {
+        if (!region) {
+            fillOptions(citySelect, [], selectedCityId, true);
+            loadWorkplaces(null, null);
+            return;
+        }
+        fetch('/api/cities/by-region/' + encodeURIComponent(region))
+            .then(function (res) { return res.json(); })
+            .then(function (cities) {
+                fillOptions(citySelect, Array.isArray(cities) ? cities : [], selectedCityId, true);
+                loadWorkplaces(selectedCityId || citySelect.value, currentWorkplaceId);
+            })
+            .catch(function (err) { console.error('Не удалось загрузить города региона:', err); });
+    }
+
+    fetch('/api/regions')
+        .then(function (res) { return res.json(); })
+        .then(function (regions) {
+            fillOptions(regionSelect, Array.isArray(regions) ? regions : [], currentRegion, false);
+            loadCities(currentRegion, currentCityId);
+        })
+        .catch(function (err) { console.error('Не удалось загрузить список регионов:', err); });
+
+    regionSelect.addEventListener('change', function () {
+        loadCities(regionSelect.value, null);
+    });
+
+    citySelect.addEventListener('change', function () {
+        loadWorkplaces(citySelect.value, null);
+    });
+});
+</script>
