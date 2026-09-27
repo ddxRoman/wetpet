@@ -2,22 +2,26 @@
 
 namespace App\Models\Concerns;
 
-use App\Models\Photo;
+use App\Models\EntityPhoto;
 
 /**
- * Общая логика фотогалереи для Organization, Clinic, Doctor, Specialist.
+ * Общая логика фотогалереи для Organization/Clinic/Doctor/Specialist.
+ *
+ * Использует уже существующую полиморфную таблицу entity_photos
+ * (модель App\Models\EntityPhoto) — ту же, в которую пишет реальный
+ * личный кабинет владельца (OwnerCabinetController::uploadPhoto).
  *
  * Правила пакетов:
  *  - Бесплатно: 1 фотография.
  *  - С активным рекламным пакетом владельца (User::hasPromoPackage()): до 15 фотографий.
  *  - Из админки (Filament) ограничение пакетом не действует, но абсолютный
- *    максимум в 15 штук — общий для всех (см. self::MAX_PHOTOS).
+ *    максимум в 15 штук — общий для всех (см. self::maxGalleryPhotos()).
  */
 trait HasGalleryPhotos
 {
     public function photos()
     {
-        return $this->morphMany(Photo::class, 'photoable')->orderBy('sort_order');
+        return $this->morphMany(EntityPhoto::class, 'photoable')->orderBy('sort_order');
     }
 
     /**
@@ -51,7 +55,7 @@ trait HasGalleryPhotos
     {
         $first = $this->photos->first();
 
-        return $first ? asset('storage/' . $first->path) : null;
+        return $first ? $first->url : null;
     }
 
     public function galleryPhotosCount(): int

@@ -213,7 +213,6 @@ class OwnerCabinetController extends Controller
 
         $data = $request->validate([
             'name'            => 'required|string|max:255',
-            'slug'            => 'required|string|max:255|alpha_dash|unique:clinics,slug,' . $id,
             'description'     => 'nullable|string',
             'country'         => 'required|string|max:255',
             'region'          => 'nullable|string|max:255',
@@ -238,6 +237,12 @@ class OwnerCabinetController extends Controller
             $request->validate(['logo' => 'image|mimes:jpeg,png,jpg,webp|max:2048']);
             if ($clinic->logo) Storage::disk('public')->delete($clinic->logo);
             $data['logo'] = $request->file('logo')->store('clinics/logos', 'public');
+        }
+
+        // Slug не запрашивается у пользователя — сохраняем текущий,
+        // либо генерируем из названия, если его почему-то ещё нет.
+        if (empty($clinic->slug)) {
+            $data['slug'] = \Illuminate\Support\Str::slug($data['name']) . '-' . $id;
         }
 
         $clinic->update($data);
@@ -566,7 +571,6 @@ public function organization(int $id)
 
         $data = $request->validate([
             'name'                 => 'required|string|max:255',
-            'slug'                 => 'required|string|max:255|alpha_dash|unique:organizations,slug,' . $id,
             'field_of_activity_id' => 'nullable|exists:field_of_activities,id',
             'description'          => 'nullable|string',
             'country'              => 'required|string|max:255',
@@ -592,6 +596,10 @@ public function organization(int $id)
             $request->validate(['logo' => 'image|mimes:jpeg,png,jpg,webp|max:2048']);
             if ($organization->logo) Storage::disk('public')->delete($organization->logo);
             $data['logo'] = $request->file('logo')->store('organizations/logos', 'public');
+        }
+
+        if (empty($organization->slug)) {
+            $data['slug'] = \Illuminate\Support\Str::slug($data['name']) . '-' . $id;
         }
 
         $organization->update($data);
@@ -646,7 +654,6 @@ public function organization(int $id)
 
         $data = $request->validate([
             'name'                => 'required|string|max:255',
-            'slug'                => 'required|string|max:255|alpha_dash|unique:doctors,slug,' . $id,
             'specialization'      => 'required|string|max:255',
             'date_of_birth'       => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
             'city_id'             => 'required|exists:cities,id',
@@ -681,6 +688,10 @@ public function organization(int $id)
             'max'      => $data['contact_max']      ?? null,
         ];
         unset($data['contact_phone'], $data['contact_email'], $data['contact_telegram'], $data['contact_vk'], $data['contact_max']);
+
+        if (empty($doctor->slug)) {
+            $data['slug'] = \Illuminate\Support\Str::slug($data['name']) . '-' . $id;
+        }
 
         $doctor->update($data);
         $doctor->contacts()->updateOrCreate(['doctor_id' => $doctor->id], $contactData);
@@ -798,6 +809,20 @@ public function organization(int $id)
             'specialist'   => Specialist::class,
         ];
 
+        $entityClass = $morphMap[$request->entity_type];
+        $entity = $entityClass::findOrFail($request->entity_id);
+
+        $limit = $entity->galleryPhotoLimitForOwner();
+        $current = $entity->photos()->count();
+
+        if ($current >= $limit) {
+            $message = $limit === 1
+                ? 'Бесплатно доступна только 1 фотография. Чтобы загружать больше (до 15), подключите рекламный пакет.'
+                : 'Достигнут лимит фотографий (' . $limit . ').';
+
+            return response()->json(['success' => false, 'message' => $message], 422);
+        }
+
         $path = $request->file('photo')->store(
             $request->entity_type . 's/gallery',
             'public'
@@ -823,6 +848,42 @@ public function organization(int $id)
                 'caption' => $photo->caption,
             ],
         ]);
+    }
+
+    /**
+     * Смена порядка фотографий (drag-and-drop в личном кабинете).
+     */
+    public function reorderPhotos(Request $request)
+    {
+        $data = $request->validate([
+            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
+            'entity_id'   => 'required|integer',
+            'order'       => 'required|array',
+            'order.*'     => 'integer',
+        ]);
+
+        $this->authorizeOwner($data['entity_type'], $data['entity_id']);
+
+        $morphMap = [
+            'clinic'       => Clinic::class,
+            'organization' => Organization::class,
+            'doctor'       => Doctor::class,
+            'specialist'   => Specialist::class,
+        ];
+
+        $ownedIds = EntityPhoto::where('photoable_type', $morphMap[$data['entity_type']])
+            ->where('photoable_id', $data['entity_id'])
+            ->pluck('id')
+            ->all();
+
+        foreach ($data['order'] as $index => $photoId) {
+            if (!in_array((int) $photoId, $ownedIds, true)) {
+                continue;
+            }
+            EntityPhoto::where('id', $photoId)->update(['sort_order' => $index]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function deletePhoto(int $photoId)

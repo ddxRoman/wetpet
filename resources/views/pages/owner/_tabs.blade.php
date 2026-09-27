@@ -18,11 +18,21 @@
 
 {{-- ════════════════ ВКЛАДКА: ФОТОГРАФИИ ════════════════ --}}
 @if($activeTab === 'photos')
+@php
+    $galleryLimit = $entity->galleryPhotoLimitForOwner();
+    $galleryCount = $photos->count();
+    $hasPromo = $entity->creator && $entity->creator->hasPromoPackage();
+@endphp
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
-    <h5 class="fw-bold mb-4">📷 Фотогалерея</h5>
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
+        <h5 class="fw-bold mb-0">📷 Фотогалерея <span class="text-muted fw-normal" id="photos-counter">({{ $galleryCount }}/{{ $galleryLimit }})</span></h5>
+        @unless($hasPromo)
+            <small class="text-muted">Больше 1 фото — с рекламным пакетом</small>
+        @endunless
+    </div>
 
     {{-- Загрузка нового фото --}}
-    <div class="border rounded-3 p-4 mb-4 bg-light">
+    <div class="border rounded-3 p-4 mb-4 bg-light" id="photo-upload-block" @if($galleryCount >= $galleryLimit) style="display:none;" @endif>
         <h6 class="fw-semibold mb-3">Добавить фото</h6>
         <div class="row g-3">
             <div class="col-md-7">
@@ -37,14 +47,24 @@
         </button>
         <div id="photo-upload-status" class="mt-2 text-muted small"></div>
     </div>
+    <div class="alert alert-info rounded-3" id="photo-limit-msg" @if($galleryCount < $galleryLimit) style="display:none;" @endif>
+        Достигнут лимит в {{ $galleryLimit }} {{ $galleryLimit === 1 ? 'фотографию' : 'фотографий' }}.
+        @unless($hasPromo)
+            Чтобы загружать до 15 фото, подключите рекламный пакет во вкладке «Продвижение».
+        @endunless
+    </div>
+
+    <p class="text-muted small mb-2" id="photo-reorder-hint" @if($galleryCount < 2) style="display:none;" @endif>
+        Перетащите фото, чтобы изменить порядок — первое фото используется как обложка карточки.
+    </p>
 
     {{-- Сетка фото --}}
     <div class="row g-3" id="photos-grid">
         @forelse($photos as $photo)
-            <div class="col-6 col-md-4 col-lg-3 photo-card" id="photo-{{ $photo->id }}">
-                <div class="position-relative rounded-3 overflow-hidden" style="aspect-ratio:1;">
+            <div class="col-6 col-md-4 col-lg-3 photo-card" id="photo-{{ $photo->id }}" draggable="true" data-id="{{ $photo->id }}">
+                <div class="position-relative rounded-3 overflow-hidden" style="aspect-ratio:1; cursor:grab;">
                     <img src="{{ Storage::url($photo->path) }}"
-                         class="w-100 h-100" style="object-fit:cover;">
+                         class="w-100 h-100" style="object-fit:cover; pointer-events:none;">
                     <button class="btn btn-danger btn-sm btn-delete-photo position-absolute top-0 end-0 m-1 rounded-circle"
                             data-id="{{ $photo->id }}"
                             style="width:28px;height:28px;padding:0;font-size:14px;">
@@ -63,63 +83,144 @@
     </div>
 </div>
 
+<style>
+    .photo-card.is-dragging { opacity: .4; }
+</style>
+
 <script>
-document.getElementById('photo-upload-btn')?.addEventListener('click', function () {
-    const files   = document.getElementById('photo-upload-input').files;
-    const caption = document.getElementById('photo-caption-input').value;
-    const status  = document.getElementById('photo-upload-status');
+(function () {
+    const grid = document.getElementById('photos-grid');
+    const counterEl = document.getElementById('photos-counter');
+    const uploadBlock = document.getElementById('photo-upload-block');
+    const limitMsg = document.getElementById('photo-limit-msg');
+    const reorderHint = document.getElementById('photo-reorder-hint');
+    const entityType = '{{ $type }}';
+    const entityId = {{ $entityId }};
+    const galleryLimit = {{ $galleryLimit }};
+    let galleryCount = {{ $galleryCount }};
 
-    if (!files.length) { status.textContent = 'Выберите файл'; return; }
+    function updateCounter() {
+        counterEl.textContent = `(${galleryCount}/${galleryLimit})`;
+        const reached = galleryCount >= galleryLimit;
+        uploadBlock.style.display = reached ? 'none' : '';
+        limitMsg.style.display = reached ? '' : 'none';
+        reorderHint.style.display = galleryCount >= 2 ? '' : 'none';
+    }
 
-    status.textContent = 'Загрузка…';
+    document.getElementById('photo-upload-btn')?.addEventListener('click', function () {
+        const files   = document.getElementById('photo-upload-input').files;
+        const caption = document.getElementById('photo-caption-input').value;
+        const status  = document.getElementById('photo-upload-status');
 
-    Array.from(files).forEach(file => {
-        const fd = new FormData();
-        fd.append('photo',       file);
-        fd.append('caption',     caption);
-        fd.append('entity_type', '{{ $type }}');
-        fd.append('entity_id',   '{{ $entityId }}');
-        fd.append('_token',      document.querySelector('meta[name="csrf-token"]').content);
+        if (!files.length) { status.textContent = 'Выберите файл'; return; }
 
-        fetch('/owner/photos/upload', { method: 'POST', body: fd })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('no-photos-msg')?.remove();
-                    const grid = document.getElementById('photos-grid');
-                    grid.insertAdjacentHTML('beforeend', `
-                        <div class="col-6 col-md-4 col-lg-3 photo-card" id="photo-${data.photo.id}">
-                            <div class="position-relative rounded-3 overflow-hidden" style="aspect-ratio:1;">
-                                <img src="${data.photo.url}" class="w-100 h-100" style="object-fit:cover;">
-                                <button class="btn btn-danger btn-sm btn-delete-photo position-absolute top-0 end-0 m-1 rounded-circle"
-                                        data-id="${data.photo.id}"
-                                        style="width:28px;height:28px;padding:0;font-size:14px;"
-                                        onclick="deletePhoto(this)">
-                                    ×
-                                </button>
+        status.textContent = 'Загрузка…';
+
+        Array.from(files).forEach(file => {
+            if (galleryCount >= galleryLimit) return;
+
+            const fd = new FormData();
+            fd.append('photo',       file);
+            fd.append('caption',     caption);
+            fd.append('entity_type', entityType);
+            fd.append('entity_id',   entityId);
+            fd.append('_token',      document.querySelector('meta[name="csrf-token"]').content);
+
+            fetch('/owner/photos/upload', { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('no-photos-msg')?.remove();
+                        grid.insertAdjacentHTML('beforeend', `
+                            <div class="col-6 col-md-4 col-lg-3 photo-card" id="photo-${data.photo.id}" draggable="true" data-id="${data.photo.id}">
+                                <div class="position-relative rounded-3 overflow-hidden" style="aspect-ratio:1; cursor:grab;">
+                                    <img src="${data.photo.url}" class="w-100 h-100" style="object-fit:cover; pointer-events:none;">
+                                    <button class="btn btn-danger btn-sm btn-delete-photo position-absolute top-0 end-0 m-1 rounded-circle"
+                                            data-id="${data.photo.id}"
+                                            style="width:28px;height:28px;padding:0;font-size:14px;">
+                                        ×
+                                    </button>
+                                </div>
+                                ${data.photo.caption ? `<div class="text-muted mt-1" style="font-size:12px;">${data.photo.caption}</div>` : ''}
                             </div>
-                            ${data.photo.caption ? `<div class="text-muted mt-1" style="font-size:12px;">${data.photo.caption}</div>` : ''}
-                        </div>
-                    `);
-                    status.textContent = 'Фото загружено ✓';
-                }
-            })
-            .catch(() => { status.textContent = 'Ошибка загрузки'; });
+                        `);
+                        galleryCount++;
+                        updateCounter();
+                        status.textContent = 'Фото загружено ✓';
+                    } else {
+                        status.textContent = data.message || 'Ошибка загрузки';
+                    }
+                })
+                .catch(() => { status.textContent = 'Ошибка загрузки'; });
+        });
     });
-});
 
-function deletePhoto(btn) {
-    if (!confirm('Удалить фото?')) return;
-    fetch(`/owner/photos/${btn.dataset.id}`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json',
-        }
-    }).then(r => r.json()).then(d => {
-        if (d.success) btn.closest('.photo-card')?.remove();
+    // ── Удаление (делегирование) ──
+    grid.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-delete-photo');
+        if (!btn) return;
+        if (!confirm('Удалить фото?')) return;
+
+        fetch(`/owner/photos/${btn.dataset.id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            }
+        }).then(r => r.json()).then(d => {
+            if (d.success) {
+                btn.closest('.photo-card')?.remove();
+                galleryCount--;
+                updateCounter();
+                if (!grid.querySelector('.photo-card')) {
+                    grid.insertAdjacentHTML('beforeend', '<div class="col-12 text-center text-muted py-4" id="no-photos-msg">Фотографий пока нет. Добавьте первое фото!</div>');
+                }
+            }
+        });
     });
-}
+
+    // ── Перетаскивание для смены порядка (нативный HTML5 drag & drop) ──
+    let dragged = null;
+
+    grid.addEventListener('dragstart', function (e) {
+        const item = e.target.closest('.photo-card');
+        if (!item) return;
+        dragged = item;
+        item.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    grid.addEventListener('dragend', function () {
+        if (dragged) dragged.classList.remove('is-dragging');
+        dragged = null;
+        sendOrder();
+    });
+
+    grid.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        const item = e.target.closest('.photo-card');
+        if (!item || item === dragged || !dragged) return;
+
+        const rect = item.getBoundingClientRect();
+        const after = (e.clientX - rect.left) > rect.width / 2;
+        grid.insertBefore(dragged, after ? item.nextSibling : item);
+    });
+
+    function sendOrder() {
+        const order = Array.from(grid.querySelectorAll('.photo-card')).map(el => el.dataset.id);
+        if (!order.length) return;
+
+        fetch('/owner/photos/reorder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ entity_type: entityType, entity_id: entityId, order }),
+        }).catch(() => {});
+    }
+})();
 </script>
 @endif
 
