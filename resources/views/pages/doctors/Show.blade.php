@@ -194,6 +194,7 @@
         </div>
 
         <div class="col-lg-4">
+            @if($doctor->photos->isNotEmpty())
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     @include('partials._gallery-cover', [
@@ -203,6 +204,7 @@
                     ])
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </main>

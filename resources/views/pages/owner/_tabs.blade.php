@@ -531,3 +531,58 @@
 })();
 </script>
 @endif
+
+{{-- ════════════════ ВКЛАДКА: УДАЛИТЬ КАРТОЧКУ ════════════════ --}}
+@if($activeTab === 'delete')
+<div class="card border-0 shadow-sm rounded-3 p-4 mb-4 border-danger border-opacity-25">
+    <h5 class="fw-bold mb-3 text-danger">🗑️ Удалить карточку</h5>
+
+    <div class="alert alert-warning rounded-3" style="font-size:14px;">
+        Карточка «{{ $entity->name ?? '' }}» будет удалена без возможности восстановления:
+        вместе с фотографиями, ценами и акциями. Пожалуйста, расскажите, почему вы её удаляете, — это поможет нам улучшить сервис.
+    </div>
+
+    <form method="POST" action="{{ route('owner.delete', ['type' => $type, 'id' => $entityId]) }}" id="delete-card-form">
+        @csrf
+
+        <div class="mb-3">
+            <label for="delete-reason" class="form-label fw-medium">Почему вы удаляете карточку? *</label>
+            <textarea name="reason" id="delete-reason" rows="5" maxlength="2000"
+                      class="form-control @error('reason') is-invalid @enderror"
+                      placeholder="Например: организация закрылась, карточка создана по ошибке, есть дубликат…"
+                      required>{{ old('reason') }}</textarea>
+            @error('reason')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input @error('confirm_delete') is-invalid @enderror" type="checkbox"
+                   name="confirm_delete" value="1" id="confirm-delete-check" {{ old('confirm_delete') ? 'checked' : '' }}>
+            <label class="form-check-label fw-medium" for="confirm-delete-check">Я хочу удалить карточку</label>
+            @error('confirm_delete')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-danger rounded-pill px-4" id="delete-card-btn" disabled>
+            Удалить
+        </button>
+    </form>
+</div>
+
+<script>
+(function () {
+    const check = document.getElementById('confirm-delete-check');
+    const btn   = document.getElementById('delete-card-btn');
+    const form  = document.getElementById('delete-card-form');
+    const sync  = () => { btn.disabled = !check.checked; };
+    check.addEventListener('change', sync);
+    sync();
+    form.addEventListener('submit', function (e) {
+        if (!check.checked) { e.preventDefault(); return; }
+        if (!confirm('Точно удалить карточку? Это действие нельзя отменить.')) e.preventDefault();
+    });
+})();
+</script>
+@endif

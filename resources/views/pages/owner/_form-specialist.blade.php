@@ -168,6 +168,12 @@
                     @endif
                     <input type="file" name="photo" class="form-control" accept="image/*">
                 </div>
+                @if(!empty($entity->photo))
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" name="remove_photo" id="remove-photo" value="1">
+                        <label class="form-check-label text-danger" for="remove-photo">Удалить фото профиля</label>
+                    </div>
+                @endif
                 <div class="form-text">JPG, PNG, WebP. Максимум 2 МБ.</div>
             </div>
 

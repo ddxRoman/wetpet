@@ -46,9 +46,9 @@
 
                 <nav class="p-2">
                     @php $activeTab = request('tab', 'info'); @endphp
-                    @foreach(['info' => ['icon'=>'📋','label'=>'Основная информация'], 'photos' => ['icon'=>'📷','label'=>'Фотографии'], 'services' => ['icon'=>'💊','label'=>'Услуги и цены'], 'promotions' => ['icon'=>'🏷️','label'=>'Акции']] as $key => $tab)
+                    @foreach(['info' => ['icon'=>'📋','label'=>'Основная информация'], 'photos' => ['icon'=>'📷','label'=>'Фотографии'], 'services' => ['icon'=>'💊','label'=>'Услуги и цены'], 'promotions' => ['icon'=>'🏷️','label'=>'Акции'], 'delete' => ['icon'=>'🗑️','label'=>'Удалить карточку']] as $key => $tab)
                         <a href="?tab={{ $key }}"
-                           class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 mb-1 text-decoration-none {{ $activeTab === $key ? 'bg-primary text-white fw-medium' : 'text-secondary' }}"
+                           class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 mb-1 text-decoration-none {{ $activeTab === $key ? ($key === 'delete' ? 'bg-danger text-white fw-medium' : 'bg-primary text-white fw-medium') : ($key === 'delete' ? 'text-danger' : 'text-secondary') }}"
                            style="font-size:14px;">
                             <span>{{ $tab['icon'] }}</span> <span>{{ $tab['label'] }}</span>
                         </a>

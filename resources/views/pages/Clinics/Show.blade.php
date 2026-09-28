@@ -161,6 +161,7 @@
 
         <div class="col-lg-4">
             {{-- Правая колонка с логотипом как в show2 --}}
+            @if($clinic->photos->isNotEmpty())
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     @include('partials._gallery-cover', [
@@ -170,6 +171,7 @@
                     ])
                 </div>
             </div>
+            @endif
 
             <div class="mt-3">
                 @include('partials._working-hours-card', ['entity' => $clinic])

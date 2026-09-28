@@ -131,6 +131,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
     Route::post('/account/avatar', [AccountController::class, 'updateAvatar'])->name('account.updateAvatar');
+    Route::post('/account/password', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
     // 🧑‍⚕️ Профиль пользователя
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
@@ -297,6 +298,12 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
 
     Route::get('/specialist/{id}',   [OwnerCabinetController::class, 'specialist'])->name('specialist');
     Route::post('/specialist/{id}',  [OwnerCabinetController::class, 'updateSpecialist'])->name('specialist.update');
+
+    // Удаление карточки владельцем (с обязательной причиной → «Обратная связь» в админке)
+    Route::post('/{type}/{id}/delete', [OwnerCabinetController::class, 'deleteCard'])
+        ->where('type', 'clinic|organization|doctor|specialist')
+        ->whereNumber('id')
+        ->name('delete');
 
     // Фотографии
     Route::post('/photos/upload',    [OwnerCabinetController::class, 'uploadPhoto'])->name('photos.upload');

@@ -14,6 +14,8 @@ use App\Models\Service;
 use App\Models\FieldOfActivity;
 use App\Models\Price;
 use App\Models\EntityPhoto;
+use App\Models\OwnerFeedback;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +50,7 @@ class OwnerCabinetController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $this->purgeOrphanedOwnerships();
 
         // 1. Получаем вообще все привязанные сущности (и подтвержденные, и нет)
         $allUserEntities = $this->getAllUserEntities();
@@ -84,8 +87,74 @@ class OwnerCabinetController extends Controller
     /**
      * Получить абсолютно все сущности пользователя
      */
+    /**
+     * Карта: тип объекта => [модель владельца, FK-колонка, связь на сам объект, модель объекта].
+     */
+    private function ownerMap(): array
+    {
+        return [
+            'clinic'       => [ClinicOwner::class,       'clinic_id',       'clinic',       Clinic::class],
+            'organization' => [OrganizationOwner::class, 'organization_id', 'organization', Organization::class],
+            'doctor'       => [DoctorOwner::class,       'doctor_id',       'doctor',       Doctor::class],
+            'specialist'   => [SpecialistOwner::class,   'specialist_id',   'specialist',   Specialist::class],
+        ];
+    }
+
+    /**
+     * Удаляет у текущего пользователя записи владения, чей объект
+     * (клиника/организация/врач/специалист) уже не существует в БД.
+     */
+    private function purgeOrphanedOwnerships(): void
+    {
+        $userId = Auth::id();
+        if (!$userId) return;
+
+        foreach ($this->ownerMap() as [$ownerModel, , $relation]) {
+            $ownerModel::where('user_id', $userId)
+                ->whereDoesntHave($relation)
+                ->get()
+                ->each(function ($row) {
+                    $row->documents()->delete();
+                    $row->messages()->delete();
+                    $row->delete();
+                });
+        }
+    }
+
+    /**
+     * Если объекта нет в БД — чистим «висящую» запись владения и показываем
+     * страницу «Объект не найден». Если записи владения нет вовсе — обычный 404.
+     * Возвращает Response|null (null — объект существует, можно продолжать).
+     */
+    private function missingEntityResponse(string $type, int $id)
+    {
+        [$ownerModel, $fk, , $entityModel] = $this->ownerMap()[$type];
+
+        if ($entityModel::whereKey($id)->exists()) {
+            return null;
+        }
+
+        $rows = $ownerModel::where('user_id', Auth::id())->where($fk, $id)->get();
+        if ($rows->isEmpty()) {
+            abort(404);
+        }
+
+        $rows->each(function ($row) {
+            $row->documents()->delete();
+            $row->messages()->delete();
+            $row->delete();
+        });
+
+        return response()->view('pages.owner.entity-missing', [
+            'type'            => $type,
+            'allUserEntities' => $this->getAllUserEntities(),
+        ], 404);
+    }
+
     private function getAllUserEntities()
     {
+        $this->purgeOrphanedOwnerships();
+
         $user = Auth::user();
         $entities = collect();
 
@@ -118,6 +187,8 @@ class OwnerCabinetController extends Controller
      */
     private function getPendingOwners()
     {
+        $this->purgeOrphanedOwnerships();
+
         $user = Auth::user();
         $pending = collect();
 
@@ -170,6 +241,10 @@ class OwnerCabinetController extends Controller
 
     public function clinic(int $id)
     {
+        if ($missing = $this->missingEntityResponse('clinic', $id)) {
+            return $missing;
+        }
+
         $this->authorizeOwner('clinic', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
@@ -237,6 +312,9 @@ class OwnerCabinetController extends Controller
             $request->validate(['logo' => 'image|mimes:jpeg,png,jpg,webp|max:2048']);
             if ($clinic->logo) Storage::disk('public')->delete($clinic->logo);
             $data['logo'] = $request->file('logo')->store('clinics/logos', 'public');
+        } elseif ($request->boolean('remove_logo')) {
+            if ($clinic->logo) Storage::disk('public')->delete($clinic->logo);
+            $data['logo'] = null;
         }
 
         // Slug не запрашивается у пользователя — сохраняем текущий,
@@ -257,6 +335,10 @@ class OwnerCabinetController extends Controller
 public function organization(int $id)
     {
         // 1. Проверяем права (доступно только если организация подтверждена)
+        if ($missing = $this->missingEntityResponse('organization', $id)) {
+            return $missing;
+        }
+
         $this->authorizeOwner('organization', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
@@ -596,6 +678,9 @@ public function organization(int $id)
             $request->validate(['logo' => 'image|mimes:jpeg,png,jpg,webp|max:2048']);
             if ($organization->logo) Storage::disk('public')->delete($organization->logo);
             $data['logo'] = $request->file('logo')->store('organizations/logos', 'public');
+        } elseif ($request->boolean('remove_logo')) {
+            if ($organization->logo) Storage::disk('public')->delete($organization->logo);
+            $data['logo'] = null;
         }
 
         if (empty($organization->slug)) {
@@ -613,6 +698,10 @@ public function organization(int $id)
 
     public function doctor(int $id)
     {
+        if ($missing = $this->missingEntityResponse('doctor', $id)) {
+            return $missing;
+        }
+
         $this->authorizeOwner('doctor', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
@@ -676,6 +765,9 @@ public function organization(int $id)
             $request->validate(['photo' => 'image|mimes:jpeg,png,jpg,webp|max:2048']);
             if ($doctor->photo) Storage::disk('public')->delete($doctor->photo);
             $data['photo'] = $request->file('photo')->store('doctors/photos', 'public');
+        } elseif ($request->boolean('remove_photo')) {
+            if ($doctor->photo) Storage::disk('public')->delete($doctor->photo);
+            $data['photo'] = null;
         }
 
         // Контактные поля не относятся напрямую к таблице doctors — выносим их
@@ -705,6 +797,10 @@ public function organization(int $id)
 
     public function specialist(int $id)
     {
+        if ($missing = $this->missingEntityResponse('specialist', $id)) {
+            return $missing;
+        }
+
         $this->authorizeOwner('specialist', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
@@ -767,6 +863,9 @@ public function organization(int $id)
             $request->validate(['photo' => 'image|mimes:jpeg,png,jpg,webp|max:2048']);
             if ($specialist->photo) Storage::disk('public')->delete($specialist->photo);
             $data['photo'] = $request->file('photo')->store('specialists/photos', 'public');
+        } elseif ($request->boolean('remove_photo')) {
+            if ($specialist->photo) Storage::disk('public')->delete($specialist->photo);
+            $data['photo'] = null;
         }
 
         // specialist_contacts: telegram/whatsapp/max — старые boolean-колонки не трогаем,
@@ -1002,6 +1101,110 @@ public function organization(int $id)
         $messages=$ownerRow->messages()->with('user')->get();
         $ownerRow->messages()->where('is_admin',true)->where('is_read',false)->update(['is_read'=>true]);
         return response()->json(['success'=>true,'messages'=>$messages->map(fn($m)=>['id'=>$m->id,'text'=>$m->message,'is_admin'=>$m->is_admin,'author'=>$m->is_admin?'Администратор':($m->user->name??'Вы'),'created_at'=>$m->created_at->format('d.m.Y H:i')])]);
+    }
+
+    // ══════════════════════════════════════════════════════════
+    //  УДАЛЕНИЕ КАРТОЧКИ ВЛАДЕЛЬЦЕМ
+    // ══════════════════════════════════════════════════════════
+
+    /**
+     * Удаляет карточку (клиника / организация / врач / специалист) по просьбе владельца.
+     * Перед удалением сохраняет копию данных и причину в «Обратную связь» (админка).
+     */
+    public function deleteCard(Request $request, string $type, int $id)
+    {
+        $this->authorizeOwner($type, $id);
+
+        [$ownerRow] = $this->getOwnerRowFor($type, $id);
+        if (!$ownerRow || !$ownerRow->is_confirmed) {
+            abort(403, 'Удалять карточку может только подтверждённый владелец.');
+        }
+
+        $request->validate([
+            'reason'         => ['required', 'string', 'min:5', 'max:2000'],
+            'confirm_delete' => ['accepted'],
+        ], [
+            'reason.required'        => 'Укажите, пожалуйста, почему вы удаляете карточку.',
+            'reason.min'             => 'Опишите причину подробнее (минимум 5 символов).',
+            'confirm_delete.accepted' => 'Поставьте галочку «Я хочу удалить карточку».',
+        ]);
+
+        [, , , $entityModel] = $this->ownerMap()[$type];
+        $entity = $entityModel::find($id);
+
+        if (!$entity) {
+            return redirect()->route('account');
+        }
+
+        $user = Auth::user();
+
+        // ── Копия данных карточки для админки ──
+        $region = $entity->region ?? null;
+        $city   = $entity->city ?? null;
+        $activity = null;
+        $address  = null;
+
+        if (in_array($type, ['organization', 'clinic'])) {
+            $activity = $type === 'organization'
+                ? ($entity->activityType->name ?? null)
+                : 'Клиника';
+            $address = implode(', ', array_filter([$entity->street ?? null, $entity->house ?? null]));
+        } else {
+            // у врачей и специалистов город — связь с таблицей cities
+            $cityModel = $entity->city_id ? \App\Models\City::find($entity->city_id) : null;
+            $region   = $cityModel->region ?? null;
+            $city     = $cityModel->name ?? null;
+            $activity = $entity->specialization ?? null;
+        }
+
+        DB::transaction(function () use ($request, $type, $id, $entity, $user, $region, $city, $activity, $address) {
+            OwnerFeedback::create([
+                'user_id'       => $user->id,
+                'user_name'     => $user->name ?? $user->email,
+                'entity_type'   => $type,
+                'entity_id'     => $id,
+                'entity_name'   => $entity->name ?? null,
+                'activity_type' => $activity,
+                'region'        => $region,
+                'city'          => $city,
+                'address'       => $address ?: null,
+                'snapshot'      => $entity->attributesToArray(),
+                'reason'        => trim($request->input('reason')),
+                'is_read'       => false,
+            ]);
+
+            // Фото галереи + файлы
+            foreach ($entity->photos ?? [] as $photo) {
+                if ($photo->path) Storage::disk('public')->delete($photo->path);
+                $photo->delete();
+            }
+            foreach (['logo', 'photo'] as $field) {
+                if (!empty($entity->{$field})) Storage::disk('public')->delete($entity->{$field});
+            }
+
+            // Цены и акции
+            if (method_exists($entity, 'prices'))     $entity->prices()->delete();
+            if (method_exists($entity, 'promotions')) $entity->promotions()->delete();
+
+            // Записи владения (у всех пользователей) вместе с документами и перепиской
+            [$ownerModel, $fk] = $this->ownerMap()[$type];
+            $ownerModel::where($fk, $id)->get()->each(function ($row) {
+                $row->documents()->delete();
+                $row->messages()->delete();
+                $row->delete();
+            });
+
+            // Специалисты/врачи, привязанные к этому месту работы, остаются, но без привязки
+            if ($type === 'organization') {
+                Specialist::where('organization_id', $id)->update(['organization_id' => null]);
+            } elseif ($type === 'clinic') {
+                Doctor::where('clinic_id', $id)->update(['clinic_id' => null]);
+            }
+
+            $entity->delete();
+        });
+
+        return redirect()->route('account')->with('success', 'Карточка удалена. Спасибо, что сообщили причину.');
     }
 
 private function authorizeOwner(string $type, int $entityId): void

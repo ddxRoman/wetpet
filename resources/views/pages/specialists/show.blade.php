@@ -194,6 +194,7 @@
 
         <div class="col-lg-4">
             <div class="card shadow-sm">
+                @if($doctor->photos->isNotEmpty())
                 <div class="card-body text-center">
                     @include('partials._gallery-cover', [
                         'entity' => $doctor,
@@ -201,6 +202,7 @@
                         'alt' => $doctor->name,
                     ])
                 </div>
+                @endif
                 @if($doctor->organization)
                     <div class="card-footer bg-white">
                         <small class="text-muted">Место работы:</small>

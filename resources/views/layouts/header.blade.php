@@ -154,10 +154,10 @@
             $userCabinets = [];
             $hasPendingRequest = false;
 
-            $clinicOwner = \App\Models\ClinicOwner::where('user_id', auth()->id())->first();
-            $orgOwner    = \App\Models\OrganizationOwner::where('user_id', auth()->id())->first();
-            $doctorOwner = \App\Models\DoctorOwner::where('user_id', auth()->id())->first();
-            $specOwner   = \App\Models\SpecialistOwner::where('user_id', auth()->id())->first();
+            $clinicOwner = \App\Models\ClinicOwner::where('user_id', auth()->id())->whereHas('clinic')->first();
+            $orgOwner    = \App\Models\OrganizationOwner::where('user_id', auth()->id())->whereHas('organization')->first();
+            $doctorOwner = \App\Models\DoctorOwner::where('user_id', auth()->id())->whereHas('doctor')->first();
+            $specOwner   = \App\Models\SpecialistOwner::where('user_id', auth()->id())->whereHas('specialist')->first();
 
             // 2. Наполняем массив каждым подтвержденным кабинетом (теперь они собираются вместе!)
             if ($clinicOwner?->is_confirmed) {

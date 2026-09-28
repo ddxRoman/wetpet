@@ -146,6 +146,12 @@
                     @endif
                     <input type="file" name="logo" class="form-control" accept="image/*">
                 </div>
+                @if(!empty($entity->logo))
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" name="remove_logo" id="remove-logo" value="1">
+                        <label class="form-check-label text-danger" for="remove-logo">Удалить логотип</label>
+                    </div>
+                @endif
                 <div class="form-text">JPG, PNG, WebP. Максимум 2 МБ.</div>
             </div>
 
