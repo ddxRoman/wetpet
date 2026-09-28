@@ -347,10 +347,11 @@ public function liveSearch(Request $request)
                   ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
             }
         })
-        ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
-            $q->where(function ($inner) use ($targetCityNameLower) {
+        ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
+            $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
                     ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                    ->orWhere('works_online', true)
                     ->orWhere(function ($none) {
                         $none->whereNull('city_id')->whereNull('clinic_id');
                     });
@@ -405,10 +406,11 @@ public function liveSearch(Request $request)
                   ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
             }
         })
-        ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
-            $q->where(function ($inner) use ($targetCityNameLower) {
+        ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
+            $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
                     ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                    ->orWhere('works_online', true)
                     ->orWhere(function ($none) {
                         $none->whereNull('city_id')->whereNull('organization_id');
                     });
@@ -607,10 +609,11 @@ public function fullSearch(Request $request)
                     }
                 });
             })
-            ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
-                $q->where(function ($inner) use ($targetCityNameLower) {
+            ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
+                $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
                         ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                        ->orWhere('works_online', true)
                         ->orWhere(function ($none) {
                             $none->whereNull('city_id')->whereNull('clinic_id');
                         });
@@ -640,10 +643,11 @@ public function fullSearch(Request $request)
                     }
                 });
             })
-            ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
-                $q->where(function ($inner) use ($targetCityNameLower) {
+            ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
+                $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
                         ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                        ->orWhere('works_online', true)
                         ->orWhere(function ($none) {
                             $none->whereNull('city_id')->whereNull('organization_id');
                         });
