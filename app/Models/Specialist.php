@@ -25,6 +25,7 @@ protected $fillable = [
     'description', 
     'slug',
     'photo',
+    'works_online',
     'date_of_birth',
     'exotic_animals',
     'On_site_assistance',
@@ -34,6 +35,7 @@ protected $fillable = [
 
     protected $casts = [
         'is_verified' => 'boolean',
+        'works_online' => 'boolean',
     ];
 
     public function owners()

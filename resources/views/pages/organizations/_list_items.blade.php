@@ -2,6 +2,7 @@
     <div class="col-lg-3 col-md-4 col-12 organization-item">
         <a href="{{ route('organizations.show', ['city' => $org->city_slug, 'slug' => $org->slug]) }}" class="text-decoration-none text-reset">
             <div class="card catalog-card h-100 shadow-sm hover-shadow position-relative transition">
+                @include('partials._other-locality-badge', ['entity' => $org])
                 @php
                     $avgRating = number_format($org->reviews_avg_rating ?? 0, 1);
                     $reviewCount = $org->reviews_count ?? 0;
@@ -26,7 +27,7 @@
                         <span class="org-type-badge">{{ $org->fieldOfActivity->name }}</span>
                     @endif
                     <p class="org-address">
-                        <i class="bi bi-geo-alt-fill"></i> {{ $org->street }}, {{ $org->house }}
+                        <i class="bi bi-geo-alt-fill"></i> @if($org->is_other_locality){{ $org->city }}, @endif{{ $org->street }}, {{ $org->house }}
                     </p>
                     @if($org->schedule)
                         <p class="org-hours">

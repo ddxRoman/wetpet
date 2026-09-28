@@ -23,12 +23,13 @@ class Doctor extends Model
         'created_by',
         'name', 'slug', 'specialization', 'date_of_birth', 'city_id',
         'clinic_id', 'practice_started_at', 'exotic_animals',
-        'On_site_assistance', 'photo', 'description', 'seo_title',
+        'On_site_assistance', 'works_online', 'photo', 'description', 'seo_title',
         'seo_description'
     ];
 
     protected $casts = [
         'is_verified' => 'boolean',
+        'works_online' => 'boolean',
     ];
 
     protected static function booted()

@@ -171,6 +171,10 @@ Forms\Components\Select::make('clinic_id')
                 'no' => 'Нет',
             ]),
 
+        Forms\Components\Toggle::make('works_online')
+            ->label('Работает онлайн')
+            ->helperText('Бейдж «Онлайн» в каталоге и фильтр «Онлайн»; карточка показывается во всех городах. Организацию и адрес можно не указывать.'),
+
         Forms\Components\Select::make('On_site_assistance')
             ->label('Выезд на дом')
             ->options([
@@ -264,6 +268,14 @@ Forms\Components\FileUpload::make('photo')
                     ->trueColor('success')
                     ->falseColor('warning')
                     ->sortable(),
+                Tables\Columns\IconColumn::make('works_online')
+                    ->label('Онлайн')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-computer-desktop')
+                    ->falseIcon('heroicon-o-minus')
+                    ->trueColor('success')
+                    ->falseColor('gray')
+                    ->sortable(),
 
                 Tables\Columns\ImageColumn::make('photo')
                     ->label('Фото')
@@ -304,6 +316,7 @@ Tables\Columns\TextColumn::make('specialization_label')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TernaryFilter::make('works_online')->label('Работает онлайн'),
                 Tables\Filters\TernaryFilter::make('is_verified')
                     ->label('Статус проверки')
                     ->trueLabel('Только проверенные')

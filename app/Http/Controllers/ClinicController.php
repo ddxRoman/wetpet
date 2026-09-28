@@ -24,15 +24,23 @@ public function index(Request $request)
         $selectedCity = session('city_name');
     }
 
+    // Модель выбранного города (нужен регион, чтобы показать «другие населённые пункты»)
+    $cityModel = null;
+    if ($selectedCity) {
+        $sessionCity = session('city_id') ? City::find(session('city_id')) : null;
+        $cityModel = ($sessionCity && mb_strtolower(trim($sessionCity->name)) === mb_strtolower(trim($selectedCity)))
+            ? $sessionCity
+            : City::whereRaw('LOWER(TRIM(name)) = LOWER(TRIM(?))', [$selectedCity])->first();
+    }
+
+    // Фильтр «Другие населённые пункты» (запоминается в сессии и cookie)
+    $otherOnly = \App\Support\LocalityFilter::resolve($request);
+
     // Включаем пагинацию
     $clinics = Clinic::with(['promotions' => fn($q) => $q->active()])
         ->withAvg('reviews', 'rating')
-        ->when($selectedCity, function ($query, $city) {
-            $query->whereRaw(
-                'LOWER(TRIM(city)) = LOWER(TRIM(?))',
-                [$city]
-            );
-        })
+        ->forCatalog($cityModel, $otherOnly)
+        ->localFirst($cityModel)
         ->orderByDesc('reviews_avg_rating')
         ->paginate(16); // Было ->get()
 
@@ -43,10 +51,10 @@ public function index(Request $request)
 // Если это AJAX (нажатие "Показать еще")
 if ($request->ajax()) {
     // Возвращаем ту же вьюху index, JS сам вырежет из неё новые карточки и кнопку
-    return view('pages.clinics.index', compact('clinics', 'selectedCity', 'seoMeta'));
+    return view('pages.clinics.index', compact('clinics', 'selectedCity', 'seoMeta', 'otherOnly'));
 }
 
-    return view('pages.clinics.index', compact('clinics', 'selectedCity', 'seoMeta'));
+    return view('pages.clinics.index', compact('clinics', 'selectedCity', 'seoMeta', 'otherOnly'));
 }
 
     /**
@@ -207,6 +215,8 @@ public function liveSearch(Request $request)
     }
 
     // Раскладочный вариант поискового термина (после вычитания города)
+    // Регионы, явно указанные в запросе («... Ростовская область») — вырезаем из текста поиска
+    [$searchTerm, $namedRegions] = \App\Support\RegionMatcher::extract($searchTerm);
     $searchTermAlt = \App\Support\KeyboardLayout::swap($searchTerm);
 
     // Город, В КОТОРОМ ищем — теперь это ЖЁСТКИЙ фильтр, а не просто
@@ -216,6 +226,27 @@ public function liveSearch(Request $request)
     // не касается.
     $targetCityName = $matchedCityName ?: session('city_name');
     $targetCityNameLower = $targetCityName ? mb_strtolower(trim($targetCityName)) : null;
+
+    // Модель города, в котором ищем (нужен регион). Если города нет в cities — ищем по названию
+    $targetCity = $targetCityName
+        ? (\App\Models\City::whereRaw('LOWER(TRIM(name)) = ?', [$targetCityNameLower])->first()
+            ?? new \App\Models\City(['name' => $targetCityName]))
+        : null;
+
+    // Свой регион в «другие регионы» не входит
+    $namedRegions = array_values(array_filter($namedRegions, fn ($r) => ! $targetCity
+        || mb_strtolower(trim($r)) !== mb_strtolower(trim((string) $targetCity->region))));
+
+    // Ярус выдачи: 0 — указанные в запросе регионы, 1 — выбранный город и не-географичные записи,
+    // 2 — «другие населённые пункты» региона
+    $tierOf = function (?string $city, ?string $region) use ($targetCityNameLower, $namedRegions) {
+        $cityL = mb_strtolower(trim((string) $city));
+        $regionL = mb_strtolower(trim((string) $region));
+        foreach ($namedRegions as $r) {
+            if ($regionL === mb_strtolower(trim($r))) return 0;
+        }
+        return ($targetCityNameLower && $cityL !== $targetCityNameLower) ? 2 : 1;
+    };
 
     // Разбиваем запрос на отдельные слова для гибкого поиска
     $words = explode(' ', $searchTerm);
@@ -289,10 +320,13 @@ public function liveSearch(Request $request)
     \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
             $applyAdvancedSearch($q);
         })
-        ->when($targetCityNameLower, $applyCityFilter)
-        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
+        ->forSearch($targetCity, $namedRegions)
+            ->searchRank($targetCity, $namedRegions)
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $tierOf) {
             $results->push([
                 'type' => 'clinic',
+                'other_locality' => $item->is_other_locality,
+                '_tier' => $tierOf($item->city, $item->region),
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'city_slug' => $item->city_slug,
@@ -316,7 +350,7 @@ public function liveSearch(Request $request)
         ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
             $q->where(function ($inner) use ($targetCityNameLower) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                    ->orWhereHas('clinic', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                    ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhere(function ($none) {
                         $none->whereNull('city_id')->whereNull('clinic_id');
                     });
@@ -343,10 +377,13 @@ public function liveSearch(Request $request)
         ->where(function($q) use ($applyAdvancedSearch) {
             $applyAdvancedSearch($q);
         })
-        ->when($targetCityNameLower, $applyCityFilter)
-        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
+        ->forSearch($targetCity, $namedRegions)
+            ->searchRank($targetCity, $namedRegions)
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $tierOf) {
             $results->push([
                 'type' => 'organization',
+                'other_locality' => $item->is_other_locality,
+                '_tier' => $tierOf($item->city, $item->region),
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'city_slug' => $item->city_slug,
@@ -371,7 +408,7 @@ public function liveSearch(Request $request)
         ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
             $q->where(function ($inner) use ($targetCityNameLower) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                    ->orWhereHas('organization', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                    ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhere(function ($none) {
                         $none->whereNull('city_id')->whereNull('organization_id');
                     });
@@ -426,11 +463,12 @@ public function liveSearch(Request $request)
     // Теперь город больше не влияет на сортировку (он уже жёсткий фильтр
     // выше) — сортируем только по релевантности текста и порядку типов.
     $sorted = $results
-        ->sortBy(['_priority', '_type_order'])
+        ->map(fn ($i) => $i + ['_tier' => 1])
+        ->sortBy(['_tier', '_priority', '_type_order'])
         ->values()
         ->take(20)
         ->map(function ($item) {
-            unset($item['_priority'], $item['_type_order']);
+            unset($item['_priority'], $item['_type_order'], $item['_tier']);
             return $item;
         });
 
@@ -472,10 +510,33 @@ public function fullSearch(Request $request)
             $searchTerm = $stripped;
         }
     }
+    // Регионы, явно указанные в запросе («... Ростовская область») — вырезаем из текста поиска
+    [$searchTerm, $namedRegions] = \App\Support\RegionMatcher::extract($searchTerm);
     $searchTermAlt = \App\Support\KeyboardLayout::swap($searchTerm);
 
     $targetCityName = $matchedCityName ?: session('city_name');
     $targetCityNameLower = $targetCityName ? mb_strtolower(trim($targetCityName)) : null;
+
+    // Модель города, в котором ищем (нужен регион). Если города нет в cities — ищем по названию
+    $targetCity = $targetCityName
+        ? (\App\Models\City::whereRaw('LOWER(TRIM(name)) = ?', [$targetCityNameLower])->first()
+            ?? new \App\Models\City(['name' => $targetCityName]))
+        : null;
+
+    // Свой регион в «другие регионы» не входит
+    $namedRegions = array_values(array_filter($namedRegions, fn ($r) => ! $targetCity
+        || mb_strtolower(trim($r)) !== mb_strtolower(trim((string) $targetCity->region))));
+
+    // Ярус выдачи: 0 — указанные в запросе регионы, 1 — выбранный город и не-географичные записи,
+    // 2 — «другие населённые пункты» региона
+    $tierOf = function (?string $city, ?string $region) use ($targetCityNameLower, $namedRegions) {
+        $cityL = mb_strtolower(trim((string) $city));
+        $regionL = mb_strtolower(trim((string) $region));
+        foreach ($namedRegions as $r) {
+            if ($regionL === mb_strtolower(trim($r))) return 0;
+        }
+        return ($targetCityNameLower && $cityL !== $targetCityNameLower) ? 2 : 1;
+    };
 
     $words = explode(' ', $searchTerm);
     $wordsAlt = explode(' ', $searchTermAlt);
@@ -510,14 +571,16 @@ public function fullSearch(Request $request)
         'clinics' => \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
                 $applyAdvancedSearch($q);
             })
-            ->when($targetCityNameLower, $applyCityFilter)
+            ->forSearch($targetCity, $namedRegions)
+            ->searchRank($targetCity, $namedRegions)
             ->get(),
 
         'organizations' => \App\Models\Organization::with('fieldOfActivity')
             ->where(function($q) use ($applyAdvancedSearch) {
                 $applyAdvancedSearch($q);
             })
-            ->when($targetCityNameLower, $applyCityFilter)
+            ->forSearch($targetCity, $namedRegions)
+            ->searchRank($targetCity, $namedRegions)
             ->get(),
 
         'doctors' => \App\Models\Doctor::with('clinic')
@@ -547,7 +610,7 @@ public function fullSearch(Request $request)
             ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
                 $q->where(function ($inner) use ($targetCityNameLower) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                        ->orWhereHas('clinic', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                        ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
                         ->orWhere(function ($none) {
                             $none->whereNull('city_id')->whereNull('clinic_id');
                         });
@@ -580,7 +643,7 @@ public function fullSearch(Request $request)
             ->when($targetCityNameLower, function ($q) use ($targetCityNameLower) {
                 $q->where(function ($inner) use ($targetCityNameLower) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                        ->orWhereHas('organization', fn($c) => $c->whereRaw('LOWER(city) = ?', [$targetCityNameLower]))
+                        ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
                         ->orWhere(function ($none) {
                             $none->whereNull('city_id')->whereNull('organization_id');
                         });

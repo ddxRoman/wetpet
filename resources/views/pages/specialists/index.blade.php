@@ -1,6 +1,26 @@
 @extends('layouts.catalog')
 
 @section('content')
+<style>
+    /* Кнопка «Онлайн» — отдельно от специализаций (это не специальность, а формат работы) */
+    .online-filter { margin-bottom: 12px; }
+    .online-filter-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 0.45rem 1.1rem; border-radius: 20px;
+        font-size: 0.9rem; font-weight: 600; text-decoration: none;
+        background: #e6f7ee; border: 1px solid #b7e4c7; color: #1a7f4b;
+        transition: background-color .2s, border-color .2s, color .2s;
+    }
+    .online-filter-btn:hover { background: #d3f0e0; border-color: #95d5b2; color: #146c3e; }
+    .online-filter-btn--active, .online-filter-btn--active:hover {
+        background: #1a7f4b; border-color: #1a7f4b; color: #fff;
+    }
+    .online-filter-btn__count {
+        background: rgba(26,127,75,.12); border-radius: 10px; padding: 0 7px; font-size: .8rem;
+    }
+    .online-filter-btn--active .online-filter-btn__count { background: rgba(255,255,255,.25); }
+    .online-filter-hint { font-size: .8rem; color: #6b7280; margin-left: 10px; }
+</style>
 <div class="container py-5">
     <h1 class="mb-4 text-center">Каталог ветеринарных специалистов
         @if(!empty($selectedCity))
@@ -14,12 +34,21 @@
         </div>
     @else
 
+        {{-- Фильтр «Онлайн» — отдельная кнопка, не входит в ряд специализаций --}}
+        <div class="online-filter">
+            <a href="{{ !empty($onlineOnly) ? route('specialists.index', ['city_id' => $currentCityId ?? request('city_id')]) : route('specialists.index', ['online' => 1, 'city_id' => $currentCityId ?? request('city_id')]) }}"
+               class="online-filter-btn {{ !empty($onlineOnly) ? 'online-filter-btn--active' : '' }}">
+                💻 Онлайн <span class="online-filter-btn__count">{{ $onlineSpecialistsCount ?? 0 }}</span>
+            </a>
+            <span class="online-filter-hint">Принимают онлайн, из любого города</span>
+        </div>
+
         {{-- БЛОК ТЕГОВ --}}
         <div class="specialization-filter-wrapper mb-4">
             <div class="d-inline-flex gap-2 specialization-filter pb-2">
                 {{-- Ссылка "Все" теперь ведет на specialists.index --}}
                 <a href="{{ route('specialists.index', ['city_id' => $currentCityId ?? request('city_id')]) }}" 
-                   class="org-filter-pill {{ empty($selectedSpecialization) ? 'org-filter-pill--active' : '' }}">
+                   class="org-filter-pill {{ empty($selectedSpecialization) && empty($onlineOnly) ? 'org-filter-pill--active' : '' }}">
                     Все <span class="org-filter-pill__count">{{ $totalSpecialistsCount }}</span>
                 </a>
 
@@ -29,7 +58,7 @@
                                 'specialization' => $spec, 
                                 'city_id' => $currentCityId ?? request('city_id')
                             ]) }}" 
-                           class="org-filter-pill {{ $selectedSpecialization == $spec ? 'org-filter-pill--active' : '' }}">
+                           class="org-filter-pill {{ empty($onlineOnly) && $selectedSpecialization == $spec ? 'org-filter-pill--active' : '' }}">
                             {{ $spec }} <span class="org-filter-pill__count">{{ $specializationCounts[$spec] ?? 0 }}</span>
                         </a>
                     @endif
@@ -39,7 +68,7 @@
 
         @if($specialists->isEmpty())
             <div class="alert alert-warning text-center">
-                Ветеринарные специалисты в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
+                @if(!empty($onlineOnly)) Онлайн-специалисты не найдены. @else Ветеринарные специалисты в городе <strong>{{ $selectedCity }}</strong> не найдены. @endif <br>
                 <button class="btn_add_clinic btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#addDoctorModal">
@@ -79,6 +108,9 @@
                                 <div class="card-body">
                                     <h5 class="org-card-title">{{ $specialist->name }}</h5>
                                     <span class="org-type-badge">{{ $specialist->specialization }}</span>
+                                    @if($specialist->works_online)
+                                        <span class="org-type-badge" style="background:#e6f7ee;color:#1a7f4b;" title="Принимает онлайн">💻 Онлайн</span>
+                                    @endif
                                     @if(!empty($specialist->city))
                                         <p class="org-address">
                                             <b class="">Город: </b> {{ $specialist->city->name }}

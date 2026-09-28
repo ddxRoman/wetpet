@@ -53,6 +53,7 @@ class OrganizationController extends Controller
     $user = auth()->user();
     $cityId = $request->get('city_id');
     $selectedCityName = null;
+    $cityModel = null;
 
     // 1. Приоритет выбора города: Request -> Session -> User Profile
     if (!$cityId) {
@@ -70,6 +71,9 @@ class OrganizationController extends Controller
 
     $selectedTypeId = $request->get('type_id');
 
+    // Фильтр «Другие населённые пункты» (запоминается в сессии и cookie)
+    $otherOnly = \App\Support\LocalityFilter::resolve($request);
+
     // 2. Получаем типы организаций для тегов
     $organizationTypes = FieldOfActivity::where('type', 'organization')
         ->whereNotIn('activity', ['vetclinic', 'doctor'])
@@ -78,9 +82,7 @@ class OrganizationController extends Controller
 
     // 2.1. Считаем количество организаций для каждого типа (и общий итог), с учётом выбранного города
     $orgCountsBaseQuery = Organization::query()
-        ->when($selectedCityName, function ($q) use ($selectedCityName) {
-            $q->where('city', $selectedCityName);
-        });
+        ->forCatalog($cityModel, $otherOnly);
 
     $totalOrganizationsCount = (clone $orgCountsBaseQuery)->count();
 
@@ -96,16 +98,15 @@ class OrganizationController extends Controller
 
     // 3. Запрос организаций
     $items = Organization::query()
-        // Фильтр по городу ОБЯЗАТЕЛЕН (если город не выбран, можно либо ничего не выводить, либо всё)
-        ->when($selectedCityName, function ($q) use ($selectedCityName) {
-            $q->where('city', $selectedCityName);
-        })
+        // Город выбранный + «другие населённые пункты» его региона (или только они — по фильтру)
+        ->forCatalog($cityModel, $otherOnly)
         ->when($selectedTypeId, function ($q) use ($selectedTypeId) {
             $q->where('field_of_activity_id', $selectedTypeId);
         })
         ->withCount('reviews') // Для бейджа рейтинга
         ->withAvg('reviews', 'rating') // Для звезд
         ->with(['promotions' => fn($q) => $q->active(), 'fieldOfActivity'])
+        ->localFirst($cityModel)
         ->orderBy('name')
         ->paginate(16);
 
@@ -132,6 +133,7 @@ class OrganizationController extends Controller
         'currentCityId' => $cityId,
         'seoMeta' => $seoMeta,
         'totalOrganizationsCount' => $totalOrganizationsCount,
+        'otherOnly' => $otherOnly,
     ]);
     }
 

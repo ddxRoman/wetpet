@@ -154,6 +154,16 @@
                     </label>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="works_online" id="works_online_{{ $entityId }}"
+                           value="1" {{ old('works_online', $entity->works_online) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="works_online_{{ $entityId }}">
+                        💻 Работает онлайн
+                    </label>
+                    <div class="form-text">Карточка получит отметку «Онлайн», попадёт в фильтр «Онлайн» и будет показываться во всех городах. Регион и город указываются в любом случае. Если работаете только онлайн, организацию и адрес можно не указывать.</div>
+                </div>
+            </div>
         </div>
 
         <hr class="my-4 opacity-25">

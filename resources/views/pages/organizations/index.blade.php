@@ -14,6 +14,12 @@
         </div>
     @else
 
+    @include('partials._other-locality-filter', [
+        'otherOnly' => $otherOnly ?? false,
+        'baseUrl'   => route('organizations.index'),
+        'query'     => array_filter(['city_id' => $currentCityId, 'type_id' => $selectedTypeId]),
+    ])
+
     <div class="specialization-filter-wrapper mb-4">
         <div class="d-inline-flex gap-2 specialization-filter pb-2">
             <a href="{{ route('organizations.index', ['city_id' => $currentCityId]) }}" 
@@ -30,7 +36,7 @@
     </div>
     @if($organizations->isEmpty())
         <div class="alert alert-warning text-center">
-            Организации в городе <strong>{{ $selectedCity }}</strong> не найдены. <br>
+            @if(!empty($otherOnly)) Организации из других населённых пунктов не найдены. @else Организации в городе <strong>{{ $selectedCity }}</strong> не найдены. @endif <br>
                 <button class="btn_add_clinic btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#addOrganizationModal"

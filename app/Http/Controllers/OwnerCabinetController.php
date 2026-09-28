@@ -750,6 +750,7 @@ public function organization(int $id)
             'practice_started_at' => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
+            'works_online'        => 'nullable|boolean',
             'description'         => 'nullable|string',
             'seo_title'           => 'nullable|string|max:255',
             'seo_description'     => 'nullable|string|max:320',
@@ -784,6 +785,8 @@ public function organization(int $id)
         if (empty($doctor->slug)) {
             $data['slug'] = \Illuminate\Support\Str::slug($data['name']) . '-' . $id;
         }
+
+        $data['works_online'] = $request->boolean('works_online');
 
         $doctor->update($data);
         $doctor->contacts()->updateOrCreate(['doctor_id' => $doctor->id], $contactData);
@@ -848,6 +851,7 @@ public function organization(int $id)
             'practice_started_at' => \App\Models\Specialist::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
+            'works_online'        => 'nullable|boolean',
             'description'         => 'nullable|string',
             'seo_title'           => 'nullable|string|max:255',
             'seo_description'     => 'nullable|string|max:320',
@@ -879,6 +883,8 @@ public function organization(int $id)
             'max_text'      => $data['contact_max']      ?? null,
         ];
         unset($data['contact_phone'], $data['contact_email'], $data['contact_telegram'], $data['contact_vk'], $data['contact_max']);
+
+        $data['works_online'] = $request->boolean('works_online');
 
         $specialist->update($data);
         $specialist->contacts()->updateOrCreate(['specialist_id' => $specialist->id], $contactData);

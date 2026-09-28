@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Concerns\HasGalleryPhotos;
+use App\Models\Concerns\HasLocalityScopes;
 
 
 class Organization extends Model
 {
-   use HasGalleryPhotos;
+   use HasGalleryPhotos, HasLocalityScopes;
 
    protected $fillable = [
         'is_verified',

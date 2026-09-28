@@ -36,6 +36,7 @@ public function index(Request $request)
     }
 
     $selectedSpecialization = $request->get('specialization');
+    $onlineOnly = $request->boolean('online');
 
     // 2. ТЕГИ: Берем только те, что относятся к специалистам, а не к врачам
     $specializations = FieldOfActivity::query()
@@ -46,12 +47,18 @@ public function index(Request $request)
         ->pluck('name'); 
 
     // 2.1. Считаем количество специалистов для каждого тега (и общий итог), с учётом города
+    // В каталоге города показываем специалистов этого города и всех, кто работает онлайн:
+    // при онлайн-работе география не играет роли.
     $specialistCountsBaseQuery = Specialist::query()
         ->when($cityId, function ($q) use ($cityId) {
-            $q->where('city_id', $cityId);
+            $q->where(function ($w) use ($cityId) {
+                $w->where('city_id', $cityId)->orWhere('works_online', true);
+            });
         });
 
     $totalSpecialistsCount = (clone $specialistCountsBaseQuery)->count();
+    // Онлайн-специалисты — из всех городов
+    $onlineSpecialistsCount = Specialist::where('works_online', true)->count();
 
     $specializationCounts = [];
     foreach ($specializations as $spec) {
@@ -67,8 +74,12 @@ public function index(Request $request)
     // 3. ЗАПРОС: Фильтруем список специалистов
     $items = Specialist::with(['promotions' => fn($q) => $q->active()])
         ->withAvg('reviews', 'rating')
-        ->when($cityId, function ($q) use ($cityId) {
-            $q->where('city_id', $cityId);
+        // Фильтр «Онлайн» — специалисты из всех городов; иначе специалисты города + все онлайн
+        ->when($onlineOnly, fn ($q) => $q->where('works_online', true))
+        ->when($cityId && !$onlineOnly, function ($q) use ($cityId) {
+            $q->where(function ($w) use ($cityId) {
+                $w->where('city_id', $cityId)->orWhere('works_online', true);
+            });
         })
         ->when($selectedSpecialization, function ($q) use ($selectedSpecialization) {
             $searchTerm = mb_substr($selectedSpecialization, 0, -3);
@@ -81,6 +92,7 @@ public function index(Request $request)
         ->appends(array_filter([
             'city_id' => $cityId,
             'specialization' => $selectedSpecialization,
+            'online' => $onlineOnly ? 1 : null,
         ]));
 
     // SEO: отдельные редактируемые шаблоны для каталога и для фильтра по специализации
@@ -99,6 +111,8 @@ public function index(Request $request)
         'seoMeta' => $seoMeta,
         'totalSpecialistsCount' => $totalSpecialistsCount,
         'specializationCounts' => $specializationCounts,
+        'onlineOnly' => $onlineOnly,
+        'onlineSpecialistsCount' => $onlineSpecialistsCount,
     ]);
 }
 
@@ -131,6 +145,7 @@ private function performStore(Request $request)
         'description'          => 'nullable|string',
         'exotic_animals'       => 'nullable|string',
         'On_site_assistance'   => 'nullable|string',
+        'works_online'         => 'nullable|boolean',
         'phone'                => 'nullable|string|max:255',
         'mail'                 => 'nullable|string|email|max:255',
         'messengers'           => 'nullable|array',
@@ -177,6 +192,7 @@ private function performStore(Request $request)
         'description'         => $validated['description'] ?? null,
         'exotic_animals'      => $request->has('exotic_animals') ? 'Да' : 'Нет',
         'On_site_assistance'  => $request->has('On_site_assistance') ? 'Да' : 'Нет',
+        'works_online'        => $request->boolean('works_online'),
         'photo'               => $photoPath,
     ]);
 

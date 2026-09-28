@@ -151,6 +151,22 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12">
+                                    <div class="p-3 rounded-3 h-100" style="background:#f0f8ff;border:1px solid #b2dff0;">
+                                        <div class="form-check form-switch d-flex align-items-center gap-2 m-0">
+                                            <input class="form-check-input flex-shrink-0" type="checkbox"
+                                                   name="works_online" id="works_online" value="1"
+                                                   style="width:42px;height:22px;cursor:pointer;accent-color:#1ccfc9;">
+                                            <label class="form-check-label m-0" for="works_online"
+                                                   style="font-size:13px;color:#374151;cursor:pointer;">
+                                                💻 Работает онлайн
+                                            </label>
+                                        </div>
+                                        <div class="text-muted mt-2" style="font-size:12px;">
+                                            Регион и город укажите в любом случае. Если работаете только онлайн, адрес можно не указывать. Такие специалисты показываются во всех городах.
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

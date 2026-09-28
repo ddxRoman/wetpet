@@ -16,12 +16,16 @@
         Пожалуйста, выберите город и обновите страницу — список клиник будет отображён только для выбранного города.
     </div>
     @else
+    @include('partials._other-locality-filter', [
+        'otherOnly' => $otherOnly ?? false,
+        'baseUrl'   => route('clinics.index'),
+    ])
     <div class="row g-4" id="clinics-grid">
 
         @if($clinics->isEmpty())
         <div class="col-12">
             <div class="alert alert-warning text-center">
-                Для города <strong>{{ $selectedCity }}</strong> клиник пока не найдено. <br>
+                @if(!empty($otherOnly)) Клиник из других населённых пунктов не найдено. @else Для города <strong>{{ $selectedCity }}</strong> клиник пока не найдено. @endif <br>
                 <button class="btn_add_clinic btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#addOrganizationModal"
@@ -47,6 +51,7 @@
         <div class="col-lg-3 col-md-4 col-12 clinic-item">
             <a href="{{ route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic->slug]) }}" title="Перейти в карточку клиники" class="text-decoration-none text-reset">
                 <div class="card catalog-card h-100 shadow-sm hover-shadow position-relative transition">
+                    @include('partials._other-locality-badge', ['entity' => $clinic])
                     {{-- Rating badge --}}
                     <div class="rating-badge position-absolute top-0 start-0 m-2 px-2 py-1 bg-warning text-dark rounded-pill d-flex align-items-center"
                         data-bs-toggle="tooltip"

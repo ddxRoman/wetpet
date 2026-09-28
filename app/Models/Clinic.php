@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\Concerns\HasGalleryPhotos;
+use App\Models\Concerns\HasLocalityScopes;
 
 
 class Clinic extends Model
 {
     use HasFactory;
-    use HasGalleryPhotos;
+    use HasGalleryPhotos, HasLocalityScopes;
 
     protected $fillable = [
         'is_verified',

@@ -46,6 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
             searchBtn.addEventListener('click', performFullSearch);
         }
 
+        // Пометка для записей из населённых пунктов, которых нет в списке городов
+        const otherBadge = (item) => item.other_locality
+            ? ' <span class="badge bg-secondary bg-opacity-75" style="font-size:10px;">Другой населенный пункт</span>'
+            : '';
+
         function renderResultItem(item) {
             switch (item.type) {
                 case 'clinic':
@@ -54,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <img src="${item.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
                             <div class="ms-2">
                                 <div class="result-title text-primary"><small>🏥 Клиника:</small> ${item.name}</div>
-                                <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}</div>
+                                <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}${otherBadge(item)}</div>
                             </div>
                         </a>`;
 
@@ -67,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="result-title text-success">
                                     <small>🏢</small> ${item.name} ${category}
                                 </div>
-                                <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}</div>
+                                <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}${otherBadge(item)}</div>
                             </div>
                         </a>`;
                 }

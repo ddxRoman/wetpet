@@ -19,7 +19,7 @@
                             <img src="{{ $clinic->logo ? Storage::url($clinic->logo) : asset('storage/clinics/logo/default-clinic.webp') }}" style="width: 80px; height: 80px; object-fit: cover;" class="rounded" alt="">
                             <div class="ms-3">
                                 <h5 class="mb-1"><a href="{{ route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic->slug]) }}">{{ $clinic->name }}</a></h5>
-                                <p class="text-muted mb-0">{{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }}</p>
+                                <p class="text-muted mb-0">{{ $clinic->city }}, {{ $clinic->street }} {{ $clinic->house }} @if($clinic->is_other_locality) <span class="badge bg-secondary bg-opacity-75">Другой населенный пункт</span> @endif</p>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                                 <h5 class="mb-1">
                                     <a href="{{ route('organizations.show', ['city' => $org->city_slug, 'slug' => $org->slug]) }}">{{ $org->name }}</a>
                                 </h5>
-                                <p class="text-muted mb-1">{{ $org->city }}, {{ $org->street }} {{ $org->house }}</p>
+                                <p class="text-muted mb-1">{{ $org->city }}, {{ $org->street }} {{ $org->house }} @if($org->is_other_locality) <span class="badge bg-secondary bg-opacity-75">Другой населенный пункт</span> @endif</p>
                                 @if($org->fieldOfActivity)
                                     <span class="badge bg-light text-dark border">{{ $org->fieldOfActivity->name }}</span>
                                 @endif
