@@ -23,8 +23,8 @@
     }
     .owner-tab {
         display: flex;
-        align-items: center;
-        gap: 8px;
+        flex-direction: column;
+        gap: 4px;
         flex-shrink: 0;
         padding: 10px 16px;
         border-radius: 12px;
@@ -36,6 +36,21 @@
         white-space: nowrap;
         transition: all .15s ease;
         border: 1px solid transparent;
+    }
+    .owner-tab__row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .owner-tab__address {
+        font-size: 12px;
+        font-weight: 400;
+        color: #9ca3af;
+        white-space: normal;
+        max-width: 260px;
+    }
+    .owner-tab--active .owner-tab__address {
+        color: rgba(255,255,255,.75);
     }
     .owner-tab:hover {
         background: #e9eaee;
@@ -99,12 +114,17 @@
             @endphp
             <a href="{{ route('owner.' . $entity['type'], $entity['id']) }}"
                class="owner-tab {{ $isActive ? 'owner-tab--active' : '' }} {{ !$entity['is_confirmed'] ? 'owner-tab--pending' : '' }}">
-                <span class="owner-tab__icon">{{ $entity['icon'] }}</span>
-                <span>{{ $entity['name'] }}</span>
-                @if($entity['is_confirmed'])
-                    <span class="owner-tab__badge owner-tab__badge--ok">✓ Подтверждено</span>
-                @else
-                    <span class="owner-tab__badge owner-tab__badge--wait">⏳ Проверка</span>
+                <span class="owner-tab__row">
+                    <span class="owner-tab__icon">{{ $entity['icon'] }}</span>
+                    <span>{{ $entity['name'] }}</span>
+                    @if($entity['is_confirmed'])
+                        <span class="owner-tab__badge owner-tab__badge--ok">✓ Подтверждено</span>
+                    @else
+                        <span class="owner-tab__badge owner-tab__badge--wait">⏳ Проверка</span>
+                    @endif
+                </span>
+                @if(!empty($entity['address']))
+                    <span class="owner-tab__address">📍 {{ $entity['address'] }}</span>
                 @endif
             </a>
         @endforeach

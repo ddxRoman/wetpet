@@ -158,24 +158,28 @@ class OwnerCabinetController extends Controller
         $user = Auth::user();
         $entities = collect();
 
-        foreach (ClinicOwner::where('user_id', $user->id)->get() as $row) {
+        foreach (ClinicOwner::with('clinic')->where('user_id', $user->id)->get() as $row) {
             $entities->push([
-                'id' => $row->clinic_id, 'type' => 'clinic', 'name' => $row->clinic?->name ?? 'Клиника', 'is_confirmed' => $row->is_confirmed, 'icon' => '🏥'
+                'id' => $row->clinic_id, 'type' => 'clinic', 'name' => $row->clinic?->name ?? 'Клиника',
+                'address' => $this->entityAddressLine($row->clinic), 'is_confirmed' => $row->is_confirmed, 'icon' => '🏥'
             ]);
         }
-        foreach (OrganizationOwner::where('user_id', $user->id)->get() as $row) {
+        foreach (OrganizationOwner::with('organization')->where('user_id', $user->id)->get() as $row) {
             $entities->push([
-                'id' => $row->organization_id, 'type' => 'organization', 'name' => $row->organization?->name ?? 'Организация', 'is_confirmed' => $row->is_confirmed, 'icon' => '🏢'
+                'id' => $row->organization_id, 'type' => 'organization', 'name' => $row->organization?->name ?? 'Организация',
+                'address' => $this->entityAddressLine($row->organization), 'is_confirmed' => $row->is_confirmed, 'icon' => '🏢'
             ]);
         }
-        foreach (DoctorOwner::where('user_id', $user->id)->get() as $row) {
+        foreach (DoctorOwner::with('doctor.city')->where('user_id', $user->id)->get() as $row) {
             $entities->push([
-                'id' => $row->doctor_id, 'type' => 'doctor', 'name' => $row->doctor?->name ?? 'Врач', 'is_confirmed' => $row->is_confirmed, 'icon' => '👨‍⚕️'
+                'id' => $row->doctor_id, 'type' => 'doctor', 'name' => $row->doctor?->name ?? 'Врач',
+                'address' => $this->entityAddressLine($row->doctor), 'is_confirmed' => $row->is_confirmed, 'icon' => '👨‍⚕️'
             ]);
         }
-        foreach (SpecialistOwner::where('user_id', $user->id)->get() as $row) {
+        foreach (SpecialistOwner::with('specialist.city')->where('user_id', $user->id)->get() as $row) {
             $entities->push([
-                'id' => $row->specialist_id, 'type' => 'specialist', 'name' => $row->specialist?->name ?? 'Специалист', 'is_confirmed' => $row->is_confirmed, 'icon' => '🩺'
+                'id' => $row->specialist_id, 'type' => 'specialist', 'name' => $row->specialist?->name ?? 'Специалист',
+                'address' => $this->entityAddressLine($row->specialist), 'is_confirmed' => $row->is_confirmed, 'icon' => '🩺'
             ]);
         }
 
@@ -185,6 +189,30 @@ class OwnerCabinetController extends Controller
     /**
      * Получить только сущности на модерации
      */
+    /**
+     * Короткий адрес объекта для плашки-переключателя кабинетов.
+     * У клиник/организаций город хранится строкой; у врачей/специалистов — связью с cities.
+     */
+    private function entityAddressLine($entity): ?string
+    {
+        if (!$entity) {
+            return null;
+        }
+
+        if ($entity instanceof Clinic || $entity instanceof Organization) {
+            $parts = [$entity->city, $entity->street, $entity->house];
+        } else {
+            // Doctor / Specialist
+            $cityName = $entity->city?->name;
+            $parts = [$cityName, $entity->street ?? null, $entity->house ?? null];
+        }
+
+        $line = implode(', ', array_filter($parts, fn ($p) => filled($p)));
+
+        return $line !== '' ? $line : null;
+    }
+
+
     private function getPendingOwners()
     {
         $this->purgeOrphanedOwnerships();
@@ -1025,14 +1053,26 @@ public function organization(int $id)
     public function savePrice(Request $request)
     {
         $request->validate([
-            'entity_type' => 'required|in:clinic,organization,doctor,specialist',
-            'entity_id'   => 'required|integer',
-            'service_id'  => 'required|exists:services,id',
-            'price'       => 'required|numeric|min:0',
-            'currency'    => 'nullable|string|max:10',
+            'entity_type'      => 'required|in:clinic,organization,doctor,specialist',
+            'entity_id'        => 'required|integer',
+            'service_id'       => 'required_without:new_service_name|nullable|exists:services,id',
+            'new_service_name' => 'required_without:service_id|nullable|string|max:255',
+            'price'            => 'required|numeric|min:0',
+            'currency'         => 'nullable|string|max:10',
         ]);
 
         $this->authorizeOwner($request->entity_type, $request->entity_id);
+
+        // Владелец может не найти нужную услугу в каталоге и ввести своё название —
+        // тогда создаём (или переиспользуем, если такая уже есть) услугу на лету.
+        if ($request->filled('new_service_name')) {
+            $service = Service::firstOrCreate([
+                'name' => trim($request->new_service_name),
+            ]);
+            $serviceId = $service->id;
+        } else {
+            $serviceId = $request->service_id;
+        }
 
         $morphMap = [
             'clinic'       => Clinic::class,
@@ -1045,7 +1085,7 @@ public function organization(int $id)
             [
                 'priceable_type' => $morphMap[$request->entity_type],
                 'priceable_id'   => $request->entity_id,
-                'service_id'     => $request->service_id,
+                'service_id'     => $serviceId,
             ],
             [
                 'price'    => $request->price,

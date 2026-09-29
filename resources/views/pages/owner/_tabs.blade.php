@@ -259,7 +259,8 @@
                     <div id="service-search-results" class="service-search-dropdown d-none"></div>
                 </div>
                 <div class="form-text" style="font-size:11px;">
-                    По умолчанию показаны услуги вашей специализации. Чтобы найти любую другую — начните печатать.
+                    По умолчанию показаны услуги вашей специализации. Чтобы найти любую другую — начните печатать,
+                    а если нужной услуги нет в каталоге — выберите «+ Новая услуга» вверху списка и впишите название.
                 </div>
             </div>
 
@@ -344,6 +345,16 @@
     }
     .service-search-item:last-child { border-bottom: none; }
     .service-search-item:hover { background: #f0f5ff; }
+    .service-search-item--new {
+        color: #2563eb;
+        font-weight: 600;
+        background: #f8faff;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        border-bottom: 1px solid #e5edff;
+    }
+    .service-search-item--new:hover { background: #eaf1ff; }
     .service-search-item .svc-category {
         font-size: 11px;
         color: #9ca3af;
@@ -384,13 +395,18 @@
     const hiddenInput   = document.getElementById('price-service');
     const dropdown      = document.getElementById('service-search-results');
 
+    const newServiceItemHtml =
+        '<div class="service-search-item service-search-item--new" data-action="new-service">+ Новая услуга</div>';
+
     function renderRelevant() {
         if (!relevantServices.length) {
-            dropdown.innerHTML = '<div class="service-search-empty">Нет готовых услуг для вашей специализации — начните вводить текст, чтобы найти услугу в общем списке</div>';
+            dropdown.innerHTML = newServiceItemHtml +
+                '<div class="service-search-empty">Нет готовых услуг для вашей специализации — начните вводить текст, чтобы найти услугу в общем списке</div>';
             dropdown.classList.remove('d-none');
             return;
         }
         dropdown.innerHTML =
+            newServiceItemHtml +
             '<div class="service-search-group-label">Услуги вашей специализации</div>' +
             relevantServices.map(svc => `
                 <div class="service-search-item" data-id="${svc.id}" data-name="${svc.name.replace(/"/g, '&quot;')}">
@@ -402,11 +418,13 @@
 
     function renderSearch(list) {
         if (!list.length) {
-            dropdown.innerHTML = '<div class="service-search-empty">Ничего не найдено</div>';
+            dropdown.innerHTML = newServiceItemHtml +
+                '<div class="service-search-empty">Ничего не найдено — можно добавить услугу с таким названием</div>';
             dropdown.classList.remove('d-none');
             return;
         }
         dropdown.innerHTML =
+            newServiceItemHtml +
             '<div class="service-search-group-label">Результаты поиска (все услуги)</div>' +
             list.slice(0, 50).map(svc => `
                 <div class="service-search-item" data-id="${svc.id}" data-name="${svc.name.replace(/"/g, '&quot;')}">
@@ -418,6 +436,9 @@
     }
 
     input.addEventListener('focus', function () {
+        // Если пользователь вводит название новой услуги — поиск не мешаем
+        if (wrap.dataset.mode === 'create') return;
+
         // По умолчанию показываем услуги своей специализации
         if (!this.value.trim()) {
             renderRelevant();
@@ -425,6 +446,9 @@
     });
 
     input.addEventListener('input', function () {
+        // В режиме создания новой услуги просто печатаем название, без поиска
+        if (wrap.dataset.mode === 'create') return;
+
         const q = this.value.trim().toLowerCase();
         hiddenInput.value = ''; // сброс выбора при ручном вводе
 
@@ -437,9 +461,34 @@
         renderSearch(filtered);
     });
 
+    const wrap = document.querySelector('.service-search-wrap');
+
+    function enterCreateMode() {
+        wrap.dataset.mode = 'create';
+        hiddenInput.value = '';
+        input.value = '';
+        input.placeholder = 'Введите название новой услуги...';
+        dropdown.classList.add('d-none');
+        input.focus();
+    }
+
+    function exitCreateMode() {
+        if (wrap.dataset.mode === 'create') {
+            wrap.dataset.mode = 'pick';
+            input.placeholder = 'Выберите из списка или начните вводить для поиска...';
+        }
+    }
+
     dropdown.addEventListener('click', function (e) {
         const item = e.target.closest('.service-search-item');
         if (!item) return;
+
+        if (item.dataset.action === 'new-service') {
+            enterCreateMode();
+            return;
+        }
+
+        exitCreateMode();
         hiddenInput.value = item.dataset.id;
         input.value = item.dataset.name;
         dropdown.classList.add('d-none');
@@ -453,14 +502,34 @@
 
     // ── Сохранение цены ──
     document.getElementById('price-save-btn')?.addEventListener('click', function () {
-        const serviceId = hiddenInput.value;
-        const price     = document.getElementById('price-amount').value;
-        const currency  = document.getElementById('price-currency').value;
-        const status    = document.getElementById('price-save-status');
+        const isCreating   = wrap.dataset.mode === 'create';
+        const serviceId    = hiddenInput.value;
+        const newName      = input.value.trim();
+        const price        = document.getElementById('price-amount').value;
+        const currency     = document.getElementById('price-currency').value;
+        const status       = document.getElementById('price-save-status');
 
-        if (!serviceId || !price) { status.textContent = 'Выберите услугу из списка и укажите цену'; return; }
+        if (isCreating) {
+            if (!newName)  { status.textContent = 'Введите название новой услуги'; return; }
+        } else if (!serviceId) {
+            status.textContent = 'Выберите услугу из списка';
+            return;
+        }
+        if (!price) { status.textContent = 'Укажите цену'; return; }
 
         status.textContent = 'Сохранение…';
+
+        const payload = {
+            entity_type: '{{ $type }}',
+            entity_id:   {{ $entityId }},
+            price:       price,
+            currency:    currency,
+        };
+        if (isCreating) {
+            payload.new_service_name = newName;
+        } else {
+            payload.service_id = serviceId;
+        }
 
         fetch('/owner/prices/save', {
             method: 'POST',
@@ -469,13 +538,7 @@
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({
-                entity_type: '{{ $type }}',
-                entity_id:   {{ $entityId }},
-                service_id:  serviceId,
-                price:       price,
-                currency:    currency,
-            })
+            body: JSON.stringify(payload)
         })
         .then(r => r.json())
         .then(data => {

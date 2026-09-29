@@ -28,10 +28,14 @@
                 <select name="specialization" class="form-select" required>
                     <option value="">— выберите специализацию —</option>
                     @php
-                        $specializationOptions = \App\Models\Service::whereNotNull('specialization_doctor')
-                            ->distinct()
-                            ->orderBy('specialization_doctor')
-                            ->pluck('specialization_doctor');
+                        // У врачей (type=doctor) — только направления с activity=doctor,
+                        // у специалистов (не врачей) — все остальные направления type=specialist.
+                        $specializationOptions = \App\Models\FieldOfActivity::where('type', 'specialist')
+                            ->when($type === 'doctor',
+                                fn ($q) => $q->where('activity', 'doctor'),
+                                fn ($q) => $q->where('activity', '!=', 'doctor'))
+                            ->orderBy('name')
+                            ->pluck('name');
                     @endphp
                     @foreach($specializationOptions as $option)
                         <option value="{{ $option }}" {{ old('specialization', $entity->specialization) === $option ? 'selected' : '' }}>
