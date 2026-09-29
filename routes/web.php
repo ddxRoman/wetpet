@@ -208,7 +208,19 @@ Route::post('/add-organization', [OrganizationController::class, 'submit'])
 Route::post('/submit-organization', [OrganizationController::class, 'submit'])->name('submit-organization');
 
 Route::get('/clinics/{city}/{clinic:slug}', [ClinicController::class, 'show'])
-    ->name('clinics.show');
+    ->name('clinics.show')
+    // Карточку могли перенести в «Организации» (сфера деятельности изменена с
+    // «Ветеринарная клиника») — старую ссылку /clinics/... ведём на /organizations/...
+    ->missing(function (\Illuminate\Http\Request $request) {
+        $organization = \App\Models\Organization::where('slug', $request->route('clinic'))->first();
+        if ($organization) {
+            return redirect()->route('organizations.show', [
+                'city' => $organization->city_slug,
+                'slug' => $organization->slug,
+            ], 301);
+        }
+        abort(404);
+    });
 
 Route::post('/add-specialist', [SpecialistCreateController::class, 'store']);
 

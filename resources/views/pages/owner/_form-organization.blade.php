@@ -9,24 +9,36 @@
 
         {{-- ── Название и сфера деятельности ── --}}
         <div class="row g-3">
-            <div class="col-md-{{ $type === 'organization' ? '8' : '12' }}">
+            <div class="col-md-8">
                 <label class="form-label fw-medium">Название {{ $type === 'organization' ? 'организации' : 'клиники' }}</label>
                 <input type="text" name="name" class="form-control" value="{{ old('name', $entity->name) }}" required>
             </div>
 
-            @if($type === 'organization')
-                <div class="col-md-4">
-                    <label class="form-label fw-medium">Сфера деятельности</label>dasdsadweqweqw
-                    <select name="field_of_activity_id" class="form-select">
-                        <option value="">— не выбрано —</option>
-                        @foreach(\App\Models\FieldOfActivity::where('type', 'organization')->orderBy('name')->get() as $field)
-                            <option value="{{ $field->id }}" {{ (old('field_of_activity_id', $entity->field_of_activity_id) == $field->id) ? 'selected' : '' }}>
-                                {{ $field->name }}
-                            </option>
-                        @endforeach
-                    </select>
+            @php
+                $activityFields = \App\Models\FieldOfActivity::where('type', 'organization')->orderBy('name')->get();
+                // У клиники своей сферы в БД нет — по умолчанию это «Ветеринарная клиника».
+                $currentFieldId = $type === 'organization'
+                    ? old('field_of_activity_id', $entity->field_of_activity_id)
+                    : old('field_of_activity_id', optional(\App\Models\FieldOfActivity::vetClinic())->id);
+            @endphp
+            <div class="col-md-4">
+                <label class="form-label fw-medium">Сфера деятельности</label>
+                <select name="field_of_activity_id" class="form-select">
+                    <option value="">— не выбрано —</option>
+                    @foreach($activityFields as $field)
+                        <option value="{{ $field->id }}" {{ $currentFieldId == $field->id ? 'selected' : '' }}>
+                            {{ $field->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <div class="form-text">
+                    @if($type === 'organization')
+                        При выборе «{{ \App\Models\FieldOfActivity::VET_CLINIC_NAME }}» карточка перейдёт в раздел «Клиники».
+                    @else
+                        При выборе другой сферы карточка перейдёт в раздел «Организации».
+                    @endif
                 </div>
-            @endif
+            </div>
 
             {{-- ── Slug ── --}}
             <!-- <div class="col-12">

@@ -13,6 +13,7 @@ use App\Models\SpecialistOwner;
 use App\Models\Service;
 use App\Models\FieldOfActivity;
 use App\Models\Price;
+use App\Services\EntityTypeConverter;
 use App\Models\EntityPhoto;
 use App\Models\OwnerFeedback;
 use Illuminate\Support\Facades\DB;
@@ -299,7 +300,11 @@ class OwnerCabinetController extends Controller
             ->where('activity', 'doctor')
             ->pluck('name');
 
-        $relevantServices = Service::whereIn('specialization_doctor', $doctorActivityNames)
+        // + услуги, помеченные направлением «Ветеринарная клиника» в поле «Специализация организации»
+        $relevantServices = Service::where(function ($q) use ($doctorActivityNames) {
+                $q->whereIn('specialization_doctor', $doctorActivityNames)
+                  ->orWhere('specialization', FieldOfActivity::VET_CLINIC_NAME);
+            })
             ->orderBy('name')->get()->unique('name')->values();
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
@@ -334,7 +339,12 @@ class OwnerCabinetController extends Controller
             'workdays'        => 'nullable|string|max:255',
             'seo_title'       => 'nullable|string|max:255',
             'seo_description' => 'nullable|string|max:320',
+            'field_of_activity_id' => 'nullable|exists:field_of_activities,id',
         ]);
+
+        // Поле сферы деятельности в таблице clinics не хранится — это только триггер переноса.
+        $fieldId = $data['field_of_activity_id'] ?? null;
+        unset($data['field_of_activity_id']);
 
         if ($request->hasFile('logo')) {
             $request->validate(['logo' => 'image|mimes:jpeg,png,jpg,webp|max:2048']);
@@ -352,6 +362,21 @@ class OwnerCabinetController extends Controller
         }
 
         $clinic->update($data);
+
+        // Выбрана сфера деятельности, отличная от «Ветеринарная клиника» —
+        // карточка переезжает из «Клиник» в «Организации» (меняется и URL).
+        if ($fieldId) {
+            $field = FieldOfActivity::find($fieldId);
+
+            if ($field && !$field->isVetClinic()) {
+                $organization = app(EntityTypeConverter::class)
+                    ->clinicToOrganization($clinic->fresh(), (int) $field->id);
+
+                return redirect()
+                    ->route('owner.organization', ['id' => $organization->id, 'tab' => 'info'])
+                    ->with('success', 'Сфера деятельности изменена: карточка перенесена в раздел «Организации».');
+            }
+        }
 
         return back()->with('success', 'Данные клиники обновлены');
     }
@@ -395,9 +420,22 @@ public function organization(int $id)
         // (FieldOfActivity.name совпадает с Service.specialization_doctor по значению)
         $activityName = $organization->activityType->name ?? null;
 
-        $relevantServices = $activityName
-            ? Service::where('specialization_doctor', $activityName)->orderBy('name')->get()->unique('name')->values()
-            : collect();
+        // Услуги организации подбираются по её направлению:
+        //  - «Специализация организации» услуги = направление организации (например, «Ветаптека»);
+        //  - «Специализация врача» услуги = один из специалистов этого направления
+        //    (у «Груминг салон» это «Грумер» — связь по колонке activity в field_of_activities);
+        //  - старые данные, где название направления записано прямо в specialization_doctor.
+        $relevantServices = collect();
+        if ($activityName) {
+            $relatedSpecialists = FieldOfActivity::specialistNamesForActivity($organization->activityType->activity ?? null);
+
+            $relevantServices = Service::where(function ($q) use ($activityName, $relatedSpecialists) {
+                    $q->where('specialization', $activityName)
+                      ->orWhere('specialization_doctor', $activityName)
+                      ->orWhereIn('specialization_doctor', $relatedSpecialists);
+                })
+                ->orderBy('name')->get()->unique('name')->values();
+        }
 
         $allServices = Service::orderBy('name')->get()->unique('name')->values();
 
@@ -716,6 +754,21 @@ public function organization(int $id)
         }
 
         $organization->update($data);
+
+        // Выбрана сфера «Ветеринарная клиника» — карточка переезжает из
+        // «Организаций» в «Клиники» (меняется и URL: /organizations/... → /clinics/...).
+        if (!empty($data['field_of_activity_id'])) {
+            $field = FieldOfActivity::find($data['field_of_activity_id']);
+
+            if ($field && $field->isVetClinic()) {
+                $clinic = app(EntityTypeConverter::class)
+                    ->organizationToClinic($organization->fresh());
+
+                return redirect()
+                    ->route('owner.clinic', ['id' => $clinic->id, 'tab' => 'info'])
+                    ->with('success', 'Сфера деятельности изменена: карточка перенесена в раздел «Клиники».');
+            }
+        }
 
         return back()->with('success', 'Данные организации обновлены');
     }

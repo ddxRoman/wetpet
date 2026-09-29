@@ -233,7 +233,17 @@ return redirect()->to($redirectUrl)->with('success', $successMessage);
         ->withCount('reviews') // Теперь будет искать по reviewable_id
         ->withAvg('reviews', 'rating')
         ->where('slug', $slug)
-        ->firstOrFail();
+        ->first();
+
+    // Карточку могли перенести в «Клиники» (сфера деятельности «Ветеринарная клиника») —
+    // старую ссылку /organizations/... ведём на новую /clinics/... (slug сохраняется).
+    if (!$organization) {
+        $clinic = Clinic::where('slug', $slug)->first();
+        if ($clinic) {
+            return redirect()->route('clinics.show', ['city' => $clinic->city_slug, 'clinic' => $clinic->slug], 301);
+        }
+        abort(404);
+    }
 
     // Каноническая ссылка вида /organizations/{city}/{slug}: если сегмент города
     // в URL не совпадает с актуальным городом организации — редиректим на верный адрес.
