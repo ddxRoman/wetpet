@@ -183,7 +183,7 @@
     <div class="mb-4 mt-5">
         <h2 class="fs-5 fw-semibold mb-3">Доктора клиники</h2>
         @php
-            $doctors = \App\Models\Doctor::where('clinic_id', $clinic->id)->get();
+            $doctors = $clinic->doctors()->get();
         @endphp
 
         <div class="row g-3">

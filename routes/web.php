@@ -112,6 +112,10 @@ Route::post('/account/update-city', [ProfileController::class, 'updateCity'])->n
 
 
 Route::get('/api/clinics/by-city/{cityId}', [ClinicController::class, 'clinicsByCity']);
+// Поиск мест работы врача/специалиста (клиники / организации) — для выбора нескольких мест
+Route::get('/api/workplaces/{type}', [\App\Http\Controllers\WorkplaceSearchController::class, 'search'])
+    ->whereIn('type', ['clinics', 'organizations'])
+    ->name('api.workplaces.search');
 
 Route::get('/search', [ClinicController::class, 'fullSearch'])->name('search.results');
 Route::get('/api/clinics-search', [ClinicController::class, 'liveSearch']);

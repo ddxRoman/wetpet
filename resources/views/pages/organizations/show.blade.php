@@ -188,7 +188,7 @@
     <div class="mb-4 mt-5">
         <h2 class="fs-5 fw-semibold mb-3">Специалисты организации</h2>
         @php
-            $specialists = \App\Models\Specialist::where('organization_id', $organization->id)->withAvg('reviews', 'rating')->orderBy('name')->get();
+            $specialists = $organization->specialists()->withAvg('reviews', 'rating')->orderBy('name')->get();
         @endphp
 
         <div class="row g-3">

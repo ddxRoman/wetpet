@@ -40,7 +40,7 @@ class SpecialistResource extends Resource
 
         $set('slug', Specialist::generateSlug(
             $get('name'),
-            $get('organization_id'),
+            collect((array) $get('organizations'))->first(),
             $get('street'),
             $get('house'),
         ));
@@ -103,16 +103,18 @@ class SpecialistResource extends Resource
                 ->preload()
                 ->required(),
 
-            Forms\Components\Select::make('organization_id')
-                ->label('Организация')
-                ->relationship('organization', 'name')
+            Forms\Components\Select::make('organizations')
+                ->label('Организации (места работы)')
+                ->relationship('organizations', 'name')
+                ->multiple()
                 ->searchable()
-                ->preload()
                 ->live()
-                ->helperText('Если специалист работает в организации — регион и город подтянутся из её адреса.')
+                ->helperText('Специалист может работать сразу в нескольких организациях. Основным остаётся текущее место работы, пока оно в списке (по нему строится адрес страницы); если его убрать — основным станет первое из выбранных. Регион и город подтягиваются из первой выбранной организации.')
                 ->afterStateUpdated(function ($state, callable $set, callable $get, string $operation) {
-                    if ($state) {
-                        $organization = \App\Models\Organization::find($state);
+                    $firstId = collect((array) $state)->first();
+
+                    if ($firstId) {
+                        $organization = \App\Models\Organization::find($firstId);
 
                         if ($organization) {
                             $cityName = trim((string) $organization->city);
@@ -280,8 +282,9 @@ class SpecialistResource extends Resource
                     ->searchable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('organization.name')
-                    ->label('Организация')
+                Tables\Columns\TextColumn::make('organizations.name')
+                    ->label('Организации')
+                    ->badge()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('experience_label')
@@ -307,9 +310,9 @@ class SpecialistResource extends Resource
                     ->falseLabel('Только непроверенные')
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('organization_id')
+                Tables\Filters\SelectFilter::make('organizations')
                     ->label('Организация')
-                    ->relationship('organization', 'name')
+                    ->relationship('organizations', 'name')
                     ->searchable()
                     ->preload(),
 

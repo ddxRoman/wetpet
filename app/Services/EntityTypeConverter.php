@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Clinic;
 use App\Models\ClinicOwner;
-use App\Models\Doctor;
 use App\Models\EntityPhoto;
 use App\Models\Organization;
 use App\Models\OrganizationOwner;
@@ -13,7 +12,6 @@ use App\Models\OwnershipDocument;
 use App\Models\Price;
 use App\Models\Promotion;
 use App\Models\Review;
-use App\Models\Specialist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -53,9 +51,8 @@ class EntityTypeConverter
                 ClinicOwner::class,       'clinic_id',       $clinic->id
             );
 
-            // У клиники нет «специалистов организации» — просто снимаем привязку.
-            Specialist::where('organization_id', $organization->id)->update(['organization_id' => null]);
-
+            // Специалисты организации остаются в системе: при удалении организации она
+            // убирается из их мест работы (событие deleting в модели Organization).
             $organization->delete();
 
             return $clinic;
@@ -79,10 +76,8 @@ class EntityTypeConverter
                 OrganizationOwner::class, 'organization_id', $organization->id
             );
 
-            // Врачи клиники остаются в системе, но без привязки к клинике
-            // (так же, как при удалении карточки владельцем).
-            Doctor::where('clinic_id', $clinic->id)->update(['clinic_id' => null]);
-
+            // Врачи клиники остаются в системе: при удалении клиники она убирается
+            // из их мест работы (событие deleting в модели Clinic).
             // Награды и связь с услугами (clinic_service) удалятся каскадом вместе с клиникой.
             $clinic->delete();
 

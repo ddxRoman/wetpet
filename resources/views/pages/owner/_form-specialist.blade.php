@@ -99,40 +99,62 @@
 
         <hr class="my-4 opacity-25">
 
-        {{-- ── Место работы ── --}}
-        <h6 class="fw-semibold mb-3">Место работы</h6>
+        {{-- ── Места работы (можно выбрать несколько) ── --}}
+        <h6 class="fw-semibold mb-3">Места работы</h6>
         <div class="row g-3">
-            @if($type === 'doctor')
-                @php
-                    $currentClinicId = old('clinic_id', $entity->clinic_id);
-                    $currentClinic   = $currentClinicId ? \App\Models\Clinic::find($currentClinicId) : null;
-                @endphp
-                <div class="col-12">
-                    <label class="form-label fw-medium">Клиника</label>
-                    <select name="clinic_id" id="owner-doctor-workplace-select" class="form-select" data-current="{{ $currentClinicId }}">
-                        <option value="">— не выбрано (частная практика) —</option>
-                        @if($currentClinic)
-                            <option value="{{ $currentClinic->id }}" selected>{{ $currentClinic->name }}</option>
-                        @endif
-                    </select>
-                    <div class="form-text">Список зависит от выбранного города.</div>
+            @php
+                $isDoctorForm = $type === 'doctor';
+                $workplaceRelation = $isDoctorForm ? 'clinics' : 'organizations';
+                $workplaceField    = $isDoctorForm ? 'clinic_ids' : 'organization_ids';
+                $currentWorkplaces = $entity->{$workplaceRelation};
+                $selectedIds = collect(old($workplaceField, $currentWorkplaces->pluck('id')->all()))->map(fn ($v) => (int) $v)->all();
+                $selectedModels = $currentWorkplaces->whereIn('id', $selectedIds);
+                // Выбранные, но ещё не сохранённые (после ошибки валидации) места работы
+                $missingIds = array_diff($selectedIds, $selectedModels->pluck('id')->all());
+                if ($missingIds) {
+                    $extra = $isDoctorForm
+                        ? \App\Models\Clinic::whereIn('id', $missingIds)->get()
+                        : \App\Models\Organization::whereIn('id', $missingIds)->get();
+                    $selectedModels = $selectedModels->concat($extra);
+                }
+            @endphp
+            @php
+                // Основное место работы (по нему формируется адрес страницы) показываем первым
+                $primaryWorkplaceId = (int) ($isDoctorForm ? $entity->clinic_id : $entity->organization_id);
+                $selectedModels = $selectedModels->sortByDesc(fn ($m) => (int) $m->id === $primaryWorkplaceId)->values();
+            @endphp
+            <div class="col-12">
+                <label class="form-label fw-medium">{{ $isDoctorForm ? 'Клиники' : 'Организации' }}</label>
+
+                {{-- Мультивыбор на чистом JS (не зависит от select2): выбранные места — «чипсы», поиск — по всем городам --}}
+                <div id="owner-workplaces" class="position-relative"
+                     data-type="{{ $workplaceRelation }}"
+                     data-field="{{ $workplaceField }}"
+                     data-placeholder="{{ $isDoctorForm ? 'Начните вводить название клиники…' : 'Начните вводить название организации…' }}">
+                    <div class="form-control d-flex flex-wrap align-items-center gap-2 h-auto" data-role="box" style="min-height:44px;cursor:text;">
+                        <span class="d-contents" data-role="chips">
+                            @foreach($selectedModels as $place)
+                                <span class="badge rounded-pill text-bg-light border d-inline-flex align-items-center gap-2 py-2 px-3 fw-normal text-wrap text-start" data-chip>
+                                    <span data-role="label">{{ $place->name }}{{ $place->city ? ' — ' . $place->city : '' }}{{ $place->street ? ', ' . trim($place->street . ' ' . $place->house) : '' }}</span>
+                                    <span class="text-primary small d-none" data-primary>основное</span>
+                                    <button type="button" class="btn-close" style="font-size:.6rem;" aria-label="Убрать" data-remove></button>
+                                    <input type="hidden" name="{{ $workplaceField }}[]" value="{{ $place->id }}">
+                                </span>
+                            @endforeach
+                        </span>
+                        <input type="text" data-role="input" autocomplete="off" class="border-0 flex-grow-1 bg-transparent"
+                               style="min-width:220px;outline:none;"
+                               placeholder="{{ $isDoctorForm ? 'Начните вводить название клиники…' : 'Начните вводить название организации…' }}">
+                    </div>
+                    <div class="list-group position-absolute w-100 shadow d-none" data-role="dropdown"
+                         style="z-index:1050;max-height:260px;overflow:auto;top:100%;"></div>
                 </div>
-            @else
-                @php
-                    $currentOrganizationId = old('organization_id', $entity->organization_id);
-                    $currentOrganization   = $currentOrganizationId ? \App\Models\Organization::find($currentOrganizationId) : null;
-                @endphp
-                <div class="col-12">
-                    <label class="form-label fw-medium">Организация</label>
-                    <select name="organization_id" id="owner-specialist-workplace-select" class="form-select" data-current="{{ $currentOrganizationId }}">
-                        <option value="">— не выбрано (частная практика) —</option>
-                        @if($currentOrganization)
-                            <option value="{{ $currentOrganization->id }}" selected>{{ $currentOrganization->name }}</option>
-                        @endif
-                    </select>
-                    <div class="form-text">Список зависит от выбранного города.</div>
+
+                <div class="form-text">
+                    Можно указать несколько мест работы, в том числе в разных городах: начните вводить название и выберите из списка.
+                    Если не выбрано ничего — частная практика. Первое место в списке считается основным.
                 </div>
-            @endif
+            </div>
         </div>
 
         <hr class="my-4 opacity-25">
@@ -228,11 +250,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     var regionSelect     = document.getElementById('owner-specialist-region-select');
     var citySelect       = document.getElementById('owner-specialist-city-select');
-    var workplaceSelect  = document.getElementById('owner-doctor-workplace-select')
-        || document.getElementById('owner-specialist-workplace-select');
     if (!regionSelect || !citySelect) return;
 
-    var isDoctor    = !!document.getElementById('owner-doctor-workplace-select');
     var hasSelect2  = !!(window.jQuery && typeof window.jQuery.fn.select2 === 'function');
 
     function initSelect2(select, placeholder) {
@@ -276,41 +295,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var currentRegion       = regionSelect.dataset.current || '';
     var currentCityId       = citySelect.dataset.current || '';
-    var currentWorkplaceId  = workplaceSelect ? (workplaceSelect.dataset.current || '') : '';
 
     initSelect2(regionSelect, 'Начните вводить регион...');
     initSelect2(citySelect, 'Начните вводить город...');
-    initSelect2(workplaceSelect, isDoctor ? 'Начните вводить клинику...' : 'Начните вводить организацию...');
-
-    function loadWorkplaces(cityId, selectedId) {
-        if (!workplaceSelect) return;
-        if (!cityId) {
-            fillOptions(workplaceSelect, [], selectedId, true);
-            return;
-        }
-        var url = isDoctor
-            ? '/api/clinics/by-city/' + encodeURIComponent(cityId)
-            : '/get-organizations-by-city-id/' + encodeURIComponent(cityId);
-
-        fetch(url)
-            .then(function (res) { return res.json(); })
-            .then(function (list) {
-                fillOptions(workplaceSelect, Array.isArray(list) ? list : [], selectedId, true);
-            })
-            .catch(function (err) { console.error('Не удалось загрузить список по городу:', err); });
-    }
 
     function loadCities(region, selectedCityId) {
         if (!region) {
             fillOptions(citySelect, [], selectedCityId, true);
-            loadWorkplaces(null, null);
             return;
         }
         fetch('/api/cities/by-region/' + encodeURIComponent(region))
             .then(function (res) { return res.json(); })
             .then(function (cities) {
                 fillOptions(citySelect, Array.isArray(cities) ? cities : [], selectedCityId, true);
-                loadWorkplaces(selectedCityId || citySelect.value, currentWorkplaceId);
             })
             .catch(function (err) { console.error('Не удалось загрузить города региона:', err); });
     }
@@ -327,8 +324,149 @@ document.addEventListener('DOMContentLoaded', function () {
         loadCities(regionSelect.value, null);
     });
 
-    citySelect.addEventListener('change', function () {
-        loadWorkplaces(citySelect.value, null);
-    });
 });
+</script>
+
+<script>
+// Мультивыбор мест работы: работает без select2/jQuery.
+(function () {
+    var root = document.getElementById('owner-workplaces');
+    if (!root) return;
+
+    var type     = root.dataset.type;   // clinics | organizations
+    var field    = root.dataset.field;  // clinic_ids | organization_ids
+    var box      = root.querySelector('[data-role="box"]');
+    var chips    = root.querySelector('[data-role="chips"]');
+    var input    = root.querySelector('[data-role="input"]');
+    var dropdown = root.querySelector('[data-role="dropdown"]');
+    var cityEl   = document.getElementById('owner-specialist-city-select');
+
+    var timer = null;
+    var requestId = 0;
+
+    function selectedIds() {
+        return Array.prototype.map.call(
+            chips.querySelectorAll('input[type="hidden"]'),
+            function (i) { return String(i.value); }
+        );
+    }
+
+    function refreshPrimary() {
+        var items = chips.querySelectorAll('[data-chip]');
+        Array.prototype.forEach.call(items, function (chip, index) {
+            chip.querySelector('[data-primary]').classList.toggle('d-none', !(index === 0 && items.length > 1));
+        });
+    }
+
+    function addChip(id, label) {
+        if (selectedIds().indexOf(String(id)) !== -1) return;
+
+        var chip = document.createElement('span');
+        chip.className = 'badge rounded-pill text-bg-light border d-inline-flex align-items-center gap-2 py-2 px-3 fw-normal text-wrap text-start';
+        chip.setAttribute('data-chip', '');
+
+        var text = document.createElement('span');
+        text.textContent = label;
+
+        var primary = document.createElement('span');
+        primary.className = 'text-primary small d-none';
+        primary.setAttribute('data-primary', '');
+        primary.textContent = 'основное';
+
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'btn-close';
+        remove.style.fontSize = '.6rem';
+        remove.setAttribute('aria-label', 'Убрать');
+        remove.setAttribute('data-remove', '');
+
+        var hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = field + '[]';
+        hidden.value = id;
+
+        chip.appendChild(text);
+        chip.appendChild(primary);
+        chip.appendChild(remove);
+        chip.appendChild(hidden);
+        chips.appendChild(chip);
+        refreshPrimary();
+    }
+
+    function closeDropdown() {
+        dropdown.classList.add('d-none');
+        dropdown.innerHTML = '';
+    }
+
+    function renderResults(results) {
+        var chosen = selectedIds();
+        var list = results.filter(function (r) { return chosen.indexOf(String(r.id)) === -1; });
+
+        dropdown.innerHTML = '';
+        if (!list.length) {
+            var empty = document.createElement('div');
+            empty.className = 'list-group-item text-muted small';
+            empty.textContent = 'Ничего не найдено';
+            dropdown.appendChild(empty);
+        } else {
+            list.forEach(function (r) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'list-group-item list-group-item-action';
+                btn.textContent = r.text;
+                btn.addEventListener('mousedown', function (e) {
+                    e.preventDefault(); // не терять фокус поля до добавления
+                    addChip(r.id, r.text);
+                    input.value = '';
+                    closeDropdown();
+                    input.focus();
+                });
+                dropdown.appendChild(btn);
+            });
+        }
+        dropdown.classList.remove('d-none');
+    }
+
+    function search() {
+        var current = ++requestId;
+        var params = new URLSearchParams({ q: input.value.trim(), city_id: cityEl ? cityEl.value : '' });
+
+        fetch('/api/workplaces/' + type + '?' + params.toString(), { headers: { 'Accept': 'application/json' } })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (current !== requestId) return; // пришёл устаревший ответ
+                renderResults(Array.isArray(data.results) ? data.results : []);
+            })
+            .catch(function (err) { console.error('Не удалось загрузить список мест работы:', err); });
+    }
+
+    input.addEventListener('focus', search);
+    input.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(search, 250);
+    });
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') e.preventDefault();       // Enter не отправляет форму
+        if (e.key === 'Escape') closeDropdown();
+        if (e.key === 'Backspace' && input.value === '') {
+            var last = chips.querySelector('[data-chip]:last-child');
+            if (last) { last.remove(); refreshPrimary(); }
+        }
+    });
+
+    box.addEventListener('click', function (e) {
+        if (e.target.closest('[data-remove]')) {
+            e.target.closest('[data-chip]').remove();
+            refreshPrimary();
+            return;
+        }
+        input.focus();
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!root.contains(e.target)) closeDropdown();
+    });
+
+    refreshPrimary();
+})();
 </script>

@@ -800,7 +800,7 @@ public function organization(int $id)
             ]);
         }
 
-        $doctor = Doctor::with(['services', 'prices.service', 'contacts', 'city', 'clinic'])->findOrFail($id);
+        $doctor = Doctor::with(['services', 'prices.service', 'contacts', 'city', 'clinic', 'clinics'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -827,7 +827,9 @@ public function organization(int $id)
             'specialization'      => 'required|string|max:255',
             'date_of_birth'       => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
             'city_id'             => 'required|exists:cities,id',
-            'clinic_id'           => 'nullable|exists:clinics,id',
+            // Врач может работать сразу в нескольких клиниках
+            'clinic_ids'          => 'nullable|array|max:20',
+            'clinic_ids.*'        => 'integer|exists:clinics,id',
             'practice_started_at' => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
@@ -869,7 +871,12 @@ public function organization(int $id)
 
         $data['works_online'] = $request->boolean('works_online');
 
+        // Места работы сохраняются отдельно (сводная таблица clinic_doctor)
+        $clinicIds = $data['clinic_ids'] ?? [];
+        unset($data['clinic_ids']);
+
         $doctor->update($data);
+        $doctor->syncWorkplaces($clinicIds);
         $doctor->contacts()->updateOrCreate(['doctor_id' => $doctor->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');
@@ -902,7 +909,7 @@ public function organization(int $id)
             ]);
         }
 
-        $specialist = Specialist::with(['prices.service', 'contacts', 'city', 'organization'])->findOrFail($id);
+        $specialist = Specialist::with(['prices.service', 'contacts', 'city', 'organization', 'organizations'])->findOrFail($id);
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -928,7 +935,9 @@ public function organization(int $id)
             'specialization'      => 'required|string|max:255',
             'date_of_birth'       => ['nullable', 'date', 'before_or_equal:' . \App\Models\Specialist::latestBirthDate()],
             'city_id'             => 'required|exists:cities,id',
-            'organization_id'     => 'nullable|exists:organizations,id',
+            // Специалист может работать сразу в нескольких организациях
+            'organization_ids'    => 'nullable|array|max:20',
+            'organization_ids.*'  => 'integer|exists:organizations,id',
             'practice_started_at' => \App\Models\Specialist::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
@@ -967,7 +976,12 @@ public function organization(int $id)
 
         $data['works_online'] = $request->boolean('works_online');
 
+        // Места работы сохраняются отдельно (сводная таблица organization_specialist)
+        $organizationIds = $data['organization_ids'] ?? [];
+        unset($data['organization_ids']);
+
         $specialist->update($data);
+        $specialist->syncWorkplaces($organizationIds);
         $specialist->contacts()->updateOrCreate(['specialist_id' => $specialist->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');
@@ -1293,13 +1307,8 @@ public function organization(int $id)
                 $row->delete();
             });
 
-            // Специалисты/врачи, привязанные к этому месту работы, остаются, но без привязки
-            if ($type === 'organization') {
-                Specialist::where('organization_id', $id)->update(['organization_id' => null]);
-            } elseif ($type === 'clinic') {
-                Doctor::where('clinic_id', $id)->update(['clinic_id' => null]);
-            }
-
+            // Специалисты/врачи, привязанные к этому месту работы, остаются: при удалении
+            // клиники/организации она убирается из их мест работы (см. события deleting в моделях).
             $entity->delete();
         });
 

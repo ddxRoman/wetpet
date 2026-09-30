@@ -57,14 +57,24 @@
         </tr>
         @endif
 
-        @if($doctor->organization)
+        @php
+            // Специалист может работать в нескольких организациях; если сводная таблица пуста — берём основную.
+            $specialistOrganizations = $doctor->organizations->isNotEmpty()
+                ? $doctor->organizations
+                : collect([$doctor->organization])->filter();
+        @endphp
+        @if($specialistOrganizations->isNotEmpty())
         <tr>
-            <td>Клиника:</td>
+            <td>{{ $specialistOrganizations->count() > 1 ? 'Организации:' : 'Организация:' }}</td>
             <td>
-                <a href="{{ route('organizations.show', ['city' => $doctor->organization->city_slug, 'slug' => $doctor->organization->slug]) }}" title="Перейти на страницу клиники" class="text-decoration-none">
-                    {{ $doctor->organization->name }}
-                    <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
-                </a>
+                @foreach($specialistOrganizations as $specialistOrganization)
+                    <div>
+                        <a href="{{ route('organizations.show', ['city' => $specialistOrganization->city_slug, 'slug' => $specialistOrganization->slug]) }}" title="Перейти на страницу организации" class="text-decoration-none">
+                            {{ $specialistOrganization->name }}
+                            <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к организации">
+                        </a>
+                    </div>
+                @endforeach
             </td>
         </tr>
         @endif

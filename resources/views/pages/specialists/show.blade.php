@@ -203,10 +203,17 @@
                     ])
                 </div>
                 @endif
-                @if($doctor->organization)
+                @php
+                    $footerOrganizations = $doctor->organizations->isNotEmpty()
+                        ? $doctor->organizations
+                        : collect([$doctor->organization])->filter();
+                @endphp
+                @if($footerOrganizations->isNotEmpty())
                     <div class="card-footer bg-white">
-                        <small class="text-muted">Место работы:</small>
-                        <div class="fw-bold">{{ $doctor->organization->name }}</div>
+                        <small class="text-muted">{{ $footerOrganizations->count() > 1 ? 'Места работы:' : 'Место работы:' }}</small>
+                        @foreach($footerOrganizations as $footerOrganization)
+                            <div class="fw-bold">{{ $footerOrganization->name }}</div>
+                        @endforeach
                     </div>
                 @endif
             </div>

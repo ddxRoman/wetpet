@@ -127,7 +127,6 @@ Forms\Components\TextInput::make('practice_started_at')
             })
             ->afterStateUpdated(function (callable $set) {
                 $set('city_id', null);
-                $set('clinic_id', null);
             }),
 
         // ───── ГОРОД ─────
@@ -141,26 +140,15 @@ Forms\Components\TextInput::make('practice_started_at')
             )
             ->searchable()
             ->reactive()
-            ->required()
-            ->afterStateUpdated(fn (callable $set) => $set('clinic_id', null)),
+            ->required(),
 
-        // ───── КЛИНИКА ─────
-Forms\Components\Select::make('clinic_id')
-    ->label('Клиника')
-    ->options(function (callable $get) {
-        $cityId = $get('city_id');
-
-        if (! $cityId) {
-            return [];
-        }
-
-        $cityName = \App\Models\City::where('id', $cityId)->value('name');
-
-        return \App\Models\Clinic::where('city', $cityName)
-            ->pluck('name', 'id');
-    })
-    ->searchable()
-    ->reactive(),
+        // ───── КЛИНИКИ (врач может работать в нескольких) ─────
+        Forms\Components\Select::make('clinics')
+            ->label('Клиники (места работы)')
+            ->relationship('clinics', 'name')
+            ->multiple()
+            ->searchable()
+            ->helperText('Врач может работать сразу в нескольких клиниках, в том числе в разных городах. Основным остаётся текущее место работы, пока оно в списке (по нему строится адрес страницы); если его убрать — основным станет первое из выбранных. Если не выбрано ничего — частная практика.'),
 
 
 
@@ -286,9 +274,9 @@ Forms\Components\FileUpload::make('photo')
                     ->searchable()
                     ->sortable(),
 
-                    Tables\Columns\TextColumn::make('clinic.name')   // 👈 новое
-                        ->label('Клиника')
-                        ->sortable()
+                    Tables\Columns\TextColumn::make('clinics.name')
+                        ->label('Клиники')
+                        ->badge()
                         ->searchable(),
                         
 Tables\Columns\TextColumn::make('specialization_label')
@@ -323,9 +311,9 @@ Tables\Columns\TextColumn::make('specialization_label')
                     ->falseLabel('Только непроверенные')
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('clinic_id')
+                Tables\Filters\SelectFilter::make('clinics')
                     ->label('Клиника')
-                    ->relationship('clinic', 'name')
+                    ->relationship('clinics', 'name')
                     ->searchable()
                     ->preload(),
 

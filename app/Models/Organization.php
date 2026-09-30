@@ -48,6 +48,11 @@ protected static function boot()
 {
     parent::boot();
 
+    // При удалении организации убираем её из мест работы специалистов.
+    static::deleting(function ($organization) {
+        Specialist::releaseWorkplace((int) $organization->id);
+    });
+
     static::creating(function ($organization) {
         $organization->slug = static::generateUniqueSlug(
             static::buildSlugSource($organization->name, $organization->city, $organization->street, $organization->house),
@@ -156,7 +161,8 @@ public function prices()
  */
 public function specialists()
 {
-    return $this->hasMany(Specialist::class, 'organization_id');
+    return $this->belongsToMany(Specialist::class, 'organization_specialist', 'organization_id', 'specialist_id')
+        ->withTimestamps();
 }
 
 public function reviews()

@@ -24,5 +24,9 @@ class EditSpecialist extends EditRecord
         $this->record->update([
             'specialization' => $this->record->specializations()->pluck('name')->implode(', '),
         ]);
+
+        // Места работы уже записаны в сводную таблицу — выравниваем основное место
+        // (колонка organization_id) с их списком.
+        $this->record->syncWorkplaces($this->record->organizations()->pluck('organizations.id')->all());
     }
 }

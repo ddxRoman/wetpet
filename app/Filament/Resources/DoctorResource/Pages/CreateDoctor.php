@@ -25,5 +25,9 @@ class CreateDoctor extends CreateRecord
         $this->record->update([
             'specialization' => $this->record->specializations()->pluck('name')->implode(', '),
         ]);
+
+        // Места работы уже записаны в сводную таблицу — выравниваем основное место
+        // (колонка clinic_id) с их списком.
+        $this->record->syncWorkplaces($this->record->clinics()->pluck('clinics.id')->all());
     }
 }

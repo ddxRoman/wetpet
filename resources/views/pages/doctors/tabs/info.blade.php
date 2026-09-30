@@ -48,16 +48,24 @@
 <table class="doctor-info-table">
     <tbody>
         <tr>
-            <td>Клиника:</td>
+            @php
+                // Врач может работать в нескольких клиниках; если сводная таблица пуста — берём основную.
+                $doctorClinics = $doctor->clinics->isNotEmpty()
+                    ? $doctor->clinics
+                    : collect([$doctor->clinic])->filter();
+            @endphp
+            <td>{{ $doctorClinics->count() > 1 ? 'Клиники:' : 'Клиника:' }}</td>
             <td>
-                @if($doctor->clinic)
-                    <a href="{{ route('clinics.show', ['city' => $doctor->clinic->city_slug, 'clinic' => $doctor->clinic->slug]) }}" title="Перейти на страницу клиники" class="text-decoration-none">
-                        {{ $doctor->clinic->name }}
-                        <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
-                    </a>
-                @else
+                @forelse($doctorClinics as $doctorClinic)
+                    <div>
+                        <a href="{{ route('clinics.show', ['city' => $doctorClinic->city_slug, 'clinic' => $doctorClinic->slug]) }}" title="Перейти на страницу клиники" class="text-decoration-none">
+                            {{ $doctorClinic->name }}
+                            <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
+                        </a>
+                    </div>
+                @empty
                     —
-                @endif
+                @endforelse
             </td>
         </tr>
 

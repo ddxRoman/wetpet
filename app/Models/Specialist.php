@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\Concerns\HasPracticeExperience;
 use App\Models\Concerns\HasGalleryPhotos;
+use App\Models\Concerns\HasWorkplaces;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Specialist extends Model
 {
 use HasPracticeExperience;
 use HasGalleryPhotos;
+use HasWorkplaces;
 
 protected $fillable = [
         'is_verified',
@@ -50,11 +53,32 @@ protected $fillable = [
     ->withTimestamps();
 }
 
+/**
+ * Основное место работы (старая колонка organization_id) — используется в slug и старом коде.
+ */
 public function organization()
     {
-        // Предполагается, что в таблице specialists есть поле organization_id
         return $this->belongsTo(Organization::class, 'organization_id');
     }
+
+/**
+ * Все организации, в которых работает специалист.
+ */
+public function organizations(): BelongsToMany
+{
+    return $this->belongsToMany(Organization::class, 'organization_specialist', 'specialist_id', 'organization_id')
+        ->withTimestamps();
+}
+
+public function workplaces(): BelongsToMany
+{
+    return $this->organizations();
+}
+
+public static function workplaceColumn(): string
+{
+    return 'organization_id';
+}
 
 // Внутри класса Specialist
 public function city()

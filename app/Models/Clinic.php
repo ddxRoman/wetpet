@@ -45,6 +45,12 @@ class Clinic extends Model
     =============================== */
     protected static function booted()
     {
+        // При удалении клиники убираем её из мест работы врачей (основное место
+        // переназначается на другую клинику врача, если она есть).
+        static::deleting(function ($clinic) {
+            Doctor::releaseWorkplace((int) $clinic->id);
+        });
+
         static::creating(function ($clinic) {
             if (empty($clinic->slug)) {
                 $clinic->slug = static::generateUniqueSlug(
@@ -140,9 +146,13 @@ public function awards()
     return $this->hasMany(Award::class);
 }
 
+    /**
+     * Врачи, работающие в клинике (врач может работать сразу в нескольких клиниках).
+     */
     public function doctors()
     {
-        return $this->hasMany(Doctor::class);
+        return $this->belongsToMany(Doctor::class, 'clinic_doctor', 'clinic_id', 'doctor_id')
+            ->withTimestamps();
     }
 
 

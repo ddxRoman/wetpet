@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use App\Models\Concerns\HasPracticeExperience;
 use App\Models\Concerns\HasGalleryPhotos;
+use App\Models\Concerns\HasWorkplaces;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Doctor extends Model
 {
@@ -15,6 +17,7 @@ class Doctor extends Model
     use Notifiable;
     use HasPracticeExperience;
     use HasGalleryPhotos;
+    use HasWorkplaces;
 
     protected $table = 'doctors';
 
@@ -127,9 +130,31 @@ class Doctor extends Model
         return $this->belongsTo(City::class);
     }
 
+    /**
+     * Основное место работы (старая колонка clinic_id) — используется в slug и старом коде.
+     */
     public function clinic()
     {
         return $this->belongsTo(\App\Models\Clinic::class);
+    }
+
+    /**
+     * Все клиники, в которых работает врач.
+     */
+    public function clinics(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\Models\Clinic::class, 'clinic_doctor', 'doctor_id', 'clinic_id')
+            ->withTimestamps();
+    }
+
+    public function workplaces(): BelongsToMany
+    {
+        return $this->clinics();
+    }
+
+    public static function workplaceColumn(): string
+    {
+        return 'clinic_id';
     }
 
     // УДАЛЕНО: public function reviewable() { return $this->morphTo(); }
