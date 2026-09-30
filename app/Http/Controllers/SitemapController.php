@@ -35,6 +35,12 @@ class SitemapController extends Controller
         // Клиники
         Clinic::whereNotNull('slug')->where('slug', '!=', '')->select('slug', 'city', 'updated_at')->chunk(200, function ($items) use (&$urls) {
             foreach ($items as $item) {
+                // У клиники без города URL собрать нельзя (в маршруте обязательный {city}) —
+                // пропускаем её, иначе весь sitemap падает с 500.
+                if ($item->city_slug === '') {
+                    continue;
+                }
+
                 $urls[] = [
                     'loc'        => route('clinics.show', ['city' => $item->city_slug, 'clinic' => $item->slug]),
                     'lastmod'    => $item->updated_at?->toAtomString(),
@@ -59,6 +65,11 @@ class SitemapController extends Controller
         // Организации
         Organization::whereNotNull('slug')->where('slug', '!=', '')->select('slug', 'city', 'updated_at')->chunk(200, function ($items) use (&$urls) {
             foreach ($items as $item) {
+                // То же для организаций без города.
+                if ($item->city_slug === '') {
+                    continue;
+                }
+
                 $urls[] = [
                     'loc'        => route('organizations.show', ['city' => $item->city_slug, 'slug' => $item->slug]),
                     'lastmod'    => $item->updated_at?->toAtomString(),
