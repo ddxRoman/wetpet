@@ -64,7 +64,7 @@
             <div class="col-md-4">
                 <label class="form-label fw-medium">Дата рождения</label>
                 <input type="date" name="date_of_birth" class="form-control" max="{{ now()->subYears(16)->format('Y-m-d') }}"
-                       value="{{ old('date_of_birth', optional($entity->date_of_birth)->format('Y-m-d')) }}">
+                       value="{{ old('date_of_birth', optional(\Illuminate\Support\Carbon::make($entity->date_of_birth))->format('Y-m-d')) }}">
             </div>
             <div class="col-md-4">
                 <label class="form-label fw-medium">Начало практики (год и месяц)</label>

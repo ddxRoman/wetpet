@@ -9,7 +9,7 @@
     <meta property="og:url"         content="{{ request()->url() }}">
     <meta property="og:title"       content="{{ $seoMeta['title'] ?? $brandname }}">
     <meta property="og:description" content="{{ $seoMeta['description'] ?? '' }}">
-    <meta property="og:image"       content="{{ $seoMeta['image'] ?? asset('storage/logo/og-default.png') }}">
+    <meta property="og:image"       content="{{ $seoMeta['image'] ?? Storage::url('logo/logo2.png') }}">
     <meta property="og:site_name"   content="Зверозор">
     <meta property="og:image:width"  content="1200">
     <meta property="og:image:height" content="630">
@@ -17,7 +17,7 @@
     <meta name="twitter:url"         content="{{ request()->url() }}">
     <meta name="twitter:title"       content="{{ $seoMeta['title'] ?? $brandname }}">
     <meta name="twitter:description" content="{{ $seoMeta['description'] ?? '' }}">
-    <meta name="twitter:image"       content="{{ $seoMeta['image'] ?? asset('storage/logo/og-default.png') }}">
+    <meta name="twitter:image"       content="{{ $seoMeta['image'] ?? Storage::url('logo/logo2.png') }}">
 
     <link rel="icon" href="{{ url('favicon.ico') }}" type="image/vnd.microsoft.icon">
     <meta name="robots" content="{{ $seoMeta['robots'] ?? 'all' }}">

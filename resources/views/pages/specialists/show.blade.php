@@ -6,9 +6,11 @@
         abort(404);
     }
 
+    // $doctor здесь — модель Specialist (см. SpecialistController::show), поэтому
+    // заглушка при отсутствии фото должна быть специалистской, а не докторской.
     $photo = $doctor->photo && Storage::disk('public')->exists($doctor->photo)
         ? asset('storage/'.$doctor->photo)
-        : asset('storage/doctors/default-doctor.webp');
+        : asset('storage/specialists/default-specialist.webp');
 
     // Формируем адрес: Город, Название организации
     $addressParts = array_filter([
@@ -203,17 +205,10 @@
                     ])
                 </div>
                 @endif
-                @php
-                    $footerOrganizations = $doctor->organizations->isNotEmpty()
-                        ? $doctor->organizations
-                        : collect([$doctor->organization])->filter();
-                @endphp
-                @if($footerOrganizations->isNotEmpty())
+                @if($doctor->organization)
                     <div class="card-footer bg-white">
-                        <small class="text-muted">{{ $footerOrganizations->count() > 1 ? 'Места работы:' : 'Место работы:' }}</small>
-                        @foreach($footerOrganizations as $footerOrganization)
-                            <div class="fw-bold">{{ $footerOrganization->name }}</div>
-                        @endforeach
+                        <small class="text-muted">Место работы:</small>
+                        <div class="fw-bold">{{ $doctor->organization->name }}</div>
                     </div>
                 @endif
             </div>

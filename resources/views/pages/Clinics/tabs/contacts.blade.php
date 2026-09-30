@@ -16,7 +16,9 @@
                                             @endif
                                         </div>
                                         @endif
+                                        @if($clinic->email)
                                         <div>✉️ {{ $clinic->email }}</div>
+                                        @endif
                                         @if($clinic->telegram)
                                         <div>💬 Telegram: <a href="https://t.me/{{ $clinic->telegram }}" target="_blank">https://t.me/{{ $clinic->telegram }}<img width="24px" src="{{ asset('storage/icon/contacts/telegram.svg') }}" title="Связатся через телеграмм" alt="Телеграмм"></a></div>
                                         @endif

@@ -70,7 +70,10 @@ if ($request->ajax()) {
         }
 
         $clinic->load(['awards', 'doctors']);
-        return view('pages.clinics.show', compact('clinic'));
+
+        $seoMeta = (new \App\Services\SeoManager())->getMeta($clinic);
+
+        return view('pages.clinics.show', compact('clinic', 'seoMeta'));
     }
 
     /**
@@ -338,7 +341,7 @@ public function liveSearch(Request $request)
         });
 
     // 2. Врачи
-    \App\Models\Doctor::with(['clinic', 'clinics', 'city'])
+    \App\Models\Doctor::with(['clinic', 'city'])
         ->where(function($q) use ($searchTerm, $searchTermAlt) {
             $q->where('name', 'LIKE', "%{$searchTerm}%")
               ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
@@ -350,11 +353,10 @@ public function liveSearch(Request $request)
         ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
             $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                    ->orWhereHas('clinics', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhere('works_online', true)
                     ->orWhere(function ($none) {
-                        $none->whereNull('city_id')->whereNull('clinic_id')->whereDoesntHave('clinics');
+                        $none->whereNull('city_id')->whereNull('clinic_id');
                     });
             });
         })
@@ -398,7 +400,7 @@ public function liveSearch(Request $request)
         });
 
     // 4. Специалисты
-    \App\Models\Specialist::with(['organization', 'organizations', 'city'])
+    \App\Models\Specialist::with(['organization', 'city'])
         ->where(function($q) use ($searchTerm, $searchTermAlt) {
             $q->where('name', 'LIKE', "%{$searchTerm}%")
               ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
@@ -410,11 +412,10 @@ public function liveSearch(Request $request)
         ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
             $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                    ->orWhereHas('organizations', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhere('works_online', true)
                     ->orWhere(function ($none) {
-                        $none->whereNull('city_id')->whereNull('organization_id')->whereDoesntHave('organizations');
+                        $none->whereNull('city_id')->whereNull('organization_id');
                     });
             });
         })
@@ -587,7 +588,7 @@ public function fullSearch(Request $request)
             ->searchRank($targetCity, $namedRegions)
             ->get(),
 
-        'doctors' => \App\Models\Doctor::with(['clinic', 'clinics'])
+        'doctors' => \App\Models\Doctor::with('clinic')
             ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
                 // Ищем по имени врача целиком (обе раскладки)
                 $q->where('name', 'LIKE', "%{$searchTerm}%")
@@ -597,7 +598,7 @@ public function fullSearch(Request $request)
                       ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
                 }
                 // ИЛИ по адресу клиники (разбивая на слова, обе раскладки)
-                $q->orWhereHas('clinics', function($sub) use ($words, $wordsAlt) {
+                $q->orWhereHas('clinic', function($sub) use ($words, $wordsAlt) {
                     foreach ($words as $i => $word) {
                         $wordAlt = $wordsAlt[$i] ?? $word;
                         $sub->where(function($inner) use ($word, $wordAlt) {
@@ -614,17 +615,16 @@ public function fullSearch(Request $request)
             ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                        ->orWhereHas('clinics', fn($c) => $c->forSearch($targetCity, $namedRegions))
-                    ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                        ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
                         ->orWhere('works_online', true)
                         ->orWhere(function ($none) {
-                            $none->whereNull('city_id')->whereNull('clinic_id')->whereDoesntHave('clinics');
+                            $none->whereNull('city_id')->whereNull('clinic_id');
                         });
                 });
             })
             ->get(),
 
-        'specialists' => \App\Models\Specialist::with(['organization', 'organizations', 'city'])
+        'specialists' => \App\Models\Specialist::with(['organization', 'city'])
             ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
                 $q->where('name', 'LIKE', "%{$searchTerm}%")
                   ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
@@ -632,7 +632,7 @@ public function fullSearch(Request $request)
                     $q->orWhere('name', 'LIKE', "%{$searchTermAlt}%")
                       ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
                 }
-                $q->orWhereHas('organizations', function($sub) use ($words, $wordsAlt) {
+                $q->orWhereHas('organization', function($sub) use ($words, $wordsAlt) {
                     foreach ($words as $i => $word) {
                         $wordAlt = $wordsAlt[$i] ?? $word;
                         $sub->where(function($inner) use ($word, $wordAlt) {
@@ -649,11 +649,10 @@ public function fullSearch(Request $request)
             ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                        ->orWhereHas('organizations', fn($c) => $c->forSearch($targetCity, $namedRegions))
-                    ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                        ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
                         ->orWhere('works_online', true)
                         ->orWhere(function ($none) {
-                            $none->whereNull('city_id')->whereNull('organization_id')->whereDoesntHave('organizations');
+                            $none->whereNull('city_id')->whereNull('organization_id');
                         });
                 });
             })

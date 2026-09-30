@@ -38,11 +38,9 @@
     <meta property="og:url"         content="{{ $seoMeta['canonical'] ?? url()->current() }}">
     <meta property="og:title"       content="{{ $seoMeta['og_title'] ?? ($seoMeta['title'] ?? config('app.name')) }}">
     <meta property="og:description" content="{{ $seoMeta['og_description'] ?? ($seoMeta['description'] ?? '') }}">
-    @if(!empty($seoMeta['image']))
-        <meta property="og:image"        content="{{ $seoMeta['image'] }}">
-        <meta property="og:image:width"  content="1200">
-        <meta property="og:image:height" content="630">
-    @endif
+    <meta property="og:image"        content="{{ $seoMeta['image'] ?? Storage::url('logo/logo2.png') }}">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
     @if(!empty($seoMeta['og_article_published_at']))
         <meta property="article:published_time" content="{{ $seoMeta['og_article_published_at'] }}">
     @endif
@@ -54,9 +52,7 @@
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="{{ $seoMeta['og_title'] ?? ($seoMeta['title'] ?? config('app.name')) }}">
     <meta name="twitter:description" content="{{ $seoMeta['og_description'] ?? ($seoMeta['description'] ?? '') }}">
-    @if(!empty($seoMeta['image']))
-        <meta name="twitter:image" content="{{ $seoMeta['image'] }}">
-    @endif
+    <meta name="twitter:image" content="{{ $seoMeta['image'] ?? Storage::url('logo/logo2.png') }}">
 
     {{-- ── JSON-LD Schema.org: сайт/организация (для Google, на всех страницах) ── --}}
     <script type="application/ld+json">

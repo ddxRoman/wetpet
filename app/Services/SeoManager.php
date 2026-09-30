@@ -101,7 +101,8 @@ class SeoManager
         if ($model && !empty($model->seo_title)) {
             return $this->build(
                 $model->seo_title,
-                $model->seo_description ?: mb_substr(strip_tags($model->description ?? ''), 0, 160)
+                $model->seo_description ?: mb_substr(strip_tags($model->description ?? ''), 0, 160),
+                $this->resolveImage($model)
             );
         }
 
@@ -133,51 +134,97 @@ class SeoManager
     {
         $class = class_basename($model);
         $name  = $model->name ?? $model->breed ?? '';
-        $city  = $model->city ?? '';
         $spec  = $model->specialization ?? '';
+        $image = $this->resolveImage($model);
+
+        // У Organization/Clinic город хранится строкой в колонке `city`.
+        // У Doctor/Specialist это связь с таблицей cities (метод city()), поэтому
+        // $model->city возвращает МОДЕЛЬ City, а не строку — её нужно брать через ->name,
+        // иначе при подстановке в строку она превращается в JSON (Model::__toString()).
+        $city = in_array($class, ['Doctor', 'Specialist'], true)
+            ? ($model->city->name ?? '')
+            : ($model->city ?? '');
 
         switch ($class) {
             case 'Clinic':
                 return $this->build(
                     "Ветеринарная клиника «{$name}» — {$city} отзывы, услуги, цены | Зверозор",
-                    "Ветеринарная клиника «{$name}» в {$city}. График работы, контакты, отзывы реальны пациентов, найти клиники, специалитов, и организации на Зверозор."
+                    "Ветеринарная клиника «{$name}» в {$city}. График работы, контакты, отзывы реальны пациентов, найти клиники, специалитов, и организации на Зверозор.",
+                    $image
                 );
             case 'Doctor':
                 return $this->build(
                     "Ветеринарный врач {$name}" . ($spec ? " — " : '') . " отзывы, контакты, рейтинг | Зверозор",
-                    "Ветеринарный врач {$name}  "  . ". Отзывы, контакты, рейтинг, услуги, прочесть отзывы реальных клиентов на Зверозор"
+                    "Ветеринарный врач {$name}" . ($city ? ", {$city}" : '') . ". Отзывы, контакты, рейтинг, услуги, прочесть отзывы реальных клиентов на Зверозор",
+                    $image
                 );
             case 'Organization':
                 return $this->build(
                     "«{$name}»" . ($city ? " — {$city}" : '') . " Отзывы, адрес, график | Зверозор",
-                    "«{$name}»" . ($city ? " {$city}" : '') . ". Услуги, контакты, отзывы реальных клиентов на Зверозор. Узнать цены и услуги, посмотреть отзывы реальных клиентов"
+                    "«{$name}»" . ($city ? " {$city}" : '') . ". Услуги, контакты, отзывы реальных клиентов на Зверозор. Узнать цены и услуги, посмотреть отзывы реальных клиентов",
+                    $image
                 );
             case 'Specialist':
                 return $this->build(
                     "Специалист {$name}" . ($spec ? " — {$spec}" : '') . " отзывы о специалисте| Зверозор",
-                    "Специалист {$name}" . ($spec ? ", {$spec}" : '') . ". Контакты, отзывы, запись на Зверозор."
+                    "Специалист {$name}" . ($spec ? ", {$spec}" : '') . ($city ? ", {$city}" : '') . ". Контакты, отзывы, запись на Зверозор.",
+                    $image
                 );
             case 'Breed':
                 $breedName = $model->breed ?? $name;
                 return $this->build(
                     "Порода {$breedName} — описание, характер, уход | Зверозор",
-                    "Полное описание породы {$breedName}: характер, уход, кормление, болезни. Отзывы владельцев на Зверозор."
+                    "Полное описание породы {$breedName}: характер, уход, кормление, болезни. Отзывы владельцев на Зверозор.",
+                    $image
                 );
             default:
                 return $this->build(
                     ($name ? "{$name} | " : '') . 'Зверозор',
-                    mb_substr(strip_tags($model->description ?? ''), 0, 160)
+                    mb_substr(strip_tags($model->description ?? ''), 0, 160),
+                    $image
                 );
         }
     }
 
-    private function build(string $title, string $description = ''): array
+    /**
+     * Картинка карточки для og:image / twitter:image: логотип или фото сущности,
+     * если он загружен и файл реально существует на диске, иначе — дефолтная
+     * картинка-заглушка для этого типа сущности (не логотип сайта: заглушки
+     * специфичны для врача/специалиста/организации/клиники).
+     */
+    private function resolveImage($model): ?string
+    {
+        $class = class_basename($model);
+
+        $map = [
+            'Doctor'       => ['field' => 'photo', 'default' => 'doctors/default-doctor.webp'],
+            'Specialist'   => ['field' => 'photo', 'default' => 'specialists/default-specialist.webp'],
+            'Organization' => ['field' => 'logo',  'default' => 'organizations/default-organization.webp'],
+            'Clinic'       => ['field' => 'logo',  'default' => 'clinics/logo/default-clinic.webp'],
+        ];
+
+        if (!isset($map[$class])) {
+            return null;
+        }
+
+        $field = $map[$class]['field'];
+        $path  = $model->{$field} ?? null;
+
+        if ($path && \Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+            return asset('storage/' . $path);
+        }
+
+        return asset('storage/' . $map[$class]['default']);
+    }
+
+    private function build(string $title, string $description = '', ?string $image = null): array
     {
         return [
             'title'          => $title,
             'description'    => $description,
             'og_title'       => $title,
             'og_description' => $description,
+            'image'          => $image,
             'robots'         => 'index, follow',
         ];
     }

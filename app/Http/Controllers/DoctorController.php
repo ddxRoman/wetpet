@@ -268,10 +268,13 @@ public function welcome()
             ->latest()
             ->get();
 
+        $seoMeta = (new \App\Services\SeoManager())->getMeta($doctor);
+
         return view('pages.doctors.show', compact(
             'doctor',
             'clinic',
-            'reviews'
+            'reviews',
+            'seoMeta'
         ));
     }
 

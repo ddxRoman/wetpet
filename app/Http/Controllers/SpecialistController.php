@@ -361,7 +361,9 @@ public function show($slug)
         ->firstOrFail();
 
     // Передаем в шаблон как $doctor
-    return view('pages.specialists.show', ['doctor' => $specialist]);
+    $seoMeta = (new \App\Services\SeoManager())->getMeta($specialist);
+
+    return view('pages.specialists.show', ['doctor' => $specialist, 'seoMeta' => $seoMeta]);
 }
 
     public function destroy(Specialist $specialist)

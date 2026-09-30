@@ -251,7 +251,9 @@ return redirect()->to($redirectUrl)->with('success', $successMessage);
         return redirect()->route('organizations.show', ['city' => $organization->city_slug, 'slug' => $organization->slug], 301);
     }
 
-    return view('pages.organizations.show', compact('organization'));
+    $seoMeta = (new \App\Services\SeoManager())->getMeta($organization);
+
+    return view('pages.organizations.show', compact('organization', 'seoMeta'));
     }
 
 
