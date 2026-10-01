@@ -12,7 +12,7 @@
                                         <div>
                                             📞 <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone1) }}">{{ $clinic->phone1 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон" title="Позвонить"> </a>
                                             @if($clinic->phone2)
-                                            , <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone2) }}">{{ $clinic->phone2 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон запасной" title="Позвонить"> </a>
+                                             <a href="tel:{{ preg_replace('/\D/', '', $clinic->phone2) }}">{{ $clinic->phone2 }}<img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон запасной" title="Позвонить"> </a>
                                             @endif
                                         </div>
                                         @endif
@@ -25,9 +25,15 @@
                                         @if($clinic->whatsapp)
                                         <div>💬 VK: <a href="{{ $clinic->whatsapp }}" target="_blank">{{ $clinic->whatsapp }}<img width="24px" src="{{ asset('storage/icon/contacts/vk-logo.svg') }}" title="Группа в ВК" alt="Вконтакте"></a></div>
                                         @endif
-                                        @if($clinic->website)
-                                        <div>  <a href="{{ $clinic->website }}" class="link_go_to_website" target="_blank" title="Перейти на сайт клиники">Перейти на сайт 🌐</a></div>
-                                        @endif
+
+                {{-- Сайт --}}
+                @if($clinic->website)
+                    <div class="mt-2">
+                        🌐 <a href="{{ $clinic->website }}" target="_blank" title="Перейти на сайт организации" class="btn btn-sm btn-outline-primary py-0">
+                            Перейти на сайт
+                        </a>
+                    </div>
+                @endif
                                          @if($clinic->description)
                                          <br>
                                          <label class="label_description_clinic" for="description">О клинике</label>

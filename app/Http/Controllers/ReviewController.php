@@ -111,10 +111,10 @@ public function store(Request $request)
     } 
     
     // 2. Для Врачей
-    // Здесь параметр в роуте называется 'specialist'
+    // Роут: /doctors/{doctor:slug} — параметр называется 'doctor'
     if (str_contains($rawType, 'Doctor')) {
         return redirect()
-            ->route('doctors.show', ['specialist' => $slug, 'tab' => 'reviews'])
+            ->route('doctors.show', ['doctor' => $slug, 'tab' => 'reviews'])
             ->with('success', 'Спасибо! Ваш отзыв о враче добавлен.');
     }
 

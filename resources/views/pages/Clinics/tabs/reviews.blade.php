@@ -185,7 +185,7 @@
                                     @endif
 
                                     @if($review->reviewable_type === 'App\Models\Doctor')
-                                        @php($aboutEmployee = $review->reviewable)
+                                        @php $aboutEmployee = $review->reviewable; @endphp
                                         <div class="small mb-2">
                                             <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
                                                 Отзыв о враче

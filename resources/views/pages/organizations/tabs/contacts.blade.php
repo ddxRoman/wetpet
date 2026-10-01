@@ -22,7 +22,7 @@
                             <img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон" title="Позвонить">
                         </a>
                         @if($organization->phone2)
-                            , <a href="tel:{{ preg_replace('/\D/', '', $organization->phone2) }}" class="text-decoration-none">
+                             <a href="tel:{{ preg_replace('/\D/', '', $organization->phone2) }}" class="text-decoration-none">
                                 {{ $organization->phone2 }}
                                 <img width="24px" src="{{ asset('storage/icon/contacts/phone.svg') }}" alt="Телефон запасной" title="Позвонить">
                             </a>

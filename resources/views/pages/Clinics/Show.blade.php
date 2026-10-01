@@ -23,7 +23,7 @@
         ? asset('storage/' . $clinic->logo)
         : asset('storage/clinics/logo/default-clinic.webp');
 
-    $tab = request('tab', 'contacts');
+    $tab = request('tab', 'info');
 
     // Логика рейтинга
     use App\Models\Review;
@@ -130,6 +130,9 @@
 
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+            <a class="nav-link {{ $tab === 'info' ? 'active' : '' }}"  title="Просмотреть общую информацию" href="?tab=info">Информация</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link {{ $tab === 'contacts' ? 'active' : '' }}" title="Просмотреть контакты" href="?tab=contacts">Контакты</a>
         </li>
@@ -146,6 +149,9 @@
     <div class="row">
         <div class="col-lg-8">
             {{-- Контент вкладок вынесен в отдельные файлы для соблюдения структуры --}}
+                        @if($tab === 'info')
+                @include('pages.clinics.tabs.info', ['clinics' => $clinic])
+            @endif
             @if($tab === 'contacts')
                 @include('pages.clinics.tabs.contacts', ['clinic' => $clinic])
             @endif
