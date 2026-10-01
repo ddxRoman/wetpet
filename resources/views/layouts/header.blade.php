@@ -788,12 +788,26 @@
                 cityList.innerHTML = '<div style="padding:8px;text-align:center;color:#aaa;font-size:13px;">Ничего не найдено</div>';
                 return;
             }
-            cityList.innerHTML = cities.map(c =>
-                `<button class="mobile-city-item" type="button" data-id="${c.id}">${c.name}</button>`
-            ).join('');
+            // Названия вводят и пользователи (свой город) — экранируем, чтобы в список не попала разметка
+            const esc = s => String(s ?? '').replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+
+            // У крупных городов регион не нужен; у остальных он пишется под названием
+            // мелким и более светлым шрифтом
+            cityList.innerHTML = cities.map(c => {
+                const showRegion = Number(c.large_city) !== 1 && c.region;
+                return `<button class="mobile-city-item" type="button" data-id="${c.id}" data-name="${esc(c.name)}">
+                    <span style="display:block;">${esc(c.name)}</span>
+                    ${showRegion
+                        ? `<span style="display:block;margin-top:1px;font-size:11.5px;font-weight:400;line-height:1.2;color:#8a8f98;">${esc(c.region)}</span>`
+                        : ''}
+                </button>`;
+            }).join('');
             cityList.querySelectorAll('.mobile-city-item').forEach(function (btn) {
                 btn.addEventListener('click', function () {
-                    setCity(this.dataset.id, this.textContent.trim());
+                    // Название берём из data-name: textContent теперь включал бы и регион
+                    setCity(this.dataset.id, this.dataset.name);
                 });
             });
         }

@@ -120,11 +120,23 @@
             return;
         }
 
-        list.innerHTML = cities.map(c => `
+        // Названия вводят и пользователи (свой город) — экранируем, чтобы в список не попала разметка
+        const esc = s => String(s ?? '').replace(/[&<>"']/g, ch => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[ch]));
+
+        // У крупных городов регион не нужен; у остальных он пишется под названием
+        // мелким и более светлым шрифтом (чтобы отличать одноимённые населённые пункты)
+        list.innerHTML = cities.map(c => {
+            const showRegion = Number(c.large_city) !== 1 && c.region;
+            return `
             <button class="city-item" data-id="${c.id}">
-                ${c.name}
-            </button>
-        `).join('');
+                <span style="display:block;">${esc(c.name)}</span>
+                ${showRegion
+                    ? `<span style="display:block;margin-top:2px;font-size:.75rem;font-weight:400;line-height:1.2;color:#8a8f98;">${esc(c.region)}</span>`
+                    : ''}
+            </button>`;
+        }).join('');
 
         list.querySelectorAll('.city-item').forEach(btn => {
             btn.addEventListener('click', () => {

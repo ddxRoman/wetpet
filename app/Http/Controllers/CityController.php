@@ -127,7 +127,7 @@ public function getCities()
         $cities = City::where('name', 'like', "%{$query}%")
             ->orderBy('name')
             ->limit(10)
-            ->get(['id', 'name']);
+            ->get(['id', 'name', 'region']);
 
         return response()->json($cities);
     }
@@ -172,7 +172,7 @@ public function getCities()
         });
     }
 
-    $cities = $query->orderBy('name')->get(['id', 'name', 'large_city']);
+    $cities = $query->orderBy('name')->get(['id', 'name', 'region', 'large_city']);
 
     return response()->json($cities);
 }
