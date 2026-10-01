@@ -313,7 +313,7 @@ class AnimalDetailResource extends Resource
     /**
      * Есть ли у породы связанные питомцы/объявления/отзывы.
      */
-    protected static function hasDependents(?Animal $animal): bool
+    public static function hasDependents(?Animal $animal): bool
     {
         if (!$animal) {
             return false;
@@ -327,7 +327,7 @@ class AnimalDetailResource extends Resource
     /**
      * Человеко-читаемая сводка "у породы N питомцев, M объявлений, K отзывов".
      */
-    protected static function dependentsSummary(?Animal $animal): string
+    public static function dependentsSummary(?Animal $animal): string
     {
         if (!$animal) {
             return '';
@@ -353,7 +353,7 @@ class AnimalDetailResource extends Resource
      * переносит их на породу-замену (обязательный $replacementId),
      * иначе просто удаляет (карточка animal_details уйдёт каскадом).
      */
-    protected static function deleteOrMergeAnimal(?Animal $animal, ?int $replacementId): void
+    public static function deleteOrMergeAnimal(?Animal $animal, ?int $replacementId): void
     {
         if (!$animal) {
             Notification::make()

@@ -46,7 +46,25 @@ public function store(Request $request)
     $review->user_id = Auth::id();
     $review->reviewable_id = $validated['reviewable_id'];
     $review->reviewable_type = $rawType;
-    
+
+    // Если отзыв оставлен врачу/специалисту — запоминаем, в какой клинике/
+    // организации он работал ИМЕННО В МОМЕНТ отзыва. Это позволяет показать
+    // отзыв и на странице этого места работы (с пометкой), даже если потом
+    // врач/специалист сменит место работы.
+    if ($rawType === \App\Models\Doctor::class) {
+        $employee = \App\Models\Doctor::find($validated['reviewable_id']);
+        if ($employee && $employee->clinic_id) {
+            $review->workplace_type = \App\Models\Clinic::class;
+            $review->workplace_id   = $employee->clinic_id;
+        }
+    } elseif ($rawType === \App\Models\Specialist::class) {
+        $employee = \App\Models\Specialist::find($validated['reviewable_id']);
+        if ($employee && $employee->organization_id) {
+            $review->workplace_type = \App\Models\Organization::class;
+            $review->workplace_id   = $employee->organization_id;
+        }
+    }
+
     $review->rating = $validated['rating'];
     $review->liked = $validated['liked'] ?? null;
     $review->disliked = $validated['disliked'] ?? null;

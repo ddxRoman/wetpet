@@ -28,6 +28,9 @@ private function performStore(Request $request)
         'name'                 => 'required|string|max:255',
         'field_of_activity_id' => 'required|exists:field_of_activities,id',
         'city_id'              => 'nullable|exists:cities,id',
+        // Город: выбранный из списка (city_id) или введённый вручную (city_name + region)
+        'city_name'            => 'nullable|string|max:120',
+        'region'               => 'nullable|string|max:255',
         'clinic_id'            => 'nullable|exists:clinics,id',
         'date_of_birth'        => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
         'practice_started_at'  => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
@@ -40,6 +43,15 @@ private function performStore(Request $request)
         'messengers'           => 'nullable|array',
         'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Валидация фото
     ]);
+
+    // 🔹 Город: выбранный из списка или введённый вручную (новый город создаётся с large_city = 0)
+    $cityId = $validated['city_id'] ?? null;
+    $newCityNote = '';
+    if ($request->filled('city_name') || $request->filled('city_id')) {
+        $resolvedCity = app(\App\Services\CityResolver::class)->fromRequest($request);
+        $cityId = $resolvedCity->id;
+        $newCityNote = \App\Services\CityResolver::newCityNote($resolvedCity);
+    }
 
     // 🔹 Получаем специализацию
     $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
@@ -55,7 +67,7 @@ private function performStore(Request $request)
         'name'                 => $validated['name'],
         'specialization'       => $field->name,
         'field_of_activity_id' => $field->id,
-        'city_id'              => $validated['city_id'] ?? null,
+        'city_id'              => $cityId,
         'clinic_id'            => $validated['clinic_id'] ?? null,
         'date_of_birth'        => $validated['date_of_birth'] ?? null,
         'practice_started_at'  => $validated['practice_started_at'] ?? null,
@@ -86,7 +98,7 @@ private function performStore(Request $request)
         Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
             'chat_id' => config('services.telegram.chat_id'),
             'parse_mode' => 'HTML',
-            'text' => "🩺 <b>Новый специалист</b>\n\n" . "👤 <b>Имя:</b> {$doctor->name}\n" . "📌 <b>Специализация:</b> {$doctor->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
+            'text' => "🩺 <b>Новый специалист</b>\n\n" . $newCityNote . "👤 <b>Имя:</b> {$doctor->name}\n" . "📌 <b>Специализация:</b> {$doctor->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
         ]);
     } catch (\Throwable $e) {
         logger()->warning('Telegram notify failed', ['error' => $e->getMessage()]);
@@ -268,13 +280,10 @@ public function welcome()
             ->latest()
             ->get();
 
-        $seoMeta = (new \App\Services\SeoManager())->getMeta($doctor);
-
         return view('pages.doctors.show', compact(
             'doctor',
             'clinic',
-            'reviews',
-            'seoMeta'
+            'reviews'
         ));
     }
 

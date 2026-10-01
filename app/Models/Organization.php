@@ -48,11 +48,6 @@ protected static function boot()
 {
     parent::boot();
 
-    // При удалении организации убираем её из мест работы специалистов.
-    static::deleting(function ($organization) {
-        Specialist::releaseWorkplace((int) $organization->id);
-    });
-
     static::creating(function ($organization) {
         $organization->slug = static::generateUniqueSlug(
             static::buildSlugSource($organization->name, $organization->city, $organization->street, $organization->house),
@@ -148,7 +143,13 @@ public function fieldOfActivity(): BelongsTo
      */
     public function getCitySlugAttribute(): string
     {
-        return Str::slug($this->city ?? '');
+        // Никогда не возвращаем пустую строку: это сегмент обязательного параметра
+        // маршрута {city}, и route() бросает UrlGenerationException, если итоговый
+        // URI остаётся с незаполненным {city} (а пустая строка после Str::slug()
+        // от city=null/'' — это и есть фактически "не заполнено").
+        $slug = Str::slug($this->city ?? '');
+
+        return $slug !== '' ? $slug : 'goroda-net';
     }
     
 public function prices()
@@ -161,8 +162,7 @@ public function prices()
  */
 public function specialists()
 {
-    return $this->belongsToMany(Specialist::class, 'organization_specialist', 'organization_id', 'specialist_id')
-        ->withTimestamps();
+    return $this->hasMany(Specialist::class, 'organization_id');
 }
 
 public function reviews()

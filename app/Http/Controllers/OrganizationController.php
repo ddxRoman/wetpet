@@ -150,7 +150,10 @@ private function performSubmit(Request $request)
 
     $validated = $request->validate([
         'name'                 => 'required|string|max:255',
-        'city_id'              => 'required|exists:cities,id',
+        'city_id'              => 'nullable|exists:cities,id',
+        // Город: выбранный из списка (city_id) или введённый вручную (city_name + region)
+        'city_name'            => 'nullable|string|max:120',
+        'region'               => 'nullable|string|max:255',
         'street'               => 'required|string|max:255',
         'house'                => 'required|string|max:255',
         'description'          => 'nullable|string',
@@ -168,7 +171,8 @@ private function performSubmit(Request $request)
     ]);
 
     $activity = FieldOfActivity::find($validated['field_of_activity_id']);
-    $city = City::find($validated['city_id']);
+    // Город из списка или введённый вручную (если его нет в базе — создаётся с large_city = 0)
+    $city = app(\App\Services\CityResolver::class)->fromRequest($request);
 
     $path = $request->hasFile('logo') 
         ? $request->file('logo')->store('organizations/logos', 'public') 
@@ -204,7 +208,7 @@ private function performSubmit(Request $request)
         $model->owners()->attach($user->id, ['is_confirmed' => false]);
     }
 
-    $this->sendTelegramNotification($model, ($type == 'clinics' ? 'клиника' : 'организация'), $type);
+    $this->sendTelegramNotification($model, ($type == 'clinics' ? 'клиника' : 'организация'), $type, $city);
 
 $successMessage = $type === 'clinics'
     ? 'Клиника успешно добавлена!'
@@ -251,9 +255,7 @@ return redirect()->to($redirectUrl)->with('success', $successMessage);
         return redirect()->route('organizations.show', ['city' => $organization->city_slug, 'slug' => $organization->slug], 301);
     }
 
-    $seoMeta = (new \App\Services\SeoManager())->getMeta($organization);
-
-    return view('pages.organizations.show', compact('organization', 'seoMeta'));
+    return view('pages.organizations.show', compact('organization'));
     }
 
 
@@ -314,12 +316,13 @@ return redirect()->to($redirectUrl)->with('success', $successMessage);
             ->with('success', 'Организация успешно удалена');
     }
 
-    private function sendTelegramNotification($model, $label, $routePart)
+    private function sendTelegramNotification($model, $label, $routePart, ?City $city = null)
     {
         $user = auth()->user();
         $url = config('app.url') . "/{$routePart}/{$model->city_slug}/" . ($model->slug ?? $model->id);
 
         $message = "<b>Новая {$label}</b>\n\n" .
+                   \App\Services\CityResolver::newCityNote($city) .
                    "Название: <a href=\"{$url}\">{$model->name}</a>\n" .
                    "Город: {$model->city}\n" .
                    "Адрес: {$model->street} {$model->house}\n\n" .

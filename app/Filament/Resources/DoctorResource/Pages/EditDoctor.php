@@ -30,5 +30,10 @@ class EditDoctor extends EditRecord
         // Места работы уже записаны в сводную таблицу — выравниваем основное место
         // (колонка clinic_id) с их списком.
         $this->record->syncWorkplaces($this->record->clinics()->pluck('clinics.id')->all());
+
+        // Город мог быть создан из введённого вручную названия: показываем его в выпадающем списке,
+        // а ручное поле очищаем (иначе при следующем сохранении оно снова перебило бы выбор).
+        $this->data['city_id'] = $this->record->city_id;
+        $this->data['city_name'] = null;
     }
 }

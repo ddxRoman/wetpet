@@ -23,6 +23,19 @@ class CityResource extends Resource
     protected static ?string $modelLabel       = 'Город';
     protected static ?string $pluralModelLabel = 'Города';
 
+    // Бейдж в меню: сколько городов ждут проверки (как у врачей и специалистов)
+    public static function getNavigationBadge(): ?string
+    {
+        $count = static::getModel()::where('verified', 'unconfirmed')->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -107,11 +120,23 @@ class CityResource extends Resource
                     ->options(['confirmed' => 'Подтверждён', 'unconfirmed' => 'Не подтверждён']),
             ])
             ->actions([
+                Tables\Actions\Action::make('confirm')
+                    ->label('Подтвердить')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn (City $record) => $record->verified !== 'confirmed')
+                    ->action(fn (City $record) => $record->update(['verified' => 'confirmed'])),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('confirm')
+                        ->label('Подтвердить выбранные')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->action(fn (\Illuminate\Support\Collection $records) => $records->each->update(['verified' => 'confirmed']))
+                        ->deselectRecordsAfterCompletion(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

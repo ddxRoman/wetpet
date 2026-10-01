@@ -15,11 +15,23 @@
     $currentType = get_class($targetModel); 
 
     // 3. Загружаем отзывы именно для этой сущности
-    $reviews = Review::where('reviewable_id', $targetModel->id)
+    $directReviews = Review::where('reviewable_id', $targetModel->id)
         ->where('reviewable_type', $currentType)
         ->with(['user', 'photos', 'pet.animal'])
-        ->latest('review_date')
         ->get();
+
+    // + если это организация — добавляем отзывы, оставленные специалистам,
+    // которые работают/работали в ней на момент отзыва (см. Review::workplace_type/
+    // workplace_id). Показываем их тут же, с пометкой «Отзыв о специалисте …»
+    // и, если он уже сменил место работы, «Специалист тут больше не работает».
+    $workplaceReviews = $currentType === App\Models\Organization::class
+        ? Review::where('workplace_type', App\Models\Organization::class)
+            ->where('workplace_id', $targetModel->id)
+            ->with(['user', 'photos', 'pet.animal', 'reviewable'])
+            ->get()
+        : collect();
+
+    $reviews = $directReviews->concat($workplaceReviews)->sortByDesc('review_date')->values();
 
     // 4. Получаем питомцев авторизованного пользователя
     $pets = Pet::where('user_id', auth()->id())
@@ -203,6 +215,22 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                     </div>
                                     @endif
 
+                                    @if($review->reviewable_type === App\Models\Specialist::class)
+                                        @php($aboutEmployee = $review->reviewable)
+                                        <div class="small mb-2">
+                                            <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
+                                                Отзыв о специалисте
+                                                @if($aboutEmployee)
+                                                    <a href="{{ route('specialists.show', ['slug' => $aboutEmployee->slug]) }}" class="text-decoration-underline text-reset">{{ $aboutEmployee->name }}</a>
+                                                @endif
+                                            </span>
+                                            @if(!$review->specialistStillWorksHere())
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle ms-1">
+                                                    Специалист тут больше не работает
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @endif
 
                                     {{-- Пользователь --}}
                                     <div class="d-flex align-items-center mb-3">

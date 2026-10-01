@@ -140,7 +140,41 @@ Forms\Components\TextInput::make('practice_started_at')
             )
             ->searchable()
             ->reactive()
-            ->required(),
+            // Нужен либо выбранный город, либо введённое вручную название
+            ->required(fn (callable $get) => blank($get('city_name')))
+            // Если название введено вручную — находим такой город в регионе или создаём новый (large_city = 0)
+            ->dehydrateStateUsing(function ($state, callable $get) {
+                $name = $get('city_name');
+
+                if (filled($name) && filled($get('region'))) {
+                    return app(\App\Services\CityResolver::class)
+                        ->findOrCreate($name, $get('region'), auth()->id(), 'confirmed')->id;
+                }
+
+                return $state;
+            }),
+
+        // ───── ГОРОД ВРУЧНУЮ ─────
+        Forms\Components\TextInput::make('city_name')
+            ->label('Или введите название города вручную')
+            ->maxLength(120)
+            ->dehydrated(false)
+            ->live(onBlur: true)
+            ->datalist(fn (callable $get) => filled($get('region'))
+                ? \App\Models\City::query()
+                    ->whereRaw('LOWER(TRIM(region)) = ?', [mb_strtolower(trim((string) $get('region')))])
+                    ->orderBy('name')
+                    ->pluck('name')
+                    ->all()
+                : [])
+            ->helperText('Сначала выберите регион. Начните вводить название: если такой город уже есть в базе, он появится в подсказках; если нет — при сохранении будет создан новый город в этом регионе. Название, введённое вручную, используется вместо выбранного в списке.')
+            ->rules([
+                fn (callable $get) => function (string $attribute, $value, \Closure $fail) use ($get) {
+                    if (filled($value) && blank($get('region'))) {
+                        $fail('Выберите регион, в котором находится город.');
+                    }
+                },
+            ]),
 
         // ───── КЛИНИКИ (врач может работать в нескольких) ─────
         Forms\Components\Select::make('clinics')

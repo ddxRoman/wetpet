@@ -20,7 +20,7 @@
 
     $mapQuery = urlencode(implode(', ', $addressParts));
 
-    $tab = request('tab', 'info');
+    $tab = request('tab', 'contacts');
 @endphp
     @include('layouts.header')
 <main class="flex-grow-1 container mt-5">
@@ -99,7 +99,7 @@
                 @if($alreadyOwner && $alreadyOwner->is_confirmed)
                     <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
                           style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
-                        ✓ Это Ваша организация
+                        Перейти в кабинет
                     </span>
                 @elseif($alreadyOwner && !$alreadyOwner->is_confirmed)
                     <button class="btn btn-warning fw-bold d-flex align-items-center gap-2"
@@ -111,7 +111,7 @@
                     <button class="btn btn-success fw-bold d-flex align-items-center gap-2"
                             style="border-radius: 10px; padding: 8px 16px; border-style: dashed;"
                             data-bs-toggle="modal" data-bs-target="#claimOwnershipModal">
-                        <i class="bi bi-person-check"></i>
+                        
                         Это я
                     </button>
                 @endif
@@ -121,7 +121,7 @@
                 <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}"
                    class="btn btn-success fw-bold d-flex align-items-center gap-2"
                    style="border-radius: 10px; padding: 8px 16px; border-style: dashed;">
-                    Это я
+                    Перейти в кабинет
                 </a>
             @endauth
         </div>
@@ -132,9 +132,7 @@
 
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-            <a class="nav-link {{ $tab === 'info' ? 'active' : '' }}"  title="Просмотреть общую информацию" href="?tab=info">Информация</a>
-        </li>
+
         <li class="nav-item">
             <a class="nav-link {{ $tab === 'contacts' ? 'active' : ''  }}" title="Просмотреть контакты" href="?tab=contacts">Контакты</a>
         </li>
@@ -148,9 +146,6 @@
 
     <div class="row">
         <div class="col-lg-8">
-            @if($tab === 'info')
-                @include('pages.organizations.tabs.info', ['organization' => $organization])
-            @endif
 
             @if($tab === 'contacts')
                 @include('pages.organizations.tabs.contacts', ['organization' => $organization])

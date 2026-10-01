@@ -4,14 +4,24 @@
                         {{-- Отзывы --}}
                         
 @php
-    // Было: Review::where(...)
-    $reviews = \App\Models\Review::where('reviewable_id', $clinic->id)
-        ->where('reviewable_type', \App\Models\Clinic::class)
+    // Отзывы, оставленные напрямую клинике
+    $directReviews = \App\Models\Review::where('reviewable_id', $clinic->id)
+        ->where('reviewable_type', 'App\Models\Clinic')
         ->with(['user', 'photos', 'pet.animal'])
-        ->latest('review_date')
         ->get();
 
-    $pets = \App\Models\Pet::where('user_id', auth()->id()) // Также добавьте \App\Models\ для Pet на всякий случай
+    // + отзывы, оставленные врачам, которые работают/работали в этой клинике
+    // на момент отзыва (см. Review::workplace_type/workplace_id). Показываем их
+    // тут же, с пометкой «Отзыв о специалисте …» и, если он уже сменил клинику,
+    // «Специалист тут больше не работает».
+    $workplaceReviews = \App\Models\Review::where('workplace_type', 'App\Models\Clinic')
+        ->where('workplace_id', $clinic->id)
+        ->with(['user', 'photos', 'pet.animal', 'reviewable'])
+        ->get();
+
+    $reviews = $directReviews->concat($workplaceReviews)->sortByDesc('review_date')->values();
+
+    $pets = \App\Models\Pet::where('user_id', auth()->id())
         ->with('animal')
         ->get();
 @endphp
@@ -55,7 +65,7 @@
 
                 <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
                 <input type="hidden" name="redirect_slug" value="{{ $clinic->slug }}">
-                <input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
+                <input type="hidden" name="reviewable_type" value="{{ 'App\Models\Clinic' }}">
 
 {{-- ⭐ Оценка --}}
 <div class="mb-3">
@@ -173,6 +183,23 @@
                                         ✅ Реальный клиент
                                     </div>
                                     @endif
+
+                                    @if($review->reviewable_type === 'App\Models\Doctor')
+                                        @php($aboutEmployee = $review->reviewable)
+                                        <div class="small mb-2">
+                                            <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
+                                                Отзыв о враче
+                                                @if($aboutEmployee)
+                                                    <a href="{{ route('doctors.show', $aboutEmployee) }}" class="text-decoration-underline text-reset">{{ $aboutEmployee->name }}</a>
+                                                @endif
+                                            </span>
+                                            @if(!$review->specialistStillWorksHere())
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle ms-1">
+                                                    Специалист тут больше не работает
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @endif
                                     {{-- Пользователь --}}
                                     <div class="d-flex align-items-center mb-3">
                                         @php
@@ -216,15 +243,6 @@
                                     @if($review->content)
                                     <p class="mt-2">{{ $review->content }}</p>
                                     @endif
-
-                                    @php
-$reviews = \App\Models\Review::where('reviewable_id', $clinic->id)
-    ->where('reviewable_type', \App\Models\Clinic::class)
-    ->with(['user', 'photos', 'pet.animal']) // добавили pet и animal
-    ->latest('review_date')
-    ->get();
-@endphp
-
 
 @if($review->pet)
     <div class="small text-muted mt-2" data-zoom-scope>

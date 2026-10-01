@@ -16,7 +16,9 @@ class AddDoctorController extends Controller
             'name'              => 'required|string|max:255',
             'date_of_birth'     => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
             'field_of_activity_id' => 'required|integer|exists:field_of_activities,id',
-            'city_id'           => 'required|integer',
+            'city_id'           => 'nullable|integer',
+            'city_name'         => 'nullable|string|max:120',
+            'region'            => 'nullable|string|max:255',
             'practice_started_at' => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
             'exotic_animals'    => 'required|string',
             'On_site_assistance'=> 'required|string',
@@ -41,6 +43,10 @@ class AddDoctorController extends Controller
             'photo.max' => 'Максимальный размер фото — 2 МБ.',
         ]);
 
+        // 🔹 Город из списка или введённый вручную (новый создаётся с large_city = 0)
+        $city = app(\App\Services\CityResolver::class)->fromRequest($request);
+        $newCityNote = \App\Services\CityResolver::newCityNote($city);
+
         // 🔹 2. Получаем объект сферы деятельнсти
         $field = FieldOfActivity::find($request->field_of_activity_id);
 
@@ -59,7 +65,7 @@ class AddDoctorController extends Controller
         $model->name = $request->name;
         $model->specialization = $field->name;
         $model->date_of_birth = $request->date_of_birth;
-        $model->city_id = $request->city_id;
+        $model->city_id = $city->id;
         $model->clinic_id = $request->clinic_id;
         $model->practice_started_at = $request->practice_started_at;
         $model->exotic_animals = $request->exotic_animals;
@@ -90,6 +96,7 @@ $specUrl = config('app.url') . '/doctors/' . $model->slug;
 
 app(\App\Services\TelegramService::class)->send(
     "👤 <b>Добавлен {$type}</b>\n\n" .
+    $newCityNote .
     "Имя: <a href=\"{$specUrl}\">{$model->name}</a>\n" .
     "Специализация: {$model->specialization}\n" .
     "Город: {$city}\n\n" .

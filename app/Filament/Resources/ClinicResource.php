@@ -101,10 +101,21 @@ class ClinicResource extends Resource
             Forms\Components\Section::make('Адрес')
                 ->schema([
                     Forms\Components\TextInput::make('country')->label('Страна'),
-                    Forms\Components\TextInput::make('region')->label('Регион'),
+                    Forms\Components\TextInput::make('region')
+                        ->label('Регион')
+                        ->live(onBlur: true),
                     Forms\Components\TextInput::make('city')
                         ->label('Город')
                         ->required()
+                        // Подсказки: города выбранного региона из справочника (поиск по вхождению — средствами браузера)
+                        ->datalist(fn (callable $get) => filled($get('region'))
+                            ? \App\Models\City::query()
+                                ->whereRaw('LOWER(TRIM(region)) = ?', [mb_strtolower(trim((string) $get('region')))])
+                                ->orderBy('name')
+                                ->pluck('name')
+                                ->all()
+                            : [])
+                        ->helperText('Введите название вручную. Если такого города нет в справочнике, он будет добавлен в выбранный регион автоматически.')
                         ->live(onBlur: true)
                         ->afterStateUpdated(function ($state, callable $set, $get) {
                             if (! $get('slug_touched')) {

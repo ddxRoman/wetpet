@@ -136,7 +136,10 @@ private function performStore(Request $request)
     $validated = $request->validate([
         'name'                 => 'required|string|max:255',
         'field_of_activity_id' => 'required|exists:field_of_activities,id',
-        'city_id'              => 'required|exists:cities,id',
+        'city_id'              => 'nullable|exists:cities,id',
+        // Город: выбранный из списка (city_id) или введённый вручную (city_name + region)
+        'city_name'            => 'nullable|string|max:120',
+        'region'               => 'nullable|string|max:255',
         'organization_id'      => 'nullable|exists:organizations,id',
         'street'               => 'nullable|string|max:255',
         'house'                => 'nullable|string|max:20',
@@ -156,6 +159,9 @@ private function performStore(Request $request)
         'personal_data_agreement.required' => 'Необходимо согласие на обработку персональных данных.',
         'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
     ]);
+
+    // 🔹 Город из списка или введённый вручную (если его нет в базе — создаётся с large_city = 0)
+    $city = app(\App\Services\CityResolver::class)->fromRequest($request);
 
     // 🔹 Получаем специализацию
     $field = FieldOfActivity::findOrFail($validated['field_of_activity_id']);
@@ -183,7 +189,7 @@ private function performStore(Request $request)
         'name'                => $validated['name'],
         'slug'                => $slug,
         'specialization'      => $field->name,
-        'city_id'             => $validated['city_id'],
+        'city_id'             => $city->id,
         'organization_id'     => $organizationId,
         'street'              => $street,
         'house'               => $house,
@@ -218,7 +224,7 @@ private function performStore(Request $request)
         Http::post('https://api.telegram.org/bot' . config('services.telegram.bot_token') . '/sendMessage', [
             'chat_id' => config('services.telegram.chat_id'),
             'parse_mode' => 'HTML',
-            'text' => "🩺 <b>Новый специалист</b>\n\n" . "👤 <b>Имя:</b> {$specialist->name}\n" . "📌 <b>Специализация:</b> {$specialist->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
+            'text' => "🩺 <b>Новый специалист</b>\n\n" . \App\Services\CityResolver::newCityNote($city) . "👤 <b>Имя:</b> {$specialist->name}\n" . "📌 <b>Специализация:</b> {$specialist->specialization}\n" . "\n🔗 <a href=\"{$url}\">Открыть профиль</a>",
         ]);
     } catch (\Throwable $e) {
         logger()->warning('Telegram notify failed', ['error' => $e->getMessage()]);
@@ -361,9 +367,7 @@ public function show($slug)
         ->firstOrFail();
 
     // Передаем в шаблон как $doctor
-    $seoMeta = (new \App\Services\SeoManager())->getMeta($specialist);
-
-    return view('pages.specialists.show', ['doctor' => $specialist, 'seoMeta' => $seoMeta]);
+    return view('pages.specialists.show', ['doctor' => $specialist]);
 }
 
     public function destroy(Specialist $specialist)
