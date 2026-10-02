@@ -1,4 +1,8 @@
 {
+  "_select2-BPEmE1J2.js": {
+    "file": "assets/select2-BPEmE1J2.js",
+    "name": "select2"
+  },
   "resources/css/app.css": {
     "file": "assets/app-l0sNRNKZ.js",
     "name": "app",
@@ -25,11 +29,32 @@
     "src": "resources/css/slider.css",
     "isEntry": true
   },
+  "resources/js/Pages/edit_doctor.js": {
+    "file": "assets/edit_doctor-CkXrUBZE.js",
+    "name": "edit_doctor",
+    "src": "resources/js/Pages/edit_doctor.js",
+    "isEntry": true,
+    "imports": [
+      "_select2-BPEmE1J2.js"
+    ]
+  },
+  "resources/js/Pages/edit_organizations.js": {
+    "file": "assets/edit_organizations-Ducox6uC.js",
+    "name": "edit_organizations",
+    "src": "resources/js/Pages/edit_organizations.js",
+    "isEntry": true,
+    "imports": [
+      "_select2-BPEmE1J2.js"
+    ]
+  },
   "resources/js/app.js": {
-    "file": "assets/app-DCJYWYqw.js",
+    "file": "assets/app-BmYfDPPs.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "imports": [
+      "_select2-BPEmE1J2.js"
+    ],
     "css": [
       "assets/app-CeVt-V8g.css"
     ]

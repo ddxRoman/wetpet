@@ -1,4 +1,4 @@
-@vite(['resources/js/pages/edit_organizations.js'])
+@vite(['resources/js/Pages/edit_organizations.js'])
 
 @if(isset($organization) && $organization)
     <form id="editOrganizationForm"

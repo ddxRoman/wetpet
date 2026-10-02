@@ -6,8 +6,12 @@
 
 <div class="tab-pane fade" id="services" role="tabpanel">
     @php
-    // Автоматически определяем, какая переменная у нас есть: $clinic или $doctor
-    $currentModel = $clinic ?? $doctor ?? $specialist ?? null;
+    // Эта вкладка используется только на собственной странице врача/специалиста
+    // (см. Show.blade.php). Раньше тут был "универсальный" $clinic ?? $doctor ?? ...,
+    // но $clinic — это клиника, где работает врач (её переменная тоже есть в scope
+    // этой страницы), и она ошибочно перебивала $doctor — вкладка показывала
+    // услуги клиники вместо личных услуг врача/специалиста.
+    $currentModel = $doctor;
 
     if (!$currentModel) {
         $pricesCollection = collect();
@@ -24,7 +28,7 @@
 
     // Группировка (оставляем ваш код без изменений, но используем новую переменную)
     $grouped = $pricesCollection->groupBy(function($priceItem) {
-        return $priceItem->service->specialization ?? 'Общие услуги';
+        return $priceItem->service->specialization_doctor ?? $priceItem->service->specialization ?? 'Общие услуги';
     })->sortKeys();
     
 

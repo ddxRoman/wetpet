@@ -12,6 +12,8 @@ export default defineConfig({
                 'resources/css/catalog-cards.css',
                 'resources/sass/app.scss',
                 'resources/js/app.js',
+                'resources/js/Pages/edit_doctor.js',
+                'resources/js/Pages/edit_organizations.js',
             ],
             refresh: true,
         }),

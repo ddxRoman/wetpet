@@ -1,4 +1,4 @@
-@vite(['resources/js/pages/edit_doctor.js'])
+@vite(['resources/js/Pages/edit_doctor.js'])
 
 <form id="editDoctorForm"
       method="POST"
