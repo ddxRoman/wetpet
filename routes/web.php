@@ -197,9 +197,6 @@ Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpe
 Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);
 // возвращает список всех регионов (для выпадающего списка с поиском)
 Route::get('/api/regions', [\App\Http\Controllers\CityController::class, 'regions'])->name('api.regions');
-// Подсказки городов при ручном вводе (поиск по вхождению в пределах региона)
-Route::get('/api/cities/suggest', [\App\Http\Controllers\CityController::class, 'suggest'])->name('api.cities.suggest');
-
 use App\Http\Controllers\AnimalReviewController;
 
 Route::post('/animals/{animal_id}/review', [AnimalReviewController::class, 'store'])->name('animals.review.store');

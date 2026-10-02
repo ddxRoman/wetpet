@@ -1,24 +1,19 @@
-{{--
-    Ручной ввод города (для модалок «Добавление специалиста» и «Добавление организации»).
-    Список городов региона остаётся как был; здесь можно ввести название вручную:
-      • при вводе идёт поиск по вхождению в названии (в пределах выбранного региона);
-      • найденные города показываются подсказками — можно выбрать;
-      • если города нет или он не выбран из подсказок — на сервере создаётся новый город
-        (таблица cities, large_city = 0) в выбранном регионе.
-    Поле уходит на сервер как city_name; если оно заполнено, оно главнее выбранного в списке.
-    Скрипт не зависит от Vite-сборки и Choices: работает со значениями select[name=region] / select[name=city_id].
---}}
-<div class="col-12" data-city-manual data-suggest-url="{{ route('api.cities.suggest') }}">
+
+<div class="col-12" data-city-manual
+     data-suggest-url="{{ route('api.cities.suggest') }}"
+     data-quick-add-url="{{ route('api.cities.quick-add') }}">
     <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Или введите название города вручную</label>
     <div class="position-relative">
         <input type="text" name="city_name" class="form-control wpm-input" autocomplete="off" maxlength="120"
-               placeholder="Например: станица Динская">
+               placeholder="укажите название населенного пункта">
         <div class="list-group position-absolute w-100 shadow d-none" data-role="suggest"
              style="z-index:1060;max-height:230px;overflow:auto;top:100%;"></div>
     </div>
+    <div class="mt-1" style="font-size:13px;display:none;" data-role="status"></div>
     <div class="text-muted mt-1" style="font-size:12px;">
-        Если вашего города нет в списке выше — введите название: если такой город уже есть в базе, он появится в подсказках,
-        если нет — будет добавлен новый в выбранный регион. Название, введённое вручную, используется вместо выбранного в списке.
+        Если вашего города нет в списке выше — введите название: если такой город уже есть в базе, он появится в подсказках.
+        Если его нет, нажмите «Добавить этот город» — он сохранится в базе в выбранном регионе и будет указан в карточке.
+        Название, введённое вручную, используется вместо выбранного в списке.
     </div>
 </div>
 
@@ -34,7 +29,60 @@
         var input   = root.querySelector('input[name="city_name"]');
         var list    = root.querySelector('[data-role="suggest"]');
         var url     = root.dataset.suggestUrl;
+        var addUrl  = root.dataset.quickAddUrl;
+        var status  = root.querySelector('[data-role="status"]');
         var timer = null, requestId = 0;
+
+        function showStatus(text, ok) {
+            status.textContent = text;
+            status.style.color = ok ? '#198754' : '#dc3545';
+            status.style.display = text ? 'block' : 'none';
+        }
+
+        function firstError(data) {
+            if (!data) return '';
+            if (data.message && !data.errors) return data.message;
+            var errors = data.errors ? Object.values(data.errors) : [];
+            return errors.length ? [].concat(errors[0])[0] : (data.message || '');
+        }
+
+        // Кнопка «Добавить этот город»: сохраняет город в базе, дальше он крепится к карточке при отправке формы
+        function addCity(term, btn) {
+            btn.disabled = true;
+            btn.textContent = 'Добавляем…';
+
+            var tokenEl = document.querySelector('meta[name="csrf-token"]');
+
+            fetch(addUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': tokenEl ? tokenEl.content : ''
+                },
+                body: JSON.stringify({ name: term, region: region ? region.value : '' })
+            })
+                .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, ok: r.ok, data: d }; }); })
+                .then(function (res) {
+                    close();
+                    if (res.status === 401) {
+                        showStatus('Чтобы добавить город, войдите в аккаунт.', false);
+                        return;
+                    }
+                    if (!res.ok) {
+                        showStatus(firstError(res.data) || 'Не удалось добавить город. Попробуйте ещё раз.', false);
+                        return;
+                    }
+                    input.value = res.data.name;   // каноническое название — оно уйдёт в city_name
+                    showStatus(res.data.created
+                        ? '✓ Город «' + res.data.name + '» добавлен и будет указан в карточке.'
+                        : '✓ Город «' + res.data.name + '» уже есть в базе — он будет указан в карточке.', true);
+                })
+                .catch(function () {
+                    close();
+                    showStatus('Не удалось добавить город. Проверьте соединение и попробуйте ещё раз.', false);
+                });
+        }
 
         function close() { list.classList.add('d-none'); list.innerHTML = ''; }
 
@@ -64,9 +112,23 @@
             });
 
             if (!exact) {
-                list.appendChild(note(items.length
-                    ? 'Не нашли свой город? Оставьте введённое название — он будет добавлен.'
-                    : 'Такого города нет в базе — при сохранении он будет добавлен в выбранный регион.'));
+                var box = document.createElement('div');
+                box.className = 'list-group-item';
+
+                var text = document.createElement('div');
+                text.className = 'text-muted small mb-2';
+                text.textContent = (items.length ? 'Нет точного совпадения. ' : 'Такого города нет в базе. ') + '«' + term + '»';
+
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-sm btn-primary';
+                btn.textContent = 'Добавить этот город';
+                btn.addEventListener('mousedown', function (e) { e.preventDefault(); }); // не терять фокус поля
+                btn.addEventListener('click', function () { addCity(term, btn); });
+
+                box.appendChild(text);
+                box.appendChild(btn);
+                list.appendChild(box);
             }
             list.classList.remove('d-none');
         }
@@ -95,6 +157,7 @@
         }
 
         input.addEventListener('input', function () {
+            showStatus('', true);
             clearTimeout(timer);
             timer = setTimeout(search, 250);
         });
@@ -106,10 +169,10 @@
 
         // Выбрали город в списке — ручной ввод очищаем (одно из двух)
         if (citySel) citySel.addEventListener('change', function () {
-            if (citySel.value) { input.value = ''; close(); }
+            if (citySel.value) { input.value = ''; close(); showStatus('', true); }
         });
         // Сменили регион — введённое название относилось к другому региону
-        if (region) region.addEventListener('change', function () { input.value = ''; close(); });
+        if (region) region.addEventListener('change', function () { input.value = ''; close(); showStatus('', true); });
     }
 
     function initAll() {

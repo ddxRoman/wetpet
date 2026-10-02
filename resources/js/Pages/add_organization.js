@@ -1,5 +1,6 @@
 import { notify, notifyAfterReload } from '../notify';
 import Choices from 'choices.js';
+import { enableAddCity, applyNewCity } from './city-add-option';
 import 'choices.js/public/assets/styles/choices.min.css';
 
 import Cropper from 'cropperjs';
@@ -52,6 +53,15 @@ function initAddOrganizationModal(modal) {
     /* ===== Choices init ===== */
     initChoices(regionSelect, { searchPlaceholderValue: 'Поиск региона...' });
     initChoices(citySelect,   { searchPlaceholderValue: 'Поиск города...' });
+
+    // Нет своего города в списке — кнопка «Добавить этот населённый пункт» прямо в выпадающем списке
+    enableAddCity({
+        select: citySelect,
+        choices: citySelect?._choices,
+        regionSelect,
+        getKnownNames: () => [...(citySelect?.options || [])].map(o => o.text),
+    });
+
     if (clinicSelect) initChoices(clinicSelect, { searchPlaceholderValue: 'Поиск клиники...' });
 
     /* ===== Сферы деятельности ===== */
@@ -104,7 +114,14 @@ function initAddOrganizationModal(modal) {
             const cityId = citySelect.value;
             clinicSelect.innerHTML = `<option value="">Загрузка...</option>`;
 
-            if (!cityId) return;
+            // У нового (ещё не сохранённого) города id нет — клиник в нём пока нет
+            if (!cityId || !/^\d+$/.test(cityId)) {
+                clinicSelect.innerHTML = `<option value="">Выберите клинику</option>`;
+                clinicSelect._choices?.setChoices(
+                    [{ value:'', label:'Выберите клинику' }], 'value', 'label', true
+                );
+                return;
+            }
 
             fetch(`/api/clinics/by-city/${cityId}`)
                 .then(r => r.json())
@@ -163,7 +180,7 @@ if (form) {
             const res = await fetch(form.action, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json' },
-                body: new FormData(form)
+                body: applyNewCity(form, new FormData(form))
             });
 
             const json = await res.json();

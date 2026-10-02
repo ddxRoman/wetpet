@@ -85,7 +85,7 @@
 
 
         {{-- 4. Описание --}}
-        @if(!empty($clinics->description))
+        @if(!empty($clinics->description != null))
         <tr>
             <td colspan="2" class="pt-3">
                 <div class="text-muted small mb-1">Об организации:</div>

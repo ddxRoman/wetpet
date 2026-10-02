@@ -23,13 +23,31 @@ class CityResolver
      */
     public static function newCityNote(?City $city): string
     {
-        if (! $city || ! $city->wasRecentlyCreated) {
+        // «Новый» — город создан только что ИЛИ ещё не проверен админом: пользователь мог
+        // добавить его кнопкой «Добавить этот город» до отправки формы, и тогда при сохранении
+        // карточки он уже найдётся в базе (wasRecentlyCreated = false), но по-прежнему unconfirmed.
+        if (! $city || ! ($city->wasRecentlyCreated || $city->verified === 'unconfirmed')) {
             return '';
         }
 
         $region = $city->region ? " ({$city->region})" : '';
 
         return "📍 <b>В НОВОМ НАСЕЛЕННОМ ПУНКТЕ:</b> {$city->name}{$region}\n\n";
+    }
+
+    /**
+     * Допустимое название города: минимум две буквы, только буквы, цифры, пробелы и знаки
+     * « - . , ' ’ " « » ( ) ». Разметка и спецсимволы не допускаются — названия потом
+     * подставляются в выпадающие списки.
+     */
+    public function isValidName(?string $name): bool
+    {
+        $name = (string) $name;
+
+        return mb_strlen($name) >= 2
+            && mb_strlen($name) <= 120
+            && preg_match('/\p{L}.*\p{L}/su', $name) === 1
+            && preg_match('/^[\p{L}\p{N}\s\-.,\'’"«»()]+$/u', $name) === 1;
     }
 
     /** Убирает лишние пробелы и делает первую букву заглавной. */
@@ -184,6 +202,12 @@ class CityResolver
             if ($region === '' || ! $this->regionExists($region)) {
                 throw ValidationException::withMessages([
                     $regionKey => 'Выберите регион, в котором находится город.',
+                ]);
+            }
+
+            if (! $this->isValidName($typed)) {
+                throw ValidationException::withMessages([
+                    $nameKey => 'Название города может содержать только буквы, цифры, пробелы и дефис.',
                 ]);
             }
 

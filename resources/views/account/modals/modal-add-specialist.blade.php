@@ -95,7 +95,6 @@
                                             <option value="">Сначала выберите регион</option>
                                         </select>
                                     </div>
-                                    @include('account.modals._city-manual')
                                     <div class="col-md-6 private-address-col">
                                         <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Улица</label>
                                         <input type="text" name="street" id="street" class="form-control wpm-input" placeholder="ул. Мира">

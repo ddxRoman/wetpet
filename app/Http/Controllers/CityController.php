@@ -70,24 +70,6 @@ public function citiesByRegion($region)
     return response()->json($cities);
 }
 
-// Подсказки для ручного ввода города: поиск по вхождению в названии, в пределах региона
-public function suggest(Request $request)
-{
-    $region = trim((string) $request->query('region', ''));
-
-    // Город всегда привязан к региону — без региона не ищем
-    if ($region === '') {
-        return response()->json([]);
-    }
-
-    $cities = app(\App\Services\CityResolver::class)
-        ->search((string) $request->query('q', ''), $region, 15)
-        ->map(fn ($c) => ['id' => $c->id, 'name' => $c->name])
-        ->values();
-
-    return response()->json($cities);
-}
-
 // Список регионов из справочника городов — для выпадающего списка с поиском
 public function regions()
 {

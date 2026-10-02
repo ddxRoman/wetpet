@@ -1,5 +1,6 @@
 import { notify, notifyAfterReload } from '../notify';
 import Choices from 'choices.js';
+import { enableAddCity, applyNewCity } from './city-add-option';
 import 'choices.js/public/assets/styles/choices.min.css';
 
 let isSubmitting = false;
@@ -39,10 +40,22 @@ function initAddDoctorScripts(modal) {
     if (regionSelect && citySelect && clinicSelect) {
         regionChoices = new Choices(regionSelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
         cityChoices = new Choices(citySelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
+
+        // Названия городов, загруженных в список выбранного региона (чтобы не предлагать добавить уже существующий)
+        let loadedCityNames = [];
+
+        // Нет своего города в списке — кнопка «Добавить этот населённый пункт» прямо в выпадающем списке
+        enableAddCity({
+            select: citySelect,
+            choices: cityChoices,
+            regionSelect,
+            getKnownNames: () => loadedCityNames,
+        });
         clinicChoices = new Choices(clinicSelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
 
         regionSelect.addEventListener('change', () => {
             const region = regionSelect.value;
+            loadedCityNames = [];
             cityChoices.clearChoices();
             clinicChoices.clearChoices();
             cityChoices.setChoices([{ value: '', label: 'Выберите город', selected: true }], 'value', 'label', true);
@@ -51,6 +64,7 @@ function initAddDoctorScripts(modal) {
             fetch(`/api/cities/by-region/${encodeURIComponent(region)}`)
                 .then(r => r.json())
                 .then(list => {
+                    loadedCityNames = list.map(c => c.name);
                     cityChoices.setChoices(list.map(c => ({ value: c.id, label: c.name })), 'value', 'label', true);
                 });
         });
@@ -60,7 +74,8 @@ function initAddDoctorScripts(modal) {
             clinicChoices.clearChoices();
             clinicChoices.setChoices([{ value: '', label: 'Выберите организацию', selected: true }], 'value', 'label', true);
             syncAddressFields();
-            if (!cityId) return;
+            // У нового (ещё не сохранённого) города id нет — организаций в нём пока нет
+            if (!cityId || !/^\d+$/.test(cityId)) return;
             const url = isDoctorMode
                 ? `/api/clinics/by-city/${cityId}`
                 : `/get-organizations-by-city-id/${cityId}`;
@@ -184,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (errorsBox) errorsBox.classList.add('d-none');
 
             try {
-                const formData = new FormData(form);
+                const formData = applyNewCity(form, new FormData(form));
                 const res = await fetch(form.action, {
                     method: 'POST',
                     body: formData,

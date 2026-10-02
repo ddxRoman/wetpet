@@ -84,7 +84,6 @@
                                 <option value="">Сначала выберите регион</option>
                             </select>
                         </div>
-                        @include('account.modals._city-manual')
 
                         <div class="col-md-8">
                             <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Улица</label>
