@@ -25,13 +25,22 @@
 
     $tab = request('tab', 'info');
 
-    // Логика рейтинга
+    // Логика рейтинга (только собственные отзывы клиники — рейтинг заведения,
+    // отдельно от отзывов о конкретных врачах)
     use App\Models\Review;
     $reviews = Review::where('reviewable_id', $clinic->id)
         ->where('reviewable_type', \App\Models\Clinic::class)
         ->get();
     $reviewCount = $reviews->count();
     $averageRating = $reviewCount > 0 ? round($reviews->avg('rating'), 1) : null;
+
+    // Счётчик у вкладки «Отзывы»: собственные отзывы клиники плюс отзывы о
+    // врачах, которые работают/работали в ней — ровно то, что реально
+    // показывается во вкладке «Отзывы» (см. tabs/reviews.blade.php).
+    $tabReviewCount = $reviewCount
+        + Review::where('workplace_type', \App\Models\Clinic::class)
+        ->where('workplace_id', $clinic->id)
+        ->count();
 @endphp
 
 @include('layouts.header')
@@ -130,8 +139,8 @@
 
     {{-- ТАБЫ --}}
     <ul class="nav nav-tabs mb-4">
-                <li class="nav-item">
-            <a class="nav-link {{ $tab === 'info' ? 'active' : '' }}"  title="Просмотреть общую информацию" href="?tab=info">Информация</a>
+        <li class="nav-item">
+            <a class="nav-link {{ $tab === 'info' ? 'active' : '' }}" title="Просмотреть общую информацию" href="?tab=info">Информация</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ $tab === 'contacts' ? 'active' : '' }}" title="Просмотреть контакты" href="?tab=contacts">Контакты</a>
@@ -140,7 +149,9 @@
             <a class="nav-link {{ $tab === 'services' ? 'active' : '' }}" title="Открыть список услуг" href="?tab=services">Услуги</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'reviews' ? 'active' : '' }}" title="Прочитать отзывы о клинике" href="?tab=reviews">Отзывы</a>
+            <a class="nav-link {{ $tab === 'reviews' ? 'active' : '' }}" title="Прочитать отзывы о клинике" href="?tab=reviews">
+                Отзывы <span class="badge bg-secondary rounded-pill">{{ $tabReviewCount }}</span>
+            </a>
         </li>
     </ul>
 
@@ -149,9 +160,10 @@
     <div class="row">
         <div class="col-lg-8">
             {{-- Контент вкладок вынесен в отдельные файлы для соблюдения структуры --}}
-                        @if($tab === 'info')
-                @include('pages.clinics.tabs.info', ['clinics' => $clinic])
+            @if($tab === 'info')
+                @include('partials._entity-info-tab', ['entity' => $clinic])
             @endif
+
             @if($tab === 'contacts')
                 @include('pages.clinics.tabs.contacts', ['clinic' => $clinic])
             @endif
@@ -189,7 +201,7 @@
     <div class="mb-4 mt-5">
         <h2 class="fs-5 fw-semibold mb-3">Доктора клиники</h2>
         @php
-            $doctors = $clinic->doctors()->get();
+            $doctors = \App\Models\Doctor::where('clinic_id', $clinic->id)->get();
         @endphp
 
         <div class="row g-3">

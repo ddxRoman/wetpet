@@ -24,8 +24,8 @@
     // которые работают/работали в ней на момент отзыва (см. Review::workplace_type/
     // workplace_id). Показываем их тут же, с пометкой «Отзыв о специалисте …»
     // и, если он уже сменил место работы, «Специалист тут больше не работает».
-    $workplaceReviews = $currentType === App\Models\Organization::class
-        ? Review::where('workplace_type', App\Models\Organization::class)
+    $workplaceReviews = $currentType === \App\Models\Organization::class
+        ? Review::where('workplace_type', \App\Models\Organization::class)
             ->where('workplace_id', $targetModel->id)
             ->with(['user', 'photos', 'pet.animal', 'reviewable'])
             ->get()
@@ -215,8 +215,8 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                     </div>
                                     @endif
 
-                                    @if($review->reviewable_type === App\Models\Specialist::class)
-                                        @php $aboutEmployee = $review->reviewable; @endphp
+                                    @if($review->reviewable_type === \App\Models\Specialist::class)
+                                        @php($aboutEmployee = $review->reviewable)
                                         <div class="small mb-2">
                                             <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
                                                 Отзыв о специалисте

@@ -6,7 +6,7 @@
 @php
     // Отзывы, оставленные напрямую клинике
     $directReviews = \App\Models\Review::where('reviewable_id', $clinic->id)
-        ->where('reviewable_type', 'App\Models\Clinic')
+        ->where('reviewable_type', \App\Models\Clinic::class)
         ->with(['user', 'photos', 'pet.animal'])
         ->get();
 
@@ -14,7 +14,7 @@
     // на момент отзыва (см. Review::workplace_type/workplace_id). Показываем их
     // тут же, с пометкой «Отзыв о специалисте …» и, если он уже сменил клинику,
     // «Специалист тут больше не работает».
-    $workplaceReviews = \App\Models\Review::where('workplace_type', 'App\Models\Clinic')
+    $workplaceReviews = \App\Models\Review::where('workplace_type', \App\Models\Clinic::class)
         ->where('workplace_id', $clinic->id)
         ->with(['user', 'photos', 'pet.animal', 'reviewable'])
         ->get();
@@ -65,7 +65,7 @@
 
                 <input type="hidden" name="reviewable_id" value="{{ $clinic->id }}">
                 <input type="hidden" name="redirect_slug" value="{{ $clinic->slug }}">
-                <input type="hidden" name="reviewable_type" value="{{ 'App\Models\Clinic' }}">
+                <input type="hidden" name="reviewable_type" value="{{ \App\Models\Clinic::class }}">
 
 {{-- ⭐ Оценка --}}
 <div class="mb-3">
@@ -184,8 +184,8 @@
                                     </div>
                                     @endif
 
-                                    @if($review->reviewable_type === 'App\Models\Doctor')
-                                        @php $aboutEmployee = $review->reviewable; @endphp
+                                    @if($review->reviewable_type === \App\Models\Doctor::class)
+                                        @php($aboutEmployee = $review->reviewable)
                                         <div class="small mb-2">
                                             <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
                                                 Отзыв о враче

@@ -51,6 +51,12 @@ document.addEventListener('DOMContentLoaded', function() {
             ? ' <span class="badge bg-secondary bg-opacity-75" style="font-size:10px;">Другой населенный пункт</span>'
             : '';
 
+        // Если в результате есть услуга (нашлось по названию услуги, например
+        // «Груминг кошек») — показываем её название и цену отдельной строкой
+        const serviceLine = (item) => item.service_name
+            ? `<div class="result-sub-small text-success fw-semibold" style="font-size: 0.85rem;">💲 ${item.service_name} — ${item.service_price}</div>`
+            : '';
+
         function renderResultItem(item) {
             switch (item.type) {
                 case 'clinic':
@@ -60,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="ms-2">
                                 <div class="result-title text-primary"><small>🏥 Клиника:</small> ${item.name}</div>
                                 <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}${otherBadge(item)}</div>
+                                ${serviceLine(item)}
                             </div>
                         </a>`;
 
@@ -73,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <small>🏢</small> ${item.name} ${category}
                                 </div>
                                 <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}${otherBadge(item)}</div>
+                                ${serviceLine(item)}
                             </div>
                         </a>`;
                 }
@@ -87,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <span class="result-sub-muted small">(${item.specialization})</span>
                                 </div>
                                 <div class="result-sub-small text-muted">${item.clinic_info}</div>
+                                ${serviceLine(item)}
                             </div>
                         </a>`;
 
@@ -100,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <span class="result-sub-muted small">(${item.specialization})</span>
                                 </div>
                                 <div class="result-sub-small text-muted">${item.location_info}</div>
+                                ${serviceLine(item)}
                             </div>
                         </a>`;
 

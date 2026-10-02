@@ -70,7 +70,10 @@ if ($request->ajax()) {
         }
 
         $clinic->load(['awards', 'doctors']);
-        return view('pages.clinics.show', compact('clinic'));
+
+        $seoMeta = (new \App\Services\SeoManager())->getMeta($clinic);
+
+        return view('pages.clinics.show', compact('clinic', 'seoMeta'));
     }
 
     /**
@@ -89,8 +92,7 @@ if ($request->ajax()) {
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'region' => 'nullable|string|max:100',
-            'city_id' => 'nullable|exists:cities,id',
-            'city_name' => 'nullable|string|max:120',
+            'city_id' => 'required|exists:cities,id',
             'street' => 'required|string|max:255',
             'house' => 'nullable|string|max:50',
             'address_comment' => 'nullable|string|max:255',
@@ -105,13 +107,12 @@ if ($request->ajax()) {
             'workdays' => 'nullable|string|max:100',
         ]);
 
-        // Город из списка или введённый вручную (новый создаётся с large_city = 0)
-        $city = app(\App\Services\CityResolver::class)->fromRequest($request);
+        $city = City::findOrFail($data['city_id']);
 
         $clinic = Clinic::create([
             'name' => $data['name'],
             'country' => 'Россия',
-            'region' => $city->region,
+            'region' => $data['region'] ?? null,
             'city' => $city->name,
             'street' => $data['street'],
             'house' => $data['house'] ?? null,
@@ -128,7 +129,6 @@ if ($request->ajax()) {
         $user = auth()->user();
         app(TelegramService::class)->send(
             "🏥 <b>Новая клиника</b>\n\n" .
-            \App\Services\CityResolver::newCityNote($city) .
             "Название: {$clinic->name}\n" .
             "Город: {$clinic->city}\n" .
             "Адрес: {$clinic->street} {$clinic->house}\n\n" .
@@ -317,45 +317,20 @@ public function liveSearch(Request $request)
         return min($score($searchTerm), $score($searchTermAlt));
     };
 
-    // ── Нечёткий поиск (опечатки, пропущенные буквы, «Вет Макс» = «ВетМакс») ──
-    // Обычный поиск (LIKE) работает как раньше и идёт первым. Нечёткие совпадения добавляются
-    // после него — и только до лимита, чтобы точные результаты не вытеснялись приблизительными.
-    $fuzzyTerms = array_values(array_unique([$searchTerm, $searchTermAlt]));
-    $fuzzyIds = [
-        'clinic'       => \App\Support\FuzzySearch::ids(\App\Models\Clinic::class, ['name'], $fuzzyTerms),
-        'organization' => \App\Support\FuzzySearch::ids(\App\Models\Organization::class, ['name'], $fuzzyTerms),
-        'doctor'       => \App\Support\FuzzySearch::ids(\App\Models\Doctor::class, ['name', 'specialization'], $fuzzyTerms),
-        'specialist'   => \App\Support\FuzzySearch::ids(\App\Models\Specialist::class, ['name', 'specialization'], $fuzzyTerms),
-        'animal'       => \App\Support\FuzzySearch::ids(\App\Models\Animal::class, ['breed', 'species'], $fuzzyTerms),
-    ];
-
-    $fill = function (callable $make, ?int $limit, array $ids) {
-        $items = $limit ? $make(null)->limit($limit)->get() : $make(null)->get();
-
-        $ids = array_values(array_diff($ids, $items->pluck('id')->all()));
-
-        if ($ids && (! $limit || $items->count() < $limit)) {
-            $extra = $make($ids);
-            $extra = $limit ? $extra->limit($limit - $items->count())->get() : $extra->get();
-            $items = $items->concat($extra);
-        }
-
-        return $items;
-    };
-
     $results = collect();
 
     // 1. Клиники
-    $fill(fn ($ids) => \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch, $ids) {
-            $ids === null ? $applyAdvancedSearch($q) : $q->whereIn('id', $ids);
+    \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
+            $applyAdvancedSearch($q);
         })
         ->forSearch($targetCity, $namedRegions)
             ->searchRank($targetCity, $namedRegions)
-        , 10, $fuzzyIds['clinic'])->each(function($item) use (&$results, $matchPriority, $tierOf) {
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $tierOf) {
             $results->push([
                 'type' => 'clinic',
                 'other_locality' => $item->is_other_locality,
                 '_tier' => $tierOf($item->city, $item->region),
+                '_entity_id' => $item->id,
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'city_slug' => $item->city_slug,
@@ -367,12 +342,8 @@ public function liveSearch(Request $request)
         });
 
     // 2. Врачи
-    $fill(fn ($ids) => \App\Models\Doctor::with(['clinic', 'clinics', 'city'])
-        ->where(function($q) use ($searchTerm, $searchTermAlt, $ids) {
-            if ($ids !== null) {
-                $q->whereIn('id', $ids);
-                return;
-            }
+    \App\Models\Doctor::with(['clinic', 'city'])
+        ->where(function($q) use ($searchTerm, $searchTermAlt) {
             $q->where('name', 'LIKE', "%{$searchTerm}%")
               ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
             if ($searchTermAlt !== $searchTerm) {
@@ -383,20 +354,20 @@ public function liveSearch(Request $request)
         ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
             $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                    ->orWhereHas('clinics', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhere('works_online', true)
                     ->orWhere(function ($none) {
-                        $none->whereNull('city_id')->whereNull('clinic_id')->whereDoesntHave('clinics');
+                        $none->whereNull('city_id')->whereNull('clinic_id');
                     });
             });
         })
-        , 10, $fuzzyIds['doctor'])->each(function($item) use (&$results, $matchPriority) {
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
             $clinicAddress = $item->clinic 
                 ? " ({$item->clinic->city}, {$item->clinic->street} {$item->clinic->house})" 
                 : "";
             $results->push([
                 'type' => 'doctor',
+                '_entity_id' => $item->id,
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'specialization' => $item->specialization,
@@ -408,17 +379,18 @@ public function liveSearch(Request $request)
         });
 
     // 3. Организации
-    $fill(fn ($ids) => \App\Models\Organization::with(['fieldOfActivity'])
-        ->where(function($q) use ($applyAdvancedSearch, $ids) {
-            $ids === null ? $applyAdvancedSearch($q) : $q->whereIn('id', $ids);
+    \App\Models\Organization::with(['fieldOfActivity'])
+        ->where(function($q) use ($applyAdvancedSearch) {
+            $applyAdvancedSearch($q);
         })
         ->forSearch($targetCity, $namedRegions)
             ->searchRank($targetCity, $namedRegions)
-        , 10, $fuzzyIds['organization'])->each(function($item) use (&$results, $matchPriority, $tierOf) {
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $tierOf) {
             $results->push([
                 'type' => 'organization',
                 'other_locality' => $item->is_other_locality,
                 '_tier' => $tierOf($item->city, $item->region),
+                '_entity_id' => $item->id,
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'city_slug' => $item->city_slug,
@@ -431,12 +403,8 @@ public function liveSearch(Request $request)
         });
 
     // 4. Специалисты
-    $fill(fn ($ids) => \App\Models\Specialist::with(['organization', 'organizations', 'city'])
-        ->where(function($q) use ($searchTerm, $searchTermAlt, $ids) {
-            if ($ids !== null) {
-                $q->whereIn('id', $ids);
-                return;
-            }
+    \App\Models\Specialist::with(['organization', 'city'])
+        ->where(function($q) use ($searchTerm, $searchTermAlt) {
             $q->where('name', 'LIKE', "%{$searchTerm}%")
               ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
             if ($searchTermAlt !== $searchTerm) {
@@ -447,15 +415,14 @@ public function liveSearch(Request $request)
         ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
             $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                    ->orWhereHas('organizations', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
                     ->orWhere('works_online', true)
                     ->orWhere(function ($none) {
-                        $none->whereNull('city_id')->whereNull('organization_id')->whereDoesntHave('organizations');
+                        $none->whereNull('city_id')->whereNull('organization_id');
                     });
             });
         })
-        , 10, $fuzzyIds['specialist'])->each(function($item) use (&$results, $matchPriority) {
+        ->limit(10)->get()->each(function($item) use (&$results, $matchPriority) {
             if ($item->organization) {
                 $location = "{$item->organization->name} ({$item->organization->city}, {$item->organization->street} {$item->organization->house})";
             } else {
@@ -464,6 +431,7 @@ public function liveSearch(Request $request)
             }
             $results->push([
                 'type' => 'specialist',
+                '_entity_id' => $item->id,
                 'name' => $item->name,
                 'slug' => $item->slug,
                 'specialization' => $item->specialization,
@@ -476,12 +444,8 @@ public function liveSearch(Request $request)
 
     // 5. Животные (породы) — не привязаны к городу, фильтр по городу
     // на них не действует
-    $fill(fn ($ids) => \App\Models\Animal::with('details')
-        ->where(function($q) use ($searchTerm, $searchTermAlt, $ids) {
-            if ($ids !== null) {
-                $q->whereIn('id', $ids);
-                return;
-            }
+    \App\Models\Animal::with('details')
+        ->where(function($q) use ($searchTerm, $searchTermAlt) {
             // Поиск по породе или виду
             $q->where('breed', 'LIKE', "%{$searchTerm}%")
               ->orWhere('species', 'LIKE', "%{$searchTerm}%")
@@ -492,7 +456,7 @@ public function liveSearch(Request $request)
                   ->orWhereRaw("CONCAT(species, ' ', breed) LIKE ?", ["%{$searchTermAlt}%"]);
             }
         })
-        , 5, $fuzzyIds['animal'])->each(function($item) use (&$results, $matchPriority) {
+        ->limit(5)->get()->each(function($item) use (&$results, $matchPriority) {
             $results->push([
                 'type' => 'animal',
                 'name' => $item->breed,
@@ -505,6 +469,153 @@ public function liveSearch(Request $request)
             ]);
         });
 
+    // 6. Поиск по названию услуги: организации/клиники/врачи/специалисты,
+    // которые её оказывают — сразу с ценой. Если сущность уже попала в
+    // выдачу по названию/адресу выше — не дублируем карточку, а просто
+    // дописываем в неё услугу и цену.
+    $matchingServiceIds = \App\Models\Service::where(function ($q) use ($searchTerm, $searchTermAlt) {
+            $q->where('name', 'LIKE', "%{$searchTerm}%");
+            if ($searchTermAlt !== $searchTerm) {
+                $q->orWhere('name', 'LIKE', "%{$searchTermAlt}%");
+            }
+        })
+        ->pluck('id');
+
+    if ($matchingServiceIds->isNotEmpty()) {
+        $pricesByEntity = \App\Models\Price::whereIn('service_id', $matchingServiceIds)
+            ->with('service')
+            ->get()
+            ->groupBy(fn ($p) => $p->priceable_type . '#' . $p->priceable_id);
+
+        // Форматирование цены без лишних нулей: 1500 или 1500.5
+        $formatPrice = function ($price, $currency) {
+            $num = rtrim(rtrim(number_format((float) $price, 2, '.', ' '), '0'), '.');
+            return $num . ' ' . ($currency ?: 'руб.');
+        };
+
+        foreach ($pricesByEntity as $pricesForEntity) {
+            $cheapest = $pricesForEntity->sortBy('price')->first();
+            $entityClass = $cheapest->priceable_type;
+            $entityId = $cheapest->priceable_id;
+            $serviceName = $cheapest->service->name ?? $query;
+            $servicePrice = $formatPrice($cheapest->price, $cheapest->currency);
+
+            // Уже есть в выдаче (нашлось по названию/адресу) — просто дописываем услугу и цену
+            $alreadyFound = false;
+            $results = $results->map(function ($r) use ($entityClass, $entityId, $serviceName, $servicePrice, &$alreadyFound) {
+                $typeMap = [
+                    \App\Models\Clinic::class => 'clinic',
+                    \App\Models\Organization::class => 'organization',
+                    \App\Models\Doctor::class => 'doctor',
+                    \App\Models\Specialist::class => 'specialist',
+                ];
+                if (($r['type'] ?? null) === ($typeMap[$entityClass] ?? null) && ($r['_entity_id'] ?? null) === $entityId) {
+                    $r['service_name'] = $serviceName;
+                    $r['service_price'] = $servicePrice;
+                    $alreadyFound = true;
+                }
+                return $r;
+            });
+            if ($alreadyFound) {
+                continue;
+            }
+
+            if ($entityClass === \App\Models\Clinic::class) {
+                $entity = \App\Models\Clinic::find($entityId);
+                if (!$entity) continue;
+                if ($targetCityNameLower && mb_strtolower(trim($entity->city)) !== $targetCityNameLower) continue;
+                $results->push([
+                    'type' => 'clinic',
+                    'other_locality' => false,
+                    '_tier' => 1,
+                    '_entity_id' => $entity->id,
+                    'name' => $entity->name,
+                    'slug' => $entity->slug,
+                    'city_slug' => $entity->city_slug,
+                    'address' => "{$entity->city}, {$entity->street} {$entity->house}",
+                    'image' => $entity->logo ? \Storage::url($entity->logo) : asset('storage/clinics/logo/default-clinic.webp'),
+                    'service_name' => $serviceName,
+                    'service_price' => $servicePrice,
+                    '_priority' => $matchPriority($serviceName),
+                    '_type_order' => 0,
+                ]);
+            } elseif ($entityClass === \App\Models\Organization::class) {
+                $entity = \App\Models\Organization::with('fieldOfActivity')->find($entityId);
+                if (!$entity) continue;
+                if ($targetCityNameLower && mb_strtolower(trim($entity->city)) !== $targetCityNameLower) continue;
+                $results->push([
+                    'type' => 'organization',
+                    'other_locality' => false,
+                    '_tier' => 1,
+                    '_entity_id' => $entity->id,
+                    'name' => $entity->name,
+                    'slug' => $entity->slug,
+                    'city_slug' => $entity->city_slug,
+                    'category_name' => $entity->fieldOfActivity->name ?? '',
+                    'address' => "{$entity->city}, {$entity->street} {$entity->house}",
+                    'image' => $entity->logo ? \Storage::url($entity->logo) : asset('storage/organizations/default-org.webp'),
+                    'service_name' => $serviceName,
+                    'service_price' => $servicePrice,
+                    '_priority' => $matchPriority($serviceName),
+                    '_type_order' => 1,
+                ]);
+            } elseif ($entityClass === \App\Models\Doctor::class) {
+                $entity = \App\Models\Doctor::with(['clinic', 'city'])->find($entityId);
+                if (!$entity) continue;
+                $worksInTargetCity = $targetCityNameLower && (
+                    mb_strtolower(trim($entity->city->name ?? '')) === $targetCityNameLower
+                    || ($entity->clinic && mb_strtolower(trim($entity->clinic->city)) === $targetCityNameLower)
+                );
+                if ($targetCityNameLower && !$worksInTargetCity && !$entity->works_online) continue;
+                $clinicAddress = $entity->clinic
+                    ? " ({$entity->clinic->city}, {$entity->clinic->street} {$entity->clinic->house})"
+                    : '';
+                $results->push([
+                    'type' => 'doctor',
+                    '_tier' => 1,
+                    '_entity_id' => $entity->id,
+                    'name' => $entity->name,
+                    'slug' => $entity->slug,
+                    'specialization' => $entity->specialization,
+                    'clinic_info' => ($entity->clinic->name ?? 'Частная практика') . $clinicAddress,
+                    'image' => $entity->photo ? \Storage::url($entity->photo) : asset('storage/doctors/default-doctor.webp'),
+                    'service_name' => $serviceName,
+                    'service_price' => $servicePrice,
+                    '_priority' => $matchPriority($serviceName),
+                    '_type_order' => 2,
+                ]);
+            } elseif ($entityClass === \App\Models\Specialist::class) {
+                $entity = \App\Models\Specialist::with(['organization', 'city'])->find($entityId);
+                if (!$entity) continue;
+                $worksInTargetCity = $targetCityNameLower && (
+                    mb_strtolower(trim($entity->city->name ?? '')) === $targetCityNameLower
+                    || ($entity->organization && mb_strtolower(trim($entity->organization->city)) === $targetCityNameLower)
+                );
+                if ($targetCityNameLower && !$worksInTargetCity && !$entity->works_online) continue;
+                if ($entity->organization) {
+                    $location = "{$entity->organization->name} ({$entity->organization->city}, {$entity->organization->street} {$entity->organization->house})";
+                } else {
+                    $cityName = $entity->city->name ?? 'Город не указан';
+                    $location = "Частный специалист: {$cityName}, {$entity->street} {$entity->house}";
+                }
+                $results->push([
+                    'type' => 'specialist',
+                    '_tier' => 1,
+                    '_entity_id' => $entity->id,
+                    'name' => $entity->name,
+                    'slug' => $entity->slug,
+                    'specialization' => $entity->specialization,
+                    'location_info' => $location,
+                    'image' => $entity->photo ? \Storage::url($entity->photo) : asset('storage/doctors/default-doctor.webp'),
+                    'service_name' => $serviceName,
+                    'service_price' => $servicePrice,
+                    '_priority' => $matchPriority($serviceName),
+                    '_type_order' => 3,
+                ]);
+            }
+        }
+    }
+
     // Теперь город больше не влияет на сортировку (он уже жёсткий фильтр
     // выше) — сортируем только по релевантности текста и порядку типов.
     $sorted = $results
@@ -513,7 +624,7 @@ public function liveSearch(Request $request)
         ->values()
         ->take(20)
         ->map(function ($item) {
-            unset($item['_priority'], $item['_type_order'], $item['_tier']);
+            unset($item['_priority'], $item['_type_order'], $item['_tier'], $item['_entity_id']);
             return $item;
         });
 
@@ -612,52 +723,24 @@ public function fullSearch(Request $request)
         }
     };
 
-    // ── Нечёткий поиск (опечатки, пропущенные буквы, «Вет Макс» = «ВетМакс») ──
-    // Обычный поиск (LIKE) работает как раньше и идёт первым. Нечёткие совпадения добавляются
-    // после него — и только до лимита, чтобы точные результаты не вытеснялись приблизительными.
-    $fuzzyTerms = array_values(array_unique([$searchTerm, $searchTermAlt]));
-    $fuzzyIds = [
-        'clinic'       => \App\Support\FuzzySearch::ids(\App\Models\Clinic::class, ['name'], $fuzzyTerms),
-        'organization' => \App\Support\FuzzySearch::ids(\App\Models\Organization::class, ['name'], $fuzzyTerms),
-        'doctor'       => \App\Support\FuzzySearch::ids(\App\Models\Doctor::class, ['name', 'specialization'], $fuzzyTerms),
-        'specialist'   => \App\Support\FuzzySearch::ids(\App\Models\Specialist::class, ['name', 'specialization'], $fuzzyTerms),
-        'animal'       => \App\Support\FuzzySearch::ids(\App\Models\Animal::class, ['breed', 'species'], $fuzzyTerms),
-    ];
-
-    $fill = function (callable $make, ?int $limit, array $ids) {
-        $items = $limit ? $make(null)->limit($limit)->get() : $make(null)->get();
-
-        $ids = array_values(array_diff($ids, $items->pluck('id')->all()));
-
-        if ($ids && (! $limit || $items->count() < $limit)) {
-            $extra = $make($ids);
-            $extra = $limit ? $extra->limit($limit - $items->count())->get() : $extra->get();
-            $items = $items->concat($extra);
-        }
-
-        return $items;
-    };
-
     $results = [
-        'clinics' => $fill(fn ($ids) => \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch, $ids) {
-                $ids === null ? $applyAdvancedSearch($q) : $q->whereIn('id', $ids);
+        'clinics' => \App\Models\Clinic::where(function($q) use ($applyAdvancedSearch) {
+                $applyAdvancedSearch($q);
             })
             ->forSearch($targetCity, $namedRegions)
-            ->searchRank($targetCity, $namedRegions), null, $fuzzyIds['clinic']),
+            ->searchRank($targetCity, $namedRegions)
+            ->get(),
 
-        'organizations' => $fill(fn ($ids) => \App\Models\Organization::with('fieldOfActivity')
-            ->where(function($q) use ($applyAdvancedSearch, $ids) {
-                $ids === null ? $applyAdvancedSearch($q) : $q->whereIn('id', $ids);
+        'organizations' => \App\Models\Organization::with('fieldOfActivity')
+            ->where(function($q) use ($applyAdvancedSearch) {
+                $applyAdvancedSearch($q);
             })
             ->forSearch($targetCity, $namedRegions)
-            ->searchRank($targetCity, $namedRegions), null, $fuzzyIds['organization']),
+            ->searchRank($targetCity, $namedRegions)
+            ->get(),
 
-        'doctors' => $fill(fn ($ids) => \App\Models\Doctor::with(['clinic', 'clinics'])
-            ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt, $ids) {
-                if ($ids !== null) {
-                    $q->whereIn('id', $ids);
-                    return;
-                }
+        'doctors' => \App\Models\Doctor::with('clinic')
+            ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
                 // Ищем по имени врача целиком (обе раскладки)
                 $q->where('name', 'LIKE', "%{$searchTerm}%")
                   ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
@@ -666,7 +749,7 @@ public function fullSearch(Request $request)
                       ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
                 }
                 // ИЛИ по адресу клиники (разбивая на слова, обе раскладки)
-                $q->orWhereHas('clinics', function($sub) use ($words, $wordsAlt) {
+                $q->orWhereHas('clinic', function($sub) use ($words, $wordsAlt) {
                     foreach ($words as $i => $word) {
                         $wordAlt = $wordsAlt[$i] ?? $word;
                         $sub->where(function($inner) use ($word, $wordAlt) {
@@ -683,28 +766,24 @@ public function fullSearch(Request $request)
             ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                        ->orWhereHas('clinics', fn($c) => $c->forSearch($targetCity, $namedRegions))
-                    ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                        ->orWhereHas('clinic', fn($c) => $c->forSearch($targetCity, $namedRegions))
                         ->orWhere('works_online', true)
                         ->orWhere(function ($none) {
-                            $none->whereNull('city_id')->whereNull('clinic_id')->whereDoesntHave('clinics');
+                            $none->whereNull('city_id')->whereNull('clinic_id');
                         });
                 });
-            }), null, $fuzzyIds['doctor']),
+            })
+            ->get(),
 
-        'specialists' => $fill(fn ($ids) => \App\Models\Specialist::with(['organization', 'organizations', 'city'])
-            ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt, $ids) {
-                if ($ids !== null) {
-                    $q->whereIn('id', $ids);
-                    return;
-                }
+        'specialists' => \App\Models\Specialist::with(['organization', 'city'])
+            ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
                 $q->where('name', 'LIKE', "%{$searchTerm}%")
                   ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");
                 if ($searchTermAlt !== $searchTerm) {
                     $q->orWhere('name', 'LIKE', "%{$searchTermAlt}%")
                       ->orWhere('specialization', 'LIKE', "%{$searchTermAlt}%");
                 }
-                $q->orWhereHas('organizations', function($sub) use ($words, $wordsAlt) {
+                $q->orWhereHas('organization', function($sub) use ($words, $wordsAlt) {
                     foreach ($words as $i => $word) {
                         $wordAlt = $wordsAlt[$i] ?? $word;
                         $sub->where(function($inner) use ($word, $wordAlt) {
@@ -721,30 +800,23 @@ public function fullSearch(Request $request)
             ->when($targetCityNameLower, function ($q) use ($targetCityNameLower, $targetCity, $namedRegions) {
                 $q->where(function ($inner) use ($targetCityNameLower, $targetCity, $namedRegions) {
                     $inner->whereHas('city', fn($c) => $c->whereRaw('LOWER(name) = ?', [$targetCityNameLower]))
-                        ->orWhereHas('organizations', fn($c) => $c->forSearch($targetCity, $namedRegions))
-                    ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
+                        ->orWhereHas('organization', fn($c) => $c->forSearch($targetCity, $namedRegions))
                         ->orWhere('works_online', true)
                         ->orWhere(function ($none) {
-                            $none->whereNull('city_id')->whereNull('organization_id')->whereDoesntHave('organizations');
+                            $none->whereNull('city_id')->whereNull('organization_id');
                         });
                 });
-            }), null, $fuzzyIds['specialist']),
+            })
+            ->get(),
 
         // Породы животных не привязаны к городу — фильтр по городу их не касается
-        'animals' => $fill(fn ($ids) => \App\Models\Animal::where(function ($q) use ($searchTerm, $searchTermAlt, $ids) {
-                if ($ids !== null) {
-                    $q->whereIn('id', $ids);
-                    return;
-                }
-
-                $q->where('breed', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('species', 'LIKE', "%{$searchTerm}%");
-
-                if ($searchTermAlt !== $searchTerm) {
-                    $q->orWhere('breed', 'LIKE', "%{$searchTermAlt}%")
-                      ->orWhere('species', 'LIKE', "%{$searchTermAlt}%");
-                }
-            }), null, $fuzzyIds['animal']),
+        'animals' => \App\Models\Animal::where('breed', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('species', 'LIKE', "%{$searchTerm}%")
+            ->when($searchTermAlt !== $searchTerm, function ($q) use ($searchTermAlt) {
+                $q->orWhere('breed', 'LIKE', "%{$searchTermAlt}%")
+                  ->orWhere('species', 'LIKE', "%{$searchTermAlt}%");
+            })
+            ->get(),
     ];
 
     return view('pages.search.index', compact('results', 'query'));
