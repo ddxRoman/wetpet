@@ -142,7 +142,7 @@ class EntityTypeConverter
         ];
 
         foreach ($map as [$model, $prefix]) {
-            $model::where("{$prefix}_type", $fromType)
+            $model::withoutGlobalScopes()->where("{$prefix}_type", $fromType)
                 ->where("{$prefix}_id", $from->id)
                 ->update([
                     "{$prefix}_type" => $toType,

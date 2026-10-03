@@ -293,6 +293,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
         @endforeach
     </div>
 @endif
+                                @include('partials.review-dispute-button', ['review' => $review])
                                 </div>
                                 @endforeach
                             </div>

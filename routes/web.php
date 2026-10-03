@@ -146,6 +146,17 @@ Route::get('/account/reviews', [AccountController::class, 'getReviews'])
 Route::post('/reviews/{id}', [AccountController::class, 'updateReview'])->name('account.reviews.update');
 // Удаление своего отзыва (JSON) — личный кабинет и карточки организаций, клиник, врачей, специалистов
 Route::delete('/account/reviews/{id}', [AccountController::class, 'deleteReview'])->middleware('auth')->name('account.reviews.delete');
+
+// Обжалование отзывов: владелец карточки оспаривает отзыв, пользователи переписываются с админом
+Route::middleware('auth')->group(function () {
+    Route::post('/reviews/{review}/dispute', [\App\Http\Controllers\ReviewDisputeController::class, 'store'])
+        ->name('reviews.dispute.store');
+    Route::get('/account/review-disputes/{dispute}', [\App\Http\Controllers\ReviewDisputeController::class, 'show'])
+        ->name('account.review-disputes.show');
+    Route::post('/account/review-disputes/{dispute}/messages', [\App\Http\Controllers\ReviewDisputeController::class, 'message'])
+        ->middleware('throttle:30,1')
+        ->name('account.review-disputes.message');
+});
 // ✅ Удаление фото и чеков
 Route::delete('/review_photos/{id}', [AccountController::class, 'deletePhoto'])->name('review_photos.delete');
 Route::delete('/review_receipts/{id}', [AccountController::class, 'deleteReceipt'])->name('review_receipts.delete');

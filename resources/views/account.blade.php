@@ -41,6 +41,16 @@
     @endif -->
 
     <button class="tab-btn" data-tab="reviews">Отзывы</button>
+
+    @php $__rd = \App\Models\ReviewDispute::headerSummary(auth()->id()); @endphp
+    @if($__rd['show'])
+        <button class="tab-btn" data-tab="review-disputes">
+            Отзывы на обжаловании
+            @if($__rd['unread'])
+                <span data-rd-unread style="display:inline-block;min-width:18px;height:18px;line-height:18px;text-align:center;border-radius:9px;background:#dc3545;color:#fff;font-size:11px;padding:0 5px;margin-left:4px;">{{ $__rd['unread'] }}</span>
+            @endif
+        </button>
+    @endif
 </div>
 
 
@@ -229,6 +239,11 @@
 @if($hasDoctorProfile)
     <div class="tab-content" id="doctor-profile" style="display:none;">
         @include('account.tabs.doctor-profile')
+    </div>
+@endif
+@if($__rd['show'])
+    <div class="tab-content" id="review-disputes" style="display:none;">
+        @include('account.tabs.review-disputes')
     </div>
 @endif
         </div>

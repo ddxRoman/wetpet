@@ -19,6 +19,12 @@ class ReviewResource extends Resource
     protected static ?string $modelLabel = 'Отзыв';
     protected static ?string $pluralModelLabel = 'Отзывы';
 
+    // В админке видны и отзывы, скрытые на время обжалования (на сайте их скрывает глобальный скоуп)
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScopes();
+    }
+
     public static function getPages(): array
 {
     return [

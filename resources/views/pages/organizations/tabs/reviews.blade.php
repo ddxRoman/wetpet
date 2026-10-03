@@ -216,7 +216,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                     @endif
 
                                     @if($review->reviewable_type === \App\Models\Specialist::class)
-                                        @php($aboutEmployee = $review->reviewable)
+                                        @php $aboutEmployee = $review->reviewable; @endphp
                                         <div class="small mb-2">
                                             <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
                                                 Отзыв о специалисте
@@ -325,6 +325,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
         @endforeach
     </div>
 @endif
+                                @include('partials.review-dispute-button', ['review' => $review])
                                 </div>
                                 @endforeach
                             </div>

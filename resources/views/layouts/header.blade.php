@@ -154,6 +154,9 @@
             $userCabinets = [];
             $hasPendingRequest = false;
 
+            // Отзывы на обжаловании: показывать ли пункт меню и сколько новых ответов админа
+            $disputeSummary = \App\Models\ReviewDispute::headerSummary(auth()->id());
+
             $clinicOwner = \App\Models\ClinicOwner::where('user_id', auth()->id())->whereHas('clinic')->first();
             $orgOwner    = \App\Models\OrganizationOwner::where('user_id', auth()->id())->whereHas('organization')->first();
             $doctorOwner = \App\Models\DoctorOwner::where('user_id', auth()->id())->whereHas('doctor')->first();
@@ -271,9 +274,18 @@
                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="avatars_pics" src="{{ asset($avatarLink) }}" alt="Аватар">
                                 {{ Auth::user()->name }}
+                                @if(!empty($disputeSummary['unread']))<span data-rd-unread-dot title="Есть новые ответы администратора" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#dc3545;"></span>@endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 py-2">
                                 <a class="dropdown-item" href="{{ route('account') }}">👤 Профиль</a>
+                                @if(!empty($disputeSummary['show']))
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('account') }}#review-disputes">
+                                        <span>⚖️ Отзывы на рассмотрении</span>
+                                        @if(!empty($disputeSummary['unread']))
+                                            <span data-rd-unread class="badge bg-danger rounded-pill ms-2" title="Новые ответы администратора">{{ $disputeSummary['unread'] }}</span>
+                                        @endif
+                                    </a>
+                                @endif
                                 @if(!empty($userCabinets))
                                     <div class="dropdown-divider"></div>
                                     @foreach($userCabinets as $cabinet)
@@ -412,9 +424,18 @@
                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img class="avatars_pics" src="{{ asset($avatarLink) }}" alt="Аватар" style="width:30px;height:30px;">
                             {{ Auth::user()->name }}
+                            @if(!empty($disputeSummary['unread']))<span data-rd-unread-dot title="Есть новые ответы администратора" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#dc3545;"></span>@endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 py-2">
                             <a class="dropdown-item" href="{{ route('account') }}">👤 Профиль</a>
+                            @if(!empty($disputeSummary['show']))
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('account') }}#review-disputes">
+                                    <span>⚖️ Отзывы на рассмотрении</span>
+                                    @if(!empty($disputeSummary['unread']))
+                                        <span data-rd-unread class="badge bg-danger rounded-pill ms-2" title="Новые ответы администратора">{{ $disputeSummary['unread'] }}</span>
+                                    @endif
+                                </a>
+                            @endif
                             @if(!empty($userCabinets))
                                 <div class="dropdown-divider"></div>
                                 @foreach($userCabinets as $cabinet)
@@ -609,6 +630,14 @@
                     <a href="{{ route('account') }}#reviews" class="mobile-nav-link" >
                         <span class="nav-icon">⭐</span> Мои отзывы
                     </a>
+                    @if(!empty($disputeSummary['show']))
+                        <a href="{{ route('account') }}#review-disputes" class="mobile-nav-link" >
+                            <span class="nav-icon">⚖️</span> Отзывы на рассмотрении
+                            @if(!empty($disputeSummary['unread']))
+                                <span data-rd-unread style="display:inline-block;min-width:18px;height:18px;line-height:18px;text-align:center;border-radius:9px;background:#dc3545;color:#fff;font-size:11px;padding:0 5px;margin-left:6px;">{{ $disputeSummary['unread'] }}</span>
+                            @endif
+                        </a>
+                    @endif
 
 @if(isset($userCabinets) && count($userCabinets) > 0)
     @foreach($userCabinets as $cabinet)
