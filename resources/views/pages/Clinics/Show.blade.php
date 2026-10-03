@@ -98,16 +98,20 @@
         <div class="ms-md-3 mt-2 mt-md-0">
             @auth
                 @php
+                    // Если по этой карточке несколько заявок — берём подтверждённую (иначе дубль «на проверке» перекрывал бы её)
                     $alreadyOwner = \App\Models\ClinicOwner::where('user_id', auth()->id())
                         ->where('clinic_id', $clinic->id)
+                        ->orderByDesc('is_confirmed')
                         ->first();
                 @endphp
 
-                @if($alreadyOwner && $alreadyOwner->is_confirmed)
-                    <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
-                          style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
-                        ✓ Это ваша организация
-                    </span>
+                {{-- Создатель верифицированной карточки считается подтверждённым владельцем --}}
+                @if($alreadyOwner && ($alreadyOwner->is_confirmed || ($clinic->is_verified && (int) $clinic->created_by === (int) auth()->id() && !$alreadyOwner->is_rejected)))
+                    <a href="{{ route('owner.clinic', $clinic->id) }}"
+                       class="btn btn-success fw-bold d-flex align-items-center gap-2"
+                       style="border-radius: 10px; padding: 8px 16px;">
+                        ⚙️ Перейти к управлению
+                    </a>
                 @elseif($alreadyOwner && !$alreadyOwner->is_confirmed)
                     <button class="btn btn-warning fw-bold d-flex align-items-center gap-2"
                             style="border-radius: 10px; padding: 8px 16px;"

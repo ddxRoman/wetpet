@@ -98,6 +98,29 @@
     
     if (!carousel) return;
 
+    // Клик по миниатюре внизу — это <label for="..."> для скрытого radio.
+    // Браузер по умолчанию при активации label переводит фокус на связанный
+    // input и докручивает страницу так, чтобы он оказался в зоне видимости.
+    // Наш input визуально скрыт (clip/position:absolute, а не display:none),
+    // поэтому он формально виден для браузера — отсюда и прыжок скролла.
+    // Переключаем слайд вручную, без нативной активации input, чтобы
+    // скролла не было вообще.
+    const thumbLabels = carousel.querySelectorAll('.carousel__thumbnails label');
+    thumbLabels.forEach(label => {
+        label.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const input = document.getElementById(label.getAttribute('for'));
+            if (!input || input.checked) return;
+
+            input.checked = true;
+            // Радио слушает 'change', чтобы перезапустить автопрокрутку
+            // (см. resources/js/slider/personal_recommendations.js) —
+            // программная установка .checked его не вызывает сама по себе.
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+    });
+
     let touchStartX = 0;
     let touchEndX = 0;
 

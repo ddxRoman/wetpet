@@ -12,6 +12,7 @@ use App\Models\Concerns\HasLocalityScopes;
 class Organization extends Model
 {
    use HasGalleryPhotos, HasLocalityScopes;
+   use \App\Models\Concerns\ConfirmsCreatorOwnership;
 
    protected $fillable = [
         'is_verified',
@@ -180,5 +181,11 @@ public function reviews()
         public function creator()
     {
         return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+
+    /** Куда подтверждать владельца-создателя при верификации карточки (см. ConfirmsCreatorOwnership). */
+    protected static function ownerConfirmationTarget(): array
+    {
+        return [\App\Models\OrganizationOwner::class, 'organization_id'];
     }
 }

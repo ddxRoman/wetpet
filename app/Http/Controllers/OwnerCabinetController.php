@@ -683,6 +683,9 @@ public function organization(int $id)
         $doc->delete();
     }
 
+    // …и переписку с администратором по этой заявке
+    $ownerRow->messages()->delete();
+
     $ownerRow->delete();
 
     return response()->json(['success' => true]);
@@ -800,7 +803,7 @@ public function organization(int $id)
             ]);
         }
 
-        $doctor = Doctor::with(['services', 'prices.service', 'contacts', 'city', 'clinic'])->findOrFail($id);
+        $doctor = Doctor::with(['services', 'prices.service', 'contacts', 'city', 'clinic', 'clinics'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -827,7 +830,9 @@ public function organization(int $id)
             'specialization'      => 'required|string|max:255',
             'date_of_birth'       => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
             'city_id'             => 'required|exists:cities,id',
-            'clinic_id'           => 'nullable|exists:clinics,id',
+            // Врач может работать сразу в нескольких клиниках
+            'clinic_ids'          => 'nullable|array|max:20',
+            'clinic_ids.*'        => 'integer|exists:clinics,id',
             'practice_started_at' => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
@@ -869,7 +874,12 @@ public function organization(int $id)
 
         $data['works_online'] = $request->boolean('works_online');
 
+        // Места работы сохраняются отдельно (сводная таблица clinic_doctor)
+        $clinicIds = $data['clinic_ids'] ?? [];
+        unset($data['clinic_ids']);
+
         $doctor->update($data);
+        $doctor->syncWorkplaces($clinicIds);
         $doctor->contacts()->updateOrCreate(['doctor_id' => $doctor->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');
@@ -902,7 +912,7 @@ public function organization(int $id)
             ]);
         }
 
-        $specialist = Specialist::with(['prices.service', 'contacts', 'city', 'organization'])->findOrFail($id);
+        $specialist = Specialist::with(['prices.service', 'contacts', 'city', 'organization', 'organizations'])->findOrFail($id);
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -928,7 +938,9 @@ public function organization(int $id)
             'specialization'      => 'required|string|max:255',
             'date_of_birth'       => ['nullable', 'date', 'before_or_equal:' . \App\Models\Specialist::latestBirthDate()],
             'city_id'             => 'required|exists:cities,id',
-            'organization_id'     => 'nullable|exists:organizations,id',
+            // Специалист может работать сразу в нескольких организациях
+            'organization_ids'    => 'nullable|array|max:20',
+            'organization_ids.*'  => 'integer|exists:organizations,id',
             'practice_started_at' => \App\Models\Specialist::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
@@ -967,7 +979,12 @@ public function organization(int $id)
 
         $data['works_online'] = $request->boolean('works_online');
 
+        // Места работы сохраняются отдельно (сводная таблица organization_specialist)
+        $organizationIds = $data['organization_ids'] ?? [];
+        unset($data['organization_ids']);
+
         $specialist->update($data);
+        $specialist->syncWorkplaces($organizationIds);
         $specialist->contacts()->updateOrCreate(['specialist_id' => $specialist->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');
@@ -1118,14 +1135,10 @@ public function organization(int $id)
 
         // Владелец может не найти нужную услугу в каталоге и ввести своё название —
         // тогда создаём (или переиспользуем, если такая уже есть) услугу на лету.
-        // Специализацию проставляем сразу по карточке, из которой добавили услугу —
-        // иначе она остаётся null и не попадает в «услуги вашей специализации»
-        // ни у кого, включая саму эту карточку.
         if ($request->filled('new_service_name')) {
-            $service = Service::firstOrCreate(
-                ['name' => trim($request->new_service_name)],
-                $this->serviceSpecializationFieldsFor($request->entity_type, $request->entity_id)
-            );
+            $service = Service::firstOrCreate([
+                'name' => trim($request->new_service_name),
+            ]);
             $serviceId = $service->id;
         } else {
             $serviceId = $request->service_id;
@@ -1151,47 +1164,6 @@ public function organization(int $id)
         );
 
         return response()->json(['success' => true]);
-    }
-
-    /**
-     * specialization / specialization_doctor для НОВОЙ услуги, создаваемой прямо
-     * из карточки конкретной организации/клиники/врача/специалиста — чтобы услуга
-     * сразу считалась «своей» для этого направления деятельности (и предлагалась
-     * другим владельцам с такой же специализацией), а не висела в каталоге без
-     * привязки ни к чему.
-     *
-     * Срабатывает только при СОЗДАНИИ услуги (Service::firstOrCreate) — если услуга
-     * с таким названием уже существует, её специализация этим не перезаписывается.
-     */
-    private function serviceSpecializationFieldsFor(string $type, int $entityId): array
-    {
-        switch ($type) {
-            case 'organization':
-                $organization = Organization::with('activityType')->find($entityId);
-                return $organization && $organization->activityType
-                    ? ['specialization' => $organization->activityType->name]
-                    : [];
-
-            case 'clinic':
-                // Клиника как сфера деятельности всегда соответствует
-                // направлению «Ветеринарная клиника» (см. FieldOfActivity::VET_CLINIC_NAME).
-                return ['specialization' => FieldOfActivity::VET_CLINIC_NAME];
-
-            case 'doctor':
-                $doctor = Doctor::find($entityId);
-                return $doctor && $doctor->specialization
-                    ? ['specialization_doctor' => $doctor->specialization]
-                    : [];
-
-            case 'specialist':
-                $specialist = Specialist::find($entityId);
-                return $specialist && $specialist->specialization
-                    ? ['specialization_doctor' => $specialist->specialization]
-                    : [];
-
-            default:
-                return [];
-        }
     }
 
     public function deletePrice(int $priceId)
@@ -1338,13 +1310,8 @@ public function organization(int $id)
                 $row->delete();
             });
 
-            // Специалисты/врачи, привязанные к этому месту работы, остаются, но без привязки
-            if ($type === 'organization') {
-                Specialist::where('organization_id', $id)->update(['organization_id' => null]);
-            } elseif ($type === 'clinic') {
-                Doctor::where('clinic_id', $id)->update(['clinic_id' => null]);
-            }
-
+            // Специалисты/врачи, привязанные к этому месту работы, остаются: при удалении
+            // клиники/организации она убирается из их мест работы (см. события deleting в моделях).
             $entity->delete();
         });
 

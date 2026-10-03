@@ -91,6 +91,7 @@
                 @php
                     $alreadyOwner = \App\Models\DoctorOwner::where('user_id', auth()->id())
                         ->where('doctor_id', $doctor->id)
+                        ->orderByDesc('is_confirmed')
                         ->first();
 
                     // Подтверждён ли пользователь уже как ЛЮБОЙ специалист или доктор
@@ -115,10 +116,11 @@
 
                 @if($alreadyOwner && $alreadyOwner->is_confirmed)
                     {{-- Эта карточка подтверждена --}}
-                    <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
-                          style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
-                        ✓ ЭТО ВЫ
-                    </span>
+                    <a href="{{ route('owner.doctor', $doctor->id) }}"
+                       class="btn btn-success fw-bold d-flex align-items-center gap-2"
+                       style="border-radius: 10px; padding: 8px 16px;">
+                        ⚙️ Перейти к управлению
+                    </a>
                 @elseif($myRejected && !$canReapply)
                     {{-- Отказано, ещё нельзя подать повторно --}}
                     @php $daysLeft = 7 - (int) \Carbon\Carbon::now()->diffInDays($alreadyOwner->rejected_at) @endphp

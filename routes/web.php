@@ -345,6 +345,12 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
     Route::delete('/documents/{id}', [OwnerCabinetController::class, 'deleteVerificationDocument'])->name('documents.delete');
     Route::post('/claim', [OwnerCabinetController::class, 'claimOwnership'])->name('claim');
 
+    // Отмена заявки на владение (кнопка «Отменить заявку»; только пока заявка не подтверждена)
+    Route::delete('/claim/{type}/{id}', [OwnerCabinetController::class, 'cancelClaim'])
+        ->where('type', 'clinic|organization|doctor|specialist')
+        ->whereNumber('id')
+        ->name('claim.cancel');
+
     // Акции
     Route::post('/promotions/save', [OwnerCabinetController::class, 'savePromotion'])->name('promotions.save');
     Route::delete('/promotions/{id}', [OwnerCabinetController::class, 'deletePromotion'])->name('promotions.delete');

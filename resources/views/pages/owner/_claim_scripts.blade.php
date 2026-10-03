@@ -94,17 +94,17 @@
             method: 'DELETE',
             headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
         })
-        .then(r => r.json())
+        .then(r => r.json().catch(() => ({ success: false, message: 'Сервер вернул ошибку (' + r.status + '). Обновите страницу и попробуйте ещё раз.' })))
         .then(data => {
             if (data.success) {
                 // Убираем карточку заявки из DOM
                 btn.closest('.claim-accordion-item')?.remove();
 
-                // Если карточек больше нет — перезагружаем страницу
-                // чтобы показать пустое состояние или редирект
+                // Если заявок больше нет, кабинет этой карточки уже недоступен (заявка удалена) —
+                // уходим на /owner: он сам отправит в другой кабинет или в профиль
                 const remaining = document.querySelectorAll('.btn-cancel-claim');
                 if (remaining.length === 0) {
-                    window.location.reload();
+                    window.location.href = '{{ route('owner.index') }}';
                 }
             } else {
                 btn.disabled = false;

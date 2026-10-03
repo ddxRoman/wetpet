@@ -100,17 +100,22 @@
         <div class="ms-md-3 mt-3 mt-md-0">
             @auth
                 @php
-                    $ownerPivot = $organization->owners()
-                        ->where('user_id', auth()->id())
+                    // Раньше читали pivot через owners(), но у связи не подгружался is_confirmed — он всегда был null,
+                    // поэтому даже подтверждённый владелец видел «На проверке». Берём запись владения напрямую;
+                    // если заявок несколько — подтверждённая важнее.
+                    $alreadyOwner = \App\Models\OrganizationOwner::where('user_id', auth()->id())
+                        ->where('organization_id', $organization->id)
+                        ->orderByDesc('is_confirmed')
                         ->first();
-                    $alreadyOwner = $ownerPivot ? $ownerPivot->pivot : null;
                 @endphp
 
-                @if($alreadyOwner && $alreadyOwner->is_confirmed)
-                    <span class="btn btn-success fw-bold disabled d-flex align-items-center gap-2"
-                          style="border-radius: 10px; padding: 8px 16px; opacity: .7;">
-                        ✓ Это Ваша организация
-                    </span>
+                {{-- Создатель верифицированной карточки считается подтверждённым владельцем --}}
+                @if($alreadyOwner && ($alreadyOwner->is_confirmed || ($organization->is_verified && (int) $organization->created_by === (int) auth()->id() && !$alreadyOwner->is_rejected)))
+                    <a href="{{ route('owner.organization', $organization->id) }}"
+                       class="btn btn-success fw-bold d-flex align-items-center gap-2"
+                       style="border-radius: 10px; padding: 8px 16px;">
+                        ⚙️ Перейти к управлению
+                    </a>
                 @elseif($alreadyOwner && !$alreadyOwner->is_confirmed)
                     <button class="btn btn-warning fw-bold d-flex align-items-center gap-2"
                             style="border-radius: 10px; padding: 8px 16px;"
