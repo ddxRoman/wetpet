@@ -264,7 +264,7 @@ Route::get('/get-organizations/{city_id}', function ($city_id) {
     return response()->json($organizations);
 });
 
-Route::delete('/specialist/{specialist}', [SpecialistController::class, 'destroy'])->name('specialist.destroy');
+Route::delete('/specialist/{specialist}', [SpecialistController::class, 'destroy'])->middleware('auth')->name('specialist.destroy');
 
 Route::get('/api/clinics-search', [ClinicController::class, 'liveSearch'])->name('api.clinics.search');
 
@@ -280,9 +280,9 @@ Route::get('/get-organizations-by-city-id/{city_id}', function ($city_id) {
 
     return response()->json($organizations);
 });
-Route::delete('/organizations/{id}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
-Route::put('/doctor/{doctor}', [DoctorController::class, 'update'])->name('doctor.update');
-Route::delete('/doctor/{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
+Route::delete('/organizations/{id}', [OrganizationController::class, 'destroy'])->middleware('auth')->name('organizations.destroy');
+Route::put('/doctor/{doctor}', [DoctorController::class, 'update'])->middleware('auth')->name('doctor.update');
+Route::delete('/doctor/{doctor}', [DoctorController::class, 'destroy'])->middleware('auth')->name('doctor.destroy');
 
 // Маршрут для страницы всех специалистов
 Route::get('/specialists', [SpecialistController::class, 'index'])->name('specialists.index');

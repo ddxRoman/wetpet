@@ -103,7 +103,7 @@ public function index()
         'user', 'pets',
         'hasClinic', 'clinicOwners',
         'hasOrganization', 'organizationOwners',
-        'hasSpecialistProfile', 'specialist',
+        'hasSpecialistProfile', 'specialist', 'specialistOwner',
         'hasDoctorProfile', 'doctor', 'doctorOwner',
         'groupedFields', 'groupedOrgFields',
         'allCities', 'doctorFields', 'organizations'

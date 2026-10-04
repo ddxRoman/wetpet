@@ -274,7 +274,7 @@ class OwnerCabinetController extends Controller
             return $missing;
         }
 
-        $this->authorizeOwner('clinic', $id);
+        $this->authorizeClaimant('clinic', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
         // страницу с загрузкой документов и чатом вместо полного кабинета.
@@ -392,7 +392,7 @@ public function organization(int $id)
             return $missing;
         }
 
-        $this->authorizeOwner('organization', $id);
+        $this->authorizeClaimant('organization', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
         // страницу с загрузкой документов и чатом вместо полного кабинета.
@@ -786,7 +786,7 @@ public function organization(int $id)
             return $missing;
         }
 
-        $this->authorizeOwner('doctor', $id);
+        $this->authorizeClaimant('doctor', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
         // страницу с загрузкой документов и чатом вместо полного кабинета.
@@ -895,7 +895,7 @@ public function organization(int $id)
             return $missing;
         }
 
-        $this->authorizeOwner('specialist', $id);
+        $this->authorizeClaimant('specialist', $id);
 
         // Если заявка на этот объект ещё не подтверждена — показываем
         // страницу с загрузкой документов и чатом вместо полного кабинета.
@@ -1169,6 +1169,17 @@ public function organization(int $id)
     public function deletePrice(int $priceId)
     {
         $price = Price::findOrFail($priceId);
+
+        $typeMap = [
+            \App\Models\Clinic::class       => 'clinic',
+            \App\Models\Organization::class => 'organization',
+            \App\Models\Doctor::class       => 'doctor',
+            \App\Models\Specialist::class   => 'specialist',
+        ];
+        $priceType = $typeMap[$price->priceable_type] ?? null;
+        abort_unless($priceType, 403);
+        $this->authorizeOwner($priceType, (int) $price->priceable_id);
+
         $price->delete();
         return response()->json(['success' => true]);
     }
@@ -1318,21 +1329,26 @@ public function organization(int $id)
         return redirect()->route('account')->with('success', 'Карточка удалена. Спасибо, что сообщили причину.');
     }
 
-private function authorizeOwner(string $type, int $entityId): void
+/**
+     * Управлять карточкой может только ПОДТВЕРЖДЁННЫЙ владелец (или админ).
+     * Раньше проверялось лишь наличие записи о владении, поэтому права появлялись сразу после
+     * нажатия «Это моя организация» — ещё до проверки документов.
+     */
+    private function authorizeOwner(string $type, int $entityId): void
     {
-        $userId = Auth::id();
+        \App\Support\OwnerAccess::authorizeConfirmed(
+            $type,
+            $entityId,
+            'У вас нет прав для управления этим объектом. Права появятся после того, как администратор подтвердит владение.'
+        );
+    }
 
-        // Проверяем, привязан ли в принципе этот объект к пользователю (без жесткого условия на true)
-        $exists = match($type) {
-            'clinic'       => ClinicOwner::where('user_id', $userId)->where('clinic_id', $entityId)->exists(),
-            'organization' => OrganizationOwner::where('user_id', $userId)->where('organization_id', $entityId)->exists(),
-            'doctor'       => DoctorOwner::where('user_id', $userId)->where('doctor_id', $entityId)->exists(),
-            'specialist'   => SpecialistOwner::where('user_id', $userId)->where('specialist_id', $entityId)->exists(),
-            default        => false,
-        };
-
-        if (!$exists) {
-            abort(403, 'У вас нет прав для управления этим объектом.');
-        }
+    /**
+     * Доступ к странице карточки в кабинете: достаточно заявки на владение.
+     * Если заявка не подтверждена, пользователь увидит только страницу с документами и чатом.
+     */
+    private function authorizeClaimant(string $type, int $entityId): void
+    {
+        \App\Support\OwnerAccess::authorizeClaimant($type, $entityId);
     }
 }

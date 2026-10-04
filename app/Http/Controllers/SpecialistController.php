@@ -234,11 +234,22 @@ private function performStore(Request $request)
         $specialist->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
     }
 
+    // «Это я»: прав на управление пока нет — отправляем на страницу заявки, где просят документы
+    $claimed = $request->boolean('its_me') && auth()->check();
+    if ($claimed) {
+        session()->flash('success', 'Профиль добавлен и отправлен на проверку. Загрузите документы, подтверждающие, что это вы, — после проверки вы получите доступ к управлению.');
+    }
+
     return response()->json([
         'success' => true,
         'id'      => $specialist->id,
         'type'    => 'specialist',
-        'redirect_url' => route('specialists.show', $specialist->slug),
+        'message' => $claimed
+            ? 'Профиль добавлен и отправлен на проверку. Загрузите документы, подтверждающие, что это вы, — после проверки вы получите доступ к управлению.'
+            : null,
+        'redirect_url' => $claimed
+            ? route('owner.specialist', $specialist->id)
+            : route('specialists.show', $specialist->slug),
     ]);
 }
 
@@ -249,6 +260,8 @@ private function performStore(Request $request)
      */
 public function edit(Specialist $specialist)
 {
+    \App\Support\OwnerAccess::authorizeConfirmed('specialist', (int) $specialist->id);
+
     // 1. Врачи (activity == doctor)
     $doctorFields = \App\Models\FieldOfActivity::where('type', 'specialist')
         ->where('activity', 'doctor')
@@ -292,6 +305,9 @@ public function edit(Specialist $specialist)
 
 public function update(Request $request, Specialist $specialist)
 {
+    // Править профиль может только подтверждённый владелец (раньше проверки не было вообще)
+    \App\Support\OwnerAccess::authorizeConfirmed('specialist', (int) $specialist->id);
+
     $validated = $request->validate([
         'name'               => 'required|string|max:255',
         'specialization'     => 'nullable|string',
@@ -372,6 +388,9 @@ public function show($slug)
 
     public function destroy(Specialist $specialist)
     {
+        // Удалять может только подтверждённый владелец
+        \App\Support\OwnerAccess::authorizeConfirmed('specialist', (int) $specialist->id);
+
         if ($specialist->photo) {
             Storage::disk('public')->delete($specialist->photo);
         }

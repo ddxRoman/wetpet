@@ -108,11 +108,22 @@ private function performStore(Request $request)
         $doctor->owners()->syncWithoutDetaching([auth()->id() => ['is_confirmed' => false]]);
     }
 
+    // «Это я»: прав на управление пока нет — отправляем на страницу заявки, где просят документы
+    $claimed = $request->boolean('its_me') && auth()->check();
+    if ($claimed) {
+        session()->flash('success', 'Профиль добавлен и отправлен на проверку. Загрузите документы, подтверждающие, что это вы, — после проверки вы получите доступ к управлению.');
+    }
+
     return response()->json([
         'success'      => true,
         'id'           => $doctor->id,
         'type'         => 'doctor',
-        'redirect_url' => $doctor->slug ? route('doctors.show', $doctor->slug) : null,
+        'message'      => $claimed
+            ? 'Профиль добавлен и отправлен на проверку. Загрузите документы, подтверждающие, что это вы, — после проверки вы получите доступ к управлению.'
+            : null,
+        'redirect_url' => $claimed
+            ? route('owner.doctor', $doctor->id)
+            : ($doctor->slug ? route('doctors.show', $doctor->slug) : null),
     ]);
 }
 
@@ -292,6 +303,9 @@ public function welcome()
      */
 public function update(Request $request, Doctor $doctor)
 {
+    // Править профиль может только подтверждённый владелец (раньше проверки не было вообще)
+    \App\Support\OwnerAccess::authorizeConfirmed('doctor', (int) $doctor->id);
+
     // 1. Валидация
     $validated = $request->validate([
         'name'           => 'required|string|max:255',
@@ -350,6 +364,9 @@ public function update(Request $request, Doctor $doctor)
      */
     public function destroy(Doctor $doctor)
     {
+        // Удалять может только подтверждённый владелец
+        \App\Support\OwnerAccess::authorizeConfirmed('doctor', (int) $doctor->id);
+
         $doctor->delete();
 
         return redirect()

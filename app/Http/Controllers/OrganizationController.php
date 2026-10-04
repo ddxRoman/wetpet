@@ -219,6 +219,17 @@ $redirectUrl = $type === 'clinics'
     ? route('clinics.show', ['city' => $model->city_slug, 'clinic' => $model->slug])
     : route('organizations.show', ['city' => $model->city_slug, 'slug' => $model->slug]);
 
+// «Это моя организация»: права на управление появятся только после проверки документов —
+// сразу ведём на страницу заявки, где просят загрузить документы
+if ($isOwner && $user) {
+    $redirectUrl = $type === 'clinics'
+        ? route('owner.clinic', $model->id)
+        : route('owner.organization', $model->id);
+
+    $successMessage .= ' Загрузите документы, подтверждающие право владения, — после проверки вы получите доступ к управлению.';
+    session()->flash('success', $successMessage);
+}
+
 if ($request->ajax() || $request->expectsJson()) {
     return response()->json([
         'success'      => true,
@@ -262,10 +273,9 @@ return redirect()->to($redirectUrl)->with('success', $successMessage);
     public function update(Request $request, $id)
     {
     $organization = Organization::findOrFail($id);
-    
-    if (!$organization->owners()->where('user_id', auth()->id())->exists()) {
-        abort(403);
-    }
+
+    // Редактировать может только подтверждённый владелец
+    \App\Support\OwnerAccess::authorizeConfirmed('organization', (int) $organization->id);
 
     $validated = $request->validate([
         'name'                 => 'required|string|max:255',
@@ -301,9 +311,8 @@ return redirect()->to($redirectUrl)->with('success', $successMessage);
     {
         $organization = Organization::findOrFail($id);
 
-        if (!$organization->owners()->where('user_id', auth()->id())->exists()) {
-            abort(403, 'У вас нет прав на удаление этой организации');
-        }
+        // Удалять может только подтверждённый владелец
+        \App\Support\OwnerAccess::authorizeConfirmed('organization', (int) $organization->id, 'У вас нет прав на удаление этой организации');
 
         if ($organization->logo) {
             Storage::disk('public')->delete($organization->logo);

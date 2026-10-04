@@ -14,7 +14,6 @@ class Specialist extends Model
 use HasPracticeExperience;
 use HasGalleryPhotos;
 use HasWorkplaces;
-use \App\Models\Concerns\ConfirmsCreatorOwnership;
 
 protected $fillable = [
         'is_verified',
@@ -188,9 +187,4 @@ public function getRouteKeyName()
         return $this->belongsTo(\App\Models\User::class, 'created_by');
     }
 
-    /** Куда подтверждать владельца-создателя при верификации карточки (см. ConfirmsCreatorOwnership). */
-    protected static function ownerConfirmationTarget(): array
-    {
-        return [\App\Models\SpecialistOwner::class, 'specialist_id'];
-    }
 }

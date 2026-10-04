@@ -829,6 +829,9 @@ public function fullSearch(Request $request)
     {
         $clinic = Clinic::findOrFail($id);
 
+        // Править может только подтверждённый владелец (раньше проверки не было — править мог кто угодно)
+        \App\Support\OwnerAccess::authorizeConfirmed('clinic', (int) $clinic->id);
+
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'region' => 'nullable|string|max:100',
@@ -861,6 +864,10 @@ public function fullSearch(Request $request)
     public function destroy($id)
     {
         $clinic = Clinic::findOrFail($id);
+
+        // Удалять может только подтверждённый владелец
+        \App\Support\OwnerAccess::authorizeConfirmed('clinic', (int) $clinic->id);
+
         $clinic->delete();
 
         return redirect()->route('clinics.index')->with('success', 'Клиника удалена');

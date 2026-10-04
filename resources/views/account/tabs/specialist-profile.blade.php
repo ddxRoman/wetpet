@@ -1,5 +1,13 @@
 @vite(['resources/js/Pages/edit_doctor.js'])
 
+{{-- Пока владение не подтверждено, редактировать профиль нельзя — только документы и чат на странице заявки --}}
+@if(isset($specialistOwner) && $specialistOwner && !$specialistOwner->is_confirmed)
+    @include('account.tabs._owner-pending-notice', [
+        'name' => $specialist->name ?? 'Профиль специалиста',
+        'url'  => route('owner.specialist', $specialistOwner->specialist_id),
+    ])
+@else
+
 <form id="addDoctorForm"
       method="POST"
       action="{{ route('specialist.update', $specialist) }}"
@@ -257,3 +265,4 @@
     @csrf
     @method('DELETE')
 </form>
+@endif

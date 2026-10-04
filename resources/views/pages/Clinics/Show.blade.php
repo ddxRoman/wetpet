@@ -105,8 +105,8 @@
                         ->first();
                 @endphp
 
-                {{-- Создатель верифицированной карточки считается подтверждённым владельцем --}}
-                @if($alreadyOwner && ($alreadyOwner->is_confirmed || ($clinic->is_verified && (int) $clinic->created_by === (int) auth()->id() && !$alreadyOwner->is_rejected)))
+                {{-- «Перейти к управлению» — только когда админ подтвердил владение. Пока заявка на проверке — «Заявка на проверке (дополнить)». --}}
+                @if($alreadyOwner && $alreadyOwner->is_confirmed)
                     <a href="{{ route('owner.clinic', $clinic->id) }}"
                        class="btn btn-success fw-bold d-flex align-items-center gap-2"
                        style="border-radius: 10px; padding: 8px 16px;">

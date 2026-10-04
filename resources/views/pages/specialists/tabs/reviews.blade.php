@@ -15,7 +15,8 @@
         ->where('reviewable_type', $currentType)
         ->with(['user', 'photos', 'pet.animal'])
         ->latest('review_date')
-        ->get();
+        ->paginate(10)
+        ->appends(request()->query());
 
     // 4. Получаем питомцев
     $pets = Pet::where('user_id', auth()->id())
@@ -297,6 +298,12 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                 </div>
                                 @endforeach
                             </div>
+
+                            @if($reviews->hasPages())
+                                <div class="mt-4">
+                                    {{ $reviews->links() }}
+                                </div>
+                            @endif
                             <!-- Modal для просмотра фото -->
 <div class="modal fade" id="photoModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">

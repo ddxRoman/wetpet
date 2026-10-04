@@ -134,14 +134,13 @@ class GalleryController extends Controller
         $user = Auth::user();
         abort_unless($user, 401);
 
-        $isCreator = (int) ($entity->created_by ?? 0) === (int) $user->id;
-
-        $isVerifiedOwner = $ownerClass::where('user_id', $user->id)
-            ->where($ownerForeignKey, $entity->id)
-            ->where('is_confirmed', true)
-            ->exists();
-
-        abort_unless($isCreator || $isVerifiedOwner, 403, 'Вы не являетесь владельцем этой карточки.');
+        // Только подтверждённый владелец (или админ). Раньше фото мог менять и «создатель» карточки —
+        // даже если не подтвердил, что это его организация.
+        abort_unless(
+            \App\Support\OwnerAccess::isConfirmedOwner($user, $type, (int) $entity->id),
+            403,
+            'Загружать фото может только подтверждённый владелец карточки.'
+        );
 
         return [$entity, $type];
     }

@@ -18,7 +18,6 @@ class Doctor extends Model
     use HasPracticeExperience;
     use HasGalleryPhotos;
     use HasWorkplaces;
-    use \App\Models\Concerns\ConfirmsCreatorOwnership;
 
     protected $table = 'doctors';
 
@@ -203,9 +202,4 @@ class Doctor extends Model
         return $this->belongsTo(\App\Models\User::class, 'created_by');
     }
 
-    /** Куда подтверждать владельца-создателя при верификации карточки (см. ConfirmsCreatorOwnership). */
-    protected static function ownerConfirmationTarget(): array
-    {
-        return [\App\Models\DoctorOwner::class, 'doctor_id'];
-    }
 }

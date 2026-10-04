@@ -14,24 +14,27 @@
     // 2. Получаем точный класс для связи reviewable_type
     $currentType = get_class($targetModel); 
 
-    // 3. Загружаем отзывы именно для этой сущности
-    $directReviews = Review::where('reviewable_id', $targetModel->id)
-        ->where('reviewable_type', $currentType)
-        ->with(['user', 'photos', 'pet.animal'])
-        ->get();
-
-    // + если это организация — добавляем отзывы, оставленные специалистам,
-    // которые работают/работали в ней на момент отзыва (см. Review::workplace_type/
-    // workplace_id). Показываем их тут же, с пометкой «Отзыв о специалисте …»
-    // и, если он уже сменил место работы, «Специалист тут больше не работает».
-    $workplaceReviews = $currentType === \App\Models\Organization::class
-        ? Review::where('workplace_type', \App\Models\Organization::class)
-            ->where('workplace_id', $targetModel->id)
-            ->with(['user', 'photos', 'pet.animal', 'reviewable'])
-            ->get()
-        : collect();
-
-    $reviews = $directReviews->concat($workplaceReviews)->sortByDesc('review_date')->values();
+    // 3. Загружаем отзывы именно для этой сущности + (если это организация)
+    // отзывы, оставленные специалистам, которые работают/работали в ней на
+    // момент отзыва (см. Review::workplace_type/workplace_id) — с пометкой
+    // «Отзыв о специалисте …» и, если он уже сменил место работы, «Специалист
+    // тут больше не работает». Один запрос с orWhere — чтобы пагинация
+    // считала страницы по общему числу отзывов, а не терялась при склейке
+    // двух отдельных коллекций.
+    $reviews = Review::where(function ($q) use ($targetModel, $currentType) {
+            $q->where('reviewable_id', $targetModel->id)
+              ->where('reviewable_type', $currentType);
+        })
+        ->when($currentType === \App\Models\Organization::class, function ($q) use ($targetModel) {
+            $q->orWhere(function ($q2) use ($targetModel) {
+                $q2->where('workplace_type', \App\Models\Organization::class)
+                   ->where('workplace_id', $targetModel->id);
+            });
+        })
+        ->with(['user', 'photos', 'pet.animal', 'reviewable'])
+        ->orderByDesc('review_date')
+        ->paginate(10)
+        ->appends(request()->query());
 
     // 4. Получаем питомцев авторизованного пользователя
     $pets = Pet::where('user_id', auth()->id())
@@ -329,6 +332,12 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                 </div>
                                 @endforeach
                             </div>
+
+                            @if($reviews->hasPages())
+                                <div class="mt-4">
+                                    {{ $reviews->links() }}
+                                </div>
+                            @endif
                             <!-- Modal для просмотра фото -->
 <div class="modal fade" id="photoModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">

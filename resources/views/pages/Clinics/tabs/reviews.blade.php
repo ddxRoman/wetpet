@@ -4,22 +4,24 @@
                         {{-- Отзывы --}}
                         
 @php
-    // Отзывы, оставленные напрямую клинике
-    $directReviews = \App\Models\Review::where('reviewable_id', $clinic->id)
-        ->where('reviewable_type', \App\Models\Clinic::class)
-        ->with(['user', 'photos', 'pet.animal'])
-        ->get();
-
-    // + отзывы, оставленные врачам, которые работают/работали в этой клинике
-    // на момент отзыва (см. Review::workplace_type/workplace_id). Показываем их
-    // тут же, с пометкой «Отзыв о специалисте …» и, если он уже сменил клинику,
-    // «Специалист тут больше не работает».
-    $workplaceReviews = \App\Models\Review::where('workplace_type', \App\Models\Clinic::class)
-        ->where('workplace_id', $clinic->id)
+    // Отзывы, оставленные напрямую клинике, + отзывы, оставленные врачам,
+    // которые работают/работали в ней на момент отзыва (см. Review::workplace_type/
+    // workplace_id) — с пометкой «Отзыв о специалисте …» и, если он уже сменил
+    // клинику, «Специалист тут больше не работает». Один запрос с orWhere —
+    // чтобы пагинация считала страницы по общему числу отзывов, а не терялась
+    // при склейке двух отдельных коллекций.
+    $reviews = \App\Models\Review::where(function ($q) use ($clinic) {
+            $q->where('reviewable_id', $clinic->id)
+              ->where('reviewable_type', \App\Models\Clinic::class);
+        })
+        ->orWhere(function ($q) use ($clinic) {
+            $q->where('workplace_type', \App\Models\Clinic::class)
+              ->where('workplace_id', $clinic->id);
+        })
         ->with(['user', 'photos', 'pet.animal', 'reviewable'])
-        ->get();
-
-    $reviews = $directReviews->concat($workplaceReviews)->sortByDesc('review_date')->values();
+        ->orderByDesc('review_date')
+        ->paginate(10)
+        ->appends(request()->query());
 
     $pets = \App\Models\Pet::where('user_id', auth()->id())
         ->with('animal')
@@ -291,6 +293,12 @@
                                 </div>
                                 @endforeach
                             </div>
+
+                            @if($reviews->hasPages())
+                                <div class="mt-4">
+                                    {{ $reviews->links() }}
+                                </div>
+                            @endif
                         
 <!-- Modal для просмотра фото -->
 <div class="modal fade" id="photoModal" tabindex="-1">
