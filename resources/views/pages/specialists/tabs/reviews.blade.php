@@ -301,7 +301,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
 
                             @if($reviews->hasPages())
                                 <div class="mt-4">
-                                    {{ $reviews->links() }}
+                                    {{ $reviews->links('vendor.pagination.dachshund') }}
                                 </div>
                             @endif
                             <!-- Modal для просмотра фото -->

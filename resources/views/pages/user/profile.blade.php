@@ -215,7 +215,7 @@
         @endforeach
 
         <div class="mt-4 d-flex justify-content-center">
-            {{ $reviews->links() }}
+            {{ $reviews->links('vendor.pagination.dachshund') }}
         </div>
     @endif
 

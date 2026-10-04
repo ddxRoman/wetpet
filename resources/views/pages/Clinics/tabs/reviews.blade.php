@@ -296,7 +296,7 @@
 
                             @if($reviews->hasPages())
                                 <div class="mt-4">
-                                    {{ $reviews->links() }}
+                                    {{ $reviews->links('vendor.pagination.dachshund') }}
                                 </div>
                             @endif
                         
