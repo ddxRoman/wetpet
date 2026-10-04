@@ -172,7 +172,9 @@
             <a class="nav-link {{ $tab === 'services' ? 'active' : ''  }}" title="Посмотреть перечь услуге которые оказывает данный специалист" href="?tab=services">Услуги</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $tab === 'reviews' ? 'active' : ''  }}" title="Прочитать отзывы" href="?tab=reviews">Отзывы</a>
+            <a class="nav-link {{ $tab === 'reviews' ? 'active' : ''  }}" title="Прочитать отзывы" href="?tab=reviews">
+                Отзывы <span class="badge bg-secondary rounded-pill">{{ $reviewCount }}</span>
+            </a>
         </li>
     </ul>
 
