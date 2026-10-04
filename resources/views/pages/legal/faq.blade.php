@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-<title>Часто задаваемые вопросы — Зверозор</title>
-
 @section('content')
 @include('layouts.header')
 

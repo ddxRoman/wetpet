@@ -31,6 +31,8 @@ class SeoCatalogPage extends Model
         'organizations'               => ['city'],
         'organizations_activity'      => ['city', 'activity_type'],
         'ads'                         => ['city'],
+        'animals'                     => [],
+        'legal_faq'                   => [],
     ];
 
     /**

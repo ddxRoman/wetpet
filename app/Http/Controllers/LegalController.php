@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Models\Faq;
 use App\Models\GlossaryTerm;
+use App\Services\SeoManager;
 
 class LegalController extends Controller
 {
@@ -67,11 +68,14 @@ class LegalController extends Controller
             ->filter(fn($c) => array_key_exists($c, self::FAQ_CATEGORIES))
             ->mapWithKeys(fn($c) => [$c => self::FAQ_CATEGORIES[$c]]);
 
+        $seoMeta = (new SeoManager())->getCatalogMeta('legal_faq');
+
         return view('pages.legal.faq', [
             'faqs'            => $faqs,
             'categories'      => $categories,
             'categoryLabels'  => self::FAQ_CATEGORIES,
             'currentCategory' => $currentCategory,
+            'seoMeta'         => $seoMeta,
         ]);
     }
 

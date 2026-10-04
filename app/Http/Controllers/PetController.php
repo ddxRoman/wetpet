@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Pet;
 use App\Models\Animal;
+use App\Services\SeoManager;
 
 class PetController extends Controller
 {
@@ -287,7 +288,9 @@ $fileName = $iconMap[$item->species] ?? 'default.svg';
             return 3 . $item->display_name;
         });
 
-    return view('pages.animals.index', compact('animalTypes'));
+    $seoMeta = (new SeoManager())->getCatalogMeta('animals');
+
+    return view('pages.animals.index', compact('animalTypes', 'seoMeta'));
 }
 
 
