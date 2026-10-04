@@ -1,6 +1,7 @@
 import { notify, notifyAfterReload } from '../notify';
 import Choices from 'choices.js';
 import { enableAddCity, applyNewCity } from './city-add-option';
+import { askDuplicate } from './duplicate-popup';
 import 'choices.js/public/assets/styles/choices.min.css';
 
 import Cropper from 'cropperjs';
@@ -177,13 +178,32 @@ if (form) {
         if (errBox) errBox.innerHTML = '';
 
         try {
-            const res = await fetch(form.action, {
-                method: 'POST',
-                headers: { 'Accept': 'application/json' },
-                body: applyNewCity(form, new FormData(form))
-            });
+            const post = async (body) => {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body
+                });
+                return { res: response, json: await response.json() };
+            };
 
-            const json = await res.json();
+            const formData = applyNewCity(form, new FormData(form));
+            let { res, json } = await post(formData);
+
+            // Сервер нашёл похожую клинику/организацию: «Это она?»
+            if (res.status === 409 && json.duplicates) {
+                const answer = await askDuplicate({ items: json.duplicates });
+
+                if (answer.action === 'yes' && answer.item?.url) {
+                    redirected = true;
+                    window.location.href = answer.item.url;   // «Да» — открываем найденную карточку
+                    return;
+                }
+                if (answer.action !== 'no') return;            // окно закрыли — остаёмся в форме
+
+                formData.set('skip_duplicates', '1');          // «Нет» — создаём новую
+                ({ res, json } = await post(formData));
+            }
 
             if (res.status === 422) { // Ошибка валидации Laravel
                 if (errBox) {

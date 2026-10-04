@@ -1,6 +1,7 @@
 import { notify, notifyAfterReload } from '../notify';
 import Choices from 'choices.js';
 import { enableAddCity, applyNewCity } from './city-add-option';
+import { askDuplicate } from './duplicate-popup';
 import 'choices.js/public/assets/styles/choices.min.css';
 
 let isSubmitting = false;
@@ -200,16 +201,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const formData = applyNewCity(form, new FormData(form));
-                const res = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                });
+                const post = async () => {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    return { res: response, data: await response.json() };
+                };
 
-                const data = await res.json();
+                let { res, data } = await post();
+
+                // Сервер нашёл похожего врача/специалиста: «Это он/она?»
+                if (res.status === 409 && data.duplicates) {
+                    const answer = await askDuplicate({ items: data.duplicates });
+
+                    if (answer.action === 'yes' && answer.item?.url) {
+                        redirected = true;
+                        window.location.href = answer.item.url;   // «Да» — открываем найденную карточку
+                        return;
+                    }
+                    if (answer.action !== 'no') return;            // окно закрыли — остаёмся в форме
+
+                    formData.set('skip_duplicates', '1');          // «Нет» — создаём нового
+                    ({ res, data } = await post());
+                }
 
                 if (data.success) {
                     redirected = true;

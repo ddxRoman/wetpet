@@ -170,6 +170,24 @@ private function performSubmit(Request $request)
         'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
     ]);
 
+    // Проверка на дубли (до создания города и карточки): «Мы нашли похожую клинику/организацию. Это она?»
+    // Пользователь ответил «Нет, создать новую» — форма уходит повторно с skip_duplicates = 1.
+    if (! $request->boolean('skip_duplicates')) {
+        $duplicates = app(\App\Services\DuplicateFinder::class)->forOrganization([
+            'name'      => $validated['name'],
+            'city_id'   => $request->input('city_id'),
+            'city_name' => $request->input('city_name'),
+            'street'    => $validated['street'],
+            'house'     => $validated['house'],
+            'phone1'    => $validated['phone1'] ?? null,
+            'phone2'    => $validated['phone2'] ?? null,
+        ]);
+
+        if ($duplicates) {
+            return \App\Services\DuplicateFinder::conflict($duplicates);
+        }
+    }
+
     $activity = FieldOfActivity::find($validated['field_of_activity_id']);
     // Город из списка или введённый вручную (если его нет в базе — создаётся с large_city = 0)
     $city = app(\App\Services\CityResolver::class)->fromRequest($request);

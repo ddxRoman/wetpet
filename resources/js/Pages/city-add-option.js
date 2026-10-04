@@ -8,6 +8,8 @@
  * и крепит его к создаваемой карточке.
  */
 
+import { askDuplicate } from './duplicate-popup';
+
 const NEW_PREFIX = 'new:';
 
 // Для сравнения: без учёта регистра, ё = е, лишних пробелов и пробелов вокруг дефиса
@@ -80,10 +82,40 @@ export function enableAddCity({ select, choices, regionSelect, getKnownNames }) 
     });
 
     /* ---------- нажали «Добавить этот населённый пункт» ---------- */
-    button.addEventListener('click', () => {
+    button.addEventListener('click', async () => {
         if (!regionSelect?.value || !typed) return;
 
         const name = typed;
+
+        // Перед добавлением спрашиваем про похожие населённые пункты региона: «Динская» ~ «Станица Динская»
+        button.disabled = true;
+        try {
+            const params = new URLSearchParams({ name, region: regionSelect.value });
+            const response = await fetch('/api/cities/similar?' + params.toString(), { headers: { 'Accept': 'application/json' } });
+            const data = response.ok ? await response.json() : {};
+
+            if (Array.isArray(data.duplicates) && data.duplicates.length) {
+                const answer = await askDuplicate({ items: data.duplicates, noLabel: 'Нет, добавить новый' });
+
+                if (answer.action === 'yes' && answer.item) {
+                    // «Да» — выбираем существующий населённый пункт вместо нового
+                    delete select.dataset.newCity;
+                    [String(answer.item.id), answer.item.id].forEach((value) => choices.setChoiceByValue(value));
+                    choices.clearInput();
+                    choices.hideDropdown();
+                    hideFooter();
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    return;
+                }
+
+                if (answer.action !== 'no') return;   // окно закрыли — ничего не делаем
+            }
+        } catch (e) {
+            // не удалось проверить — не мешаем добавить город
+        } finally {
+            button.disabled = !regionSelect?.value;
+        }
+
         select.dataset.newCity = name;
 
         // Подставляем название в поле «Город» (пока только в форме, в базу не пишем)

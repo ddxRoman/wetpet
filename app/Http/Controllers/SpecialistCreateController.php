@@ -25,6 +25,11 @@ class SpecialistCreateController extends Controller
             default  => app(SpecialistController::class)->store($request),
         };
 
+        // Найден похожий врач/специалист (ответ 409) — ничего не создано, привязывать владельца не к чему
+        if ($response->getStatusCode() === 409 || empty($response->getData(true)['id'] ?? null)) {
+            return $response;
+        }
+
         // 🔹 привязка владельца
         if ($request->boolean('its_me') && Auth::check()) {
 

@@ -70,6 +70,17 @@ public function citiesByRegion($region)
     return response()->json($cities);
 }
 
+// Похожие населённые пункты в регионе — для вопроса «Это он?» перед добавлением нового города
+public function similar(Request $request)
+{
+    $matches = app(\App\Services\DuplicateFinder::class)->forCity(
+        (string) $request->query('name', ''),
+        (string) $request->query('region', '')
+    );
+
+    return response()->json(['duplicates' => $matches]);
+}
+
 // Список регионов из справочника городов — для выпадающего списка с поиском
 public function regions()
 {

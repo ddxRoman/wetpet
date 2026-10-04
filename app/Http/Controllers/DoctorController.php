@@ -44,6 +44,21 @@ private function performStore(Request $request)
         'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Валидация фото
     ]);
 
+    // 🔹 Проверка на дубли (до создания города и профиля): «Мы нашли похожего врача. Это он/она?»
+    if (! $request->boolean('skip_duplicates')) {
+        $duplicates = app(\App\Services\DuplicateFinder::class)->forPerson([
+            'name'          => $validated['name'],
+            'city_id'       => $request->input('city_id'),
+            'city_name'     => $request->input('city_name'),
+            'phone'         => $validated['phone'] ?? null,
+            'date_of_birth' => $validated['date_of_birth'] ?? null,
+        ]);
+
+        if ($duplicates) {
+            return \App\Services\DuplicateFinder::conflict($duplicates);
+        }
+    }
+
     // 🔹 Город: выбранный из списка или введённый вручную (новый город создаётся с large_city = 0)
     $cityId = $validated['city_id'] ?? null;
     $newCityNote = '';

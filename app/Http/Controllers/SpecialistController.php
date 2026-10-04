@@ -160,6 +160,23 @@ private function performStore(Request $request)
         'personal_data_agreement.accepted' => 'Необходимо согласие на обработку персональных данных.',
     ]);
 
+    // 🔹 Проверка на дубли (до создания города и профиля): «Мы нашли похожего специалиста. Это он/она?»
+    if (! $request->boolean('skip_duplicates')) {
+        $duplicates = app(\App\Services\DuplicateFinder::class)->forPerson([
+            'name'          => $validated['name'],
+            'city_id'       => $request->input('city_id'),
+            'city_name'     => $request->input('city_name'),
+            'phone'         => $validated['phone'] ?? null,
+            'street'        => $validated['street'] ?? null,
+            'house'         => $validated['house'] ?? null,
+            'date_of_birth' => $validated['date_of_birth'] ?? null,
+        ]);
+
+        if ($duplicates) {
+            return \App\Services\DuplicateFinder::conflict($duplicates);
+        }
+    }
+
     // 🔹 Город из списка или введённый вручную (если его нет в базе — создаётся с large_city = 0)
     $city = app(\App\Services\CityResolver::class)->fromRequest($request);
 

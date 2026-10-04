@@ -107,6 +107,22 @@ if ($request->ajax()) {
             'workdays' => 'nullable|string|max:100',
         ]);
 
+        // Проверка на дубли: «Мы нашли похожую клинику. Это она?» (повторная отправка с skip_duplicates = 1)
+        if ($request->expectsJson() && ! $request->boolean('skip_duplicates')) {
+            $duplicates = app(\App\Services\DuplicateFinder::class)->forOrganization([
+                'name'    => $data['name'],
+                'city_id' => $data['city_id'],
+                'street'  => $data['street'],
+                'house'   => $data['house'] ?? null,
+                'phone1'  => $data['phone1'] ?? null,
+                'phone2'  => $data['phone2'] ?? null,
+            ]);
+
+            if ($duplicates) {
+                return \App\Services\DuplicateFinder::conflict($duplicates);
+            }
+        }
+
         $city = City::findOrFail($data['city_id']);
 
         $clinic = Clinic::create([
