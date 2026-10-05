@@ -442,11 +442,25 @@
 
 @endsection
 
-@section('content')
-    {{-- Ваш основной контент страницы --}}
-@endsection
-
 @push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Пользователя привели сюда из личного кабинета, после добавления питомца,
+    // чтобы он сразу написал отзыв о породе — открываем форму отзыва сами.
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('write_review') === '1') {
+        const modalEl = document.getElementById('addReviewModal');
+        if (modalEl && window.bootstrap?.Modal) {
+            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        }
+        // Убираем флаг из адресной строки, чтобы форма не открывалась
+        // заново при обновлении страницы.
+        params.delete('write_review');
+        const query = params.toString();
+        window.history.replaceState({}, '', window.location.pathname + (query ? '?' + query : '') + window.location.hash);
+    }
+});
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org/",

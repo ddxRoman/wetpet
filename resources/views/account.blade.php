@@ -211,6 +211,28 @@
                 <div id="pets-list" class="pets-grid"></div>
 
             </div>
+
+            {{-- Приглашение написать отзыв о породе сразу после добавления питомца --}}
+            <div class="modal fade" id="petReviewPromptModal" tabindex="-1" aria-labelledby="petReviewPromptModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="modal-header border-0 p-4 pb-0">
+                            <h5 class="fw-bold" id="petReviewPromptModalLabel">Расскажите о своём питомце 🐾</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body p-4 pt-2">
+                            <p class="text-secondary mb-0">
+                                Пожалуйста, расскажите о своём питомце и особенностях породы, с которыми вы столкнулись —
+                                это поможет тем, кто только собирается завести животное такой породы.
+                            </p>
+                        </div>
+                        <div class="modal-footer border-0 p-4 pt-0">
+                            <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal" style="border-radius: 12px;">Не сейчас</button>
+                            <a href="#" id="petReviewPromptLink" class="btn btn-primary px-4 shadow" style="border-radius: 12px;">Написать отзыв</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Отзывы -->
             @include('account.tabs.reviews')
 

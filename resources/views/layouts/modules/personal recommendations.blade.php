@@ -1,6 +1,35 @@
+@if($topItems->isEmpty())
+  {{-- В городе пока нет клиник с отзывами: другие города здесь не показываем --}}
+  <section class="slider_section">
+    <div class="container">
+      @if(!empty($recommendationCity))
+        <h3 class="top_rank_doctor_h3">Рекомендации для вас в городе {{ $recommendationCity }}</h3>
+      @else
+        <h3 class="top_rank_doctor_h3">Рекомендации для вас</h3>
+      @endif
+
+      <div style="text-align:center;padding:36px 20px;margin-top:14px;background:#fff;border:1px dashed #e5e7eb;border-radius:16px;">
+        <div style="font-size:44px;line-height:1;margin-bottom:10px;" aria-hidden="true">⭐</div>
+
+        @if(!empty($recommendationCity))
+          <p style="font-size:20px;font-weight:700;color:#1f2937;margin:0 0 6px;">Пока в вашем городе нет отзывов</p>
+          <p style="font-size:16px;color:#6b7280;margin:0 0 18px;">Напишите первый — выберите клинику и поделитесь впечатлением.</p>
+        @else
+          <p style="font-size:20px;font-weight:700;color:#1f2937;margin:0 0 6px;">Выберите город</p>
+          <p style="font-size:16px;color:#6b7280;margin:0 0 18px;">Укажите город в шапке сайта — и мы покажем лучшие клиники рядом с вами.</p>
+        @endif
+
+        <a href="{{ route('clinics.index') }}"
+           style="display:inline-block;background:#ff8c00;color:#fff;font-weight:600;border-radius:25px;padding:11px 30px;text-decoration:none;">
+          Перейти в каталог
+        </a>
+      </div>
+    </div>
+  </section>
+@else
 <section class="slider_section">
   <div class="container">
-    <h3 class="top_rank_doctor_h3">Рекомендации для вас в городе {{ $currentCityName }}</h3>
+    <h3 class="top_rank_doctor_h3">Рекомендации для вас в городе {{ $recommendationCity ?? $currentCityName }}</h3>
     <h5 class="top_rank_doctor_h5">лучшие по оценкам пользователей</h5>
 
     <div class="carousel js-swipe-carousel">
@@ -161,3 +190,4 @@
     }
 });
 </script>
+@endif

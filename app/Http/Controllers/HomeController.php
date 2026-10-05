@@ -28,109 +28,18 @@ public function __construct()
 
 public function index()
 {
-    // Название города — для заголовка (с запасным вариантом для отображения)
-    $currentCityNameRaw = session('city_name');
-    $currentCityName    = $currentCityNameRaw ?: 'Выберите город';
-    $cityId             = session('city_id');
+    // Город: выбранный на сайте (при выборе он же сохраняется в профиль пользователя),
+    // а если в сессии пусто — город из профиля. Рекомендации строятся ТОЛЬКО по нему.
+    $cityId = session('city_id') ?: auth()->user()?->city_id;
+    $city   = $cityId ? \App\Models\City::find($cityId) : null;
 
-    // У Doctor/Specialist город хранится как city_id, у Clinic/Organization — как строка city
-    $reviewableTypes = [
-        \App\Models\Doctor::class       => ['column' => 'city_id', 'value' => $cityId],
-        \App\Models\Specialist::class   => ['column' => 'city_id', 'value' => $cityId],
-        \App\Models\Clinic::class       => ['column' => 'city',    'value' => $currentCityNameRaw],
-        \App\Models\Organization::class => ['column' => 'city',    'value' => $currentCityNameRaw],
-    ];
+    // Название города для слайдера «Рекомендации для вас» (null — город ещё не выбран)
+    $recommendationCity = $city?->name;
+    $currentCityName    = $recommendationCity ?: 'Выберите город';
 
-    // Собираем рейтинг/кол-во отзывов по каждому типу отдельно —
-    // сразу и с фильтром по городу, и без него (нужно для фолбэка ниже,
-    // если в городе не наберётся достаточно записей).
-    $statsCity = collect();
-    $statsAll  = collect();
-
-    foreach ($reviewableTypes as $modelClass => $cityFilter) {
-        $table = (new $modelClass())->getTable();
-
-        $baseQuery = fn () => Review::query()
-            ->join($table, "{$table}.id", '=', 'reviews.reviewable_id')
-            ->where('reviews.reviewable_type', $modelClass)
-            ->whereNotNull('reviews.rating')
-            ->groupBy('reviews.reviewable_id')
-            ->select(
-                'reviews.reviewable_id',
-                DB::raw('AVG(reviews.rating) as avg_rating'),
-                DB::raw('COUNT(*) as reviews_count')
-            );
-
-        // Без фильтра по городу — на случай фолбэка
-        $rowsAll = $baseQuery()->get()->each(function ($row) use ($modelClass) {
-            $row->reviewable_type = $modelClass;
-        });
-        $statsAll = $statsAll->merge($rowsAll);
-
-        // С фильтром по городу
-        if (!empty($cityFilter['value'])) {
-            $rowsCity = $baseQuery()
-                ->where("{$table}.{$cityFilter['column']}", $cityFilter['value'])
-                ->get()
-                ->each(function ($row) use ($modelClass) {
-                    $row->reviewable_type = $modelClass;
-                });
-            $statsCity = $statsCity->merge($rowsCity);
-        }
-    }
-
-    // Порог, при котором городской подбор считаем "рабочим"
-    $minCandidates = 5;
-
-    $cityHasEnough = $statsCity->filter(fn ($row) => $row->reviews_count >= 5)->count() >= $minCandidates;
-
-    // Если в городе достаточно кандидатов — используем городскую статистику,
-    // иначе показываем лучших по всей базе, чтобы блок не был пустым.
-    $stats = $cityHasEnough ? $statsCity : $statsAll;
-
-    // Минимум 5 отзывов — обязательное условие в любом случае (и для основного отбора, и для fallback)
-    $withEnoughReviews = $stats->filter(function ($row) {
-        return $row->reviews_count >= 5;
-    });
-
-    // Кандидаты с рейтингом 4.7–5
-    $highRated = $withEnoughReviews->filter(function ($row) {
-        return $row->avg_rating >= 4.7 && $row->avg_rating <= 5;
-    });
-
-    if ($withEnoughReviews->isEmpty()) {
-
-        $chosen = $stats
-            ->sort(function ($a, $b) {
-                if ($a->reviews_count === $b->reviews_count) {
-                    return $b->avg_rating <=> $a->avg_rating;
-                }
-                return $b->reviews_count <=> $a->reviews_count;
-            })
-            ->values()
-            ->take(5);
-    } elseif ($highRated->count() >= 5) {
-        // Достаточно записей — берём 5 случайных из них
-        $chosen = $highRated->shuffle()->take(5);
-    } else {
-
-        $chosen = $withEnoughReviews->shuffle()->sortByDesc('avg_rating')->values()->take(5);
-    }
-
-    // Подгружаем сами модели (Doctor, Clinic, ...)
-    $topItems = $chosen->map(function ($row) {
-        $model = $row->reviewable_type::find($row->reviewable_id);
-
-        if (!$model) {
-            return null;
-        }
-
-        $model->avg_rating = round($row->avg_rating, 1);
-        $model->reviews_count = $row->reviews_count;
-        $model->reviewable_type = class_basename($row->reviewable_type);
-
-        return $model;
-    })->filter()->values();
+    // Только клиники этого города. Если отзывов в городе пока нет — коллекция пустая,
+    // а шаблон покажет «Пока в вашем городе нет отзывов» и кнопку в каталог.
+    $topItems = $city ? $this->topClinicsInCity($city->name) : collect();
 
     // Загружаем 3 последние опубликованные новости для блока на главной
     $news = News::where('is_published', true)
@@ -138,33 +47,62 @@ public function index()
         ->take(3)
         ->get();
 
-    // ВРЕМЕННАЯ ОТЛАДКА — удалить после диагностики.
-    // Открыть на проде: https://zverozor.ru/?debug_recs=1
-    if (request()->has('debug_recs')) {
-        dd([
-            'city_id'              => $cityId,
-            'city_name_raw'        => $currentCityNameRaw,
-            'statsAll_total'       => $statsAll->count(),
-            'statsAll_qualified'   => $statsAll->filter(fn($r) => $r->reviews_count >= 5)->count(),
-            'statsCity_total'      => $statsCity->count(),
-            'statsCity_qualified'  => $statsCity->filter(fn($r) => $r->reviews_count >= 5)->count(),
-            'cityHasEnough'        => $cityHasEnough,
-            'withEnoughReviews'    => $withEnoughReviews->count(),
-            'usedFallbackNoReviewsThreshold' => $withEnoughReviews->isEmpty(),
-            'highRated'            => $highRated->count(),
-            'chosen_count'         => $chosen->count(),
-            'topItems_count'       => $topItems->count(),
-            'topItems_sample'      => $topItems->take(2)->map(fn($m) => [
-                'type' => $m->reviewable_type,
-                'id'   => $m->id,
-                'name' => $m->name,
-            ]),
-        ]);
-    }
-
     // Добавляем 'news' и 'currentCityName' (если она нужна в шаблоне) в compact
-    return view('welcome', compact('topItems', 'news', 'currentCityName'));
+    return view('welcome', compact('topItems', 'news', 'currentCityName', 'recommendationCity'));
 }
 
+    /**
+     * Лучшие клиники одного города по отзывам (до 5 штук).
+     * Город клиники хранится текстом (clinics.city), поэтому сравниваем названия без учёта регистра
+     * и пробелов по краям. Скрытые на время обжалования отзывы не учитываются (глобальный скоуп Review).
+     */
+    private function topClinicsInCity(string $cityName, int $limit = 5): \Illuminate\Support\Collection
+    {
+        $cityName = mb_strtolower(trim($cityName));
+
+        if ($cityName === '') {
+            return collect();
+        }
+
+        $rows = Review::query()
+            ->join('clinics', 'clinics.id', '=', 'reviews.reviewable_id')
+            ->where('reviews.reviewable_type', \App\Models\Clinic::class)
+            ->whereNotNull('reviews.rating')
+            ->whereRaw('LOWER(TRIM(clinics.city)) = ?', [$cityName])
+            ->groupBy('reviews.reviewable_id')
+            ->select(
+                'reviews.reviewable_id as id',
+                DB::raw('AVG(reviews.rating) as avg'),
+                DB::raw('COUNT(*) as cnt')
+            )
+            ->get()
+            ->map(fn ($row) => ['id' => (int) $row->id, 'avg' => (float) $row->avg, 'count' => (int) $row->cnt])
+            ->all();
+
+        $picked = \App\Support\RecommendationPicker::pick($rows, $limit);
+
+        if (! $picked) {
+            return collect();
+        }
+
+        $clinics = \App\Models\Clinic::whereIn('id', array_column($picked, 'id'))->get()->keyBy('id');
+
+        return collect($picked)
+            ->map(function ($row) use ($clinics) {
+                $clinic = $clinics->get($row['id']);
+
+                if (! $clinic) {
+                    return null;
+                }
+
+                $clinic->avg_rating      = round($row['avg'], 1);
+                $clinic->reviews_count   = $row['count'];
+                $clinic->reviewable_type = 'Clinic';   // по нему шаблон выбирает логотип и ссылку
+
+                return $clinic;
+            })
+            ->filter()
+            ->values();
+    }
 
 }

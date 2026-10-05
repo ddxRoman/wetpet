@@ -215,6 +215,16 @@ petsList.insertAdjacentHTML('beforeend', `
                 showToast('Питомец добавлен!', 'success');
                 form.style.display = 'none';
                 await loadPets();
+
+                // Приглашаем владельца написать отзыв о породе — помогает
+                // будущим владельцам животных такой же породы.
+                const animal = data.pet?.animal;
+                const promptModalEl = document.getElementById('petReviewPromptModal');
+                const promptLink = document.getElementById('petReviewPromptLink');
+                if (animal?.species_slug && animal?.breed_slug && promptModalEl && promptLink && window.bootstrap?.Modal) {
+                    promptLink.href = `/animals/${encodeURIComponent(animal.species_slug)}/${encodeURIComponent(animal.breed_slug)}?write_review=1`;
+                    bootstrap.Modal.getOrCreateInstance(promptModalEl).show();
+                }
             } else {
                 console.error('Ошибка добавления питомца:', data);
                 showToast(data.message || 'Ошибка при добавлении', 'error');
