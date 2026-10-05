@@ -208,6 +208,14 @@ Route::get('/api/fields/specialists', [FieldOfActivityController::class, 'getSpe
 Route::get('/api/cities/by-region/{region}', [\App\Http\Controllers\CityController::class, 'citiesByRegion']);
 // возвращает список всех регионов (для выпадающего списка с поиском)
 Route::get('/api/regions', [\App\Http\Controllers\CityController::class, 'regions'])->name('api.regions');
+
+// Модальные уведомления на сайте (управляются из админки Filament → Контент → Уведомления)
+Route::get('/api/site-notices/pending', [\App\Http\Controllers\SiteNoticeController::class, 'pending'])
+    ->middleware('throttle:60,1')
+    ->name('site-notices.pending');
+Route::post('/api/site-notices/{notice}/seen', [\App\Http\Controllers\SiteNoticeController::class, 'seen'])
+    ->middleware('throttle:60,1')
+    ->name('site-notices.seen');
 // Похожие населённые пункты (вопрос «Это он?» перед добавлением нового города)
 Route::get('/api/cities/similar', [\App\Http\Controllers\CityController::class, 'similar'])
     ->middleware('throttle:60,1')

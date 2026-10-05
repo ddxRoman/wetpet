@@ -117,5 +117,8 @@
             @yield('content')
         </main>
     </div>
+
+    {{-- Модальные уведомления сайта (админка → Контент → Уведомления) --}}
+    @include('partials.site-notices')
 </body>
 </html>

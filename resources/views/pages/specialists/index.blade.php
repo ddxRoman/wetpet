@@ -132,11 +132,9 @@
                 </button>
             </div>
         @endif
-
         @endif 
     @endif
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     // Tooltips
