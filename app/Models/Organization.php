@@ -158,11 +158,16 @@ public function prices()
     return $this->morphMany(\App\Models\Price::class, 'priceable');
 }
 /**
- * Специалисты, работающие в этой организации (specialists.organization_id)
+ * Все специалисты, которые работают в этой организации (сводная таблица
+ * organization_specialist — см. App\Models\Concerns\HasWorkplaces у Specialist).
+ * Специалист может работать в нескольких организациях одновременно, поэтому
+ * это belongsToMany, а не hasMany по specialists.organization_id — та колонка
+ * хранит только «основное» место работы.
  */
 public function specialists()
 {
-    return $this->hasMany(Specialist::class, 'organization_id');
+    return $this->belongsToMany(Specialist::class, 'organization_specialist', 'organization_id', 'specialist_id')
+        ->withTimestamps();
 }
 
 public function reviews()

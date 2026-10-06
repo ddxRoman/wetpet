@@ -146,9 +146,16 @@ public function awards()
     return $this->hasMany(Award::class);
 }
 
+    /**
+     * Все врачи, которые работают в этой клинике (сводная таблица clinic_doctor —
+     * см. App\Models\Concerns\HasWorkplaces у Doctor). Врач может работать в
+     * нескольких клиниках одновременно, поэтому это belongsToMany, а не hasMany
+     * по doctors.clinic_id — та колонка хранит только «основное» место работы.
+     */
     public function doctors()
     {
-        return $this->hasMany(Doctor::class);
+        return $this->belongsToMany(Doctor::class, 'clinic_doctor', 'clinic_id', 'doctor_id')
+            ->withTimestamps();
     }
 
 

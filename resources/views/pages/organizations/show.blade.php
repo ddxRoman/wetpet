@@ -205,7 +205,10 @@
     <div class="mb-4 mt-5">
         <h2 class="fs-5 fw-semibold mb-3">Специалисты организации</h2>
         @php
-            $specialists = \App\Models\Specialist::where('organization_id', $organization->id)->withAvg('reviews', 'rating')->orderBy('name')->get();
+            // Специалист может работать в нескольких организациях (сводная таблица
+            // organization_specialist) — раньше тут была выборка только по «основной»
+            // organization_id, и специалист пропадал из карточек остальных мест работы.
+            $specialists = $organization->specialists()->withAvg('reviews', 'rating')->orderBy('name')->get();
         @endphp
 
         <div class="row g-3">

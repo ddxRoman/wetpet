@@ -205,7 +205,10 @@
     <div class="mb-4 mt-5">
         <h2 class="fs-5 fw-semibold mb-3">Доктора клиники</h2>
         @php
-            $doctors = \App\Models\Doctor::where('clinic_id', $clinic->id)->get();
+            // Врач может работать в нескольких клиниках (сводная таблица clinic_doctor) —
+            // раньше тут была выборка только по «основной» clinic_id, и врач пропадал
+            // из карточек остальных мест работы.
+            $doctors = $clinic->doctors()->orderBy('name')->get();
         @endphp
 
         <div class="row g-3">
