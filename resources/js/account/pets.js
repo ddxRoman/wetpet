@@ -1,6 +1,68 @@
 import { showToast } from './toast';
 import { openEditModal } from './pets-edit';
 
+// Динамическое добавление стилей для черно-белых фото умерших питомцев
+if (!document.getElementById('pet-deceased-styles')) {
+    const styleTag = document.createElement('style');
+    styleTag.id = 'pet-deceased-styles';
+    styleTag.innerHTML = `
+        .pet-card.pet-deceased img {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+        .pet-card.pet-deceased:hover img {
+            filter: grayscale(0%);
+        }
+    `;
+    document.head.appendChild(styleTag);
+}
+
+// Функция для расчёта возраста (лет и месяцев) по дате рождения и дате смерти/текущей дате
+function formatAge(birthDateStr, deathDateStr) {
+    if (!birthDateStr) return '';
+
+    const birthDate = new Date(birthDateStr);
+    if (isNaN(birthDate.getTime())) return '';
+
+    const endDate = deathDateStr ? new Date(deathDateStr) : new Date();
+
+    let years = endDate.getFullYear() - birthDate.getFullYear();
+    let months = endDate.getMonth() - birthDate.getMonth();
+
+    if (endDate.getDate() < birthDate.getDate()) {
+        months--;
+    }
+
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    if (years < 0) return '';
+
+    // Функция для склонения слов (например: 1 год, 2 года, 5 лет)
+    const declension = (number, titles) => {
+        const cases = [2, 0, 1, 1, 1, 2];
+        return titles[
+            number % 100 > 4 && number % 100 < 20
+                ? 2
+                : cases[number % 10 < 5 ? number % 10 : 5]
+        ];
+    };
+
+    const parts = [];
+
+    if (years > 0) {
+        parts.push(`${years} ${declension(years, ['год', 'года', 'лет'])}`);
+    }
+
+    if (months > 0 || years === 0) {
+        parts.push(`${months} ${declension(months, ['месяц', 'месяца', 'месяцев'])}`);
+    }
+
+    return parts.join(' ');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('add-pet-btn');
     const form = document.getElementById('add-pet-form');
@@ -63,12 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             data.pets.forEach(p => {
                 const cls = getTypeClass(p.animal?.species);
-                // photo_url приходит с бэкенда (App\Models\Pet::getPhotoUrlAttribute):
-                // собственное фото питомца, либо дефолт по виду животного
-                // (кошка/собака/другое) — единая логика для всего проекта.
                 const photoUrl = p.photo_url || '/storage/pets/default-pet.jpg';
+
+                // Рассчитываем возраст из p.birth_date
+                const ageString = formatAge(p.birth_date, p.death_date) || (p.age ? `${p.age}` : '');
+
+                // Класс для умершего питомца
+                const isDeceased = Boolean(p.death_date);
+                const deceasedClass = isDeceased ? 'pet-deceased' : '';
+
 petsList.insertAdjacentHTML('beforeend', `
-    <div class="pet-card ${cls}"
+    <div class="pet-card ${cls} ${deceasedClass}"
          data-id="${p.id}"
          data-name="${p.name}"
          data-gender="${p.gender || ''}"
@@ -92,6 +159,8 @@ petsList.insertAdjacentHTML('beforeend', `
 
         <b>${p.name}</b><br>
         <small>${p.animal?.species || ''} (${p.animal?.breed || ''})</small><br>
+        <small>${ageString ? `(${ageString})` : ''}</small><br>
+        
     </div>
 `);
 
@@ -216,8 +285,6 @@ petsList.insertAdjacentHTML('beforeend', `
                 form.style.display = 'none';
                 await loadPets();
 
-                // Приглашаем владельца написать отзыв о породе — помогает
-                // будущим владельцам животных такой же породы.
                 const animal = data.pet?.animal;
                 const promptModalEl = document.getElementById('petReviewPromptModal');
                 const promptLink = document.getElementById('petReviewPromptLink');

@@ -304,7 +304,6 @@
                 <input type="checkbox" id="edit-unknown-birth"> Я не знаю точную дату
             </label>
 
-
             <div id="edit-age-block" style="display:none; margin-bottom:10px;">
                 <label>Возраст</label>
                 <input type="number" id="edit-pet-age" style="width:100%;" min="0">
