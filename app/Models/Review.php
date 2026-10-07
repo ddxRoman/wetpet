@@ -140,14 +140,17 @@ class Review extends Model
         // Врач может работать в нескольких клиниках, специалист — в нескольких организациях
         // (сводные таблицы clinic_doctor / organization_specialist); основное место
         // (clinic_id / organization_id) проверяем тоже — для старых записей.
+        // Места работы бывают перекрёстными: врач — и в клиниках, и в организациях,
+        // специалист — и в организациях, и в клиниках. У врача нет колонки
+        // organization_id, у специалиста — clinic_id, поэтому читаем их через `?? null`.
         if ($this->workplace_type === \App\Models\Clinic::class) {
-            return (int) $employee->clinic_id === (int) $this->workplace_id
+            return (int) ($employee->clinic_id ?? 0) === (int) $this->workplace_id
                 || (method_exists($employee, 'clinics')
                     && $employee->clinics()->whereKey($this->workplace_id)->exists());
         }
 
         if ($this->workplace_type === \App\Models\Organization::class) {
-            return (int) $employee->organization_id === (int) $this->workplace_id
+            return (int) ($employee->organization_id ?? 0) === (int) $this->workplace_id
                 || (method_exists($employee, 'organizations')
                     && $employee->organizations()->whereKey($this->workplace_id)->exists());
         }

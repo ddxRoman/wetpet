@@ -104,55 +104,77 @@
         <div class="row g-3">
             @php
                 $isDoctorForm = $type === 'doctor';
-                $workplaceRelation = $isDoctorForm ? 'clinics' : 'organizations';
-                $workplaceField    = $isDoctorForm ? 'clinic_ids' : 'organization_ids';
-                $currentWorkplaces = $entity->{$workplaceRelation};
-                $selectedIds = collect(old($workplaceField, $currentWorkplaces->pluck('id')->all()))->map(fn ($v) => (int) $v)->all();
-                $selectedModels = $currentWorkplaces->whereIn('id', $selectedIds);
-                // Выбранные, но ещё не сохранённые (после ошибки валидации) места работы
-                $missingIds = array_diff($selectedIds, $selectedModels->pluck('id')->all());
-                if ($missingIds) {
-                    $extra = $isDoctorForm
-                        ? \App\Models\Clinic::whereIn('id', $missingIds)->get()
-                        : \App\Models\Organization::whereIn('id', $missingIds)->get();
-                    $selectedModels = $selectedModels->concat($extra);
-                }
-            @endphp
-            @php
-                // Основное место работы (по нему формируется адрес страницы) показываем первым
-                $primaryWorkplaceId = (int) ($isDoctorForm ? $entity->clinic_id : $entity->organization_id);
-                $selectedModels = $selectedModels->sortByDesc(fn ($m) => (int) $m->id === $primaryWorkplaceId)->values();
-            @endphp
-            <div class="col-12">
-                <label class="form-label fw-medium">{{ $isDoctorForm ? 'Клиники' : 'Организации' }}</label>
 
-                {{-- Мультивыбор на чистом JS (не зависит от select2): выбранные места — «чипсы», поиск — по всем городам --}}
-                <div id="owner-workplaces" class="position-relative"
-                     data-type="{{ $workplaceRelation }}"
-                     data-field="{{ $workplaceField }}"
-                     data-placeholder="{{ $isDoctorForm ? 'Начните вводить название клиники…' : 'Начните вводить название организации…' }}">
-                    <div class="form-control d-flex flex-wrap align-items-center gap-2 h-auto" data-role="box" style="min-height:44px;cursor:text;">
-                        <span class="d-contents" data-role="chips">
-                            @foreach($selectedModels as $place)
-                                <span class="badge rounded-pill text-bg-light border d-inline-flex align-items-center gap-2 py-2 px-3 fw-normal text-wrap text-start" data-chip>
-                                    <span data-role="label">{{ $place->name }}{{ $place->city ? ' — ' . $place->city : '' }}{{ $place->street ? ', ' . trim($place->street . ' ' . $place->house) : '' }}</span>
-                                    <span class="text-primary small d-none" data-primary>основное</span>
-                                    <button type="button" class="btn-close" style="font-size:.6rem;" aria-label="Убрать" data-remove></button>
-                                    <input type="hidden" name="{{ $workplaceField }}[]" value="{{ $place->id }}">
-                                </span>
-                            @endforeach
-                        </span>
-                        <input type="text" data-role="input" autocomplete="off" class="border-0 flex-grow-1 bg-transparent"
-                               style="min-width:220px;outline:none;"
-                               placeholder="{{ $isDoctorForm ? 'Начните вводить название клиники…' : 'Начните вводить название организации…' }}">
+                // Места работы перекрёстные: врач — в клиниках И организациях, специалист — в организациях И клиниках.
+                // Первый селект — «родной» тип (по нему строится адрес страницы, первое место — основное),
+                // второй — дополнительный тип.
+                $pickers = $isDoctorForm
+                    ? [
+                        ['relation' => 'clinics',       'field' => 'clinic_ids',       'label' => 'Клиники',      'model' => \App\Models\Clinic::class,       'primary' => true,  'placeholder' => 'Начните вводить название клиники…'],
+                        ['relation' => 'organizations', 'field' => 'organization_ids', 'label' => 'Организации',  'model' => \App\Models\Organization::class, 'primary' => false, 'placeholder' => 'Начните вводить название организации…'],
+                    ]
+                    : [
+                        ['relation' => 'organizations', 'field' => 'organization_ids', 'label' => 'Организации',  'model' => \App\Models\Organization::class, 'primary' => true,  'placeholder' => 'Начните вводить название организации…'],
+                        ['relation' => 'clinics',       'field' => 'clinic_ids',       'label' => 'Клиники',      'model' => \App\Models\Clinic::class,       'primary' => false, 'placeholder' => 'Начните вводить название клиники…'],
+                    ];
+            @endphp
+
+            @foreach($pickers as $picker)
+                @php
+                    $currentWorkplaces = $entity->{$picker['relation']};
+                    $selectedIds = collect(old($picker['field'], $currentWorkplaces->pluck('id')->all()))->map(fn ($v) => (int) $v)->all();
+                    $selectedModels = $currentWorkplaces->whereIn('id', $selectedIds);
+                    // Выбранные, но ещё не сохранённые (после ошибки валидации) места работы
+                    $missingIds = array_diff($selectedIds, $selectedModels->pluck('id')->all());
+                    if ($missingIds) {
+                        $selectedModels = $selectedModels->concat($picker['model']::whereIn('id', $missingIds)->get());
+                    }
+                    if ($picker['primary']) {
+                        // Основное место работы (по нему формируется адрес страницы) показываем первым
+                        $primaryWorkplaceId = (int) ($isDoctorForm ? $entity->clinic_id : $entity->organization_id);
+                        $selectedModels = $selectedModels->sortByDesc(fn ($m) => (int) $m->id === $primaryWorkplaceId)->values();
+                    }
+                @endphp
+                <div class="col-12">
+                    <label class="form-label fw-medium">{{ $picker['label'] }}</label>
+
+                    {{-- Мультивыбор на чистом JS (не зависит от select2): выбранные места — «чипсы», поиск — по всем городам --}}
+                    <div class="position-relative" data-workplace-picker
+                         data-type="{{ $picker['relation'] }}"
+                         data-field="{{ $picker['field'] }}"
+                         data-primary-badge="{{ $picker['primary'] ? '1' : '0' }}">
+                        <div class="form-control d-flex flex-wrap align-items-center gap-2 h-auto" data-role="box" style="min-height:44px;cursor:text;">
+                            <span class="d-contents" data-role="chips">
+                                @foreach($selectedModels as $place)
+                                    <span class="badge rounded-pill text-bg-light border d-inline-flex align-items-center gap-2 py-2 px-3 fw-normal text-wrap text-start" data-chip>
+                                        <span data-role="label">{{ $place->name }}{{ $place->city ? ' — ' . $place->city : '' }}{{ $place->street ? ', ' . trim($place->street . ' ' . $place->house) : '' }}</span>
+                                        <span class="text-primary small d-none" data-primary>основное</span>
+                                        <button type="button" class="btn-close" style="font-size:.6rem;" aria-label="Убрать" data-remove></button>
+                                        <input type="hidden" name="{{ $picker['field'] }}[]" value="{{ $place->id }}">
+                                    </span>
+                                @endforeach
+                            </span>
+                            <input type="text" data-role="input" autocomplete="off" class="border-0 flex-grow-1 bg-transparent"
+                                   style="min-width:220px;outline:none;"
+                                   placeholder="{{ $picker['placeholder'] }}">
+                        </div>
+                        <div class="list-group position-absolute w-100 shadow d-none" data-role="dropdown"
+                             style="z-index:1050;max-height:260px;overflow:auto;top:100%;"></div>
                     </div>
-                    <div class="list-group position-absolute w-100 shadow d-none" data-role="dropdown"
-                         style="z-index:1050;max-height:260px;overflow:auto;top:100%;"></div>
-                </div>
 
-                <div class="form-text">
-                    Можно указать несколько мест работы, в том числе в разных городах: начните вводить название и выберите из списка.
-                    Если не выбрано ничего — частная практика. Первое место в списке считается основным.
+                    @if($loop->first)
+                        <div class="form-text">
+                            Можно указать несколько мест работы, в том числе в разных городах: начните вводить название и выберите из списка.
+                            Первое место в списке считается основным.
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+
+            <div class="col-12">
+                <div class="form-text mt-0">
+                    {{ $isDoctorForm ? 'Врач' : 'Специалист' }} может работать и в клиниках, и в организациях одновременно.
+                    Если не выбрано ничего — частная практика.
                 </div>
             </div>
         </div>
@@ -330,11 +352,13 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 // Мультивыбор мест работы: работает без select2/jQuery.
 (function () {
-    var root = document.getElementById('owner-workplaces');
-    if (!root) return;
+    var roots = document.querySelectorAll('[data-workplace-picker]');
+    Array.prototype.forEach.call(roots, initPicker);
 
+    function initPicker(root) {
     var type     = root.dataset.type;   // clinics | organizations
     var field    = root.dataset.field;  // clinic_ids | organization_ids
+    var showPrimary = root.dataset.primaryBadge === '1'; // «основное» только у родного типа
     var box      = root.querySelector('[data-role="box"]');
     var chips    = root.querySelector('[data-role="chips"]');
     var input    = root.querySelector('[data-role="input"]');
@@ -354,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function refreshPrimary() {
         var items = chips.querySelectorAll('[data-chip]');
         Array.prototype.forEach.call(items, function (chip, index) {
-            chip.querySelector('[data-primary]').classList.toggle('d-none', !(index === 0 && items.length > 1));
+            chip.querySelector('[data-primary]').classList.toggle('d-none', !(showPrimary && index === 0 && items.length > 1));
         });
     }
 
@@ -468,5 +492,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     refreshPrimary();
+    }
 })();
 </script>

@@ -218,22 +218,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                                     </div>
                                     @endif
 
-                                    @if($review->reviewable_type === \App\Models\Specialist::class)
-                                        @php $aboutEmployee = $review->reviewable; @endphp
-                                        <div class="small mb-2">
-                                            <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
-                                                Отзыв о специалисте
-                                                @if($aboutEmployee)
-                                                    <a href="{{ route('specialists.show', ['slug' => $aboutEmployee->slug]) }}" class="text-decoration-underline text-reset">{{ $aboutEmployee->name }}</a>
-                                                @endif
-                                            </span>
-                                            @if(!$review->specialistStillWorksHere())
-                                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle ms-1">
-                                                    Специалист тут больше не работает
-                                                </span>
-                                            @endif
-                                        </div>
-                                    @endif
+                                    @include('partials._review-employee-badge', ['review' => $review])
 
                                     {{-- Пользователь --}}
                                     <div class="d-flex align-items-center mb-3">

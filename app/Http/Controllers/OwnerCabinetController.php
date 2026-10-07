@@ -803,7 +803,7 @@ public function organization(int $id)
             ]);
         }
 
-        $doctor = Doctor::with(['services', 'prices.service', 'contacts', 'city', 'clinic', 'clinics'])->findOrFail($id);
+        $doctor = Doctor::with(['services', 'prices.service', 'contacts', 'city', 'clinic', 'clinics', 'organizations'])->findOrFail($id);
         $photos = EntityPhoto::where('photoable_type', Doctor::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -833,6 +833,9 @@ public function organization(int $id)
             // Врач может работать сразу в нескольких клиниках
             'clinic_ids'          => 'nullable|array|max:20',
             'clinic_ids.*'        => 'integer|exists:clinics,id',
+            // ...и в организациях
+            'organization_ids'    => 'nullable|array|max:20',
+            'organization_ids.*'  => 'integer|exists:organizations,id',
             'practice_started_at' => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
@@ -876,10 +879,13 @@ public function organization(int $id)
 
         // Места работы сохраняются отдельно (сводная таблица clinic_doctor)
         $clinicIds = $data['clinic_ids'] ?? [];
-        unset($data['clinic_ids']);
+        $organizationIds = $data['organization_ids'] ?? [];
+        unset($data['clinic_ids'], $data['organization_ids']);
 
         $doctor->update($data);
         $doctor->syncWorkplaces($clinicIds);
+        // Организации (doctor_organization) — дополнительные места работы, основного там нет
+        $doctor->organizations()->sync(array_values(array_unique(array_map('intval', $organizationIds))));
         $doctor->contacts()->updateOrCreate(['doctor_id' => $doctor->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');
@@ -912,7 +918,7 @@ public function organization(int $id)
             ]);
         }
 
-        $specialist = Specialist::with(['prices.service', 'contacts', 'city', 'organization', 'organizations'])->findOrFail($id);
+        $specialist = Specialist::with(['prices.service', 'contacts', 'city', 'organization', 'organizations', 'clinics'])->findOrFail($id);
         $photos     = EntityPhoto::where('photoable_type', Specialist::class)->where('photoable_id', $id)
                         ->orderBy('sort_order')->get();
 
@@ -941,6 +947,9 @@ public function organization(int $id)
             // Специалист может работать сразу в нескольких организациях
             'organization_ids'    => 'nullable|array|max:20',
             'organization_ids.*'  => 'integer|exists:organizations,id',
+            // ...и в клиниках
+            'clinic_ids'          => 'nullable|array|max:20',
+            'clinic_ids.*'        => 'integer|exists:clinics,id',
             'practice_started_at' => \App\Models\Specialist::practiceStartRules($request->date_of_birth),
             'exotic_animals'      => 'nullable|boolean',
             'On_site_assistance'  => 'nullable|boolean',
@@ -981,10 +990,13 @@ public function organization(int $id)
 
         // Места работы сохраняются отдельно (сводная таблица organization_specialist)
         $organizationIds = $data['organization_ids'] ?? [];
-        unset($data['organization_ids']);
+        $clinicIds = $data['clinic_ids'] ?? [];
+        unset($data['organization_ids'], $data['clinic_ids']);
 
         $specialist->update($data);
         $specialist->syncWorkplaces($organizationIds);
+        // Клиники (clinic_specialist) — дополнительные места работы, основного там нет
+        $specialist->clinics()->sync(array_values(array_unique(array_map('intval', $clinicIds))));
         $specialist->contacts()->updateOrCreate(['specialist_id' => $specialist->id], $contactData);
 
         return back()->with('success', 'Данные профиля обновлены');

@@ -147,6 +147,17 @@ class Doctor extends Model
             ->withTimestamps();
     }
 
+    /**
+     * Организации, в которых работает врач (сводная таблица doctor_organization).
+     * Это «дополнительные» места работы: основное (clinic_id) и синхронизация
+     * через HasWorkplaces относятся только к клиникам.
+     */
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\Models\Organization::class, 'doctor_organization', 'doctor_id', 'organization_id')
+            ->withTimestamps();
+    }
+
     public function workplaces(): BelongsToMany
     {
         return $this->clinics();

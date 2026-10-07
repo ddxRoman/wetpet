@@ -238,6 +238,40 @@
         </div>
     </div>
 
+    {{-- СПИСОК СПЕЦИАЛИСТОВ (специалисты тоже могут работать в клинике; блок показываем, только если они есть) --}}
+    @php
+        $clinicSpecialists = $clinic->specialists()->withAvg('reviews', 'rating')->orderBy('name')->get();
+    @endphp
+    @if ($clinicSpecialists->isNotEmpty())
+    <div class="mb-4 mt-5">
+        <h2 class="fs-5 fw-semibold mb-3">Специалисты клиники</h2>
+
+        <div class="row g-3">
+            @foreach ($clinicSpecialists as $specialist)
+                @php
+                    $specialistAvgRating = $specialist->reviews_avg_rating ? number_format($specialist->reviews_avg_rating, 1) : '0.0';
+                @endphp
+                <div class="col-md-6 col-lg-4 col-sm-6">
+                    <a href="{{ route('specialists.show', $specialist->slug) }}" class="text-decoration-none text-reset">
+                        <div class="card h-100 shadow-sm border-0 position-relative doctor-card">
+                            <div class="rating-badge">
+                                <img width="24px" src="{{ asset('storage/icon/stars/doctors_stars.png') }}" alt="Рейтинг">
+                                <span class="rating-value">{{ $specialistAvgRating }}</span>
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="{{ $specialist->photo ? asset('/storage/' . $specialist->photo) : asset('/storage/specialists/default-specialist.webp') }}"
+                                     alt="{{ $specialist->name }}" class="doctor-photo mb-3">
+                                <h5 class="card-title mb-1">{{ $specialist->name }}</h5>
+                                <p class="text-muted mb-2">{{ $specialist->specialization ?? 'Специалист' }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
 </main>
 
 

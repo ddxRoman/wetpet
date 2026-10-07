@@ -56,12 +56,20 @@ public function store(Request $request)
         if ($employee && $employee->clinic_id) {
             $review->workplace_type = \App\Models\Clinic::class;
             $review->workplace_id   = $employee->clinic_id;
+        } elseif ($employee && ($firstOrg = $employee->organizations()->orderBy('organizations.id')->value('organizations.id'))) {
+            // Врач работает только в организации (основной клиники нет)
+            $review->workplace_type = \App\Models\Organization::class;
+            $review->workplace_id   = $firstOrg;
         }
     } elseif ($rawType === \App\Models\Specialist::class) {
         $employee = \App\Models\Specialist::find($validated['reviewable_id']);
         if ($employee && $employee->organization_id) {
             $review->workplace_type = \App\Models\Organization::class;
             $review->workplace_id   = $employee->organization_id;
+        } elseif ($employee && ($firstClinic = $employee->clinics()->orderBy('clinics.id')->value('clinics.id'))) {
+            // Специалист работает только в клинике (основной организации нет)
+            $review->workplace_type = \App\Models\Clinic::class;
+            $review->workplace_id   = $firstClinic;
         }
     }
 

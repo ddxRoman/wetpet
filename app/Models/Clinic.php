@@ -159,6 +159,16 @@ public function awards()
     }
 
 
+    /**
+     * Специалисты (не врачи), которые работают в этой клинике
+     * (сводная таблица clinic_specialist).
+     */
+    public function specialists()
+    {
+        return $this->belongsToMany(Specialist::class, 'clinic_specialist', 'clinic_id', 'specialist_id')
+            ->withTimestamps();
+    }
+
     public function promotions()
     {
         return $this->morphMany(\App\Models\Promotion::class, 'promotable');

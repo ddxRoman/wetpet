@@ -197,6 +197,12 @@ class OrganizationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\IconColumn::make('is_verified')
                     ->label('Проверено')
                     ->boolean()
@@ -204,11 +210,13 @@ class OrganizationResource extends Resource
                     ->falseIcon('heroicon-o-clock')
                     ->trueColor('success')
                     ->falseColor('warning')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 Tables\Columns\ImageColumn::make('logo')
                     ->label('Лого')
-                    ->circular(),
+                    ->circular()
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
@@ -217,12 +225,14 @@ class OrganizationResource extends Resource
 
                 Tables\Columns\TextColumn::make('activityType.name')
                     ->label('Сфера деятельности')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('city')
                     ->label('Город')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Кто добавил')
@@ -240,6 +250,42 @@ class OrganizationResource extends Resource
                     ->label('Статус проверки')
                     ->trueLabel('Только проверенные')
                     ->falseLabel('Только непроверенные')
+                    ->native(false),
+
+                Tables\Filters\TernaryFilter::make('has_logo')
+                    ->label('Логотип')
+                    ->placeholder('Все')
+                    ->trueLabel('С логотипом')
+                    ->falseLabel('Без логотипа')
+                    ->queries(
+                        true: fn ($query) => $query->whereNotNull('logo')->where('logo', '!=', ''),
+                        false: fn ($query) => $query->where(fn ($q) => $q->whereNull('logo')->orWhere('logo', '')),
+                        blank: fn ($query) => $query,
+                    )
+                    ->native(false),
+
+                Tables\Filters\SelectFilter::make('field_of_activity_id')
+                    ->label('Сфера деятельности')
+                    ->relationship('activityType', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('created_by')
+                    ->label('Кто добавил')
+                    ->relationship('creator', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\TernaryFilter::make('added_by_system')
+                    ->label('Источник добавления')
+                    ->placeholder('Все')
+                    ->trueLabel('Пользователем')
+                    ->falseLabel('Администратором / системой')
+                    ->queries(
+                        true: fn ($query) => $query->whereNotNull('created_by'),
+                        false: fn ($query) => $query->whereNull('created_by'),
+                        blank: fn ($query) => $query,
+                    )
                     ->native(false),
 
                 Tables\Filters\SelectFilter::make('city')

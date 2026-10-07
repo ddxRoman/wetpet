@@ -186,6 +186,14 @@ Forms\Components\TextInput::make('practice_started_at')
 
 
 
+        // ───── ОРГАНИЗАЦИИ (врач может работать и в организациях) ─────
+        Forms\Components\Select::make('organizations')
+            ->label('Организации (места работы)')
+            ->relationship('organizations', 'name')
+            ->multiple()
+            ->searchable()
+            ->helperText('Врач может работать не только в клиниках, но и в организациях. Основное место (по нему строится адрес страницы) задаётся полем «Клиники».'),
+
         Forms\Components\Select::make('exotic_animals')
             ->label('Экзотические животные')
             ->options([
@@ -312,6 +320,12 @@ Forms\Components\FileUpload::make('photo')
                         ->label('Клиники')
                         ->badge()
                         ->searchable(),
+
+                    Tables\Columns\TextColumn::make('organizations.name')
+                        ->label('Организации')
+                        ->badge()
+                        ->searchable()
+                        ->toggleable(),
                         
 Tables\Columns\TextColumn::make('specialization_label')
     ->label('Специализация'),
@@ -348,6 +362,12 @@ Tables\Columns\TextColumn::make('specialization_label')
                 Tables\Filters\SelectFilter::make('clinics')
                     ->label('Клиника')
                     ->relationship('clinics', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('organizations')
+                    ->label('Организация')
+                    ->relationship('organizations', 'name')
                     ->searchable()
                     ->preload(),
 

@@ -170,6 +170,15 @@ public function specialists()
         ->withTimestamps();
 }
 
+/**
+ * Врачи, которые работают в этой организации (сводная таблица doctor_organization).
+ */
+public function doctors()
+{
+    return $this->belongsToMany(Doctor::class, 'doctor_organization', 'organization_id', 'doctor_id')
+        ->withTimestamps();
+}
+
 public function reviews()
 {
     // 'reviewable' — это название префикса для полей reviewable_type и reviewable_id

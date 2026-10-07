@@ -103,6 +103,13 @@ class SpecialistResource extends Resource
                 ->preload()
                 ->required(),
 
+            Forms\Components\Select::make('clinics')
+                ->label('Клиники (места работы)')
+                ->relationship('clinics', 'name')
+                ->multiple()
+                ->searchable()
+                ->helperText('Специалист может работать не только в организациях, но и в клиниках. Основное место (по нему строится адрес страницы) задаётся полем «Организации».'),
+
             Forms\Components\Select::make('organizations')
                 ->label('Организации (места работы)')
                 ->relationship('organizations', 'name')
@@ -320,6 +327,12 @@ class SpecialistResource extends Resource
                     ->badge()
                     ->searchable(),
 
+                Tables\Columns\TextColumn::make('clinics.name')
+                    ->label('Клиники')
+                    ->badge()
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('experience_label')
                     ->label('Стаж')
                     ->placeholder('Данные не указаны'),
@@ -346,6 +359,12 @@ class SpecialistResource extends Resource
                 Tables\Filters\SelectFilter::make('organizations')
                     ->label('Организация')
                     ->relationship('organizations', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('clinics')
+                    ->label('Клиника')
+                    ->relationship('clinics', 'name')
                     ->searchable()
                     ->preload(),
 

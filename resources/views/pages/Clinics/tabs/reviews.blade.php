@@ -186,22 +186,7 @@
                                     </div>
                                     @endif
 
-                                    @if($review->reviewable_type === \App\Models\Doctor::class)
-                                        @php $aboutEmployee = $review->reviewable; @endphp
-                                        <div class="small mb-2">
-                                            <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
-                                                Отзыв о враче
-                                                @if($aboutEmployee)
-                                                    <a href="{{ route('doctors.show', $aboutEmployee) }}" class="text-decoration-underline text-reset">{{ $aboutEmployee->name }}</a>
-                                                @endif
-                                            </span>
-                                            @if(!$review->specialistStillWorksHere())
-                                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle ms-1">
-                                                    Специалист тут больше не работает
-                                                </span>
-                                            @endif
-                                        </div>
-                                    @endif
+                                    @include('partials._review-employee-badge', ['review' => $review])
                                     {{-- Пользователь --}}
                                     <div class="d-flex align-items-center mb-3">
                                         @php

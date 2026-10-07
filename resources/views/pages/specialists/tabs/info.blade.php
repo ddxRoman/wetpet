@@ -79,6 +79,23 @@
         </tr>
         @endif
 
+        @php $specialistClinics = $doctor->clinics; @endphp
+        @if($specialistClinics->isNotEmpty())
+        <tr>
+            <td>{{ $specialistClinics->count() > 1 ? 'Клиники:' : 'Клиника:' }}</td>
+            <td>
+                @foreach($specialistClinics as $specialistClinic)
+                    <div>
+                        <a href="{{ route('clinics.show', ['city' => $specialistClinic->city_slug, 'clinic' => $specialistClinic->slug]) }}" title="Перейти на страницу клиники" class="text-decoration-none">
+                            {{ $specialistClinic->name }}
+                            <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к клинике">
+                        </a>
+                    </div>
+                @endforeach
+            </td>
+        </tr>
+        @endif
+
         <tr>
             <td>Город:</td>
             <td>

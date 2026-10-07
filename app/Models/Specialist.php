@@ -70,6 +70,17 @@ public function organizations(): BelongsToMany
         ->withTimestamps();
 }
 
+/**
+ * Клиники, в которых работает специалист (сводная таблица clinic_specialist).
+ * Это «дополнительные» места работы: основное (organization_id) и синхронизация
+ * через HasWorkplaces относятся только к организациям.
+ */
+public function clinics(): BelongsToMany
+{
+    return $this->belongsToMany(Clinic::class, 'clinic_specialist', 'specialist_id', 'clinic_id')
+        ->withTimestamps();
+}
+
 public function workplaces(): BelongsToMany
 {
     return $this->organizations();

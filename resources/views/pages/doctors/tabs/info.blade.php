@@ -69,6 +69,23 @@
             </td>
         </tr>
 
+        @php $doctorOrganizations = $doctor->organizations; @endphp
+        @if($doctorOrganizations->isNotEmpty())
+        <tr>
+            <td>{{ $doctorOrganizations->count() > 1 ? 'Организации:' : 'Организация:' }}</td>
+            <td>
+                @foreach($doctorOrganizations as $doctorOrganization)
+                    <div>
+                        <a href="{{ route('organizations.show', ['city' => $doctorOrganization->city_slug, 'slug' => $doctorOrganization->slug]) }}" title="Перейти на страницу организации" class="text-decoration-none">
+                            {{ $doctorOrganization->name }}
+                            <img src="{{ asset('storage/icon/button/gosite.svg') }}" class="go-icon" alt="Перейти к организации">
+                        </a>
+                    </div>
+                @endforeach
+            </td>
+        </tr>
+        @endif
+
         <tr>
             <td>Город:</td>
             <td>
