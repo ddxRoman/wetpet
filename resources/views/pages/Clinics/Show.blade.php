@@ -201,6 +201,9 @@
         </div>
     </div>
 
+    {{-- ДРУГИЕ ФИЛИАЛЫ СЕТИ В ЭТОМ ГОРОДЕ --}}
+    @include('partials._chain-branches', ['entity' => $clinic])
+
     {{-- СПИСОК ДОКТОРОВ (нижняя секция) --}}
     <div class="mb-4 mt-5">
         <h2 class="fs-5 fw-semibold mb-3">Доктора клиники</h2>

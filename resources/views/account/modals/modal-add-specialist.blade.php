@@ -108,10 +108,20 @@
                         </div>
 
                         <div class="col-12">
-                            <label class="form-label fw-semibold" style="font-size:13px;color:#374151;">Организация</label>
+                            <label class="form-label fw-semibold" id="primaryWorkplaceLabel" style="font-size:13px;color:#374151;">Организация</label>
                             <select name="organization_id" id="clinicSelect" class="form-select wpm-input">
                                 <option value="">Сначала выберите город</option>
                             </select>
+                        </div>
+
+                        {{-- Второе место работы другого типа: врач — ещё и в организации, специалист — ещё и в клинике.
+                             Имя поля и подпись переключает add_doctor.js по выбранной сфере деятельности. --}}
+                        <div class="col-12">
+                            <label class="form-label fw-semibold" id="extraWorkplaceLabel" style="font-size:13px;color:#374151;">Также работает в клинике</label>
+                            <select name="clinic_id" id="extraWorkplaceSelect" class="form-select wpm-input">
+                                <option value="">Сначала выберите город</option>
+                            </select>
+                            <small class="text-muted">Необязательно. Список подбирается по выбранному городу.</small>
                         </div>
 
                         <div class="col-md-6">

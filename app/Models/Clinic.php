@@ -17,6 +17,7 @@ class Clinic extends Model
     protected $fillable = [
         'is_verified',
         'created_by',
+        'chain_id',
         'name',
         'slug',
         'country',
@@ -158,6 +159,14 @@ public function awards()
             ->withTimestamps();
     }
 
+
+    /**
+     * Сеть филиалов, в которую входит запись (null — не входит).
+     */
+    public function chain()
+    {
+        return $this->belongsTo(\App\Models\Chain::class);
+    }
 
     /**
      * Специалисты (не врачи), которые работают в этой клинике

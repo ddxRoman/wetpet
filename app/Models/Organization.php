@@ -16,6 +16,7 @@ class Organization extends Model
    protected $fillable = [
         'is_verified',
         'created_by',
+        'chain_id',
     'name',
     'slug',
     'country',
@@ -168,6 +169,14 @@ public function specialists()
 {
     return $this->belongsToMany(Specialist::class, 'organization_specialist', 'organization_id', 'specialist_id')
         ->withTimestamps();
+}
+
+/**
+ * Сеть филиалов, в которую входит запись (null — не входит).
+ */
+public function chain()
+{
+    return $this->belongsTo(\App\Models\Chain::class);
 }
 
 /**

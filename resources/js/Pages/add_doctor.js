@@ -30,7 +30,9 @@ function initAddDoctorScripts(modal) {
     const regionSelect = modal.querySelector('#regionSelect');
     const citySelect   = modal.querySelector('#citySelect');
     const clinicSelect = modal.querySelector('#clinicSelect');
-    let regionChoices, cityChoices, clinicChoices;
+    // Второе место работы другого типа (врач → ещё и организация, специалист → ещё и клиника)
+    const extraSelect  = modal.querySelector('#extraWorkplaceSelect');
+    let regionChoices, cityChoices, clinicChoices, extraChoices;
 
     // Врач → список клиник (clinic_id), остальные специалисты → организации (organization_id).
     // По умолчанию форма отправляется в /specialist, поэтому стартуем в режиме специалиста.
@@ -53,12 +55,14 @@ function initAddDoctorScripts(modal) {
             getKnownNames: () => loadedCityNames,
         });
         clinicChoices = new Choices(clinicSelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
+        if (extraSelect) extraChoices = new Choices(extraSelect, { searchPlaceholderValue: 'Поиск...', shouldSort: false });
 
         regionSelect.addEventListener('change', () => {
             const region = regionSelect.value;
             loadedCityNames = [];
             cityChoices.clearChoices();
             clinicChoices.clearChoices();
+            if (extraChoices) extraChoices.clearChoices();
             cityChoices.setChoices([{ value: '', label: 'Выберите город', selected: true }], 'value', 'label', true);
             syncAddressFields();
             if (!region) return;
@@ -70,21 +74,33 @@ function initAddDoctorScripts(modal) {
                 });
         });
 
-        loadOrganizations = () => {
-            const cityId = citySelect.value;
-            clinicChoices.clearChoices();
-            clinicChoices.setChoices([{ value: '', label: 'Выберите организацию', selected: true }], 'value', 'label', true);
-            syncAddressFields();
-            // У нового (ещё не сохранённого) города id нет — организаций в нём пока нет
+        // kind: 'clinics' | 'organizations'
+        const workplaceUrl = (kind, cityId) => kind === 'clinics'
+            ? `/api/clinics/by-city/${cityId}`
+            : `/get-organizations-by-city-id/${cityId}`;
+
+        const fillWorkplaces = (choices, kind, cityId) => {
+            choices.clearChoices();
+            choices.setChoices([{
+                value: '',
+                label: kind === 'clinics' ? 'Выберите клинику' : 'Выберите организацию',
+                selected: true,
+            }], 'value', 'label', true);
+            // У нового (ещё не сохранённого) города id нет — мест работы в нём пока нет
             if (!cityId || !/^\d+$/.test(cityId)) return;
-            const url = isDoctorMode
-                ? `/api/clinics/by-city/${cityId}`
-                : `/get-organizations-by-city-id/${cityId}`;
-            fetch(url)
+            fetch(workplaceUrl(kind, cityId))
                 .then(r => r.json())
                 .then(list => {
-                    clinicChoices.setChoices(list.map(c => ({ value: c.id, label: c.name })), 'value', 'label', true);
+                    choices.setChoices(list.map(c => ({ value: c.id, label: c.name })), 'value', 'label', true);
                 });
+        };
+
+        loadOrganizations = () => {
+            const cityId = citySelect.value;
+            syncAddressFields();
+            // Врач: основное — клиника, дополнительно — организация. Специалист — наоборот.
+            fillWorkplaces(clinicChoices, isDoctorMode ? 'clinics' : 'organizations', cityId);
+            if (extraChoices) fillWorkplaces(extraChoices, isDoctorMode ? 'organizations' : 'clinics', cityId);
         };
 
         citySelect.addEventListener('change', loadOrganizations);
@@ -151,6 +167,13 @@ fieldSelect.addEventListener('change', function() {
 
     // Врач привязывается к клинике, специалист — к организации
     if (clinicSelect) clinicSelect.name = isDoctorMode ? 'clinic_id' : 'organization_id';
+    if (extraSelect)  extraSelect.name  = isDoctorMode ? 'organization_id' : 'clinic_id';
+
+    const primaryLabel = modal.querySelector('#primaryWorkplaceLabel');
+    const extraLabel   = modal.querySelector('#extraWorkplaceLabel');
+    if (primaryLabel) primaryLabel.textContent = isDoctorMode ? 'Клиника' : 'Организация';
+    if (extraLabel)   extraLabel.textContent   = isDoctorMode ? 'Также работает в организации' : 'Также работает в клинике';
+
     loadOrganizations();
     syncAddressFields();
 });

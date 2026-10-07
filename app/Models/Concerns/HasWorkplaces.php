@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 /**
  * Несколько мест работы у врача (клиники) или специалиста (организации).
@@ -80,6 +81,45 @@ trait HasWorkplaces
                 $model->skipWorkplaceSync = false;
             }
         });
+    }
+
+    /**
+     * Все места работы — и клиники, и организации (места работы перекрёстные).
+     * Каждый элемент: ['key' => 'clinic:5' | 'organization:7', 'type' => класс модели, 'id', 'name', 'city'].
+     * Основное место (старая колонка clinic_id / organization_id) добавляется, если его нет в сводных таблицах.
+     */
+    public function allWorkplaces(): Collection
+    {
+        $clinics = $this->clinics()->orderBy('clinics.name')->get();
+        $organizations = $this->organizations()->orderBy('organizations.name')->get();
+
+        $primaryClinicId = $this->getAttributes()['clinic_id'] ?? null;
+        if ($primaryClinicId && ! $clinics->contains('id', (int) $primaryClinicId)) {
+            $primary = \App\Models\Clinic::find($primaryClinicId);
+            if ($primary) {
+                $clinics->push($primary);
+            }
+        }
+
+        $primaryOrgId = $this->getAttributes()['organization_id'] ?? null;
+        if ($primaryOrgId && ! $organizations->contains('id', (int) $primaryOrgId)) {
+            $primary = \App\Models\Organization::find($primaryOrgId);
+            if ($primary) {
+                $organizations->push($primary);
+            }
+        }
+
+        $map = fn (string $kind, string $type) => fn ($m) => [
+            'key'  => $kind . ':' . $m->id,
+            'type' => $type,
+            'id'   => (int) $m->id,
+            'name' => $m->name,
+            'city' => $m->city,
+        ];
+
+        return $clinics->map($map('clinic', \App\Models\Clinic::class))
+            ->concat($organizations->map($map('organization', \App\Models\Organization::class)))
+            ->values();
     }
 
     /**

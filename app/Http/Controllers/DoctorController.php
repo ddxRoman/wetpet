@@ -32,6 +32,8 @@ private function performStore(Request $request)
         'city_name'            => 'nullable|string|max:120',
         'region'               => 'nullable|string|max:255',
         'clinic_id'            => 'nullable|exists:clinics,id',
+        // Врач может работать и в организации (сводная таблица doctor_organization)
+        'organization_id'      => 'nullable|exists:organizations,id',
         'date_of_birth'        => ['nullable', 'date', 'before_or_equal:' . \App\Models\Doctor::latestBirthDate()],
         'practice_started_at'  => \App\Models\Doctor::practiceStartRules($request->date_of_birth),
         'description'          => 'nullable|string',
@@ -93,6 +95,11 @@ private function performStore(Request $request)
         'photo'                => $photoPath, // ЗАПИСЬ В БАЗУ
         'slug'                 => Str::slug($validated['name']) . '-' . rand(100, 999),
     ]);
+
+    // Организация, в которой врач работает дополнительно к клинике
+    if (!empty($validated['organization_id'])) {
+        $doctor->organizations()->syncWithoutDetaching([(int) $validated['organization_id']]);
+    }
 
     // СОХРАНЕНИЕ КОНТАКТОВ
     $telegram = ($request->messengers && in_array('telegram', $request->messengers)) ? $request->phone : null;

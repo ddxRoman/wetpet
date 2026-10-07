@@ -118,6 +118,7 @@ box-shadow: 0px 0px 31px 12px rgba(0, 0, 0, 0.2);
                     <textarea name="content" id="reviewText" class="form-control small-textarea"
                               placeholder="Напишите свой отзыв..." rows="2"></textarea>
                 </div>
+@include('partials._review-workplace-select', ['employee' => $targetModel])
 {{-- 🐾 Питомец --}}
 <div class="mb-3">
     <label class="form-label">Ваш питомец:</label>

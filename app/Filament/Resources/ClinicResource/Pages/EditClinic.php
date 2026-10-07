@@ -4,10 +4,12 @@ namespace App\Filament\Resources\ClinicResource\Pages;
 
 use App\Filament\Resources\ClinicResource;
 use App\Models\Clinic;
+use App\Models\Chain;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class EditClinic extends EditRecord
@@ -64,7 +66,17 @@ class EditClinic extends EditRecord
             }
         }
 
-        $branch->save();
+        // Связь с исходной записью: если она ещё не в сети, создаём сеть с названием
+        // «Сеть <название первого филиала>» и включаем в неё обе записи.
+        DB::transaction(function () use ($source, $branch) {
+            if (! $source->chain_id) {
+                $chain = Chain::create(['name' => 'Сеть ' . $source->name]);
+                $source->forceFill(['chain_id' => $chain->id])->saveQuietly();
+            }
+
+            $branch->chain_id = $source->chain_id;
+            $branch->save();
+        });
 
         Notification::make()
             ->title('Филиал создан')

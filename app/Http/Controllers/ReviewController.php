@@ -23,6 +23,8 @@ public function store(Request $request)
         'disliked'        => 'nullable|string|max:255',
         'content'         => 'nullable|string|max:2000',
         'pet_id'          => 'nullable|integer',
+        // Место приёма (необязательно): 'clinic:ID' | 'organization:ID' — только из мест работы врача/специалиста
+        'workplace'       => 'nullable|string|max:50',
         'receipt'         => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         'photos.*'        => 'nullable|image|max:5120',
         'redirect_slug'   => 'required|string',
@@ -47,29 +49,26 @@ public function store(Request $request)
     $review->reviewable_id = $validated['reviewable_id'];
     $review->reviewable_type = $rawType;
 
-    // Если отзыв оставлен врачу/специалисту — запоминаем, в какой клинике/
-    // организации он работал ИМЕННО В МОМЕНТ отзыва. Это позволяет показать
-    // отзыв и на странице этого места работы (с пометкой), даже если потом
+    // Если отзыв оставлен врачу/специалисту — запоминаем место приёма, чтобы показать
+    // отзыв и на странице этой клиники/организации (с пометкой), даже если потом
     // врач/специалист сменит место работы.
-    if ($rawType === \App\Models\Doctor::class) {
-        $employee = \App\Models\Doctor::find($validated['reviewable_id']);
-        if ($employee && $employee->clinic_id) {
-            $review->workplace_type = \App\Models\Clinic::class;
-            $review->workplace_id   = $employee->clinic_id;
-        } elseif ($employee && ($firstOrg = $employee->organizations()->orderBy('organizations.id')->value('organizations.id'))) {
-            // Врач работает только в организации (основной клиники нет)
-            $review->workplace_type = \App\Models\Organization::class;
-            $review->workplace_id   = $firstOrg;
-        }
-    } elseif ($rawType === \App\Models\Specialist::class) {
-        $employee = \App\Models\Specialist::find($validated['reviewable_id']);
-        if ($employee && $employee->organization_id) {
-            $review->workplace_type = \App\Models\Organization::class;
-            $review->workplace_id   = $employee->organization_id;
-        } elseif ($employee && ($firstClinic = $employee->clinics()->orderBy('clinics.id')->value('clinics.id'))) {
-            // Специалист работает только в клинике (основной организации нет)
-            $review->workplace_type = \App\Models\Clinic::class;
-            $review->workplace_id   = $firstClinic;
+    //  - работает в нескольких местах: берём то, что выбрал автор отзыва в поле «Где был приём?»
+    //    (допустимы только места самого врача/специалиста); пусто — отзыв только у специалиста;
+    //  - работает в одном месте: привязываем к нему автоматически, как и раньше.
+    if (in_array($rawType, [\App\Models\Doctor::class, \App\Models\Specialist::class], true)) {
+        $employee = $rawType::find($validated['reviewable_id']);
+
+        if ($employee) {
+            $places = $employee->allWorkplaces();
+
+            $place = $places->count() > 1
+                ? $places->firstWhere('key', (string) ($validated['workplace'] ?? ''))
+                : $places->first();
+
+            if ($place) {
+                $review->workplace_type = $place['type'];
+                $review->workplace_id   = $place['id'];
+            }
         }
     }
 

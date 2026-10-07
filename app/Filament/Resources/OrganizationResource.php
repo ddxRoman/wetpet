@@ -174,6 +174,34 @@ class OrganizationResource extends Resource
                 ])
                 ->columns(2),
 
+            Forms\Components\Section::make('Входить в сеть')
+                ->description('Филиалы одной сети связываются друг с другом: в карточке каждого показываются ссылки на остальные филиалы из того же города. Выберите существующую сеть или создайте новую кнопкой «+».')
+                ->schema([
+                    Forms\Components\Select::make('chain_id')
+                        ->label('Сеть')
+                        ->relationship('chain', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->placeholder('Не входит в сеть')
+                        ->createOptionForm([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Название новой сети')
+                                ->helperText('Если оставить пустым, сеть будет названа «Сеть <название этой записи>».')
+                                ->maxLength(255),
+                        ])
+                        ->createOptionUsing(function (array $data, callable $get): int {
+                            $name = trim((string) ($data['name'] ?? ''));
+
+                            if ($name === '') {
+                                $own  = trim((string) $get('name'));
+                                $name = $own !== '' ? 'Сеть ' . $own : 'Новая сеть';
+                            }
+
+                            return \App\Models\Chain::create(['name' => $name])->getKey();
+                        }),
+                ])
+                ->collapsible(),
+
             Forms\Components\FileUpload::make('logo')
                 ->label('Логотип')
                 ->image()
@@ -234,6 +262,12 @@ class OrganizationResource extends Resource
                     ->sortable()
                     ->toggleable(),
 
+                Tables\Columns\TextColumn::make('chain.name')
+                    ->label('Сеть')
+                    ->placeholder('—')
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('creator.name')
                     ->label('Кто добавил')
                     ->placeholder('Администратор/система')
@@ -251,6 +285,12 @@ class OrganizationResource extends Resource
                     ->trueLabel('Только проверенные')
                     ->falseLabel('Только непроверенные')
                     ->native(false),
+
+                Tables\Filters\SelectFilter::make('chain_id')
+                    ->label('Сеть')
+                    ->relationship('chain', 'name')
+                    ->searchable()
+                    ->preload(),
 
                 Tables\Filters\TernaryFilter::make('has_logo')
                     ->label('Логотип')

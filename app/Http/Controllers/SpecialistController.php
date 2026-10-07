@@ -141,6 +141,8 @@ private function performStore(Request $request)
         'city_name'            => 'nullable|string|max:120',
         'region'               => 'nullable|string|max:255',
         'organization_id'      => 'nullable|exists:organizations,id',
+        // Специалист может работать и в клинике (сводная таблица clinic_specialist)
+        'clinic_id'            => 'nullable|exists:clinics,id',
         'street'               => 'nullable|string|max:255',
         'house'                => 'nullable|string|max:20',
         'date_of_birth'        => ['nullable', 'date', 'before_or_equal:' . \App\Models\Specialist::latestBirthDate()],
@@ -221,6 +223,11 @@ private function performStore(Request $request)
 
     // Специализация (справочник field_of_activities)
     $specialist->specializations()->syncWithoutDetaching([$field->id]);
+
+    // Клиника, в которой специалист работает дополнительно к организации
+    if (!empty($validated['clinic_id'])) {
+        $specialist->clinics()->syncWithoutDetaching([(int) $validated['clinic_id']]);
+    }
 
     // СОХРАНЕНИЕ КОНТАКТОВ
     $telegram = ($request->messengers && in_array('telegram', $request->messengers)) ? $request->phone : null;

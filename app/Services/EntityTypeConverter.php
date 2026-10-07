@@ -30,7 +30,7 @@ class EntityTypeConverter
 {
     /** Поля, одинаковые у clinics и organizations. */
     private const COPY_FIELDS = [
-        'is_verified', 'created_by', 'name', 'country', 'region', 'city',
+        'is_verified', 'created_by', 'chain_id', 'name', 'country', 'region', 'city',
         'street', 'house', 'address_comment', 'logo', 'description',
         'phone1', 'phone2', 'email', 'telegram', 'whatsapp', 'max',
         'website', 'schedule', 'workdays', 'seo_title', 'seo_description',
