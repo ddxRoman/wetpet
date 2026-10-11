@@ -54,6 +54,13 @@
                         </a>
                     @endforeach
                     <hr class="my-2 opacity-25">
+                    @if(!empty($entity->chain_id))
+                        <a href="{{ route('owner.branches', $entity->chain_id) }}"
+                           class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 text-decoration-none text-dark"
+                           style="font-size:14px;">
+                            <span>🔗</span> <span>Работа с филиалами</span>
+                        </a>
+                    @endif
                     @if(!empty($entity->slug))
                         <a href="{{ route('organizations.show', ['city' => $entity->city_slug, 'slug' => $entity->slug]) }}" target="_blank"
                            class="d-flex align-items-center gap-2 px-3 py-2 text-decoration-none text-muted"

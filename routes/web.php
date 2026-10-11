@@ -30,6 +30,7 @@ use App\Http\Controllers\{
     NewsController,
     LegalController,
     OwnerCabinetController,
+    OwnerBranchController,
     UserProfileController,
     PremiumController,
     TrustedUserController,
@@ -328,6 +329,10 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
 
     // Главная (редирект на нужный кабинет)
     Route::get('/', [OwnerCabinetController::class, 'index'])->name('index');
+
+    // Работа с филиалами (массовое задание логотипа, графика, контактов для филиалов сети)
+    Route::get('/branches/{chain?}',        [OwnerBranchController::class, 'index'])->whereNumber('chain')->name('branches');
+    Route::post('/branches/{chain}/apply',  [OwnerBranchController::class, 'apply'])->whereNumber('chain')->name('branches.apply');
 
     // Кабинеты по типам
     Route::get('/clinic/{id}',       [OwnerCabinetController::class, 'clinic'])->name('clinic');
