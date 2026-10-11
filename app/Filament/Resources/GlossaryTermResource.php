@@ -51,7 +51,33 @@ class GlossaryTermResource extends Resource
                         Toggle::make('is_active')
                             ->label('Опубликован')
                             ->default(true),
-                    ]),
+
+                        TextInput::make('slug')
+                            ->label('Адрес страницы (slug)')
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true)
+                            ->rules(['nullable', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'])
+                            ->validationMessages(['regex' => 'Только латинские буквы в нижнем регистре, цифры и дефисы.'])
+                            ->helperText('Страница термина: /glossary/<slug>. Если оставить пустым — сформируется из названия термина.'),
+                    ])->columns(2),
+
+                Section::make('SEO страницы термина')
+                    ->description('Необязательно. Если поле пустое, подставится общий шаблон из раздела «SEO → SEO Каталожных страниц» (запись «Термины глоссария»).')
+                    ->schema([
+                        TextInput::make('seo_title')
+                            ->label('SEO Title')
+                            ->maxLength(255)
+                            ->helperText('Заголовок страницы в поиске. Оптимально до 60–70 символов.')
+                            ->columnSpanFull(),
+
+                        Textarea::make('seo_description')
+                            ->label('SEO Description')
+                            ->rows(3)
+                            ->maxLength(500)
+                            ->helperText('Описание в поиске. Оптимально до 150–160 символов.')
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible(),
             ]);
     }
 
@@ -91,6 +117,18 @@ class GlossaryTermResource extends Resource
                     ->label('Опубликован')
                     ->boolean(),
 
+                TextColumn::make('slug')
+                    ->label('Адрес')
+                    ->prefix('/glossary/')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                IconColumn::make('has_manual_seo')
+                    ->label('Своё SEO')
+                    ->boolean()
+                    ->state(fn (GlossaryTerm $record) => filled($record->seo_title) || filled($record->seo_description))
+                    ->toggleable(),
+
                 TextColumn::make('updated_at')
                     ->label('Обновлён')
                     ->dateTime('d.m.Y')
@@ -108,6 +146,12 @@ class GlossaryTermResource extends Resource
                     ->falseLabel('Только скрытые'),
             ])
             ->actions([
+                Tables\Actions\Action::make('open')
+                    ->label('На сайте')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->url(fn (GlossaryTerm $record) => route('glossary.show', $record->slug))
+                    ->openUrlInNewTab()
+                    ->visible(fn (GlossaryTerm $record) => filled($record->slug)),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

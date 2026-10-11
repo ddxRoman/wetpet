@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\GlossaryTerm;
 use App\Models\SeoStatic;
 use App\Models\SeoCatalogPage;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,9 @@ class SeoManager
         'city'           => 'вашем городе',
         'specialization' => 'ветеринарных специалистов',
         'activity_type'  => 'организации',
+        'term'           => 'термин',
+        'definition'     => '',
+        'category'       => '',
     ];
 
     /**
@@ -39,6 +43,41 @@ class SeoManager
             $this->applyVariables($title, $vars),
             $this->applyVariables($description, $vars)
         );
+    }
+
+    /**
+     * SEO страницы термина глоссария. Приоритет по каждому полю отдельно:
+     *  1) ручное SEO термина (seo_title / seo_description в «Глоссарии»);
+     *  2) общий шаблон 'glossary_term' из «SEO Каталожных страниц»
+     *     с переменными {term}, {definition}, {category}.
+     */
+    public function getGlossaryTermMeta(GlossaryTerm $term): array
+    {
+        $definition = trim(preg_replace('/\s+/u', ' ', strip_tags((string) $term->definition)));
+
+        $template = $this->getCatalogMeta('glossary_term', [
+            'term'       => $term->term,
+            'definition' => \Illuminate\Support\Str::limit($definition, 150, '…'),
+            'category'   => $term->category_label !== '—' ? $term->category_label : '',
+        ]);
+
+        $title       = trim((string) $term->seo_title) !== '' ? trim($term->seo_title) : $template['title'];
+        $description = trim((string) $term->seo_description) !== '' ? trim($term->seo_description) : $template['description'];
+
+        $meta = $this->build($title, $description);
+
+        $meta['og_type']   = 'article';
+        $meta['canonical'] = route('glossary.show', $term->slug);
+        $meta['schema']    = json_encode([
+            '@context'          => 'https://schema.org',
+            '@type'             => 'DefinedTerm',
+            'name'              => $term->term,
+            'description'       => $definition,
+            'url'               => $meta['canonical'],
+            'inDefinedTermSet'  => route('legal/glossary'),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        return $meta;
     }
 
     private function applyVariables(string $text, array $vars): string
@@ -85,6 +124,14 @@ class SeoManager
             'organizations_activity' => [
                 '{activity_type} в {city} — рейтинг и отзывы | Зверозор',
                 'Организации «{activity_type}» в {city}. Отзывы, рейтинги и контакты на Зверозор.',
+            ],
+            'glossary' => [
+                'Словарь ветеринарных терминов — определения и значения | Зверозор',
+                'Словарь ветеринарных и юридических терминов на Зверозор: простые определения, анатомия, болезни, процедуры и термины платформы.',
+            ],
+            'glossary_term' => [
+                '{term} — что это такое, определение термина | Зверозор',
+                '{term} — {definition}',
             ],
             'ads' => [
                 'Объявления о животных в {city} | Зверозор',

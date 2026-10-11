@@ -9,6 +9,9 @@
     $reviewWorkplaces = $employee->allWorkplaces();
 @endphp
 
+{{-- Диагностика: в исходном коде страницы (Ctrl+U) виден комментарий со счётчиком мест. Можно удалить, когда всё проверено. --}}
+<!-- review-workplaces: {{ $reviewWorkplaces->count() }} -->
+
 @if($reviewWorkplaces->count() > 1)
     <div class="mb-3">
         <label class="form-label">Где был приём? <span class="text-muted small">(необязательно)</span></label>

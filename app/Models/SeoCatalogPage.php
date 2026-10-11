@@ -33,6 +33,8 @@ class SeoCatalogPage extends Model
         'ads'                         => ['city'],
         'animals'                     => [],
         'legal_faq'                   => [],
+        'glossary'                    => [],
+        'glossary_term'               => ['term', 'definition', 'category'],
     ];
 
     /**
@@ -42,6 +44,9 @@ class SeoCatalogPage extends Model
         'city'           => 'Город пользователя',
         'specialization' => 'Специализация (из фильтра)',
         'activity_type'  => 'Тип деятельности организации (из фильтра)',
+        'term'           => 'Название термина',
+        'definition'     => 'Определение термина (первые ~150 символов)',
+        'category'       => 'Категория термина',
     ];
 
     public function availableVariables(): array

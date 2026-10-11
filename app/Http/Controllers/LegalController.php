@@ -79,6 +79,26 @@ class LegalController extends Controller
         ]);
     }
 
+    // ─── Страница отдельного термина глоссария ───
+    public function glossaryTerm(string $slug)
+    {
+        $term = GlossaryTerm::active()->where('slug', $slug)->firstOrFail();
+
+        // Другие термины той же категории — для перелинковки
+        $related = GlossaryTerm::active()
+            ->whereKeyNot($term->id)
+            ->when($term->category, fn ($q) => $q->where('category', $term->category))
+            ->ordered()
+            ->limit(8)
+            ->get();
+
+        return view('pages.legal.glossary-term', [
+            'term'    => $term,
+            'related' => $related,
+            'seoMeta' => (new SeoManager())->getGlossaryTermMeta($term),
+        ]);
+    }
+
     // ─── Глоссарий ───
     public function glossary()
     {
@@ -104,13 +124,18 @@ class LegalController extends Controller
             ->orderBy('category')
             ->pluck('category');
 
+        // Страница открыта для индексации; SEO — из «SEO Каталожных страниц» (запись «Словарь терминов»).
+        // Фильтр по категории (?category=…) — дубль основной страницы, поэтому canonical ведёт на неё.
+        $seoMeta = (new SeoManager())->getCatalogMeta('glossary');
+        $seoMeta['canonical'] = route('legal/glossary');
+
         return view('pages.legal.glossary', [
             'terms'           => $terms,
             'grouped'         => $grouped,
             'letters'         => $letters,
             'categories'      => $categories,
             'currentCategory' => $currentCategory,
-            'seoMeta'         => ['robots' => 'noindex, follow'],
+            'seoMeta'         => $seoMeta,
         ]);
     }
 }

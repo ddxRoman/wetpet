@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ad;
 use App\Models\Clinic;
 use App\Models\Doctor;
+use App\Models\GlossaryTerm;
 use App\Models\Organization;
 use App\Models\Specialist;
 use Illuminate\Http\Response;
@@ -26,6 +27,7 @@ class SitemapController extends Controller
             ['loc' => url('/organizations'),       'changefreq' => 'daily',   'priority' => '0.9'],
             ['loc' => url('/specialists'),         'changefreq' => 'daily',   'priority' => '0.9'],
             ['loc' => url('/ads'),                 'changefreq' => 'daily',   'priority' => '0.8'],
+            ['loc' => route('legal/glossary'),     'changefreq' => 'weekly',  'priority' => '0.6'],
         ];
 
         foreach ($staticUrls as $u) {
@@ -107,6 +109,20 @@ class SitemapController extends Controller
             }
         });
 
+        // Термины глоссария
+        GlossaryTerm::active()->whereNotNull('slug')->where('slug', '!=', '')
+            ->select('slug', 'updated_at')
+            ->chunk(200, function ($items) use (&$urls) {
+                foreach ($items as $item) {
+                    $urls[] = [
+                        'loc'        => route('glossary.show', $item->slug),
+                        'lastmod'    => $item->updated_at?->toAtomString(),
+                        'changefreq' => 'monthly',
+                        'priority'   => '0.5',
+                    ];
+                }
+            });
+
         $xml = view('sitemap', ['urls' => $urls])->render();
 
         return response($xml, 200)->header('Content-Type', 'application/xml');
@@ -134,7 +150,6 @@ class SitemapController extends Controller
             . "Disallow: /legal/partner-offer\n"
             . "Disallow: /legal/cookies\n"
             . "Disallow: /legal/content-rules\n"
-            . "Disallow: /legal/glossary\n"
             . "Disallow: /legal/contacts\n\n"
             . "User-agent: TelegramBot\n"
             . "Allow: /\n\n"

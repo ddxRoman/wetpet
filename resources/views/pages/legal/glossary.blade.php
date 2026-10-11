@@ -25,8 +25,8 @@
             <div class="d-flex flex-wrap gap-1 justify-content-center mb-5">
                 @foreach($letters as $letter)
                     <a href="#letter-{{ $letter }}"
-                       class="btn btn-sm btn-outline-primary rounded-circle fw-bold"
-                       style="width: 38px; height: 38px; line-height: 24px; padding: 0;">
+                       class="btn btn-sm btn-outline-primary rounded-circle fw-bold d-inline-flex align-items-center justify-content-center"
+                       style="width: 38px; height: 38px; line-height: 1; padding: 0;">
                         {{ $letter }}
                     </a>
                 @endforeach
@@ -100,7 +100,13 @@
 
                                                 <div class="flex-grow-1">
                                                     <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                                                        <h5 class="fw-bold text-dark mb-0">{{ $term->term }}</h5>
+                                                        <h5 class="fw-bold text-dark mb-0">
+                                                            @if($term->slug)
+                                                                <a href="{{ route('glossary.show', $term->slug) }}" class="text-dark text-decoration-none">{{ $term->term }}</a>
+                                                            @else
+                                                                {{ $term->term }}
+                                                            @endif
+                                                        </h5>
                                                         @if($term->category)
                                                             <span class="badge bg-secondary bg-opacity-75"
                                                                   style="font-size: 0.7rem;">

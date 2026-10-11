@@ -59,6 +59,8 @@ Route::get('legal/partner-offer', function () {
     ]);
     })->name('legal/partner-offer');
 Route::get('legal/glossary', [LegalController::class, 'glossary'])->name('legal/glossary');
+// Отдельная страница термина (вне /legal/*, чтобы не попасть под Disallow: /legal/glossary в robots.txt)
+Route::get('glossary/{slug}', [LegalController::class, 'glossaryTerm'])->name('glossary.show');
 Route::get('legal/contacts', function () {
     return view('pages.legal.contacts');
 })->name('legal/contacts');

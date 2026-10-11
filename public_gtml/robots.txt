@@ -18,7 +18,6 @@ Disallow: /legal/personal-data-agreement
 Disallow: /legal/partner-offer
 Disallow: /legal/cookies
 Disallow: /legal/content-rules
-Disallow: /legal/glossary
 Disallow: /legal/contacts
 
 User-agent: TelegramBot

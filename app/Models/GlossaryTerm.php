@@ -3,15 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class GlossaryTerm extends Model
 {
     protected $fillable = [
         'term',
+        'slug',
         'definition',
         'letter',
         'category',
         'is_active',
+        'seo_title',
+        'seo_description',
     ];
 
     protected $casts = [
@@ -36,7 +40,32 @@ class GlossaryTerm extends Model
     {
         static::saving(function (GlossaryTerm $model) {
             $model->letter = mb_strtoupper(mb_substr($model->term, 0, 1));
+
+            // Адрес страницы термина: если не задан вручную — формируется из термина
+            if (blank($model->slug)) {
+                $model->slug = static::makeUniqueSlug($model->term, $model->id);
+            }
         });
+    }
+
+    public static function makeUniqueSlug(string $term, ?int $ignoreId = null): string
+    {
+        $base = Str::slug($term) ?: 'termin';
+        $slug = $base;
+        $i    = 2;
+
+        while (static::where('slug', $slug)
+            ->when($ignoreId, fn ($q) => $q->whereKeyNot($ignoreId))
+            ->exists()) {
+            $slug = $base . '-' . $i++;
+        }
+
+        return $slug;
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 
     public function scopeActive($query)
