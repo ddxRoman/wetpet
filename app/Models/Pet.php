@@ -13,6 +13,7 @@ class Pet extends Model
         'breed',
         'birth_date',
         'death_date',
+        'caption',
         'gender',
         'age',
         'photo',
@@ -40,6 +41,30 @@ class Pet extends Model
     public function animal()
     {
             return $this->belongsTo(Animal::class, 'animal_id');
+    }
+
+    /**
+     * Дополнительные фото (галерея). Основное фото лежит в pets.photo.
+     */
+    public function photos()
+    {
+        return $this->hasMany(PetPhoto::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    /**
+     * Сколько фото у питомца всего: основное + галерея
+     */
+    public function totalPhotosCount(): int
+    {
+        return ($this->photo ? 1 : 0) + $this->photos()->count();
+    }
+
+    /**
+     * Своя страница питомца есть только у питомцев пользователей с премиум-подпиской
+     */
+    public function hasPage(): bool
+    {
+        return (bool) $this->user?->isPremium();
     }
 
     /**

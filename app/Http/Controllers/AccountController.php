@@ -303,6 +303,20 @@ public function index()
             'receipts.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:4096',
         ]);
 
+        // Лимит фото на отзыв: уже загруженные + новые не больше лимита пользователя.
+        // Проверяем до сохранения, чтобы при отказе отзыв не обновился наполовину.
+        $photoLimit = auth()->user()->reviewPhotoLimit();
+        $newPhotos  = $request->hasFile('photos') ? count($request->file('photos')) : 0;
+
+        if ($newPhotos > 0 && $review->photos()->count() + $newPhotos > $photoLimit) {
+            return response()->json([
+                'success' => false,
+                'message' => $photoLimit > 1
+                    ? "К отзыву можно прикрепить не более {$photoLimit} фото."
+                    : 'К отзыву можно прикрепить только одно фото. Несколько фото доступны с Премиум-подпиской.',
+            ], 422);
+        }
+
         $review->update($request->only('liked', 'disliked', 'content', 'rating'));
 
         // "?:" — пустая строка (питомец не выбран / «Другой питомец») должна

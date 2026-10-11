@@ -94,12 +94,19 @@ class UserProfileController extends Controller
             'robots'         => 'noindex, follow',
         ];
 
+        // Кнопка «Доверенные»: показываем зрителю, если это не его собственный профиль
+        $viewer    = auth()->user();
+        $isTrusted = $viewer && $viewer->id !== $profileUser->id && $viewer->isTrusting($profileUser);
+
         return view('pages.user.profile', [
             'profileUser'   => $profileUser,
             'registeredFor' => $registeredFor,
             'pets'          => $pets,
             'reviews'       => $reviews,
             'seoMeta'       => $seoMeta,
+            'viewer'        => $viewer,
+            'isTrusted'     => $isTrusted,
+            'ownerIsPremium' => $profileUser->isPremium(),
         ]);
     }
 

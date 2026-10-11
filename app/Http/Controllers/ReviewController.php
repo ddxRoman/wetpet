@@ -15,6 +15,9 @@ class ReviewController extends Controller
      */
 public function store(Request $request)
 {
+    // Больше одного фото к отзыву могут прикрепить только пользователи с Премиум
+    $photoLimit = $request->user()?->reviewPhotoLimit() ?? (int) config('premium.limits.review_photos.free', 1);
+
     $validated = $request->validate([
         'reviewable_id'   => 'required|integer',
         'reviewable_type' => 'required|string',
@@ -26,8 +29,13 @@ public function store(Request $request)
         // Место приёма (необязательно): 'clinic:ID' | 'organization:ID' — только из мест работы врача/специалиста
         'workplace'       => 'nullable|string|max:50',
         'receipt'         => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+        'photos'          => 'nullable|array|max:' . $photoLimit,
         'photos.*'        => 'nullable|image|max:5120',
         'redirect_slug'   => 'required|string',
+    ], [
+        'photos.max' => $photoLimit > 1
+            ? "К отзыву можно прикрепить не более {$photoLimit} фото."
+            : 'К отзыву можно прикрепить только одно фото. Несколько фото доступны с Премиум-подпиской.',
     ]);
 
     // Белый список допустимых типов — клиент не может передать произвольный класс
@@ -148,6 +156,19 @@ public function update(Request $request, $id)
     // Проверка владельца
     if ($review->user_id !== auth()->id()) {
         abort(403);
+    }
+
+    // Лимит фото на отзыв: уже загруженные + новые не больше лимита пользователя
+    $photoLimit = auth()->user()->reviewPhotoLimit();
+    $newPhotos  = $request->hasFile('photos') ? count($request->file('photos')) : 0;
+
+    if ($newPhotos > 0 && $review->photos()->count() + $newPhotos > $photoLimit) {
+        return response()->json([
+            'success' => false,
+            'message' => $photoLimit > 1
+                ? "К отзыву можно прикрепить не более {$photoLimit} фото."
+                : 'К отзыву можно прикрепить только одно фото. Несколько фото доступны с Премиум-подпиской.',
+        ], 422);
     }
 
     // Обновляем основные поля

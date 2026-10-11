@@ -49,6 +49,13 @@ async function request(url, options = {}) {
     return { ok: response.ok, status: response.status, data };
 }
 
+// Сколько фото можно прикрепить к отзыву (1 — обычный аккаунт, больше — Премиум).
+// Значение приходит из <meta name="review-photo-limit">; сервер всё равно проверяет лимит сам.
+function reviewPhotoLimit() {
+    const n = parseInt(document.querySelector('meta[name="review-photo-limit"]')?.content || '1', 10);
+    return Number.isFinite(n) && n > 0 ? n : 1;
+}
+
 function errorText(result) {
     if (result.data?.errors) {
         return Object.values(result.data.errors).flat().map(m => `<div>${esc(m)}</div>`).join('');
@@ -112,7 +119,10 @@ function ensureEditModal() {
                     <div class="mb-3">
                         <label class="form-label">Фотографии</label>
                         <div class="d-flex flex-wrap gap-2 mb-2" data-role="photos"></div>
-                        <input type="file" class="form-control" multiple accept="image/*" data-role="new-photos">
+                        <input type="file" class="form-control" ${reviewPhotoLimit() > 1 ? 'multiple' : ''} accept="image/*" data-role="new-photos">
+                        <div class="form-text">${reviewPhotoLimit() > 1
+                            ? `До ${reviewPhotoLimit()} фото на отзыв.`
+                            : 'Можно прикрепить одно фото. Несколько фото — с <a href="/account#premium">Премиум</a>.'}</div>
                     </div>
                     <div class="mb-1">
                         <label class="form-label">Чеки</label>
@@ -241,6 +251,18 @@ async function saveEdit() {
     }
     if (saveBtn.disabled) return;
     saveBtn.disabled = true;
+
+    // Лимит фото: оставшиеся в отзыве + новые не больше лимита (сервер проверяет это тоже)
+    const newFiles = Array.from(editModalEl.querySelector('[data-role="new-photos"]').files);
+    const keptPhotos = (current.photos || []).filter(p => !removedPhotos.has(p.id)).length;
+    const photoLimit = reviewPhotoLimit();
+    if (newFiles.length && keptPhotos + newFiles.length > photoLimit) {
+        showError(photoLimit > 1
+            ? `К отзыву можно прикрепить не более ${photoLimit} фото.`
+            : 'К отзыву можно прикрепить только одно фото. Несколько фото доступны с Премиум-подпиской.');
+        saveBtn.disabled = false;
+        return;
+    }
 
     try {
         // 1. Удаляем отмеченные вложения

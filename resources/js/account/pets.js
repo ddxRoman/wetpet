@@ -1,5 +1,5 @@
 import { showToast } from './toast';
-import { openEditModal } from './pets-edit';
+import { openEditModal, registerPetGallery } from './pets-edit';
 
 // Динамическое добавление стилей для черно-белых фото умерших питомцев
 if (!document.getElementById('pet-deceased-styles')) {
@@ -134,6 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isDeceased = Boolean(p.death_date);
                 const deceasedClass = isDeceased ? 'pet-deceased' : '';
 
+                // Доп. фото (Премиум) — для модалки редактирования
+                registerPetGallery(p.id, {
+                    photos: (p.photos || []).map(ph => ({ id: ph.id, url: ph.url })),
+                    hasMain: Boolean(p.photo),
+                    caption: p.caption || ''
+                });
+
 petsList.insertAdjacentHTML('beforeend', `
     <div class="pet-card ${cls} ${deceasedClass}"
          data-id="${p.id}"
@@ -160,7 +167,7 @@ petsList.insertAdjacentHTML('beforeend', `
         <b>${p.name}</b><br>
         <small>${p.animal?.species || ''} (${p.animal?.breed || ''})</small><br>
         <small>${ageString ? `(${ageString})` : ''}</small><br>
-        
+        ${p.page_url ? `<a class="pet-page-link" href="${p.page_url}" style="font-size:13px;">Страница питомца →</a>` : ''}
     </div>
 `);
 
@@ -169,6 +176,11 @@ petsList.insertAdjacentHTML('beforeend', `
             // Открытие модалки
             document.querySelectorAll('.pet-card').forEach(card => {
                 card.addEventListener('click', () => openEditModal(card.dataset.id));
+            });
+
+            // Клик по ссылке «Страница питомца» не должен открывать модалку редактирования
+            document.querySelectorAll('.pet-page-link').forEach(a => {
+                a.addEventListener('click', e => e.stopPropagation());
             });
 
             // Удаление питомца

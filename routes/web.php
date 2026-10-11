@@ -31,6 +31,9 @@ use App\Http\Controllers\{
     LegalController,
     OwnerCabinetController,
     UserProfileController,
+    PremiumController,
+    TrustedUserController,
+    PetPageController,
 };
 
 /*
@@ -373,3 +376,29 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
     Route::post('/claim/messages/send', [OwnerCabinetController::class, 'sendClaimMessage'])->name('claim.messages.send');
     Route::get('/claim/messages',       [OwnerCabinetController::class, 'getClaimMessages'])->name('claim.messages.get');
 });
+
+
+// ======================================================
+// ⭐ Премиум-подписка, доверенные пользователи, фото питомцев
+// ======================================================
+Route::middleware(['auth'])->group(function () {
+
+    // Оформление подписки
+    Route::post('/account/premium/checkout', [PremiumController::class, 'checkout'])->name('premium.checkout');
+
+    // Тестовый шлюз оплаты (работает только при PREMIUM_GATEWAY=fake, см. config/premium.php)
+    Route::get('/premium/fake-pay/{payment}', [PremiumController::class, 'fakeShow'])->name('premium.fake.show');
+    Route::post('/premium/fake-pay/{payment}', [PremiumController::class, 'fakeConfirm'])->name('premium.fake.confirm');
+
+    // Доверенные пользователи и лента их отзывов
+    Route::get('/account/trusted/feed', [TrustedUserController::class, 'feed'])->name('trusted.feed');
+    Route::post('/trusted/{user}', [TrustedUserController::class, 'store'])->whereNumber('user')->name('trusted.store');
+    Route::delete('/trusted/{user}', [TrustedUserController::class, 'destroy'])->whereNumber('user')->name('trusted.destroy');
+
+    // Дополнительные фото питомца (Премиум)
+    Route::post('/pets/{pet}/photos', [PetController::class, 'addPhotos'])->name('pets.photos.store');
+    Route::delete('/pet-photos/{photo}', [PetController::class, 'deletePhoto'])->name('pets.photos.destroy');
+});
+
+// Отдельная страница питомца (только для питомцев владельцев с Премиум)
+Route::get('/pet/{pet}', [PetPageController::class, 'show'])->whereNumber('pet')->name('pets.page');

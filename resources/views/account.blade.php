@@ -41,6 +41,8 @@
     @endif -->
 
     <button class="tab-btn" data-tab="reviews">Отзывы</button>
+    <button class="tab-btn" data-tab="trusted">Доверенные</button>
+    {{-- <button class="tab-btn" data-tab="premium">⭐ Премиум</button> --}}
 
     @php $__rd = \App\Models\ReviewDispute::headerSummary(auth()->id()); @endphp
     @if($__rd['show'])
@@ -236,6 +238,12 @@
             <!-- Отзывы -->
             @include('account.tabs.reviews')
 
+            <!-- Доверенные пользователи и лента -->
+            @include('account.tabs.trusted')
+
+            <!-- Премиум-подписка -->
+            @include('account.tabs.premium')
+
             @if($hasClinic)
     <div class="tab-content" id="my-clinics" style="display:none;">
         @include('account.tabs.my-clinics')
@@ -275,7 +283,7 @@
     <div id="edit-pet-modal" class="modal" style="
     display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
     justify-content:center; align-items:center; z-index:9999;">
-        <div style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:400px; position:relative;">
+        <div style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:400px; max-height:90vh; overflow-y:auto; position:relative;">
             <button id="close-modal" style="position:absolute; top:8px; right:10px; background:none; border:none; font-size:18px;">✖</button>
             <h3>Редактировать питомца</h3>
 
@@ -327,6 +335,26 @@
                 <input type="file" id="edit-pet-photo" accept="image/*" style="display:none;">
                 <p style="font-size:13px; color:#666;">Нажмите на фото, чтобы добавить или изменить</p>
             </div>
+            {{-- Подпись к питомцу (Премиум) --}}
+            <div id="edit-pet-caption-box" style="display:none; margin-bottom:10px;">
+                <label for="edit-pet-caption">Подпись <small style="color:#888;">(видна на странице питомца)</small></label>
+                <textarea id="edit-pet-caption" rows="3" maxlength="1000" style="width:100%;" placeholder="Расскажите о питомце..."></textarea>
+            </div>
+
+            {{-- Дополнительные фото питомца (Премиум) --}}
+            <div id="edit-pet-gallery" style="margin-bottom:12px;">
+                <label>Фотографии <small id="edit-gallery-counter" style="color:#888;"></small></label>
+                <div id="edit-gallery-list" style="display:flex; flex-wrap:wrap; gap:8px; margin:6px 0;"></div>
+
+                <div id="edit-gallery-premium" style="display:none;">
+                    <label for="edit-gallery-input" class="save-btn" id="edit-gallery-add" style="display:inline-block; cursor:pointer; margin:0;">+ Добавить фото</label>
+                    <input type="file" id="edit-gallery-input" accept="image/jpeg,image/png,image/webp" multiple style="display:none;">
+                </div>
+                <p id="edit-gallery-upsell" style="display:none; font-size:13px; color:#666; margin:0;">
+                    Больше одного фото питомца — в <a href="#premium" id="edit-gallery-go-premium">Премиум</a>.
+                </p>
+            </div>
+
             <button id="save-edit-pet" class="save-btn">Сохранить изменения</button>
         </div>
     </div>

@@ -27,6 +27,7 @@ class User extends Authenticatable implements FilamentUser
         'is_admin',
         'has_promo_package',
         'promo_package_expires_at',
+        'premium_until',
     ];
 
     protected $hidden = [
@@ -39,6 +40,7 @@ class User extends Authenticatable implements FilamentUser
         'is_admin' => 'boolean',
         'has_promo_package' => 'boolean',
         'promo_package_expires_at' => 'date',
+        'premium_until' => 'datetime',
     ];
 
     /* ================= 1 к 1 ================= */
@@ -123,5 +125,50 @@ public function ownedOrganizations()
         if (!$this->has_promo_package) return false;
         if (!$this->promo_package_expires_at) return true;
         return $this->promo_package_expires_at >= now()->toDateString();
+    }
+
+    /* ================= Премиум-подписка ================= */
+
+    /**
+     * Есть ли активная премиум-подписка
+     */
+    public function isPremium(): bool
+    {
+        return $this->premium_until !== null && $this->premium_until->isFuture();
+    }
+
+    /**
+     * Сколько всего фото может быть у одного питомца (с основным)
+     */
+    public function petPhotoLimit(): int
+    {
+        return (int) config('premium.limits.pet_photos.' . ($this->isPremium() ? 'premium' : 'free'), 1);
+    }
+
+    /**
+     * Сколько фото можно прикрепить к одному отзыву
+     */
+    public function reviewPhotoLimit(): int
+    {
+        return (int) config('premium.limits.review_photos.' . ($this->isPremium() ? 'premium' : 'free'), 1);
+    }
+
+    public function premiumPayments()
+    {
+        return $this->hasMany(PremiumPayment::class);
+    }
+
+    /**
+     * Доверенные пользователи (избранные), чьи отзывы идут в ленту
+     */
+    public function trustedUsers()
+    {
+        return $this->belongsToMany(User::class, 'trusted_users', 'user_id', 'trusted_user_id')
+            ->withTimestamps();
+    }
+
+    public function isTrusting(User $other): bool
+    {
+        return $this->trustedUsers()->whereKey($other->id)->exists();
     }
 }

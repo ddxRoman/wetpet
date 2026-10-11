@@ -159,13 +159,13 @@
                     @endif
 
                     @if($review->liked)
-                        <div style="white-space: pre-line;"><strong class="text-success">Понравилось:</strong> {{ $review->liked }}</div>
+                        <div style="white-space: pre-line; overflow-wrap: anywhere;"><strong class="text-success">Понравилось:</strong> {{ $review->liked }}</div>
                     @endif
                     @if($review->disliked)
-                        <div style="white-space: pre-line;"><strong class="text-danger">Не понравилось:</strong> {{ $review->disliked }}</div>
+                        <div style="white-space: pre-line; overflow-wrap: anywhere;"><strong class="text-danger">Не понравилось:</strong> {{ $review->disliked }}</div>
                     @endif
                     @if($review->content)
-                        <p class="mt-2 mb-0" style="white-space: pre-line;">{{ $review->content }}</p>
+                        <p class="mt-2 mb-0" style="white-space: pre-line; overflow-wrap: anywhere;">{{ $review->content }}</p>
                     @endif
 
                     @if($review->pet)

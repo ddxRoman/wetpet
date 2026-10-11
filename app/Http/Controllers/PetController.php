@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Pet;
+use App\Models\PetPhoto;
 use App\Models\Animal;
 use App\Services\SeoManager;
 
@@ -16,8 +17,12 @@ class PetController extends Controller
     {
         $user = Auth::user();
 
-        $pets = $user->pets()->with('animal')->get();
+        $pets = $user->pets()->with(['animal', 'photos'])->get();
         $animals = Animal::select('id', 'species', 'breed')->get();
+
+        // Ссылка на отдельную страницу питомца — только если у владельца активен Премиум
+        $isPremium = $user->isPremium();
+        $pets->each(fn ($pet) => $pet->setAttribute('page_url', $isPremium ? route('pets.page', $pet->id) : null));
 
         return response()->json([
             'success' => true,
@@ -143,6 +148,7 @@ public function update(Request $request, Pet $pet)
         'age'        => 'nullable|integer|min:0',
         'photo'      => 'nullable|image|mimes:webp|max:5120',
         'gender'     => 'nullable|string|max:10',
+        'caption'    => 'nullable|string|max:1000',
     ], [
         'death_date.date'            => 'Некорректная дата смерти',
         'death_date.before_or_equal' => 'Дата смерти не может быть в будущем',
@@ -192,6 +198,11 @@ public function update(Request $request, Pet $pet)
         'age'        => $age,
         'gender'     => $request->gender ?? $pet->gender,
     ];
+
+    // Подпись к питомцу (показывается на его странице) — только для Премиум
+    if ($user->isPremium() && $request->has('caption')) {
+        $data['caption'] = trim((string) $request->caption) ?: null;
+    }
 
     // Фото
     if ($request->hasFile('photo')) {
@@ -407,9 +418,85 @@ public function updateAnimalSeo(Request $request, $id)
             Storage::disk('public')->delete($pet->photo);
         }
 
+        // Файлы галереи (записи pet_photos удалятся каскадом вместе с питомцем)
+        foreach ($pet->photos as $extra) {
+            Storage::disk('public')->delete($extra->path);
+        }
+
         $pet->delete();
 
         return response()->json(['success' => true, 'message' => 'Питомец удалён']);
+    }
+
+    // === Дополнительные фото питомца (Премиум) ===
+    public function addPhotos(Request $request, Pet $pet)
+    {
+        $user = Auth::user();
+
+        if ($pet->user_id !== $user->id) {
+            return response()->json(['success' => false, 'message' => 'Нет доступа'], 403);
+        }
+
+        if (! $user->isPremium()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Больше одного фото питомца доступно с Премиум-подпиской.',
+            ], 403);
+        }
+
+        $request->validate([
+            'photos'   => 'required|array|min:1',
+            'photos.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        $limit   = $user->petPhotoLimit();
+        $current = $pet->totalPhotosCount();
+        $incoming = count($request->file('photos'));
+
+        if ($current + $incoming > $limit) {
+            $left = max(0, $limit - $current);
+
+            return response()->json([
+                'success' => false,
+                'message' => $left > 0
+                    ? "Можно добавить ещё {$left} фото (максимум {$limit} на питомца)."
+                    : "Достигнут лимит: {$limit} фото на питомца.",
+            ], 422);
+        }
+
+        $order = (int) $pet->photos()->max('sort_order');
+
+        foreach ($request->file('photos') as $file) {
+            PetPhoto::create([
+                'pet_id'     => $pet->id,
+                'path'       => $file->store('pets/gallery', 'public'),
+                'sort_order' => ++$order,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Фото добавлены',
+            'photos'  => $pet->photos()->get(),
+        ]);
+    }
+
+    public function deletePhoto(PetPhoto $photo)
+    {
+        $pet = $photo->pet;
+
+        // Удалять можно и после окончания подписки — чтобы освободить место
+        if (! $pet || $pet->user_id !== auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Нет доступа'], 403);
+        }
+
+        Storage::disk('public')->delete($photo->path);
+        $photo->delete();
+
+        return response()->json([
+            'success' => true,
+            'photos'  => $pet->photos()->get(),
+        ]);
     }
 
     // === Получение списка пород по типу ===

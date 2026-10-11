@@ -174,6 +174,7 @@
 </div>
                             
                             {{-- 🔽 Список отзывов --}}
+                            @include('partials._review-wrap-style')
                             <div id="reviewList" class="list-group">
                                 @foreach($reviews as $review)
                                 <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"

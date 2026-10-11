@@ -47,6 +47,10 @@ class UserResource extends Resource
             Forms\Components\Toggle::make('is_admin')
                 ->label('Администратор')
                 ->inline(false),
+
+            Forms\Components\DateTimePicker::make('premium_until')
+                ->label('Премиум действует до')
+                ->helperText('Пустое поле — Премиума нет.'),
         ]);
     }
 
@@ -85,6 +89,14 @@ Tables\Columns\TextColumn::make('status')
             Tables\Columns\IconColumn::make('is_admin')
                 ->label('Админ')
                 ->boolean(),
+
+            Tables\Columns\TextColumn::make('premium_until')
+                ->label('Премиум до')
+                ->dateTime('d.m.Y H:i')
+                ->sortable()
+                ->placeholder('—')
+                ->badge()
+                ->color(fn ($record) => $record->isPremium() ? 'success' : 'gray'),
         ])
         ->actions([
             Tables\Actions\EditAction::make(),
@@ -113,6 +125,39 @@ Tables\Columns\TextColumn::make('status')
                     $record->update(['status' => 'active']);
                     Notification::make()
                         ->title('Пользователь разбанен')
+                        ->success()
+                        ->send();
+                }),
+
+            Tables\Actions\Action::make('premium_change')
+                ->label('Срок Премиум')
+                ->icon('heroicon-o-star')
+                ->color('warning')
+                ->form([
+                    Forms\Components\DateTimePicker::make('premium_until')
+                        ->label('Премиум действует до')
+                        ->required()
+                        ->default(fn ($record) => $record->premium_until ?? now()->addMonth()),
+                ])
+                ->action(function (array $data, $record) {
+                    $record->update(['premium_until' => $data['premium_until']]);
+                    Notification::make()
+                        ->title('Срок Премиум изменён')
+                        ->success()
+                        ->send();
+                }),
+
+            Tables\Actions\Action::make('premium_cancel')
+                ->label('Отменить Премиум')
+                ->icon('heroicon-o-x-circle')
+                ->color('danger')
+                ->requiresConfirmation()
+                ->modalDescription('Подписка будет отключена сразу. Данные пользователя (фото, список доверенных) сохранятся.')
+                ->visible(fn ($record) => $record->isPremium())
+                ->action(function ($record) {
+                    $record->update(['premium_until' => null]);
+                    Notification::make()
+                        ->title('Премиум отменён')
                         ->success()
                         ->send();
                 }),
