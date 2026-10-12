@@ -21,13 +21,15 @@
 @php
     $galleryLimit = $entity->galleryPhotoLimitForOwner();
     $galleryCount = $photos->count();
-    $hasPromo = $entity->creator && $entity->creator->hasPromoPackage();
+    $hasPromo = $galleryLimit > 1;
+    $isCardEntity = in_array($type, ['clinic', 'organization'], true);
+    $photoPackageHint = $isCardEntity ? 'пакетом «Управление»' : 'рекламным пакетом';
 @endphp
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
         <h5 class="fw-bold mb-0">📷 Фотогалерея <span class="text-muted fw-normal" id="photos-counter">({{ $galleryCount }}/{{ $galleryLimit }})</span></h5>
         @unless($hasPromo)
-            <small class="text-muted">Больше 1 фото — с рекламным пакетом</small>
+            <small class="text-muted">Больше 1 фото — с {{ $photoPackageHint }}</small>
         @endunless
     </div>
 
@@ -50,7 +52,11 @@
     <div class="alert alert-info rounded-3" id="photo-limit-msg" @if($galleryCount < $galleryLimit) style="display:none;" @endif>
         Достигнут лимит в {{ $galleryLimit }} {{ $galleryLimit === 1 ? 'фотографию' : 'фотографий' }}.
         @unless($hasPromo)
-            Чтобы загружать до 15 фото, подключите рекламный пакет во вкладке «Продвижение».
+            @if($isCardEntity)
+                Чтобы загружать до 15 фото, подключите <a href="{{ route('owner.boost', ['type' => $type, 'id' => $entityId]) }}">пакет «Управление»</a> в разделе «Продвижение».
+            @else
+                Чтобы загружать до 15 фото, подключите рекламный пакет во вкладке «Продвижение».
+            @endif
         @endunless
     </div>
 
@@ -233,8 +239,22 @@
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
     <h5 class="fw-bold mb-4">💊 Услуги и цены</h5>
 
-    {{-- Форма добавления --}}
-    <div class="border rounded-3 p-4 mb-4 bg-light">
+    @php
+        // Клиники и организации: добавлять услуги можно только с пакетом «Управление»
+        $canEditServices = !in_array($type, ['clinic', 'organization'], true) || $entity->hasBoostPackage('manage');
+    @endphp
+
+    @unless($canEditServices)
+        <div class="text-center border rounded-3 p-4 mb-4 bg-light">
+            <div style="font-size:36px;">🔒</div>
+            <h6 class="fw-bold mt-2">Добавление услуг доступно с пакетом «Управление»</h6>
+            <p class="text-muted mb-3" style="font-size:14px;">Уже добавленные услуги и цены продолжают отображаться в карточке.</p>
+            <a href="{{ route('owner.boost', ['type' => $type, 'id' => $entityId]) }}" class="btn btn-primary rounded-pill px-4">Подключить пакет «Управление»</a>
+        </div>
+    @endunless
+
+    {{-- Форма добавления (скрыта без пакета; сервер тоже не даст сохранить) --}}
+    <div class="border rounded-3 p-4 mb-4 bg-light {{ $canEditServices ? '' : 'd-none' }}">
         <h6 class="fw-semibold mb-3">Добавить / обновить цену</h6>
 
         @if(isset($relevantServices) && $relevantServices->isEmpty())

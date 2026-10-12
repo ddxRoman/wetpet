@@ -107,6 +107,8 @@ class OrganizationController extends Controller
         ->withAvg('reviews', 'rating') // Для звезд
         ->with(['promotions' => fn($q) => $q->active(), 'fieldOfActivity'])
         ->localFirst($cityModel)
+        // Пакет «Продвижение»: карточки с активным пакетом — в первых рядах
+        ->boostedFirst('top')
         ->orderBy('name')
         ->paginate(16);
 

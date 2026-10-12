@@ -104,6 +104,22 @@
 
     @if($manageable->isEmpty())
         <div class="alert alert-info rounded-3">У вас нет подтверждённых филиалов в этой сети, поэтому изменять данные нельзя.</div>
+    @elseif(! $canManage)
+        {{-- Массовые настройки — только с пакетом «Управление» --}}
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body text-center py-5">
+                <div class="fs-1 mb-2">🔒</div>
+                <h2 class="fs-5 fw-bold mb-2">Массовые настройки филиалов доступны с пакетом «Управление»</h2>
+                <p class="text-muted mb-4" style="max-width:560px;margin:0 auto;">
+                    Общий логотип, график работы, телефон, почта и сайт для нескольких филиалов сразу —
+                    подключите пакет «Управление» в разделе «Продвижение».
+                    Список филиалов выше доступен для просмотра.
+                </p>
+                @if($buyUrl)
+                    <a href="{{ $buyUrl }}" class="btn btn-primary rounded-pill px-4">Подключить пакет «Управление»</a>
+                @endif
+            </div>
+        </div>
     @else
         <p class="text-muted" style="font-size:14px;">
             В каждом блоке ниже выберите, куда применить настройку: ко всем вашим филиалам или только к выбранным.

@@ -46,7 +46,7 @@
 
                 <nav class="p-2">
                     @php $activeTab = request('tab', 'info'); @endphp
-                    @foreach(['info' => ['icon'=>'📋','label'=>'Основная информация'], 'photos' => ['icon'=>'📷','label'=>'Фотографии'], 'services' => ['icon'=>'💊','label'=>'Услуги и цены'], 'delete' => ['icon'=>'🗑️','label'=>'Удалить карточку']] as $key => $tab)
+                    @foreach(['info' => ['icon'=>'📋','label'=>'Основная информация'], 'photos' => ['icon'=>'📷','label'=>'Фотографии'], 'services' => ['icon'=>'💊','label'=>'Услуги и цены'], 'promotions' => ['icon'=>'🏷️','label'=>'Акции'], 'delete' => ['icon'=>'🗑️','label'=>'Удалить карточку']] as $key => $tab)
                         <a href="?tab={{ $key }}"
                            class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 mb-1 text-decoration-none {{ $activeTab === $key ? ($key === 'delete' ? 'bg-danger text-white fw-medium' : 'bg-primary text-white fw-medium') : ($key === 'delete' ? 'text-danger' : 'text-secondary') }}"
                            style="font-size:14px;">
@@ -61,6 +61,11 @@
                             <span>🔗</span> <span>Работа с филиалами</span>
                         </a>
                     @endif
+                    <a href="{{ route('owner.boost', ['type' => 'clinic', 'id' => $entity->id]) }}"
+                       class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 text-decoration-none text-dark"
+                       style="font-size:14px;">
+                        <span>⭐</span> <span>Продвижение</span>
+                    </a>
                     @if(!empty($entity->slug))
                         <a href="{{ route('clinics.show', ['city' => $entity->city_slug, 'clinic' => $entity->slug]) }}" target="_blank"
                            class="d-flex align-items-center gap-2 px-3 py-2 text-decoration-none text-muted"

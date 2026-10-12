@@ -41,6 +41,8 @@ public function index(Request $request)
         ->withAvg('reviews', 'rating')
         ->forCatalog($cityModel, $otherOnly)
         ->localFirst($cityModel)
+        // Пакет «Продвижение»: карточки с активным пакетом — в первых рядах
+        ->boostedFirst('top')
         ->orderByDesc('reviews_avg_rating')
         ->paginate(16); // Было ->get()
 
@@ -340,6 +342,7 @@ public function liveSearch(Request $request)
             $applyAdvancedSearch($q);
         })
         ->forSearch($targetCity, $namedRegions)
+            ->boostedFirst('top')
             ->searchRank($targetCity, $namedRegions)
         ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $tierOf) {
             $results->push([
@@ -400,6 +403,7 @@ public function liveSearch(Request $request)
             $applyAdvancedSearch($q);
         })
         ->forSearch($targetCity, $namedRegions)
+            ->boostedFirst('top')
             ->searchRank($targetCity, $namedRegions)
         ->limit(10)->get()->each(function($item) use (&$results, $matchPriority, $tierOf) {
             $results->push([
@@ -634,15 +638,62 @@ public function liveSearch(Request $request)
 
     // Теперь город больше не влияет на сортировку (он уже жёсткий фильтр
     // выше) — сортируем только по релевантности текста и порядку типов.
-    $sorted = $results
-        ->map(fn ($i) => $i + ['_tier' => 1])
-        ->sortBy(['_tier', '_priority', '_type_order'])
+    // Клиники и организации с активным пакетом «Продвижение» — выше остальных совпадений
+    $boostedIds = [];
+    foreach (['clinic', 'organization'] as $boostType) {
+        $ids = $results->where('type', $boostType)->pluck('_entity_id')->filter()->unique()->all();
+        $boostedIds[$boostType] = $ids
+            ? \App\Models\BoostSubscription::active()
+                ->where('entity_type', $boostType)
+                ->where('package', 'top')
+                ->whereIn('entity_id', $ids)
+                ->pluck('entity_id')
+                ->flip()
+                ->all()
+            : [];
+    }
+
+    $top = $results
+        ->map(function ($i) use ($boostedIds) {
+            $isBoosted = in_array($i['type'] ?? null, ['clinic', 'organization'], true)
+                && isset($boostedIds[$i['type']][$i['_entity_id'] ?? 0]);
+
+            return $i + ['_tier' => 1, '_boost' => $isBoosted ? 0 : 1];
+        })
+        ->sortBy(['_boost', '_tier', '_priority', '_type_order'])
         ->values()
-        ->take(20)
-        ->map(function ($item) {
-            unset($item['_priority'], $item['_type_order'], $item['_tier'], $item['_entity_id']);
-            return $item;
-        });
+        ->take(20);
+
+    // Акции под названием — только у карточек с пакетом «Выделение» (Promotion::active() это проверяет)
+    $promoMap = ['clinic' => [], 'organization' => []];
+    foreach (['clinic' => \App\Models\Clinic::class, 'organization' => \App\Models\Organization::class] as $promoType => $promoClass) {
+        $ids = $top->where('type', $promoType)->pluck('_entity_id')->filter()->unique()->all();
+        if (! $ids) {
+            continue;
+        }
+
+        \App\Models\Promotion::active()
+            ->where('promotable_type', $promoClass)
+            ->whereIn('promotable_id', $ids)
+            ->orderBy('id')
+            ->get()
+            ->each(function ($p) use (&$promoMap, $promoType) {
+                $promoMap[$promoType][$p->promotable_id][] = [
+                    'title'     => $p->title,
+                    'new_price' => $p->new_price !== null ? number_format($p->new_price, 0, '.', ' ') . ' ₽' : null,
+                    'badge'     => $p->badge,
+                ];
+            });
+    }
+
+    $sorted = $top->map(function ($item) use ($promoMap) {
+        if (in_array($item['type'] ?? null, ['clinic', 'organization'], true)) {
+            $item['promotions'] = array_slice($promoMap[$item['type']][$item['_entity_id'] ?? 0] ?? [], 0, 2);
+        }
+
+        unset($item['_priority'], $item['_type_order'], $item['_tier'], $item['_entity_id'], $item['_boost']);
+        return $item;
+    });
 
     return response()->json(['results' => $sorted]);
 }
@@ -744,6 +795,7 @@ public function fullSearch(Request $request)
                 $applyAdvancedSearch($q);
             })
             ->forSearch($targetCity, $namedRegions)
+            ->boostedFirst('top')
             ->searchRank($targetCity, $namedRegions)
             ->get(),
 
@@ -752,6 +804,7 @@ public function fullSearch(Request $request)
                 $applyAdvancedSearch($q);
             })
             ->forSearch($targetCity, $namedRegions)
+            ->boostedFirst('top')
             ->searchRank($targetCity, $namedRegions)
             ->get(),
 

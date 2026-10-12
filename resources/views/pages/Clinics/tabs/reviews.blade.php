@@ -133,11 +133,8 @@
                     <input type="file" name="receipt" accept="image/*,application/pdf" class="form-control">
                 </div>
 
-                {{-- 🖼 Фото --}}
-                <div class="mb-3">
-                    <label class="form-label">Фотографии:</label>
-                    <input type="file" name="photos[]" multiple accept="image/*" class="form-control">
-                </div>
+                {{-- 🖼 Фото (несколько — только Премиум) --}}
+                @include('partials._review-photo-input')
 
                 {{-- 🚀 Кнопка --}}
                 <div class="text-end">
@@ -174,7 +171,6 @@
 </div>
                             
                             {{-- 🔽 Список отзывов --}}
-                            @include('partials._review-wrap-style')
                             <div id="reviewList" class="list-group">
                                 @foreach($reviews as $review)
                                 <div class="list-group-item mb-3 border rounded shadow-sm p-4 review-card"

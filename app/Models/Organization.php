@@ -12,6 +12,7 @@ use App\Models\Concerns\HasLocalityScopes;
 class Organization extends Model
 {
    use HasGalleryPhotos, HasLocalityScopes;
+   use \App\Models\Concerns\HasBoostPackages;
 
    protected $fillable = [
         'is_verified',

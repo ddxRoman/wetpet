@@ -13,7 +13,7 @@ let editCropperInitialized = false;
    🖼 ГАЛЕРЕЯ ПИТОМЦА (Премиум)
    Данные о доп. фото приходят из pets.js вместе со списком питомцев
 ====================================================== */
-const galleryStore = new Map(); // petId -> { photos: [{id, url}], hasMain: bool, caption: string }
+const galleryStore = new Map(); // petId -> { photos: [{id, url}], hasMain: bool }
 
 export function registerPetGallery(petId, data) {
     galleryStore.set(String(petId), data);
@@ -171,14 +171,8 @@ export function openEditModal(petId) {
         ageInput.value = age || '';
     }
 
-    // —————— Галерея и подпись (Премиум) ——————
+    // —————— Галерея (Премиум) ——————
     renderGallery(petId);
-    const captionBox = document.getElementById('edit-pet-caption-box');
-    if (captionBox) {
-        captionBox.style.display = window.userPremium ? 'block' : 'none';
-        document.getElementById('edit-pet-caption').value =
-            (galleryStore.get(String(petId)) || {}).caption || '';
-    }
 
     // —————— Фото ——————
     previewEdit.src = photo || '/storage/pets/default-pet.jpg';
@@ -332,10 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Пустое значение = «питомец жив» (дата смерти сбрасывается)
         fd.append('death_date', document.getElementById('edit-pet-death').value);
-
-        if (window.userPremium) {
-            fd.append('caption', document.getElementById('edit-pet-caption').value);
-        }
 
         fd.append('_method', 'PUT');
 

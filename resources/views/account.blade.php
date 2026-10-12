@@ -42,7 +42,7 @@
 
     <button class="tab-btn" data-tab="reviews">Отзывы</button>
     <button class="tab-btn" data-tab="trusted">Доверенные</button>
-    {{-- <button class="tab-btn" data-tab="premium">⭐ Премиум</button> --}}
+    <button class="tab-btn" data-tab="premium">⭐ Премиум</button>
 
     @php $__rd = \App\Models\ReviewDispute::headerSummary(auth()->id()); @endphp
     @if($__rd['show'])
@@ -335,12 +335,6 @@
                 <input type="file" id="edit-pet-photo" accept="image/*" style="display:none;">
                 <p style="font-size:13px; color:#666;">Нажмите на фото, чтобы добавить или изменить</p>
             </div>
-            {{-- Подпись к питомцу (Премиум) --}}
-            <div id="edit-pet-caption-box" style="display:none; margin-bottom:10px;">
-                <label for="edit-pet-caption">Подпись <small style="color:#888;">(видна на странице питомца)</small></label>
-                <textarea id="edit-pet-caption" rows="3" maxlength="1000" style="width:100%;" placeholder="Расскажите о питомце..."></textarea>
-            </div>
-
             {{-- Дополнительные фото питомца (Премиум) --}}
             <div id="edit-pet-gallery" style="margin-bottom:12px;">
                 <label>Фотографии <small id="edit-gallery-counter" style="color:#888;"></small></label>

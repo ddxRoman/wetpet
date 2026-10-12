@@ -6,7 +6,7 @@
     // upload и base совпадают по префиксу — используем upload-роут и для базового пути удаления
     $baseUrlForDelete = url("/account/gallery/{$type}/{$entity->id}");
     $reorderUrl = route('account.gallery.reorder', ['type' => $type, 'id' => $entity->id]);
-    $hasPromo = $entity->creator && $entity->creator->hasPromoPackage();
+    $hasPromo = $limit > 1;
 @endphp
 
 <div class="gallery-manager"

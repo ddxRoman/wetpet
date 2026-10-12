@@ -46,6 +46,24 @@
                 <div class="text-muted small mt-2">
                     Питомцев: {{ $pets->count() }} &nbsp;·&nbsp; Отзывов: {{ $reviews->total() }}
                 </div>
+
+                {{-- Доверенные пользователи: только для авторизованных и не на своём профиле --}}
+                @if($viewer && $viewer->id !== $profileUser->id)
+                    @if($viewer->isPremium() || $isTrusted)
+                        <button type="button" id="trust-btn" class="btn btn-sm mt-3"
+                                data-user-id="{{ $profileUser->id }}"
+                                data-trusted="{{ $isTrusted ? '1' : '0' }}"
+                                @if(! $viewer->isPremium()) data-premium="0" @endif
+                                style="border-radius: 12px; border: 1px solid #1ccfc9;">
+                        </button>
+                    @else
+                        <a href="{{ route('account') }}#premium" class="btn btn-sm mt-3"
+                           style="border-radius: 12px; border: 1px solid #1ccfc9;"
+                           title="Доверенные пользователи доступны с Премиум-подпиской">
+                            ☆ В доверенные (Премиум)
+                        </a>
+                    @endif
+                @endif
             </div>
         </div>
     </div>
@@ -91,6 +109,11 @@
                                 @endif
                             @elseif($pet->age_label)
                                 <div class="small text-muted">Возраст: {{ $pet->age_label }}</div>
+                            @endif
+
+                            {{-- Отдельная страница питомца — у владельцев с Премиум --}}
+                            @if($ownerIsPremium)
+                                <a href="{{ route('pets.page', $pet->id) }}" class="small d-inline-block mt-2">Страница питомца →</a>
                             @endif
                         </div>
                     </div>
@@ -159,13 +182,13 @@
                     @endif
 
                     @if($review->liked)
-                        <div style="white-space: pre-line; overflow-wrap: anywhere;"><strong class="text-success">Понравилось:</strong> {{ $review->liked }}</div>
+                        <div style="white-space: pre-line;"><strong class="text-success">Понравилось:</strong> {{ $review->liked }}</div>
                     @endif
                     @if($review->disliked)
-                        <div style="white-space: pre-line; overflow-wrap: anywhere;"><strong class="text-danger">Не понравилось:</strong> {{ $review->disliked }}</div>
+                        <div style="white-space: pre-line;"><strong class="text-danger">Не понравилось:</strong> {{ $review->disliked }}</div>
                     @endif
                     @if($review->content)
-                        <p class="mt-2 mb-0" style="white-space: pre-line; overflow-wrap: anywhere;">{{ $review->content }}</p>
+                        <p class="mt-2 mb-0" style="white-space: pre-line;">{{ $review->content }}</p>
                     @endif
 
                     @if($review->pet)
@@ -220,6 +243,52 @@
     @endif
 
 </div>
+
+@if($viewer && $viewer->id !== $profileUser->id && ($viewer->isPremium() || $isTrusted))
+<script>
+(function () {
+    const btn = document.getElementById('trust-btn');
+    if (!btn) return;
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+    const premium = btn.dataset.premium !== '0';
+
+    function render() {
+        const on = btn.dataset.trusted === '1';
+        btn.textContent = on ? '★ В доверенных' : '☆ В доверенные';
+        btn.style.background = on ? '#1ccfc9' : '#fff';
+        btn.style.color = on ? '#fff' : '#222';
+        btn.title = on ? 'Нажмите, чтобы убрать из доверенных' : 'Следить за отзывами этого пользователя';
+    }
+    render();
+
+    btn.addEventListener('click', async () => {
+        const on = btn.dataset.trusted === '1';
+        // Подписка закончилась: добавлять нельзя, но убрать из списка можно
+        if (!on && !premium) { location.href = '{{ route('account') }}#premium'; return; }
+
+        btn.disabled = true;
+        try {
+            const res = await fetch('/trusted/' + btn.dataset.userId, {
+                method: on ? 'DELETE' : 'POST',
+                headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+                credentials: 'same-origin'
+            });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.success) {
+                btn.dataset.trusted = on ? '0' : '1';
+                render();
+            } else {
+                alert(data.message || 'Не удалось выполнить действие');
+            }
+        } catch (e) {
+            alert('Ошибка сети');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+})();
+</script>
+@endif
 
 {{-- Модалка просмотра фото (аватар, питомцы, отзывы) подключена глобально
      в layouts/footer.blade.php — partials/image-zoom-modal.blade.php --}}

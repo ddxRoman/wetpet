@@ -13,6 +13,7 @@ class Clinic extends Model
 {
     use HasFactory;
     use HasGalleryPhotos, HasLocalityScopes;
+    use \App\Models\Concerns\HasBoostPackages;
 
     protected $fillable = [
         'is_verified',

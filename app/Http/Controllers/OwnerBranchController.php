@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BoostSubscription;
 use App\Models\Chain;
 use App\Models\Clinic;
 use App\Models\ClinicOwner;
@@ -51,13 +52,21 @@ class OwnerBranchController extends Controller
                 ->with('info', 'Работа с филиалами доступна, когда ваша карточка входит в сеть филиалов.');
         }
 
-        $branches = $this->branches($current);
+        $branches   = $this->branches($current);
+        $manageable = $branches->where('owned', true)->values();
+
+        // Куда вести за покупкой пакета: первая из карточек пользователя в этой сети
+        $buyFor = $manageable->first();
 
         return view('pages.owner.branches', [
             'chains'     => $chains,
             'chain'      => $current,
             'branches'   => $branches,
-            'manageable' => $branches->where('owned', true)->values(),
+            'manageable' => $manageable,
+            'canManage'  => $this->canManage($manageable),
+            'buyUrl'     => $buyFor
+                ? route('owner.boost', ['type' => $buyFor['type'], 'id' => $buyFor['id']])
+                : null,
         ]);
     }
 
@@ -80,6 +89,13 @@ class OwnerBranchController extends Controller
         if ($manageable->isEmpty()) {
             abort(403, 'У вас нет прав для управления филиалами этой сети.');
         }
+
+        // Массовые настройки доступны только с оплаченным пакетом «Управление»
+        abort_unless(
+            $this->canManage($manageable),
+            403,
+            'Массовые настройки филиалов доступны с пакетом «Управление». Подключите его в разделе «Продвижение».'
+        );
 
         if ($request->input('target') === 'all') {
             $targets = $manageable;
@@ -167,6 +183,21 @@ class OwnerBranchController extends Controller
     }
 
     // ───────────────────────── вспомогательное ─────────────────────────
+
+    /**
+     * Массовые настройки доступны при активном пакете «Управление» хотя бы у одной из карточек
+     * пользователя в этой сети (администратору — всегда).
+     */
+    private function canManage(Collection $manageable): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        return $manageable->contains(
+            fn ($b) => BoostSubscription::activeFor($b['type'], (int) $b['id'], 'manage')
+        );
+    }
 
     private function isAdmin(): bool
     {

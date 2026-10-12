@@ -54,6 +54,9 @@ class Review extends Model
         return $this->hasMany(ReviewDispute::class);
     }
 
+    /** Кэш проверки пакета «Управление» в рамках запроса: ['clinic:5' => bool]. */
+    private static array $manageCache = [];
+
     /**
      * Какие карточки подтверждённо принадлежат пользователю: [класс модели => [id => true]].
      * Считается один раз за запрос (4 запроса), чтобы не плодить запросы на каждый отзыв в списке.
@@ -85,7 +88,19 @@ class Review extends Model
 
         $owned = static::ownedReviewableMap($user->id);
 
-        return isset($owned[$this->reviewable_type][(int) $this->reviewable_id]);
+        if (! isset($owned[$this->reviewable_type][(int) $this->reviewable_id])) {
+            return false;
+        }
+
+        // Клиника/организация: оспаривать отзывы можно только с активным пакетом «Управление»
+        if ($this->reviewable_type === Clinic::class || $this->reviewable_type === Organization::class) {
+            $type = $this->reviewable_type === Clinic::class ? 'clinic' : 'organization';
+            $key  = $type . ':' . (int) $this->reviewable_id;
+
+            return static::$manageCache[$key] ??= BoostSubscription::activeFor($type, (int) $this->reviewable_id, 'manage');
+        }
+
+        return true;
     }
 
     // Отзыв — принадлежит пользователю

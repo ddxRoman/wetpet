@@ -33,11 +33,18 @@ trait HasGalleryPhotos
     }
 
     /**
-     * Сколько фотографий доступно владельцу карточки (личный кабинет),
-     * с учётом наличия активного рекламного пакета у создателя записи.
+     * Сколько фотографий доступно владельцу карточки (личный кабинет):
+     * клиника/организация — 15 с пакетом «Управление», иначе 1;
+     * врач/специалист — 15 при рекламном пакете создателя записи, иначе 1.
      */
     public function galleryPhotoLimitForOwner(): int
     {
+        // Клиники и организации: до 15 фото — только с активным пакетом «Управление»
+        if (method_exists($this, 'hasBoostPackage')) {
+            return $this->hasBoostPackage('manage') ? self::maxGalleryPhotos() : 1;
+        }
+
+        // Врачи и специалисты: прежнее правило — рекламный пакет создателя карточки
         $creator = $this->creator ?? null;
 
         if ($creator && method_exists($creator, 'hasPromoPackage') && $creator->hasPromoPackage()) {

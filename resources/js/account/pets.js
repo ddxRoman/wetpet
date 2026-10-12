@@ -137,8 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Доп. фото (Премиум) — для модалки редактирования
                 registerPetGallery(p.id, {
                     photos: (p.photos || []).map(ph => ({ id: ph.id, url: ph.url })),
-                    hasMain: Boolean(p.photo),
-                    caption: p.caption || ''
+                    hasMain: Boolean(p.photo)
                 });
 
 petsList.insertAdjacentHTML('beforeend', `

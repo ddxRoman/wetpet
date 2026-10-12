@@ -2,11 +2,16 @@
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
     <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
         <h5 class="fw-bold mb-0">🏷️ Акции и спецпредложения</h5>
-        @php $hasPackage = auth()->user()->hasPromoPackage(); @endphp
+        @php
+            // Клиники и организации — пакет «Выделение» этой карточки; врачи и специалисты — рекламный пакет пользователя
+            $isCard     = in_array($type, ['clinic', 'organization'], true);
+            $hasPackage = $isCard ? $entity->hasBoostPackage('featured') : auth()->user()->hasPromoPackage();
+            $packageName = $isCard ? 'Пакет «Выделение»' : 'Рекламный пакет';
+        @endphp
         @if($hasPackage)
-            <span class="badge bg-success rounded-pill px-3" style="font-size:12px;">✓ Рекламный пакет активен</span>
+            <span class="badge bg-success rounded-pill px-3" style="font-size:12px;">✓ {{ $packageName }} активен</span>
         @else
-            <span class="badge bg-secondary rounded-pill px-3" style="font-size:12px;">Рекламный пакет не активен</span>
+            <span class="badge bg-secondary rounded-pill px-3" style="font-size:12px;">{{ $packageName }} не активен</span>
         @endif
     </div>
 
@@ -16,10 +21,19 @@
             <div style="font-size:48px;">🔒</div>
             <h6 class="fw-bold mt-3">Это платная функция</h6>
             <p class="text-muted" style="font-size:14px;max-width:400px;margin:0 auto;">
-                Акции и спецпредложения доступны только пользователям с активным рекламным пакетом.
-                Ваши акции будут показаны на главной странице и в карточке организации.
+                @if($isCard)
+                    Акции и спецпредложения доступны с пакетом «Выделение». Ваши акции будут показаны на карточке в каталоге,
+                    в поиске под названием и на главной странице.
+                @else
+                    Акции и спецпредложения доступны только пользователям с активным рекламным пакетом.
+                    Ваши акции будут показаны на главной странице и в карточке организации.
+                @endif
             </p>
-            <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">Подключить рекламный пакет</a>
+            @if($isCard)
+                <a href="{{ route('owner.boost', ['type' => $type, 'id' => $entity->id]) }}" class="btn btn-primary rounded-pill px-4 mt-3">Подключить пакет «Выделение»</a>
+            @else
+                <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">Подключить рекламный пакет</a>
+            @endif
         </div>
     @else
         @php $promotions = $entity->promotions()->latest()->get(); @endphp

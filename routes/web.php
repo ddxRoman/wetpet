@@ -31,6 +31,7 @@ use App\Http\Controllers\{
     LegalController,
     OwnerCabinetController,
     OwnerBranchController,
+    OwnerBoostController,
     UserProfileController,
     PremiumController,
     TrustedUserController,
@@ -333,6 +334,14 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
     // Работа с филиалами (массовое задание логотипа, графика, контактов для филиалов сети)
     Route::get('/branches/{chain?}',        [OwnerBranchController::class, 'index'])->whereNumber('chain')->name('branches');
     Route::post('/branches/{chain}/apply',  [OwnerBranchController::class, 'apply'])->whereNumber('chain')->name('branches.apply');
+
+    // Продвижение карточки: пакеты и оплата (тестовый шлюз)
+    Route::get('/{type}/{id}/boost',            [OwnerBoostController::class, 'show'])
+        ->where('type', 'clinic|organization')->whereNumber('id')->name('boost');
+    Route::post('/{type}/{id}/boost/checkout',  [OwnerBoostController::class, 'checkout'])
+        ->where('type', 'clinic|organization')->whereNumber('id')->name('boost.checkout');
+    Route::get('/boost/fake-pay/{payment}',     [OwnerBoostController::class, 'fakeShow'])->name('boost.fake.show');
+    Route::post('/boost/fake-pay/{payment}',    [OwnerBoostController::class, 'fakeConfirm'])->name('boost.fake.confirm');
 
     // Кабинеты по типам
     Route::get('/clinic/{id}',       [OwnerCabinetController::class, 'clinic'])->name('clinic');

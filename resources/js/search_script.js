@@ -57,6 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
             ? `<div class="result-sub-small text-success fw-semibold" style="font-size: 0.85rem;">💲 ${item.service_name} — ${item.service_price}</div>`
             : '';
 
+        // Акции организации/клиники (пакет «Выделение») — под названием
+        const promoLines = (item) => (item.promotions || []).map(p => `
+            <div class="result-sub-small" style="font-size: 0.8rem; color:#92400e;">
+                🏷️ ${p.title}${p.new_price ? ` — <span class="fw-bold text-success">${p.new_price}</span>` : (p.badge ? ` <span class="badge rounded-pill" style="background:#dc3545;font-size:10px;">${p.badge}</span>` : '')}
+            </div>`).join('');
+
         function renderResultItem(item) {
             switch (item.type) {
                 case 'clinic':
@@ -65,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <img src="${item.image}" class="search-img-thumb" alt="logo" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
                             <div class="ms-2">
                                 <div class="result-title text-primary"><small>🏥 Клиника:</small> ${item.name}</div>
+                                ${promoLines(item)}
                                 <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}${otherBadge(item)}</div>
                                 ${serviceLine(item)}
                             </div>
@@ -79,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="result-title text-success">
                                     <small>🏢</small> ${item.name} ${category}
                                 </div>
+                                ${promoLines(item)}
                                 <div class="result-sub-small text-muted" style="font-size: 0.85rem;">${item.address}${otherBadge(item)}</div>
                                 ${serviceLine(item)}
                             </div>
