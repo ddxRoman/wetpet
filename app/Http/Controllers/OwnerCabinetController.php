@@ -1211,7 +1211,7 @@ public function organization(int $id)
 
     public function savePromotion(Request $request)
     {
-        $request->validate(['entity_type'=>'required|in:clinic,organization,doctor,specialist','entity_id'=>'required|integer','title'=>'required|string|max:100','description'=>'nullable|string|max:500','old_price'=>'nullable|numeric|min:0','new_price'=>'nullable|numeric|min:0','badge'=>'nullable|string|max:20','expires_at'=>'nullable|date|after_or_equal:today']);
+        $request->validate(['entity_type'=>'required|in:clinic,organization,doctor,specialist','entity_id'=>'required|integer','title'=>'required|string|max:100','description'=>'nullable|string|max:500','old_price'=>'nullable|numeric|min:0','new_price'=>'nullable|numeric|min:0','badge'=>'nullable|string|max:20','expires_at'=>'nullable|date|after_or_equal:today','show_on_home'=>'nullable|boolean']);
         $this->authorizeOwner($request->entity_type, $request->entity_id);
         // Клиники и организации — только с пакетом «Выделение»; врачи и специалисты — по рекламному пакету пользователя
         if (in_array($request->entity_type, ['clinic', 'organization'], true)) {
@@ -1223,8 +1223,34 @@ public function organization(int $id)
         }
         $morphMap=['clinic'=>\App\Models\Clinic::class,'organization'=>\App\Models\Organization::class,'doctor'=>\App\Models\Doctor::class,'specialist'=>\App\Models\Specialist::class];
         if (\App\Models\Promotion::where('promotable_type',$morphMap[$request->entity_type])->where('promotable_id',$request->entity_id)->count()>=3) return response()->json(['success'=>false,'message'=>'Максимум 3 акции.'],422);
-        \App\Models\Promotion::create(['promotable_type'=>$morphMap[$request->entity_type],'promotable_id'=>$request->entity_id,'title'=>$request->title,'description'=>$request->description,'old_price'=>$request->old_price,'new_price'=>$request->new_price,'badge'=>$request->badge,'expires_at'=>$request->expires_at,'is_active'=>true]);
+        // «Выводить на главной»: не более 3 акций одной карточки
+        $showOnHome = $request->boolean('show_on_home');
+        if ($showOnHome && \App\Models\Promotion::where('promotable_type',$morphMap[$request->entity_type])->where('promotable_id',$request->entity_id)->where('show_on_home',true)->count() >= \App\Models\Promotion::HOME_PER_CARD) {
+            return response()->json(['success'=>false,'message'=>'На главной можно показывать не более '.\App\Models\Promotion::HOME_PER_CARD.' акций одной организации. Снимите галочку «Выводить на главной» или уберите её у другой акции.'],422);
+        }
+        \App\Models\Promotion::create(['promotable_type'=>$morphMap[$request->entity_type],'promotable_id'=>$request->entity_id,'title'=>$request->title,'description'=>$request->description,'old_price'=>$request->old_price,'new_price'=>$request->new_price,'badge'=>$request->badge,'expires_at'=>$request->expires_at,'is_active'=>true,'show_on_home'=>$showOnHome]);
         return response()->json(['success'=>true]);
+    }
+
+    /** Включить/выключить показ акции на главной (не более 3 акций одной карточки). */
+    public function togglePromotionHome(Request $request, int $promotionId)
+    {
+        $promo = \App\Models\Promotion::findOrFail($promotionId);
+        $map=[\App\Models\Clinic::class=>'clinic',\App\Models\Organization::class=>'organization',\App\Models\Doctor::class=>'doctor',\App\Models\Specialist::class=>'specialist'];
+        $type=$map[$promo->promotable_type]??null;
+        abort_unless($type, 404);
+        $this->authorizeOwner($type,$promo->promotable_id);
+
+        $show = $request->boolean('show_on_home');
+
+        if ($show && !$promo->show_on_home
+            && \App\Models\Promotion::where('promotable_type',$promo->promotable_type)->where('promotable_id',$promo->promotable_id)->where('show_on_home',true)->count() >= \App\Models\Promotion::HOME_PER_CARD) {
+            return response()->json(['success'=>false,'message'=>'На главной можно показывать не более '.\App\Models\Promotion::HOME_PER_CARD.' акций одной организации.'],422);
+        }
+
+        $promo->update(['show_on_home'=>$show]);
+
+        return response()->json(['success'=>true,'show_on_home'=>$show]);
     }
 
     public function deletePromotion(int $promotionId)

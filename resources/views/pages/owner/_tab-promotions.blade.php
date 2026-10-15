@@ -75,6 +75,13 @@
                     <input type="date" id="promo-expires" class="form-control" min="{{ now()->toDateString() }}">
                 </div>
             </div>
+            <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="promo-show-home" checked>
+                <label class="form-check-label" for="promo-show-home">
+                    Выводить на главной
+                    <span class="text-muted small">(на главной показывается не более 3 акций одной организации)</span>
+                </label>
+            </div>
             <button class="btn btn-primary mt-3 rounded-pill px-4" id="promo-save-btn">
                 + Добавить акцию
             </button>
@@ -107,6 +114,11 @@
                         @if($promo->expires_at)
                             <span class="text-muted">До {{ $promo->expires_at->format('d.m.Y') }}</span>
                         @endif
+                    </div>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input promo-home-toggle" type="checkbox" id="promo-home-{{ $promo->id }}"
+                               data-id="{{ $promo->id }}" {{ $promo->show_on_home ? 'checked' : '' }}>
+                        <label class="form-check-label small" for="promo-home-{{ $promo->id }}">Выводить на главной</label>
                     </div>
                 </div>
                 <button class="btn btn-sm btn-outline-danger rounded-pill flex-shrink-0 btn-delete-promo"
@@ -158,6 +170,7 @@
                 new_price:   document.getElementById('promo-new-price')?.value || null,
                 badge:       document.getElementById('promo-badge')?.value.trim() || null,
                 expires_at:  document.getElementById('promo-expires')?.value || null,
+                show_on_home: !!document.getElementById('promo-show-home')?.checked,
             }),
         })
         .then(r => r.json())
@@ -175,6 +188,34 @@
             status.className   = 'mt-2 text-danger small';
             this.disabled = false;
         });
+    });
+
+    // ── «Выводить на главной» у существующей акции ────────
+    document.addEventListener('change', function (e) {
+        const box = e.target.closest('.promo-home-toggle');
+        if (!box) return;
+
+        const wanted = box.checked;
+        box.disabled = true;
+
+        fetch(`/owner/promotions/${box.dataset.id}/home`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrf,
+                'Accept':       'application/json',
+            },
+            body: JSON.stringify({ show_on_home: wanted }),
+        })
+        .then(r => r.json().then(d => ({ ok: r.ok, d })))
+        .then(({ ok, d }) => {
+            if (!ok || !d.success) {
+                box.checked = !wanted;
+                alert(d.message || 'Не удалось изменить настройку.');
+            }
+        })
+        .catch(() => { box.checked = !wanted; alert('Ошибка соединения.'); })
+        .finally(() => { box.disabled = false; });
     });
 
     // ── Удаление акции ───────────────────────────────────

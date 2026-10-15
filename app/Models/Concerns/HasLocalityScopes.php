@@ -77,6 +77,15 @@ trait HasLocalityScopes
     }
 
     /**
+     * Записи региона: по полю region записи или по её городу из справочника cities.
+     * $regionLower — название региона в нижнем регистре, без пробелов по краям.
+     */
+    public function scopeInUserRegion(Builder $query, string $regionLower): Builder
+    {
+        return $query->whereRaw(self::regionSql(), [$regionLower, $regionLower]);
+    }
+
+    /**
      * Поиск: выбранный город + «другие населённые пункты» его региона
      * + все записи регионов, которые пользователь явно указал в запросе.
      */

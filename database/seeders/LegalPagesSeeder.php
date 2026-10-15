@@ -217,7 +217,7 @@ class LegalPagesSeeder extends Seeder
     <h3>1. Оператор персональных данных</h3>
     <ul>
         <li><strong>ФИО / Статус:</strong> Оксентий Роман Сергеевич (самозанятый / индивидуальный предприниматель)</li>
-        <li><strong>ИНН:</strong> 21419893675</li>
+        <li><strong>ИНН:</strong> 310000685782</li>
         <li><strong>Адрес регистрации:</strong> 308010, Белгородская обл., г. Белгород, ул. Гоголя, д. 39, кв. 76</li>
         <li><strong>Электронная почта для обращений:</strong> <a href="mailto:admin@zverozor.ru">admin@zverozor.ru</a></li>
     </ul>

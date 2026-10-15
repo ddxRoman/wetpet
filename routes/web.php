@@ -384,6 +384,7 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
 
     // Акции
     Route::post('/promotions/save', [OwnerCabinetController::class, 'savePromotion'])->name('promotions.save');
+    Route::post('/promotions/{id}/home', [OwnerCabinetController::class, 'togglePromotionHome'])->name('promotions.home');
     Route::delete('/promotions/{id}', [OwnerCabinetController::class, 'deletePromotion'])->name('promotions.delete');
 
     // Чат по заявке на верификацию

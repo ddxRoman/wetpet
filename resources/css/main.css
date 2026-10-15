@@ -2468,3 +2468,94 @@ pre.politics {
     text-decoration: none;
 font-weight: 500;
 }
+
+
+/* Только форма смены пароля */
+.password-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.password-section form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.password-section form .form-group label {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.password-section form .form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 50px;
+    padding: 0 15px;
+    color: #1e293b;
+    background: #f8fafc;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+}
+
+.password-section form .form-group input:hover {
+    border-color: #a5b4fc;
+}
+
+.password-section form .form-group input:focus {
+    background: #ffffff;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.password-section form .save-btn {
+    width: 100%;
+    min-height: 49px;
+    margin-top: 2px;
+    padding: 12px 20px;
+    color: #ffffff;
+    background: #4f46e5;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.password-section form .save-btn:hover {
+    background: #4338ca;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    transform: translateY(-1px);
+}
+
+.password-section form .save-btn:active {
+    transform: translateY(0);
+}
+
+.password-section form .save-btn:focus-visible {
+    outline: 3px solid rgba(99, 102, 241, 0.3);
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    .password-section form {
+        gap: 16px;
+    }
+
+    .password-section form .form-group input {
+        height: 47px;
+    }
+}

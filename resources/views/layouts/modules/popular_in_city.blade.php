@@ -1,28 +1,56 @@
 @php
+use App\Models\City;
 use App\Models\Promotion;
 use App\Models\Clinic;
 use App\Models\Organization;
 use App\Models\Doctor;
 use App\Models\Specialist;
 
-$cityId = $currentCityId ?? null;
+/*
+ | Блок «Выгодные предложения» на главной.
+ |  • акции показываются только если регион карточки совпадает с регионом выбранного пользователем города;
+ |  • только акции с галочкой «Выводить на главной», не более 3 от одной карточки;
+ |  • в блоке максимум 15 акций: 3 столбца по 5 штук; если подходящих больше — случайная выборка.
+ */
+$userCity = auth()->user()?->city
+    ?? (session('city_id') ? City::find(session('city_id')) : null)
+    ?? (session('city_name') ? City::where('name', session('city_name'))->first() : null);
 
-$promos = Promotion::with('promotable')
-    ->active()
-    ->whereHasMorph('promotable', [Clinic::class, Organization::class, Doctor::class, Specialist::class], function ($q) use ($cityId) {
-        if ($cityId) {
-            $q->where('city_id', $cityId);
-        }
-    })
-    ->inRandomOrder()
-    ->take(6)
-    ->get();
+$region = $userCity && filled($userCity->region) ? mb_strtolower(trim($userCity->region)) : null;
 
-$columns  = $promos->chunk(2);
-$hasPromos = $promos->isNotEmpty();
+$promos = collect();
 
-$colTitles = ['Скидки на услуги', 'Спецпредложения', 'Акции партнёров'];
-$routeMap  = [
+if ($region) {
+    $candidates = Promotion::with('promotable')
+        ->active()
+        ->forHome()
+        ->where(function ($outer) use ($region) {
+            $outer->whereHasMorph('promotable', [Clinic::class, Organization::class],
+                    fn ($q) => $q->inUserRegion($region))
+                ->orWhereHasMorph('promotable', [Doctor::class, Specialist::class],
+                    fn ($q) => $q->whereHas('city', fn ($c) => $c->whereRaw('LOWER(TRIM(region)) = ?', [$region])));
+        })
+        ->orderByDesc('id')
+        ->get()
+        ->filter(fn ($p) => $p->promotable);
+
+    // Не более 3 акций от одной карточки
+    $candidates = $candidates
+        ->groupBy(fn ($p) => $p->promotable_type . ':' . $p->promotable_id)
+        ->flatMap(fn ($group) => $group->take(Promotion::HOME_PER_CARD))
+        ->values();
+
+    // Больше 15 — случайная выборка из подходящих
+    $promos = $candidates->count() > Promotion::HOME_TOTAL
+        ? $candidates->shuffle()->take(Promotion::HOME_TOTAL)->values()
+        : $candidates;
+}
+
+// Раскладка: 3 столбца, в каждом до 5 акций (при малом числе акций делим поровну)
+$perColumn = max(1, min(5, (int) ceil($promos->count() / 3)));
+$columns   = $promos->chunk($perColumn);
+
+$routeMap = [
     'Clinic'       => 'clinics.show',
     'Organization' => 'organizations.show',
     'Doctor'       => 'doctors.show',
@@ -30,125 +58,81 @@ $routeMap  = [
 ];
 @endphp
 
-@if($hasPromos)
+@if($promos->isNotEmpty())
 <style>
-.badge-discount{background-color:#dc3545;color:white;font-size:.75rem;font-weight:700;padding:3px 7px;border-radius:6px;}
-.commercial-old-price{text-decoration:line-through;color:#999;font-size:.85rem;margin-right:5px;}
-.commercial-new-price{color:#28a745;font-weight:700;}
-.btn-commercial{font-size:.85rem;padding:5px 12px;border-radius:8px;font-weight:500;transition:all .2s ease;white-space:nowrap;}
-.commercial-card-desktop{background:#fff;border-radius:12px;padding:15px;transition:transform .2s ease,box-shadow .2s ease;height:100%;}
-.commercial-card-desktop:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,.08);}
+.promo-home-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start;}
+.promo-home-col{display:flex;flex-direction:column;gap:8px;min-width:0;}
 
-@media(min-width:993px){.mobile-popular-wrapper{display:none!important;}}
+.promo-mini{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:10px;padding:8px 12px 8px 15px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;text-decoration:none;color:#212529;min-width:0;transition:transform .15s ease,box-shadow .15s ease;overflow:hidden;}
+.promo-mini::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#fd7e14;}
+.promo-home-col:nth-child(2) .promo-mini::before{background:#8dc63f;}
+.promo-home-col:nth-child(3) .promo-mini::before{background:#0d6efd;}
+.promo-mini:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.08);color:#212529;}
+.promo-mini__info{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.promo-mini__title{font-size:.85rem;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.promo-mini__org{font-size:.72rem;color:#6c757d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.promo-mini__side{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.promo-mini__chip{background:#dc3545;color:#fff;font-size:.62rem;font-weight:700;line-height:1;padding:3px 6px;border-radius:6px;white-space:nowrap;}
+.promo-mini__prices{display:flex;align-items:baseline;gap:5px;white-space:nowrap;}
+.promo-mini__old{font-size:.7rem;color:#9ca3af;text-decoration:line-through;}
+.promo-mini__new{font-size:.9rem;font-weight:700;color:#16a34a;}
 
 @media(max-width:992px){
-    .desktop-popular-wrapper{display:none!important;}
-    .mobile-popular-wrapper{padding:0 15px 20px;}
-    .mobile-popular-title{font-size:1.2rem;font-weight:700;color:#222;margin-bottom:12px;}
-    .mobile-popular-scroll{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:12px;padding:4px 2px 12px;scrollbar-width:none;-ms-overflow-style:none;}
-    .mobile-popular-scroll::-webkit-scrollbar{display:none;}
-    .mobile-popular-card{flex:0 0 82vw;max-width:300px;background:#fff;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.08);border:1px solid #f0f0f0;overflow:hidden;scroll-snap-align:start;}
-    .mobile-popular-card-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8f9fa;border-bottom:1px solid #eee;font-weight:600;font-size:.88rem;color:#333;}
-    .mobile-popular-item{padding:10px 14px;border-bottom:1px solid #f3f4f6;}
-    .mobile-popular-item:last-child{border-bottom:none;}
-    .mobile-popular-link{display:block;text-decoration:none;color:#212529;font-size:.88rem;font-weight:600;line-height:1.3;margin-bottom:3px;}
-    .mobile-clinic-name{font-size:.78rem;color:#6c757d;display:block;margin-bottom:6px;}
-    .mobile-commercial-footer{display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px dashed #e0e0e0;}
+    .promo-home-wrapper{padding:0 15px 20px;}
+    .promo-home-cols{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:10px;padding:4px 2px 12px;scrollbar-width:none;-ms-overflow-style:none;}
+    .promo-home-cols::-webkit-scrollbar{display:none;}
+    .promo-home-col{display:contents;}
+    .promo-mini{flex:0 0 78vw;max-width:300px;scroll-snap-align:start;}
 }
 </style>
 
-{{-- ДЕСКТОП --}}
-<div class="container desktop-popular-wrapper my-4">
-    <div class="row">
-        <h2 class="header_h2 mb-4">Выгодные предложения в г. {{ $currentCityName }}</h2>
-        <div class="row g-3">
-            @foreach($columns as $colIndex => $colPromos)
-            <div class="col-4">
-                <div class="most_popular_in_city border commercial-card-desktop">
-                    <figcaption class="title_list_popular d-flex justify-content-between align-items-center mb-2">
-                        <span>{{ $colTitles[$colIndex] ?? 'Акции' }}</span>
-                        <span class="badge-discount">% Акции</span>
-                    </figcaption>
-                    <ul class="list_doctor mb-0">
-                        @foreach($colPromos as $promo)
-                        @php
-                            $entity = $promo->promotable;
-                            $typeStr = class_basename($promo->promotable_type);
-                            $url = '#';
-                            if (isset($routeMap[$typeStr]) && $entity) {
-                                $routeParams = match ($typeStr) {
-                                    'Clinic' => ['city' => $entity->city_slug, 'clinic' => $entity->slug],
-                                    'Organization' => ['city' => $entity->city_slug, 'slug' => $entity->slug],
-                                    default => ($entity->slug ?? '#'),
-                                };
-                                $url = route($routeMap[$typeStr], $routeParams);
-                            }
-                        @endphp
-                        <li class="list_in_category_specialist d-flex flex-column align-items-stretch py-2 {{ !$loop->last ? 'border-bottom' : '' }}">
-                            <a class="link_in_category_specialist font-weight-bold" href="{{ $url }}" title="{{ $promo->title }}">
-                                {{ $promo->title }}
-                            </a>
-                            <small class="text-muted">{{ $entity->name ?? '' }}</small>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <div>
-                                    @if($promo->old_price)
-                                        <span class="commercial-old-price">{{ number_format($promo->old_price, 0, '.', ' ') }} ₽</span>
-                                    @endif
-                                    @if($promo->new_price)
-                                        <span class="commercial-new-price">{{ number_format($promo->new_price, 0, '.', ' ') }} ₽</span>
-                                    @endif
-                                </div>
-                                <a href="{{ $url }}" class="btn btn-sm btn-outline-primary btn-commercial">Подробнее</a>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</div>
+<div class="container promo-home-wrapper my-4">
+    <h2 class="header_h2 mb-3">Выгодные предложения в г. {{ $currentCityName }}</h2>
 
-{{-- МОБИЛЕ --}}
-<div class="mobile-popular-wrapper">
-    <h2 class="mobile-popular-title">Акции в г. {{ $currentCityName }}</h2>
-    <div class="mobile-popular-scroll">
-        @foreach($columns as $colIndex => $colPromos)
-        <div class="mobile-popular-card">
-            <div class="mobile-popular-card-header">
-                <span>{{ $colTitles[$colIndex] ?? 'Акции' }}</span>
-                <span class="badge-discount">%</span>
-            </div>
+    <div class="promo-home-cols">
+        @foreach($columns as $colPromos)
+        <div class="promo-home-col">
             @foreach($colPromos as $promo)
-            @php
-                $entity = $promo->promotable;
-                $typeStr = class_basename($promo->promotable_type);
-                $url = '#';
-                if (isset($routeMap[$typeStr]) && $entity) {
-                    $routeParams = match ($typeStr) {
-                        'Clinic' => ['city' => $entity->city_slug, 'clinic' => $entity->slug],
-                        'Organization' => ['city' => $entity->city_slug, 'slug' => $entity->slug],
-                        default => ($entity->slug ?? '#'),
-                    };
-                    $url = route($routeMap[$typeStr], $routeParams);
-                }
-            @endphp
-            <div class="mobile-popular-item">
-                <a class="mobile-popular-link" href="{{ $url }}">{{ $promo->title }}</a>
-                <span class="mobile-clinic-name">{{ $entity->name ?? '' }}</span>
-                <div class="mobile-commercial-footer">
-                    <div>
-                        @if($promo->old_price)
-                            <span class="commercial-old-price">{{ number_format($promo->old_price, 0, '.', ' ') }} ₽</span>
+                @php
+                    $entity  = $promo->promotable;
+                    $typeStr = class_basename($promo->promotable_type);
+                    $url     = '#';
+
+                    if (isset($routeMap[$typeStr]) && $entity) {
+                        $routeParams = match ($typeStr) {
+                            'Clinic'       => ['city' => $entity->city_slug, 'clinic' => $entity->slug],
+                            'Organization' => ['city' => $entity->city_slug, 'slug' => $entity->slug],
+                            default        => ($entity->slug ?? '#'),
+                        };
+                        $url = route($routeMap[$typeStr], $routeParams);
+                    }
+
+                    if ($promo->old_price && $promo->new_price && $promo->old_price > $promo->new_price) {
+                        $chip = '−' . round((1 - $promo->new_price / $promo->old_price) * 100) . '%';
+                    } else {
+                        $chip = $promo->badge ?: '% Акция';
+                    }
+                @endphp
+
+                <a href="{{ $url }}" class="promo-mini" title="{{ $promo->title }}">
+                    <span class="promo-mini__info">
+                        <span class="promo-mini__title">{{ $promo->title }}</span>
+                        <span class="promo-mini__org">{{ $entity->name ?? '' }}</span>
+                    </span>
+                    <span class="promo-mini__side">
+                        <span class="promo-mini__chip">{{ $chip }}</span>
+                        @if($promo->old_price || $promo->new_price)
+                            <span class="promo-mini__prices">
+                                @if($promo->old_price)
+                                    <span class="promo-mini__old">{{ number_format($promo->old_price, 0, '.', ' ') }} ₽</span>
+                                @endif
+                                @if($promo->new_price)
+                                    <span class="promo-mini__new">{{ number_format($promo->new_price, 0, '.', ' ') }} ₽</span>
+                                @endif
+                            </span>
                         @endif
-                        @if($promo->new_price)
-                            <span class="commercial-new-price">{{ number_format($promo->new_price, 0, '.', ' ') }} ₽</span>
-                        @endif
-                    </div>
-                    <a href="{{ $url }}" class="btn btn-sm btn-primary btn-commercial">Смотреть</a>
-                </div>
-            </div>
+                    </span>
+                </a>
             @endforeach
         </div>
         @endforeach

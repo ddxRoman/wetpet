@@ -85,7 +85,7 @@
 
                     <div class="form-group">
                         <label>Ник *</label>
-                        <input type="text" name="nickname" value="{{ $user->nickname ?? '' }}" required>
+                        <input type="text" name="nickname" value="{{ $user->nickname ?? '' }}">
                     </div>
 
                     <div class="form-group">

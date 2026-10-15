@@ -16,6 +16,7 @@ class Promotion extends Model
         'badge',
         'expires_at',
         'is_active',
+        'show_on_home',
     ];
 
     protected $casts = [
@@ -23,7 +24,20 @@ class Promotion extends Model
         'new_price'  => 'decimal:2',
         'expires_at' => 'date',
         'is_active'  => 'boolean',
+        'show_on_home' => 'boolean',
     ];
+
+    /** Максимум акций одной карточки, которые показываются на главной. */
+    public const HOME_PER_CARD = 3;
+
+    /** Максимум акций в блоке на главной (3 ряда по 5). */
+    public const HOME_TOTAL = 15;
+
+    /** Только акции, отмеченные «Выводить на главной». */
+    public function scopeForHome($query)
+    {
+        return $query->where('show_on_home', true);
+    }
 
     public function promotable()
     {
