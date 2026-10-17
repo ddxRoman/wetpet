@@ -13,6 +13,7 @@ class Specialist extends Model
 {
 use HasPracticeExperience;
 use HasGalleryPhotos;
+use \App\Models\Concerns\HasBoostPackages;
 use HasWorkplaces;
 
 protected $fillable = [

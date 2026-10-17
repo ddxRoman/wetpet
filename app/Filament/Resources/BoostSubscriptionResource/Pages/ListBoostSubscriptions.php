@@ -26,7 +26,7 @@ class ListBoostSubscriptions extends ListRecords
                 ->form([
                     Select::make('entity_type')
                         ->label('Тип карточки')
-                        ->options(['clinic' => 'Клиника', 'organization' => 'Организация'])
+                        ->options(['clinic' => 'Клиника', 'organization' => 'Организация', 'doctor' => 'Врач', 'specialist' => 'Специалист'])
                         ->required(),
                     TextInput::make('entity_id')
                         ->label('ID карточки')
@@ -41,9 +41,12 @@ class ListBoostSubscriptions extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data) {
-                    $exists = $data['entity_type'] === 'clinic'
-                        ? Clinic::whereKey($data['entity_id'])->exists()
-                        : Organization::whereKey($data['entity_id'])->exists();
+                    $exists = match ($data['entity_type']) {
+                        'clinic'     => Clinic::whereKey($data['entity_id'])->exists(),
+                        'doctor'     => \App\Models\Doctor::whereKey($data['entity_id'])->exists(),
+                        'specialist' => \App\Models\Specialist::whereKey($data['entity_id'])->exists(),
+                        default      => Organization::whereKey($data['entity_id'])->exists(),
+                    };
 
                     if (! $exists) {
                         Notification::make()->title('Карточка с таким ID не найдена')->danger()->send();

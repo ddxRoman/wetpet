@@ -6,7 +6,7 @@ use App\Models\BoostSubscription;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Пакеты продвижения карточки (Clinic / Organization).
+ * Пакеты продвижения карточки (Clinic / Organization / Doctor / Specialist).
  *
  *  - $card->hasBoostPackage('manage')  — доступны ли функции пакета этой карточке;
  *  - Clinic::query()->hasBoost('top')            — только карточки с активным пакетом;
@@ -19,7 +19,12 @@ trait HasBoostPackages
 {
     public function boostType(): string
     {
-        return $this instanceof \App\Models\Clinic ? 'clinic' : 'organization';
+        return match (true) {
+            $this instanceof \App\Models\Clinic     => 'clinic',
+            $this instanceof \App\Models\Doctor     => 'doctor',
+            $this instanceof \App\Models\Specialist => 'specialist',
+            default                                   => 'organization',
+        };
     }
 
     public function boostSubscriptions()

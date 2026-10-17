@@ -640,7 +640,7 @@ public function liveSearch(Request $request)
     // выше) — сортируем только по релевантности текста и порядку типов.
     // Клиники и организации с активным пакетом «Продвижение» — выше остальных совпадений
     $boostedIds = [];
-    foreach (['clinic', 'organization'] as $boostType) {
+    foreach (['clinic', 'organization', 'doctor', 'specialist'] as $boostType) {
         $ids = $results->where('type', $boostType)->pluck('_entity_id')->filter()->unique()->all();
         $boostedIds[$boostType] = $ids
             ? \App\Models\BoostSubscription::active()
@@ -655,7 +655,7 @@ public function liveSearch(Request $request)
 
     $top = $results
         ->map(function ($i) use ($boostedIds) {
-            $isBoosted = in_array($i['type'] ?? null, ['clinic', 'organization'], true)
+            $isBoosted = in_array($i['type'] ?? null, ['clinic', 'organization', 'doctor', 'specialist'], true)
                 && isset($boostedIds[$i['type']][$i['_entity_id'] ?? 0]);
 
             return $i + ['_tier' => 1, '_boost' => $isBoosted ? 0 : 1];
@@ -665,8 +665,8 @@ public function liveSearch(Request $request)
         ->take(20);
 
     // Акции под названием — только у карточек с пакетом «Выделение» (Promotion::active() это проверяет)
-    $promoMap = ['clinic' => [], 'organization' => []];
-    foreach (['clinic' => \App\Models\Clinic::class, 'organization' => \App\Models\Organization::class] as $promoType => $promoClass) {
+    $promoMap = ['clinic' => [], 'organization' => [], 'doctor' => [], 'specialist' => []];
+    foreach (['clinic' => \App\Models\Clinic::class, 'organization' => \App\Models\Organization::class, 'doctor' => \App\Models\Doctor::class, 'specialist' => \App\Models\Specialist::class] as $promoType => $promoClass) {
         $ids = $top->where('type', $promoType)->pluck('_entity_id')->filter()->unique()->all();
         if (! $ids) {
             continue;
@@ -687,7 +687,7 @@ public function liveSearch(Request $request)
     }
 
     $sorted = $top->map(function ($item) use ($promoMap) {
-        if (in_array($item['type'] ?? null, ['clinic', 'organization'], true)) {
+        if (in_array($item['type'] ?? null, ['clinic', 'organization', 'doctor', 'specialist'], true)) {
             $item['promotions'] = array_slice($promoMap[$item['type']][$item['_entity_id'] ?? 0] ?? [], 0, 2);
         }
 
@@ -809,6 +809,7 @@ public function fullSearch(Request $request)
             ->get(),
 
         'doctors' => \App\Models\Doctor::with('clinic')
+            ->boostedFirst('top')
             ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
                 // Ищем по имени врача целиком (обе раскладки)
                 $q->where('name', 'LIKE', "%{$searchTerm}%")
@@ -845,6 +846,7 @@ public function fullSearch(Request $request)
             ->get(),
 
         'specialists' => \App\Models\Specialist::with(['organization', 'city'])
+            ->boostedFirst('top')
             ->where(function($q) use ($searchTerm, $searchTermAlt, $words, $wordsAlt) {
                 $q->where('name', 'LIKE', "%{$searchTerm}%")
                   ->orWhere('specialization', 'LIKE', "%{$searchTerm}%");

@@ -22,7 +22,7 @@
     $galleryLimit = $entity->galleryPhotoLimitForOwner();
     $galleryCount = $photos->count();
     $hasPromo = $galleryLimit > 1;
-    $isCardEntity = in_array($type, ['clinic', 'organization'], true);
+    $isCardEntity = in_array($type, ['clinic', 'organization', 'doctor', 'specialist'], true);
     $photoPackageHint = $isCardEntity ? 'пакетом «Управление»' : 'рекламным пакетом';
 @endphp
 <div class="card border-0 shadow-sm rounded-3 p-4 mb-4">
@@ -240,8 +240,8 @@
     <h5 class="fw-bold mb-4">💊 Услуги и цены</h5>
 
     @php
-        // Клиники и организации: добавлять услуги можно только с пакетом «Управление»
-        $canEditServices = !in_array($type, ['clinic', 'organization'], true) || $entity->hasBoostPackage('manage');
+        // Добавлять услуги можно только с пакетом «Управление» (клиники, организации, врачи, специалисты)
+        $canEditServices = $entity->hasBoostPackage('manage');
     @endphp
 
     @unless($canEditServices)

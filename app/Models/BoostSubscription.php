@@ -32,12 +32,15 @@ class BoostSubscription extends Model
             ->exists();
     }
 
-    /** Карточка (клиника или организация), к которой относится подписка. */
+    /** Карточка (клиника, организация, врач или специалист), к которой относится подписка. */
     public function entityModel(): ?Model
     {
-        return $this->entity_type === 'clinic'
-            ? Clinic::find($this->entity_id)
-            : Organization::find($this->entity_id);
+        return match ($this->entity_type) {
+            'clinic'     => Clinic::find($this->entity_id),
+            'doctor'     => Doctor::find($this->entity_id),
+            'specialist' => Specialist::find($this->entity_id),
+            default      => Organization::find($this->entity_id),
+        };
     }
 
     public function packageLabel(): string

@@ -17,6 +17,7 @@ class Doctor extends Model
     use Notifiable;
     use HasPracticeExperience;
     use HasGalleryPhotos;
+    use \App\Models\Concerns\HasBoostPackages;
     use HasWorkplaces;
 
     protected $table = 'doctors';

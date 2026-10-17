@@ -11,9 +11,18 @@ use Illuminate\Support\Facades\DB;
 
 class BoostService
 {
-    public function plans(): array
+    /** Врачи и специалисты покупают пакеты со своим набором (config('boost.specialist_plans')). */
+    public static function isPerson(?string $type): bool
     {
-        return config('boost.plans', []);
+        return in_array($type, ['doctor', 'specialist'], true);
+    }
+
+    /** Пакеты для типа карточки (без типа — пакеты клиник и организаций). */
+    public function plans(?string $type = null): array
+    {
+        return self::isPerson($type)
+            ? config('boost.specialist_plans', [])
+            : config('boost.plans', []);
     }
 
     /**
@@ -32,7 +41,7 @@ class BoostService
     /** Создаёт платёж в статусе pending (сумма берётся из конфига, а не от клиента). */
     public function createPayment(User $user, string $type, int $id, string $package, string $period, string $gatewayName): BoostPayment
     {
-        $amount = config("boost.plans.{$package}.{$period}");
+        $amount = $this->plans($type)[$package][$period] ?? null;
 
         abort_if($amount === null || ! isset(config('boost.periods')[$period]), 422, 'Неизвестный пакет или период.');
 

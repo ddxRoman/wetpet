@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\BoostPayment;
 use App\Models\BoostSubscription;
 use App\Models\Clinic;
+use App\Models\Doctor;
 use App\Models\Organization;
+use App\Models\Specialist;
 use App\Services\Boost\BoostService;
 use App\Support\OwnerAccess;
 use Illuminate\Http\Request;
@@ -43,7 +45,7 @@ class OwnerBoostController extends Controller
         return view('pages.owner.boost', [
             'type'          => $type,
             'entity'        => $entity,
-            'plans'         => $boost->plans(),
+            'plans'         => $boost->plans($type),
             'subscriptions' => $subscriptions,
             'payments'      => $payments,
             'gatewayReady'  => (bool) $gateway,
@@ -57,7 +59,7 @@ class OwnerBoostController extends Controller
         $this->entity($type, $id);
 
         $data = $request->validate([
-            'package' => ['required', Rule::in(array_keys($boost->plans()))],
+            'package' => ['required', Rule::in(array_keys($boost->plans($type)))],
             'period'  => ['required', Rule::in(array_keys(config('boost.periods')))],
         ]);
 
@@ -109,7 +111,7 @@ class OwnerBoostController extends Controller
 
     private function authorizeOwner(string $type, int $id): void
     {
-        abort_unless(in_array($type, ['clinic', 'organization'], true), 404);
+        abort_unless(in_array($type, ['clinic', 'organization', 'doctor', 'specialist'], true), 404);
 
         OwnerAccess::authorizeConfirmed(
             $type,
@@ -120,6 +122,11 @@ class OwnerBoostController extends Controller
 
     private function entity(string $type, int $id)
     {
-        return $type === 'clinic' ? Clinic::findOrFail($id) : Organization::findOrFail($id);
+        return match ($type) {
+            'clinic'     => Clinic::findOrFail($id),
+            'doctor'     => Doctor::findOrFail($id),
+            'specialist' => Specialist::findOrFail($id),
+            default      => Organization::findOrFail($id),
+        };
     }
 }

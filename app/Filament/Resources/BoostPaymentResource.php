@@ -32,7 +32,7 @@ class BoostPaymentResource extends Resource
                 TextColumn::make('user.name')->label('Пользователь')->searchable(),
                 TextColumn::make('entity_type')
                     ->label('Тип')
-                    ->formatStateUsing(fn ($state) => $state === 'clinic' ? 'Клиника' : 'Организация')
+                    ->formatStateUsing(fn ($state) => ['clinic' => 'Клиника', 'doctor' => 'Врач', 'specialist' => 'Специалист'][$state] ?? 'Организация')
                     ->badge(),
                 TextColumn::make('entity_id')->label('ID карточки')->sortable(),
                 TextColumn::make('package')

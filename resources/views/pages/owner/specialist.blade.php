@@ -54,6 +54,11 @@
                         </a>
                     @endforeach
                     <hr class="my-2 opacity-25">
+                    <a href="{{ route('owner.boost', ['type' => 'specialist', 'id' => $entity->id]) }}"
+                       class="d-flex align-items-center gap-2 px-3 py-2 rounded-2 text-decoration-none text-dark"
+                       style="font-size:14px;">
+                        <span>⭐</span> <span>Продвижение</span>
+                    </a>
                     @if(!empty($entity->slug))
                         <a href="{{ route('specialists.show', $entity->slug) }}" target="_blank"
                            class="d-flex align-items-center gap-2 px-3 py-2 text-decoration-none text-muted"

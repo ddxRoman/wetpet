@@ -3,9 +3,9 @@
     <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
         <h5 class="fw-bold mb-0">🏷️ Акции и спецпредложения</h5>
         @php
-            // Клиники и организации — пакет «Выделение» этой карточки; врачи и специалисты — рекламный пакет пользователя
-            $isCard     = in_array($type, ['clinic', 'organization'], true);
-            $hasPackage = $isCard ? $entity->hasBoostPackage('featured') : auth()->user()->hasPromoPackage();
+            // Все типы карточек — пакет «Выделение» этой карточки
+            $isCard     = in_array($type, ['clinic', 'organization', 'doctor', 'specialist'], true);
+            $hasPackage = $entity->hasBoostPackage('featured');
             $packageName = $isCard ? 'Пакет «Выделение»' : 'Рекламный пакет';
         @endphp
         @if($hasPackage)

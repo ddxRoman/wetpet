@@ -242,6 +242,7 @@ public function index(Request $request)
 
             $query->where('specialization', 'LIKE', '%' . $searchTerm . '%');
         })
+        ->boostedFirst('top')
         ->orderByDesc('reviews_avg_rating') 
         ->orderBy('name')
         ->paginate(16)

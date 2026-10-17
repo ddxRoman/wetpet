@@ -30,7 +30,7 @@ class BoostSubscriptionResource extends Resource
                 TextColumn::make('id')->label('ID')->sortable(),
                 TextColumn::make('entity_type')
                     ->label('Тип')
-                    ->formatStateUsing(fn ($state) => $state === 'clinic' ? 'Клиника' : 'Организация')
+                    ->formatStateUsing(fn ($state) => ['clinic' => 'Клиника', 'doctor' => 'Врач', 'specialist' => 'Специалист'][$state] ?? 'Организация')
                     ->badge(),
                 TextColumn::make('entity_name')
                     ->label('Карточка')
@@ -61,7 +61,7 @@ class BoostSubscriptionResource extends Resource
                     ->options(fn () => collect(config('boost.plans'))->map(fn ($p) => $p['title'])->all()),
                 Tables\Filters\SelectFilter::make('entity_type')
                     ->label('Тип карточки')
-                    ->options(['clinic' => 'Клиника', 'organization' => 'Организация']),
+                    ->options(['clinic' => 'Клиника', 'organization' => 'Организация', 'doctor' => 'Врач', 'specialist' => 'Специалист']),
             ])
             ->actions([
                 Action::make('manage')

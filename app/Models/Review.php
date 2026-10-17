@@ -92,9 +92,16 @@ class Review extends Model
             return false;
         }
 
-        // Клиника/организация: оспаривать отзывы можно только с активным пакетом «Управление»
-        if ($this->reviewable_type === Clinic::class || $this->reviewable_type === Organization::class) {
-            $type = $this->reviewable_type === Clinic::class ? 'clinic' : 'organization';
+        // Клиника/организация/врач/специалист: оспаривать отзывы можно только с активным пакетом «Управление»
+        $boostTypes = [
+            Clinic::class     => 'clinic',
+            Organization::class => 'organization',
+            Doctor::class     => 'doctor',
+            Specialist::class => 'specialist',
+        ];
+
+        if (isset($boostTypes[$this->reviewable_type])) {
+            $type = $boostTypes[$this->reviewable_type];
             $key  = $type . ':' . (int) $this->reviewable_id;
 
             return static::$manageCache[$key] ??= BoostSubscription::activeFor($type, (int) $this->reviewable_id, 'manage');

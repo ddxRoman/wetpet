@@ -58,8 +58,7 @@ class Promotion extends Model
     }
 
     /**
-     * Активные и не истёкшие акции: у клиник и организаций — с активным пакетом «Выделение»,
-     * у врачей и специалистов — у пользователей с активным рекламным пакетом.
+     * Активные и не истёкшие акции: у клиник, организаций, врачей и специалистов — с активным пакетом «Выделение».
      * Используется на главной странице, в каталогах и на публичных show-страницах.
      *
      * Владелец определяется через поле created_by на самой сущности
@@ -78,19 +77,11 @@ class Promotion extends Model
                   ->orWhere('expires_at', '>=', $today);
             })
             ->where(function ($outer) use ($today) {
-                // Клиники и организации: акции видны только с активным пакетом «Выделение»
+                // Клиники, организации, врачи и специалисты: акции видны только с активным пакетом «Выделение»
                 $outer->whereHasMorph('promotable', [Clinic::class], fn ($q) => $q->hasBoost('featured'))
                     ->orWhereHasMorph('promotable', [Organization::class], fn ($q) => $q->hasBoost('featured'))
-                    // Врачи и специалисты: прежнее правило — рекламный пакет создателя карточки
-                    ->orWhereHasMorph('promotable', [Doctor::class, Specialist::class], function ($q) use ($today) {
-                        $q->whereHas('creator', function ($u) use ($today) {
-                            $u->where('has_promo_package', true)
-                              ->where(function ($d) use ($today) {
-                                  $d->whereNull('promo_package_expires_at')
-                                    ->orWhere('promo_package_expires_at', '>=', $today);
-                              });
-                        });
-                    });
+                    ->orWhereHasMorph('promotable', [Doctor::class], fn ($q) => $q->hasBoost('featured'))
+                    ->orWhereHasMorph('promotable', [Specialist::class], fn ($q) => $q->hasBoost('featured'));
             });
     }
 }

@@ -1145,9 +1145,8 @@ public function organization(int $id)
 
         $this->authorizeOwner($request->entity_type, $request->entity_id);
 
-        // Клиники и организации: добавлять услуги можно только с пакетом «Управление»
-        if (in_array($request->entity_type, ['clinic', 'organization'], true)
-            && !\App\Models\BoostSubscription::activeFor($request->entity_type, (int) $request->entity_id, 'manage')) {
+        // Добавлять услуги можно только с пакетом «Управление»
+        if (!\App\Models\BoostSubscription::activeFor($request->entity_type, (int) $request->entity_id, 'manage')) {
             return response()->json([
                 'success' => false,
                 'message' => 'Добавление услуг доступно с пакетом «Управление». Подключите его в разделе «Продвижение».',
@@ -1213,13 +1212,9 @@ public function organization(int $id)
     {
         $request->validate(['entity_type'=>'required|in:clinic,organization,doctor,specialist','entity_id'=>'required|integer','title'=>'required|string|max:100','description'=>'nullable|string|max:500','old_price'=>'nullable|numeric|min:0','new_price'=>'nullable|numeric|min:0','badge'=>'nullable|string|max:20','expires_at'=>'nullable|date|after_or_equal:today','show_on_home'=>'nullable|boolean']);
         $this->authorizeOwner($request->entity_type, $request->entity_id);
-        // Клиники и организации — только с пакетом «Выделение»; врачи и специалисты — по рекламному пакету пользователя
-        if (in_array($request->entity_type, ['clinic', 'organization'], true)) {
-            if (!\App\Models\BoostSubscription::activeFor($request->entity_type, (int) $request->entity_id, 'featured')) {
-                return response()->json(['success'=>false,'message'=>'Акции доступны с пакетом «Выделение». Подключите его в разделе «Продвижение».'],403);
-            }
-        } elseif (!Auth::user()->hasPromoPackage()) {
-            return response()->json(['success'=>false,'message'=>'Рекламный пакет не активен.'],403);
+        // Акции — только с пакетом «Выделение» этой карточки
+        if (!\App\Models\BoostSubscription::activeFor($request->entity_type, (int) $request->entity_id, 'featured')) {
+            return response()->json(['success'=>false,'message'=>'Акции доступны с пакетом «Выделение». Подключите его в разделе «Продвижение».'],403);
         }
         $morphMap=['clinic'=>\App\Models\Clinic::class,'organization'=>\App\Models\Organization::class,'doctor'=>\App\Models\Doctor::class,'specialist'=>\App\Models\Specialist::class];
         if (\App\Models\Promotion::where('promotable_type',$morphMap[$request->entity_type])->where('promotable_id',$request->entity_id)->count()>=3) return response()->json(['success'=>false,'message'=>'Максимум 3 акции.'],422);

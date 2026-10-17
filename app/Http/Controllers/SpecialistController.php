@@ -86,6 +86,7 @@ public function index(Request $request)
             if (mb_strlen($searchTerm) < 3) { $searchTerm = $selectedSpecialization; }
             $q->where('specialization', 'LIKE', '%' . $searchTerm . '%');
         })
+        ->boostedFirst('top')
         ->orderByDesc('reviews_avg_rating') 
         ->orderBy('name')
         ->paginate(16)

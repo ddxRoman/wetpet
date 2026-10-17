@@ -337,9 +337,9 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
 
     // Продвижение карточки: пакеты и оплата (тестовый шлюз)
     Route::get('/{type}/{id}/boost',            [OwnerBoostController::class, 'show'])
-        ->where('type', 'clinic|organization')->whereNumber('id')->name('boost');
+        ->where('type', 'clinic|organization|doctor|specialist')->whereNumber('id')->name('boost');
     Route::post('/{type}/{id}/boost/checkout',  [OwnerBoostController::class, 'checkout'])
-        ->where('type', 'clinic|organization')->whereNumber('id')->name('boost.checkout');
+        ->where('type', 'clinic|organization|doctor|specialist')->whereNumber('id')->name('boost.checkout');
     Route::get('/boost/fake-pay/{payment}',     [OwnerBoostController::class, 'fakeShow'])->name('boost.fake.show');
     Route::post('/boost/fake-pay/{payment}',    [OwnerBoostController::class, 'fakeConfirm'])->name('boost.fake.confirm');
 
