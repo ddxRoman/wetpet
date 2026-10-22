@@ -37,6 +37,14 @@ class LegalController extends Controller
             ]);
         }
 
+        // «О проекте» — SEO редактируется в админке: «SEO Каталожных страниц» (ключ legal_about)
+        if ($slug === 'about') {
+            return view('pages.legal.template', [
+                'page'    => $page,
+                'seoMeta' => (new SeoManager())->getCatalogMeta('legal_about'),
+            ]);
+        }
+
         return view('pages.legal.template', compact('page'));
     }
 

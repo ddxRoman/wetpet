@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Редактируемое SEO для каталожных страниц (/doctors, /clinics, /specialists,
- * /organizations, /ads) и их фильтров. Управляется через Filament:
+ * /organizations, /ads, /animals, /legal/about) и их фильтров. Управляется через Filament:
  * "SEO Каталожных страниц".
  */
 class SeoCatalogPage extends Model
@@ -33,6 +33,7 @@ class SeoCatalogPage extends Model
         'ads'                         => ['city'],
         'animals'                     => [],
         'legal_faq'                   => [],
+        'legal_about'                 => [],
         'glossary'                    => [],
         'glossary_term'               => ['term', 'definition', 'category'],
     ];
