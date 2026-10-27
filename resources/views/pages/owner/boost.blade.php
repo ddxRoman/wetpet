@@ -35,7 +35,7 @@
 
     @if($gatewayName === 'fake')
         <div class="alert alert-warning rounded-3">
-            🧪 Тестовый режим оплаты: деньги не списываются, пакет включится после нажатия «Оплатить (тест)».
+            🧪 Тестовый режим оплаты: деньги не списываются, пакет включится после нажатия «Оформить подписку (тест)».
         </div>
     @elseif(! $gatewayReady)
         <div class="alert alert-info rounded-3">Оплата пока недоступна — мы подключаем платёжную систему.</div>
@@ -47,6 +47,7 @@
                 $sub      = $subscriptions->get($key);
                 $isActive = $sub && $sub->isActive();
                 $saving   = $plan['month'] * 12 - $plan['year'];
+                $autoRenew = $autoRenewals->get($key);
             @endphp
             <div class="col-lg-4">
                 <div class="card h-100 border-0 shadow-sm rounded-3 {{ $isActive ? 'border border-2 border-success' : '' }}">
@@ -80,16 +81,38 @@
                                 </div>
                             </div>
 
+                            @unless($autoRenew)
                             <form method="POST" action="{{ route('owner.boost.checkout', ['type' => $type, 'id' => $entity->id]) }}" class="d-grid gap-2">
                                 @csrf
                                 <input type="hidden" name="package" value="{{ $key }}">
                                 <button type="submit" name="period" value="month" class="btn btn-primary rounded-pill" @disabled(! $gatewayReady)>
-                                    {{ $isActive ? 'Продлить' : 'Подключить' }} на месяц — {{ number_format($plan['month'], 0, ',', ' ') }} ₽
+                                    Оформить подписку на месяц — {{ number_format($plan['month'], 0, ',', ' ') }} ₽
                                 </button>
                                 <button type="submit" name="period" value="year" class="btn btn-outline-primary rounded-pill" @disabled(! $gatewayReady)>
-                                    {{ $isActive ? 'Продлить' : 'Подключить' }} на год — {{ number_format($plan['year'], 0, ',', ' ') }} ₽
+                                    Оформить подписку на год — {{ number_format($plan['year'], 0, ',', ' ') }} ₽
                                 </button>
                             </form>
+                            @if($gatewayName === 'yookassa')
+                                <p class="text-muted small mt-2 mb-0">
+                                    Нажимая «Оформить подписку», вы соглашаетесь на автоматическое продление: мы привяжем ваш способ оплаты
+                                    и будем списывать стоимость выбранного периода за сутки до окончания пакета.
+                                    Отключить подписку можно в любой момент на этой странице.
+                                </p>
+                            @endif
+                            @endunless
+
+                            @if($autoRenew)
+                                <div class="mt-3 small text-success">
+                                    🔁 Подписка продлевается автоматически ({{ $autoRenew->planLabel() }}@if($autoRenew->payment_method_title), {{ $autoRenew->payment_method_title }}@endif).
+                                    @if($isActive)
+                                        Следующее списание — примерно {{ $sub->expires_at->copy()->subHours((int) config('premium.auto_renew.charge_before_hours'))->format('d.m.Y') }}.
+                                    @endif
+                                </div>
+                                <form method="POST" action="{{ route('owner.boost.autorenew.cancel', ['type' => $type, 'id' => $entity->id, 'package' => $key]) }}" class="mt-2">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill">Отключить подписку</button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>

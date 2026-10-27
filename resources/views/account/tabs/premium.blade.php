@@ -5,6 +5,10 @@
     $__yearSaving     = $__monthPrice * 12 - $__yearPrice;
     $__isPremium      = $user->isPremium();
     $__gatewayReady   = (bool) app(\App\Services\Premium\PremiumService::class)->gateway();
+    $__gatewayName    = app(\App\Services\Premium\PremiumService::class)->gateway()?->name();
+    $__autoRenewCan   = $__gatewayName === 'yookassa';
+    $__autoRenew      = \App\Models\AutoRenewal::forPremium($user->id);
+    $__autoRenewOn    = $__autoRenew && $__autoRenew->isActive();
     $__lastPayments   = $user->premiumPayments()->where('status', 'paid')->latest('paid_at')->limit(5)->get();
 @endphp
 
@@ -33,6 +37,30 @@
         </div>
     @endif
 
+    @if($__autoRenewOn)
+        <div class="premium-status premium-status--active" style="margin-top:10px;">
+            🔁 Подписка продлевается автоматически: {{ $__autoRenew->planLabel() }}, {{ $__premiumPlans[$__autoRenew->plan]['price'] ?? '' }} ₽
+            @if($__autoRenew->payment_method_title) ({{ $__autoRenew->payment_method_title }}) @endif.
+            @if($user->premium_until)
+                Следующее списание — примерно {{ $user->premium_until->copy()->subHours((int) config('premium.auto_renew.charge_before_hours'))->format('d.m.Y') }}.
+            @endif
+            <form method="POST" action="{{ route('premium.autorenew.cancel') }}" style="margin-top:8px;">
+                @csrf
+                <button type="submit" class="save-btn">Отключить подписку</button>
+                <div class="section-hint" style="margin-top:4px;">Премиум сохранится до конца оплаченного срока, дальше продлеваться не будет.</div>
+            </form>
+        </div>
+    @elseif($__autoRenew && $__autoRenew->status === 'failed')
+        <div class="premium-status" style="margin-top:10px;">
+            Подписка больше не продлевается автоматически: не удалось списать оплату. Оформите подписку заново.
+        </div>
+    @elseif($__isPremium && $__autoRenewCan)
+        <div class="section-hint" style="margin-top:8px;">
+            Автоматическое продление не подключено: деньги списываться не будут, Премиум закончится в указанную дату.
+            Чтобы продлевать автоматически, оформите подписку ниже.
+        </div>
+    @endif
+
     <h3 style="margin-top:20px;">Что даёт Премиум</h3>
     <ul class="premium-benefits">
         <li>📷 До {{ config('premium.limits.pet_photos.premium') }} фото у каждого питомца</li>
@@ -42,7 +70,8 @@
     </ul>
 
     {{-- Тарифы --}}
-    <h3 style="margin-top:20px;">{{ $__isPremium ? 'Продлить подписку' : 'Оформить подписку' }}</h3>
+    @unless($__autoRenewOn)
+    <h3 style="margin-top:20px;">Оформить подписку</h3>
 
     <div class="premium-plans">
         <form method="POST" action="{{ route('premium.checkout') }}" class="premium-plan">
@@ -51,7 +80,7 @@
             <div class="premium-plan__title">{{ $__premiumPlans['month']['label'] }}</div>
             <div class="premium-plan__price">{{ $__monthPrice }} ₽</div>
             <div class="premium-plan__hint">{{ $__monthPrice }} ₽ в месяц</div>
-            <button type="submit" class="save-btn" @disabled(! $__gatewayReady)>Оплатить</button>
+            <button type="submit" class="save-btn" @disabled(! $__gatewayReady)>Оформить подписку</button>
         </form>
 
         <form method="POST" action="{{ route('premium.checkout') }}" class="premium-plan premium-plan--best">
@@ -61,9 +90,19 @@
             <div class="premium-plan__title">{{ $__premiumPlans['year']['label'] }}</div>
             <div class="premium-plan__price">{{ $__yearPrice }} ₽</div>
             <div class="premium-plan__hint">{{ round($__yearPrice / 12) }} ₽ в месяц</div>
-            <button type="submit" class="save-btn" @disabled(! $__gatewayReady)>Оплатить</button>
+            <button type="submit" class="save-btn" @disabled(! $__gatewayReady)>Оформить подписку</button>
         </form>
     </div>
+
+    @if($__autoRenewCan && $__gatewayReady)
+        <p class="section-hint" style="margin-top:10px;">
+            Нажимая «Оформить подписку», вы соглашаетесь на подписку с автоматическим продлением: мы привяжем ваш способ оплаты
+            и будем списывать стоимость выбранного тарифа ({{ $__monthPrice }} ₽ в месяц или {{ $__yearPrice }} ₽ в год)
+            за сутки до окончания каждого периода. Отключить подписку можно в любой момент на этой странице —
+            Премиум сохранится до конца оплаченного срока.
+        </p>
+    @endif
+    @endunless
 
     @unless($__gatewayReady)
         <p class="section-hint" style="margin-top:10px;">Оплата пока недоступна — мы подключаем платёжную систему.</p>

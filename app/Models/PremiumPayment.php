@@ -15,10 +15,14 @@ class PremiumPayment extends Model
         'gateway',
         'external_id',
         'paid_at',
+        'auto_renew',
+        'is_renewal',
     ];
 
     protected $casts = [
-        'paid_at' => 'datetime',
+        'paid_at'    => 'datetime',
+        'auto_renew' => 'boolean',
+        'is_renewal' => 'boolean',
     ];
 
     public function user()

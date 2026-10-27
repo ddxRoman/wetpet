@@ -194,23 +194,13 @@ Forms\Components\TextInput::make('practice_started_at')
             ->searchable()
             ->helperText('Врач может работать не только в клиниках, но и в организациях. Основное место (по нему строится адрес страницы) задаётся полем «Клиники».'),
 
-        Forms\Components\Select::make('exotic_animals')
-            ->label('Экзотические животные')
-            ->options([
-                'yes' => 'Да',
-                'no' => 'Нет',
-            ]),
+        \App\Filament\Support\YesNoToggle::make('exotic_animals', 'Экзотические животные'),
 
         Forms\Components\Toggle::make('works_online')
             ->label('Работает онлайн')
             ->helperText('Бейдж «Онлайн» в каталоге и фильтр «Онлайн»; карточка показывается во всех городах. Организацию и адрес можно не указывать.'),
 
-        Forms\Components\Select::make('On_site_assistance')
-            ->label('Выезд на дом')
-            ->options([
-                'yes' => 'Да',
-                'no' => 'Нет',
-            ]),
+        \App\Filament\Support\YesNoToggle::make('On_site_assistance', 'Выезд на дом'),
 
 
 Forms\Components\FileUpload::make('photo')

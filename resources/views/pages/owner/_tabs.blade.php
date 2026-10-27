@@ -249,7 +249,7 @@
             <div style="font-size:36px;">🔒</div>
             <h6 class="fw-bold mt-2">Добавление услуг доступно с пакетом «Управление»</h6>
             <p class="text-muted mb-3" style="font-size:14px;">Уже добавленные услуги и цены продолжают отображаться в карточке.</p>
-            <a href="{{ route('owner.boost', ['type' => $type, 'id' => $entityId]) }}" class="btn btn-primary rounded-pill px-4">Подключить пакет «Управление»</a>
+            <a href="{{ route('owner.boost', ['type' => $type, 'id' => $entityId]) }}" class="btn btn-primary rounded-pill px-4">Оформить подписку «Управление»</a>
         </div>
     @endunless
 

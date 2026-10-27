@@ -7,6 +7,8 @@ use App\Models\BoostSubscription;
 use App\Models\User;
 use App\Services\Boost\Gateways\BoostGateway;
 use App\Services\Boost\Gateways\FakeBoostGateway;
+use App\Services\Boost\Gateways\YooKassaBoostGateway;
+use App\Services\Payments\YooKassaService;
 use Illuminate\Support\Facades\DB;
 
 class BoostService
@@ -33,13 +35,14 @@ class BoostService
     public function gateway(): ?BoostGateway
     {
         return match (config('premium.gateway')) {
-            'fake'  => app(FakeBoostGateway::class),
-            default => null,
+            'fake'     => app(FakeBoostGateway::class),
+            'yookassa' => app(YooKassaService::class)->configured() ? app(YooKassaBoostGateway::class) : null,
+            default    => null,
         };
     }
 
     /** Создаёт платёж в статусе pending (сумма берётся из конфига, а не от клиента). */
-    public function createPayment(User $user, string $type, int $id, string $package, string $period, string $gatewayName): BoostPayment
+    public function createPayment(User $user, string $type, int $id, string $package, string $period, string $gatewayName, bool $autoRenew = false): BoostPayment
     {
         $amount = $this->plans($type)[$package][$period] ?? null;
 
@@ -55,6 +58,7 @@ class BoostService
             'currency'    => 'RUB',
             'status'      => 'pending',
             'gateway'     => $gatewayName,
+            'auto_renew'  => $autoRenew,
         ]);
     }
 

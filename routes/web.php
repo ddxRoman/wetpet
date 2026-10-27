@@ -36,6 +36,7 @@ use App\Http\Controllers\{
     PremiumController,
     TrustedUserController,
     PetPageController,
+    YooKassaWebhookController,
 };
 
 /*
@@ -343,6 +344,14 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
     Route::get('/boost/fake-pay/{payment}',     [OwnerBoostController::class, 'fakeShow'])->name('boost.fake.show');
     Route::post('/boost/fake-pay/{payment}',    [OwnerBoostController::class, 'fakeConfirm'])->name('boost.fake.confirm');
 
+    // Отключение автопродления пакета
+    Route::post('/{type}/{id}/boost/{package}/autorenew/cancel', [OwnerBoostController::class, 'cancelAutoRenew'])
+        ->where('type', 'clinic|organization|doctor|specialist')->whereNumber('id')
+        ->where('package', 'manage|top|featured')->name('boost.autorenew.cancel');
+
+    // Возврат пользователя из ЮKassa после оплаты
+    Route::get('/boost/yookassa/return/{payment}', [OwnerBoostController::class, 'yookassaReturn'])->name('boost.yookassa.return');
+
     // Кабинеты по типам
     Route::get('/clinic/{id}',       [OwnerCabinetController::class, 'clinic'])->name('clinic');
     Route::post('/clinic/{id}',      [OwnerCabinetController::class, 'updateClinic'])->name('clinic.update');
@@ -393,6 +402,9 @@ Route::prefix('owner')->name('owner.')->middleware('auth')->group(function () {
 });
 
 
+// HTTP-уведомления ЮKassa (без auth и CSRF — вызывается сервером ЮKassa)
+Route::post('/yookassa/webhook', YooKassaWebhookController::class)->name('yookassa.webhook');
+
 // ======================================================
 // ⭐ Премиум-подписка, доверенные пользователи, фото питомцев
 // ======================================================
@@ -401,9 +413,15 @@ Route::middleware(['auth'])->group(function () {
     // Оформление подписки
     Route::post('/account/premium/checkout', [PremiumController::class, 'checkout'])->name('premium.checkout');
 
+    // Отключение автопродления
+    Route::post('/account/premium/autorenew/cancel', [PremiumController::class, 'cancelAutoRenew'])->name('premium.autorenew.cancel');
+
     // Тестовый шлюз оплаты (работает только при PREMIUM_GATEWAY=fake, см. config/premium.php)
     Route::get('/premium/fake-pay/{payment}', [PremiumController::class, 'fakeShow'])->name('premium.fake.show');
     Route::post('/premium/fake-pay/{payment}', [PremiumController::class, 'fakeConfirm'])->name('premium.fake.confirm');
+
+    // Возврат пользователя из ЮKassa после оплаты
+    Route::get('/premium/yookassa/return/{payment}', [PremiumController::class, 'yookassaReturn'])->name('premium.yookassa.return');
 
     // Доверенные пользователи и лента их отзывов
     Route::get('/account/trusted/feed', [TrustedUserController::class, 'feed'])->name('trusted.feed');

@@ -116,7 +116,7 @@
                     Список филиалов выше доступен для просмотра.
                 </p>
                 @if($buyUrl)
-                    <a href="{{ $buyUrl }}" class="btn btn-primary rounded-pill px-4">Подключить пакет «Управление»</a>
+                    <a href="{{ $buyUrl }}" class="btn btn-primary rounded-pill px-4">Оформить подписку «Управление»</a>
                 @endif
             </div>
         </div>

@@ -6,6 +6,8 @@ use App\Models\PremiumPayment;
 use App\Models\User;
 use App\Services\Premium\Gateways\FakeGateway;
 use App\Services\Premium\Gateways\PaymentGateway;
+use App\Services\Premium\Gateways\YooKassaGateway;
+use App\Services\Payments\YooKassaService;
 use Illuminate\Support\Facades\DB;
 
 class PremiumService
@@ -22,13 +24,14 @@ class PremiumService
     public function gateway(): ?PaymentGateway
     {
         return match (config('premium.gateway')) {
-            'fake'  => app(FakeGateway::class),
-            default => null,
+            'fake'     => app(FakeGateway::class),
+            'yookassa' => app(YooKassaService::class)->configured() ? app(YooKassaGateway::class) : null,
+            default    => null,
         };
     }
 
     /** Создаёт запись о платеже в статусе pending (сумма берётся из конфига, а не от клиента). */
-    public function createPayment(User $user, string $plan, string $gatewayName): PremiumPayment
+    public function createPayment(User $user, string $plan, string $gatewayName, bool $autoRenew = false): PremiumPayment
     {
         $planConfig = $this->plans()[$plan] ?? null;
 
@@ -41,6 +44,7 @@ class PremiumService
             'currency' => 'RUB',
             'status'   => 'pending',
             'gateway'  => $gatewayName,
+            'auto_renew' => $autoRenew,
         ]);
     }
 

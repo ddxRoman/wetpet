@@ -15,7 +15,7 @@
 
             <form method="POST" action="{{ route('premium.fake.confirm', $payment) }}">
                 @csrf
-                <button type="submit" class="btn btn-primary px-4" style="border-radius: 12px;">Оплатить (тест)</button>
+                <button type="submit" class="btn btn-primary px-4" style="border-radius: 12px;">Оформить подписку (тест)</button>
                 <a href="{{ route('account') }}#premium" class="btn btn-light px-4" style="border-radius: 12px;">Отмена</a>
             </form>
         </div>

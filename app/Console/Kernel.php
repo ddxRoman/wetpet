@@ -12,7 +12,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Автопродление Премиума и пакетов продвижения (нужен cron: * * * * * php artisan schedule:run)
+        $schedule->command('subscriptions:renew')->hourly()->withoutOverlapping();
+
+        // Страховка: подтянуть оплаченные платежи ЮKassa, если вебхук не дошёл
+        $schedule->command('payments:reconcile')->everyFiveMinutes()->withoutOverlapping();
     }
 
     /**

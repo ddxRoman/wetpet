@@ -30,9 +30,9 @@
                 @endif
             </p>
             @if($isCard)
-                <a href="{{ route('owner.boost', ['type' => $type, 'id' => $entity->id]) }}" class="btn btn-primary rounded-pill px-4 mt-3">Подключить пакет «Выделение»</a>
+                <a href="{{ route('owner.boost', ['type' => $type, 'id' => $entity->id]) }}" class="btn btn-primary rounded-pill px-4 mt-3">Оформить подписку «Выделение»</a>
             @else
-                <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">Подключить рекламный пакет</a>
+                <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">Оформить рекламную подписку</a>
             @endif
         </div>
     @else
