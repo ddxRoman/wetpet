@@ -25,6 +25,12 @@ class YooKassaService
             && filled(config('services.yookassa.secret_key'));
     }
 
+    /** Разрешены ли автоплатежи (подписка с автопродлением). См. YOOKASSA_RECURRING в .env. */
+    public function recurringEnabled(): bool
+    {
+        return $this->configured() && (bool) config('services.yookassa.recurring');
+    }
+
     public function client(): Client
     {
         if (! $this->configured()) {

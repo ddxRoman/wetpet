@@ -82,7 +82,7 @@ class OwnerBoostController extends Controller
         }
 
         // Каждая покупка — подписка с автопродлением (пока доступно только через ЮKassa)
-        $autoRenew = $gateway->name() === 'yookassa';
+        $autoRenew = $gateway->name() === 'yookassa' && app(YooKassaService::class)->recurringEnabled();
 
         $payment = $boost->createPayment(
             $request->user(), $type, $id, $data['package'], $data['period'], $gateway->name(), $autoRenew

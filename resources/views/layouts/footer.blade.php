@@ -29,6 +29,7 @@
             <a target="_blank" href="{{ route('legal/terms') }}"><p>Пользовательское соглашение</p></a>
             <a target="_blank" href="{{ route('legal/personal-data-agreement') }}"><p>Согласие на обработку персональных данных</p></a>
             <a target="_blank" href="{{ route('legal/partner-offer') }}"><p>Договор Оферты</p></a>
+            <a target="_blank" href="{{ route('legal/subscription-offer') }}"><p>Оферта на подписку</p></a>
             <a target="_blank" href="{{ route('legal/cookies') }}"><p>Политика Cookie</p></a>
             <a target="_blank" href="{{ route('legal/content-rules') }}"><p>Политика модерации</p></a>
             <a href="{{ route('legal/glossary') }}"><p>Словарь</p></a>

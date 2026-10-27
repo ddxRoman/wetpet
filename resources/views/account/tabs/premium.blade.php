@@ -6,7 +6,7 @@
     $__isPremium      = $user->isPremium();
     $__gatewayReady   = (bool) app(\App\Services\Premium\PremiumService::class)->gateway();
     $__gatewayName    = app(\App\Services\Premium\PremiumService::class)->gateway()?->name();
-    $__autoRenewCan   = $__gatewayName === 'yookassa';
+    $__autoRenewCan   = $__gatewayName === 'yookassa' && app(\App\Services\Payments\YooKassaService::class)->recurringEnabled();
     $__autoRenew      = \App\Models\AutoRenewal::forPremium($user->id);
     $__autoRenewOn    = $__autoRenew && $__autoRenew->isActive();
     $__lastPayments   = $user->premiumPayments()->where('status', 'paid')->latest('paid_at')->limit(5)->get();
@@ -96,7 +96,8 @@
 
     @if($__autoRenewCan && $__gatewayReady)
         <p class="section-hint" style="margin-top:10px;">
-            Нажимая «Оформить подписку», вы соглашаетесь на подписку с автоматическим продлением: мы привяжем ваш способ оплаты
+            Нажимая «Оформить подписку», вы принимаете <a href="{{ route('legal/subscription-offer') }}" target="_blank">оферту</a>
+            и соглашаетесь на подписку с автоматическим продлением: мы привяжем ваш способ оплаты
             и будем списывать стоимость выбранного тарифа ({{ $__monthPrice }} ₽ в месяц или {{ $__yearPrice }} ₽ в год)
             за сутки до окончания каждого периода. Отключить подписку можно в любой момент на этой странице —
             Премиум сохранится до конца оплаченного срока.

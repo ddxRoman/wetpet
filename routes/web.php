@@ -64,6 +64,12 @@ Route::get('legal/partner-offer', function () {
         'seoMeta' => ['robots' => 'noindex, follow'],
     ]);
     })->name('legal/partner-offer');
+// Публичная оферта на платную подписку (реквизиты берутся из config/company.php)
+Route::get('legal/subscription-offer', function () {
+    return view('pages.legal.subscription-offer', [
+        'seoMeta' => ['robots' => 'noindex, follow'],
+    ]);
+})->name('legal/subscription-offer');
 Route::get('legal/glossary', [LegalController::class, 'glossary'])->name('legal/glossary');
 // Отдельная страница термина (вне /legal/*, чтобы не попасть под Disallow: /legal/glossary в robots.txt)
 Route::get('glossary/{slug}', [LegalController::class, 'glossaryTerm'])->name('glossary.show');

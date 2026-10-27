@@ -92,9 +92,10 @@
                                     Оформить подписку на год — {{ number_format($plan['year'], 0, ',', ' ') }} ₽
                                 </button>
                             </form>
-                            @if($gatewayName === 'yookassa')
+                            @if($gatewayName === 'yookassa' && app(\App\Services\Payments\YooKassaService::class)->recurringEnabled())
                                 <p class="text-muted small mt-2 mb-0">
-                                    Нажимая «Оформить подписку», вы соглашаетесь на автоматическое продление: мы привяжем ваш способ оплаты
+                                    Нажимая «Оформить подписку», вы принимаете <a href="{{ route('legal/subscription-offer') }}" target="_blank">оферту</a>
+                                    и соглашаетесь на автоматическое продление: мы привяжем ваш способ оплаты
                                     и будем списывать стоимость выбранного периода за сутки до окончания пакета.
                                     Отключить подписку можно в любой момент на этой странице.
                                 </p>

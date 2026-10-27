@@ -33,6 +33,9 @@ return [
     'yookassa' => [
         'shop_id'    => env('YOOKASSA_SHOP_ID'),
         'secret_key' => env('YOOKASSA_SECRET_KEY'),
+        // Автоплатежи (сохранение способа оплаты). Включайте только после того, как менеджер ЮKassa
+        // подключил их для магазина, иначе ЮKassa отвечает 403 «This store can't make recurring payments».
+        'recurring'  => env('YOOKASSA_RECURRING', false),
     ],
 
 // Телеграммм

@@ -28,7 +28,7 @@ class PremiumController extends Controller
         }
 
         // Каждая покупка — подписка с автопродлением (пока доступно только через ЮKassa)
-        $autoRenew = $gateway->name() === 'yookassa';
+        $autoRenew = $gateway->name() === 'yookassa' && app(YooKassaService::class)->recurringEnabled();
 
         $payment = $premium->createPayment($request->user(), $data['plan'], $gateway->name(), $autoRenew);
 
